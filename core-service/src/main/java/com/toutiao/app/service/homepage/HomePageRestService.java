@@ -17,7 +17,7 @@ public interface HomePageRestService {
     /**
      * 获取新房五条
      */
-    NewHouseListDomain getHomePageNewHouse();
+    NewHouseListDomain getHomePageNewHouse(String city);
 
     /**
      * 获取首页主题房

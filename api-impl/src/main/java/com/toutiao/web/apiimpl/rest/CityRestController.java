@@ -34,14 +34,17 @@ public class CityRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/{cityId}",method = RequestMethod.GET)
-    public NashResult getNewHouseDetailByNewCode(@PathVariable String cityId,@RequestHeader ("User-Agent") String userAgent,@CookieValue("select_city")String city)
+    public NashResult getNewHouseDetailByNewCode(@PathVariable String cityId)
     {
 
-        System.out.println(city);
-        Cookie cookie = CookieUtils.setCookie(request, response, CookieUtils.COOKIE_NAME_CITY, cityId);
+//        System.out.println(city);
+//        Cookie cookie = CookieUtils.setCookie(request, response, CookieUtils.COOKIE_NAME_CITY, cityId);
 
 //        esIndexUtils.getESByCity1(request, response, cookie.getValue());
-        return NashResult.build(cookie.getValue());
+
+
+        String cityCode = request.getHeader("select_city");
+        return NashResult.build(cityCode);
     }
 
 

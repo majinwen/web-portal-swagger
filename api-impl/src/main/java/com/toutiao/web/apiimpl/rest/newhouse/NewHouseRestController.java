@@ -1,4 +1,5 @@
 package com.toutiao.web.apiimpl.rest.newhouse;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -6,10 +7,14 @@ import com.toutiao.app.api.chance.request.newhouse.NewHouseDetailsRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseDynamicRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseTrafficRequest;
-import com.toutiao.app.api.chance.response.newhouse.*;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseDynamicResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
+import com.toutiao.app.api.chance.response.newhouse.NewHouseTrafficResponse;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +35,7 @@ public class NewHouseRestController {
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
     public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest)
     {
-        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode());
+        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode(), CityUtils.getCity());
         NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
         return NashResult.build(newHouseDetailResponse);
     }
@@ -46,7 +51,7 @@ public class NewHouseRestController {
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseDoQuery newHouseDoQuery=new NewHouseDoQuery();
         BeanUtils.copyProperties(newHouseListRequest,newHouseDoQuery);
-        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery);
+        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(newHouseListVo,newHouseListDomainResponse);
         return  NashResult.build(newHouseListDomainResponse);
     }
@@ -61,7 +66,7 @@ public class NewHouseRestController {
     {
         NewHouseDynamicDoQuery newHouseDynamicDoQuery =new NewHouseDynamicDoQuery();
         BeanUtils.copyProperties(newHouseDynamicRequest,newHouseDynamicDoQuery);
-        List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery);
+        List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseDynamicDoList));
         List<NewHouseDynamicResponse> newHouseDynamicResponses=JSONObject.parseArray(json.toJSONString(), NewHouseDynamicResponse.class);
         return  NashResult.build(newHouseDynamicResponses);
@@ -73,10 +78,10 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "getNewHouseTraffic",method = RequestMethod.GET)
-    public  NashResult getNewHouseTraffic(@Validated NewHouseTrafficRequest newHouseTrafficRequest)
+    public  NashResult getNewHouseTraffic(@Validated NewHouseTrafficRequest newHouseTrafficRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
     {
         NewHouseTrafficResponse newHouseTrafficResponse =new   NewHouseTrafficResponse();
-        NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode());
+        NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode(),userAgent ,city);
         BeanUtils.copyProperties(newHouseTrafficDo,newHouseTrafficResponse);
         return  NashResult.build(newHouseTrafficResponse);
     }

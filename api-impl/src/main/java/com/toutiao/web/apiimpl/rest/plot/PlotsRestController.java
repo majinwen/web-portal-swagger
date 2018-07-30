@@ -13,6 +13,7 @@ import com.toutiao.app.api.chance.response.plot.*;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -39,7 +40,7 @@ public class PlotsRestController {
     @RequestMapping("/getPlotDetailByPlotId")
     @ResponseBody
     public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
-        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId());
+        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId(),CityUtils.getCity());
         PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
         BeanUtils.copyProperties(plotDetailsDo,plotDetailsResponse);
         return NashResult.build(plotDetailsResponse);
@@ -66,10 +67,10 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
+    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest, HttpServletRequest request, HttpServletResponse response){
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
-        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery);
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery,request,response,CityUtils.getCity());
         PlotListResponse plotListResponse = JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class);
         return NashResult.build(plotListResponse);
     }
@@ -98,12 +99,12 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getTop50List",method = RequestMethod.GET)
     @ResponseBody
-    public  NashResult getTop50List(BaseQueryRequest baseQueryRequest)
+    public  NashResult getTop50List(BaseQueryRequest baseQueryRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
     {
         List<PlotTop50Response> plotTop50Responses=new ArrayList<>();
         PlotTop50ListDoQuery plotTop50ListDoQuery=new PlotTop50ListDoQuery();
         BeanUtils.copyProperties(baseQueryRequest,plotTop50ListDoQuery);
-        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery);
+        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery,userAgent,city);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotTop50Dos));
         plotTop50Responses=JSONObject.parseArray(json.toJSONString(), PlotTop50Response.class);
         return  NashResult.build(plotTop50Responses);

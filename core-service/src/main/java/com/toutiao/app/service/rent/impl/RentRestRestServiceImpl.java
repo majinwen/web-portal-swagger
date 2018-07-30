@@ -77,13 +77,13 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsDo queryRentDetailByHouseId(String rentId) {
+    public RentDetailsDo queryRentDetailByHouseId(String rentId, String cityCode) {
         RentDetailsDo rentDetailsDo = new RentDetailsDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
-        SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
+        SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder,cityCode);
         SearchHit[] hits = searchResponse.getHits().getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         if (hits.length>0){
@@ -135,7 +135,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum) {
+    public RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum,String city) {
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -145,7 +145,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",rentType));
         }
         Integer from = (pageNum-1)*10;
-        SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder,from);
+        SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder,from,city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
             for (SearchHit hit:hits){
@@ -167,7 +167,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentNumListDo queryRentNumByPlotId(Integer plotId) {
+    public RentNumListDo queryRentNumByPlotId(Integer plotId, String city) {
         RentNumListDo rentNumListDo = new RentNumListDo();
         List<RentNumDo> list = new ArrayList<>();
         RentNumDo rentNumDo = new RentNumDo();
@@ -175,7 +175,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
-        SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder);
+        SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder,city);
         long zhengzu = ((InternalFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
         long hezu = ((InternalFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();
         rentNumDo.setNum((int) zhengzu);
@@ -284,7 +284,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery) {
+    public RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery,String city) {
 
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -305,7 +305,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         Integer size = 10;
         Integer from = (rentHouseDoQuery.getPageNum()-1)*size;
 
-        SearchResponse searchResponse = rentEsDao.queryRentList(boolQueryBuilder, from, size);
+        SearchResponse searchResponse = rentEsDao.queryRentList(boolQueryBuilder, from, size, city);
         SearchHit[] hits = searchResponse.getHits().getHits();
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
@@ -350,7 +350,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery) {
+    public RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery,String city) {
 
         String uid = rentHouseDoQuery.getUid();
         RentDetailsFewDo rentDetailsFewDo = new RentDetailsFewDo();
@@ -358,7 +358,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder = getRecommendRentBoolQueryBuilder(boolQueryBuilder, rentHouseDoQuery);
         boolQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gt(0));
 
-        SearchResponse searchResponse = rentEsDao.queryRecommendRentList(boolQueryBuilder, uid);
+        SearchResponse searchResponse = rentEsDao.queryRecommendRentList(boolQueryBuilder, uid, city);
 
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
@@ -395,7 +395,7 @@ public class RentRestRestServiceImpl implements RentRestService {
     }
 
     @Override
-    public RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery) {
+    public RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -473,7 +473,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize());
+        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
             List<String> imgs = new ArrayList<>();

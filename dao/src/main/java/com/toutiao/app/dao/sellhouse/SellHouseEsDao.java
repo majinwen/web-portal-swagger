@@ -16,17 +16,17 @@ public interface SellHouseEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder, String city);
+    SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder,String city);
 
     /**
      * 根据小区id获取小区的房源数量
      * @param plotsId
      * @return
      */
-    SearchResponse getSellHouseCountByPlotsId(Integer plotsId);
+    SearchResponse getSellHouseCountByPlotsId(Integer plotsId,  String city);
 
 
-    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize);
+    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,  String city);
 
     /**
      * 获取二手房列表

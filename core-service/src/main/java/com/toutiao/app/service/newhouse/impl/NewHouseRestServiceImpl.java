@@ -79,11 +79,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
      * @return
      */
     @Override
-    public NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode) {
+    public NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode, String city) {
         NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newCode));
-        SearchResponse buildResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder);
+        SearchResponse buildResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder, city);
         SearchHit[] searchHists = buildResponse.getHits().getHits();
         String details = "";
         for (SearchHit searchHit : searchHists) {
@@ -120,7 +120,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
 
     @Override
-    public NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseDoQuery) {
+    public NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseDoQuery, String city) {
         NewHouseListDomain newHouseListVo=new NewHouseListDomain();
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
@@ -251,7 +251,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
 
-            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize(),levelSort,buildingSort);
+            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize(),levelSort,buildingSort,city);
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             if(searchHists.length > 0){
@@ -265,7 +265,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                newHouseListDos.setNearbysubway(null);
                     try{
                         //获取新房下户型的数量
-                        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
+                        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(),city);
 //                        if (null!=newHouseLayoutCountDomain.getTotalCount())
 //                        {
 //                            newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
@@ -306,12 +306,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery) {
+    public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery, String city) {
         List<NewHouseDynamicDo> newHouseDynamicDoList=new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode",newHouseDynamicDoQuery.getNewCode()));
         try {
-            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDoQuery.getPageNum(),newHouseDynamicDoQuery.getPageSize());
+            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDoQuery.getPageNum(),newHouseDynamicDoQuery.getPageSize(), city);
             SearchHits hits = dynamicResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit searchHit : searchHists) {
@@ -329,7 +329,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode) {
+    public NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String userAgent, String city) {
         MapInfo mapInfo = new MapInfo();
         NewHouseTrafficDo newHouseTrafficDo=new NewHouseTrafficDo();
         mapInfo =  mapService.getMapInfo(newCode);
@@ -347,7 +347,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //获取地铁和环线位置
-        NewHouseDetailDo newHouseDetailDo=newHouseService.getNewHouseBuildByNewCode(newCode);
+        NewHouseDetailDo newHouseDetailDo=newHouseService.getNewHouseBuildByNewCode(newCode, city);
         if (null!=newHouseDetailDo.getRoundstation() &&!"".equals(newHouseDetailDo.getRoundstation()))
         {  String []  trafficInfo=newHouseDetailDo.getRoundstation().split("\\$");
             newHouseTrafficDo.setSubwayStation(trafficInfo[1]);

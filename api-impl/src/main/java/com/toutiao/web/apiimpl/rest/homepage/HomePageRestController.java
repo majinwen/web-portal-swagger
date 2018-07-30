@@ -16,13 +16,11 @@ import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -57,7 +55,7 @@ public class HomePageRestController {
     @ResponseBody
     public  NashResult getHomePageNewHouse()
     {
-        NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse();
+        NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse(CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDomain.getData()));
         List<HomePageNewHouseResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),HomePageNewHouseResponse.class);
         return  NashResult.build(newHouseListResponses);
@@ -72,7 +70,7 @@ public class HomePageRestController {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(baseQueryRequest,sellHouseDoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
         return NashResult.build(sellHouseSearchDomainResponse);
 

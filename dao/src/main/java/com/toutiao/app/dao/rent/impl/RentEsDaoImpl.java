@@ -30,9 +30,9 @@ public class RentEsDaoImpl implements RentEsDao {
 
 
     @Override
-    public SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from) {
+    public SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from,String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getRentHouseType(city));
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC).setFrom(from).execute().actionGet();
         return searchResponse;
     }
@@ -54,9 +54,9 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getRentHouseIndex(city)).setTypes(ElasticCityUtils.getRentHouseType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder)
                 .addAggregation(AggregationBuilders.filter("ZHENGZU", QueryBuilders.termQuery("rent_type", ZHENGZU)))
                 .addAggregation(AggregationBuilders.filter("HEZU", QueryBuilders.termQuery("rent_type", HEZU)))
@@ -65,10 +65,10 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
+    public SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getRentIndex(city)).setTypes(ElasticCityUtils.getRentType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).setFrom(from).setSize(size)
                 .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
                         "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img","estate_agent","brokerage_agency","phone","agent_headphoto","userId","rent_type","rentHouseType","nearest_subway","rent_house_img"},null).execute().actionGet();
@@ -77,11 +77,11 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder, String uid) {
+    public SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder, String uid, String city) {
 
         TransportClient client = esClientTools.init();
 
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getRentIndex(city)).setTypes(ElasticCityUtils.getRentType(city));
         if(!uid.equals("0")){
             searchRequestBuilder.searchAfter(new String[]{uid});
         }
@@ -101,11 +101,11 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize) {
+    public SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize, String city) {
 
         TransportClient client = esClientTools.init();
         SearchResponse searchResponse = null;
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getRentIndex(city)).setTypes(ElasticCityUtils.getRentType(city));
         if((null!=keyword && !"".equals(keyword)) || null!=distance){
             searchResponse = searchRequestBuilder.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
                     .execute().actionGet();
