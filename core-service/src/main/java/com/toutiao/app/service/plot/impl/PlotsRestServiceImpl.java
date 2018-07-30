@@ -427,7 +427,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 if(hits.length > 0){
                     for (SearchHit hit:hits){
-                        commonMethod(hit,key,plotDetailsFewDoList);
+                        commonMethod(hit,key,plotDetailsFewDoList,userAgent,city);
                     }
                 }else{
                     throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND,"小区楼盘列表为空");
@@ -446,20 +446,20 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 SearchHits hits = searchResponse.getHits();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    commonMethod(hit,key,plotDetailsFewDoList);
+                    commonMethod(hit,key,plotDetailsFewDoList,userAgent,city);
                 }
             }else if(reslocationinfo < 10 && reslocationinfo>0){
                 SearchHits hits = searchResponse.getHits();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    commonMethod(hit,key,plotDetailsFewDoList);
+                    commonMethod(hit,key,plotDetailsFewDoList,userAgent,city);
                 }
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
                 SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder,  plotListDoQuery.getPageSize() - reslocationinfo,plotListDoQuery.getKeyword(),request,response,userAgent, city);
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit:hits1){
-                    commonMethod(hit,key,plotDetailsFewDoList);
+                    commonMethod(hit,key,plotDetailsFewDoList,userAgent,city);
                 }
             }else if(reslocationinfo == 0){
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
@@ -471,7 +471,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(),plotListDoQuery.getKeyword(),request,response,userAgent, city);
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit:hits1){
-                    commonMethod(hit,key,plotDetailsFewDoList);
+                    commonMethod(hit,key,plotDetailsFewDoList,userAgent,city);
                 }
             }
         }
@@ -487,7 +487,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @param key
      * @return
      */
-    public void commonMethod(SearchHit hit,String key,List<PlotDetailsFewDo> plotDetailsFewDoList){
+    public void commonMethod(SearchHit hit,String key,List<PlotDetailsFewDo> plotDetailsFewDoList,String userAgent , String city){
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()&&""!=key){
@@ -496,7 +496,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         plotDetailsFewDo.setMetroWithPlotsDistance(null);
         //二手房总数
         try {
-            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());
+            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId(),userAgent,city);
             plotDetailsFewDo.setSellHouseTotalNum(Math.toIntExact(plotsEsfRoomCountDomain.getTotalCount()));
         }catch (BaseException e){
             // logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
@@ -506,7 +506,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
         //租房总数
         try {
-            RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId());
+            RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId(),userAgent,city);
             plotDetailsFewDo.setRentTotalNum(rentNumListDo.getTotalNum());
         }catch (BaseException e){
             // logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
@@ -570,7 +570,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      */
 
     @Override
-    public List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery) {
+    public List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery,String userAgent,  String city) {
         List<PlotTop50Do> plotTop50Dos=new ArrayList<>();
         int [] isTop={1};
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -588,7 +588,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             String sourceAsString = hit.getSourceAsString();
             PlotTop50Do plotTop50Do = JSON.parseObject(sourceAsString, PlotTop50Do.class);
 
-            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId());
+            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId(),userAgent,city);
             if(plotsEsfRoomCountDomain.getTotalCount()!= null){
                 plotTop50Do.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
             }else{

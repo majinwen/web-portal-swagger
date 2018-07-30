@@ -99,12 +99,12 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getTop50List",method = RequestMethod.GET)
     @ResponseBody
-    public  NashResult getTop50List(BaseQueryRequest baseQueryRequest)
+    public  NashResult getTop50List(BaseQueryRequest baseQueryRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
     {
         List<PlotTop50Response> plotTop50Responses=new ArrayList<>();
         PlotTop50ListDoQuery plotTop50ListDoQuery=new PlotTop50ListDoQuery();
         BeanUtils.copyProperties(baseQueryRequest,plotTop50ListDoQuery);
-        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery);
+        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery,userAgent,city);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotTop50Dos));
         plotTop50Responses=JSONObject.parseArray(json.toJSONString(), PlotTop50Response.class);
         return  NashResult.build(plotTop50Responses);

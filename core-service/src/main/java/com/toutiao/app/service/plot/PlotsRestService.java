@@ -57,7 +57,7 @@ public interface PlotsRestService {
      * 小区top50查询
      */
 
-    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery);
+    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery,String userAgent,  String city);
 
 
 }
