@@ -13,6 +13,7 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -197,7 +198,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                 String sourceAsString = hit.getSourceAsString();
                 HomePageNearPlotDo homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
 
-                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId());
+                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId(), CityUtils.getCity());
                 if(null != plotsEsfRoomCountDomain.getTotalCount()){
                     homePageNearPlotDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
                 }else{
@@ -305,7 +306,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
             homePageNearPlotDo.setDistance((double) Math.round((Double) hits[0].getSortValues()[0]));
 
-            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId());
+            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId(),CityUtils.getCity());
             if(null != plotsEsfRoomCountDomain.getTotalCount()){
                 homePageNearPlotDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
             }else{

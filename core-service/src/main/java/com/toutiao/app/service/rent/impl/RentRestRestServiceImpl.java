@@ -135,7 +135,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum) {
+    public RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum,String city) {
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -145,7 +145,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",rentType));
         }
         Integer from = (pageNum-1)*10;
-        SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder,from);
+        SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder,from,city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
             for (SearchHit hit:hits){
@@ -167,7 +167,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentNumListDo queryRentNumByPlotId(Integer plotId) {
+    public RentNumListDo queryRentNumByPlotId(Integer plotId, String city) {
         RentNumListDo rentNumListDo = new RentNumListDo();
         List<RentNumDo> list = new ArrayList<>();
         RentNumDo rentNumDo = new RentNumDo();
@@ -175,7 +175,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
-        SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder);
+        SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder,city);
         long zhengzu = ((InternalFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
         long hezu = ((InternalFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();
         rentNumDo.setNum((int) zhengzu);
