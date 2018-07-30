@@ -14,6 +14,7 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseTrafficResponse;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -32,9 +33,9 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
-    public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
+    public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest)
     {
-        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode(), userAgent, city);
+        NewHouseDetailDo newHouseDetailDo= newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode(), CityUtils.getCity());
         NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
         return NashResult.build(newHouseDetailResponse);
     }
@@ -45,12 +46,12 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
-    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
+    public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
     {
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseDoQuery newHouseDoQuery=new NewHouseDoQuery();
         BeanUtils.copyProperties(newHouseListRequest,newHouseDoQuery);
-        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, userAgent, city);
+        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(newHouseListVo,newHouseListDomainResponse);
         return  NashResult.build(newHouseListDomainResponse);
     }
@@ -61,11 +62,11 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getNewHouseDynamic",method = RequestMethod.GET)
-    public  NashResult getNewHouseDynamicByNewCode(@Validated NewHouseDynamicRequest newHouseDynamicRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
+    public  NashResult getNewHouseDynamicByNewCode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
     {
         NewHouseDynamicDoQuery newHouseDynamicDoQuery =new NewHouseDynamicDoQuery();
         BeanUtils.copyProperties(newHouseDynamicRequest,newHouseDynamicDoQuery);
-        List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery, userAgent, city);
+        List<NewHouseDynamicDo>   newHouseDynamicDoList= newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseDynamicDoList));
         List<NewHouseDynamicResponse> newHouseDynamicResponses=JSONObject.parseArray(json.toJSONString(), NewHouseDynamicResponse.class);
         return  NashResult.build(newHouseDynamicResponses);

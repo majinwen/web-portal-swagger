@@ -33,7 +33,7 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
     @Override
-    public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder, String userAgent, String city) {
+    public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
         //查询详情
         SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city))
@@ -44,7 +44,7 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
     @Override
-    public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String userAgent, String city) {
+    public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String city) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();
 
@@ -78,7 +78,7 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     }
 
     @Override
-    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String userAgent, String city) {
+    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String city) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();
         searchresponse= client.prepareSearch(ElasticCityUtils.getNewHosueDynamicIndex(city)).setTypes(ElasticCityUtils.getNewHosueDynamicType(city))

@@ -40,7 +40,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
 
 
     @Override
-    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder,String userAgent,  String city){
+    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder,String city){
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();
@@ -80,17 +80,18 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort,String userAgent,  String city) {
+    public SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort,
+                                                                 FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort,String city) {
         TransportClient client = esClientTools.init();
-//        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-        SearchRequestBuilder srb=client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(levelSort).addSort(plotScoreSort).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, HttpServletRequest request, HttpServletResponse response,String userAgent,  String city) {
+    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword,String city) {
         TransportClient client = esClientTools.init();
+
         SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = null;
         if (StringTool.isNotEmpty(keyword)){

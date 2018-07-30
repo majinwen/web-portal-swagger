@@ -16,6 +16,7 @@ import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -52,9 +53,9 @@ public class HomePageRestController {
 
     @RequestMapping(value = "getHomePageNewHouse",method = RequestMethod.GET)
     @ResponseBody
-    public  NashResult getHomePageNewHouse(@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
+    public  NashResult getHomePageNewHouse()
     {
-        NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse(userAgent ,city);
+        NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse(CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDomain.getData()));
         List<HomePageNewHouseResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),HomePageNewHouseResponse.class);
         return  NashResult.build(newHouseListResponses);
@@ -69,7 +70,7 @@ public class HomePageRestController {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(baseQueryRequest,sellHouseDoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
         return NashResult.build(sellHouseSearchDomainResponse);
 

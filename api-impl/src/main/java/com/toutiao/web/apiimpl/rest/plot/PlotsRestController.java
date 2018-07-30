@@ -13,6 +13,7 @@ import com.toutiao.app.api.chance.response.plot.*;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -38,8 +39,8 @@ public class PlotsRestController {
      */
     @RequestMapping("/getPlotDetailByPlotId")
     @ResponseBody
-    public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) {
-        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId(),userAgent,city);
+    public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
+        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId(),CityUtils.getCity());
         PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
         BeanUtils.copyProperties(plotDetailsDo,plotDetailsResponse);
         return NashResult.build(plotDetailsResponse);
@@ -66,10 +67,10 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest, HttpServletRequest request, HttpServletResponse response, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city){
+    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
-        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery,request,response,userAgent,city);
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
         PlotListResponse plotListResponse = JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class);
         return NashResult.build(plotListResponse);
     }
@@ -85,9 +86,9 @@ public class PlotsRestController {
 
     @RequestMapping(value = "/getAroundInfoByPlotId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) throws InvocationTargetException, IllegalAccessException {
+    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
         PlotTrafficResponse plotTrafficResponse=new PlotTrafficResponse();
-        PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId(),userAgent,city);
+        PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId(),CityUtils.getCity());
         BeanUtils.copyProperties(plotTrafficDo,plotTrafficResponse);
         return NashResult.build(plotTrafficResponse);
     }

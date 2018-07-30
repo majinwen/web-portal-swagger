@@ -15,7 +15,7 @@ public interface PlotsRestService {
      * @param plotId
      * @return
      */
-    PlotDetailsDo queryPlotDetailByPlotId(Integer plotId,String userAgent , String city);
+    PlotDetailsDo queryPlotDetailByPlotId(Integer plotId, String cityId);
 
 
     /**
@@ -31,20 +31,20 @@ public interface PlotsRestService {
      * @param plotListDoQuery
      * @return
      */
-    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery, HttpServletRequest request, HttpServletResponse response,String userAgent,  String city);
+    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery,String city);
 
     /**
      * 获取小区列表含坐标
      * @param plotListDoQuery
      * @return
      */
-    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
+//    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
 
 
     /**
      * 获取交通配套
      */
-    PlotTrafficDo queryPlotDataInfo(Integer plotId,String userAgent , String city) throws InvocationTargetException, IllegalAccessException;
+    PlotTrafficDo queryPlotDataInfo(Integer plotId, String city) throws InvocationTargetException, IllegalAccessException;
 
     /**
      * 小区收藏列表

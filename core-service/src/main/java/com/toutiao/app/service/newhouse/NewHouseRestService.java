@@ -12,7 +12,7 @@ public interface NewHouseRestService {
      * @param newCode
      * @return
      */
-    NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode, String userAgent, String city);
+    NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode, String city);
 
 
     /**
@@ -20,12 +20,12 @@ public interface NewHouseRestService {
      * @param newHouseQueryDo
      * @return
      */
-    NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseQueryDo, String userAgent, String city);
+    NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseQueryDo, String city);
 
     /**
      *  新房动态
      */
-    List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery, String userAgent, String city);
+    List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery, String city);
 
 
     /**

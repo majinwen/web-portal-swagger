@@ -2,6 +2,7 @@ package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -32,9 +33,9 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder,String city) {
         TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils.getEsfType(city))
                 .setQuery(booleanQueryBuilder)
                 .execute().actionGet();
 
@@ -80,9 +81,11 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize) {
+    public SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer
+            pageNum, Integer pageSize, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils
+                .getEsfType(city));
         SearchResponse searchresponse = null;
         if ((null != keyword && !"".equals(keyword)) || null != distance) {
             searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
@@ -97,10 +100,11 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize) {
+    public SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils
+                .getEsfType(city));
 
         if (!uid.equals("0")) {
             srb.searchAfter(new String[]{uid});

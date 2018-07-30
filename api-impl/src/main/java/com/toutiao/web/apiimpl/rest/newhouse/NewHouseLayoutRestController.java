@@ -11,6 +11,7 @@ import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -38,10 +39,10 @@ public class NewHouseLayoutRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getLayoutCountByNewHouseId")
-    public NashResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) {
+    public NashResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
         Integer newHouseId = newHouseLayoutRequest.getNewCode();
         NewHouseLayoutCountResponse newHouseLayoutCountResponse = new NewHouseLayoutCountResponse();
-        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId,userAgent ,city);
+        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId, CityUtils.getCity());
         BeanUtils.copyProperties(newHouseLayoutCountDomain, newHouseLayoutCountResponse);
         return NashResult.build(newHouseLayoutCountResponse);
     }
