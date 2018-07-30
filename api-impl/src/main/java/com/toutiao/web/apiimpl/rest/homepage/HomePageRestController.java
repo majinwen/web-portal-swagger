@@ -19,10 +19,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -55,9 +52,9 @@ public class HomePageRestController {
 
     @RequestMapping(value = "getHomePageNewHouse",method = RequestMethod.GET)
     @ResponseBody
-    public  NashResult getHomePageNewHouse()
+    public  NashResult getHomePageNewHouse(@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
     {
-        NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse();
+        NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse(userAgent ,city);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDomain.getData()));
         List<HomePageNewHouseResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),HomePageNewHouseResponse.class);
         return  NashResult.build(newHouseListResponses);

@@ -53,8 +53,40 @@ public class ElasticCityUtils {
         return getESIndexMap(ESIndexConstant.ESF_TYPE, cityCode);
     }
 
+    /**
+     * 新房索引
+     */
+    public static String getNewHouseIndex(String cityCode){
+        return getESIndexMap(ESIndexConstant.NEW_HOUSE_INDEX,cityCode);
+    }
 
+    /**
+     * 新房表名(父表)
+     */
+    public static String getNewHouseParentType(String cityCode){
+        return getESIndexMap(ESIndexConstant.NEW_HOUSE_TYPE_T1,cityCode);
+    }
 
+    /**
+     * 新房表名(父表)
+     */
+    public static String getNewHouseChildType(String cityCode){
+        return getESIndexMap(ESIndexConstant.NEW_HOUSE_TYPE_T2,cityCode);
+    }
+
+    /**
+     * 新房动态索引
+     */
+    public static String getNewHosueDynamicIndex(String cityCode){
+        return getESIndexMap(ESIndexConstant.DYNAMIC_INDEX,cityCode);
+    }
+
+    /**
+     * 新房动态表名
+     */
+    public static String getNewHosueDynamicType(String cityCode){
+        return getESIndexMap(ESIndexConstant.DYNAMIC_TYPE,cityCode);
+    }
 
 
 

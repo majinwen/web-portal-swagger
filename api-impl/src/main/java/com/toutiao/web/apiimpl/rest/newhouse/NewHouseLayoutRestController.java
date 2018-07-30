@@ -6,12 +6,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.newhouse.NewHouseLayoutRequest;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutCountResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutResponse;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.assertUtils.First;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +38,10 @@ public class NewHouseLayoutRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/getLayoutCountByNewHouseId")
-    public NashResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
+    public NashResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) {
         Integer newHouseId = newHouseLayoutRequest.getNewCode();
         NewHouseLayoutCountResponse newHouseLayoutCountResponse = new NewHouseLayoutCountResponse();
-        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId);
+        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId,userAgent ,city);
         BeanUtils.copyProperties(newHouseLayoutCountDomain, newHouseLayoutCountResponse);
         return NashResult.build(newHouseLayoutCountResponse);
     }

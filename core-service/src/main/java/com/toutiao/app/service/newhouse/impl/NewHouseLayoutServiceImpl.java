@@ -6,8 +6,6 @@ import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
-import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
-import com.toutiao.web.common.exceptions.BaseException;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -22,7 +20,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 
@@ -43,14 +46,14 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
      * @return
      */
     @Override
-    public NewHouseLayoutCountDomain getNewHouseLayoutByNewHouseId(Integer newHouseId) {
+    public NewHouseLayoutCountDomain getNewHouseLayoutByNewHouseId(Integer newHouseId, String userAgent, String city) {
 
         List<NewHouseLayoutCountDo> newHouseLayoutCountDoList = new ArrayList<>();
         NewHouseLayoutCountDomain newHouseLayoutCountDomain = new NewHouseLayoutCountDomain();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
         sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
         
-        SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder);
+        SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder,userAgent,city);
 
         Map aggMap =searchresponse.getAggregations().asMap();
         LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
