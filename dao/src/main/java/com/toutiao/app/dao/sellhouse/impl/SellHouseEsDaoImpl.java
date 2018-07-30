@@ -59,7 +59,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotsId));
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
-        booleanQueryBuilder.mustNot(QueryBuilders.termQuery("is_claim", 0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
         TransportClient client = esClientTools.init();
 
         SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
