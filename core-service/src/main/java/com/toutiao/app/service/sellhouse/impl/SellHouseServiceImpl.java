@@ -66,7 +66,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     private CommunityRestService communityRestService;
 
     @Override
-    public SellHouseDetailsDo getSellHouseByHouseId(String houseId) {
+    public SellHouseDetailsDo getSellHouseByHouseId(String houseId, String city) {
 
         //二手房房源详情
         SellAndClaimHouseDetailsDo sellAndClaimHouseDetailsDo = new SellAndClaimHouseDetailsDo();
@@ -78,7 +78,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
         }
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
-        SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder);
+        SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder, city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
@@ -371,7 +371,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
     @Override
-    public SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery) {
+    public SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery, String city) {
 
         SellHouseSearchDomain sellHouseSearchDomain = new SellHouseSearchDomain();
         SellHousesSearchDo  sellHousesSearchDo= new SellHousesSearchDo();
@@ -455,7 +455,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         List<SellHousesSearchDo> sellHousesSearchDos =new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query, sellHouseDoQuery.getDistance(),
-                sellHouseDoQuery.getKeyword(), sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), null);
+                sellHouseDoQuery.getKeyword(), sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if(searchHists.length > 0){

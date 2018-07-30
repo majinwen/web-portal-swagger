@@ -16,7 +16,7 @@ public interface SellHouseEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder, String city);
 
     /**
      * 根据小区id获取小区的房源数量

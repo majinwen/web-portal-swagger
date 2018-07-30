@@ -33,9 +33,9 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils.getEsfType(city))
                 .setQuery(booleanQueryBuilder)
                 .execute().actionGet();
 
