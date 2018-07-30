@@ -11,6 +11,7 @@ import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -31,7 +32,7 @@ public class RentRestController {
      */
     @RequestMapping(value = "/getRentDetailByRentId",method = RequestMethod.GET)
     public NashResult getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest){
-        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId());
+        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
         BeanUtils.copyProperties(rentDetailsDo,rentDetailResponse);
         return NashResult.build(rentDetailResponse);

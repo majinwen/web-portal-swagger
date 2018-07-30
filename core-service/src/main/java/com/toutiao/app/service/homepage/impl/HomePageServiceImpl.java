@@ -87,10 +87,10 @@ public class HomePageServiceImpl implements HomePageRestService {
      */
 
     @Override
-    public NewHouseListDomain getHomePageNewHouse(String userAgent, String city) {
+    public NewHouseListDomain getHomePageNewHouse(String city) {
         NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
         newHouseDoQuery.setPageSize(5);
-        NewHouseListDomain newHouseListDomain = newHouseRestService.getNewHouseList(newHouseDoQuery, userAgent ,city);
+        NewHouseListDomain newHouseListDomain = newHouseRestService.getNewHouseList(newHouseDoQuery,city);
 
         return newHouseListDomain;
 
