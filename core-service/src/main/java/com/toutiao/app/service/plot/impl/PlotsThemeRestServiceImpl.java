@@ -9,6 +9,7 @@ import com.toutiao.app.domain.plot.PlotsThemeDomain;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -83,7 +84,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 plotsThemeDo.setHouseMaxArea(maxHouse.getValue());
                 plotsThemeDo.setHouseMinArea(minHouse.getValue());
                 //二手房房源数量
-                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotsThemeDo.getId());
+                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotsThemeDo.getId(), CityUtils.getCity());
 
                 if(plotsEsfRoomCountDomain.getTotalCount()!= null){
                     plotsThemeDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
