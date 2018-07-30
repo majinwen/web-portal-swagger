@@ -1,14 +1,10 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseBeSureToSnatchRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseDerailsRequest;
 import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseDynamicResponse;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
@@ -18,8 +14,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -63,15 +57,16 @@ public class SellHouseRestController {
     /**
      *  二手房房源默认列表
      * @param sellHouseRequest
+     * @param city
      * @return
      */
     @RequestMapping("/getSellHouseByChoose")
     @ResponseBody
-    public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest) {
+    public NashResult getSellHouse(@Validated SellHouseRequest sellHouseRequest, @CookieValue("select_city") String city) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseDoQuery, city);
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);
@@ -84,11 +79,11 @@ public class SellHouseRestController {
      */
     @RequestMapping(value ="/getRecommendSellHouse", method = RequestMethod.POST)
     @ResponseBody
-    public NashResult getRecommendSellHouse(@Validated(First.class) @RequestBody SellHouseRequest sellHouseRequest) {
+    public NashResult getRecommendSellHouse(@Validated(First.class) @RequestBody SellHouseRequest sellHouseRequest, @CookieValue("select_city") String city) {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseDoQuery, city);
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);

@@ -23,16 +23,18 @@ public interface SellHouseService {
     /**
      * 条件查询二手房房源
      * @param sellHouseQueryDo
+     * @param city
      * @return
      */
-    SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo, String city);
 
     /**
      * 查询二手房推荐房源
      * @param sellHouseQueryDo
+     * @param city
      * @return
      */
-    SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseQueryDo, String city);
 
 
     /**
