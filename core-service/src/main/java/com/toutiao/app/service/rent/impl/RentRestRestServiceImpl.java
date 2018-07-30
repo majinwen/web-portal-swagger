@@ -77,13 +77,13 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsDo queryRentDetailByHouseId(String rentId) {
+    public RentDetailsDo queryRentDetailByHouseId(String rentId, String cityCode) {
         RentDetailsDo rentDetailsDo = new RentDetailsDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
-        SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder);
+        SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder,cityCode);
         SearchHit[] hits = searchResponse.getHits().getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         if (hits.length>0){

@@ -38,7 +38,7 @@ public interface PlotsRestService {
      * @param plotListDoQuery
      * @return
      */
-    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
+//    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
 
 
     /**

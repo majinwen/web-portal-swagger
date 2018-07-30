@@ -16,7 +16,7 @@ public interface SellHouseEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder,String city);
 
     /**
      * 根据小区id获取小区的房源数量
@@ -33,18 +33,21 @@ public interface SellHouseEsDao {
      * @param query
      * @param pageNum
      * @param pageSize
+     * @param city
      * @return
      */
-    SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize);
+    SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer
+            pageNum, Integer pageSize, String city);
 
     /**
      * 获取推荐二手房
      * @param query
      * @param uid
      * @param pageSize
+     * @param city
      * @return
      */
-    SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize);
+    SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize, String city);
 
 
     SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder,Integer pageNum, Integer pageSize,FieldSortBuilder sortFile );

@@ -25,7 +25,7 @@ public interface RentEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder) ;
+    SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder, String cityCode) ;
 
     /**
      * 附近5km内出租房源(规则:app的是吧，那就优先三公里的录入房源由近到远)

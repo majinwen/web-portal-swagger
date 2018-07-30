@@ -517,50 +517,50 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         plotDetailsFewDoList.add(plotDetailsFewDo);
     }
 
-    /**
-     * 小区列表含坐标
-     * @param plotListDoQuery
-     * @return
-     */
-    @Override
-    public List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery) {
-        List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        if (plotListDoQuery.getLat()!=0&& plotListDoQuery.getLon()!=0){
-            GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(plotListDoQuery.getLat(), plotListDoQuery.getLon()).distance(1600, DistanceUnit.METERS);
-            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", plotListDoQuery.getLat(), plotListDoQuery.getLon());
-            sort.unit(DistanceUnit.METERS);
-            sort.order(SortOrder.ASC);
-            boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-            boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
-            SearchResponse searchResponse = plotEsDao.queryNearPlotListByLocationAndDistance(boolQueryBuilder, location, sort);
-            SearchHit[] hits = searchResponse.getHits().getHits();
-            if (hits.length==10){
-                for (SearchHit hit:hits){
-                    String sourceAsString = hit.getSourceAsString();
-                    PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
-                    plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
-                    plotDetailsFewDoList.add(plotDetailsFewDo);
-                }
-            }else if (hits.length<10&&hits.length>0){
-                for (SearchHit hit:hits){
-                    String sourceAsString = hit.getSourceAsString();
-                    PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
-                    plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
-                    plotDetailsFewDoList.add(plotDetailsFewDo);
-                }
-
-                plotListDoQuery.setPageSize(10-hits.length);
+//    /**
+//     * 小区列表含坐标
+//     * @param plotListDoQuery
+//     * @return
+//     */
+//    @Override
+//    public List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery) {
+//        List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//        if (plotListDoQuery.getLat()!=0&& plotListDoQuery.getLon()!=0){
+//            GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(plotListDoQuery.getLat(), plotListDoQuery.getLon()).distance(1600, DistanceUnit.METERS);
+//            GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("location", plotListDoQuery.getLat(), plotListDoQuery.getLon());
+//            sort.unit(DistanceUnit.METERS);
+//            sort.order(SortOrder.ASC);
+//            boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+//            boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
+//            SearchResponse searchResponse = plotEsDao.queryNearPlotListByLocationAndDistance(boolQueryBuilder, location, sort);
+//            SearchHit[] hits = searchResponse.getHits().getHits();
+//            if (hits.length==10){
+//                for (SearchHit hit:hits){
+//                    String sourceAsString = hit.getSourceAsString();
+//                    PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
+//                    plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+//                    plotDetailsFewDoList.add(plotDetailsFewDo);
+//                }
+//            }else if (hits.length<10&&hits.length>0){
+//                for (SearchHit hit:hits){
+//                    String sourceAsString = hit.getSourceAsString();
+//                    PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
+//                    plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+//                    plotDetailsFewDoList.add(plotDetailsFewDo);
+//                }
+//
+//                plotListDoQuery.setPageSize(10-hits.length);
 //                PlotListDo plotListDo = plotsRestService.queryPlotListByRequirement(plotListDoQuery);
 //                plotDetailsFewDoList.addAll(plotListDo.getPlotList());
-            }else if (hits.length==0){
-               // plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
-            }
-        }else {
-            //plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
-        }
-        return plotDetailsFewDoList;
-    }
+//            }else if (hits.length==0){
+//                plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
+//            }
+//        }else {
+//            plotDetailsFewDoList = plotsRestService.queryPlotListByRequirement(plotListDoQuery).getPlotList();
+//        }
+//        return plotDetailsFewDoList;
+//    }
 
 
     /**

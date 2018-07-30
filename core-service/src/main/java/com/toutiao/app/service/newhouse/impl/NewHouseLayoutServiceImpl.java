@@ -46,14 +46,14 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
      * @return
      */
     @Override
-    public NewHouseLayoutCountDomain getNewHouseLayoutByNewHouseId(Integer newHouseId, String userAgent, String city) {
+    public NewHouseLayoutCountDomain getNewHouseLayoutByNewHouseId(Integer newHouseId, String city) {
 
         List<NewHouseLayoutCountDo> newHouseLayoutCountDoList = new ArrayList<>();
         NewHouseLayoutCountDomain newHouseLayoutCountDomain = new NewHouseLayoutCountDomain();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
         sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
         
-        SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder,userAgent,city);
+        SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder,city);
 
         Map aggMap =searchresponse.getAggregations().asMap();
         LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");

@@ -31,7 +31,7 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
      * @return
      */
     @Override
-    public SearchResponse getLayoutCountByNewHouseId(BoolQueryBuilder booleanQueryBuilder, String userAgent, String city) {
+    public SearchResponse getLayoutCountByNewHouseId(BoolQueryBuilder booleanQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseChildType(city)).setQuery(booleanQueryBuilder)
                 .addAggregation(AggregationBuilders.terms("roomCount").field("room").order(Terms.Order.term(true)))

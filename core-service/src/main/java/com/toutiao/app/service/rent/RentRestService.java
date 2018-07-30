@@ -11,7 +11,7 @@ public interface RentRestService {
      * @param rentId
      * @return
      */
-    RentDetailsDo queryRentDetailByHouseId(String rentId);
+    RentDetailsDo queryRentDetailByHouseId(String rentId,String cityCode);
 
     /**
      * 根据小区id查询该小区下的出租房源
