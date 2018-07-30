@@ -18,7 +18,7 @@ public interface RentEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from,String userAgent , String city) ;
+    SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from, String city) ;
 
     /**
      * 根据出租房源的id查询出租房源详情
@@ -41,7 +41,7 @@ public interface RentEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder,String userAgent,  String city);
+    SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder, String city);
 
     /**
      * 获取租房推荐列表

@@ -16,6 +16,7 @@ import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -36,8 +37,8 @@ public class PlotsRentRestController {
      */
     @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city){
-        RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(), plotsRentRequest.getRentType(), plotsRentRequest.getPageNum(),userAgent,city);
+    public NashResult getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
+        RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(), plotsRentRequest.getRentType(), plotsRentRequest.getPageNum(),CityUtils.getCity());
         RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
 
         BeanUtils.copyProperties(rentDetailsListDo,rentDetailsListResponse);
@@ -50,8 +51,8 @@ public class PlotsRentRestController {
      * @return
      */
     @RequestMapping(value = "/queryRentNumByPlotId",method = RequestMethod.GET)
-    public NashResult getRentNumByPlotId(@Validated PlotsRentRequest plotsRentRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city){
-        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotsRentRequest.getPlotId(),userAgent,city);
+    public NashResult getRentNumByPlotId(@Validated PlotsRentRequest plotsRentRequest){
+        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotsRentRequest.getPlotId(), CityUtils.getCity());
         RentNumListResponse rentNumListResponse = JSON.parseObject(JSON.toJSONString(rentNumListDo), RentNumListResponse.class);
         return NashResult.build(rentNumListResponse);
     }

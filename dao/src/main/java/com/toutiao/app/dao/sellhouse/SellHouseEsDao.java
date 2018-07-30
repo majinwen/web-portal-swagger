@@ -23,10 +23,10 @@ public interface SellHouseEsDao {
      * @param plotsId
      * @return
      */
-    SearchResponse getSellHouseCountByPlotsId(Integer plotsId,String userAgent,  String city);
+    SearchResponse getSellHouseCountByPlotsId(Integer plotsId,  String city);
 
 
-    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,String userAgent,  String city);
+    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,  String city);
 
     /**
      * 获取二手房列表

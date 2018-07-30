@@ -50,7 +50,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
      * @return
      */
     @Override
-    public SearchResponse getSellHouseCountByPlotsId(Integer plotsId,String userAgent , String city) {
+    public SearchResponse getSellHouseCountByPlotsId(Integer plotsId , String city) {
 
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotsId));
@@ -70,7 +70,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,String userAgent,  String city) {
+    public SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,  String city) {
 
         TransportClient client = esClientTools.init();
         SearchResponse searchResponse = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city))

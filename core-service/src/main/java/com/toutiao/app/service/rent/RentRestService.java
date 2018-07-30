@@ -18,14 +18,14 @@ public interface RentRestService {
      * @param plotId
      * @return
      */
-    RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum,String userAgent,  String city);
+    RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum,  String city);
 
     /**
      * 根据小区id查询该小区下的出租房源个数
      * @param plotId
      * @return
      */
-    RentNumListDo queryRentNumByPlotId(Integer plotId,String userAgent , String city);
+    RentNumListDo queryRentNumByPlotId(Integer plotId, String city);
 
     /**
      * 根据出租房源的id查询该房源的经纪人

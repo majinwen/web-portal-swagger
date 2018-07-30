@@ -14,6 +14,7 @@ import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -31,11 +32,11 @@ public class PlotsEsfRestController {
 
     @RequestMapping("/getPlotsEsfList")
     @ResponseBody
-    public NashResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) {
+    public NashResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest) {
 
         Integer plotsId = plotsEsfRequest.getPlotId();
         PlotsEsfRoomCountResponse plotsEsfRoomCountResponse = new PlotsEsfRoomCountResponse();
-        PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotsId,userAgent,city);
+        PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotsId, CityUtils.getCity());
         BeanUtils.copyProperties(plotsEsfRoomCountDomain, plotsEsfRoomCountResponse);
         return NashResult.build(plotsEsfRoomCountResponse);
     }
@@ -44,13 +45,13 @@ public class PlotsEsfRestController {
 
     @ResponseBody
     @RequestMapping(value = "/getEsfByPlotsIdAndRoom")
-    public NashResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) {
+    public NashResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest) {
 
         Integer plotsId = plotsEsfRequest.getPlotId();
         Integer room = plotsEsfRequest.getRoom();
         Integer pageNum = plotsEsfRequest.getPageNum();
         Integer pageSize = plotsEsfRequest.getPageSize();
-        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId,room,pageNum,pageSize,userAgent,city);
+        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId,room,pageNum,pageSize,CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(sellHouseDoList));
 
         List<PlotsEsfListResponse> plotsEsfListResponses = JSONObject.parseArray(json.toJSONString(),PlotsEsfListResponse.class);
