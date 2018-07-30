@@ -2,6 +2,7 @@ package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -62,7 +63,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         booleanQueryBuilder.mustNot(QueryBuilders.termQuery("is_parent_claim", 1));
         TransportClient client = esClientTools.init();
 
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchRequestBuilder srb = client.prepareSearch().setTypes(projhouseType);
 //        srb.setQuery(booleanQueryBuilder)
 //                .addAggregation(AggregationBuilders.terms("roomCount").field("room"));
 

@@ -84,7 +84,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
      * @return
      */
     @Override
-    public List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize) {
+    public List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize,String userAgent , String city) {
 
         BoolQueryBuilder detailsBuilder = boolQuery();
         List<SellAndClaimHouseDetailsDo> sellHouseDoList = new ArrayList<>();
@@ -94,7 +94,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         if(room != 0){
             detailsBuilder.must(termQuery("room",room));
         }
-        SearchResponse searchresponse = sellHouseEsDao.getEsfByPlotsIdAndRoom(detailsBuilder,pageNum,pageSize);
+        SearchResponse searchresponse = sellHouseEsDao.getEsfByPlotsIdAndRoom(detailsBuilder,pageNum,pageSize,userAgent,city);
 
         if(searchresponse.getHits().totalHits==0){
             throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_ESF_NOT_FOUND,"小区没有出售房源信息");

@@ -40,9 +40,9 @@ public class PlotEsDaoImpl implements PlotEsDao {
 
 
     @Override
-    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder){
+    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder,String userAgent,  String city){
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchResponse;
     }

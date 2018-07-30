@@ -77,12 +77,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @return
      */
     @Override
-    public PlotDetailsDo queryPlotDetailByPlotId(Integer plotId) {
+    public PlotDetailsDo queryPlotDetailByPlotId(Integer plotId,String userAgent , String city) {
         String details = "";
         try {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
-            SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
+            SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder,userAgent,city);
             SearchHit[] hits = searchResponse.getHits().getHits();
             PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
             for (SearchHit searchHit : hits) {
@@ -149,7 +149,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @return
      */
     @Override
-    public PlotTrafficDo queryPlotDataInfo(Integer plotId){
+    public PlotTrafficDo queryPlotDataInfo(Integer plotId,String userAgent , String city){
             MapInfo mapInfo = new MapInfo();
             PlotTrafficDo plotTrafficDo=new PlotTrafficDo();
             mapInfo =  mapService.getMapInfo(plotId);
@@ -166,7 +166,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 plotTrafficDo.setBusLines(Integer.valueOf(businfo.get("lines").toString()));
             }
             //获取地铁和环线位置
-            PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotDetailByPlotId(plotId);
+            PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotDetailByPlotId(plotId,userAgent , city);
             if (!"".equals(plotDetailsDo.getTrafficInformation()))
             {  String []  trafficInfo=plotDetailsDo.getTrafficInformation().split("\\$");
                 plotTrafficDo.setSubwayStation(trafficInfo[1]);

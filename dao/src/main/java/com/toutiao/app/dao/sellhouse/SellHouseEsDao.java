@@ -26,7 +26,7 @@ public interface SellHouseEsDao {
     SearchResponse getSellHouseCountByPlotsId(Integer plotsId);
 
 
-    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize);
+    SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,String userAgent,  String city);
 
     /**
      * 获取二手房列表

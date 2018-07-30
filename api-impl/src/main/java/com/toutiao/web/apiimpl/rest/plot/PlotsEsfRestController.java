@@ -17,9 +17,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,13 +44,13 @@ public class PlotsEsfRestController {
 
     @ResponseBody
     @RequestMapping(value = "/getEsfByPlotsIdAndRoom")
-    public NashResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest) {
+    public NashResult getEsfByPlotsIdAndRoom (@Validated(First.class) PlotsEsfRequest plotsEsfRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) {
 
         Integer plotsId = plotsEsfRequest.getPlotId();
         Integer room = plotsEsfRequest.getRoom();
         Integer pageNum = plotsEsfRequest.getPageNum();
         Integer pageSize = plotsEsfRequest.getPageSize();
-        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId,room,pageNum,pageSize);
+        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId,room,pageNum,pageSize,userAgent,city);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(sellHouseDoList));
 
         List<PlotsEsfListResponse> plotsEsfListResponses = JSONObject.parseArray(json.toJSONString(),PlotsEsfListResponse.class);

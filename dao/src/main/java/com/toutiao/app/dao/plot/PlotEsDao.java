@@ -20,7 +20,7 @@ public interface PlotEsDao {
      * @param
      * @return
      */
-    SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder,String userAgent , String city);
 
     /**
      * 根据坐标和距离查询附近的小区

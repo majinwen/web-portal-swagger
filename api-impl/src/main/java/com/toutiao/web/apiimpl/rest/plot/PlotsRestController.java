@@ -38,8 +38,8 @@ public class PlotsRestController {
      */
     @RequestMapping("/getPlotDetailByPlotId")
     @ResponseBody
-    public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
-        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId());
+    public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) {
+        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId(),userAgent,city);
         PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
         BeanUtils.copyProperties(plotDetailsDo,plotDetailsResponse);
         return NashResult.build(plotDetailsResponse);
@@ -85,9 +85,9 @@ public class PlotsRestController {
 
     @RequestMapping(value = "/getAroundInfoByPlotId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
+    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) throws InvocationTargetException, IllegalAccessException {
         PlotTrafficResponse plotTrafficResponse=new PlotTrafficResponse();
-        PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
+        PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId(),userAgent,city);
         BeanUtils.copyProperties(plotTrafficDo,plotTrafficResponse);
         return NashResult.build(plotTrafficResponse);
     }
