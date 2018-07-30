@@ -4,7 +4,7 @@
 <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/login.css?v=${staticversion}">
     <title>登录页</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/login_cookie.js?v=${staticversion}"></script>
@@ -37,7 +37,7 @@
     <span id="message" class="code-text-tips"><#if message?exists>${message}</#if></span>
     <button type="button" id="log_in_button" class="submit-btn">登录</button>
 </form>
-<p class="fixed-bottom-tips">注册/登录即代表同意《头条房产用户使用协议》</p>
+<p class="fixed-bottom-tips">注册/登录即代表同意《懂房帝用户使用协议》</p>
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
 <script>

@@ -3,7 +3,7 @@
 <head>
     <#include "../staticHeader.ftl">
     <title>我的订单</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <link rel="stylesheet" href="${staticurl}/css/payment-order.css?v=${staticversion}">
     <#include "../StatisticsHeader.ftl">

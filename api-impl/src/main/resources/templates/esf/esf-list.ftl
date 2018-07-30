@@ -4,8 +4,8 @@
 <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
-    <title>来头条房产二手房</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>来懂房帝看二手房</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
@@ -13,15 +13,15 @@
 </head>
 <#setting url_escaping_charset="UTF-8">
 <body>
-<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="懂房帝">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/esf')}">
-    <a href="/" onclick="esf_title(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" onclick="esf_title(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="懂房帝"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
-    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="头条·房产"></a>
+    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="懂房帝"></a>
 </header>
 <section class="category-box">
     <ul id="category-tab">

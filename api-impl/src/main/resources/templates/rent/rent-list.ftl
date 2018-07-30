@@ -4,18 +4,18 @@
 <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/rent-list.css?v=${staticversion}">
-    <title>头条房产看租房</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>懂房帝看租房</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="懂房帝">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/zufang')}">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="懂房帝"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text"  class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">

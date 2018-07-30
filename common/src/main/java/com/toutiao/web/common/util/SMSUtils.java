@@ -61,7 +61,7 @@ public class SMSUtils {
         if(sendSign==ServiceStateConstant.SEND_MESSAGE_APP){
             request.setSignName("懂房帝");
         }else if (sendSign==ServiceStateConstant.SEND_MESSAGE_WAP){
-            request.setSignName("头条房产");
+            request.setSignName("懂房帝");
         }
 
         // 必填:短信模板-可在短信控制台中找到

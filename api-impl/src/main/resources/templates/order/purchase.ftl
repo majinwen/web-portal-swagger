@@ -3,7 +3,7 @@
 <head>
     <#include "../staticHeader.ftl">
     <title>购买</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <link rel="stylesheet" href="${staticurl}/css/payment-purchase.css?v=${staticversion}">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
