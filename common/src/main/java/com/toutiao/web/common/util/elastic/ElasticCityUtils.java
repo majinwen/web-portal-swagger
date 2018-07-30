@@ -88,6 +88,20 @@ public class ElasticCityUtils {
         return getESIndexMap(ESIndexConstant.DYNAMIC_TYPE,cityCode);
     }
 
+    /**
+     * 租房索引
+     */
+    public static String getRentIndex(String cityCode){
+        return getESIndexMap(ESIndexConstant.RENT_INDEX,cityCode);
+    }
+
+    /**
+     *  租房表名
+     */
+    public static String getRentType(String cityCode){
+        return getESIndexMap(ESIndexConstant.RENT_TYPE,cityCode);
+    }
+
 
 
 

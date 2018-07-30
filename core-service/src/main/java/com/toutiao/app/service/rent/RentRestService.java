@@ -46,21 +46,21 @@ public interface RentRestService {
      * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery);
+    RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery, String city);
 
     /**
      * 推优房源
      * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery);
+    RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery, String city);
 
     /**
      * 租房搜索结果
      * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery);
+    RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city);
 
 
 }

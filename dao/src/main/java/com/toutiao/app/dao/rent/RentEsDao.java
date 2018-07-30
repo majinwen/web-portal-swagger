@@ -50,7 +50,7 @@ public interface RentEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder,Integer from, Integer size);
+    SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder,Integer from, Integer size, String city);
 
     /**
      * 获取推优房源
@@ -58,7 +58,7 @@ public interface RentEsDao {
      * @param uid
      * @return
      */
-    SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder,String uid);
+    SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder,String uid, String city);
 
     /**
      * 获取附近的出租房源
@@ -77,6 +77,6 @@ public interface RentEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size);
+    SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city);
 
 }
