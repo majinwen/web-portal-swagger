@@ -93,7 +93,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
             searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
                     .execute().actionGet();
         } else {
-            searchresponse = srb.setQuery(query).addSort("extraTagsCount", SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+            searchresponse = srb.setQuery(query).addSort("extraTagsCount", SortOrder.DESC).addSort("updateTimeSort",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
                     .execute().actionGet();
         }
 
