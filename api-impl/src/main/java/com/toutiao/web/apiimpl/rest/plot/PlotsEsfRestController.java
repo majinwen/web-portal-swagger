@@ -31,11 +31,11 @@ public class PlotsEsfRestController {
 
     @RequestMapping("/getPlotsEsfList")
     @ResponseBody
-    public NashResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest) {
+    public NashResult getPlotsEsfList(@Validated PlotsEsfRequest plotsEsfRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city) {
 
         Integer plotsId = plotsEsfRequest.getPlotId();
         PlotsEsfRoomCountResponse plotsEsfRoomCountResponse = new PlotsEsfRoomCountResponse();
-        PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotsId);
+        PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotsId,userAgent,city);
         BeanUtils.copyProperties(plotsEsfRoomCountDomain, plotsEsfRoomCountResponse);
         return NashResult.build(plotsEsfRoomCountResponse);
     }

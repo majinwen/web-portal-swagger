@@ -44,14 +44,14 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
      * @return
      */
     @Override
-    public PlotsEsfRoomCountDomain queryPlotsEsfByPlotsId(Integer plotsId) {
+    public PlotsEsfRoomCountDomain queryPlotsEsfByPlotsId(Integer plotsId,String userAgent,  String city) {
 
 
         List<PlotsEsfRoomCountDo> plotsEsfRoomCountDoList = new ArrayList<>();
 
         PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = new PlotsEsfRoomCountDomain();
 
-        SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId);
+        SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId,userAgent,city);
         Map aggMap =searchResponse.getAggregations().asMap();
         StringTerms gradeTerms = (StringTerms) aggMap.get("roomCount");
 
@@ -76,6 +76,8 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         }
         return plotsEsfRoomCountDomain;
     }
+
+
 
     /**
      * 根据小区id，户型查询房源列表
@@ -117,12 +119,12 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
     }
 
     @Override
-    public PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId) {
+    public PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId,String userAgent , String city) {
         List<PlotsEsfRoomCountDo> plotsEsfRoomCountDoList = new ArrayList<>();
 
         PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = new PlotsEsfRoomCountDomain();
 
-        SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId);
+        SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId,userAgent,city);
         Map aggMap =searchResponse.getAggregations().asMap();
         StringTerms gradeTerms = (StringTerms) aggMap.get("roomCount");
 

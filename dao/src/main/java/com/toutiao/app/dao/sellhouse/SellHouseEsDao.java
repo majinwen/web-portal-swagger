@@ -23,7 +23,7 @@ public interface SellHouseEsDao {
      * @param plotsId
      * @return
      */
-    SearchResponse getSellHouseCountByPlotsId(Integer plotsId);
+    SearchResponse getSellHouseCountByPlotsId(Integer plotsId,String userAgent,  String city);
 
 
     SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,String userAgent,  String city);

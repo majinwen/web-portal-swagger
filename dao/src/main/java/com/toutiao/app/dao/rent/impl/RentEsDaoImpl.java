@@ -2,6 +2,7 @@ package com.toutiao.app.dao.rent.impl;
 
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -29,9 +30,9 @@ public class RentEsDaoImpl implements RentEsDao {
 
 
     @Override
-    public SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from) {
+    public SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from,String userAgent,  String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getRentHouseType(city));
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC).setFrom(from).execute().actionGet();
         return searchResponse;
     }
@@ -53,9 +54,9 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder,String userAgent , String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getRentHouseIndex(city)).setTypes(ElasticCityUtils.getRentHouseType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder)
                 .addAggregation(AggregationBuilders.filter("ZHENGZU", QueryBuilders.termQuery("rent_type", ZHENGZU)))
                 .addAggregation(AggregationBuilders.filter("HEZU", QueryBuilders.termQuery("rent_type", HEZU)))

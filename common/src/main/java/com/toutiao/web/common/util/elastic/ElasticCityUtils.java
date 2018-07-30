@@ -68,7 +68,37 @@ public class ElasticCityUtils {
     }
 
 
+    /**
+     * 获取二手房索引
+     */
+     public  static  String getEsfHouseIndex(String cityCode)
+     {
+         return getESIndexMap(ESIndexConstant.ESF_INDEX,cityCode);
+     }
 
+    /**
+     * 获取二手房
+     */
+     public static  String getEsfHouseTpye(String cityCode)
+     {
+         return  getESIndexMap(ESIndexConstant.ESF_TYPE,cityCode);
+     }
+
+    /**
+     * 获取租房的索引
+     */
+    public static  String getRentHouseIndex(String cityCode)
+    {
+        return  getESIndexMap(ESIndexConstant.RENT_INDEX,cityCode);
+    }
+
+    /**
+     * 获取租房的type
+     */
+    public  static  String getRentHouseType(String cityCode)
+    {
+        return getESIndexMap(ESIndexConstant.RENT_TYPE,cityCode);
+    }
 
 //
 //    public static String getESMap(String esName){
