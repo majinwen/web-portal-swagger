@@ -21,7 +21,7 @@ public class CityUtils {
     public static String getCity(){
         //从cookie中获取城市信息
         //String cityCode = CookieUtils.getCookie(request,response, CookieUtils.COOKIE_NAME_CITY);
-        //从header中获取城市信息
+        //从header中获取城市信息12
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String cityCode = request.getHeader("select_city");
         if(null ==cityCode){
