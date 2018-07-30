@@ -78,10 +78,10 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     }
 
     @Override
-    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize) {
+    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String userAgent, String city) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();
-        searchresponse= client.prepareSearch(houseDynamicIndex).setTypes(dynamicType)
+        searchresponse= client.prepareSearch(ElasticCityUtils.getNewHosueDynamicIndex(city)).setTypes(ElasticCityUtils.getNewHosueDynamicType(city))
                 .setQuery(boolQueryBuilder).addSort("create_time",SortOrder.DESC).setFetchSource(
                         new String[]{"title","time","link_url","detail","newcode","create_time","type","is_del"},null
                 )

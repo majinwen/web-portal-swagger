@@ -306,12 +306,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery) {
+    public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery, String userAgent, String city) {
         List<NewHouseDynamicDo> newHouseDynamicDoList=new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode",newHouseDynamicDoQuery.getNewCode()));
         try {
-            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDoQuery.getPageNum(),newHouseDynamicDoQuery.getPageSize());
+            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDoQuery.getPageNum(),newHouseDynamicDoQuery.getPageSize(), userAgent, city);
             SearchHits hits = dynamicResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit searchHit : searchHists) {

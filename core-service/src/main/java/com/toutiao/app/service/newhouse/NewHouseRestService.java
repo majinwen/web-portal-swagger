@@ -25,7 +25,7 @@ public interface NewHouseRestService {
     /**
      *  新房动态
      */
-    List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery);
+    List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery, String userAgent, String city);
 
 
     /**
