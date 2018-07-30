@@ -64,7 +64,7 @@ public interface PlotEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort);
+    SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort,String userAgent,  String city);
 
     /**
      * 普通小区列表(补)
@@ -73,7 +73,7 @@ public interface PlotEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, HttpServletRequest request, HttpServletResponse response);
+    SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, HttpServletRequest request, HttpServletResponse response,String userAgent,  String city);
 
 
     /**
