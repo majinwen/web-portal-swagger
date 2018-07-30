@@ -33,5 +33,5 @@ public interface PlotsEsfRestService {
      * @param plotsId
      * @return
      */
-    PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId , String city);
+    PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId,String city );
 }
