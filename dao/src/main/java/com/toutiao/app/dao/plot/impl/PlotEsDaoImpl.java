@@ -36,6 +36,11 @@ public class PlotEsDaoImpl implements PlotEsDao {
     private Double distance;
     @Autowired
     private ESClientTools esClientTools;
+    @Autowired
+    private HttpServletRequest request;
+
+    @Autowired
+    private HttpServletResponse response;
 
 
 
@@ -88,7 +93,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, HttpServletRequest request, HttpServletResponse response) {
+    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword) {
         TransportClient client = esClientTools.init();
 
 

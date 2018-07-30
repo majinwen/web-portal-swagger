@@ -2,6 +2,7 @@ package com.toutiao.web.common.util.elastic;
 
 
 import com.toutiao.web.common.constant.elastic.ESIndexConstant;
+import com.toutiao.web.common.util.StringTool;
 
 /**
  * 获取表名
@@ -32,6 +33,25 @@ public class ElasticCityUtils {
         return getESIndexMap(ESIndexConstant.PLOT_TYPE_T1,cityCode);
     }
 
+    /**
+     * 二手房索引
+     */
+    public static String getEsfIndex(String cityCode) {
+        if (StringTool.isEmpty(cityCode)) {
+            cityCode = "bj";
+        }
+        return getESIndexMap(ESIndexConstant.ESF_INDEX, cityCode);
+    }
+
+    /**
+     * 二手房表名
+     */
+    public static String getEsfType(String cityCode) {
+        if (StringTool.isEmpty(cityCode)) {
+            cityCode = "bj";
+        }
+        return getESIndexMap(ESIndexConstant.ESF_TYPE, cityCode);
+    }
 
 
 
