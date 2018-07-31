@@ -249,7 +249,7 @@
         select
         <include refid="Base_Column_List"/>
         from invite_history
-        where user_id = #{userId,jdbcType=VARCHAR} and equipment_no = #{equipmentNo,jdbcType=VARCHAR}
+        where equipment_no = #{equipmentNo,jdbcType=VARCHAR}
     </select>
 
     <select id="getInviteHistoryByCode" parameterType="java.lang.Integer" resultMap="BaseResultMap">
