@@ -1,5 +1,9 @@
 package com.toutiao.web.common.util.city;
 
+import com.toutiao.web.common.constant.city.CityConstant;
+import com.toutiao.web.common.constant.city.CityEnum;
+import com.toutiao.web.common.util.CookieUtils;
+import com.toutiao.web.common.util.StringTool;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -23,25 +27,29 @@ public class CityUtils {
         //String cityCode = CookieUtils.getCookie(request,response, CookieUtils.COOKIE_NAME_CITY);
         //从header中获取城市信息12
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String cityCode = request.getHeader("select_city");
+        String cityCode = request.getHeader(CookieUtils.COOKIE_NAME_CITY);
         if(null ==cityCode){
             //测试用sh;正式默认bj
-            cityCode = "sh";
+            cityCode = CityConstant.ABBREVIATION_SHANGHAI;
         }
 
         return cityCode;
     }
 
+    /**
+     * 通过城市简写获取城市id
+     * @param city
+     * @return
+     */
     public static Integer returnCityId(String city){
-        if (city.equals("bj")){
-            return 12;
-        }else if (city.equals("sh")){
-            return 13;
-        }else  if (city.equals("tj")){
-            return 14;
-        }else {
-            return 12;
+
+        Integer cityId = CityEnum.getValue(city);
+        if(StringTool.isBlank(cityId)){
+            return CityEnum.BEIJING.getValue();
+        }else{
+            return  cityId;
         }
+
     }
 
 
