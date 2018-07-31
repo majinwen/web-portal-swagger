@@ -63,6 +63,7 @@ public class SellHouseFavoriteRestController {
         UserFavoriteEsHouseDoQuery userFavoriteEsHouse= new UserFavoriteEsHouseDoQuery();
         BeanUtils.copyProperties(addFavorite,userFavoriteEsHouse);
         userFavoriteEsHouse.setPriceIncreaseDecline(addFavorite.getIsCutPrice());
+        userFavoriteEsHouse.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         return favoriteRestService.addEsfFavorite(userFavoriteEsHouse);
     }
 

@@ -17,7 +17,7 @@ public interface PlotsEsfRestService {
      * @param plotsId
      * @return
      */
-    PlotsEsfRoomCountDomain queryPlotsEsfByPlotsId(Integer plotsId);
+    PlotsEsfRoomCountDomain queryPlotsEsfByPlotsId(Integer plotsId, String city);
 
     /**
      * 根据小区id，户型查询房源列表
@@ -25,7 +25,7 @@ public interface PlotsEsfRestService {
      * @param room
      * @return
      */
-    List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize,String userAgent , String city);
+    List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize, String city);
 
 
     /**
@@ -33,5 +33,5 @@ public interface PlotsEsfRestService {
      * @param plotsId
      * @return
      */
-    PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId);
+    PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId,String city );
 }

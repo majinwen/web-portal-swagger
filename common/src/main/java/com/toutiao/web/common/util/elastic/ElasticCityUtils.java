@@ -88,6 +88,12 @@ public class ElasticCityUtils {
         return getESIndexMap(ESIndexConstant.DYNAMIC_TYPE,cityCode);
     }
 
+    /**
+     * 租房索引
+     */
+    public static String getRentIndex(String cityCode){
+        return getESIndexMap(ESIndexConstant.RENT_INDEX,cityCode);
+    }
 
     /**
      * 搜索索引(区域商圈)
@@ -113,6 +119,46 @@ public class ElasticCityUtils {
     public static String getSearchEnginesType(String cityCode){
         return getESIndexMap(ESIndexConstant.ENGINES_TYPE,cityCode);
     }
+    /**
+     *  租房表名
+     */
+    public static String getRentType(String cityCode){
+        return getESIndexMap(ESIndexConstant.RENT_TYPE,cityCode);
+    }
+
+
+    /**
+     * 获取二手房索引
+     */
+     public  static  String getEsfHouseIndex(String cityCode)
+     {
+         return getESIndexMap(ESIndexConstant.ESF_INDEX,cityCode);
+     }
+
+    /**
+     * 获取二手房
+     */
+     public static  String getEsfHouseTpye(String cityCode)
+     {
+         return  getESIndexMap(ESIndexConstant.ESF_TYPE,cityCode);
+     }
+
+    /**
+     * 获取租房的索引
+     */
+    public static  String getRentHouseIndex(String cityCode)
+    {
+        return  getESIndexMap(ESIndexConstant.RENT_INDEX,cityCode);
+    }
+
+    /**
+     * 获取租房的type
+     */
+    public  static  String getRentHouseType(String cityCode)
+    {
+        return getESIndexMap(ESIndexConstant.RENT_TYPE,cityCode);
+    }
+
 //
 //    public static String getESMap(String esName){
 //
