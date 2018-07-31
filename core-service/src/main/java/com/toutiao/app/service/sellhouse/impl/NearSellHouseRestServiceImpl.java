@@ -65,7 +65,8 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
 
         //过滤为删除
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-        booleanQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
+//        booleanQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
         booleanQueryBuilder.must(location);
         FunctionScoreQueryBuilder query = null;
         //条件is_claim标志设置权重

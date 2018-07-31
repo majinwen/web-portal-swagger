@@ -13,24 +13,31 @@ public class SellHouseDo {
     /**
      * 二手房房源id
      */
-    @ChangeName("houseId")
+//    @ChangeName("houseId")
     private String claimHouseId;
+
+    private String houseId;
     /**
      * 房源标题
      */
-    @ChangeName("houseTitle")
+//    @ChangeName("houseTitle")
     private String claimHouseTitle;
+
+    private String houseTitle;
     /**
      * 房源图片
      */
     @ChangeName("housePhoto")
     private String[] housePhoto;
 
+
     /**
      * 标题图
      */
     @ChangeName("housePhotoTitle")
     private String claimHousePhotoTitle;
+
+    private String housePhotoTitle;
 
     /**
      * 价格涨降标志
@@ -67,8 +74,10 @@ public class SellHouseDo {
     /**
      * 标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
-    @ChangeName("tags")
+//    @ChangeName("tags")
     private String[] claimTagsName;
+    @ChangeName("tags")
+    private String[] tagsName;
 
     /**
      * 室
