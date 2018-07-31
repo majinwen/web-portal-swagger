@@ -42,10 +42,13 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
     public InvitationCodeDo getInvitation(InvitationCodeDoQuery invitationCodeDoQuery) {
         InvitationCodeDo invitationCodeDo = new InvitationCodeDo();
         InvitationCode invitation = invitationCodeMapper.getInvitation(invitationCodeDoQuery.getUserId());
-        BeanUtils.copyProperties(invitation, invitationCodeDo);
-        List<InviteHistoryDo> inviteHistorys = inviteHistoryMapper.getInviteHistorys(invitationCodeDoQuery.getEquipmentNo());
-        invitationCodeDo.setInvateHistoryDos(inviteHistorys);
-        return invitationCodeDo;
+        if (invitation != null) {
+            BeanUtils.copyProperties(invitation, invitationCodeDo);
+            List<InviteHistoryDo> inviteHistorys = inviteHistoryMapper.getInviteHistorys(invitationCodeDoQuery.getEquipmentNo());
+            invitationCodeDo.setInvateHistoryDos(inviteHistorys);
+            return invitationCodeDo;
+        }
+        return null;
     }
 
     /**
