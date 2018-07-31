@@ -66,7 +66,7 @@ public interface RentEsDao {
      * @param from
      * @return
      */
-    SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from);
+    SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from, String city);
 
     /**
      * 获取搜索列表

@@ -93,9 +93,9 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from) {
+    public SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getRentIndex(city)).setTypes(ElasticCityUtils.getRentType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(query).setFrom(from).execute().actionGet();
         return searchResponse;
     }

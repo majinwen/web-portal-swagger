@@ -7,6 +7,7 @@ import com.toutiao.app.domain.rent.NearHouseListDoQuery;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +30,7 @@ public class NearRentHouseRestController {
         NearHouseListDoQuery nearHouseListDoQuery = new NearHouseListDoQuery();
         RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
         BeanUtils.copyProperties(nearHouseListRequest,nearHouseListDoQuery);
-        RentDetailsListDo rentDetailsListDo = nearRentHouseRestService.queryNearHouseByLocation(nearHouseListDoQuery);
+        RentDetailsListDo rentDetailsListDo = nearRentHouseRestService.queryNearHouseByLocation(nearHouseListDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(rentDetailsListDo,rentDetailsListResponse);
         return NashResult.build(rentDetailsListResponse);
     }
