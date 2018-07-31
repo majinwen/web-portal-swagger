@@ -68,7 +68,7 @@ public class ElasticCityUtils {
     }
 
     /**
-     * 新房表名(父表)
+     * 新房表名(子表)
      */
     public static String getNewHouseChildType(String cityCode){
         return getESIndexMap(ESIndexConstant.NEW_HOUSE_TYPE_T2,cityCode);
@@ -89,8 +89,30 @@ public class ElasticCityUtils {
     }
 
 
-
-
+    /**
+     * 搜索索引(区域商圈)
+     */
+    public static String getSearchScopeIndex(String cityCode){
+        return getESIndexMap(ESIndexConstant.SCOPE_INDEX,cityCode);
+    }
+    /**
+     * 搜索表名(区域商圈)
+     */
+    public static String getSearchScopeType(String cityCode){
+        return getESIndexMap(ESIndexConstant.SCOPE_TYPE,cityCode);
+    }
+    /**
+     * 搜索索引(房源)
+     */
+    public static String getSearchEnginesIndex(String cityCode){
+        return getESIndexMap(ESIndexConstant.ENGINES_INDEX,cityCode);
+    }
+    /**
+     * 搜索表名(房源)
+     */
+    public static String getSearchEnginesType(String cityCode){
+        return getESIndexMap(ESIndexConstant.ENGINES_TYPE,cityCode);
+    }
 //
 //    public static String getESMap(String esName){
 //

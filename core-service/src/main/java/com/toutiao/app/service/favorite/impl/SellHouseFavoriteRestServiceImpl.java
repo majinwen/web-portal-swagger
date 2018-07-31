@@ -4,7 +4,6 @@ import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.service.favorite.SellHouseFavoriteRestService;
-import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
@@ -25,7 +24,7 @@ public class SellHouseFavoriteRestServiceImpl implements SellHouseFavoriteRestSe
      * @return
      */
     @Override
-    public SellHouseFavoriteDomain queryNewHouseFavoriteListByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery) {
+    public SellHouseFavoriteDomain queryNewHouseFavoriteListByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery, String cityId) {
 
         SellHouseFavoriteDomain sellHouseFavoriteDomain = new SellHouseFavoriteDomain();
         sellHouseFavoriteListDoQuery.setFrom((sellHouseFavoriteListDoQuery.getPageNum()-1)*sellHouseFavoriteListDoQuery.getSize());

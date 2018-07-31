@@ -11,5 +11,5 @@ public interface SellHouseFavoriteRestService {
      * @param sellHouseFavoriteListDoQuery
      * @return
      */
-    SellHouseFavoriteDomain queryNewHouseFavoriteListByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery);
+    SellHouseFavoriteDomain queryNewHouseFavoriteListByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery, String cityId);
 }

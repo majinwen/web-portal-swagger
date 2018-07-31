@@ -1,11 +1,13 @@
 package com.toutiao.web.apiimpl.rest.favorite;
 
 
-import com.toutiao.app.api.chance.request.favorite.*;
+import com.toutiao.app.api.chance.request.favorite.AddFavorite;
+import com.toutiao.app.api.chance.request.favorite.DeleteEsfFavoriteResquest;
+import com.toutiao.app.api.chance.request.favorite.IsFavoriteRequest;
+import com.toutiao.app.api.chance.request.favorite.SellHouseFavoriteListRequest;
 import com.toutiao.app.api.chance.response.favorite.SellHouseFavoriteListResponse;
 import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserFavoriteEsHouse;
 import com.toutiao.app.domain.favorite.UserFavoriteEsHouseDoQuery;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
@@ -14,6 +16,7 @@ import com.toutiao.app.service.favorite.SellHouseFavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -41,7 +44,7 @@ public class SellHouseFavoriteRestController {
 
         SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery = new SellHouseFavoriteListDoQuery();
         BeanUtils.copyProperties(sellHouseFavoriteListRequest,sellHouseFavoriteListDoQuery);
-        SellHouseFavoriteDomain sellHouseFavoriteDomain = sellHouseFavoriteRestService.queryNewHouseFavoriteListByUserId(sellHouseFavoriteListDoQuery);
+        SellHouseFavoriteDomain sellHouseFavoriteDomain = sellHouseFavoriteRestService.queryNewHouseFavoriteListByUserId(sellHouseFavoriteListDoQuery, CityUtils.getCity());
         SellHouseFavoriteListResponse sellHouseFavoriteListResponse = new SellHouseFavoriteListResponse();
         BeanUtils.copyProperties(sellHouseFavoriteDomain,sellHouseFavoriteListResponse);
         return NashResult.build(sellHouseFavoriteListResponse);
