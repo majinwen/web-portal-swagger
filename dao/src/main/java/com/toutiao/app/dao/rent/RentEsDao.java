@@ -44,6 +44,13 @@ public interface RentEsDao {
     SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder);
 
     /**
+     * 根据小区id查询该小区下的出租房源的个数（非聚合）
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder);
+
+    /**
      * 获取租房推荐列表
      * @param boolQueryBuilder
      * @param from
@@ -78,5 +85,12 @@ public interface RentEsDao {
      * @return
      */
     SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size);
+
+    /**
+     * 获取小区出租房源均价最低
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse getRentPriceByPlotId(BoolQueryBuilder boolQueryBuilder);
 
 }

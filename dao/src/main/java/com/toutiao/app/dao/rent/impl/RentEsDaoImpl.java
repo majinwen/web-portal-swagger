@@ -64,6 +64,15 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
+    public SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
     public SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
 
         TransportClient client = esClientTools.init();
@@ -114,5 +123,22 @@ public class RentEsDaoImpl implements RentEsDao {
         }
         return searchResponse;
 
+    }
+
+    /**
+     * 获取小区出租房源均价最低
+     * @param boolQueryBuilder
+     * @return
+     */
+    @Override
+    public SearchResponse getRentPriceByPlotId(BoolQueryBuilder boolQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+
+        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+                .addAggregation(AggregationBuilders.min("minRentPrice").field("rent_house_price")).execute().actionGet();
+
+        return searchResponse;
     }
 }

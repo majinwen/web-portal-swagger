@@ -47,6 +47,8 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
         TransportClient client = esClientTools.init();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         boolQueryBuilder.must(QueryBuilders.termQuery("plotId", plotId));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(childType);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0).addAggregation(AggregationBuilders.max("maxHouse").field("sellHouseArea"))
                 .addAggregation(AggregationBuilders.min("minHouse").field("sellHouseArea")).execute().actionGet();
