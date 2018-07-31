@@ -57,7 +57,7 @@ public class NewHouseLayoutRestController {
     public NashResult getNewHouseLayoutByNewCode (@Validated(First.class) NewHouseLayoutRequest newHouseLayoutRequest) {
         Integer newHouseId = newHouseLayoutRequest.getNewCode();
         Integer room = newHouseLayoutRequest.getRoom();
-        List<NewHouseLayoutDo> newHouseLayoutDoList = newHouseLayoutService.getNewHouseLayoutList(newHouseId,room);
+        List<NewHouseLayoutDo> newHouseLayoutDoList = newHouseLayoutService.getNewHouseLayoutList(newHouseId,room, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseLayoutDoList));
         List<NewHouseLayoutResponse> newHouseLayoutResponses = JSONObject.parseArray(json.toJSONString(),NewHouseLayoutResponse.class);
         return NashResult.build(newHouseLayoutResponses);

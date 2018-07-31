@@ -45,10 +45,10 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
      * @return
      */
     @Override
-    public SearchResponse getLayoutListByNewHouseIdAndRoomCount(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getLayoutListByNewHouseIdAndRoomCount(BoolQueryBuilder booleanQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = client.prepareSearch(newHouseIndex).setTypes(layoutType)
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseChildType(city))
                 .setQuery(booleanQueryBuilder).setSize(1000)
                 .execute().actionGet();
         return searchresponse;

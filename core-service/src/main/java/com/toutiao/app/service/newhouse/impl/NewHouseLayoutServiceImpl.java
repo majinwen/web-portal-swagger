@@ -87,7 +87,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
      * @return
      */
     @Override
-    public List<NewHouseLayoutDo> getNewHouseLayoutList(Integer newHouseId, Integer roomCount) {
+    public List<NewHouseLayoutDo> getNewHouseLayoutList(Integer newHouseId, Integer roomCount, String city) {
 
         BoolQueryBuilder detailsBuilder = boolQuery();
         List<NewHouseLayoutDo> newHouseLayoutDoList = new ArrayList<>();
@@ -96,7 +96,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
             detailsBuilder.must(QueryBuilders.termQuery("room",roomCount));
         }
 
-        SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutListByNewHouseIdAndRoomCount(detailsBuilder);
+        SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutListByNewHouseIdAndRoomCount(detailsBuilder, city);
 
         SearchHits layoutHits = searchresponse.getHits();
         SearchHit[] searchHists = layoutHits.getHits();

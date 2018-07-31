@@ -18,5 +18,5 @@ public interface NewHouseLayoutEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse getLayoutListByNewHouseIdAndRoomCount(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getLayoutListByNewHouseIdAndRoomCount(BoolQueryBuilder booleanQueryBuilder, String city);
 }

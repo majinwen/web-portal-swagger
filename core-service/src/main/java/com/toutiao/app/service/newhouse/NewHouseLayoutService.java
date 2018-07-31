@@ -20,6 +20,6 @@ public interface NewHouseLayoutService {
      * @param roomCount
      * @return
      */
-    List<NewHouseLayoutDo> getNewHouseLayoutList(Integer newHouseId, Integer roomCount);
+    List<NewHouseLayoutDo> getNewHouseLayoutList(Integer newHouseId, Integer roomCount, String city);
 
 }
