@@ -32,7 +32,7 @@ public interface InviteHistoryMapper {
 
     int updateByPrimaryKey(InviteHistory record);
 
-    List<InviteHistoryDo> getInviteHistorys(@Param("userId") String userId, @Param("equipmentNo") String equipmentNo);
+    List<InviteHistoryDo> getInviteHistorys(@Param("equipmentNo") String equipmentNo);
 
     List<InviteHistory> getInviteHistoryByCode(Integer invitationCode);
 }
