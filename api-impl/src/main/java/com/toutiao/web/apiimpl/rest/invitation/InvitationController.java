@@ -32,6 +32,9 @@ public class InvitationController {
         InvitationCodeDoQuery invitationCodeDoQuery = new InvitationCodeDoQuery();
         BeanUtils.copyProperties(invitationRequest, invitationCodeDoQuery);
         InvitationCodeDo invitationCodeDo = invitationCodeService.getInvitation(invitationCodeDoQuery);
+        if (invitationCodeDo == null) {
+            return NashResult.Fail("用户没有邀请码，请联系技术人员解决");
+        }
         InvitationResponse invitationResponse = new InvitationResponse();
         BeanUtils.copyProperties(invitationCodeDo, invitationResponse);
         return NashResult.build(invitationResponse);
