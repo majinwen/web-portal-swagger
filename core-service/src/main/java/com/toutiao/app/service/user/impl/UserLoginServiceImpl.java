@@ -3,6 +3,7 @@ package com.toutiao.app.service.user.impl;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.domain.user.UserBasicDoQuery;
 import com.toutiao.app.service.compared.ComparedService;
+import com.toutiao.app.service.invitation.InvitationCodeService;
 import com.toutiao.app.service.sys.IMService;
 import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.web.common.constant.syserror.ShortMessageInterfaceErrorCodeEnum;
@@ -10,6 +11,7 @@ import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
+import com.toutiao.web.dao.entity.invitation.InvitationCode;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper;
 import org.joda.time.DateTime;
@@ -22,10 +24,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class UserLoginServiceImpl implements UserLoginService {
@@ -40,11 +39,36 @@ public class UserLoginServiceImpl implements UserLoginService {
     private IMService imService;
     @Autowired
     private ComparedService comparedService;
+    @Autowired
+    private InvitationCodeService invitationCodeService;
     @Value("${qiniu.headpic_directory}")
     public String headPicDirectory;
     @Value("${qiniu.img_wapapp_domain}")
     public String headPicPath;
 
+    /**
+     * 生成8位数字邀请码
+     *
+     * @param length
+     * @return
+     */
+    private static String randomDigits(int length) {
+
+        if (0 > length) {
+            return "";
+        }
+
+        String[] randomNums = new String[]{"0", "1", "2", "3", "4", "5", "6",
+                "7", "8", "9"};
+        List<String> randomNumList = Arrays.asList(randomNums);
+        // 随机排列
+        Collections.shuffle(randomNumList);
+        StringBuilder randomNum = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            randomNum.append(randomNumList.get(i));
+        }
+        return randomNum.toString();
+    }
 
     @Override
     public UserBasicDo checkUserVerifyCodeLogin(UserBasicDoQuery userBasicDo, HttpServletRequest request, HttpServletResponse response) {
@@ -132,6 +156,15 @@ public class UserLoginServiceImpl implements UserLoginService {
                     insertUserBasic.setRongCloudToken(rcToken);
 
                     int userId = userBasicMapper.insertSelective(insertUserBasic);
+
+                    InvitationCode invitationCode = new InvitationCode();
+                    invitationCode.setCode(Integer.valueOf(randomDigits(8)));
+                    invitationCode.setCreateTime(date);
+                    UserBasic user = userBasicMapper.selectUserByExample(insertUserBasic);
+                    invitationCode.setUserId(user.getUserId());
+                    invitationCode.setInviteTotal(0);
+                    invitationCodeService.saveInvitationCode(invitationCode);
+
                     BeanUtils.copyProperties(insertUserBasic, ubd);
                 }
 
@@ -166,5 +199,6 @@ public class UserLoginServiceImpl implements UserLoginService {
 
         return ubd;
     }
+
 
 }

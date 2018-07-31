@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.invitation.InviteHistoryMapper">
+    <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.invitation.InviteHistory">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="invitation_code" property="invitationCode" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="is_valid" property="isValid" jdbcType="SMALLINT"/>
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="equipment_no" property="equipmentNo" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        id, invitation_code, user_id, create_time, is_valid, pay_time, equipment_no
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.dao.entity.invitation.InviteHistoryExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from invite_history
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List"/>
+        from invite_history
+        where id = #{id,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from invite_history
+        where id = #{id,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.toutiao.web.dao.entity.invitation.InviteHistoryExample">
+        delete from invite_history
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.toutiao.web.dao.entity.invitation.InviteHistory">
+        insert into invite_history (id, invitation_code, user_id,
+        create_time, is_valid, pay_time,
+        equipment_no)
+        values (#{id,jdbcType=INTEGER}, #{invitationCode,jdbcType=INTEGER}, #{userId,jdbcType=VARCHAR},
+        #{createTime,jdbcType=TIMESTAMP}, #{isValid,jdbcType=SMALLINT}, #{payTime,jdbcType=TIMESTAMP},
+        #{equipmentNo,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.invitation.InviteHistory">
+        insert into invite_history
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="invitationCode != null">
+                invitation_code,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="isValid != null">
+                is_valid,
+            </if>
+            <if test="payTime != null">
+                pay_time,
+            </if>
+            <if test="equipmentNo != null">
+                equipment_no,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="invitationCode != null">
+                #{invitationCode,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isValid != null">
+                #{isValid,jdbcType=SMALLINT},
+            </if>
+            <if test="payTime != null">
+                #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="equipmentNo != null">
+                #{equipmentNo,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.toutiao.web.dao.entity.invitation.InviteHistoryExample"
+            resultType="java.lang.Integer">
+        select count(*) from invite_history
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update invite_history
+        <set>
+            <if test="record.id != null">
+                id = #{record.id,jdbcType=INTEGER},
+            </if>
+            <if test="record.invitationCode != null">
+                invitation_code = #{record.invitationCode,jdbcType=INTEGER},
+            </if>
+            <if test="record.userId != null">
+                user_id = #{record.userId,jdbcType=VARCHAR},
+            </if>
+            <if test="record.createTime != null">
+                create_time = #{record.createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.isValid != null">
+                is_valid = #{record.isValid,jdbcType=SMALLINT},
+            </if>
+            <if test="record.payTime != null">
+                pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="record.equipmentNo != null">
+                equipment_no = #{record.equipmentNo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update invite_history
+        set id = #{record.id,jdbcType=INTEGER},
+        invitation_code = #{record.invitationCode,jdbcType=INTEGER},
+        user_id = #{record.userId,jdbcType=VARCHAR},
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+        is_valid = #{record.isValid,jdbcType=SMALLINT},
+        pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+        equipment_no = #{record.equipmentNo,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.web.dao.entity.invitation.InviteHistory">
+        update invite_history
+        <set>
+            <if test="invitationCode != null">
+                invitation_code = #{invitationCode,jdbcType=INTEGER},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="isValid != null">
+                is_valid = #{isValid,jdbcType=SMALLINT},
+            </if>
+            <if test="payTime != null">
+                pay_time = #{payTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="equipmentNo != null">
+                equipment_no = #{equipmentNo,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.toutiao.web.dao.entity.invitation.InviteHistory">
+        update invite_history
+        set invitation_code = #{invitationCode,jdbcType=INTEGER},
+        user_id = #{userId,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        is_valid = #{isValid,jdbcType=SMALLINT},
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+        equipment_no = #{equipmentNo,jdbcType=VARCHAR}
+        where id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="getInviteHistorys" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from invite_history
+        where user_id = #{userId,jdbcType=VARCHAR} and equipment_no = #{equipmentNo,jdbcType=VARCHAR}
+    </select>
+
+    <select id="getInviteHistoryByCode" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from invite_history
+        where invitation_code = #{invitationCode,jdbcType=INTEGER}
+    </select>
+</mapper>

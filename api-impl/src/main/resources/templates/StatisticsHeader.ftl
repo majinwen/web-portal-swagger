@@ -44,3 +44,13 @@
     };
     window.zhuge.load('7ade0caffb294025964cda0cfed2156a');//配置应用的AppKey
 </script>
+
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "https://hm.baidu.com/hm.js?7ec9676ca74fb43b30d92bf0b924d191";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
