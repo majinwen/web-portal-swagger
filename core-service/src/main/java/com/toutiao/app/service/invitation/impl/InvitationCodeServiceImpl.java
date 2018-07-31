@@ -11,6 +11,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -22,14 +25,25 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
     private InviteHistoryMapper inviteHistoryMapper;
 
     /**
-     * 保存邀请码
+     * 生成8位数字邀请码
      *
-     * @param record
+     * @param length
      * @return
      */
-    @Override
-    public int saveInvitationCode(InvitationCode record) {
-        return invitationCodeMapper.insertSelective(record);
+    private static String randomDigits(int length) {
+        if (0 > length) {
+            return "";
+        }
+        String[] randomNums = new String[]{"0", "1", "2", "3", "4", "5", "6",
+                "7", "8", "9"};
+        List<String> randomNumList = Arrays.asList(randomNums);
+        // 随机排列
+        Collections.shuffle(randomNumList);
+        StringBuilder randomNum = new StringBuilder();
+        for (int i = 0; i < length; i++) {
+            randomNum.append(randomNumList.get(i));
+        }
+        return randomNum.toString();
     }
 
     /**
@@ -42,13 +56,20 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
     public InvitationCodeDo getInvitation(InvitationCodeDoQuery invitationCodeDoQuery) {
         InvitationCodeDo invitationCodeDo = new InvitationCodeDo();
         InvitationCode invitation = invitationCodeMapper.getInvitation(invitationCodeDoQuery.getUserId());
-        if (invitation != null) {
+        if (invitation == null) {
+            InvitationCode invitationCode = new InvitationCode();
+            invitationCode.setCode(Integer.valueOf(randomDigits(8)));
+            invitationCode.setCreateTime(new Date());
+            invitationCode.setUserId(invitationCodeDoQuery.getUserId());
+            invitationCode.setInviteTotal(0);
+            invitationCodeMapper.insertSelective(invitationCode);
+            BeanUtils.copyProperties(invitationCode, invitationCodeDo);
+        } else {
             BeanUtils.copyProperties(invitation, invitationCodeDo);
             List<InviteHistoryDo> inviteHistorys = inviteHistoryMapper.getInviteHistorys(invitationCodeDoQuery.getEquipmentNo());
             invitationCodeDo.setInvateHistoryDos(inviteHistorys);
-            return invitationCodeDo;
         }
-        return null;
+        return invitationCodeDo;
     }
 
     /**
