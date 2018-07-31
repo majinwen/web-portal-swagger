@@ -66,9 +66,9 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
             BeanUtils.copyProperties(invitationCode, invitationCodeDo);
         } else {
             BeanUtils.copyProperties(invitation, invitationCodeDo);
-            List<InviteHistoryDo> inviteHistorys = inviteHistoryMapper.getInviteHistorys(invitationCodeDoQuery.getEquipmentNo());
-            invitationCodeDo.setInvateHistoryDos(inviteHistorys);
         }
+        List<InviteHistoryDo> inviteHistorys = inviteHistoryMapper.getInviteHistorys(invitationCodeDoQuery.getEquipmentNo());
+        invitationCodeDo.setInvateHistoryDos(inviteHistorys);
         return invitationCodeDo;
     }
 
