@@ -50,7 +50,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
     private CommunityRestService communityRestService;
 
     @Override
-    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo) {
+    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo,String city) {
 
         NearBySellHouseDomain nearBySellHouseDomain=new NearBySellHouseDomain();
         NearBySellHousesDo  nearBySellHousesDo=new NearBySellHousesDo();
@@ -114,7 +114,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
         }
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
-        SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHouseQueryDo.getPageNum(),nearBySellHouseQueryDo.getPageSize());
+        SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHouseQueryDo.getPageNum(),nearBySellHouseQueryDo.getPageSize(),city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
