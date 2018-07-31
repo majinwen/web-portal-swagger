@@ -5,11 +5,18 @@ import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.compared.HouseComparedDetailDo;
 import com.toutiao.app.domain.compared.HouseComparedListDo;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.compared.ComparedService;
+import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
 import com.toutiao.web.dao.mapper.compared.HouseComparedMapper;
+import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -25,7 +32,8 @@ import java.util.List;
 
 @Service
 public class ComparedServiceImpl implements ComparedService {
-
+    @Autowired
+    private UserFavoriteEsHouseMapper userFavoriteEsHouseMapper;
 
     @Autowired
     HouseComparedMapper houseComparedMapper;
@@ -147,6 +155,20 @@ public class ComparedServiceImpl implements ComparedService {
             houseComparedListDoList.add(houseComparedDetailDo);
         }
         return houseComparedListDoList;
+    }
+
+    @Override
+    public SellHouseFavoriteDomain queryComparedList(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery) {
+        SellHouseFavoriteDomain sellHouseFavoriteDomain = new SellHouseFavoriteDomain();
+        sellHouseFavoriteListDoQuery.setFrom((sellHouseFavoriteListDoQuery.getPageNum()-1)*sellHouseFavoriteListDoQuery.getSize());
+        sellHouseFavoriteListDoQuery.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        List<SellHouseFavoriteDo> sellHouseFavoriteDos = userFavoriteEsHouseMapper.selectComparedList(sellHouseFavoriteListDoQuery);
+        if(null!=sellHouseFavoriteDos && sellHouseFavoriteDos.size()>0){
+            sellHouseFavoriteDomain.setData(sellHouseFavoriteDos);
+        }else{
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_NOT_FOUND,"比对列表为空");
+        }
+        return sellHouseFavoriteDomain;
     }
 
     private Hashtable<String, HouseComparedDetailDo> getESHouseComparedDetailDo(List<String> ids) {

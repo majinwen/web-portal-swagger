@@ -1,8 +1,12 @@
 package com.toutiao.web.apiimpl.rest.compared;
 
 import com.toutiao.app.api.chance.request.compared.ComparedRequest;
+import com.toutiao.app.api.chance.request.favorite.SellHouseFavoriteListRequest;
+import com.toutiao.app.api.chance.response.favorite.SellHouseFavoriteListResponse;
 import com.toutiao.app.domain.compared.HouseComparedDetailDo;
 import com.toutiao.app.domain.compared.HouseComparedListDo;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.service.compared.ComparedService;
 import com.toutiao.web.apiimpl.authentication.IgnoreLogin;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -11,6 +15,7 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.joda.time.DateTime;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -187,4 +192,18 @@ public class ComparedRestController {
         }
         return NashResult.build(houseComparedDetailDoList);
     }
+
+    /**
+     * 比对列表
+     */
+    @RequestMapping(value = "/getComparedList",method = RequestMethod.GET)
+    public NashResult getComparedList(@Validated SellHouseFavoriteListRequest sellHouseFavoriteListRequest){
+        SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery = new SellHouseFavoriteListDoQuery();
+        BeanUtils.copyProperties(sellHouseFavoriteListRequest,sellHouseFavoriteListDoQuery);
+        SellHouseFavoriteDomain sellHouseFavoriteDomain = comparedService.queryComparedList(sellHouseFavoriteListDoQuery);
+        SellHouseFavoriteListResponse sellHouseFavoriteListResponse = new SellHouseFavoriteListResponse();
+        BeanUtils.copyProperties(sellHouseFavoriteDomain,sellHouseFavoriteListResponse);
+        return NashResult.build(sellHouseFavoriteListResponse);
+    }
+
 }

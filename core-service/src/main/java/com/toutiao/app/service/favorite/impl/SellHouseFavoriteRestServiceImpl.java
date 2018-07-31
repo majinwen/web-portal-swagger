@@ -24,7 +24,7 @@ public class SellHouseFavoriteRestServiceImpl implements SellHouseFavoriteRestSe
      * @return
      */
     @Override
-    public SellHouseFavoriteDomain queryNewHouseFavoriteListByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery, String cityId) {
+    public SellHouseFavoriteDomain queryNewHouseFavoriteListByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery) {
 
         SellHouseFavoriteDomain sellHouseFavoriteDomain = new SellHouseFavoriteDomain();
         sellHouseFavoriteListDoQuery.setFrom((sellHouseFavoriteListDoQuery.getPageNum()-1)*sellHouseFavoriteListDoQuery.getSize());

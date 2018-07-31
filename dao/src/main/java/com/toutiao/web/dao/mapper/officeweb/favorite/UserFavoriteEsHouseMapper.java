@@ -37,5 +37,11 @@ public interface UserFavoriteEsHouseMapper extends BaseDao {
      */
     List<SellHouseFavoriteDo> selectSellHouseFavoriteByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery);
 
+    /**
+     * 比对列表
+     * @param sellHouseFavoriteListDoQuery
+     * @return
+     */
+    List<SellHouseFavoriteDo> selectComparedList(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery);
 
 }
