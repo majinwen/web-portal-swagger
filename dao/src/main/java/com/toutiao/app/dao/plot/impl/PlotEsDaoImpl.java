@@ -89,7 +89,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, HttpServletRequest request, HttpServletResponse response, String city) {
+    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, String city) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = null;

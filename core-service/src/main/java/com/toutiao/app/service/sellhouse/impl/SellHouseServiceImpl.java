@@ -66,7 +66,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     private CommunityRestService communityRestService;
 
     @Override
-    public SellHouseDetailsDo getSellHouseByHouseId(String houseId) {
+    public SellHouseDetailsDo getSellHouseByHouseId(String houseId, String city) {
 
         //二手房房源详情
         SellAndClaimHouseDetailsDo sellAndClaimHouseDetailsDo = new SellAndClaimHouseDetailsDo();

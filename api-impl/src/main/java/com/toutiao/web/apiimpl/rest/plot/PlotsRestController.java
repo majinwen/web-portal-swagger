@@ -67,10 +67,10 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest, HttpServletRequest request, HttpServletResponse response){
+    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
-        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery,request,response,CityUtils.getCity());
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery,CityUtils.getCity());
         PlotListResponse plotListResponse = JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class);
         return NashResult.build(plotListResponse);
     }

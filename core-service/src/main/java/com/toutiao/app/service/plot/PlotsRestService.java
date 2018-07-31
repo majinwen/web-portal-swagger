@@ -31,7 +31,7 @@ public interface PlotsRestService {
      * @param plotListDoQuery
      * @return
      */
-    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery, HttpServletRequest request, HttpServletResponse response,  String city);
+    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery, String city);
 
     /**
      * 获取小区列表含坐标
