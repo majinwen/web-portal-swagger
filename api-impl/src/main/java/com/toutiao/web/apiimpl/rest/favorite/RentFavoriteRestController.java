@@ -14,6 +14,7 @@ import com.toutiao.app.service.favorite.RentFavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -59,6 +60,7 @@ public class RentFavoriteRestController {
     {
         UserFavoriteRentDoQuery userFavoriteRent =new UserFavoriteRentDoQuery();
         BeanUtils.copyProperties(addFavorite,userFavoriteRent);
+        userFavoriteRent.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         return favoriteRestService.addRentFavorite(userFavoriteRent);
     }
 

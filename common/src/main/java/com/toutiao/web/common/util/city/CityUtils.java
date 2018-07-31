@@ -32,5 +32,17 @@ public class CityUtils {
         return cityCode;
     }
 
+    public static Integer returnCityId(String city){
+        if (city.equals("bj")){
+            return 12;
+        }else if (city.equals("sh")){
+            return 13;
+        }else  if (city.equals("tj")){
+            return 14;
+        }else {
+            return 12;
+        }
+    }
+
 
 }

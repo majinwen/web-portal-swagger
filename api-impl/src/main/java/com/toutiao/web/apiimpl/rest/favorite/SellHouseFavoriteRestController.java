@@ -14,6 +14,7 @@ import com.toutiao.app.service.favorite.SellHouseFavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -60,6 +61,7 @@ public class SellHouseFavoriteRestController {
         UserFavoriteEsHouseDoQuery userFavoriteEsHouse= new UserFavoriteEsHouseDoQuery();
         BeanUtils.copyProperties(addFavorite,userFavoriteEsHouse);
         userFavoriteEsHouse.setPriceIncreaseDecline(addFavorite.getIsCutPrice());
+        userFavoriteEsHouse.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         return favoriteRestService.addEsfFavorite(userFavoriteEsHouse);
     }
 
