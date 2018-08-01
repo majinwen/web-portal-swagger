@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="${appstaticurl}/css/jquery.fullPage.css?v=${staticversion}">
     <link rel="stylesheet" href="${appstaticurl}/css/intelligent.css?v=${staticversion}">
     <title>懂房帝</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${appstaticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${appstaticurl}/js/jquery.fullpage.min.new.js?v=${staticversion}"></script>

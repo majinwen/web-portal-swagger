@@ -279,4 +279,9 @@ public class PlotDetailsDo {
      * 是否收藏
      */
     private Boolean isFavorite = false;
+
+    /**
+     * 二手房，租房信息
+     */
+    private PlotsHousesDomain plotsHousesDomain;
 }

@@ -8,6 +8,7 @@ import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
+import com.toutiao.app.service.plot.PlotsHomesRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
@@ -67,6 +68,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private RentRestService rentRestService;
     @Autowired
     private FavoriteRestService favoriteRestService;
+    @Autowired
+    private PlotsHomesRestService plotsHomesRestService;
 
 
     /**
@@ -77,12 +80,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     @Override
     public PlotDetailsDo queryPlotDetailByPlotId(Integer plotId) {
         String details = "";
+        PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
         try {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(QueryBuilders.termQuery("id",plotId));
             SearchResponse searchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder);
             SearchHit[] hits = searchResponse.getHits().getHits();
-            PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
+
             for (SearchHit searchHit : hits) {
                 details = searchHit.getSourceAsString();
             }
@@ -128,9 +132,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 {
                     plotDetailsDo.setHasElevator("无");
                 }
-                return plotDetailsDo;
+//                return plotDetailsDo;
             }
 
+            PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId);
+
+            plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
+            plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -138,7 +146,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         {
             throw  new  BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_DETAILS_NOT_FOUND);
         }
-        return null;
+        return plotDetailsDo;
     }
 
     /**

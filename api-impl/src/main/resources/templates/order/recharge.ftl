@@ -3,7 +3,7 @@
 <head>
     <#include "../staticHeader.ftl">
     <title>充值</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <link rel="stylesheet" href="${staticurl}/css/payment-recharge.css?v=${staticversion}">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
