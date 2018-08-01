@@ -231,4 +231,10 @@
         where code = #{code,jdbcType=INTEGER}
     </update>
 
+    <select id="getInvitationValid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from invitation_code
+        where code = #{code,jdbcType=INTEGER}
+    </select>
 </mapper>

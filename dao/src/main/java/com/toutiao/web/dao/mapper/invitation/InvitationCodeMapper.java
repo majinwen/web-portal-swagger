@@ -34,4 +34,6 @@ public interface InvitationCodeMapper {
     InvitationCode getInvitation(String userId);
 
     int updateInviteTotal(@Param("code") Integer code, @Param("inviteTotal") Integer inviteTotal);
+
+    InvitationCode getInvitationValid(Integer code);
 }

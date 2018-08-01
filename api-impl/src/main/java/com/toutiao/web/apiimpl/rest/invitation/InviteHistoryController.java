@@ -4,6 +4,7 @@ import com.toutiao.app.service.invitation.InvitationCodeService;
 import com.toutiao.app.service.invitation.InviteHistoryService;
 import com.toutiao.web.api.chance.request.invitation.InviteHistoryRequest;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.dao.entity.invitation.InvitationCode;
 import com.toutiao.web.dao.entity.invitation.InviteHistory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,10 @@ public class InviteHistoryController {
     public NashResult saveInviteHistory(@Validated InviteHistoryRequest inviteHistoryRequest) {
         InviteHistory inviteHistory = new InviteHistory();
         BeanUtils.copyProperties(inviteHistoryRequest, inviteHistory);
+        InvitationCode invitationValid = invitationCodeService.getInvitationValid(inviteHistoryRequest.getInvitationCode());
+        if (invitationValid == null) {
+            return NashResult.Fail("邀请码无效！");
+        }
         int i = inviteHistoryService.saveInviteHistory(inviteHistory);
         List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
         if (!CollectionUtils.isEmpty(inviteHistoryByCode)) {

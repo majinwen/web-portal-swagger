@@ -81,4 +81,15 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
     public int updateInviteTotal(Integer code, Integer inviteTotal) {
         return invitationCodeMapper.updateInviteTotal(code, inviteTotal);
     }
+
+    /**
+     * 通过邀请码获取记录
+     *
+     * @param code
+     * @return
+     */
+    @Override
+    public InvitationCode getInvitationValid(Integer code) {
+        return invitationCodeMapper.getInvitationValid(code);
+    }
 }

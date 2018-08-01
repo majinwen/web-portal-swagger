@@ -3,6 +3,7 @@ package com.toutiao.app.service.invitation;
 
 import com.toutiao.app.domain.invitation.InvitationCodeDo;
 import com.toutiao.app.domain.invitation.InvitationCodeDoQuery;
+import com.toutiao.web.dao.entity.invitation.InvitationCode;
 
 
 public interface InvitationCodeService {
@@ -10,4 +11,6 @@ public interface InvitationCodeService {
     InvitationCodeDo getInvitation(InvitationCodeDoQuery invitationCodeDoQuery);
 
     int updateInviteTotal(Integer code, Integer inviteTotal);
+
+    InvitationCode getInvitationValid(Integer code);
 }
