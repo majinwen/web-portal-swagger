@@ -151,6 +151,12 @@
     </div>
 </section>
 <section id="result-section">
+    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="app-download-top-tips-wrapper">
+        <div class="download-btn">
+            <i></i>
+            <span>下载懂房帝APP</span>
+        </div>
+    </a>
     <ul id="valueList">
     <#--<#if builds?exists>
         <#list builds as map>
@@ -250,6 +256,23 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
+    {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
+    <li>
+        <a class="list-item" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom">
+            <div class="clear">
+                <div class="list-item-img-box">
+                    <img src="http://s1.qn.toutiaofangchan.com/81b8769cabd84a92b6b5812dfbdd0f04.jpg-tt400x300" alt="国瑞熙墅">
+                </div>
+                <div class="list-item-cont download-app-tips-type1">
+                    <h3 class="cont-block-1"><span>{{$value.current_month}}月北京优惠楼盘</span></h3>
+                    <p class="cont-block-2">实时更新</p>
+                    <p class="cont-block-3">尽在懂房帝APP</p>
+                    <div class="cont-block-btn">立即下载</div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{else}}
     <li id='{{total}}'><a class="list-item new" data-id = "{{$value.pageNum}}" onclick="new_list(this)"  url="<%= $imports.router_city('/loupan/'+$value.building_name_id+'.html') %>" href="javascript:void(0);">
 
         <div class="clear">
@@ -312,6 +335,7 @@
         </div>
         {{/if}}
     </a></li>
+    {{/if}}
     {{/each}}
 </script>
 

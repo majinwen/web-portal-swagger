@@ -149,8 +149,14 @@
     </div>
 </section>
 <section id="result-section">
-    <ul id="valueList" class="list-item-wrapper">
-    <#--<#if villageList?exists>-->
+    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="app-download-top-tips-wrapper">
+        <div class="download-btn">
+            <i></i>
+            <span>下载懂房帝APP</span>
+        </div>
+    </a>
+    <ul id="valueList" class="list-item-wrapper"></ul>
+<#--<#if villageList?exists>-->
         <#--<#list villageList as plot>-->
             <#--<li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">-->
             <#--&lt;#&ndash;<input type="hidden" name="total" value="${plot.total}">&ndash;&gt;-->
@@ -223,7 +229,6 @@
             <#--</a></li>-->
         <#--</#list>-->
     <#--</#if>-->
-    </ul>
     <#--<p class="tip-box none">有新上房源，我们会及时通知您哦！</p>-->
 </section>
 <#include "../user.ftl">
@@ -242,6 +247,23 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
+    {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
+    <li>
+        <a class="list-item" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom">
+            <div class="clear">
+                <div class="list-item-img-box">
+                    <img src="${staticurl}/images/house-app-download.jpg" alt="优惠房源">
+                </div>
+                <div class="list-item-cont download-app-tips-type1">
+                    <h3 class="cont-block-1"><span>{{$value.current_month}}月北京优惠房源</span></h3>
+                    <p class="cont-block-2">实时更新</p>
+                    <p class="cont-block-3">尽在懂房帝APP</p>
+                    <div class="cont-block-btn">立即下载</div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{else}}
     <li>
         <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.id}}&__topic__=xiaoqubaoguang'/>-->
         <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="plot_list(this)" url="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>" href="javascript:void(0);">
@@ -283,6 +305,7 @@
             </div>
         </div>
     </a></li>
+    {{/if}}
     {{/each}}
 </script>
 <script>

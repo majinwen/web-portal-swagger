@@ -136,12 +136,41 @@
     </div>
 </section>
 <section id="result-section">
+    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="app-download-top-tips-wrapper">
+        <div class="download-btn">
+            <i></i>
+            <span>下载懂房帝APP</span>
+        </div>
+    </a>
     <ul id="valueList"></ul>
 </section>
 <#include "../user.ftl">
 <#include "../search.ftl">
 <script id="listContent" type="text/html">
     {{each data}}
+    {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
+    <li><a class="list-item app-download-item" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom">
+        <div class="list-item-cont-ad">
+            <h3 class="cont-block-1">北京个人出租房源每天上新，下载懂房帝APP随时查</h3>
+        </div>
+        <div class="clear">
+            <div class="list-item-img-box">
+                <img src="${staticurl}/images/zufang-app-download-1.jpg" alt="出租房源每天上新">
+            </div>
+            <div class="list-item-img-box">
+                <img src="${staticurl}/images/zufang-app-download-2.jpg" alt="出租房源每天上新">
+            </div>
+            <div class="list-item-img-box">
+                <img src="${staticurl}/images/zufang-app-download-3.jpg" alt="出租房源每天上新">
+            </div>
+        </div>
+        <div class="pr">
+            <div class="house-labelling gray">
+                <span>懂房帝APP</span>
+            </div>
+        </div>
+    </a></li>
+    {{else}}
     <li>
         <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.house_id}}&__topic__=zufangbaoguang'/>-->
         <a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">
@@ -174,6 +203,7 @@
             </div>
         </div>
     </a></li>
+    {{/if}}
     {{/each}}
 </script>
 </body>

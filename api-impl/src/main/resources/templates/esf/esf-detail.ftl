@@ -251,14 +251,27 @@
                     交通信息：距离${houseDetail.traffic?split("$")[0]}${houseDetail.traffic?split("$")[1]}${houseDetail.traffic?split("$")[2]}m
                     <em class="primary-distance">
                         <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="primary-map-icon"></a>
-                        <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="arrows-right"></a>
                     </em>
+                    <a href="${router_city('/esf/'+houseDetail.newcode+'/map.html')}" class="arrows-right"></a>
                 </p>
             </li></#if>
         </ul>
     </section>
 </div>
 
+<div class="module-bottom-fill">
+    <section class="primary-message">
+        <ul class="primary-item">
+            <li class="download-app">
+                <p>
+                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="primary-app-logo"></a>
+                    下载懂房帝APP，一键查北京房价
+                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="arrows-right"></a>
+                </p>
+            </li>
+        </ul>
+    </section>
+</div>
 
 <#if houseDetail['claimHouseId']?exists>
 <div class="module-bottom-fill">

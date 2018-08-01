@@ -157,6 +157,19 @@
     </div>
 </div>
 </#if>
+<div class="module-bottom-fill">
+    <section class="primary-message">
+        <ul class="primary-item">
+            <li class="download-app">
+                <p>
+                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="primary-app-logo"></a>
+                    下载懂房帝APP，一键查北京房价
+                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="arrows-right"></a>
+                </p>
+            </li>
+        </ul>
+    </section>
+</div>
 <#if (layout?exists) && (layout?size>0)>
 <div class="module-bottom-fill">
     <section>
