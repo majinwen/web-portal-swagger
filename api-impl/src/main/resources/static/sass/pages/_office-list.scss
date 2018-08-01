@@ -9,7 +9,7 @@ $textGrayColor: #888;
 .list-item {
     display: block;
     line-height: 1.2;
-    padding: rem(42) 0;
+    padding: rem(45) 0;
     margin: 0 rem(30);
     color: $baseBlack;
     border-bottom: 1px solid $baseBorderColor;
@@ -176,9 +176,37 @@ $textGrayColor: #888;
                 bottom: auto;
             }
         }
+
+        &.download-app-tips-type1 {
+            .cont-block-1, .cont-block-2, .cont-block-3, .cont-block-btn {
+                position: absolute;
+                margin-top: 0;
+                color: #888;
+            }
+            .cont-block-1, .cont-block-2 {
+                @include font-dpr(28);
+            }
+            .cont-block-1 {
+                top: 0;
+            }
+            .cont-block-2 {
+                top: 39%;
+            }
+            .cont-block-3 {
+                bottom: 0;
+                @include font-dpr(30);
+            }
+            .cont-block-btn {
+                top: 29%;
+                right: 0;
+                padding: rem(20) rem(38);
+                color: #fff;
+                background-color: #ff4848;
+                border-radius: rem(5);
+                @include font-dpr(28);
+            }
+        }
     }
-
-
 
     &.new {
         .cont-block-1 {
@@ -285,6 +313,44 @@ $textGrayColor: #888;
             }
         }
     }
+
+    &.app-download-item {
+        padding-top: rem(40);
+        padding-bottom: rem(30);
+
+        .list-item-cont-ad {
+            position: relative;
+            margin-bottom: rem(30);
+
+            .cont-block-1 {
+                font-weight: 700;
+                @include font-dpr(28);
+            }
+        }
+
+        .list-item-img-box {
+            width: rem(223);
+            margin-right: rem(10);
+            margin-bottom: rem(20);
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        .house-labelling {
+            span {
+                height: rem(30);
+                line-height: rem(30);
+                padding-left: rem(9);
+                padding-right: rem(9);
+                color: #666;
+                border-radius: rem(5);
+                background-color: #efefef;
+                @include font-dpr(20);
+            }
+        }
+    }
 }
 
 .sort-icon {
@@ -337,5 +403,36 @@ $textGrayColor: #888;
         width: 100%;
         height: 100%;
         background-color: rgba(0,0,0,0.5);
+    }
+}
+
+.app-download-top-tips-wrapper {
+    display: block;
+    padding-top: rem(48);
+    text-align: center;
+    padding-bottom: rem(15);
+
+    .download-btn {
+        display: inline-block;
+        padding: rem(18) rem(59);
+        background-color: #ff4848;
+        border-radius: rem(5);
+        font-size: 0;
+
+        i, span {
+            display: inline-block;
+            line-height: rem(34);
+            color: #fff;
+            vertical-align: middle;
+            @include font-dpr(32);
+        }
+        i {
+            width: rem(36);
+            height: rem(34);
+            margin-right: rem(23);
+            background: url('/static/images/app-xiazai-icon.png') no-repeat center;
+            -webkit-background-size: contain;
+            background-size: contain;
+        }
     }
 }

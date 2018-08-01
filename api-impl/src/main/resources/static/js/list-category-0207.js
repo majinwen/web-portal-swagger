@@ -1226,6 +1226,11 @@ function pullUpAction() {
                             var dataCon = data.data.data || [];
                             for (var i = 0; i < dataCon.length; i++) {
 
+                                // app下载提示月份
+                                var myDate = new Date();
+                                var current_month = myDate.getMonth() + 1;
+                                dataCon[i]['current_month'] = current_month;
+
                                 if (_localHref.indexOf('loupan') > 0) {
                                     //组织地铁描述信息
                                     if (dataCon[i]['nearsubway']) {
@@ -1420,6 +1425,11 @@ function pullDownAction() {
                             if(data.data!=null){
                                 var dataCon = data.data.data || [];
                                 for (var i = 0; i < dataCon.length; i++) {
+
+                                    // app下载提示月份
+                                    var myDate = new Date();
+                                    var current_month = myDate.getMonth() + 1;
+                                    dataCon[i]['current_month'] = current_month;
 
                                     if (_localHref.indexOf('loupan') > 0) {
                                         //组织地铁描述信息
