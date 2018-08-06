@@ -1,14 +1,7 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
-import com.toutiao.app.api.chance.request.sellhouse.SellHouseBeSureToSnatchRequest;
-import com.toutiao.app.api.chance.request.sellhouse.SellHouseDerailsRequest;
-import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseDynamicResponse;
+import com.toutiao.app.api.chance.request.sellhouse.*;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
@@ -18,8 +11,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 
 @RestController
@@ -126,6 +117,23 @@ public class SellHouseRestController {
         SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
         BeanUtils.copyProperties(sellHouseBeSureToSnatchDos,sellHouseBeSureToSnatchResponses);
         return  NashResult.build(sellHouseBeSureToSnatchResponses);
+    }
+
+    /**
+     * 获取推荐房源5条
+     *
+     * @param recommendEsf5Request
+     * @return
+     */
+    @RequestMapping(value = "/getRecommendEsf5", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getRecommendEsf5(RecommendEsf5Request recommendEsf5Request) {
+        RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
+        BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
+        SellHouseDomain recommendEsf5 = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery);
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        BeanUtils.copyProperties(recommendEsf5, sellHouseDomain);
+        return NashResult.build(sellHouseDomain);
     }
 
 }

@@ -15,7 +15,6 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
-import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
@@ -25,7 +24,6 @@ import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
-import org.apache.poi.ss.formula.functions.T;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
@@ -44,9 +42,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class SellHouseServiceImpl implements SellHouseService{
@@ -662,6 +657,61 @@ public class SellHouseServiceImpl implements SellHouseService{
         sellHouseBeSureToSnatchDomain.setSubscribeId(subscribeId);
         sellHouseBeSureToSnatchDomain.setTotalCount(hits.totalHits);
          return sellHouseBeSureToSnatchDomain ;
+    }
+
+    /**
+     * 获取推荐房源
+     *
+     * @param recommendEsf5DoQuery
+     * @return
+     */
+    @Override
+    public SellHouseDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery) {
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        BoolQueryBuilder recommendEsf5 = filterSellHouseChooseService.getRecommendEsf5(recommendEsf5DoQuery);
+        FieldSortBuilder sortFile = null;
+        if (null != recommendEsf5DoQuery.getSortFile() && null != recommendEsf5DoQuery.getSort()) {
+            if (recommendEsf5DoQuery.getSort().equals(1)) {
+                sortFile = SortBuilders.fieldSort(recommendEsf5DoQuery.getSortFile()).order(SortOrder.DESC);
+            } else {
+                sortFile = SortBuilders.fieldSort(recommendEsf5DoQuery.getSortFile()).order(SortOrder.ASC);
+            }
+        }
+        SearchResponse RecommendEsf5List = sellHouseEsDao.getBeSureToSnatchList(recommendEsf5,
+                recommendEsf5DoQuery.getPageNum(), recommendEsf5DoQuery.getPageSize(), sortFile);
+        SearchHits hits = RecommendEsf5List.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        List<SellHouseDo> sellHouseDos = new ArrayList<>();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String details = searchHit.getSourceAsString();
+                SellHouseDo sellHouseDo = JSON.parseObject(details, SellHouseDo.class);
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if (sellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                    //认领状态取认领数据
+                    sellHouseDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
+                    sellHouseDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
+                    List<String> tags = (List<String>) searchHit.getSource().get("claimTagsName");
+                    String[] tagsName = new String[tags.size()];
+                    tags.toArray(tagsName);
+                    sellHouseDo.setTagsName(tagsName);
+                    sellHouseDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
+                } else {
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                }
+                sellHouseDo.setAgentBaseDo(agentBaseDo);
+                sellHouseDos.add(sellHouseDo);
+            }
+            sellHouseDomain.setSellHouseList(sellHouseDos);
+            sellHouseDomain.setTotal((int) RecommendEsf5List.getHits().getTotalHits());
+        } else {
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND, "二手房列表为空");
+        }
+        return sellHouseDomain;
     }
 
 }
