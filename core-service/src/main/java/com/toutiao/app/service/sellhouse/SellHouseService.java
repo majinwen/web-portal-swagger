@@ -57,5 +57,5 @@ public interface SellHouseService {
      * @param recommendEsf5DoQuery
      * @return
      */
-    SellHouseDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery);
+    SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery);
 }
