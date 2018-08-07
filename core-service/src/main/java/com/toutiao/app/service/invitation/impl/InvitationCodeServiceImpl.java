@@ -4,6 +4,7 @@ import com.toutiao.app.domain.invitation.InvitationCodeDo;
 import com.toutiao.app.domain.invitation.InvitationCodeDoQuery;
 import com.toutiao.app.domain.invitation.InviteHistoryDo;
 import com.toutiao.app.service.invitation.InvitationCodeService;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.invitation.InvitationCode;
 import com.toutiao.web.dao.mapper.invitation.InvitationCodeMapper;
 import com.toutiao.web.dao.mapper.invitation.InviteHistoryMapper;
@@ -56,16 +57,18 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
     @Override
     public InvitationCodeDo getInvitation(InvitationCodeDoQuery invitationCodeDoQuery) {
         InvitationCodeDo invitationCodeDo = new InvitationCodeDo();
-        InvitationCode invitation = invitationCodeMapper.getInvitation(invitationCodeDoQuery.getEquipmentNo());
-        if (invitation == null) {
-            invitation = new InvitationCode();
-            invitation.setCode(Integer.valueOf(randomDigits(1, ONETONINE) + randomDigits(7, ZEROTONINE)));
-            invitation.setCreateTime(new Date());
-            invitation.setUserId(invitationCodeDoQuery.getUserId());
-            invitation.setInviteTotal(0);
-            invitationCodeMapper.insertSelective(invitation);
+        if (StringTool.isNotEmpty(invitationCodeDoQuery.getUserId())) {
+            InvitationCode invitation = invitationCodeMapper.getInvitation(invitationCodeDoQuery.getUserId());
+            if (invitation == null) {
+                invitation = new InvitationCode();
+                invitation.setCode(Integer.valueOf(randomDigits(1, ONETONINE) + randomDigits(7, ZEROTONINE)));
+                invitation.setCreateTime(new Date());
+                invitation.setUserId(invitationCodeDoQuery.getUserId());
+                invitation.setInviteTotal(0);
+                invitationCodeMapper.insertSelective(invitation);
+            }
+            BeanUtils.copyProperties(invitation, invitationCodeDo);
         }
-        BeanUtils.copyProperties(invitation, invitationCodeDo);
         List<InviteHistoryDo> inviteHistorys = inviteHistoryMapper.getInviteHistorys(invitationCodeDoQuery.getEquipmentNo());
         invitationCodeDo.setInvateHistoryDos(inviteHistorys);
         return invitationCodeDo;
