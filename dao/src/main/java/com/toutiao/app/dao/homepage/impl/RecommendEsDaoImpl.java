@@ -6,6 +6,8 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +53,7 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
 
     @Override
     public SearchResponse getRecommendByRecommendHouseTags(BoolQueryBuilder boolQueryBuilder) {
+
 
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);

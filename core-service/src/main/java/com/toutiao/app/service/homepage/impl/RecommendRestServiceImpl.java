@@ -6,10 +6,7 @@ import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
 import com.toutiao.app.service.homepage.RecommendRestService;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.index.query.RangeQueryBuilder;
-import org.elasticsearch.index.query.TermsQueryBuilder;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
@@ -18,8 +15,7 @@ import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ Idea
@@ -49,18 +45,16 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
         RecommendTopicDomain recommendTopicDomain = new RecommendTopicDomain();
 
-        Map<String,Map<String,RecommendTopicDo>> mapMap = new HashMap<>();
-
         TermsQueryBuilder termsQueryBuilderByAreaId = QueryBuilders.termsQuery("areaId", recommendTopicDoQuery.getDistrictId());
         BoolQueryBuilder bqb_plotTags = QueryBuilders.boolQuery();
 
         String flag = "";
         if(recommendTopicDoQuery.getEndPrice() <= PRICE){//价格小于1000万，推荐首置，改善
             bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-            flag = "2";
+            flag = "lower1000";
         }else if(recommendTopicDoQuery.getEndPrice() > PRICE){//价格大于1000万，推荐豪宅，别墅
             bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-            flag = "3";
+            flag = "higher1000";
         }
 
         RangeQueryBuilder rangeQueryBuilder = null;
@@ -75,61 +69,62 @@ public class RecommendRestServiceImpl implements RecommendRestService {
         bqb_plotTags.must(termsQueryBuilderByAreaId);
 
 
+        TermQueryBuilder termQuery_isDel= QueryBuilders.termQuery("isDel",0);
+        TermQueryBuilder termQuery_isClaim= QueryBuilders.termQuery("is_claim",1);
         BoolQueryBuilder bqb_isCutPrice = QueryBuilders.boolQuery();
         //价格洼地
         bqb_isCutPrice.must(QueryBuilders.termQuery("isCutPrice",1));
         bqb_isCutPrice.must(rangeQueryBuilder);
         bqb_isCutPrice.must(termsQueryBuilderByAreaId);
-
+        bqb_isCutPrice.must(termQuery_isClaim);
+        bqb_isCutPrice.must(termQuery_isDel);
         BoolQueryBuilder bqb_isLowPrice = QueryBuilders.boolQuery();
         //捡漏房
         bqb_isLowPrice.must(QueryBuilders.termQuery("isLowPrice",1));
         bqb_isLowPrice.must(rangeQueryBuilder);
         bqb_isLowPrice.must(termsQueryBuilderByAreaId);
-
+        bqb_isLowPrice.must(termQuery_isClaim);
+        bqb_isLowPrice.must(termQuery_isDel);
         BoolQueryBuilder bqb_isMustRob = QueryBuilders.boolQuery();
         //逢出毕抢
         bqb_isMustRob.must(QueryBuilders.termQuery("isMustRob",1));
         bqb_isMustRob.must(rangeQueryBuilder);
         bqb_isMustRob.must(termsQueryBuilderByAreaId);
+        bqb_isMustRob.must(termQuery_isClaim);
+        bqb_isMustRob.must(termQuery_isDel);
 
+        List<Map<String,Map<String,RecommendTopicDo>>> list_all = new ArrayList<>();
 
-        SearchResponse sr_isCutPrice = recommendEsDao.getRecommendByRecommendHouseTags(bqb_isCutPrice);
+        SearchResponse sp_isCutPrice=recommendEsDao.getRecommendByRecommendHouseTags(bqb_isCutPrice);
+        List<Map<String,Map<String,RecommendTopicDo>>> list_isCutPrice= cleanEsdata(sp_isCutPrice,"isCutPrice");
 
-        Terms terms_isCutPrice = sr_isCutPrice.getAggregations().get("areaId");
-        if(null != terms_isCutPrice){
-            if(terms_isCutPrice.getBuckets().size()>0){
-                int size = terms_isCutPrice.getBuckets().size();
-                for(int i=0; i<size; i++){
-                    RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
-                    Map<String,RecommendTopicDo> recommendTopicDoMap = new HashMap<>();
-                    Terms.Bucket bucket = terms_isCutPrice.getBuckets().get(i);
-                    InternalCardinality internalCardinality = bucket.getAggregations().get("count");
-                    recommendTopicDo.setCount((int)internalCardinality.getValue());
-                    InternalMin lowestPrice = bucket.getAggregations().get("minPrice");
-                    InternalMax highestPrice = bucket.getAggregations().get("maxPrice");
-                    recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-                    recommendTopicDo.setHighestPrice(highestPrice.getValue());
-                    recommendTopicDoMap.put(flag,recommendTopicDo);
-                    if(mapMap.containsKey(bucket.getKeyAsString())){
+        SearchResponse sp_isMustRob=recommendEsDao.getRecommendByRecommendHouseTags(bqb_isMustRob);
+        List<Map<String,Map<String,RecommendTopicDo>>> list_isMustRob= cleanEsdata(sp_isMustRob,"isMustRob");
 
-                    }
-//                    mapMap.put(bucket.getKeyAsString(),recommendTopicDoMap);
-                }
-//                recommendTopicDomain.setData(mapMap);
-            }
-        }
-
-
-
-
+        SearchResponse sp_isLowPrice=recommendEsDao.getRecommendByRecommendHouseTags(bqb_isLowPrice);
+        List<Map<String,Map<String,RecommendTopicDo>>> list_isLowPrice= cleanEsdata(sp_isLowPrice,"isLowPrice");
 
         SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(bqb_plotTags);
-        Terms areaIdBucket = recommendByRecommendBuildTags.getAggregations().get("areaId");
+        List<Map<String,Map<String,RecommendTopicDo>>> map = cleanEsdata(recommendByRecommendBuildTags,flag);
+
+        list_all.addAll(list_isCutPrice);
+        list_all.addAll(list_isMustRob);
+        list_all.addAll(list_isLowPrice);
+        list_all.addAll(map);
+        Map mapResult = mapCombine(list_all);
+        recommendTopicDomain.setData(mapResult);
+        return recommendTopicDomain;
+    }
+
+
+    public List<Map<String,Map<String,RecommendTopicDo>>> cleanEsdata(SearchResponse searchResponse, String flag){
+        List<Map<String,Map<String,RecommendTopicDo>>> mapList = new ArrayList<>();
+        Terms areaIdBucket = searchResponse.getAggregations().get("areaId");
         if(null != areaIdBucket){
             if(areaIdBucket.getBuckets().size()>0){
                 int size = areaIdBucket.getBuckets().size();
                 for(int i=0; i<size; i++){
+                    Map<String,Map<String,RecommendTopicDo>> mapMap = new HashMap<>();
                     RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
                     Map<String,RecommendTopicDo> recommendTopicDoMap = new HashMap<>();
                     Terms.Bucket bucket = areaIdBucket.getBuckets().get(i);
@@ -140,11 +135,34 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     recommendTopicDo.setLowestPrice(lowestPrice.getValue());
                     recommendTopicDo.setHighestPrice(highestPrice.getValue());
                     recommendTopicDoMap.put(flag,recommendTopicDo);
-//                    mapMap.put(bucket.getKeyAsString(),recommendTopicDoMap);
+                    mapMap.put(bucket.getKeyAsString(),recommendTopicDoMap);
+
+                    mapList.add(mapMap);
                 }
-               // recommendTopicDomain.setData(mapMap);
             }
         }
-        return recommendTopicDomain;
+
+        return mapList;
+    }
+
+
+
+
+    public static Map mapCombine(List<Map<String,Map<String,RecommendTopicDo>>> list) {
+        Map<Object, List> map = new HashMap<>();
+        for (Map m : list) {
+            Iterator<Object> it = m.keySet().iterator();
+            while (it.hasNext()) {
+                Object key = it.next();
+                if (!map.containsKey(key)) {
+                    List newList = new ArrayList<>();
+                    newList.add(m.get(key));
+                    map.put(key, newList);
+                } else {
+                    map.get(key).add(m.get(key));
+                }
+            }
+        }
+        return map;
     }
 }
