@@ -173,10 +173,7 @@ public class StringTool {
         if (obj == null) {
             return true;
         }
-        if (StringUtils.isBlank(obj.toString())) {
-            return true;
-        }
-        return false;
+        return StringUtils.isBlank(obj.toString());
     }
 
     /**
@@ -190,10 +187,7 @@ public class StringTool {
         if (obj == null) {
             return false;
         }
-        if (StringUtils.isBlank(obj.toString())) {
-            return false;
-        }
-        return true;
+        return !StringUtils.isBlank(obj.toString());
     }
 
     /**
@@ -273,6 +267,10 @@ public class StringTool {
 
     public static boolean isNotEmpty(Object o) {
         return (o != null);
+    }
+
+    public static boolean isNotEmpty(Integer[] o) {
+        return (o != null && o.length > 0);
     }
 
     public static boolean isNotEmptyList(List o) {
@@ -428,10 +426,7 @@ public class StringTool {
         if (o == null) {
             return true;
         }
-        if (StringUtils.isBlank(o.toString())) {
-            return true;
-        }
-        return false;
+        return StringUtils.isBlank(o.toString());
     }
 
     /**
@@ -446,10 +441,7 @@ public class StringTool {
         if (o == null) {
             return false;
         }
-        if (StringUtils.isBlank(o.toString())) {
-            return false;
-        }
-        return true;
+        return !StringUtils.isBlank(o.toString());
     }
 
     /**
@@ -467,25 +459,13 @@ public class StringTool {
 
             String test = "\\d+.\\d+";
 
-            if (number != null && Pattern.compile(test).matcher(number).matches()) {
-
-                rs = true;
-            } else {
-
-                rs = false;
-            }
+            rs = number != null && Pattern.compile(test).matcher(number).matches();
 
         } else {
 
             String test = "\\d+";
 
-            if (number != null && Pattern.compile(test).matcher(number).matches()) {
-
-                rs = true;
-            } else {
-
-                rs = false;
-            }
+            rs = number != null && Pattern.compile(test).matcher(number).matches();
 
         }
 
@@ -660,11 +640,7 @@ public class StringTool {
         if (isEmpty(num)) {
             return false;
         } else {
-            if (num > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return num > 0;
         }
     }
 
