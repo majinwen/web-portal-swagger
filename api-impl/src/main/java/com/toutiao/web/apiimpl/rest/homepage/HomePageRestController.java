@@ -206,4 +206,16 @@ public class HomePageRestController {
         UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userId);
         return NashResult.build(recommendCondition);
     }
+
+    /**
+     * 更新推荐条件
+     */
+    @RequestMapping(value = "/updateRecommendCondition",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult updateRecommendCondition(@Validated UserFavoriteConditionRequest userFavoriteConditionRequest){
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
+        Integer integer = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery);
+        return NashResult.build(integer);
+    }
 }

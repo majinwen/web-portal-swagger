@@ -81,4 +81,11 @@ public interface HomePageRestService {
      * 获取推荐条件
      */
     UserFavoriteConditionDo getRecommendCondition(Integer userId);
+
+    /**
+     * 更新推荐条件
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
 }

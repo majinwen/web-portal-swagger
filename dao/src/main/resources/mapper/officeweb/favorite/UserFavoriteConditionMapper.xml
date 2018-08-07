@@ -69,4 +69,14 @@
   <select id="getRecommendCondition" parameterType="java.lang.Integer" resultType="com.toutiao.app.domain.favorite.UserFavoriteCondition">
     SELECT * FROM user_favorite_condition WHERE user_id = #{userId}
   </select>
+  <update id="updateRecommendCondition" parameterType="com.toutiao.app.domain.favorite.UserFavoriteCondition">
+    UPDATE user_favorite_condition
+    <set >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},condition = '${condition}'
+      <!--<if test="condition != null" >-->
+        <!--building_id = #{buildingId,jdbcType=INTEGER},-->
+      <!--</if>-->
+    </set>
+    WHERE user_id = #{userId,jdbcType=INTEGER}
+  </update>
 </mapper>

@@ -55,6 +55,9 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private UserFavoriteConditionMapper userFavoriteConditionMapper;
+
+    @Autowired
+    private HomePageRestService homePageRestService;
     /**
      * @return 获取二手房5条
      */
@@ -517,6 +520,10 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Override
     public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery.getUserId());
+        if (StringTool.isNotEmpty(recommendCondition)){
+            return 0;
+        }
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
         userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
         userFavoriteCondition.setIsDel(0);
@@ -536,5 +543,16 @@ public class HomePageServiceImpl implements HomePageRestService {
             userFavoriteConditionDo = JSON.parseObject(JSON.toJSONString(jsonObject), UserFavoriteConditionDo.class);
         }
         return userFavoriteConditionDo;
+    }
+
+    @Override
+    public Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+        UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
+        userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
+        userFavoriteCondition.setIsDel(0);
+        userFavoriteCondition.setUpdateTime(new Date());
+        userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
+        int result = userFavoriteConditionMapper.updateRecommendCondition(userFavoriteCondition);
+        return result;
     }
 }
