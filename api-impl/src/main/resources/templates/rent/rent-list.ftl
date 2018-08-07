@@ -136,7 +136,7 @@
     </div>
 </section>
 <section id="result-section">
-    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="app-download-top-tips-wrapper">
+    <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
         <div class="download-btn">
             <i></i>
             <span>下载懂房帝APP</span>
@@ -149,7 +149,7 @@
 <script id="listContent" type="text/html">
     {{each data}}
     {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
-    <li><a class="list-item app-download-item" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom">
+    <li><a class="list-item app-download-item" href="https://at.umeng.com/onelink/K9nqai">
         <div class="list-item-cont-ad">
             <h3 class="cont-block-1">北京个人出租房源每天上新，下载懂房帝APP随时查</h3>
         </div>
