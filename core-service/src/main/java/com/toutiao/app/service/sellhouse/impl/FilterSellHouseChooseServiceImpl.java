@@ -2,7 +2,7 @@ package com.toutiao.app.service.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.SellHouseKeywordEsDao;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
-import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
+import com.toutiao.app.domain.sellhouse.RecommendEsf5DoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.web.common.util.StringTool;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -340,6 +341,49 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", sellHouseDoQuery.getIsMustRob()));
         }
 
+        return booleanQueryBuilder;
+    }
+
+    /**
+     * 获取推荐房源5条查询条件
+     *
+     * @param recommendEsf5DoQuery
+     * @return
+     */
+    @Override
+    public BoolQueryBuilder getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery) {
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        booleanQueryBuilder.must(QueryBuilders.termQuery("priceFloat", 10));
+        //户型(室)
+        Integer[] layoutId = recommendEsf5DoQuery.getLayoutId();
+        if (StringTool.isNotEmpty(layoutId)) {
+            List<Integer> layoutIds = Arrays.asList(layoutId);
+            if (Collections.max(layoutIds) > 4) {
+                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                bqb.should(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
+                bqb.should(QueryBuilders.rangeQuery("room").gt(5));
+                booleanQueryBuilder.must(bqb);
+            } else {
+                booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
+            }
+        }
+
+        //区域id
+        Integer[] districtIds = recommendEsf5DoQuery.getDistrictIds();
+        if (StringTool.isNotEmpty((districtIds))) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
+        }
+
+        //总价
+        double beginPrice = recommendEsf5DoQuery.getBeginPrice();
+        double endPrice = recommendEsf5DoQuery.getEndPrice();
+        if (beginPrice != 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+        } else if (beginPrice == 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(endPrice));
+        } else if (endPrice == 0 && beginPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
+        }
         return booleanQueryBuilder;
     }
 }
