@@ -14,4 +14,6 @@ public interface UserFavoriteConditionMapper extends BaseDao {
     UserFavoriteCondition getRecommendCondition(@Param("userId") Integer userId);
 
     int updateRecommendCondition(UserFavoriteCondition record);
+
+    int deleteRecommendCondition(@Param("userId") Integer userId);
 }

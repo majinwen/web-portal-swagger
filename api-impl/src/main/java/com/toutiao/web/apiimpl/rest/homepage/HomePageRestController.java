@@ -18,6 +18,7 @@ import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
@@ -190,7 +191,7 @@ public class HomePageRestController {
      */
     @RequestMapping(value = "/saveRecommendCondition",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult saveRecommendCondition(@Validated UserFavoriteConditionRequest userFavoriteConditionRequest){
+    public NashResult saveRecommendCondition(@Validated(First.class)  UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
         Integer integer = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery);
@@ -212,10 +213,20 @@ public class HomePageRestController {
      */
     @RequestMapping(value = "/updateRecommendCondition",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult updateRecommendCondition(@Validated UserFavoriteConditionRequest userFavoriteConditionRequest){
+    public NashResult updateRecommendCondition(@Validated(First.class) UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
         Integer integer = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery);
+        return NashResult.build(integer);
+    }
+
+    /**
+     * 删除推荐条件
+     */
+    @RequestMapping(value = "/deleteRecommendCondition",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult deleteRecommendCondition(@Param("userId") Integer userId){
+        Integer integer = homePageRestService.deleteRecommendCondition(userId);
         return NashResult.build(integer);
     }
 }

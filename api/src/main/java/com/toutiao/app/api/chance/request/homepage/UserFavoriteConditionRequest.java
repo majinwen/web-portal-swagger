@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.request.homepage;
 
+import com.toutiao.web.common.assertUtils.First;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -9,7 +10,7 @@ public class UserFavoriteConditionRequest {
     /**
      * 用户id
      */
-    @NotNull(message = "用户id不能为空")
+    @NotNull(groups = {First.class},message = "用户id不能为空")
     private Integer userId;
     /**
      * 区域id
@@ -28,3 +29,4 @@ public class UserFavoriteConditionRequest {
      */
     private String[] layoutId;
 }
+

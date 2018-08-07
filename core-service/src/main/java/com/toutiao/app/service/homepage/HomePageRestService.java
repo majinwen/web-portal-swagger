@@ -88,4 +88,11 @@ public interface HomePageRestService {
      * @return
      */
     Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+
+    /**
+     * 删除推荐条件
+     * @param userId
+     * @return
+     */
+    Integer deleteRecommendCondition (Integer userId);
 }

@@ -521,7 +521,7 @@ public class HomePageServiceImpl implements HomePageRestService {
     @Override
     public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
         UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery.getUserId());
-        if (StringTool.isNotEmpty(recommendCondition)){
+        if (StringTool.isNotEmpty(recommendCondition.getUserId())){
             return 0;
         }
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
@@ -553,6 +553,12 @@ public class HomePageServiceImpl implements HomePageRestService {
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
         int result = userFavoriteConditionMapper.updateRecommendCondition(userFavoriteCondition);
+        return result;
+    }
+
+    @Override
+    public Integer deleteRecommendCondition(Integer userId) {
+        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId);
         return result;
     }
 }
