@@ -9,7 +9,6 @@ import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -28,7 +27,7 @@ public class InvitationController {
      */
     @RequestMapping(value = "/getInvitation", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getInvitation(@Validated InvitationRequest invitationRequest) {
+    public NashResult getInvitation(InvitationRequest invitationRequest) {
         InvitationCodeDoQuery invitationCodeDoQuery = new InvitationCodeDoQuery();
         BeanUtils.copyProperties(invitationRequest, invitationCodeDoQuery);
         InvitationCodeDo invitationCodeDo = invitationCodeService.getInvitation(invitationCodeDoQuery);

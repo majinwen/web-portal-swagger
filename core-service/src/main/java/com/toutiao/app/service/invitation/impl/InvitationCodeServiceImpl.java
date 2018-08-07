@@ -18,6 +18,9 @@ import java.util.List;
 
 @Service
 public class InvitationCodeServiceImpl implements InvitationCodeService {
+    private static final String[] ZEROTONINE = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    private static final String[] ONETONINE = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
+
     @Autowired
     private InvitationCodeMapper invitationCodeMapper;
 
@@ -30,12 +33,10 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
      * @param length
      * @return
      */
-    private static String randomDigits(int length) {
+    private static String randomDigits(int length, String[] randomNums) {
         if (0 > length) {
             return "";
         }
-        String[] randomNums = new String[]{"0", "1", "2", "3", "4", "5", "6",
-                "7", "8", "9"};
         List<String> randomNumList = Arrays.asList(randomNums);
         // 随机排列
         Collections.shuffle(randomNumList);
@@ -55,10 +56,10 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
     @Override
     public InvitationCodeDo getInvitation(InvitationCodeDoQuery invitationCodeDoQuery) {
         InvitationCodeDo invitationCodeDo = new InvitationCodeDo();
-        InvitationCode invitation = invitationCodeMapper.getInvitation(invitationCodeDoQuery.getUserId());
+        InvitationCode invitation = invitationCodeMapper.getInvitation(invitationCodeDoQuery.getEquipmentNo());
         if (invitation == null) {
             invitation = new InvitationCode();
-            invitation.setCode(Integer.valueOf(randomDigits(8)));
+            invitation.setCode(Integer.valueOf(randomDigits(1, ONETONINE) + randomDigits(7, ZEROTONINE)));
             invitation.setCreateTime(new Date());
             invitation.setUserId(invitationCodeDoQuery.getUserId());
             invitation.setInviteTotal(0);
