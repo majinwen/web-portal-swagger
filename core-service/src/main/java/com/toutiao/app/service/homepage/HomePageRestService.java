@@ -2,6 +2,8 @@ package com.toutiao.app.service.homepage;
 
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 
 import java.util.List;
 
@@ -68,4 +70,15 @@ public interface HomePageRestService {
      * 首页缝出必抢
      */
     List<HomeSureToSnatchDo>  getHomeBeSureToSnatch (HomeSureToSnatchDoQuery homeSureToSnatchDoQuery);
+
+    /**
+     * 保存推荐条件
+     * @return
+     */
+    Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+
+    /**
+     * 获取推荐条件
+     */
+    UserFavoriteConditionDo getRecommendCondition(Integer userId);
 }

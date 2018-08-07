@@ -7,15 +7,19 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.request.homepage.NearHouseRequest;
 import com.toutiao.app.api.chance.request.homepage.NearHouseSpecialPageRequest;
+import com.toutiao.app.api.chance.request.homepage.UserFavoriteConditionRequest;
 import com.toutiao.app.api.chance.response.homepage.*;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.restmodel.NashResult;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -181,4 +185,25 @@ public class HomePageRestController {
         return NashResult.build(newHouseListResponses);
     }
 
+    /**
+     * 保存推荐条件
+     */
+    @RequestMapping(value = "/saveRecommendCondition",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult saveRecommendCondition(@Validated UserFavoriteConditionRequest userFavoriteConditionRequest){
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
+        Integer integer = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery);
+        return NashResult.build(integer);
+    }
+
+    /**
+     * 查询推荐条件
+     */
+    @RequestMapping(value = "/getRecommendCondition",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getRecommendCondition(@Param("userId") Integer userId){
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userId);
+        return NashResult.build(recommendCondition);
+    }
 }

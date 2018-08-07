@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.favorite.UserFavoriteCondition" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="is_del" property="isDel" jdbcType="INTEGER" />
+    <result column="condition" property="condition" jdbcType="OTHER" />
+  </resultMap>
+  <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteCondition" >
+    insert into user_favorite_condition (id, user_id, create_time, 
+      update_time, is_del, condition
+      )
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=INTEGER}, #{condition,jdbcType=OTHER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteCondition" useGeneratedKeys="true" keyProperty="id">
+    <!--<selectKey keyProperty="id" resultType="int" order="BEFORE">-->
+      <!--SELECT nextval('jqqsyc_id_seq'::regclass) as id-->
+    <!--</selectKey>-->
+    <!--<selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER">-->
+    <!--SELECT currval('id') AS id-->
+    <!--</selectKey>-->
+    insert into user_favorite_condition
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="condition != null" >
+        condition,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=INTEGER},
+      </if>
+      <if test="condition != null" >
+        '${condition}',
+      </if>
+    </trim>
+  </insert>
+  <select id="getRecommendCondition" parameterType="java.lang.Integer" resultType="com.toutiao.app.domain.favorite.UserFavoriteCondition">
+    SELECT * FROM user_favorite_condition WHERE user_id = #{userId}
+  </select>
+</mapper>

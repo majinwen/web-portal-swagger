@@ -1,11 +1,15 @@
 package com.toutiao.app.service.homepage.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.favorite.UserFavoriteCondition;
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
@@ -13,6 +17,7 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -25,13 +30,11 @@ import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class HomePageServiceImpl implements HomePageRestService {
@@ -50,6 +53,8 @@ public class HomePageServiceImpl implements HomePageRestService {
     @Autowired
     private CommunityRestService communityRestService;
 
+    @Autowired
+    private UserFavoriteConditionMapper userFavoriteConditionMapper;
     /**
      * @return 获取二手房5条
      */
@@ -508,5 +513,28 @@ public class HomePageServiceImpl implements HomePageRestService {
         return homeSureToSnatchDos;
 
 
+    }
+
+    @Override
+    public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+        UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
+        userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
+        userFavoriteCondition.setIsDel(0);
+        userFavoriteCondition.setCreateTime(new Date());
+        userFavoriteCondition.setUpdateTime(new Date());
+        userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
+        int result = userFavoriteConditionMapper.insertSelective(userFavoriteCondition);
+        return result;
+    }
+
+    @Override
+    public UserFavoriteConditionDo getRecommendCondition(Integer userId) {
+        UserFavoriteConditionDo userFavoriteConditionDo = new UserFavoriteConditionDo();
+        UserFavoriteCondition recommendCondition = userFavoriteConditionMapper.getRecommendCondition(userId);
+        if (StringTool.isNotEmpty(recommendCondition)&&StringTool.isNotEmpty(recommendCondition.getCondition())){
+            JSONObject jsonObject = JSON.parseObject(((PGobject) recommendCondition.getCondition()).getValue());
+            userFavoriteConditionDo = JSON.parseObject(JSON.toJSONString(jsonObject), UserFavoriteConditionDo.class);
+        }
+        return userFavoriteConditionDo;
     }
 }
