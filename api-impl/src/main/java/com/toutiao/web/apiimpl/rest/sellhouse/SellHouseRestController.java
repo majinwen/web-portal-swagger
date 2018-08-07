@@ -128,12 +128,12 @@ public class SellHouseRestController {
     @RequestMapping(value = "/getRecommendEsf5", method = RequestMethod.GET)
     @ResponseBody
     public NashResult getRecommendEsf5(RecommendEsf5Request recommendEsf5Request) {
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
         RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
         BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
-        SellHouseDomain recommendEsf5 = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery);
-        SellHouseDomain sellHouseDomain = new SellHouseDomain();
-        BeanUtils.copyProperties(recommendEsf5, sellHouseDomain);
-        return NashResult.build(sellHouseDomain);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery);
+        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+        return NashResult.build(sellHouseSearchDomainResponse);
     }
 
 }
