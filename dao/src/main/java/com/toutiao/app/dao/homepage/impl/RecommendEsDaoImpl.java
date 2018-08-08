@@ -1,6 +1,7 @@
 package com.toutiao.app.dao.homepage.impl;
 
 import com.toutiao.app.dao.homepage.RecommendEsDao;
+import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
@@ -30,40 +31,86 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
     @Value("${tt.projhouse.type}")
     private String esfType;//二手房索引类
 
-    /**
-     * 根据小区楼盘推荐标志查询
-     * @param boolQueryBuilder
-     * @return
-     */
     @Override
-    public SearchResponse getRecommendByRecommendBuildTags(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getRecommendByRecommendBuildTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder) {
 
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+        SearchResponse searchResponse = null;
+        if(null!=recommendTopicDoQuery.getDistrictId()){
+             searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
                 .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
                         .subAggregation(AggregationBuilders.cardinality("count").field("newcode"))
                         .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
                         .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
                 .execute().actionGet();
-
+        }else{
+            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+                    .addAggregation(AggregationBuilders.cardinality("count").field("newcode"))
+                    .addAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+                    .addAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
+                    .execute().actionGet();
+        }
 
         return searchResponse;
     }
 
     @Override
-    public SearchResponse getRecommendByRecommendHouseTags(BoolQueryBuilder boolQueryBuilder) {
-
-
+    public SearchResponse getRecommendByRecommendHouseTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
-                .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
-                        .subAggregation(AggregationBuilders.cardinality("count").field("houseId"))
-                        .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
-                        .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
-                .execute().actionGet();
-
+        SearchResponse searchResponse = null;
+        if(null!=recommendTopicDoQuery.getDistrictId()){
+            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+                    .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
+                            .subAggregation(AggregationBuilders.cardinality("count").field("houseId"))
+                            .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+                            .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
+                    .execute().actionGet();
+        }else{
+            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+                    .addAggregation(AggregationBuilders.cardinality("count").field("houseId"))
+                    .addAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+                    .addAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
+                    .execute().actionGet();
+        }
         return searchResponse;
     }
+
+//    /**
+//     * 根据小区楼盘推荐标志查询
+//     * @param boolQueryBuilder
+//     * @return
+//     */
+//    @Override
+//    public SearchResponse getRecommendByRecommendBuildTags(BoolQueryBuilder boolQueryBuilder) {
+//
+//        TransportClient client = esClientTools.init();
+//        SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);
+//        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+//                .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
+//                        .subAggregation(AggregationBuilders.cardinality("count").field("newcode"))
+//                        .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+//                        .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
+//                .execute().actionGet();
+//
+//
+//        return searchResponse;
+//    }
+//
+//    @Override
+//    public SearchResponse getRecommendByRecommendHouseTags(BoolQueryBuilder boolQueryBuilder) {
+//
+//
+//        TransportClient client = esClientTools.init();
+//        SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);
+//        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+//                .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
+//                        .subAggregation(AggregationBuilders.cardinality("count").field("houseId"))
+//                        .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+//                        .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
+//                .execute().actionGet();
+//
+//        return searchResponse;
+//    }
 }

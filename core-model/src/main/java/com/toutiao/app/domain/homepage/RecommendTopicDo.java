@@ -13,11 +13,26 @@ import lombok.Data;
 public class RecommendTopicDo {
 
 
+    /**
+     * 区域id
+     */
+    private String districtId;
+    /**
+     * 主题类型
+     */
+    private String topicType;
+    /**
+     * 数量
+     */
     private Integer count;
-
-    private Double lowestPrice;
-
+    /**
+     * 最高价格
+     */
     private Double highestPrice;
+    /**
+     * 最低价格
+     */
+    private Double lowestPrice;
 
 
 
