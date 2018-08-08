@@ -704,6 +704,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                 }
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
+                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHousesSearchDos.add(sellHousesSearchDo);
             }
             sellHouseSearchDomain.setData(sellHousesSearchDos);
