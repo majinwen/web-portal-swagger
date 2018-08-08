@@ -6,6 +6,7 @@ import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 
 import java.util.List;
+import java.util.Map;
 
 public interface HomePageRestService {
 
@@ -63,7 +64,8 @@ public interface HomePageRestService {
      * 获取首页top50
      */
 
-    List<HomePageTop50Do> getHomePageTop50();
+//    List<HomePageTop50Do> getHomePageTop50();
+    Map<String,HomePageTop50Do> getHomePageTop50();
 
 
     /**
