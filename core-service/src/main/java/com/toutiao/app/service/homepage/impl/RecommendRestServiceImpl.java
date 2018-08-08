@@ -96,12 +96,16 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             if(recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()!=null){
                 if(recommendTopicDoQuery.getEndPrice() <= PRICE){//价格小于1000万，推荐首置，改善
                     bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
+                    bqb_plotTags.must(termQuery_isClaim);
+                    bqb_plotTags.must(termQuery_isDel);
                     flag = "lower1000";
                     SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
                     List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
                     recommendTopicDoList.addAll(list_buildTopic);
                 }else if(recommendTopicDoQuery.getEndPrice() > PRICE){//价格大于1000万，推荐豪宅，别墅
                     bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
+                    bqb_plotTags.must(termQuery_isClaim);
+                    bqb_plotTags.must(termQuery_isDel);
                     flag = "higher1000";
                     SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
                     List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
@@ -110,11 +114,15 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             }else {
                 BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
                 bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
+                bqb_plotTags_hzvsbs.must(termQuery_isClaim);
+                bqb_plotTags_hzvsbs.must(termQuery_isDel);
                 bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
                 SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
                 List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery,sp_BuildTags_hzvsbs,"higher1000");
                 recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
                 bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
+                bqb_plotTags.must(termQuery_isClaim);
+                bqb_plotTags.must(termQuery_isDel);
                 SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
                 List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,"lower1000");
                 recommendTopicDoList.addAll(list_buildTopic);
