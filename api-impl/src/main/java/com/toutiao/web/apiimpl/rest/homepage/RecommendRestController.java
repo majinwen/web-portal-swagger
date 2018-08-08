@@ -1,9 +1,6 @@
 package com.toutiao.web.apiimpl.rest.homepage;
 
-import com.alibaba.fastjson.JSON;
 import com.toutiao.app.api.chance.request.homepage.RecommendRequest;
-import com.toutiao.app.api.chance.response.homepage.HomeThemeHouseListResponse;
-import com.toutiao.app.api.chance.response.homepage.RecommendTopicResponse;
 import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
 import com.toutiao.app.service.homepage.RecommendRestService;
@@ -41,9 +38,9 @@ public class RecommendRestController {
         RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
         BeanUtils.copyProperties(recommendRequest, recommendTopicDoQuery);
 
-        RecommendTopicDomain recommendTopic = recommendRestService.getRecommendTopic(recommendTopicDoQuery);
+        RecommendTopicDomain recommendTopicDomain= recommendRestService.getRecommendTopic(recommendTopicDoQuery);
 
-        return NashResult.build(recommendTopic);
+        return NashResult.build(recommendTopicDomain);
     }
 
 

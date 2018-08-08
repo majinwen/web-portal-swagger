@@ -2,6 +2,7 @@ package com.toutiao.app.domain.homepage;
 
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,5 +16,6 @@ import java.util.Map;
 public class RecommendTopicDomain {
 
 
-    private Map<String,Map<String,RecommendTopicDo>> data;
+//    private Map<String,Map<String,RecommendTopicDo>> data;
+    private List<RecommendTopicDo> data;
 }
