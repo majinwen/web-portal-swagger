@@ -16,7 +16,7 @@ public class InviteHistoryRequest {
     /**
      * 用户Id
      */
-    @NotEmpty(message = "用户Id不能为空")
+//    @NotEmpty(message = "用户Id不能为空")
     private String userId;
 
     /**

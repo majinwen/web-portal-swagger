@@ -19,9 +19,4 @@ public class RecommendEsf5Request extends BaseQueryRequest {
      * 排序
      */
     private Integer sort = 1;
-
-    /**
-     * 页容量
-     */
-    private Integer pageSize = 5;
 }

@@ -151,7 +151,7 @@
     </div>
 </section>
 <section id="result-section">
-    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="app-download-top-tips-wrapper">
+    <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
         <div class="download-btn">
             <i></i>
             <span>下载懂房帝APP</span>
@@ -258,7 +258,7 @@
     {{each data}}
     {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
     <li>
-        <a class="list-item" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom">
+        <a class="list-item" href="https://at.umeng.com/onelink/K9nqai">
             <div class="clear">
                 <div class="list-item-img-box">
                     <img src="http://s1.qn.toutiaofangchan.com/81b8769cabd84a92b6b5812dfbdd0f04.jpg-tt400x300" alt="国瑞熙墅">

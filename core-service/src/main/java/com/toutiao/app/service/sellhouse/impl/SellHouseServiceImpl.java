@@ -666,8 +666,8 @@ public class SellHouseServiceImpl implements SellHouseService{
      * @return
      */
     @Override
-    public SellHouseDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery) {
-        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+    public SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery) {
+        SellHouseSearchDomain sellHouseSearchDomain = new SellHouseSearchDomain();
         BoolQueryBuilder recommendEsf5 = filterSellHouseChooseService.getRecommendEsf5(recommendEsf5DoQuery);
         FieldSortBuilder sortFile = null;
         if (null != recommendEsf5DoQuery.getSortFile() && null != recommendEsf5DoQuery.getSort()) {
@@ -681,37 +681,38 @@ public class SellHouseServiceImpl implements SellHouseService{
                 recommendEsf5DoQuery.getPageNum(), recommendEsf5DoQuery.getPageSize(), sortFile);
         SearchHits hits = RecommendEsf5List.getHits();
         SearchHit[] searchHists = hits.getHits();
-        List<SellHouseDo> sellHouseDos = new ArrayList<>();
+        List<SellHousesSearchDo> sellHousesSearchDos = new ArrayList<>();
         if (searchHists.length > 0) {
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
-                SellHouseDo sellHouseDo = JSON.parseObject(details, SellHouseDo.class);
+                SellHousesSearchDo sellHousesSearchDo = JSON.parseObject(details, SellHousesSearchDo.class);
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
-                if (sellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseDo.getUserId())) {
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                if (sellHousesSearchDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
                     //认领状态取认领数据
-                    sellHouseDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
-                    sellHouseDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
+                    sellHousesSearchDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
+                    sellHousesSearchDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
                     List<String> tags = (List<String>) searchHit.getSource().get("claimTagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
-                    sellHouseDo.setTagsName(tagsName);
-                    sellHouseDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
+                    sellHousesSearchDo.setTagsName(tagsName);
+                    sellHousesSearchDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
                 } else {
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                 }
-                sellHouseDo.setAgentBaseDo(agentBaseDo);
-                sellHouseDos.add(sellHouseDo);
+                sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
+                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                sellHousesSearchDos.add(sellHousesSearchDo);
             }
-            sellHouseDomain.setSellHouseList(sellHouseDos);
-            sellHouseDomain.setTotal((int) RecommendEsf5List.getHits().getTotalHits());
+            sellHouseSearchDomain.setData(sellHousesSearchDos);
+            sellHouseSearchDomain.setTotalNum((int) RecommendEsf5List.getHits().getTotalHits());
         } else {
             throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND, "二手房列表为空");
         }
-        return sellHouseDomain;
+        return sellHouseSearchDomain;
     }
 
 }
