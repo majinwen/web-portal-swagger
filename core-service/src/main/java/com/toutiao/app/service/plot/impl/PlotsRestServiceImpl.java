@@ -629,6 +629,9 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
         }
 
+        //二手房个数
+        booleanQueryBuilder.must(QueryBuilders.rangeQuery("house_count").gt(0));
+
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
