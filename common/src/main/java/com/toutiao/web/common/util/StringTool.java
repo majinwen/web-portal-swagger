@@ -242,6 +242,10 @@ public class StringTool {
         return (o == null || o.size() == 0);
     }
 
+    public static boolean isEmpty(Integer[] o) {
+        return (o == null || o.length == 0);
+    }
+
     /**
      * 判断字符串是否为null或空字符串,在模糊查询的时候很有意义
      */
@@ -270,7 +274,7 @@ public class StringTool {
     }
 
     public static boolean isNotEmpty(Integer[] o) {
-        return (o != null && o.length > 0);
+        return !isEmpty(o);
     }
 
     public static boolean isNotEmptyList(List o) {
