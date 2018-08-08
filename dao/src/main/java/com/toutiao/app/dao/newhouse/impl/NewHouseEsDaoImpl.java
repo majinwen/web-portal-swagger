@@ -10,9 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
-
 @Service
 public class NewHouseEsDaoImpl implements NewHouseEsDao {
     @Autowired
@@ -90,6 +87,16 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
                 .execute().actionGet();
         return  searchresponse;
 
+    }
+
+    @Override
+    public SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder boolQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        //查询
+        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+                .setQuery(boolQueryBuilder).setSize(1)
+                .execute().actionGet();
+        return  searchresponse;
     }
 
 }

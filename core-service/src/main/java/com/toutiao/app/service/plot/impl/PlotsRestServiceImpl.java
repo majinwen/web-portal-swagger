@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
@@ -29,12 +30,10 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.*;
 import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +46,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 
 @Service
 public class PlotsRestServiceImpl implements PlotsRestService {
@@ -604,6 +605,43 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             plotTop50Dos.add(plotTop50Do);
         }
         return plotTop50Dos;
+    }
+
+    @Override
+    public List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+        //构建筛选器
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        List<PlotDetailsDo> list = new ArrayList<>();
+
+        //组装条件
+        //区域
+        if (null!=userFavoriteConditionDoQuery.getDistrictId()&&userFavoriteConditionDoQuery.getDistrictId().length>0){
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+        }
+        //户型
+        if (null!=userFavoriteConditionDoQuery.getLayoutId()&&userFavoriteConditionDoQuery.getLayoutId().length>0){
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
+        }
+        //价格
+        if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()){
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
+        }else if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
+        }
+
+        Script script = new Script("Math.random()");
+        ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+
+        SearchResponse plotByRecommendCondition = plotEsDao.getPlotByRecommendCondition(booleanQueryBuilder,scrip);
+        SearchHit[] hits = plotByRecommendCondition.getHits().getHits();
+        if (hits.length>0){
+            for (SearchHit hit :hits){
+                String sourceAsString = hit.getSourceAsString();
+                PlotDetailsDo plotDetailsDo = JSON.parseObject(sourceAsString,PlotDetailsDo.class);
+                list.add(plotDetailsDo);
+            }
+        }
+        return list;
     }
 
 

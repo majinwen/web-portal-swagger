@@ -366,5 +366,37 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         return  newHouseTrafficDo;
     }
 
+    @Override
+    public NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+        //构建筛选器
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+
+        //组装条件
+        //区域
+        if (null!=userFavoriteConditionDoQuery.getDistrictId()&&userFavoriteConditionDoQuery.getDistrictId().length>0){
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("district_id",userFavoriteConditionDoQuery.getDistrictId()));
+        }
+        //户型
+        if (null!=userFavoriteConditionDoQuery.getLayoutId()&&userFavoriteConditionDoQuery.getLayoutId().length>0){
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout",QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
+        }
+        //价格
+        if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()){
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1));
+        }else if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9));
+        }
+
+        //查询
+        SearchResponse oneNewHouseByRecommendCondition = newHouseEsDao.getOneNewHouseByRecommendCondition(booleanQueryBuilder);
+        SearchHit[] hits = oneNewHouseByRecommendCondition.getHits().getHits();
+        NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
+        if (hits.length>0){
+            String sourceAsString = hits[0].getSourceAsString();
+            newHouseDetailDo = JSON.parseObject(sourceAsString,NewHouseDetailDo.class);
+        }
+        return newHouseDetailDo;
+    }
+
 
 }
