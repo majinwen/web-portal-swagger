@@ -1,5 +1,6 @@
 package com.toutiao.web.dao.mapper.invitation;
 
+import com.toutiao.app.domain.invitation.InvitationCodeDo;
 import com.toutiao.web.dao.entity.invitation.InvitationCode;
 import com.toutiao.web.dao.entity.invitation.InvitationCodeExample;
 import org.apache.ibatis.annotations.Param;
@@ -36,4 +37,6 @@ public interface InvitationCodeMapper {
     int updateInviteTotal(@Param("code") Integer code, @Param("inviteTotal") Integer inviteTotal);
 
     InvitationCode getInvitationValid(Integer code);
+
+    List<InvitationCodeDo> getCodeInfo(@Param("code") Integer Code);
 }

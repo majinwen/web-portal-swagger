@@ -237,4 +237,15 @@
         from invitation_code
         where code = #{code,jdbcType=INTEGER}
     </select>
+
+    <select id="getCodeInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from invitation_code
+        <if test="code != null">
+            where code = #{code,jdbcType=INTEGER}
+        </if>
+        order by code
+    </select>
+
 </mapper>
