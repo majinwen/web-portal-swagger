@@ -1,5 +1,6 @@
 package com.toutiao.app.service.invitation.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.toutiao.app.service.invitation.InviteHistoryService;
 import com.toutiao.web.dao.entity.invitation.InviteHistory;
 import com.toutiao.web.dao.mapper.invitation.InviteHistoryMapper;
@@ -40,6 +41,13 @@ public class InviteHistoryServiceImpl implements InviteHistoryService {
      */
     @Override
     public List<InviteHistory> getInviteHistoryByCode(Integer code) {
+        List<InviteHistory> inviteHistoryByCode = inviteHistoryMapper.getInviteHistoryByCode(code);
+        return inviteHistoryByCode;
+    }
+
+    @Override
+    public List<InviteHistory> getInviteHistoryList(Integer code, Integer pageSize, Integer pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
         List<InviteHistory> inviteHistoryByCode = inviteHistoryMapper.getInviteHistoryByCode(code);
         return inviteHistoryByCode;
     }

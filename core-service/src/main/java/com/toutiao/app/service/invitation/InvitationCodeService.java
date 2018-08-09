@@ -16,5 +16,5 @@ public interface InvitationCodeService {
 
     InvitationCode getInvitationValid(Integer code);
 
-    List<InvitationCodeDo> getCodeInfo(Integer code);
+    List<InvitationCodeDo> getCodeInfo(Integer code, Integer pageSize, Integer pageNum);
 }

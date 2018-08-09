@@ -61,8 +61,8 @@ public class InviteHistoryController {
      */
     @RequestMapping(value = "/getInviteHistoryList", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getInviteHistoryList(Integer code) {
-        List<InviteHistory> inviteHistoryList = inviteHistoryService.getInviteHistoryByCode(code);
+    public NashResult getInviteHistoryList(Integer code, Integer pageSize, Integer pageNum) {
+        List<InviteHistory> inviteHistoryList = inviteHistoryService.getInviteHistoryList(code, pageSize, pageNum);
         return NashResult.build(inviteHistoryList);
     }
 }
