@@ -245,7 +245,7 @@
         <if test="code != null">
             where code = #{code,jdbcType=INTEGER}
         </if>
-        order by code
+        order by create_time DESC
     </select>
 
 </mapper>
