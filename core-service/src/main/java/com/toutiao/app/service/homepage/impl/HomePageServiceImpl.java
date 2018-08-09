@@ -525,8 +525,10 @@ public class HomePageServiceImpl implements HomePageRestService {
     @Override
     public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
         UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery.getUserId());
+        Integer result = 0;
         if (StringTool.isNotEmpty(recommendCondition.getUserId())){
-            return 0;
+            result = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery);
+            return result;
         }
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
         userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
@@ -534,7 +536,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         userFavoriteCondition.setCreateTime(new Date());
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
-        int result = userFavoriteConditionMapper.insertSelective(userFavoriteCondition);
+        result = userFavoriteConditionMapper.insertSelective(userFavoriteCondition);
         return result;
     }
 
@@ -553,7 +555,6 @@ public class HomePageServiceImpl implements HomePageRestService {
     public Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
         userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
-        userFavoriteCondition.setIsDel(0);
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
         int result = userFavoriteConditionMapper.updateRecommendCondition(userFavoriteCondition);
