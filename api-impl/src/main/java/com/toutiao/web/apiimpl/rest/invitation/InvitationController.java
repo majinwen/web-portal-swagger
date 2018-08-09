@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("rest/invitation")
 public class InvitationController {
@@ -34,6 +36,19 @@ public class InvitationController {
         InvitationResponse invitationResponse = new InvitationResponse();
         BeanUtils.copyProperties(invitationCodeDo, invitationResponse);
         return NashResult.build(invitationResponse);
+    }
+
+    /**
+     * 获取验证码信息
+     *
+     * @param code
+     * @return
+     */
+    @RequestMapping(value = "/getCodeInfo", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getCodeInfoList(Integer code, Integer pageSize, Integer pageNum) {
+        List<InvitationCodeDo> invitationCodeDos = invitationCodeService.getCodeInfo(code, pageSize, pageNum);
+        return NashResult.build(invitationCodeDos);
     }
 
 }

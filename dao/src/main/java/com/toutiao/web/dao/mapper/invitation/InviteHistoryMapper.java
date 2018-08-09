@@ -34,5 +34,5 @@ public interface InviteHistoryMapper {
 
     List<InviteHistoryDo> getInviteHistorys(String equipmentNo);
 
-    List<InviteHistory> getInviteHistoryByCode(Integer invitationCode);
+    List<InviteHistory> getInviteHistoryByCode(@Param("code") Integer invitationCode);
 }

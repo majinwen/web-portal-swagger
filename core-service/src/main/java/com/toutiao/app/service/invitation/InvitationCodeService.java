@@ -5,6 +5,8 @@ import com.toutiao.app.domain.invitation.InvitationCodeDo;
 import com.toutiao.app.domain.invitation.InvitationCodeDoQuery;
 import com.toutiao.web.dao.entity.invitation.InvitationCode;
 
+import java.util.List;
+
 
 public interface InvitationCodeService {
 
@@ -13,4 +15,6 @@ public interface InvitationCodeService {
     int updateInviteTotal(Integer code, Integer inviteTotal);
 
     InvitationCode getInvitationValid(Integer code);
+
+    List<InvitationCodeDo> getCodeInfo(Integer code, Integer pageSize, Integer pageNum);
 }

@@ -52,4 +52,17 @@ public class InviteHistoryController {
             return NashResult.Fail("添加失败");
         }
     }
+
+    /**
+     * 获取邀请码邀请记录
+     *
+     * @param code
+     * @return
+     */
+    @RequestMapping(value = "/getInviteHistoryList", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getInviteHistoryList(Integer code, Integer pageSize, Integer pageNum) {
+        List<InviteHistory> inviteHistoryList = inviteHistoryService.getInviteHistoryList(code, pageSize, pageNum);
+        return NashResult.build(inviteHistoryList);
+    }
 }

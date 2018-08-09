@@ -591,7 +591,8 @@ public class SellHouseServiceImpl implements SellHouseService{
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew",1));
         }
         booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("status",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
+//        booleanQueryBuilder.must(QueryBuilders.termQuery("status",0));
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
 
         if (null!=sellHouseBeSureToSnatchDoQuery.getSortFile() && null!=sellHouseBeSureToSnatchDoQuery.getSort() )

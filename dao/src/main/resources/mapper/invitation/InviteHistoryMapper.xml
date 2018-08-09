@@ -256,6 +256,9 @@
         select
         <include refid="Base_Column_List"/>
         from invite_history
-        where invitation_code = #{invitationCode,jdbcType=INTEGER}
+        <if test="code != null">
+            where invitation_code = #{code,jdbcType=INTEGER}
+        </if>
+        order by create_time DESC
     </select>
 </mapper>
