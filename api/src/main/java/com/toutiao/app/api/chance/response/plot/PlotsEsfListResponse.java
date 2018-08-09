@@ -183,4 +183,18 @@ public class PlotsEsfListResponse {
     @ChangeName("buildingName")
     private String plotName;
 
+    @ChangeName("tags")
+    private String[] tagsName;
+
+    /**
+     * 商圈id
+     */
+    @ChangeName("areaId")
+    private String houseBusinessNameId;
+    /**
+     * 商圈名称
+     */
+    @ChangeName("areaName")
+    private String houseBusinessName;
+
 }
