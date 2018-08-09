@@ -19,7 +19,7 @@ public class UserFavoriteConditionRequest {
     /**
      * 起始价格
      */
-    private Double beginPrice;
+    private Double beginPrice = 0.0;
     /**
      * 结束价格
      */

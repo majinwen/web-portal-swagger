@@ -4,12 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
+import com.toutiao.app.api.chance.request.homepage.UserFavoriteConditionRequest;
 import com.toutiao.app.api.chance.request.plot.PlotAroundInfoRequest;
 import com.toutiao.app.api.chance.request.plot.PlotAroundPlotRequest;
 import com.toutiao.app.api.chance.request.plot.PlotDetailsRequest;
 import com.toutiao.app.api.chance.request.plot.PlotListRequest;
-import com.toutiao.app.api.chance.response.newhouse.NewHouseDynamicResponse;
 import com.toutiao.app.api.chance.response.plot.*;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -108,6 +109,20 @@ public class PlotsRestController {
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotTop50Dos));
         plotTop50Responses=JSONObject.parseArray(json.toJSONString(), PlotTop50Response.class);
         return  NashResult.build(plotTop50Responses);
+    }
+
+    /**
+     * 获取推荐小区(返回值随机取4条)
+     */
+    @ResponseBody
+    @RequestMapping(value = "getPlotByRecommendCondition",method = RequestMethod.GET)
+    public NashResult getPlotByRecommendCondition(UserFavoriteConditionRequest userFavoriteConditionRequest){
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
+        List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery);
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
+        List<PlotDetailsFewDo> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewDo.class);
+        return NashResult.build(plotDetailsFewDos);
     }
 
 }

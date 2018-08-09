@@ -307,4 +307,9 @@ public class SellHousesSearchDo {
      */
     private Integer rankInLowCommunityLayout;
 
+    /**
+     * 标签总数
+     */
+    private Integer extraTagsCount;
+
 }

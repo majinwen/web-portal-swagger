@@ -162,9 +162,9 @@
         <ul class="primary-item">
             <li class="download-app">
                 <p>
-                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="primary-app-logo"></a>
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="primary-app-logo"></a>
                     下载懂房帝APP，一键查北京房价
-                    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="arrows-right"></a>
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="arrows-right"></a>
                 </p>
             </li>
         </ul>

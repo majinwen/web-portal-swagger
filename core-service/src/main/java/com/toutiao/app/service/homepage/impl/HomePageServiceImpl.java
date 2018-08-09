@@ -458,9 +458,11 @@ public class HomePageServiceImpl implements HomePageRestService {
     }
 
     @Override
-    public List<HomePageTop50Do> getHomePageTop50() {
+    public Map<String,HomePageTop50Do> getHomePageTop50() {
 
-        List<HomePageTop50Do> homePageTop50Dos=new ArrayList<>();
+//        List<HomePageTop50Do> homePageTop50Dos=new ArrayList<>();
+        List<Map<String,HomePageTop50Do>> homePageTop50Dos=new ArrayList<>();
+        Map<String,HomePageTop50Do> map = new HashMap<>();
         int [] isTop={1};
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",isTop));
@@ -478,9 +480,11 @@ public class HomePageServiceImpl implements HomePageRestService {
             {
                 homePageTop50Do.setDistrictName((String) hit.getSource().get("area"));
             }
-            homePageTop50Dos.add(homePageTop50Do);
+            map.put(((StringTerms.Bucket) l).getKeyAsString(),homePageTop50Do);
+
         }
-        return  homePageTop50Dos;
+//        homePageTop50Dos.add(map);
+        return  map;
     }
 
     /**

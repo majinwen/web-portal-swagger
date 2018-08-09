@@ -28,5 +28,7 @@ public interface NewHouseEsDao {
     SearchResponse getDynamicByNewCode(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize);
 
 
+    SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder  boolQueryBuilder);
+
 
 }
