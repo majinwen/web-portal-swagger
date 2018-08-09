@@ -46,8 +46,8 @@ public class InvitationController {
      */
     @RequestMapping(value = "/getCodeInfo", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getCodeInfoList(Integer code) {
-        List<InvitationCodeDo> invitationCodeDos = invitationCodeService.getCodeInfo(code);
+    public NashResult getCodeInfoList(Integer code, Integer pageSize, Integer pageNum) {
+        List<InvitationCodeDo> invitationCodeDos = invitationCodeService.getCodeInfo(code, pageSize, pageNum);
         return NashResult.build(invitationCodeDos);
     }
 

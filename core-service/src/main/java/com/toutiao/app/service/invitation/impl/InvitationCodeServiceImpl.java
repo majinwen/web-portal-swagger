@@ -1,5 +1,6 @@
 package com.toutiao.app.service.invitation.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.toutiao.app.domain.invitation.InvitationCodeDo;
 import com.toutiao.app.domain.invitation.InvitationCodeDoQuery;
 import com.toutiao.app.domain.invitation.InviteHistoryDo;
@@ -101,10 +102,13 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
      * 获取验证码信息
      *
      * @param code
+     * @param pageSize
+     * @param pageNum
      * @return
      */
     @Override
-    public List<InvitationCodeDo> getCodeInfo(Integer code) {
+    public List<InvitationCodeDo> getCodeInfo(Integer code, Integer pageSize, Integer pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
         return invitationCodeMapper.getCodeInfo(code);
     }
 }

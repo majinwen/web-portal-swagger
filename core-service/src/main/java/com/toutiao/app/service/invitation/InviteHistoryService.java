@@ -8,4 +8,6 @@ public interface InviteHistoryService {
     int saveInviteHistory(InviteHistory inviteHistory);
 
     List<InviteHistory> getInviteHistoryByCode(Integer code);
+
+    List<InviteHistory> getInviteHistoryList(Integer code, Integer pageSize, Integer pageNum);
 }
