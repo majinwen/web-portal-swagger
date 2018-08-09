@@ -96,4 +96,15 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
     public InvitationCode getInvitationValid(Integer code) {
         return invitationCodeMapper.getInvitationValid(code);
     }
+
+    /**
+     * 获取验证码信息
+     *
+     * @param code
+     * @return
+     */
+    @Override
+    public List<InvitationCodeDo> getCodeInfo(Integer code) {
+        return invitationCodeMapper.getCodeInfo(code);
+    }
 }

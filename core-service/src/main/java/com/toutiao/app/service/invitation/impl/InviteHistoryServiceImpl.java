@@ -35,12 +35,12 @@ public class InviteHistoryServiceImpl implements InviteHistoryService {
     /**
      * 通过邀请码获取邀请记录
      *
-     * @param invitationCode
+     * @param code
      * @return
      */
     @Override
-    public List<InviteHistory> getInviteHistoryByCode(Integer invitationCode) {
-        List<InviteHistory> inviteHistoryByCode = inviteHistoryMapper.getInviteHistoryByCode(invitationCode);
+    public List<InviteHistory> getInviteHistoryByCode(Integer code) {
+        List<InviteHistory> inviteHistoryByCode = inviteHistoryMapper.getInviteHistoryByCode(code);
         return inviteHistoryByCode;
     }
 }
