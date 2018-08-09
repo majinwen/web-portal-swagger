@@ -259,6 +259,6 @@
         <if test="code != null">
             where invitation_code = #{code,jdbcType=INTEGER}
         </if>
-        order by create_time
+        order by create_time DESC
     </select>
 </mapper>
