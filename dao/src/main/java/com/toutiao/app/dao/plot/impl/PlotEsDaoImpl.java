@@ -127,7 +127,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
     public SearchResponse getPlotByRecommendCondition(BoolQueryBuilder boolQueryBuilder,ScriptSortBuilder scrip) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(scrip).setSize(4).execute().actionGet();
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(scrip).setSize(5).execute().actionGet();
         return  searchResponse;
     }
 

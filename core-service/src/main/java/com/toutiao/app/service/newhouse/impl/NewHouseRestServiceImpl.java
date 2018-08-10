@@ -394,6 +394,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if (hits.length>0){
             String sourceAsString = hits[0].getSourceAsString();
             newHouseDetailDo = JSON.parseObject(sourceAsString,NewHouseDetailDo.class);
+        }else {
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND,"新房楼盘列表为空");
         }
         return newHouseDetailDo;
     }
