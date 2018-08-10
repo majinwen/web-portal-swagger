@@ -389,6 +389,8 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         } else if (endPrice == 0 && beginPrice != 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         return booleanQueryBuilder;
     }
 }
