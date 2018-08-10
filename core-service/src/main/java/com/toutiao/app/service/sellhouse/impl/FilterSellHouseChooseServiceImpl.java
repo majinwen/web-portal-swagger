@@ -357,14 +357,26 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         Integer[] layoutId = recommendEsf5DoQuery.getLayoutId();
         if (StringTool.isNotEmpty(layoutId)) {
             List<Integer> layoutIds = Arrays.asList(layoutId);
-            if (Collections.max(layoutIds) > 4) {
+            if(Collections.max(layoutIds) > 4){
                 BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-//                bqb.should(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
-                bqb.should(QueryBuilders.rangeQuery("room").gte(5));
+                if(layoutId.length > 1){
+                    int arr = layoutId[layoutId.length-1];
+                    int[] comp = new int[]{layoutId.length-1};
+                    for(int i=0;i<layoutId.length;i++) {
+                        if(layoutId[i]<arr){
+                            arr = layoutId[i];
+                            comp[i] =arr;
+                        }
+                    }
+                    bqb.should(QueryBuilders.termsQuery("layout", comp));
+                }
+                bqb.should(QueryBuilders.rangeQuery("layout").gte(5));
                 booleanQueryBuilder.must(bqb);
-            } else {
-                booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
+            }else {
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("layout", layoutId));
             }
+
+
         }
 
         //区域id
