@@ -360,8 +360,8 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             List<Integer> layoutIds = Arrays.asList(layoutId);
             if (Collections.max(layoutIds) > 4) {
                 BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-                bqb.should(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
-                bqb.should(QueryBuilders.rangeQuery("room").gt(5));
+//                bqb.should(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
+                bqb.should(QueryBuilders.rangeQuery("room").gte(5));
                 booleanQueryBuilder.must(bqb);
             } else {
                 booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
