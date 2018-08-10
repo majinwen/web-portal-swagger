@@ -353,7 +353,6 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
     @Override
     public BoolQueryBuilder getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery) {
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        booleanQueryBuilder.must(QueryBuilders.termQuery("priceFloat", 10));
         //户型(室)
         Integer[] layoutId = recommendEsf5DoQuery.getLayoutId();
         if (StringTool.isNotEmpty(layoutId)) {
@@ -374,9 +373,15 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
         }
 
-        //总价
+        //总价(上下浮动10%)
         double beginPrice = recommendEsf5DoQuery.getBeginPrice();
+        if (beginPrice != 0) {
+            beginPrice *= 0.9;
+        }
         double endPrice = recommendEsf5DoQuery.getEndPrice();
+        if (endPrice != 0) {
+            endPrice *= 1.1;
+        }
         if (beginPrice != 0 && endPrice != 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
         } else if (beginPrice == 0 && endPrice != 0) {
@@ -384,6 +389,8 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         } else if (endPrice == 0 && beginPrice != 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         return booleanQueryBuilder;
     }
 }

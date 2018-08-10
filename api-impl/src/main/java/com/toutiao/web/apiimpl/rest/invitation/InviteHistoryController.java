@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.rest.invitation;
 
 import com.toutiao.app.service.invitation.InvitationCodeService;
 import com.toutiao.app.service.invitation.InviteHistoryService;
+import com.toutiao.web.api.chance.request.invitation.GetInviteHistoryRequest;
 import com.toutiao.web.api.chance.request.invitation.InviteHistoryRequest;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.entity.invitation.InvitationCode;
@@ -56,13 +57,14 @@ public class InviteHistoryController {
     /**
      * 获取邀请码邀请记录
      *
-     * @param code
+     * @param getInviteHistoryRequest
      * @return
      */
     @RequestMapping(value = "/getInviteHistoryList", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getInviteHistoryList(Integer code, Integer pageSize, Integer pageNum) {
-        List<InviteHistory> inviteHistoryList = inviteHistoryService.getInviteHistoryList(code, pageSize, pageNum);
+    public NashResult getInviteHistoryList(GetInviteHistoryRequest getInviteHistoryRequest) {
+        List<InviteHistory> inviteHistoryList = inviteHistoryService.getInviteHistoryList(getInviteHistoryRequest.getCode(),
+                getInviteHistoryRequest.getPageSize(), getInviteHistoryRequest.getPageNum());
         return NashResult.build(inviteHistoryList);
     }
 }

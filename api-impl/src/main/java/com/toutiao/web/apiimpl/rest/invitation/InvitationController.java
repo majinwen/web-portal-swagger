@@ -3,6 +3,7 @@ package com.toutiao.web.apiimpl.rest.invitation;
 import com.toutiao.app.domain.invitation.InvitationCodeDo;
 import com.toutiao.app.domain.invitation.InvitationCodeDoQuery;
 import com.toutiao.app.service.invitation.impl.InvitationCodeServiceImpl;
+import com.toutiao.web.api.chance.request.invitation.GetInviteHistoryRequest;
 import com.toutiao.web.api.chance.request.invitation.InvitationRequest;
 import com.toutiao.web.api.chance.response.invitation.InvitationResponse;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -41,13 +42,14 @@ public class InvitationController {
     /**
      * 获取验证码信息
      *
-     * @param code
+     * @param getInviteHistoryRequest
      * @return
      */
     @RequestMapping(value = "/getCodeInfo", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getCodeInfoList(Integer code, Integer pageSize, Integer pageNum) {
-        List<InvitationCodeDo> invitationCodeDos = invitationCodeService.getCodeInfo(code, pageSize, pageNum);
+    public NashResult getCodeInfoList(GetInviteHistoryRequest getInviteHistoryRequest) {
+        List<InvitationCodeDo> invitationCodeDos = invitationCodeService.getCodeInfo(getInviteHistoryRequest.getCode(),
+                getInviteHistoryRequest.getPageSize(), getInviteHistoryRequest.getPageNum());
         return NashResult.build(invitationCodeDos);
     }
 

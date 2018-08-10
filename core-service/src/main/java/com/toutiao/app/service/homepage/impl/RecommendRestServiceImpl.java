@@ -40,7 +40,13 @@ public class RecommendRestServiceImpl implements RecommendRestService {
     public RecommendTopicDomain getRecommendTopic(RecommendTopicDoQuery recommendTopicDoQuery) {
         RecommendTopicDomain recommendTopicDomain = new RecommendTopicDomain();
         List<RecommendTopicDo> recommendTopicDoList = new ArrayList<>();
-        if(recommendTopicDoQuery.getDistrictId()!=null || (recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()!=null)){
+//        if(recommendTopicDoQuery.getDistrictId()!=null || (recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()!=null)
+//                ||recommendTopicDoQuery.getBeginPrice()!=null||recommendTopicDoQuery.getEndPrice()!=null){
+        if(recommendTopicDoQuery.getDistrictId()==null && recommendTopicDoQuery.getBeginPrice()==null && recommendTopicDoQuery.getEndPrice()==null){
+            recommendTopicDomain.setData(recommendTopicDoList);
+
+            return recommendTopicDomain;
+        }else {
             BoolQueryBuilder bqb_plotTags = QueryBuilders.boolQuery();
             BoolQueryBuilder bqb_isCutPrice = QueryBuilders.boolQuery();
             BoolQueryBuilder bqb_isLowPrice = QueryBuilders.boolQuery();
@@ -113,7 +119,10 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
                     BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
                     bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-                    bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
+
+                    if(recommendTopicDoQuery.getDistrictId()!=null){
+                        bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
+                    }
                     bqb_plotTags_hzvsbs.must(termQuery_isDel);
                     bqb_plotTags_hzvsbs.must(termQuery_isClaim);
                     SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
@@ -153,7 +162,10 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     recommendTopicDoList.addAll(list_buildTopic);
                     BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
                     bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-                    bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
+                    if(recommendTopicDoQuery.getDistrictId()!=null){
+                        bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
+                    }
+
                     bqb_plotTags_hzvsbs.must(termQuery_isDel);
                     bqb_plotTags_hzvsbs.must(termQuery_isClaim);
                     SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
@@ -164,7 +176,9 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             }else {
 
                 BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
-                bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
+                if(recommendTopicDoQuery.getDistrictId()!=null){
+                    bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
+                }
                 bqb_plotTags_hzvsbs.must(termQuery_isClaim);
                 bqb_plotTags_hzvsbs.must(termQuery_isDel);
                 bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
