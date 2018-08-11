@@ -197,4 +197,20 @@ public class PlotsEsfListResponse {
     @ChangeName("areaName")
     private String houseBusinessName;
 
+    /**
+     * 厅
+     */
+    private Integer hall;
+
+    /**
+     * 区域名称
+     */
+    @ChangeName("districtName")
+    private String area;
+    /**
+     * 区域id
+     */
+    @ChangeName("districtId")
+    private Integer areaId;
+
 }
