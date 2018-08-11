@@ -22,6 +22,7 @@ public class PlotsEsfListResponse {
     /**
      * 楼盘ID(楼盘/小区)
      */
+    @ChangeName("buildingId")
     private Integer newCode;
 
     /**
@@ -196,6 +197,11 @@ public class PlotsEsfListResponse {
      */
     @ChangeName("areaName")
     private String houseBusinessName;
+
+    /**
+     * 单价
+     */
+    private Double houseUnitCost;
 
     /**
      * 厅
