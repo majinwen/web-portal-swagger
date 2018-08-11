@@ -2,13 +2,16 @@ package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.app.domain.sellhouse.SellHouseDo;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -37,6 +40,8 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
     @Autowired
     private SellHouseEsDao sellHouseEsDao;
+    @Autowired
+    private AgentService agentService;
 
     /**
      * 根据小区id获取小区下房源数量
@@ -111,6 +116,20 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
                 sellHouseDo.setHouseId(hit.getSource().get("claimHouseId").toString());
             }
 
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
+            if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+
+
+
+
+            }else{
+                agentBaseDo.setAgentName(hit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(hit.getSource().get("ofCompany").toString());
+                agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
+                agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
+            }
+            sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDoList.add(sellHouseDo);
         }
         return sellHouseDoList;

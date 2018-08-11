@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.plot;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -218,5 +219,11 @@ public class PlotsEsfListResponse {
      */
     @ChangeName("districtId")
     private Integer areaId;
+
+    /**
+     * 经纪人信息
+     */
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
 
 }
