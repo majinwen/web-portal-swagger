@@ -8,6 +8,7 @@ import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -42,6 +43,8 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
     private SellHouseEsDao sellHouseEsDao;
     @Autowired
     private AgentService agentService;
+    @Autowired
+    private CommunityRestService communityRestService;
 
     /**
      * 根据小区id获取小区下房源数量
@@ -129,6 +132,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
                 agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
                 agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
             }
+            sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
             sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDoList.add(sellHouseDo);
         }
