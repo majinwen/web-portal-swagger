@@ -4,7 +4,7 @@
     <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/intelligent.css?v=${staticversion}">
-    <title>懂房帝</title>
+    <title>购房报告</title>
     <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
