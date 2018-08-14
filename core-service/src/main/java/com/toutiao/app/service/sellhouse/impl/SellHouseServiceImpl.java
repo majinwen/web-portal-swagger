@@ -652,6 +652,8 @@ public class SellHouseServiceImpl implements SellHouseService{
             String districtIdsStr = "";
             Integer[] districtIds = sellHouseBeSureToSnatchDoQuery.getDistrictIds();
             if (StringTool.isNotEmpty(districtIds)) {
+                //区域id排序，与订阅信息匹配
+                Arrays.sort(districtIds);
                 districtIdsStr = StringTool.IntegerArrayToString(districtIds);
             }
             userSubscribeDetailDo.setDistrictId(districtIdsStr);

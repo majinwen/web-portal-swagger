@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -124,6 +125,8 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
             userSubscribeDetailDo.setTopicType(topicType);
             String districtIdsStr = "";
             if (StringTool.isNotEmpty(districtIds)) {
+                //区域id排序，与订阅信息匹配
+                Arrays.sort(districtIds);
                 districtIdsStr = StringTool.IntegerArrayToString(districtIds);
             }
             userSubscribeDetailDo.setDistrictId(districtIdsStr);
