@@ -137,13 +137,23 @@
 </section>
 <section id="result-section">
     <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
-        <div class="download-btn">
-            <i></i>
-            <span>下载懂房帝APP</span>
-        </div>
+        <img src="${staticurl}/images/download/rent-list-download.jpg" width="100%" alt="下载懂房帝APP">
     </a>
     <ul id="valueList"></ul>
 </section>
+<div class="download-app-bottom-tips">
+    <div class="detail">
+        <img src="http://wap-qn.toutiaofangchan.com/ic_launcher.png" alt="懂房帝">
+        <p>
+            <strong>下载懂房帝APP</strong>
+            <span>查看更多减价房源</span>
+        </p>
+    </div>
+    <div class="btn">打开APP</div>
+    <div class="download-app-bottom-tips-close">
+        <img src="${staticurl}/images/download/download-app-bottom-tips-close.png" alt="">
+    </div>
+</div>
 <#include "../user.ftl">
 <#include "../search.ftl">
 <script id="listContent" type="text/html">
@@ -218,6 +228,13 @@
     window["$toutiao_customer_pullUpAction"]=true;
 
     $(function () {
+        $('.download-app-bottom-tips-close').on('click', function () {
+            $('.download-app-bottom-tips').hide()
+        });
+        $('.download-app-bottom-tips .btn').on('click', function () {
+            location.href = "https://at.umeng.com/onelink/K9nqai"
+        });
+
         var urlparam =GetRequest();
         if (urlparam["lat"] && urlparam["lon"]) {
             window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]

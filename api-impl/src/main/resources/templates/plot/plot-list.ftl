@@ -150,87 +150,23 @@
 </section>
 <section id="result-section">
     <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
-        <div class="download-btn">
-            <i></i>
-            <span>下载懂房帝APP</span>
-        </div>
+        <img src="${staticurl}/images/download/plot-list-download.jpg" width="100%" alt="下载懂房帝APP">
     </a>
     <ul id="valueList" class="list-item-wrapper"></ul>
-<#--<#if villageList?exists>-->
-        <#--<#list villageList as plot>-->
-            <#--<li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">-->
-            <#--&lt;#&ndash;<input type="hidden" name="total" value="${plot.total}">&ndash;&gt;-->
-                <#--<div class="clear">-->
-                    <#--<#if plot['photo']?exists>-->
-                        <#--<div class="list-item-img-box">-->
-                            <#--<#if plot['photo']?exists>-->
-                                <#--<#assign photo = plot['photo']>-->
-                                <#--<#if photo[0]?exists><img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">-->
-                                    <#--<#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">-->
-                                <#--</#if>-->
-                            <#--</#if>-->
-                        <#--</div>-->
-                    <#--</#if>-->
-                    <#--<div class="list-item-cont">-->
-                        <#--<h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无数据</#if></span></h3>-->
-                        <#--<p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>-->
-                        <#--<#if plot['metroWithPlotsDistance']?exists>-->
-                            <#--<#assign map = plot['metroWithPlotsDistance']>-->
-                            <#--<#if plot['key']?exists>-->
-                                <#--<#if map[plot['key']]?exists>-->
-                                    <#--<#assign split=map[plot['key']]?split("$")/>-->
-                                    <#--<p class="cont-block-3 distance">-->
-                                        <#--<i class="icon"></i>-->
-                                        <#--<#if split[2]?number gt 1000>-->
-                                            <#--<#assign x = split[2]?number/1000>-->
-                                            <#--距离${split[1]}[${split[0]}] ${x?string("#.#")}km-->
-                                        <#--<#else>-->
-                                            <#--距离${split[1]}[${split[0]}] ${split[2]}m-->
-                                        <#--</#if>-->
-                                    <#--</p>-->
-                                <#--<#else>-->
-                                    <#--<p class="cont-block-3 distance"><i class="icon"></i>-->
-                                        <#--<#if plot['area']?exists&&plot['area']!=''>-->
-                                        <#--${plot['area']}${'-'+plot['tradingArea']}-->
-                                        <#--<#else>-->
-                                            <#--<#if plot['tradingArea']?exists&&plot['tradingArea']!=''>-->
-                                            <#--${plot['tradingArea']}-->
-                                            <#--</#if>-->
-                                        <#--</#if>-->
-                                    <#--</p>-->
-                                <#--</#if>-->
-                            <#--<#else>-->
-                                <#--<#if plot['tradingArea']?exists>-->
-                                    <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
-                                <#--</#if>-->
-                            <#--</#if>-->
-                        <#--<#else>-->
-                            <#--<#if plot['tradingArea']?exists>-->
-                                <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
-                            <#--</#if>-->
-                        <#--</#if>-->
-                        <#--<div class="cont-block-4 house-labelling gray">-->
-                            <#--<#if plot['label']?exists>-->
-                                <#--<#assign item =  plot['label']>-->
-                                <#--<#list item as itemValue>-->
-                                    <#--<#if itemValue?exists>-->
-                                        <#--<#if itemValue_index lt 3>-->
-                                            <#--<span>${itemValue}</span>-->
-                                        <#--</#if>-->
-                                    <#--</#if>-->
-                                <#--</#list>-->
-                            <#--</#if>-->
-                        <#--</div>-->
-                        <#--<div class="cont-block-price plot">-->
-                            <#--<em>${plot['avgPrice']}元/㎡</em>-->
-                        <#--</div>-->
-                    <#--</div>-->
-                <#--</div>-->
-            <#--</a></li>-->
-        <#--</#list>-->
-    <#--</#if>-->
-    <#--<p class="tip-box none">有新上房源，我们会及时通知您哦！</p>-->
 </section>
+<div class="download-app-bottom-tips">
+    <div class="detail">
+        <img src="http://wap-qn.toutiaofangchan.com/ic_launcher.png" alt="懂房帝">
+        <p>
+            <strong>下载懂房帝APP</strong>
+            <span>查看小区最新报价</span>
+        </p>
+    </div>
+    <div class="btn">打开APP</div>
+    <div class="download-app-bottom-tips-close">
+        <img src="${staticurl}/images/download/download-app-bottom-tips-close.png" alt="">
+    </div>
+</div>
 <#include "../user.ftl">
 <#include "../search.ftl">
 <div class="sort-icon"></div>
@@ -310,6 +246,13 @@
 </script>
 <script>
     $(function () {
+        $('.download-app-bottom-tips-close').on('click', function () {
+            $('.download-app-bottom-tips').hide()
+        });
+        $('.download-app-bottom-tips .btn').on('click', function () {
+            location.href = "https://at.umeng.com/onelink/K9nqai"
+        });
+
         var url = document.referrer;
         if(url.indexOf("/xiaoqu") > 0){
             if(GetQueryString("keyword")!='undefined'){

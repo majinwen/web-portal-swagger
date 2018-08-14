@@ -355,7 +355,7 @@ $textGrayColor: #888;
 
 .sort-icon {
     position: fixed;
-    bottom: rem(30);
+    bottom: rem(130);
     right: rem(30);
     width: rem(112);
     height: rem(112);
@@ -408,31 +408,80 @@ $textGrayColor: #888;
 
 .app-download-top-tips-wrapper {
     display: block;
-    padding-top: rem(48);
     text-align: center;
-    padding-bottom: rem(15);
+}
+.download-app-bottom-tips {
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    height: rem(126);
+    background-color: #adadad;
 
-    .download-btn {
-        display: inline-block;
-        padding: rem(18) rem(59);
-        background-color: #ff4848;
-        border-radius: rem(5);
-        font-size: 0;
+    .detail, .btn {
+        position: absolute;
+        top: 50%;
+    }
+    .detail {
+        color: #fff;
+        left: rem(61);
+        margin-top: rem(-38);
 
-        i, span {
+        img, p {
             display: inline-block;
-            line-height: rem(34);
-            color: #fff;
-            vertical-align: middle;
-            @include font-dpr(32);
         }
-        i {
-            width: rem(36);
-            height: rem(34);
-            margin-right: rem(23);
-            background: url('/static/images/app-xiazai-icon.png') no-repeat center;
-            -webkit-background-size: contain;
-            background-size: contain;
+        img {
+            height: rem(75);
+            -webkit-border-radius: rem(14);
+            -moz-border-radius: rem(14);
+            border-radius: rem(14);
+        }
+        p {
+            position: relative;
+            height: rem(75);
+            margin-left: rem(30);
+            vertical-align: top;
+
+            strong, span {
+                position: absolute;
+                display: block;
+                line-height: 1;
+                white-space: nowrap;
+            }
+            strong {
+                top: rem(6);
+                @include font-dpr(28);
+            }
+            span {
+                bottom: rem(8);
+                @include font-dpr(23);
+            }
+        }
+    }
+    .btn {
+        right: rem(65);
+        width: rem(150);
+        height: rem(60);
+        line-height: rem(60);
+        margin-top: rem(-30);
+        text-align: center;
+        font-weight: 700;
+        @include font-dpr(26);
+        background-color: #f9e04b;
+        -webkit-border-radius: rem(4);
+        -moz-border-radius: rem(4);
+        border-radius: rem(4);
+    }
+    .download-app-bottom-tips-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: rem(18);
+        width: rem(16);
+        height: rem(16);
+
+        img {
+            width: 100%;
+            vertical-align: top;
         }
     }
 }
