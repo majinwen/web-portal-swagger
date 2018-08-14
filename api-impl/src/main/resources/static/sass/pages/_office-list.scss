@@ -413,6 +413,7 @@ $textGrayColor: #888;
 .download-app-bottom-tips {
     position: fixed;
     width: 100%;
+    max-width: rem(750);
     bottom: 0;
     height: rem(126);
     background-color: #adadad;
