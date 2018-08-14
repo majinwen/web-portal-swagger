@@ -1,6 +1,5 @@
 package com.toutiao.app.domain.sellhouse;
 
-import com.fasterxml.jackson.databind.ser.Serializers;
 import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
@@ -8,8 +7,10 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class NearBySellHouseQueryDo extends QueryDo{
-
-
+    /**
+     * 区域Ids
+     */
+    private Integer[] districtIds;
     /**
      * y坐标
      */

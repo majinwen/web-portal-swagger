@@ -676,4 +676,21 @@ public class StringTool {
         }
         return pageHTML.toString();
     }
+
+    /**
+     * Integer[]转字符串
+     *
+     * @param ids
+     * @return
+     */
+    public static String IntegerArrayToString(Integer[] ids) {
+        if (StringTool.isEmpty(ids)) {
+            return "";
+        }
+        StringBuffer id = new StringBuffer();
+        for (int i = 0; i < ids.length; i++) {
+            id.append(ids[i].toString() + ",");
+        }
+        return id.substring(0, id.length() - 1).toString();
+    }
 }

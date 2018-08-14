@@ -47,7 +47,6 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         MustBuyShellHouseDomain mustBuyShellHouseDomain = new MustBuyShellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
-        Integer areaId = mustBuyShellHouseDoQuery.getDistrictId();
         if (topicType == 1) {
             //降价房
             booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
@@ -57,8 +56,9 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         }
 
         //区域
-        if (areaId != null && areaId != 0) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
+        Integer[] districtIds = mustBuyShellHouseDoQuery.getDistrictIds();
+        if (StringTool.isNotEmpty(districtIds)) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
         }
 
         //新导入房源
@@ -122,7 +122,11 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
             UserBasic userBasic = UserBasic.getCurrent();
             UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
             userSubscribeDetailDo.setTopicType(topicType);
-            userSubscribeDetailDo.setDistrictId(areaId);
+            String districtIdsStr = "";
+            if (StringTool.isNotEmpty(districtIds)) {
+                districtIdsStr = StringTool.IntegerArrayToString(districtIds);
+            }
+            userSubscribeDetailDo.setDistrictId(districtIdsStr);
             userSubscribeDetailDo.setBeginPrice((int) beginPrice);
             userSubscribeDetailDo.setEndPrice((int) endPrice);
 
