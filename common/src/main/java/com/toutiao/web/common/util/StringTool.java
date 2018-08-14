@@ -687,7 +687,7 @@ public class StringTool {
         if (StringTool.isEmpty(ids)) {
             return "";
         }
-        StringBuffer id = new StringBuffer();
+        StringBuilder id = new StringBuilder();
         for (int i = 0; i < ids.length; i++) {
             id.append(ids[i].toString() + ",");
         }
