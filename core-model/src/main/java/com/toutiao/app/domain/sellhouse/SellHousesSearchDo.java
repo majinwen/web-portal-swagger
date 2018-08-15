@@ -312,4 +312,8 @@ public class SellHousesSearchDo {
      */
     private Integer extraTagsCount;
 
+    /**
+     * 推荐房源主题排序
+     */
+    private Integer recommendHouseTopicSort;
 }
