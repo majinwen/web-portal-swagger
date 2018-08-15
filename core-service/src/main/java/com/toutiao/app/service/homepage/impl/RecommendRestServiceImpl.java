@@ -4,11 +4,13 @@ import com.toutiao.app.dao.homepage.RecommendEsDao;
 import com.toutiao.app.domain.homepage.RecommendTopicDo;
 import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import com.toutiao.app.service.homepage.RecommendRestService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
@@ -251,10 +253,21 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             InternalCardinality internalCardinality = searchResponse.getAggregations().get("count");
             InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
             InternalMax highestPrice = searchResponse.getAggregations().get("maxPrice");
+            LongTerms longTerms = searchResponse.getAggregations().get("areaIds");
+
+            Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
+//            String areaIds = "";
+            StringBuffer areaIds = new StringBuffer();
+            while(areaIdBucketIt.hasNext()) {
+
+                Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
+                areaIds = areaIds.append(areaIdsBucket.getKeyAsString()+",");
+            }
+            recommendTopicDo.setDistrictId(areaIds.substring(0,areaIds.length()-1));
             recommendTopicDo.setLowestPrice(lowestPrice.getValue());
             recommendTopicDo.setHighestPrice(highestPrice.getValue());
             recommendTopicDo.setCount((int)internalCardinality.getValue());
-            recommendTopicDo.setDistrictId("");
+//            recommendTopicDo.setDistrictId("");
             recommendTopicDo.setTopicType(flag);
             recommendTopicDoList.add(recommendTopicDo);
         }

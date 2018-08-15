@@ -37,21 +37,27 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);
         SearchResponse searchResponse = null;
-        if(null!=recommendTopicDoQuery.getDistrictId()){
-             searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
-                .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
-                        .subAggregation(AggregationBuilders.cardinality("count").field("newcode"))
-                        .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
-                        .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
-                .execute().actionGet();
-        }else{
-            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
-                    .addAggregation(AggregationBuilders.cardinality("count").field("newcode"))
-                    .addAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
-                    .addAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
-                    .execute().actionGet();
-        }
+//        if(null!=recommendTopicDoQuery.getDistrictId()){
+//             searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+//                .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
+//                        .subAggregation(AggregationBuilders.cardinality("count").field("newcode"))
+//                        .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+//                        .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
+//                .execute().actionGet();
+//        }else{
+//            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+//                    .addAggregation(AggregationBuilders.cardinality("count").field("newcode"))
+//                    .addAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+//                    .addAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
+//                    .execute().actionGet();
+//        }
 
+        searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+                .addAggregation(AggregationBuilders.cardinality("count").field("newcode"))
+                .addAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+                .addAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
+                .addAggregation(AggregationBuilders.terms("areaIds").field("areaId"))
+                .execute().actionGet();
         return searchResponse;
     }
 
@@ -60,20 +66,26 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);
         SearchResponse searchResponse = null;
-        if(null!=recommendTopicDoQuery.getDistrictId()){
-            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
-                    .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
-                            .subAggregation(AggregationBuilders.cardinality("count").field("houseId"))
-                            .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
-                            .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
-                    .execute().actionGet();
-        }else{
-            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
-                    .addAggregation(AggregationBuilders.cardinality("count").field("houseId"))
-                    .addAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
-                    .addAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
-                    .execute().actionGet();
-        }
+//        if(null!=recommendTopicDoQuery.getDistrictId()){
+//            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+//                    .addAggregation(AggregationBuilders.terms("areaId").field("areaId")
+//                            .subAggregation(AggregationBuilders.cardinality("count").field("houseId"))
+//                            .subAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+//                            .subAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices")))
+//                    .execute().actionGet();
+//        }else{
+//            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+//                    .addAggregation(AggregationBuilders.cardinality("count").field("houseId"))
+//                    .addAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+//                    .addAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
+//                    .execute().actionGet();
+//        }
+        searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+                .addAggregation(AggregationBuilders.cardinality("count").field("houseId"))
+                .addAggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
+                .addAggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
+                .addAggregation(AggregationBuilders.terms("areaIds").field("areaId"))
+                .execute().actionGet();
         return searchResponse;
     }
 
