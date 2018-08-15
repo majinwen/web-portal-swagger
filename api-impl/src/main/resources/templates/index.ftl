@@ -128,6 +128,19 @@
         </div>
     </section>
 </div>
+<div class="module-bottom-fill">
+    <section class="primary-message">
+        <ul class="primary-item">
+            <li class="download-app">
+                <p>
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="primary-app-logo"></a>
+                    下载懂房帝APP，查看最新成交数据
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="arrows-right"></a>
+                </p>
+            </li>
+        </ul>
+    </section>
+</div>
 <section>
     <div class="index-module-header">
         <h3>最近热销新房</h3>
