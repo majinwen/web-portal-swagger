@@ -31,7 +31,7 @@ public interface NewHouseRestService {
     /**
      * 新房交通配套
      */
-    NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String userAgent, String city);
+    NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String city);
 
     /**
      * 根据推荐条件查询一条推荐房源

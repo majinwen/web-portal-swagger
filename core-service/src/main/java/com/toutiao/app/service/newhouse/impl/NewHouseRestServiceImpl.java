@@ -329,7 +329,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String userAgent, String city) {
+    public NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String city) {
         MapInfo mapInfo = new MapInfo();
         NewHouseTrafficDo newHouseTrafficDo=new NewHouseTrafficDo();
         mapInfo =  mapService.getMapInfo(newCode);

@@ -82,10 +82,10 @@ public class NewHouseRestController {
      */
     @ResponseBody
     @RequestMapping(value = "getNewHouseTraffic",method = RequestMethod.GET)
-    public  NashResult getNewHouseTraffic(@Validated NewHouseTrafficRequest newHouseTrafficRequest, @RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
+    public  NashResult getNewHouseTraffic(@Validated NewHouseTrafficRequest newHouseTrafficRequest)
     {
         NewHouseTrafficResponse newHouseTrafficResponse =new   NewHouseTrafficResponse();
-        NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode(),userAgent ,city);
+        NewHouseTrafficDo newHouseTrafficDo=newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode(),CityUtils.getCity());
         BeanUtils.copyProperties(newHouseTrafficDo,newHouseTrafficResponse);
         return  NashResult.build(newHouseTrafficResponse);
     }

@@ -1,10 +1,7 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
-import com.toutiao.app.api.chance.request.sellhouse.AgentSellHouseRequest;
-import com.toutiao.app.api.chance.request.sellhouse.SellHouseBeSureToSnatchRequest;
-import com.toutiao.app.api.chance.request.sellhouse.SellHouseDerailsRequest;
-import com.toutiao.app.api.chance.request.sellhouse.SellHouseRequest;
+import com.toutiao.app.api.chance.request.sellhouse.*;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
