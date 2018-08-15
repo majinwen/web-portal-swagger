@@ -254,22 +254,29 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
             InternalMax highestPrice = searchResponse.getAggregations().get("maxPrice");
             LongTerms longTerms = searchResponse.getAggregations().get("areaIds");
+            if(internalCardinality.getValue()>0){
+                if(longTerms.getBuckets().size()> 0){
 
-            Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
-//            String areaIds = "";
-            StringBuffer areaIds = new StringBuffer();
-            while(areaIdBucketIt.hasNext()) {
+                    Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
+                    StringBuffer areaIds = new StringBuffer();
+                    while(areaIdBucketIt.hasNext()) {
 
-                Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
-                areaIds = areaIds.append(areaIdsBucket.getKeyAsString()+",");
+                        Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
+                        areaIds = areaIds.append(areaIdsBucket.getKeyAsString()+",");
+                    }
+                    recommendTopicDo.setDistrictId(areaIds.substring(0,areaIds.length()-1));
+                }else{
+                    recommendTopicDo.setDistrictId("");
+                }
+
+                recommendTopicDo.setLowestPrice(lowestPrice.getValue());
+                recommendTopicDo.setHighestPrice(highestPrice.getValue());
+                recommendTopicDo.setCount((int)internalCardinality.getValue());
+
+                recommendTopicDo.setTopicType(flag);
+                recommendTopicDoList.add(recommendTopicDo);
             }
-            recommendTopicDo.setDistrictId(areaIds.substring(0,areaIds.length()-1));
-            recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-            recommendTopicDo.setHighestPrice(highestPrice.getValue());
-            recommendTopicDo.setCount((int)internalCardinality.getValue());
-//            recommendTopicDo.setDistrictId("");
-            recommendTopicDo.setTopicType(flag);
-            recommendTopicDoList.add(recommendTopicDo);
+
         }
 
         return recommendTopicDoList;
