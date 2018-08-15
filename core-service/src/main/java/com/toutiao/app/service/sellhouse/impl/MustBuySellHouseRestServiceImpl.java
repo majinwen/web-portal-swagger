@@ -68,7 +68,6 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", isNew));
         }
 
-
         //价格区间
         double beginPrice = mustBuyShellHouseDoQuery.getBeginPrice();
         double endPrice = mustBuyShellHouseDoQuery.getEndPrice();
@@ -79,7 +78,17 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         } else if (beginPrice != 0 && endPrice == 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
+
+        //排序
         Integer sort = mustBuyShellHouseDoQuery.getSort();
+        if (sort == null) {
+            //降价房按更新时间降序，捡漏房按总价升序
+            if (topicType == 1) {
+                sort = 0;
+            } else if (topicType == 2) {
+                sort = 1;
+            }
+        }
         Integer pageNum = mustBuyShellHouseDoQuery.getPageNum();
         Integer pageSize = mustBuyShellHouseDoQuery.getPageSize();
         SearchResponse cutPriceSellHouse = mustBuySellHouseEsDao.getMustBuySellHouse(booleanQueryBuilder, sort, pageNum, pageSize, topicType);

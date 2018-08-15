@@ -146,7 +146,6 @@ public class SubscribeServiceImpl implements SubscribeService {
                 mustBuyShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
             mustBuyShellHouseDoQuery.setIsNew(1);
-            mustBuyShellHouseDoQuery.setSort(0);
             mustBuyShellHouseDoQuery.setPageSize(pageSize);
             mustBuyShellHouseDoQuery.setPageNum(pageIndex);
             return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType()).getTotalCount();
@@ -184,7 +183,6 @@ public class SubscribeServiceImpl implements SubscribeService {
             if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
                 mustBuyShellHouseDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
-            mustBuyShellHouseDoQuery.setSort(0);
             mustBuyShellHouseDoQuery.setPageSize(pageSize);
             mustBuyShellHouseDoQuery.setPageNum(pageIndex);
             return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType());
