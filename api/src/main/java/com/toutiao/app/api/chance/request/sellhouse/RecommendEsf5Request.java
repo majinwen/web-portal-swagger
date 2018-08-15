@@ -13,7 +13,7 @@ public class RecommendEsf5Request extends BaseQueryRequest {
     /**
      * 排序字段
      */
-    private String sortFile = "extraTagsCount";
+    private String sortFile = "recommendHouseTopicSort";
 
     /**
      * 排序
