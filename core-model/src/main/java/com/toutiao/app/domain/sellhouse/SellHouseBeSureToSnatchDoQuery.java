@@ -5,28 +5,27 @@ import lombok.Data;
 @Data
 public class SellHouseBeSureToSnatchDoQuery {
 
-    private  String sortFile="updateTimeSort";
+    private String sortFile = "updateTimeSort";
 
-    private  Integer  sort=1;
+    private Integer sort = 1;
     /**
      * 起始价格
      */
-    private  double beginPrice;
+    private double beginPrice;
 
     /**
      * 结束价格
      */
     private double endPrice;
 
-
     /**
-     * 区域
+     * 区域Ids
      */
-    private Integer districtId;
+    private Integer[] districtIds;
 
-    private  Integer pageNum;
+    private Integer pageNum;
 
-    private  Integer pageSize;
+    private Integer pageSize;
 
-    private  Integer isNew;
+    private Integer isNew;
 }
