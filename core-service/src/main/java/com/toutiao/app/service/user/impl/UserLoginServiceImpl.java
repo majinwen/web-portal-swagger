@@ -45,7 +45,6 @@ public class UserLoginServiceImpl implements UserLoginService {
     @Value("${qiniu.img_wapapp_domain}")
     public String headPicPath;
 
-
     @Override
     public UserBasicDo checkUserVerifyCodeLogin(UserBasicDoQuery userBasicDo, HttpServletRequest request, HttpServletResponse response) {
 
@@ -130,7 +129,6 @@ public class UserLoginServiceImpl implements UserLoginService {
                     String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getUserPhone(),
                             headPicPath + "/" + headPicDirectory + "/" + insertUserBasic.getAvatar());
                     insertUserBasic.setRongCloudToken(rcToken);
-
                     int userId = userBasicMapper.insertSelective(insertUserBasic);
                     BeanUtils.copyProperties(insertUserBasic, ubd);
                 }
@@ -166,5 +164,6 @@ public class UserLoginServiceImpl implements UserLoginService {
 
         return ubd;
     }
+
 
 }

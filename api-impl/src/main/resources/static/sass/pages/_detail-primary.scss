@@ -126,6 +126,21 @@
             .module-table-item {
                 padding: 0;
             }
+
+            &.download-app {
+                @include font-dpr(30)
+            }
+            .primary-app-logo {
+                display: inline-block;
+                width: rem(48);
+                height: rem(48);
+                margin-right: rem(10);
+                vertical-align: top;
+                background: url('http://wap-qn.toutiaofangchan.com/ic_launcher.png') no-repeat center;
+                -webkit-background-size: contain;
+                background-size: contain;
+                border-radius: rem(5);
+            }
         }
     }
 }

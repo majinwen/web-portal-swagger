@@ -1,7 +1,7 @@
 package com.toutiao.app.service.sellhouse;
 
 import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
-import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
+import com.toutiao.app.domain.sellhouse.RecommendEsf5DoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 
@@ -31,4 +31,11 @@ public interface FilterSellHouseChooseService {
      */
     BoolQueryBuilder filterSellHouseChoose(SellHouseDoQuery sellHouseQueryDo);
 
+    /**
+     * 获取推荐房源
+     *
+     * @param recommendEsf5DoQuery
+     * @return
+     */
+    BoolQueryBuilder getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery);
 }

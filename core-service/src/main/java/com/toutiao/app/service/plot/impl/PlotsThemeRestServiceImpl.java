@@ -10,9 +10,11 @@ import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
@@ -51,17 +53,28 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         if (recommendBuildTagsId != null) {
             if (recommendBuildTagsId == 6 && StringTool.isNotEmpty(nearestPark)) {
                 boolQueryBuilder.must(QueryBuilders.boolQuery()
-                        .must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId))
+                        .must(QueryBuilders.termsQuery("recommendBuildTagsId", new int[]{recommendBuildTagsId}))
                         .must(QueryBuilders.termQuery("nearestPark", nearestPark)));
             } else {
-                boolQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId));
+                boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",  new int[]{recommendBuildTagsId}));
             }
+        }
+
+        if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()!=0){
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+                    .gte(plotsThemeDoQuery.getBeginPrice()).lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
+        }else if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()==0){
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+                    .gte(plotsThemeDoQuery.getBeginPrice()), ScoreMode.None));
+        }else if(plotsThemeDoQuery.getBeginPrice()==0 && plotsThemeDoQuery.getEndPrice()!=0){
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+                    .lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
         }
 
         //区域
         Integer[] districtIds = plotsThemeDoQuery.getDistrictIds();
         if (districtIds != null) {
-            boolQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("areaId", districtIds)));
+            boolQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
         }
         Integer pageNum = plotsThemeDoQuery.getPageNum();
         Integer pageSize = plotsThemeDoQuery.getPageSize();

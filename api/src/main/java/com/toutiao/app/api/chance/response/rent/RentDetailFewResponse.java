@@ -75,4 +75,9 @@ public class RentDetailFewResponse {
 
     private String[] housePhoto;
 
+    /**
+     * 房源描述
+     */
+    private String houseDesc;
+
 }

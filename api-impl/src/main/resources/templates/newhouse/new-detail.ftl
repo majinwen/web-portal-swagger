@@ -4,8 +4,8 @@
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/new-detail.css?v=${staticversion}">
-    <title>来头条看【${build['building_name']}】</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>来懂房帝看【${build['building_name']}】</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
@@ -15,7 +15,7 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']!""}-ttfc1200x640" alt="头条·房产">
+<img height="1px" width="1px" hidden src="${qiniuimage}/${build['building_title_img']!""}-ttfc1200x640" alt="懂房帝">
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -157,6 +157,19 @@
     </div>
 </div>
 </#if>
+<div class="module-bottom-fill">
+    <section class="primary-message">
+        <ul class="primary-item">
+            <li class="download-app">
+                <p>
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="primary-app-logo"></a>
+                    下载懂房帝APP，一键查北京房价
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="arrows-right"></a>
+                </p>
+            </li>
+        </ul>
+    </section>
+</div>
 <#if (layout?exists) && (layout?size>0)>
 <div class="module-bottom-fill">
     <section>

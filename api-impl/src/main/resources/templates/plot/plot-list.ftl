@@ -4,18 +4,18 @@
 <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
-    <title>头条房产看二手房小区</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>懂房帝看二手房小区</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="懂房帝">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/xiaoqu')}">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="懂房帝"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text"  class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
@@ -149,83 +149,24 @@
     </div>
 </section>
 <section id="result-section">
-    <ul id="valueList" class="list-item-wrapper">
-    <#--<#if villageList?exists>-->
-        <#--<#list villageList as plot>-->
-            <#--<li><a id="${plot.total}" onclick="plot_title(this)" class="list-item" href="${router_city('/xiaoqu/'+plot['id']?c+'.html')}">-->
-            <#--&lt;#&ndash;<input type="hidden" name="total" value="${plot.total}">&ndash;&gt;-->
-                <#--<div class="clear">-->
-                    <#--<#if plot['photo']?exists>-->
-                        <#--<div class="list-item-img-box">-->
-                            <#--<#if plot['photo']?exists>-->
-                                <#--<#assign photo = plot['photo']>-->
-                                <#--<#if photo[0]?exists><img src="${qiniuimage}/${photo[0]}-tt400x300" alt="${plot['rc']}">-->
-                                    <#--<#else><img src="${staticurl}/images/global/tpzw_image.png" alt="暂无数据">-->
-                                <#--</#if>-->
-                            <#--</#if>-->
-                        <#--</div>-->
-                    <#--</#if>-->
-                    <#--<div class="list-item-cont">-->
-                        <#--<h3 class="cont-block-1"><span><#if plot['rc']?exists>${plot['rc']}<#else>暂无数据</#if></span></h3>-->
-                        <#--<p class="cont-block-2 plot"><#if plot['abbreviatedAge']?exists>${plot['abbreviatedAge']}年建成</#if></p>-->
-                        <#--<#if plot['metroWithPlotsDistance']?exists>-->
-                            <#--<#assign map = plot['metroWithPlotsDistance']>-->
-                            <#--<#if plot['key']?exists>-->
-                                <#--<#if map[plot['key']]?exists>-->
-                                    <#--<#assign split=map[plot['key']]?split("$")/>-->
-                                    <#--<p class="cont-block-3 distance">-->
-                                        <#--<i class="icon"></i>-->
-                                        <#--<#if split[2]?number gt 1000>-->
-                                            <#--<#assign x = split[2]?number/1000>-->
-                                            <#--距离${split[1]}[${split[0]}] ${x?string("#.#")}km-->
-                                        <#--<#else>-->
-                                            <#--距离${split[1]}[${split[0]}] ${split[2]}m-->
-                                        <#--</#if>-->
-                                    <#--</p>-->
-                                <#--<#else>-->
-                                    <#--<p class="cont-block-3 distance"><i class="icon"></i>-->
-                                        <#--<#if plot['area']?exists&&plot['area']!=''>-->
-                                        <#--${plot['area']}${'-'+plot['tradingArea']}-->
-                                        <#--<#else>-->
-                                            <#--<#if plot['tradingArea']?exists&&plot['tradingArea']!=''>-->
-                                            <#--${plot['tradingArea']}-->
-                                            <#--</#if>-->
-                                        <#--</#if>-->
-                                    <#--</p>-->
-                                <#--</#if>-->
-                            <#--<#else>-->
-                                <#--<#if plot['tradingArea']?exists>-->
-                                    <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
-                                <#--</#if>-->
-                            <#--</#if>-->
-                        <#--<#else>-->
-                            <#--<#if plot['tradingArea']?exists>-->
-                                <#--<p class="cont-block-3 distance"><i class="icon"></i>${plot['area']!'暂无数据'}-${plot['tradingArea']!'暂无数据'}</p>-->
-                            <#--</#if>-->
-                        <#--</#if>-->
-                        <#--<div class="cont-block-4 house-labelling gray">-->
-                            <#--<#if plot['label']?exists>-->
-                                <#--<#assign item =  plot['label']>-->
-                                <#--<#list item as itemValue>-->
-                                    <#--<#if itemValue?exists>-->
-                                        <#--<#if itemValue_index lt 3>-->
-                                            <#--<span>${itemValue}</span>-->
-                                        <#--</#if>-->
-                                    <#--</#if>-->
-                                <#--</#list>-->
-                            <#--</#if>-->
-                        <#--</div>-->
-                        <#--<div class="cont-block-price plot">-->
-                            <#--<em>${plot['avgPrice']}元/㎡</em>-->
-                        <#--</div>-->
-                    <#--</div>-->
-                <#--</div>-->
-            <#--</a></li>-->
-        <#--</#list>-->
-    <#--</#if>-->
-    </ul>
-    <#--<p class="tip-box none">有新上房源，我们会及时通知您哦！</p>-->
+    <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
+        <img src="${staticurl}/images/download/plot-list-download.jpg" width="100%" alt="下载懂房帝APP">
+    </a>
+    <ul id="valueList" class="list-item-wrapper"></ul>
 </section>
+<div class="download-app-bottom-tips">
+    <div class="detail">
+        <img src="http://wap-qn.toutiaofangchan.com/ic_launcher.png" alt="懂房帝">
+        <p>
+            <strong>下载懂房帝APP</strong>
+            <span>查看小区最新报价</span>
+        </p>
+    </div>
+    <div class="btn">打开APP</div>
+    <div class="download-app-bottom-tips-close">
+        <img src="${staticurl}/images/download/download-app-bottom-tips-close.png" alt="">
+    </div>
+</div>
 <#include "../user.ftl">
 <#include "../search.ftl">
 <div class="sort-icon"></div>
@@ -242,6 +183,23 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
+    {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
+    <li>
+        <a class="list-item" href="https://at.umeng.com/onelink/K9nqai">
+            <div class="clear">
+                <div class="list-item-img-box">
+                    <img src="${staticurl}/images/house-app-download.jpg" alt="优惠房源">
+                </div>
+                <div class="list-item-cont download-app-tips-type1">
+                    <h3 class="cont-block-1"><span>{{$value.current_month}}月北京优惠房源</span></h3>
+                    <p class="cont-block-2">实时更新</p>
+                    <p class="cont-block-3">尽在懂房帝APP</p>
+                    <div class="cont-block-btn">立即下载</div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{else}}
     <li>
         <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.id}}&__topic__=xiaoqubaoguang'/>-->
         <a id="{{$value.total}}" class="list-item" data-id = "{{$value.pageNum}}" onclick="plot_list(this)" url="<%= $imports.router_city('/xiaoqu/'+$value.id+'.html') %>" href="javascript:void(0);">
@@ -283,10 +241,18 @@
             </div>
         </div>
     </a></li>
+    {{/if}}
     {{/each}}
 </script>
 <script>
     $(function () {
+        $('.download-app-bottom-tips-close').on('click', function () {
+            $('.download-app-bottom-tips').hide()
+        });
+        $('.download-app-bottom-tips .btn').on('click', function () {
+            location.href = "https://at.umeng.com/onelink/K9nqai"
+        });
+
         var url = document.referrer;
         if(url.indexOf("/xiaoqu") > 0){
             if(GetQueryString("keyword")!='undefined'){

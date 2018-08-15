@@ -141,6 +141,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
         if (StringTool.isNotEmpty(rentType)){
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",rentType));
         }
@@ -151,6 +152,20 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit hit:hits){
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+
+                }else{
+                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency").toString());
+                    agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto")==null?"":hit.getSourceAsMap().get("agent_headphoto").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone").toString());
+                }
+                rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
+
+
                 list.add(rentDetailsFewDo);
             }
             rentDetailsListDo.setRentDetailsList(list);
@@ -175,6 +190,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
         SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder,city);
         long zhengzu = ((InternalFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
         long hezu = ((InternalFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();

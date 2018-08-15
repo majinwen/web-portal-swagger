@@ -2,6 +2,7 @@ package com.toutiao.app.api.chance.response.plot;
 
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 import java.util.Map;
@@ -168,5 +169,12 @@ public class PlotDetailsResponse {
      */
     @ChangeName("hasElevator")
     private String hasElevator;
+
+    /**
+     * 二手房，租房信息
+     */
+    @ChangeName("plotHomes")
+    private PlotsHousesDomain plotsHousesDomain;
+
 
 }

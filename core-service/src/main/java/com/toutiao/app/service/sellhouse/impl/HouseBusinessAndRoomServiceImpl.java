@@ -14,6 +14,7 @@ import com.toutiao.app.service.sellhouse.HouseBusinessAndRoomService;
 import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
         BoolQueryBuilder boolQueryBuilder = filterBusinessRoomChooseService.filterBusinessRoomChoose(houseBusinessAndRoomDoQuery);
         Integer pageNum = houseBusinessAndRoomDoQuery.getPageNum();
         Integer pageSize = houseBusinessAndRoomDoQuery.getPageSize();
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         SearchResponse houseBusinessAndRoomHouses = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomHouses(
                 boolQueryBuilder, pageNum, pageSize);
         SearchHits hits = houseBusinessAndRoomHouses.getHits();

@@ -33,6 +33,11 @@ public interface NewHouseRestService {
      */
     NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String userAgent, String city);
 
+    /**
+     * 根据推荐条件查询一条推荐房源
+     */
+    NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+
 
 
 }

@@ -3,13 +3,13 @@
 <head>
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/cpc.css?v=${staticversion}">
-    <title>头条房产 发现好房</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>懂房帝 买房秒懂</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<a href="http://m.toutiaofangchan.com/bj/?=cpc2esf_top_banner"><img src="${staticurl}/images/cpc/cpc-page2-banner.png?v=${staticversion}" width="100%" alt="头条房产" style="margin-bottom:3%;"></a>
+<a href="http://m.toutiaofangchan.com/bj/?=cpc2esf_top_banner"><img src="${staticurl}/images/cpc/cpc-page2-banner.png?v=${staticversion}" width="100%" alt="懂房帝" style="margin-bottom:3%;"></a>
 <#if adcpc?exists><section class="recommend-list">
     <ul>
         <#assign listdetail = adcpc['data']>
@@ -65,8 +65,8 @@
     <img src="${staticurl}/images/cpc/bottom-link.png?v=${staticversion}" width="100%" alt="发现好房 只要两步">
 </a>
 <div class="bottom-tips">
-    <img src="http://wap-qn.toutiaofangchan.com/adideas/luodiyesucai/700fba27781845049881eb3c23ae9674/20180209174127.png" alt="上拉进入头条房产">
-    <p>上拉进入头条房产</p>
+    <img src="http://wap-qn.toutiaofangchan.com/adideas/luodiyesucai/700fba27781845049881eb3c23ae9674/20180209174127.png" alt="上拉进入懂房帝">
+    <p>上拉进入懂房帝</p>
 </div>
 </body>
 <script>

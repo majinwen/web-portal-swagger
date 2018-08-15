@@ -4,8 +4,8 @@
 <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/rent-detail.css?v=${staticversion}">
-    <title>头条房产看租房</title>
-    <meta name="description" content="">
+    <title>懂房帝看租房</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
@@ -108,6 +108,19 @@
     </section>
 </div>
 </#if>
+<div class="border-box">
+    <section class="primary-message">
+        <ul class="primary-item">
+            <li class="download-app">
+                <p>
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="primary-app-logo"></a>
+                    下载懂房帝APP，一键查北京房价
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="arrows-right"></a>
+                </p>
+            </li>
+        </ul>
+    </section>
+</div>
 <#if plot?exists>
 <div class="border-box">
     <section>

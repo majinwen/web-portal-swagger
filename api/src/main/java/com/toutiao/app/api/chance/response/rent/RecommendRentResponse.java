@@ -99,4 +99,9 @@ public class RecommendRentResponse {
 
     private String[] housePhoto;
 
+    /**
+     * 房源描述
+     */
+    private String houseDesc;
+
 }

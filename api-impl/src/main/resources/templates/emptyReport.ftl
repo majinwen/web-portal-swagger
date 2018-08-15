@@ -3,8 +3,8 @@
 <head>
     <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/404.css?v=${staticversion}">
-    <title>我的报告页</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>我的购房报告</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "StatisticsHeader.ftl">
@@ -24,7 +24,7 @@
         <span>2</span>
         <div class="tips-content">
             <h3>懂房帝是什么？</h3>
-            <p>头条房产大数据，为您匹配专属理想家。</p>
+            <p>懂房帝大数据，为您匹配专属理想家。</p>
         </div>
     </div>
     <a class="link-intelligent" href="${router_city('/findhouse/')}">获取报告</a>

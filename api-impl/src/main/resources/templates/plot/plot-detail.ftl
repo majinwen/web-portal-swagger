@@ -4,8 +4,8 @@
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/plot-detail.css?v=${staticversion}">
-    <title>来头条房产看【${village['rc']!'小区'}】</title>
-    <meta name="description" content="推荐你上头条房产看看【${village['rc']!'小区'}】的价格走势与小区详情">
+    <title>来懂房帝看【${village['rc']!'小区'}】</title>
+    <meta name="description" content="推荐你上懂房帝看看【${village['rc']!'小区'}】的价格走势与小区详情">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
@@ -307,6 +307,19 @@
     </section>
 </div>
 </#if>
+<div class="module-bottom-fill">
+    <section class="primary-message">
+        <ul class="primary-item">
+            <li class="download-app">
+                <p>
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="primary-app-logo"></a>
+                    下载懂房帝APP，一键查北京房价
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="arrows-right"></a>
+                </p>
+            </li>
+        </ul>
+    </section>
+</div>
 <div class="module-bottom-fill">
     <section>
         <div class="module-header-message">

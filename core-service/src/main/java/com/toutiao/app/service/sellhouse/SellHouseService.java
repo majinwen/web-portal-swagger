@@ -53,6 +53,11 @@ public interface SellHouseService {
      */
     SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery);
 
-
-
+    /**
+     * 推荐房源
+     *
+     * @param recommendEsf5DoQuery
+     * @return
+     */
+    SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery);
 }

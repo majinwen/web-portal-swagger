@@ -9,7 +9,7 @@ $textGrayColor: #888;
 .list-item {
     display: block;
     line-height: 1.2;
-    padding: rem(42) 0;
+    padding: rem(45) 0;
     margin: 0 rem(30);
     color: $baseBlack;
     border-bottom: 1px solid $baseBorderColor;
@@ -176,9 +176,37 @@ $textGrayColor: #888;
                 bottom: auto;
             }
         }
+
+        &.download-app-tips-type1 {
+            .cont-block-1, .cont-block-2, .cont-block-3, .cont-block-btn {
+                position: absolute;
+                margin-top: 0;
+                color: #888;
+            }
+            .cont-block-1, .cont-block-2 {
+                @include font-dpr(28);
+            }
+            .cont-block-1 {
+                top: 0;
+            }
+            .cont-block-2 {
+                top: 39%;
+            }
+            .cont-block-3 {
+                bottom: 0;
+                @include font-dpr(30);
+            }
+            .cont-block-btn {
+                top: 29%;
+                right: 0;
+                padding: rem(20) rem(38);
+                color: #fff;
+                background-color: #ff4848;
+                border-radius: rem(5);
+                @include font-dpr(28);
+            }
+        }
     }
-
-
 
     &.new {
         .cont-block-1 {
@@ -285,11 +313,49 @@ $textGrayColor: #888;
             }
         }
     }
+
+    &.app-download-item {
+        padding-top: rem(40);
+        padding-bottom: rem(30);
+
+        .list-item-cont-ad {
+            position: relative;
+            margin-bottom: rem(30);
+
+            .cont-block-1 {
+                font-weight: 700;
+                @include font-dpr(28);
+            }
+        }
+
+        .list-item-img-box {
+            width: rem(223);
+            margin-right: rem(10);
+            margin-bottom: rem(20);
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+
+        .house-labelling {
+            span {
+                height: rem(30);
+                line-height: rem(30);
+                padding-left: rem(9);
+                padding-right: rem(9);
+                color: #666;
+                border-radius: rem(5);
+                background-color: #efefef;
+                @include font-dpr(20);
+            }
+        }
+    }
 }
 
 .sort-icon {
     position: fixed;
-    bottom: rem(30);
+    bottom: rem(130);
     right: rem(30);
     width: rem(112);
     height: rem(112);
@@ -337,5 +403,86 @@ $textGrayColor: #888;
         width: 100%;
         height: 100%;
         background-color: rgba(0,0,0,0.5);
+    }
+}
+
+.app-download-top-tips-wrapper {
+    display: block;
+    text-align: center;
+}
+.download-app-bottom-tips {
+    position: fixed;
+    width: 100%;
+    max-width: rem(750);
+    bottom: 0;
+    height: rem(126);
+    background-color: #adadad;
+
+    .detail, .btn {
+        position: absolute;
+        top: 50%;
+    }
+    .detail {
+        color: #fff;
+        left: rem(61);
+        margin-top: rem(-38);
+
+        img, p {
+            display: inline-block;
+        }
+        img {
+            height: rem(75);
+            -webkit-border-radius: rem(14);
+            -moz-border-radius: rem(14);
+            border-radius: rem(14);
+        }
+        p {
+            position: relative;
+            height: rem(75);
+            margin-left: rem(30);
+            vertical-align: top;
+
+            strong, span {
+                position: absolute;
+                display: block;
+                line-height: 1;
+                white-space: nowrap;
+            }
+            strong {
+                top: rem(6);
+                @include font-dpr(28);
+            }
+            span {
+                bottom: rem(8);
+                @include font-dpr(23);
+            }
+        }
+    }
+    .btn {
+        right: rem(65);
+        width: rem(150);
+        height: rem(60);
+        line-height: rem(60);
+        margin-top: rem(-30);
+        text-align: center;
+        font-weight: 700;
+        @include font-dpr(26);
+        background-color: #f9e04b;
+        -webkit-border-radius: rem(4);
+        -moz-border-radius: rem(4);
+        border-radius: rem(4);
+    }
+    .download-app-bottom-tips-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: rem(18);
+        width: rem(16);
+        height: rem(16);
+
+        img {
+            width: 100%;
+            vertical-align: top;
+        }
     }
 }

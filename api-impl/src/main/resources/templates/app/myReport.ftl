@@ -3,8 +3,8 @@
 <head>
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${appstaticurl}/css/my-report.css?v=${staticversion}">
-    <title>我的报告页</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>我的购房报告</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${appstaticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">

@@ -39,8 +39,16 @@ public interface HomePageEsDao {
      * @param size
      * @param sort
      * @return
-     */
+             */
     SearchResponse getHomePageNearPlot(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort);
+
+    /**
+     * 首页获取附近小区(无坐标)
+     * @param boolQueryBuilder
+     * @param size
+     * @return
+     */
+    SearchResponse getHomePageNearPlotNoLocation(BoolQueryBuilder boolQueryBuilder,Integer size);
 
     /**
      * 首页获取附近的二手房
@@ -50,6 +58,13 @@ public interface HomePageEsDao {
      * @return
      */
     SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort);
+    /**
+     * 首页获取附近的二手房
+     * @param boolQueryBuilder
+     * @param size
+     * @return
+     */
+    SearchResponse getHomePageNearEsfNoLocation(BoolQueryBuilder boolQueryBuilder,Integer size);
 
     /**
      * 专题着陆页-附近小区

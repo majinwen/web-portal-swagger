@@ -4,8 +4,8 @@
 <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/list.css?v=${staticversion}">
-    <title>来头条房产二手房</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>来懂房帝看二手房</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
@@ -13,15 +13,15 @@
 </head>
 <#setting url_escaping_charset="UTF-8">
 <body>
-<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="懂房帝">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/esf')}">
-    <a href="/" onclick="esf_title(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" onclick="esf_title(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="懂房帝"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
     </div>
-    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="头条·房产"></a>
+    <a href="javascript:;" class="header-user"><img src="${staticurl}/images/global/xf_grzx@3x.png" alt="懂房帝"></a>
 </header>
 <section class="category-box">
     <ul id="category-tab">
@@ -168,85 +168,24 @@
     </div>
 </section>
 <section id="result-section">
-<#--<#if builds?exists>-->
-    <#--<p class="dropload-up none"></p>-->
-    <ul id="valueList" class="list-item-wrapper">
-    <#--<#list builds as map>-->
-        <#--<li id="${map.houseId}"><a id="${map.total}" class="list-item" href="${router_city('/esf/'+map.houseId+'.html?_esflit=1&pageNum='+map.pageNum)}">-->
-            <#--<div class="clear">-->
-                <#--<div class="list-item-img-box">-->
-                    <#--<#assign item=map['housePhotoTitle']>-->
-                    <#--<#if item?? && item!=''><img src="${item}" alt="${map.houseTitle}">-->
-                    <#--<#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="${map.houseTitle}">-->
-                    <#--</#if>-->
-                <#--</div>-->
-                <#--<div class="list-item-cont">-->
-                    <#--<h3 class="cont-block-1"><span>${map.houseTitle}</span></h3>-->
-                    <#--<p class="cont-block-2">-->
-                        <#--<#if map.buildArea?exists&&(map.buildArea>0)>-->
-                        <#--${map.buildArea}㎡-->
-                        <#--</#if>-->
-                        <#--<#if map.room?exists&&map.hall?exists>-->
-                            <#--/ <#if map.room?number lt 99 >${map.room}<#elseif map.room?number gte 99 >多</#if>室<#if map.hall?number lt 99>${map.hall}<#elseif map.hall?number gte 99>多</#if>厅-->
-                        <#--</#if>-->
-                        <#--<#if map.forwardName?exists>-->
-                            <#--/ ${map.forwardName}-->
-                        <#--</#if>-->
-                        <#--<#if map.plotName?exists>-->
-                            <#--/ ${map.plotName}-->
-                        <#--</#if>-->
-                    <#--</p>-->
-                    <#--<#if map['subwayDistince']?exists>-->
-                        <#--<#assign item=map['subwayDistince']>-->
-                        <#--<#if map['key']?exists>-->
-                            <#--<#if item[map['key']]?exists>-->
-                                <#--<p class="cont-block-3 distance"><i class="icon"></i>-->
-                                    <#--<#assign rounditems=item[map['key']]?split("$")>-->
-                                    <#--<#if rounditems[2]?number gt 1000>-->
-                                        <#--<#assign x = rounditems[2]?number/1000>-->
-                                        <#--距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km-->
-                                    <#--<#else>-->
-                                        <#--距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m-->
-                                    <#--</#if>-->
-                                <#--</p>-->
-                            <#--</#if>-->
-                        <#--<#else>-->
-                            <#--<p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.area!=''&&map.houseBusinessName?exists&&map.houseBusinessName!=''>${map.area}-${map.houseBusinessName}<#else></#if></p>-->
-                        <#--</#if>-->
-                    <#--<#else >-->
-                        <#--<p class="cont-block-3 distance"><i class="icon"></i><#if map.area?exists&&map.houseBusinessName?exists>${map.area}-${map.houseBusinessName}<#else></#if></p>-->
-                    <#--</#if>-->
-                    <#--<div class="cont-block-4 house-labelling gray middle esf">-->
-                        <#--<#if map['tagsName']?exists>-->
-                            <#--<#assign item =map['tagsName']>-->
-                            <#--<#list item as itemValue>-->
-                                <#--<#if itemValue?exists>-->
-                                    <#--<span>${itemValue}</span>-->
-                                <#--</#if>-->
-                            <#--<#else >-->
-                            <#--</#list>-->
-                        <#--<#else >-->
-                        <#--</#if>-->
-                    <#--</div>-->
-                    <#--<div class="cont-block-price">-->
-                        <#--<#if map.houseTotalPrices?exists && map.houseTotalPrices?number gt 0>-->
-                            <#--<em>${map.houseTotalPrices}万</em>-->
-                        <#--</#if>-->
-                        <#--<#if map.houseTotalPrices?exists && map.buildArea?exists>-->
-                            <#--<#if map.houseTotalPrices?number gt 0 && map.buildArea?number gt 0>-->
-                                <#--<span>${(((map.houseTotalPrices?number / (map.buildArea?number))) * 10000)}元/㎡</span>-->
-                            <#--</#if>-->
-                        <#--</#if>-->
-                    <#--</div>-->
-                <#--</div>-->
-            <#--</div>-->
-        <#--</a></li>-->
-    <#--</#list>-->
-    </ul>
-<#--</#if>-->
-
-    <#--<p class="dropload-down none"></p>-->
+    <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
+        <img src="${staticurl}/images/download/esf-list-download.jpg" width="100%" alt="下载懂房帝APP">
+    </a>
+    <ul id="valueList" class="list-item-wrapper"></ul>
 </section>
+<div class="download-app-bottom-tips">
+    <div class="detail">
+        <img src="http://wap-qn.toutiaofangchan.com/ic_launcher.png" alt="懂房帝">
+        <p>
+            <strong>下载懂房帝APP</strong>
+            <span>查看更多减价房源</span>
+        </p>
+    </div>
+    <div class="btn">打开APP</div>
+    <div class="download-app-bottom-tips-close">
+        <img src="${staticurl}/images/download/download-app-bottom-tips-close.png" alt="">
+    </div>
+</div>
 <#include "../user.ftl">
 <#include "../search.ftl">
 <div class="sort-icon"></div>
@@ -263,6 +202,23 @@
 
 <script id="listContent" type="text/html">
     {{each data}}
+    {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
+    <li>
+        <a class="list-item" href="https://at.umeng.com/onelink/K9nqai">
+            <div class="clear">
+                <div class="list-item-img-box">
+                    <img src="${staticurl}/images/house-app-download.jpg" alt="优惠房源">
+                </div>
+                <div class="list-item-cont download-app-tips-type1">
+                    <h3 class="cont-block-1"><span>{{$value.current_month}}月北京优惠房源</span></h3>
+                    <p class="cont-block-2">实时更新</p>
+                    <p class="cont-block-3">尽在懂房帝APP</p>
+                    <div class="cont-block-btn">立即下载</div>
+                </div>
+            </div>
+        </a>
+    </li>
+    {{else}}
     <li>
         {{if $value.claimHouseId!=''}}
             <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.claimHouseId}}&__topic__=esfbaoguang'/>-->
@@ -350,12 +306,20 @@
             </div>
         </a>
     </li>
+    {{/if}}
     {{/each}}
 </script>
 <script>
     //二手房拦截默认的下拉加载
     window["$toutiao_customer_pullUpAction"]=true;
     $(function () {
+        $('.download-app-bottom-tips-close').on('click', function () {
+            $('.download-app-bottom-tips').hide()
+        });
+        $('.download-app-bottom-tips .btn').on('click', function () {
+            location.href = "https://at.umeng.com/onelink/K9nqai"
+        });
+
         var urlparam =GetRequest();
         if (urlparam["lat"] && urlparam["lon"]) {
             window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]

@@ -6,9 +6,14 @@ import lombok.Data;
 @Data
 public class SellHouseBeSureToSnatchRequest extends BaseQueryRequest {
 
-    private  String sortFile="updateTimeSort";
+    private String sortFile = "updateTimeSort";
 
-    private  Integer  sort=1;
+    private Integer sort = 1;
 
-    private  Integer isNew;
+    private Integer isNew;
+
+    /**
+     * 区域Ids
+     */
+    private Integer[] districtIds;
 }

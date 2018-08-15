@@ -113,8 +113,14 @@ public class RentDetailsFewDo {
      * 地铁到房子间的距离
      */
     private  String subwayDistanceInfo;
-
+    /**
+     * 房源图片
+     */
     private String[] housePhoto;
+    /**
+     * 房源描述
+     */
+    private String houseDesc;
 
 
 }

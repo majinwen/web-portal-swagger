@@ -55,7 +55,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotsId));
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
-        booleanQueryBuilder.mustNot(QueryBuilders.termQuery("is_parent_claim", 1));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
         TransportClient client = esClientTools.init();
 
         SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
@@ -65,6 +65,24 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder)
                 .addAggregation(AggregationBuilders.terms("roomCount").field("layout").order(Terms.Order.term(true)))
                 .execute().actionGet();
+        return searchResponse;
+    }
+
+    /**
+     * 根据小区id获取小区的房源数量v2(非聚合)
+     * @param plotsId
+     * @return
+     */
+    @Override
+    public SearchResponse getEsfCountByPlotsId(Integer plotsId) {
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotsId));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();
+
         return searchResponse;
     }
 
@@ -91,7 +109,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
             searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
                     .execute().actionGet();
         } else {
-            searchresponse = srb.setQuery(query).addSort("sortingScore", SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+            searchresponse = srb.setQuery(query).addSort("extraTagsCount", SortOrder.DESC).addSort("updateTimeSort",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
                     .execute().actionGet();
         }
 

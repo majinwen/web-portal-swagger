@@ -4,8 +4,8 @@
     <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/jquery.fullPage.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/intelligent-report.css?v=${staticversion}">
-    <title>懂房帝</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>购房报告</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/modernizr.custom.js?v=${staticversion}"></script>
@@ -709,7 +709,7 @@
             <div class="module-item">
                 <div class="report-end-word">
                     <p>选房就是选生活</p>
-                    <p>发现美好家园 就在头条房产</p>
+                    <p>发现美好家园 就在懂房帝</p>
                 </div>
                 <div class="report-bottom-button">
                     <div class="report-button collect-button">
@@ -719,7 +719,7 @@
                         <span>分享</span>
                     </div>
                 </div>
-                <img src="/static/images/intelligent/report-page-bottom.png" width="100%" alt="发现美好家园 就在头条房产">
+                <img src="/static/images/intelligent/report-page-bottom.png" width="100%" alt="发现美好家园 就在懂房帝">
             </div>
         </div>
     </div>

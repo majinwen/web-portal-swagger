@@ -4,8 +4,8 @@
     <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/new-index.css?v=${staticversion}">
-    <title>上头条 找新房</title>
-    <meta name="description" content="让美好生活 来找你">
+    <title>上懂房帝 找新房</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
@@ -14,7 +14,7 @@
 <body>
 <header class="main-top-header">
     <input id="url" type="hidden"  value="${router_city('/loupan')}">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="懂房帝"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link" placeholder="">
@@ -46,7 +46,7 @@
 </div>
 <div class="module-bottom-fill">
     <section class="bulletin-board">
-        <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt="房产头条"></div>
+        <div class="img"><img src="${staticurl}/images/newindex/sy_fctt.png" alt="懂房帝"></div>
         <div class="text-scroll">
             <ul id="ul_index_lunbo_guanggao">
             </ul>

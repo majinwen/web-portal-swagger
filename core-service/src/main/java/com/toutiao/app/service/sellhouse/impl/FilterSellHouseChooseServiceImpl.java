@@ -2,7 +2,7 @@ package com.toutiao.app.service.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.SellHouseKeywordEsDao;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
-import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
+import com.toutiao.app.domain.sellhouse.RecommendEsf5DoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.web.common.util.StringTool;
@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -68,14 +69,13 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHouseQueryDo.getAreaId()));
 
         }
-        //区域id
-        if (StringTool.isNotEmpty((nearBySellHouseQueryDo.getDistrictId())) && nearBySellHouseQueryDo.getDistrictId()!=0) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", nearBySellHouseQueryDo.getDistrictId()));
 
+        //区域id
+        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getDistrictIds())) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", nearBySellHouseQueryDo.getDistrictIds()));
         }
 
         //地铁线id
-
         if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getSubwayLineId())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", nearBySellHouseQueryDo.getSubwayLineId()));
 
@@ -340,6 +340,68 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", sellHouseDoQuery.getIsMustRob()));
         }
 
+        return booleanQueryBuilder;
+    }
+
+    /**
+     * 获取推荐房源5条查询条件
+     *
+     * @param recommendEsf5DoQuery
+     * @return
+     */
+    @Override
+    public BoolQueryBuilder getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery) {
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        //户型(室)
+        Integer[] layoutId = recommendEsf5DoQuery.getLayoutId();
+        if (StringTool.isNotEmpty(layoutId)) {
+            List<Integer> layoutIds = Arrays.asList(layoutId);
+            if(Collections.max(layoutIds) > 4){
+                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                if(layoutId.length > 1){
+                    int arr = layoutId[layoutId.length-1];
+                    int[] comp = new int[]{layoutId.length-1};
+                    for(int i=0;i<layoutId.length;i++) {
+                        if(layoutId[i]<arr){
+                            arr = layoutId[i];
+                            comp[i] =arr;
+                        }
+                    }
+                    bqb.should(QueryBuilders.termsQuery("layout", comp));
+                }
+                bqb.should(QueryBuilders.rangeQuery("layout").gte(5));
+                booleanQueryBuilder.must(bqb);
+            }else {
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("layout", layoutId));
+            }
+
+
+        }
+
+        //区域id
+        Integer[] districtIds = recommendEsf5DoQuery.getDistrictIds();
+        if (StringTool.isNotEmpty((districtIds))) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
+        }
+
+        //总价(上下浮动10%)
+        double beginPrice = recommendEsf5DoQuery.getBeginPrice();
+        if (beginPrice != 0) {
+            beginPrice *= 0.9;
+        }
+        double endPrice = recommendEsf5DoQuery.getEndPrice();
+        if (endPrice != 0) {
+            endPrice *= 1.1;
+        }
+        if (beginPrice != 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+        } else if (beginPrice == 0 && endPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(endPrice));
+        } else if (endPrice == 0 && beginPrice != 0) {
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
+        }
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         return booleanQueryBuilder;
     }
 }

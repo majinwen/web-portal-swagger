@@ -4,18 +4,18 @@
 <#include "../staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/dropload.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/rent-list.css?v=${staticversion}">
-    <title>头条房产看租房</title>
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <title>懂房帝看租房</title>
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
 <#include "../StatisticsHeader.ftl">
 </head>
 <body>
-<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="头条·房产">
+<img class="shareTopImg" height="0" width="0" src="http://wap-qn.toutiaofangchan.com/logo/tt.jpg" alt="懂房帝">
 <header class="main-top-header">
     <input id="url" type="hidden" value="${router_city('/zufang')}">
-    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="懂房帝"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text"  class="search-link" placeholder="" value="<#if RequestParameters.keyword??>${RequestParameters.keyword}</#if>">
@@ -136,12 +136,51 @@
     </div>
 </section>
 <section id="result-section">
+    <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
+        <img src="${staticurl}/images/download/rent-list-download.jpg" width="100%" alt="下载懂房帝APP">
+    </a>
     <ul id="valueList"></ul>
 </section>
+<div class="download-app-bottom-tips">
+    <div class="detail">
+        <img src="http://wap-qn.toutiaofangchan.com/ic_launcher.png" alt="懂房帝">
+        <p>
+            <strong>下载懂房帝APP</strong>
+            <span>查看更多减价房源</span>
+        </p>
+    </div>
+    <div class="btn">打开APP</div>
+    <div class="download-app-bottom-tips-close">
+        <img src="${staticurl}/images/download/download-app-bottom-tips-close.png" alt="">
+    </div>
+</div>
 <#include "../user.ftl">
 <#include "../search.ftl">
 <script id="listContent" type="text/html">
     {{each data}}
+    {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
+    <li><a class="list-item app-download-item" href="https://at.umeng.com/onelink/K9nqai">
+        <div class="list-item-cont-ad">
+            <h3 class="cont-block-1">北京个人出租房源每天上新，下载懂房帝APP随时查</h3>
+        </div>
+        <div class="clear">
+            <div class="list-item-img-box">
+                <img src="${staticurl}/images/zufang-app-download-1.jpg" alt="出租房源每天上新">
+            </div>
+            <div class="list-item-img-box">
+                <img src="${staticurl}/images/zufang-app-download-2.jpg" alt="出租房源每天上新">
+            </div>
+            <div class="list-item-img-box">
+                <img src="${staticurl}/images/zufang-app-download-3.jpg" alt="出租房源每天上新">
+            </div>
+        </div>
+        <div class="pr">
+            <div class="house-labelling gray">
+                <span>懂房帝APP</span>
+            </div>
+        </div>
+    </a></li>
+    {{else}}
     <li>
         <#--<img src='http://${exposurelogproject}.${exposureloghost}/logstores/${exposurelogstore}/track.gif?APIVersion=0.6.0&houseId={{$value.house_id}}&__topic__=zufangbaoguang'/>-->
         <a class="list-item" data-id="{{$value.pageNum}}" onclick="rent_list(this)" url="<%= $imports.router_city('/zufang/'+$value.house_id+'.html') %>" href="javascript:void(0);">
@@ -174,6 +213,7 @@
             </div>
         </div>
     </a></li>
+    {{/if}}
     {{/each}}
 </script>
 </body>
@@ -188,6 +228,13 @@
     window["$toutiao_customer_pullUpAction"]=true;
 
     $(function () {
+        $('.download-app-bottom-tips-close').on('click', function () {
+            $('.download-app-bottom-tips').hide()
+        });
+        $('.download-app-bottom-tips .btn').on('click', function () {
+            location.href = "https://at.umeng.com/onelink/K9nqai"
+        });
+
         var urlparam =GetRequest();
         if (urlparam["lat"] && urlparam["lon"]) {
             window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]

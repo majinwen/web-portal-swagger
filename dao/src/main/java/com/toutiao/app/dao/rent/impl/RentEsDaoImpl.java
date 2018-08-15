@@ -65,12 +65,21 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
+    public SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).execute().actionGet();
+        return searchResponse;
+    }
+
+    @Override
     public SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size, String city) {
 
         TransportClient client = esClientTools.init();
         SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getRentIndex(city)).setTypes(ElasticCityUtils.getRentType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("sortingScore", SortOrder.DESC).setFrom(from).setSize(size)
-                .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
+                .setFetchSource(new String[]{"house_desc","house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
                         "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img","estate_agent","brokerage_agency","phone","agent_headphoto","userId","rent_type","rentHouseType","nearest_subway","rent_house_img"},null).execute().actionGet();
 
         return searchResponse;
@@ -86,7 +95,7 @@ public class RentEsDaoImpl implements RentEsDao {
             searchRequestBuilder.searchAfter(new String[]{uid});
         }
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("_uid", SortOrder.DESC).setSize(1)
-                .setFetchSource(new String[]{"house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
+                .setFetchSource(new String[]{"house_desc","house_id","area_id","house_title","rent_house_price","rent_type_name","house_area","room","hall","forward",
                         "district_name","area_name","zufang_name","zufang_id","rent_house_tags_name","house_title_img","estate_agent","brokerage_agency","phone","agent_headphoto","userId","rent_type","rentHouseType","nearest_subway","rent_house_img"},null).execute().actionGet();
 
         return searchResponse;
@@ -115,5 +124,22 @@ public class RentEsDaoImpl implements RentEsDao {
         }
         return searchResponse;
 
+    }
+
+    /**
+     * 获取小区出租房源均价最低
+     * @param boolQueryBuilder
+     * @return
+     */
+    @Override
+    public SearchResponse getRentPriceByPlotId(BoolQueryBuilder boolQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+
+        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
+                .addAggregation(AggregationBuilders.min("minRentPrice").field("rent_house_price")).execute().actionGet();
+
+        return searchResponse;
     }
 }

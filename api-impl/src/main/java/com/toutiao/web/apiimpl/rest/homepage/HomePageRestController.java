@@ -7,22 +7,28 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.app.api.chance.request.homepage.NearHouseRequest;
 import com.toutiao.app.api.chance.request.homepage.NearHouseSpecialPageRequest;
+import com.toutiao.app.api.chance.request.homepage.UserFavoriteConditionRequest;
 import com.toutiao.app.api.chance.response.homepage.*;
 import com.toutiao.app.api.chance.response.sellhouse.SellHouseSearchDomainResponse;
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.city.CityUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/homePage")
@@ -132,10 +138,10 @@ public class HomePageRestController {
     @ResponseBody
     public  NashResult homePageTop50()
     {
-        List<HomePageTop50Do> homePageTop50Dos= homePageRestService.getHomePageTop50();
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageTop50Dos));
-        List<HomePageTop50Response> homePageTop50ResponseList=JSONObject.parseArray(json.toJSONString(),HomePageTop50Response.class);
-        return NashResult.build(homePageTop50ResponseList);
+        Map<String,HomePageTop50Do> homePageTop50Dos= homePageRestService.getHomePageTop50();
+//        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageTop50Dos));
+//        List<HomePageTop50Response> homePageTop50ResponseList=JSONObject.parseArray(json.toJSONString(),HomePageTop50Response.class);
+        return NashResult.build(homePageTop50Dos);
 
     }
 
@@ -179,4 +185,47 @@ public class HomePageRestController {
         return NashResult.build(newHouseListResponses);
     }
 
+    /**
+     * 保存推荐条件
+     */
+    @RequestMapping(value = "/saveRecommendCondition",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult saveRecommendCondition(@Validated(First.class)  UserFavoriteConditionRequest userFavoriteConditionRequest){
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
+        Integer integer = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery);
+        return NashResult.build(integer);
+    }
+
+    /**
+     * 查询推荐条件
+     */
+    @RequestMapping(value = "/getRecommendCondition",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getRecommendCondition(@Param("userId") Integer userId){
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userId);
+        return NashResult.build(recommendCondition);
+    }
+
+    /**
+     * 更新推荐条件
+     */
+    @RequestMapping(value = "/updateRecommendCondition",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult updateRecommendCondition(@Validated(First.class) UserFavoriteConditionRequest userFavoriteConditionRequest){
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
+        Integer integer = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery);
+        return NashResult.build(integer);
+    }
+
+    /**
+     * 删除推荐条件
+     */
+    @RequestMapping(value = "/deleteRecommendCondition",method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult deleteRecommendCondition(@Param("userId") Integer userId){
+        Integer integer = homePageRestService.deleteRecommendCondition(userId);
+        return NashResult.build(integer);
+    }
 }

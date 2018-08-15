@@ -2,8 +2,11 @@ package com.toutiao.app.service.homepage;
 
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 
 import java.util.List;
+import java.util.Map;
 
 public interface HomePageRestService {
 
@@ -61,11 +64,37 @@ public interface HomePageRestService {
      * 获取首页top50
      */
 
-    List<HomePageTop50Do> getHomePageTop50();
+//    List<HomePageTop50Do> getHomePageTop50();
+    Map<String,HomePageTop50Do> getHomePageTop50();
 
 
     /**
      * 首页缝出必抢
      */
     List<HomeSureToSnatchDo>  getHomeBeSureToSnatch (HomeSureToSnatchDoQuery homeSureToSnatchDoQuery);
+
+    /**
+     * 保存推荐条件
+     * @return
+     */
+    Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+
+    /**
+     * 获取推荐条件
+     */
+    UserFavoriteConditionDo getRecommendCondition(Integer userId);
+
+    /**
+     * 更新推荐条件
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+
+    /**
+     * 删除推荐条件
+     * @param userId
+     * @return
+     */
+    Integer deleteRecommendCondition (Integer userId);
 }

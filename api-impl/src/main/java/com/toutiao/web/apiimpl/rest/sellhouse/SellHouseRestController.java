@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/rest/esf")
@@ -121,6 +123,23 @@ public class SellHouseRestController {
         SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
         BeanUtils.copyProperties(sellHouseBeSureToSnatchDos,sellHouseBeSureToSnatchResponses);
         return  NashResult.build(sellHouseBeSureToSnatchResponses);
+    }
+
+    /**
+     * 获取推荐房源5条
+     *
+     * @param recommendEsf5Request
+     * @return
+     */
+    @RequestMapping(value = "/getRecommendEsf5", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getRecommendEsf5(RecommendEsf5Request recommendEsf5Request) {
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+        RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
+        BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery);
+        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+        return NashResult.build(sellHouseSearchDomainResponse);
     }
 
 }

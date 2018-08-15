@@ -112,7 +112,7 @@
             and user_subscribe_map->>'topicType' = cast(#{record.topicType,jdbcType=INTEGER} as text)
         </if>
         <if test="record.districtId != null">
-            and user_subscribe_map->>'districtId' = cast(#{record.districtId,jdbcType=INTEGER} as text)
+            and user_subscribe_map->>'districtId' = cast(#{record.districtId,jdbcType=VARCHAR} as text)
         </if>
         <if test="record.beginPrice != null">
             and user_subscribe_map->>'beginPrice' = cast(#{record.beginPrice,jdbcType=INTEGER} as text)

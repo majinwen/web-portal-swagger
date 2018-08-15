@@ -25,6 +25,13 @@ public interface SellHouseEsDao {
      */
     SearchResponse getSellHouseCountByPlotsId(Integer plotsId,  String city);
 
+    /**
+     * 根据小区id获取小区的房源数量v2(非聚合)
+     * @param plotsId
+     * @return
+     */
+    SearchResponse getEsfCountByPlotsId(Integer plotsId);
+
 
     SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,  String city);
 

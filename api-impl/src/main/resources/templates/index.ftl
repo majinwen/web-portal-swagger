@@ -4,16 +4,16 @@
     <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/index.css?v=${staticversion}">
-    <meta name="description" content="头条房产，帮你发现美好生活">
+    <meta name="description" content="懂房帝 买房秒懂">
     <meta name="keyword" content="">
-    <title>头条房产 发现美好</title>
+    <title>懂房帝 买房秒懂</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "StatisticsHeader.ftl">
 </head>
 <body>
 <header class="main-top-header gradient">
-    <a href="/" onclick="dashouyelogo(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="头条·房产"></a>
+    <a href="/" onclick="dashouyelogo(this)" class="header-logo"><img src="${staticurl}/images/global/sy_logo@3x.png" alt="懂房帝"></a>
     <div class="search-box">
         <i class="icon"></i>
         <input type="text" class="search-link recommend-index" placeholder="">
@@ -40,7 +40,7 @@
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" <#--onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})"-->>
-                <i class="index-intelligent-icon"></i><p>懂房帝</p>
+                <i class="index-intelligent-icon"></i><p>购房报告</p>
             </a></div>
         </div>
     </section>

@@ -164,4 +164,8 @@ public class HomePageNearEsfDo {
 
 
     private String nearPark;
+
+
+    private Double totalAbsoluteWithBizcircle;
+    private Double isLowPrice;
 }

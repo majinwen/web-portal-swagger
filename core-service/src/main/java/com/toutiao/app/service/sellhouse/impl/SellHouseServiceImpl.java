@@ -191,26 +191,25 @@ public class SellHouseServiceImpl implements SellHouseService{
         //默认列表暂时不做搜索，暂注掉
         //boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseQueryDo);
         //设置搜索规则
-        Date date = new Date();
-        String pastDateOfMonth = DateUtil.getPastDate(29)+" 00:00:00";
-        String pastDateOfWeek = DateUtil.getPastDate(6)+" 00:00:00";
-        String nowDate = DateUtil.format(date)+" 23:59:59";
-        BoolQueryBuilder queryBuilderOfMonth = QueryBuilders.boolQuery();
+//        Date date = new Date();
+//        String pastDateOfMonth = DateUtil.getPastDate(29)+" 00:00:00";
+//        String pastDateOfWeek = DateUtil.getPastDate(6)+" 00:00:00";
+//        String nowDate = DateUtil.format(date)+" 23:59:59";
+//        BoolQueryBuilder queryBuilderOfMonth = QueryBuilders.boolQuery();
 
 
-        queryBuilderOfMonth.must(QueryBuilders.termQuery("is_claim",1));
-        queryBuilderOfMonth.must(QueryBuilders.termQuery("isRecommend",0));
-        queryBuilderOfMonth.must(QueryBuilders.termsQuery("isDel", "0"));
-        queryBuilderOfMonth.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("isCutPrice").gt(0)));
+//        queryBuilderOfMonth.must(QueryBuilders.termQuery("is_claim",1));
+//        queryBuilderOfMonth.must(QueryBuilders.termQuery("isRecommend",0));
+//        queryBuilderOfMonth.must(QueryBuilders.termsQuery("isDel", "0"));
+//        queryBuilderOfMonth.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("isCutPrice").gt(0)));
 //        queryBuilderOfMonth.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("claim_time").gt(pastDateOfMonth).lte(nowDate)));
 //        queryBuilderOfMonth.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("price_increase_decline").gt(0)));
 
-        boolQueryBuilder.should(queryBuilderOfMonth);
+//        boolQueryBuilder.should(queryBuilderOfMonth);
 
         BoolQueryBuilder queryBuilderOfWeek = QueryBuilders.boolQuery();
-        queryBuilderOfWeek.must(QueryBuilders.termQuery("is_claim",1));
+        queryBuilderOfWeek.must(QueryBuilders.termQuery("is_claim",0));
         queryBuilderOfWeek.must(QueryBuilders.termQuery("isNew",1));
-        queryBuilderOfWeek.must(QueryBuilders.termQuery("isRecommend",0));
         queryBuilderOfWeek.must(QueryBuilders.termsQuery("isDel", "0"));
 //        queryBuilderOfWeek.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("import_time").gt(pastDateOfWeek).lte(nowDate)));
         boolQueryBuilder.should(queryBuilderOfWeek);
@@ -383,7 +382,8 @@ public class SellHouseServiceImpl implements SellHouseService{
 
         //过滤为删除
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-        booleanQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+//        booleanQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
 
         FunctionScoreQueryBuilder query = null;
         //条件is_claim标志设置权重
@@ -594,7 +594,8 @@ public class SellHouseServiceImpl implements SellHouseService{
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew",1));
         }
         booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("status",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
+//        booleanQueryBuilder.must(QueryBuilders.termQuery("status",0));
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
 
         if (null!=sellHouseBeSureToSnatchDoQuery.getSortFile() && null!=sellHouseBeSureToSnatchDoQuery.getSort() )
@@ -651,6 +652,14 @@ public class SellHouseServiceImpl implements SellHouseService{
             userSubscribeDetailDo.setTopicType(3);
             userSubscribeDetailDo.setBeginPrice((int) sellHouseBeSureToSnatchDoQuery.getBeginPrice());
             userSubscribeDetailDo.setEndPrice((int) sellHouseBeSureToSnatchDoQuery.getEndPrice());
+            String districtIdsStr = "";
+            Integer[] districtIds = sellHouseBeSureToSnatchDoQuery.getDistrictIds();
+            if (StringTool.isNotEmpty(districtIds)) {
+                //区域id排序，与订阅信息匹配
+                Arrays.sort(districtIds);
+                districtIdsStr = StringTool.IntegerArrayToString(districtIds);
+            }
+            userSubscribeDetailDo.setDistrictId(districtIdsStr);
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.parseInt(userBasic.getUserId()));
             if (null!=userSubscribe)
             {
@@ -660,6 +669,62 @@ public class SellHouseServiceImpl implements SellHouseService{
         sellHouseBeSureToSnatchDomain.setSubscribeId(subscribeId);
         sellHouseBeSureToSnatchDomain.setTotalCount(hits.totalHits);
          return sellHouseBeSureToSnatchDomain ;
+    }
+
+    /**
+     * 获取推荐房源
+     *
+     * @param recommendEsf5DoQuery
+     * @return
+     */
+    @Override
+    public SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery) {
+        SellHouseSearchDomain sellHouseSearchDomain = new SellHouseSearchDomain();
+        BoolQueryBuilder recommendEsf5 = filterSellHouseChooseService.getRecommendEsf5(recommendEsf5DoQuery);
+        FieldSortBuilder sortFile = null;
+        if (null != recommendEsf5DoQuery.getSortFile() && null != recommendEsf5DoQuery.getSort()) {
+            if (recommendEsf5DoQuery.getSort().equals(1)) {
+                sortFile = SortBuilders.fieldSort(recommendEsf5DoQuery.getSortFile()).order(SortOrder.DESC);
+            } else {
+                sortFile = SortBuilders.fieldSort(recommendEsf5DoQuery.getSortFile()).order(SortOrder.ASC);
+            }
+        }
+        SearchResponse RecommendEsf5List = sellHouseEsDao.getBeSureToSnatchList(recommendEsf5,
+                recommendEsf5DoQuery.getPageNum(), recommendEsf5DoQuery.getPageSize(), sortFile);
+        SearchHits hits = RecommendEsf5List.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        List<SellHousesSearchDo> sellHousesSearchDos = new ArrayList<>();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String details = searchHit.getSourceAsString();
+                SellHousesSearchDo sellHousesSearchDo = JSON.parseObject(details, SellHousesSearchDo.class);
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if (sellHousesSearchDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+                    //认领状态取认领数据
+                    sellHousesSearchDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
+                    sellHousesSearchDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
+                    List<String> tags = (List<String>) searchHit.getSource().get("claimTagsName");
+                    String[] tagsName = new String[tags.size()];
+                    tags.toArray(tagsName);
+                    sellHousesSearchDo.setTagsName(tagsName);
+                    sellHousesSearchDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
+                } else {
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                }
+                sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
+                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                sellHousesSearchDos.add(sellHousesSearchDo);
+            }
+            sellHouseSearchDomain.setData(sellHousesSearchDos);
+            sellHouseSearchDomain.setTotalNum((int) RecommendEsf5List.getHits().getTotalHits());
+        } else {
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND, "二手房列表为空");
+        }
+        return sellHouseSearchDomain;
     }
 
 }
