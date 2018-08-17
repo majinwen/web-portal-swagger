@@ -79,4 +79,8 @@ public class IntelligenceFhRes {
 
     private Integer collectStatus;
 
+    private String layoutArray;
+
+    private String districtArray;
+
 }

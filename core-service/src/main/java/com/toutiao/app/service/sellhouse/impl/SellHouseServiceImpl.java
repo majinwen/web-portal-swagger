@@ -96,7 +96,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
                     sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
                     sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
-                    Date date = new Date();
+//                    Date date = new Date();
 //                    if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
 //                        if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
 //                            int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
