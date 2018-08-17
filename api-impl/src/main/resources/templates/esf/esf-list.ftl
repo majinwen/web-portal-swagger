@@ -168,14 +168,24 @@
     </div>
 </section>
 <section id="result-section">
-    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="app-download-top-tips-wrapper">
-        <div class="download-btn">
-            <i></i>
-            <span>下载懂房帝APP</span>
-        </div>
+    <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
+        <img src="${staticurl}/images/download/esf-list-download.jpg" width="100%" alt="下载懂房帝APP">
     </a>
     <ul id="valueList" class="list-item-wrapper"></ul>
 </section>
+<div class="download-app-bottom-tips">
+    <div class="detail">
+        <img src="http://wap-qn.toutiaofangchan.com/ic_launcher.png" alt="懂房帝">
+        <p>
+            <strong>下载懂房帝APP</strong>
+            <span>查看更多减价房源</span>
+        </p>
+    </div>
+    <div class="btn">打开APP</div>
+    <div class="download-app-bottom-tips-close">
+        <img src="${staticurl}/images/download/download-app-bottom-tips-close.png" alt="">
+    </div>
+</div>
 <#include "../user.ftl">
 <#include "../search.ftl">
 <div class="sort-icon"></div>
@@ -194,7 +204,7 @@
     {{each data}}
     {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
     <li>
-        <a class="list-item" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom">
+        <a class="list-item" href="https://at.umeng.com/onelink/K9nqai">
             <div class="clear">
                 <div class="list-item-img-box">
                     <img src="${staticurl}/images/house-app-download.jpg" alt="优惠房源">
@@ -303,6 +313,13 @@
     //二手房拦截默认的下拉加载
     window["$toutiao_customer_pullUpAction"]=true;
     $(function () {
+        $('.download-app-bottom-tips-close').on('click', function () {
+            $('.download-app-bottom-tips').hide()
+        });
+        $('.download-app-bottom-tips .btn').on('click', function () {
+            location.href = "https://at.umeng.com/onelink/K9nqai"
+        });
+
         var urlparam =GetRequest();
         if (urlparam["lat"] && urlparam["lon"]) {
             window["$toutiao_customer_pullUpAction_latlon"] = [urlparam["lat"], urlparam["lon"]]

@@ -13,6 +13,7 @@ import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
+import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -120,6 +121,14 @@ public class PlotEsDaoImpl implements PlotEsDao {
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom((from - 1) * size).setSize(size).execute().actionGet();
         return  searchResponse;
 
+    }
+
+    @Override
+    public SearchResponse getPlotByRecommendCondition(BoolQueryBuilder boolQueryBuilder,ScriptSortBuilder scrip) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(scrip).setSize(5).execute().actionGet();
+        return  searchResponse;
     }
 
 }

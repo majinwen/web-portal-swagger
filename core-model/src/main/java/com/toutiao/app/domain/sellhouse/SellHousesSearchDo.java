@@ -307,4 +307,13 @@ public class SellHousesSearchDo {
      */
     private Integer rankInLowCommunityLayout;
 
+    /**
+     * 标签总数
+     */
+    private Integer extraTagsCount;
+
+    /**
+     * 推荐房源主题排序
+     */
+    private Integer recommendHouseTopicSort;
 }

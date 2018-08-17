@@ -1,6 +1,7 @@
 package com.toutiao.app.service.plot;
 
 
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -56,6 +57,9 @@ public interface PlotsRestService {
      */
 
     List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery);
+
+
+    List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
 
 
 }

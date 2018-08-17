@@ -173,10 +173,7 @@ public class StringTool {
         if (obj == null) {
             return true;
         }
-        if (StringUtils.isBlank(obj.toString())) {
-            return true;
-        }
-        return false;
+        return StringUtils.isBlank(obj.toString());
     }
 
     /**
@@ -190,10 +187,7 @@ public class StringTool {
         if (obj == null) {
             return false;
         }
-        if (StringUtils.isBlank(obj.toString())) {
-            return false;
-        }
-        return true;
+        return !StringUtils.isBlank(obj.toString());
     }
 
     /**
@@ -248,6 +242,10 @@ public class StringTool {
         return (o == null || o.size() == 0);
     }
 
+    public static boolean isEmpty(Integer[] o) {
+        return (o == null || o.length == 0);
+    }
+
     /**
      * 判断字符串是否为null或空字符串,在模糊查询的时候很有意义
      */
@@ -273,6 +271,10 @@ public class StringTool {
 
     public static boolean isNotEmpty(Object o) {
         return (o != null);
+    }
+
+    public static boolean isNotEmpty(Integer[] o) {
+        return !isEmpty(o);
     }
 
     public static boolean isNotEmptyList(List o) {
@@ -428,10 +430,7 @@ public class StringTool {
         if (o == null) {
             return true;
         }
-        if (StringUtils.isBlank(o.toString())) {
-            return true;
-        }
-        return false;
+        return StringUtils.isBlank(o.toString());
     }
 
     /**
@@ -446,10 +445,7 @@ public class StringTool {
         if (o == null) {
             return false;
         }
-        if (StringUtils.isBlank(o.toString())) {
-            return false;
-        }
-        return true;
+        return !StringUtils.isBlank(o.toString());
     }
 
     /**
@@ -467,25 +463,13 @@ public class StringTool {
 
             String test = "\\d+.\\d+";
 
-            if (number != null && Pattern.compile(test).matcher(number).matches()) {
-
-                rs = true;
-            } else {
-
-                rs = false;
-            }
+            rs = number != null && Pattern.compile(test).matcher(number).matches();
 
         } else {
 
             String test = "\\d+";
 
-            if (number != null && Pattern.compile(test).matcher(number).matches()) {
-
-                rs = true;
-            } else {
-
-                rs = false;
-            }
+            rs = number != null && Pattern.compile(test).matcher(number).matches();
 
         }
 
@@ -660,11 +644,7 @@ public class StringTool {
         if (isEmpty(num)) {
             return false;
         } else {
-            if (num > 0) {
-                return true;
-            } else {
-                return false;
-            }
+            return num > 0;
         }
     }
 
@@ -695,5 +675,22 @@ public class StringTool {
             e.printStackTrace();
         }
         return pageHTML.toString();
+    }
+
+    /**
+     * Integer[]转字符串
+     *
+     * @param ids
+     * @return
+     */
+    public static String IntegerArrayToString(Integer[] ids) {
+        if (StringTool.isEmpty(ids)) {
+            return "";
+        }
+        StringBuilder id = new StringBuilder();
+        for (int i = 0; i < ids.length; i++) {
+            id.append(ids[i].toString() + ",");
+        }
+        return id.substring(0, id.length() - 1).toString();
     }
 }

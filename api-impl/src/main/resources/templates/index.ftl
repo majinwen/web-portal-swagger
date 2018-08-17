@@ -40,7 +40,7 @@
                 <i class="index-plot-icon"></i><p>小区</p>
             </a></div>
             <div class="banner-nav-item index-nav-item"><a id="index-findhouse" class="index-findhouse" href="${router_city('/findhouse/')}" <#--onclick="zhuge.track('导航_大首页',{'导航名称':'懂房帝','页面来源URL':window.location.href})"-->>
-                <i class="index-intelligent-icon"></i><p>懂房帝</p>
+                <i class="index-intelligent-icon"></i><p>购房报告</p>
             </a></div>
         </div>
     </section>
@@ -126,6 +126,19 @@
             </div>
             </#if>
         </div>
+    </section>
+</div>
+<div class="module-bottom-fill">
+    <section class="primary-message">
+        <ul class="primary-item">
+            <li class="download-app">
+                <p>
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="primary-app-logo"></a>
+                    下载懂房帝APP，查看最新成交数据
+                    <a href="https://at.umeng.com/onelink/K9nqai" class="arrows-right"></a>
+                </p>
+            </li>
+        </ul>
     </section>
 </div>
 <section>

@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/rest/homePage")
@@ -139,10 +140,10 @@ public class HomePageRestController {
     @ResponseBody
     public  NashResult homePageTop50()
     {
-        List<HomePageTop50Do> homePageTop50Dos= homePageRestService.getHomePageTop50();
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageTop50Dos));
-        List<HomePageTop50Response> homePageTop50ResponseList=JSONObject.parseArray(json.toJSONString(),HomePageTop50Response.class);
-        return NashResult.build(homePageTop50ResponseList);
+        Map<String,HomePageTop50Do> homePageTop50Dos= homePageRestService.getHomePageTop50();
+//        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageTop50Dos));
+//        List<HomePageTop50Response> homePageTop50ResponseList=JSONObject.parseArray(json.toJSONString(),HomePageTop50Response.class);
+        return NashResult.build(homePageTop50Dos);
 
     }
 

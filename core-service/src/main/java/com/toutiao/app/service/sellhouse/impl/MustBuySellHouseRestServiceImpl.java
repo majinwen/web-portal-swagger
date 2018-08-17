@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -47,7 +48,6 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         MustBuyShellHouseDomain mustBuyShellHouseDomain = new MustBuyShellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
-        Integer areaId = mustBuyShellHouseDoQuery.getDistrictId();
         if (topicType == 1) {
             //降价房
             booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
@@ -57,8 +57,9 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         }
 
         //区域
-        if (areaId != null && areaId != 0) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", areaId));
+        Integer[] districtIds = mustBuyShellHouseDoQuery.getDistrictIds();
+        if (StringTool.isNotEmpty(districtIds)) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
         }
 
         //新导入房源
@@ -66,7 +67,6 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         if (isNew != null) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", isNew));
         }
-
 
         //价格区间
         double beginPrice = mustBuyShellHouseDoQuery.getBeginPrice();
@@ -78,7 +78,17 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         } else if (beginPrice != 0 && endPrice == 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
         }
+
+        //排序
         Integer sort = mustBuyShellHouseDoQuery.getSort();
+        if (sort == null) {
+            //降价房按更新时间降序，捡漏房按总价升序
+            if (topicType == 1) {
+                sort = 0;
+            } else if (topicType == 2) {
+                sort = 1;
+            }
+        }
         Integer pageNum = mustBuyShellHouseDoQuery.getPageNum();
         Integer pageSize = mustBuyShellHouseDoQuery.getPageSize();
         SearchResponse cutPriceSellHouse = mustBuySellHouseEsDao.getMustBuySellHouse(booleanQueryBuilder, sort, pageNum, pageSize, topicType);
@@ -122,7 +132,13 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
             UserBasic userBasic = UserBasic.getCurrent();
             UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
             userSubscribeDetailDo.setTopicType(topicType);
-            userSubscribeDetailDo.setDistrictId(areaId);
+            String districtIdsStr = "";
+            if (StringTool.isNotEmpty(districtIds)) {
+                //区域id排序，与订阅信息匹配
+                Arrays.sort(districtIds);
+                districtIdsStr = StringTool.IntegerArrayToString(districtIds);
+            }
+            userSubscribeDetailDo.setDistrictId(districtIdsStr);
             userSubscribeDetailDo.setBeginPrice((int) beginPrice);
             userSubscribeDetailDo.setEndPrice((int) endPrice);
 

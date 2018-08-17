@@ -3,7 +3,6 @@ package com.toutiao.app.service.newhouse;
 
 
 import com.toutiao.app.domain.newhouse.*;
-import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 
 import java.util.List;
 
@@ -34,6 +33,11 @@ public interface NewHouseRestService {
      * 新房交通配套
      */
     NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode);
+
+    /**
+     * 根据推荐条件查询一条推荐房源
+     */
+    NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
 
 
 

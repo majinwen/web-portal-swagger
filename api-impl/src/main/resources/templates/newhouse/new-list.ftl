@@ -151,94 +151,24 @@
     </div>
 </section>
 <section id="result-section">
-    <a href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom" class="app-download-top-tips-wrapper">
-        <div class="download-btn">
-            <i></i>
-            <span>下载懂房帝APP</span>
-        </div>
+    <a href="https://at.umeng.com/onelink/K9nqai" class="app-download-top-tips-wrapper">
+        <img src="${staticurl}/images/download/new-list-download.jpg" width="100%" alt="下载懂房帝APP">
     </a>
-    <ul id="valueList">
-    <#--<#if builds?exists>
-        <#list builds as map>
-            &lt;#&ndash;<input type="hidden" name="total" value="${total}">&ndash;&gt;
-            <li ><a id="${total}" class="list-item new" href="${router_city('/loupan/'+map['building_name_id']?c+'.html')}">
-                <div class="clear">
-                    <div class="list-item-img-box">
-                        <#if map['building_title_img']?exists>
-                            <#assign imgt = map['building_title_img']?split(",")>
-                            <#if imgt[0]?? && imgt[0] != ''>
-                                <img src="${qiniuimage}/${imgt[0]}-tt400x300" alt="${map['building_name']}">
-                            <#else>
-                                <img src="${staticurl}/images/global/tpzw_image.png" alt="${map['building_name']}">
-                            </#if>
-                        </#if>
-                    </div>
-                    <div class="list-item-cont">
-                        <span hidden="hidden"><#if map['building_name_id']?exists>${map['building_name_id']}</#if></span>
-                        <h3 class="cont-block-1">
-                            <span class="ellipsis">${map['building_name']}</span>
-                            <#if map['property_type']?exists>
-                                <em>${map['property_type']}</em>
-                            </#if>
-                        </h3>
-                        <p class="cont-block-2">
-                            <em class="high-light-red">
-                                <#if map['average_price']?exists && map['average_price'] gt 0>
-                                ${map['average_price']}元/㎡
-                                <#else>
-                                    <#if map['total_price']?exists && map['total_price'] gt 0>
-                                    ${map['total_price']}万元/套
-                                    <#else>售价待定
-                                    </#if>
-                                </#if>
-                            </em>
-                        </p>
-                        <p class="cont-block-3">
-                            <#if map['nearsubway']??>
-                                <#assign rounditems = map['nearsubway']?split("$")>
-                                <#if rounditems[2]?number gt 1000>
-                                    <#assign x = rounditems[2]?number/1000>
-                                    距离${rounditems[1]}[${rounditems[0]}] ${x?string("#.#")}km
-                                <#else>
-                                    距离${rounditems[1]}[${rounditems[0]}] ${rounditems[2]}m
-                                </#if>
-                            <#else>
-                                <#if map['district_name']?exists>
-                                    ${map['district_name']}
-                                </#if>
-                                <#if map['house_min_area']?exists&&map['house_max_area']?exists>
-                                    / ${map['house_min_area']}㎡-${map['house_max_area']}㎡
-                                </#if>
-                            </#if>
-                        </p>
-                        <div class="cont-block-4 house-labelling gray middle">
-                            <#if  map['building_tags']?exists>
-                                <#assign item = map['building_tags']>
-                                <#list item as itemValue>
-                                    <#if itemValue?exists && itemValue_index<3>
-                                        <span>${itemValue}</span>
-                                    </#if>
-                                </#list>
-                            </#if>
-                        </div>
-                        <div class="cont-block-sale">
-                            <em><#if map['sale_status_name']?exists>${map['sale_status_name']}</#if></em>
-                        </div>
-                    </div>
-                </div>
-                <#if map['activity_desc']?exists>
-                <div class="new-active">
-                    <i class="icon"></i><em>活动：</em>
-                   <span>${map['activity_desc']}</span>
-                </div>
-                </#if>
-            </a></li>
-        </#list>
-    </#if>-->
-    </ul>
-    <#--<p class="tip-box none">有新上房源，我们会及时通知您哦！</p>-->
+    <ul id="valueList"></ul>
 </section>
-
+<div class="download-app-bottom-tips">
+    <div class="detail">
+        <img src="http://wap-qn.toutiaofangchan.com/ic_launcher.png" alt="懂房帝">
+        <p>
+            <strong>看看你家房子涨价没？</strong>
+            <span>下载懂房帝APP随时查看</span>
+        </p>
+    </div>
+    <div class="btn">打开APP</div>
+    <div class="download-app-bottom-tips-close">
+        <img src="${staticurl}/images/download/download-app-bottom-tips-close.png" alt="">
+    </div>
+</div>
 <div class="sort-icon"></div>
 <div class="sort-content-box">
     <div class="sort-mask"></div>
@@ -258,7 +188,7 @@
     {{each data}}
     {{if $index == 3 && $value.pageNum == 1 || $index == 5 && $value.pageNum == 2}}
     <li>
-        <a class="list-item" href="http://a.app.qq.com/o/simple.jsp?pkgname=com.toutiaofangchan.bidewucustom">
+        <a class="list-item" href="https://at.umeng.com/onelink/K9nqai">
             <div class="clear">
                 <div class="list-item-img-box">
                     <img src="http://s1.qn.toutiaofangchan.com/81b8769cabd84a92b6b5812dfbdd0f04.jpg-tt400x300" alt="国瑞熙墅">
@@ -349,6 +279,12 @@
 <script src="${staticurl}/js/template-web.js?v=${staticversion}"></script>
 <script>
     $(function () {
+        $('.download-app-bottom-tips-close').on('click', function () {
+            $('.download-app-bottom-tips').hide()
+        });
+        $('.download-app-bottom-tips .btn').on('click', function () {
+            location.href = "https://at.umeng.com/onelink/K9nqai"
+        });
 
         var count=$("#result-section").find("li").find('a').attr("id");
         var url = document.referrer;

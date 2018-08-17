@@ -13,15 +13,10 @@ public class RecommendEsf5Request extends BaseQueryRequest {
     /**
      * 排序字段
      */
-    private String sortFile = "extraTagsCount";
+    private String sortFile = "recommendHouseTopicSort";
 
     /**
      * 排序
      */
     private Integer sort = 1;
-
-    /**
-     * 页容量
-     */
-    private Integer pageSize = 5;
 }
