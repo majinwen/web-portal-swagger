@@ -161,6 +161,16 @@ public class NewHouseListDo  {
     private  String openedTime;
 
     /**
+     * 开盘时间描述
+     */
+    private String openedTimeDesc;
+
+    /**
+     * 交付时间描述
+     */
+    private String deliverTimeDesc;
+
+    /**
      * 楼盘动态
      */
     private List<NewHouseDynamicDo> newHouseDynamic;
