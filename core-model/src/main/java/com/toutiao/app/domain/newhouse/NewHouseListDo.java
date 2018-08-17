@@ -3,6 +3,7 @@ package com.toutiao.app.domain.newhouse;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -130,5 +131,38 @@ public class NewHouseListDo  {
      * 推荐理由
      */
     private String buildingFeature;
+
+    /**
+     * 建筑类别
+     */
+    private String  buildingType;
+    /**
+     * 户型最低价格
+     */
+    private Double houseMinPrice;
+    /**
+     * 户型最大价格
+     */
+    private Double houseMaxPrice;
+
+    /**
+     * 开发商
+     */
+    private  String  developers;
+
+    /**
+     * 物业管理公司
+     */
+    private  String propertymanage;
+
+    /**
+     * 开盘时间
+     */
+    private  String openedTime;
+
+    /**
+     * 楼盘动态
+     */
+    private List<NewHouseDynamicDo> newHouseDynamic;
 
 }

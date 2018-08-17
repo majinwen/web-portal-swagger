@@ -288,7 +288,16 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     }catch (Exception e){
                         logger.error("获取新房户型信息异常信息={}",e.getStackTrace());
                     }
-
+                    //获取新房户型价格范围
+                    NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId());
+                    newHouseListDos.setHouseMinPrice(newHouseLayoutPriceDo.getHouseMinPrice());
+                    newHouseListDos.setHouseMaxPrice(newHouseLayoutPriceDo.getHouseMaxPrice());
+                    //新房动态
+                    NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
+                    newHouseDynamicDoQuery.setNewCode(newHouseListDos.getBuildingNameId());
+                    newHouseDynamicDoQuery.setPageSize(1);
+                    List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery);
+                    newHouseListDos.setNewHouseDynamic(newHouseDynamicDoList);
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
 //                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);

@@ -5,6 +5,7 @@ import com.toutiao.app.dao.newhouse.NewHouseLayoutEsDao;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutPriceDo;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -16,6 +17,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
+import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,5 +108,27 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
             newHouseLayoutDoList.add(newHouseLayoutDo);
         }
         return newHouseLayoutDoList;
+    }
+
+    /**
+     * 根据新房id获取户型价格范围
+     * @param newHouseId
+     * @return
+     */
+    @Override
+    public NewHouseLayoutPriceDo getNewHouseLayoutPriceByNewHouseId(Integer newHouseId) {
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        NewHouseLayoutPriceDo newHouseLayoutPriceDo = new NewHouseLayoutPriceDo();
+//        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
+        boolQueryBuilder.must(QueryBuilders.termQuery("building_id",newHouseId));
+
+        SearchResponse searchResponse=newHouseLayoutEsDao.getLayoutPriceByNewHouseId(boolQueryBuilder);
+
+        InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
+        newHouseLayoutPriceDo.setHouseMaxPrice(lowestPrice.getValue());
+        InternalMax highestPrice = searchResponse.getAggregations().get("maxPrice");
+        newHouseLayoutPriceDo.setHouseMaxPrice(highestPrice.getValue());
+        return newHouseLayoutPriceDo;
     }
 }
