@@ -12,6 +12,7 @@ import com.toutiao.web.dao.entity.compared.HouseCompared;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/rest/compared")
@@ -58,11 +60,14 @@ public class ComparedRestController {
                 // 已加入过对比，状态为已删除
                 if (currHouseCompared.getIsDel() == 1) {
                     currHouseCompared.setIsDel((short) 0);
+                    currHouseCompared.setCreateTime(DateTime.now().toDate());
                     comparedService.updateByPrimaryKeySelective(currHouseCompared);
                     return NashResult.build(currHouseCompared);
                 }
                 // 已加入过对比，状态为未删除
                 else {
+                    currHouseCompared.setCreateTime(DateTime.now().toDate());
+                    comparedService.updateByPrimaryKeySelective(currHouseCompared);
                     return NashResult.Fail("该房源已加入对比列表");
                 }
             }
@@ -115,7 +120,16 @@ public class ComparedRestController {
             String[] currHouseIdArray = currHouseId.split("_");
             List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
             if (!currHouseIdList.contains(comparedRequest.getHouseId())) {
-                currHouseId = currHouseId + "_" + comparedRequest.getHouseId();
+                currHouseId = comparedRequest.getHouseId() + "_" + currHouseId;
+            } else {
+                List<String> newCurrHouseIdList = new ArrayList<>();
+                newCurrHouseIdList.add(comparedRequest.getHouseId());
+                for (String houseId : currHouseIdList) {
+                    if (!Objects.equals(houseId, comparedRequest.getHouseId())) {
+                        newCurrHouseIdList.add(houseId);
+                    }
+                }
+                currHouseId = StringUtils.collectionToDelimitedString(newCurrHouseIdList, "_");
             }
         } else {
             currHouseId = comparedRequest.getHouseId();
