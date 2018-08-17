@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/{citypath}/findhouse/byHouseReport")
+@RequestMapping("/rest/findhouse/byHouseReport")
 public class HomePageReportController {
     @Autowired
     private IntelligenceFhTdService intelligenceFhTdService;
