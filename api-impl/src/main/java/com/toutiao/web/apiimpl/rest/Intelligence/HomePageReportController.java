@@ -61,6 +61,8 @@ public class HomePageReportController {
             Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
             map.put("datajson",datajson);
             map.put("totalPrice",intelligenceFhRes.getTotalPrice());
+            map.put("layout",intelligenceFhRes.getLayoutArray());
+            map.put("district",intelligenceFhRes.getDistrictArray());
             map.put("fhpt",fhpt);
             map.put("fhtp",fhtp);
         return NashResult.build(map);
