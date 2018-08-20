@@ -11,7 +11,7 @@ public class UserSubscribeDetailDo {
     /**
      * 区域Id
      */
-    private Integer districtId;
+    private String districtId;
     /**
      * 区域
      */
