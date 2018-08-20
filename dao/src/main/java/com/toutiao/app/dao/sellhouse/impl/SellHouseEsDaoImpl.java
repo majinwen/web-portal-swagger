@@ -34,6 +34,10 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     private String projhouseType;//索引类
     @Value("${distance}")
     private Double distance;
+    @Value("${tt.search.engines}")
+    private String searchEnginesIndex ;
+    @Value("${tt.search.engines.type}")
+    private String searchEnginesType;
 
 
     @Override
@@ -152,6 +156,24 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
                 .setQuery(idsQueryBuilder)
                 .execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchresponse;
     }
 
