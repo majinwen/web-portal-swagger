@@ -126,7 +126,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
         SearchResponse searchResponse=newHouseLayoutEsDao.getLayoutPriceByNewHouseId(boolQueryBuilder);
 
         InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
-        newHouseLayoutPriceDo.setHouseMaxPrice(lowestPrice.getValue());
+        newHouseLayoutPriceDo.setHouseMinPrice(lowestPrice.getValue());
         InternalMax highestPrice = searchResponse.getAggregations().get("maxPrice");
         newHouseLayoutPriceDo.setHouseMaxPrice(highestPrice.getValue());
         return newHouseLayoutPriceDo;
