@@ -2,6 +2,7 @@ package com.toutiao.web.service.newhouse.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -15,6 +16,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
@@ -52,6 +54,10 @@ public class NewHouseServiceImpl implements NewHouseService{
     private String layoutType;//子类索引类型
     @Value("${distance}")
     private Double distance;
+    @Value("${tt.search.engines}")
+    private String searchEnginesIndex ;
+    @Value("${tt.search.engines.type}")
+    private String searchEnginesType;
 
     private static final Integer IS_DEL = 0;//新房未删除
     private static final Integer IS_APPROVE = 1;//新房未下架
@@ -67,6 +73,29 @@ public class NewHouseServiceImpl implements NewHouseService{
         //建立连接
 
         TransportClient client = esClientTools.init();
+
+        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+        if (StringTool.isNotBlank(newHouseQuery.getKeyword())) {
+            SearchResponse searchResponse = null;
+            bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseQuery.getKeyword()));
+            searchResponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType).setQuery(bqbPlotName).execute().actionGet();
+            long total = searchResponse.getHits().getTotalHits();
+            out: if(total > 0l){
+                break out;
+            }else{
+                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                bqb.must(QueryBuilders.multiMatchQuery(newHouseQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+                searchResponse = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType).setQuery(bqb).execute().actionGet();
+                if(searchResponse.getHits().getTotalHits()>0l){
+                    SearchHits hits = searchResponse.getHits();
+                    SearchHit[] searchHists = hits.getHits();
+                    outFor:for (SearchHit hit : searchHists) {
+                        newHouseQuery.setKeyword(hit.getSource().get("search_name").toString());
+                        break outFor ;
+                    }
+                }
+            }
+        }
         //
         SearchResponse searchresponse = new SearchResponse();
         //校验筛选条件，根据晒选条件展示列表
