@@ -1,5 +1,6 @@
 package com.toutiao.app.service.subscribe;
 
+import com.toutiao.app.domain.subscribe.UserConditionSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeListDo;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
@@ -30,4 +31,15 @@ public interface SubscribeService {
      * @return
      */
     List<UserSubscribeListDo> getIndexSubscribeInfo(Integer userId);
+
+
+    /**
+     * 获取我的条件订阅页数据
+     * @param userId
+     * @return
+     */
+    List<UserSubscribe> getMyConditionSubscribeInfo(Integer userId);
+
+
+    UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId);
 }

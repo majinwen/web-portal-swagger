@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDomain;
+import com.toutiao.app.domain.subscribe.UserConditionSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeListDo;
 import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
@@ -73,6 +74,23 @@ public class SubscribeServiceImpl implements SubscribeService {
     @Override
     public List<UserSubscribeListDo> getIndexSubscribeInfo(Integer userId) {
         return selectByUserId(userId, Boolean.TRUE);
+    }
+
+    @Override
+    public List<UserSubscribe> getMyConditionSubscribeInfo(Integer userId) {
+        return userSubscribeMapper.selectConditionSubscribeByUserId(userId);
+    }
+
+    @Override
+    public UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId) {
+        if (userConditionSubscribeDetailDo.getBeginPrice() == null) {
+            userConditionSubscribeDetailDo.setBeginPrice(0);
+        }
+        if (userConditionSubscribeDetailDo.getEndPrice() == null) {
+            userConditionSubscribeDetailDo.setEndPrice(0);
+        }
+
+        return userSubscribeMapper.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo, userId);
     }
 
     /**
