@@ -2,6 +2,7 @@ package com.toutiao.app.dao.newhouse.impl;
 
 import com.toutiao.app.dao.newhouse.NewHouseLayoutEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -51,5 +52,23 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
                 .setQuery(booleanQueryBuilder).setSize(1000)
                 .execute().actionGet();
         return searchresponse;
+    }
+
+    /**
+     * 根据新房id获取户型价格范围
+     * @param booleanQueryBuilder
+     * @return
+     */
+    @Override
+    public SearchResponse getLayoutPriceByNewHouseId(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(newHouseIndex).setTypes(layoutType);
+        SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).setSize(0)
+                .addAggregation(AggregationBuilders.min("minPrice").field("total_price"))
+                .addAggregation(AggregationBuilders.max("maxPrice").field("total_price"))
+                .execute().actionGet();
+
+        return searchResponse;
     }
 }

@@ -41,6 +41,7 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     }
 
 
+
     @Override
     public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort ) {
         TransportClient client = esClientTools.init();
@@ -48,11 +49,11 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         if (null!=levelSort && null!=buildingSort)
         {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(boolQueryBuilder).addSort(levelSort).addSort(buildingSort).setFetchSource(
+                    .setQuery(boolQueryBuilder).addSort(levelSort).addSort(buildingSort)/*.setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
-                            null)
+                            null)*/
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
@@ -60,11 +61,11 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         else
         {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(boolQueryBuilder).setFetchSource(
+                    .setQuery(boolQueryBuilder)/*.setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
-                            null)
+                            null)*/
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
