@@ -202,7 +202,6 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
         SearchResponse searchResponse = null;
         if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
-//            booleanQueryBuilder.must(QueryBuilders.multiMatchQuery(sellHouseDoQuery.getKeyword(),"search_name").minimumShouldMatch("80%"));
             bqbPlotName.must(QueryBuilders.boolQuery()
                     .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
                     .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
