@@ -26,6 +26,7 @@ import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -51,6 +52,10 @@ public class PlotServiceImpl implements PlotService {
     private String childType;
     @Value("${distance}")
     private Double distance;
+    @Value("${tt.search.engines}")
+    private String searchEnginesIndex ;
+    @Value("${tt.search.engines.type}")
+    private String searchEnginesType;
 
     @Autowired
     private ESClientTools esClientTools;
@@ -129,6 +134,30 @@ public class PlotServiceImpl implements PlotService {
             if (villageRequest.getId() != null) {
                 boolQueryBuilder.must(QueryBuilders.termQuery("id", villageRequest.getId()));
             }
+
+            BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+            if (StringTool.isNotBlank(villageRequest.getKeyword())) {
+                SearchResponse searchResponse = null;
+                bqbPlotName.must(QueryBuilders.termQuery("rc_accurate",villageRequest.getKeyword()));
+                searchResponse = client.prepareSearch(index).setTypes(parentType).setQuery(bqbPlotName).execute().actionGet();
+                long total = searchResponse.getHits().getTotalHits();
+                out: if(total > 0l){
+                    break out;
+                }else{
+                    BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                    bqb.must(QueryBuilders.multiMatchQuery(villageRequest.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+                    searchResponse = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType).setQuery(bqb).execute().actionGet();
+                    if(searchResponse.getHits().getTotalHits()>0l){
+                        SearchHits hits = searchResponse.getHits();
+                        SearchHit[] searchHists = hits.getHits();
+                        outFor:for (SearchHit hit : searchHists) {
+                            villageRequest.setKeyword(hit.getSource().get("search_name").toString());
+                            break outFor ;
+                        }
+                    }
+                }
+            }
+
             //关键字
             if (null != villageRequest.getKeyword()) {
 //                queryBuilder = boolQueryBuilder.must(QueryBuilders.termQuery("rc", villageRequest.getRc()));
