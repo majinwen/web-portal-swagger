@@ -1,6 +1,7 @@
 package com.toutiao.app.dao.newhouse.impl;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -28,6 +29,10 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     private String houseDynamicIndex;
     @Value("${tt.dynamic.type}")
     private  String dynamicType;
+    @Value("${tt.search.engines}")
+    private String searchEnginesIndex ;
+    @Value("${tt.search.engines.type}")
+    private String searchEnginesType;
 
 
     @Override
@@ -98,6 +103,25 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
                 .setQuery(boolQueryBuilder).setSize(1)
                 .execute().actionGet();
         return  searchresponse;
+    }
+
+
+    @Override
+    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(newhouseIndex).setTypes(newhouseType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
     }
 
 }

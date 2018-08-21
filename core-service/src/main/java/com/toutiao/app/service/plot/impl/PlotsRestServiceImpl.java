@@ -28,6 +28,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.script.Script;
@@ -267,6 +268,36 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         String key = "";
         List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+
+        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+
+        if (StringTool.isNotBlank(plotListDoQuery.getKeyword())) {
+            SearchResponse searchResponse = null;
+            bqbPlotName.must(QueryBuilders.termQuery("rc_accurate",plotListDoQuery.getKeyword()));
+//                    .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword();
+            searchResponse = plotEsDao.getPlotByKeyWord(bqbPlotName);
+            long total = searchResponse.getHits().getTotalHits();
+            out: if(total > 0l){
+                break out;
+            }else{
+                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                bqb.must(QueryBuilders.multiMatchQuery(plotListDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+                searchResponse = plotEsDao.getPlotByNickNameKeyWord(bqb);
+                if(searchResponse.getHits().getTotalHits()>0l){
+                    SearchHits hits = searchResponse.getHits();
+
+                    SearchHit[] searchHists = hits.getHits();
+                    outFor:for (SearchHit hit : searchHists) {
+                        hit.getSource().get("search_name");
+                        plotListDoQuery.setKeyword(hit.getSource().get("search_name").toString());
+                        break outFor ;
+                    }
+                }
+            }
+        }
+
+
 
         //关键字
         if (StringTool.isNotEmpty(plotListDoQuery.getKeyword())){

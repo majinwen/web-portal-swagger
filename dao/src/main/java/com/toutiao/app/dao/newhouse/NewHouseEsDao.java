@@ -30,5 +30,10 @@ public interface NewHouseEsDao {
 
     SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder  boolQueryBuilder);
 
+    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
+
+
+    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
+
 
 }
