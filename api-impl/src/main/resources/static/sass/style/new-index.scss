@@ -68,6 +68,7 @@
 }
 .primary-item {
     .download-app {
+        display: block;
         padding: rem(20) rem(30);
         line-height: rem(47);
         @include font-dpr(30);
@@ -75,6 +76,7 @@
 
         p {
             position: relative;
+            color: #3a3a3a;
 
             .arrows-right {
                 position: absolute;

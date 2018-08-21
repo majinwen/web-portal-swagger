@@ -74,15 +74,15 @@
 </div>
 <div class="module-bottom-fill">
     <section class="primary-message">
-        <ul class="primary-item">
-            <li class="download-app">
+        <div class="primary-item">
+            <a class="download-app" href="https://at.umeng.com/onelink/K9nqai">
                 <p>
-                    <a href="https://at.umeng.com/onelink/K9nqai" class="primary-app-logo"></a>
+                    <i class="primary-app-logo"></i>
                     下载懂房帝APP，查看更多楼市最新动态
-                    <a href="https://at.umeng.com/onelink/K9nqai" class="arrows-right"></a>
+                    <i class="arrows-right"></i>
                 </p>
-            </li>
-        </ul>
+            </a>
+        </div>
     </section>
 </div>
 <section>
