@@ -214,16 +214,16 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                 break out;
             }else{
                 BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-                bqb.must(QueryBuilders.multiMatchQuery(sellHouseDoQuery.getKeyword(),"search_nickname").minimumShouldMatch("100%"));
+                bqb.must(QueryBuilders.multiMatchQuery(sellHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
                 searchResponse = sellHouseEsDao.getPlotByNickNameKeyWord(bqb);
                 if(searchResponse.getHits().getTotalHits()>0l){
                     SearchHits hits = searchResponse.getHits();
 
                     SearchHit[] searchHists = hits.getHits();
-                    for (SearchHit hit : searchHists) {
+                    outFor:for (SearchHit hit : searchHists) {
                         hit.getSource().get("search_name");
                         sellHouseDoQuery.setKeyword(hit.getSource().get("search_name").toString());
-                        continue ;
+                        break outFor ;
                     }
                 }
             }
