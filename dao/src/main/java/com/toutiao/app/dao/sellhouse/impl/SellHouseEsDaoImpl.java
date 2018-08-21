@@ -122,7 +122,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     public SearchResponse getHouseByIds(IdsQueryBuilder idsQueryBuilder) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(idsQueryBuilder)
+                .setQuery(idsQueryBuilder).setSize(1000)
                 .execute().actionGet();
         return searchresponse;
     }
