@@ -16,11 +16,11 @@
     <result column="user_portrait" property="userPortrait" jdbcType="INTEGER" />
     <result column="collect_status" property="collectStatus" jdbcType="INTEGER" />
     <result column="district_id" property="districtId" jdbcType="VARCHAR" />
-    <result column="layout_array" property="layoutArray" jdbcType="INTEGER" />
-    <result column="district_array" property="districtArray" jdbcType="INTEGER" />
+    <result column="layout_array" property="layoutArray" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayStringTypeHandler"/>
+    <result column="district_array" property="districtArray" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayStringTypeHandler"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout, 
+    id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout,layout_array,district_array,
     has_child, has_oldman,create_time,user_portrait,district_id,collect_status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
