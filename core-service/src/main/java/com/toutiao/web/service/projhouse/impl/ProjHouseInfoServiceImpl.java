@@ -68,6 +68,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private String agentBaseIndex;
     @Value("${tt.agent.type}")
     private String agentBaseType;
+    @Value("${tt.search.engines}")
+    private String searchEnginesIndex ;
+    @Value("${tt.search.engines.type}")
+    private String searchEnginesType;
 
     /**
      * 功能描述：通过小区的经度纬度查找房源信息
@@ -220,6 +224,34 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             List<String> searchDistrictsList = new ArrayList<>();
             List<String> searchAreasList = new ArrayList<>();
             List<String> searchTermList = new ArrayList<>();
+
+            BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+            if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())) {
+                SearchResponse searchResponse = null;
+                bqbPlotName.must(QueryBuilders.boolQuery()
+                        .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).operator(Operator.AND).boost(2))
+                        .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
+                searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType).setQuery(bqbPlotName).execute().actionGet();
+                long total = searchResponse.getHits().getTotalHits();
+                out: if(total > 0l){
+                    break out;
+                }else{
+                    BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                    bqb.must(QueryBuilders.multiMatchQuery(projHouseInfoRequest.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+                    searchResponse = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType).setQuery(bqb).execute().actionGet();
+                    if(searchResponse.getHits().getTotalHits()>0l){
+                        SearchHits hits = searchResponse.getHits();
+                        SearchHit[] searchHists = hits.getHits();
+                        outFor:for (SearchHit hit : searchHists) {
+                            projHouseInfoRequest.setKeyword(hit.getSource().get("search_name").toString());
+                            break outFor ;
+                        }
+                    }
+                }
+            }
+
             if (StringTool.isNotBlank(projHouseInfoRequest.getKeyword())) {
                 if (StringUtil.isNotNullString(DistrictMap.getDistricts(projHouseInfoRequest.getKeyword()))) {
                     booleanQueryBuilder.must(QueryBuilders.boolQuery()

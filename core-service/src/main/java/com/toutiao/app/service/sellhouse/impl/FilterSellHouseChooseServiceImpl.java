@@ -1,5 +1,6 @@
 package com.toutiao.app.service.sellhouse.impl;
 
+import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseKeywordEsDao;
 import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
 import com.toutiao.app.domain.sellhouse.RecommendEsf5DoQuery;
@@ -9,11 +10,14 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +32,8 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
     @Autowired
     private SellHouseKeywordEsDao sellHouseKeywordEsDao;
+    @Autowired
+    private SellHouseEsDao sellHouseEsDao;
 
     /**
      * 过滤二手房查询条件
@@ -193,6 +199,34 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
     @Override
     public BoolQueryBuilder filterSellHouseChoose(SellHouseDoQuery sellHouseDoQuery) {
 
+        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+        SearchResponse searchResponse = null;
+        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
+            bqbPlotName.must(QueryBuilders.boolQuery()
+                    .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
+                    .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                    .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                    .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
+            searchResponse = sellHouseEsDao.getPlotByKeyWord(bqbPlotName);
+            long total = searchResponse.getHits().getTotalHits();
+            out: if(total > 0l){
+                break out;
+            }else{
+                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                bqb.must(QueryBuilders.multiMatchQuery(sellHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+                searchResponse = sellHouseEsDao.getPlotByNickNameKeyWord(bqb);
+                if(searchResponse.getHits().getTotalHits()>0l){
+                    SearchHits hits = searchResponse.getHits();
+
+                    SearchHit[] searchHists = hits.getHits();
+                    outFor:for (SearchHit hit : searchHists) {
+                        hit.getSource().get("search_name");
+                        sellHouseDoQuery.setKeyword(hit.getSource().get("search_name").toString());
+                        break outFor ;
+                    }
+                }
+            }
+        }
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
             if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
