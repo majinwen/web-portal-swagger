@@ -1,5 +1,6 @@
 package com.toutiao.web.dao.mapper.subscribe;
 
+import com.toutiao.app.domain.subscribe.UserConditionSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +25,9 @@ public interface UserSubscribeMapper {
     int updateByPrimaryKey(UserSubscribe record);
 
     List<UserSubscribe> selectByUserId(@Param("userId")Integer userId);
+
+    List<UserSubscribe> selectConditionSubscribeByUserId(@Param("userId")Integer userId);
+
+    UserSubscribe selectConditionSubscribeByUserSubscribeMap(@Param(value = "record")UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, @Param(value = "userId")Integer userId);
+
 }
