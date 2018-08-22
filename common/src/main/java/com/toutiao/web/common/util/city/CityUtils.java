@@ -32,12 +32,13 @@ public class CityUtils {
         //从header中获取城市信息12
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String cityCode = request.getHeader(CookieUtils.COOKIE_NAME_CITY);
-        logger.info("城市代码================="+cityCode);
+        logger.info("城市代码1================="+cityCode);
         if(null ==cityCode){
             //测试用sh;正式默认bj
-            cityCode = CityConstant.ABBREVIATION_SHANGHAI;
+            cityCode = CityConstant.ABBREVIATION_TIANJIN;
+            logger.info("城市代码2================="+cityCode);
         }
-
+        logger.info("城市代码3================="+cityCode);
         return cityCode;
     }
 
