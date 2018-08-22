@@ -35,7 +35,7 @@ public class CityUtils {
         logger.info("城市代码1================="+cityCode);
         if(null ==cityCode){
             //测试用sh;正式默认bj
-            cityCode = CityConstant.ABBREVIATION_TIANJIN;
+            cityCode = CityConstant.ABBREVIATION_SHANGHAI;
         }
 
         return cityCode;
