@@ -65,6 +65,7 @@ public class HomePageReportController {
             map.put("district",intelligenceFhRes.getDistrictArray());
             map.put("fhpt",fhpt);
             map.put("fhtp",fhtp);
+            map.put("collectStatus",intelligenceFhRes.getCollectStatus());
         return NashResult.build(map);
     }
 }
