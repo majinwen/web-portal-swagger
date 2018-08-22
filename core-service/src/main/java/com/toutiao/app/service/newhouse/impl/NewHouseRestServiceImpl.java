@@ -325,7 +325,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
                     newHouseDynamicDoQuery.setNewCode(newHouseListDos.getBuildingNameId());
                     newHouseDynamicDoQuery.setPageSize(1);
-                    List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery);
+                    List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery,city);
                     newHouseListDos.setNewHouseDynamic(newHouseDynamicDoList);
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
