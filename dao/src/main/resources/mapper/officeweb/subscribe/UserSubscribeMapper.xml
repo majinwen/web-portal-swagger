@@ -181,6 +181,15 @@
         <if test="record.labelId != null">
             and user_subscribe_map->>'labelId' = cast(#{record.labelId,jdbcType=VARCHAR} as text)
         </if>
-
+        <if test="record.isCutPrice != null">
+            and user_subscribe_map->>'isCutPrice' = cast(#{record.isCutPrice,jdbcType=INTEGER} as text)
+        </if>
+        <if test="record.isLowPrice != null">
+            and user_subscribe_map->>'isLowPrice' = cast(#{record.isLowPrice,jdbcType=INTEGER} as text)
+        </if>
+        <if test="record.isMustRob != null">
+            and user_subscribe_map->>'isMustRob' = cast(#{record.isMustRob,jdbcType=INTEGER} as text)
+        </if>
+        limit 1
     </select>
 </mapper>
