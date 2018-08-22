@@ -78,4 +78,19 @@ public class ConditionSubscribeRequest {
      * 标签
      */
     private String labelId;
+
+    /**
+     * 标签-降价房
+     */
+    private Integer isCutPrice;
+
+    /**
+     * 标签-逢出毕抢
+     */
+    private Integer isMustRob;
+
+    /**
+     * 标签-抢手
+     */
+    private Integer isLowPrice;
 }
