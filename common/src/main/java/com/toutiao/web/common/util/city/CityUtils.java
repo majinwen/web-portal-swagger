@@ -6,8 +6,6 @@ import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -24,9 +22,6 @@ public class CityUtils {
 
     private static Logger logger = LoggerFactory.getLogger(CityUtils.class);
 
-    @Autowired
-    private static HttpServletRequest request;
-
     /**
      * 获取header中城市信息
      * @return
@@ -35,19 +30,14 @@ public class CityUtils {
         //从cookie中获取城市信息
         //String cityCode = CookieUtils.getCookie(request,response, CookieUtils.COOKIE_NAME_CITY);
         //从header中获取城市信息12
-//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-
-//        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
-//        HttpServletRequest request = ((ServletRequestAttributes)requestAttributes).getRequest();
-
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String cityCode = request.getHeader(CookieUtils.COOKIE_NAME_CITY);
         logger.info("城市代码1================="+cityCode);
         if(null ==cityCode){
             //测试用sh;正式默认bj
             cityCode = CityConstant.ABBREVIATION_TIANJIN;
-            logger.info("城市代码2================="+cityCode);
         }
-        logger.info("城市代码3================="+cityCode);
+
         return cityCode;
     }
 
