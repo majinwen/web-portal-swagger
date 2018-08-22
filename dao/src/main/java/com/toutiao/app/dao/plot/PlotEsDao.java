@@ -102,4 +102,12 @@ public interface PlotEsDao {
 
 
     SearchResponse getPlotByRecommendCondition(BoolQueryBuilder boolQueryBuilder, ScriptSortBuilder scrip);
+
+
+    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
+
+
+    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
+
+
 }

@@ -19,4 +19,11 @@ public interface NewHouseLayoutEsDao {
      * @return
      */
     SearchResponse getLayoutListByNewHouseIdAndRoomCount(BoolQueryBuilder booleanQueryBuilder, String city);
+
+    /**
+     * 根据新房id获取户型价格范围
+     * @param booleanQueryBuilder
+     * @return
+     */
+    SearchResponse getLayoutPriceByNewHouseId(BoolQueryBuilder booleanQueryBuilder);
 }

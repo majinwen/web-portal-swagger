@@ -66,3 +66,41 @@
         vertical-align: top;
     }
 }
+.primary-item {
+    .download-app {
+        display: block;
+        padding: rem(20) rem(30);
+        line-height: rem(47);
+        @include font-dpr(30);
+        border-bottom: 1px solid $baseBorderColor;
+
+        p {
+            position: relative;
+            color: #3a3a3a;
+
+            .arrows-right {
+                position: absolute;
+                top: 0;
+                right: rem(-15);
+                display: block;
+                width: rem(47);
+                height: rem(47);
+                @include bg-image('/static/images/global/arrows_right_icon');
+                background-position: center;
+                -webkit-background-size: 40%;
+                background-size: 40%;
+            }
+            .primary-app-logo {
+                display: inline-block;
+                width: rem(48);
+                height: rem(48);
+                margin-right: rem(10);
+                vertical-align: top;
+                background: url('http://wap-qn.toutiaofangchan.com/ic_launcher.png') no-repeat center;
+                -webkit-background-size: contain;
+                background-size: contain;
+                border-radius: rem(5);
+            }
+        }
+    }
+}

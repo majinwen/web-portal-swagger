@@ -35,6 +35,10 @@ public class PlotEsDaoImpl implements PlotEsDao {
     private String childType;
     @Value("${distance}")
     private Double distance;
+    @Value("${tt.search.engines}")
+    private String searchEnginesIndex ;
+    @Value("${tt.search.engines.type}")
+    private String searchEnginesType;
     @Autowired
     private ESClientTools esClientTools;
 
@@ -134,6 +138,25 @@ public class PlotEsDaoImpl implements PlotEsDao {
         SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(scrip).setSize(5).execute().actionGet();
         return  searchResponse;
+    }
+
+
+    @Override
+    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
     }
 
 }
