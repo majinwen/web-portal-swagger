@@ -174,5 +174,10 @@ public class NewHouseListDo  {
      * 楼盘动态
      */
     private List<NewHouseDynamicDo> newHouseDynamic;
+    /**
+     * 地址
+     */
+    @ChangeName("houseAddress")
+    private  String buildingAddress;
 
 }
