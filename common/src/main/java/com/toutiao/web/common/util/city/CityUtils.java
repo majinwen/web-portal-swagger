@@ -6,6 +6,7 @@ import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -30,7 +31,11 @@ public class CityUtils {
         //从cookie中获取城市信息
         //String cityCode = CookieUtils.getCookie(request,response, CookieUtils.COOKIE_NAME_CITY);
         //从header中获取城市信息12
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+
+        RequestAttributes requestAttributes = RequestContextHolder.currentRequestAttributes();
+        HttpServletRequest request = ((ServletRequestAttributes)requestAttributes).getRequest();
+
         String cityCode = request.getHeader(CookieUtils.COOKIE_NAME_CITY);
         logger.info("城市代码1================="+cityCode);
         if(null ==cityCode){
