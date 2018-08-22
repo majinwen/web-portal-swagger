@@ -14,7 +14,7 @@ public class CookieUtils {
     public final static String COOKIE_NAME_User_LOGIN = "user_phone";
     public final static String COOKIE_NAME_USER = "user";
     public final static String COOKIE_NAME_TEMP_HOUSE_COMPARED = "temp_house_compared"; //平台用户房源对比数据CookieName
-    public final static String COOKIE_NAME_CITY = "select_city";
+    public final static String COOKIE_NAME_CITY = "city";
 
     /**
      * 获取cookie中的数据
