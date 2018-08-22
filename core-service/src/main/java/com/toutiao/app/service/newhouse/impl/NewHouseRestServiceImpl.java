@@ -127,6 +127,35 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         QueryBuilder queryBuilder = null;
         FieldSortBuilder levelSort=null;
         FieldSortBuilder buildingSort=null;
+
+
+        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+        if (StringTool.isNotBlank(newHouseDoQuery.getKeyword())) {
+            SearchResponse searchResponse = null;
+            bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseDoQuery.getKeyword()));
+            searchResponse = newHouseEsDao.getPlotByKeyWord(bqbPlotName);
+            long total = searchResponse.getHits().getTotalHits();
+            out: if(total > 0l){
+                break out;
+            }else{
+                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+                bqb.must(QueryBuilders.multiMatchQuery(newHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+                searchResponse = newHouseEsDao.getPlotByNickNameKeyWord(bqb);
+                if(searchResponse.getHits().getTotalHits()>0l){
+                    SearchHits hits = searchResponse.getHits();
+
+                    SearchHit[] searchHists = hits.getHits();
+                    outFor:for (SearchHit hit : searchHists) {
+                        hit.getSource().get("search_name");
+                        newHouseDoQuery.setKeyword(hit.getSource().get("search_name").toString());
+                        break outFor ;
+                    }
+                }
+            }
+        }
+
+
+
         if(StringUtil.isNotNullString(newHouseDoQuery.getKeyword())){
             if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseDoQuery.getKeyword()))){
                 queryBuilder = QueryBuilders.disMaxQuery()
@@ -288,7 +317,16 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     }catch (Exception e){
                         logger.error("获取新房户型信息异常信息={}",e.getStackTrace());
                     }
-
+                    //获取新房户型价格范围
+                    NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId());
+                    newHouseListDos.setHouseMinPrice(newHouseLayoutPriceDo.getHouseMinPrice());
+                    newHouseListDos.setHouseMaxPrice(newHouseLayoutPriceDo.getHouseMaxPrice());
+                    //新房动态
+                    NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
+                    newHouseDynamicDoQuery.setNewCode(newHouseListDos.getBuildingNameId());
+                    newHouseDynamicDoQuery.setPageSize(1);
+                    List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery);
+                    newHouseListDos.setNewHouseDynamic(newHouseDynamicDoList);
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
 //                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);

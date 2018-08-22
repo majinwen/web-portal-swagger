@@ -4,11 +4,13 @@ import com.toutiao.app.dao.homepage.RecommendEsDao;
 import com.toutiao.app.domain.homepage.RecommendTopicDo;
 import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import com.toutiao.app.service.homepage.RecommendRestService;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
@@ -251,12 +253,30 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             InternalCardinality internalCardinality = searchResponse.getAggregations().get("count");
             InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
             InternalMax highestPrice = searchResponse.getAggregations().get("maxPrice");
-            recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-            recommendTopicDo.setHighestPrice(highestPrice.getValue());
-            recommendTopicDo.setCount((int)internalCardinality.getValue());
-            recommendTopicDo.setDistrictId("");
-            recommendTopicDo.setTopicType(flag);
-            recommendTopicDoList.add(recommendTopicDo);
+            LongTerms longTerms = searchResponse.getAggregations().get("areaIds");
+            if(internalCardinality.getValue()>0){
+                if(longTerms.getBuckets().size()> 0){
+
+                    Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
+                    StringBuffer areaIds = new StringBuffer();
+                    while(areaIdBucketIt.hasNext()) {
+
+                        Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
+                        areaIds = areaIds.append(areaIdsBucket.getKeyAsString()+",");
+                    }
+                    recommendTopicDo.setDistrictId(areaIds.substring(0,areaIds.length()-1));
+                }else{
+                    recommendTopicDo.setDistrictId("");
+                }
+
+                recommendTopicDo.setLowestPrice(lowestPrice.getValue());
+                recommendTopicDo.setHighestPrice(highestPrice.getValue());
+                recommendTopicDo.setCount((int)internalCardinality.getValue());
+
+                recommendTopicDo.setTopicType(flag);
+                recommendTopicDoList.add(recommendTopicDo);
+            }
+
         }
 
         return recommendTopicDoList;

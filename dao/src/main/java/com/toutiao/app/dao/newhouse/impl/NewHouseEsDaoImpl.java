@@ -1,6 +1,7 @@
 package com.toutiao.app.dao.newhouse.impl;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -28,6 +29,10 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     private String houseDynamicIndex;
     @Value("${tt.dynamic.type}")
     private  String dynamicType;
+    @Value("${tt.search.engines}")
+    private String searchEnginesIndex ;
+    @Value("${tt.search.engines.type}")
+    private String searchEnginesType;
 
 
     @Override
@@ -41,6 +46,7 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     }
 
 
+
     @Override
     public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort ) {
         TransportClient client = esClientTools.init();
@@ -48,11 +54,11 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         if (null!=levelSort && null!=buildingSort)
         {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(boolQueryBuilder).addSort(levelSort).addSort(buildingSort).setFetchSource(
+                    .setQuery(boolQueryBuilder).addSort(levelSort).addSort(buildingSort)/*.setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
-                            null)
+                            null)*/
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
@@ -60,11 +66,11 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         else
         {
             searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(boolQueryBuilder).setFetchSource(
+                    .setQuery(boolQueryBuilder)/*.setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
                                     "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
-                            null)
+                            null)*/
                     .setFrom((pageNum-1)*pageSize)
                     .setSize(pageSize)
                     .execute().actionGet();
@@ -97,6 +103,25 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
                 .setQuery(boolQueryBuilder).setSize(1)
                 .execute().actionGet();
         return  searchresponse;
+    }
+
+
+    @Override
+    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(newhouseIndex).setTypes(newhouseType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
     }
 
 }
