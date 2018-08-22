@@ -4,6 +4,8 @@ import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.constant.city.CityEnum;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -18,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class CityUtils {
 
+    private static Logger logger = LoggerFactory.getLogger(CityUtils.class);
+
     /**
      * 获取header中城市信息
      * @return
@@ -28,6 +32,7 @@ public class CityUtils {
         //从header中获取城市信息12
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String cityCode = request.getHeader(CookieUtils.COOKIE_NAME_CITY);
+        logger.info("城市代码================="+cityCode);
         if(null ==cityCode){
             //测试用sh;正式默认bj
             cityCode = CityConstant.ABBREVIATION_SHANGHAI;
