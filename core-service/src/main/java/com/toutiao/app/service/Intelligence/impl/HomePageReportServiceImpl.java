@@ -87,7 +87,7 @@ public class HomePageReportServiceImpl implements HomePageReportService {
 
         IntelligenceFhRes intelligenceFhRes = intelligenceFindHouseServiceByType1(personas,userPhone);
 
-        if (StringTool.isNotBlank(intelligenceFhRes)) {
+        if (StringTool.isNotBlank(intelligenceFhRes)&&StringTool.isNotEmpty(intelligenceFhRes.getId())&&intelligenceFhRes.getId()>0) {
             return intelligenceFhRes.getId();
         }
         return 0;
