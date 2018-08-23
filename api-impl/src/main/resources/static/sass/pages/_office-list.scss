@@ -417,6 +417,7 @@ $textGrayColor: #888;
     bottom: 0;
     height: rem(126);
     background-color: #adadad;
+    z-index: 20;
 
     .detail, .btn {
         position: absolute;
