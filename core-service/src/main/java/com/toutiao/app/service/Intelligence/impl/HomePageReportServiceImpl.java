@@ -163,6 +163,7 @@ public class HomePageReportServiceImpl implements HomePageReportService {
     @Override
     public IntelligenceFhRes intelligenceFindHouseServiceByType1(IntelligenceQuery intelligenceQuery, String userPhone) {
         IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
+        List<IntelligenceFindhouse> finalList = new ArrayList<>();
 
         //初始化数据
 //        IntelligenceQuery intelligenceQuery = init(intelligenceQuery1);
@@ -173,37 +174,33 @@ public class HomePageReportServiceImpl implements HomePageReportService {
         //判断类型
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1AV1(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend1A(list);
-            intelligenceFhRes = save(intelligenceQuery, finalList, userPhone);
+            finalList = recommend1A(list);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1BV1(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend1B(list, starPropertyList);
-            intelligenceFhRes = save(intelligenceQuery, finalList, userPhone);
+            finalList = recommend1B(list, starPropertyList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_1C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType1CV1(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend1C(list, starPropertyList);
-            intelligenceFhRes = save(intelligenceQuery, finalList, userPhone);
+            finalList = recommend1C(list, starPropertyList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2AV1(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2A(list, starPropertyList);
-            intelligenceFhRes = save(intelligenceQuery, finalList, userPhone);
+            finalList = recommend2A(list, starPropertyList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2B) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2BV1(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2B(list, starPropertyList);
-            intelligenceFhRes = save(intelligenceQuery, finalList, userPhone);
+            finalList = recommend2B(list, starPropertyList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_2C) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType2CV1(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend2C(list, starPropertyList);
-            intelligenceFhRes = save(intelligenceQuery, finalList, userPhone);
+            finalList = recommend2C(list, starPropertyList);
         }
         if (intelligenceQuery.getUserPortrayalType() == USERTYPE_3A) {
             List<IntelligenceFindhouse> list = intelligenceFindhouseMapper.queryByUserType3AV1(intelligenceQuery);
-            List<IntelligenceFindhouse> finalList = recommend3A(list);
+            finalList = recommend3A(list);
+        }
+        if(null!=finalList&&finalList.size()==5){
             intelligenceFhRes = save(intelligenceQuery, finalList, userPhone);
         }
         return intelligenceFhRes;
