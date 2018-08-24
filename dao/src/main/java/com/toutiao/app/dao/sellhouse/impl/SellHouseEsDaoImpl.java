@@ -139,7 +139,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 //                        "houseProxyName", "ofCompany", "houseProxyPhone", "houseProxyPhoto", "claim_time", "price_increase_decline", "import_time", "price_increase_decline_amount"}, null)
 //                .execute().actionGet();
                 new String[] {"houseId","housePhotoTitle","houseTitle","tagsName","claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
-                        "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
+                        "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","areaId","houseBusinessName",
                         "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","housePhoto","is_claim","userId",
                         "houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto","claim_time","price_increase_decline","import_time","price_increase_decline_amount",
                         "isMainLayout","isDealLayout","avgDealCycle","isLowPrice","isCutPrice","isMustRob","isLowest","isNew","isCommunityTopHouse","avgAbsoluteWithCommunity",
