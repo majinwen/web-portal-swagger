@@ -5,6 +5,7 @@ import com.toutiao.app.api.chance.response.agent.AgentResponse;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,7 @@ public class AgentRestController {
     @RequestMapping(value = "/getAgentInfoByUserId",method = RequestMethod.GET)
     public NashResult getAgentInfoByUserId(@Validated AgentRequest agentRequest){
         AgentResponse agentResponse = new AgentResponse();
-        AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(agentRequest.getUserId());
+        AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(agentRequest.getUserId(), CityUtils.getCity());
         BeanUtils.copyProperties(agentBaseDo,agentResponse);
         return NashResult.build(agentResponse);
     }

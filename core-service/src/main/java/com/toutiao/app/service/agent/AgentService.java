@@ -8,5 +8,5 @@ public interface AgentService {
      * @param userId
      * @return
      */
-    AgentBaseDo queryAgentInfoByUserId(String userId);
+    AgentBaseDo queryAgentInfoByUserId(String userId, String city);
 }

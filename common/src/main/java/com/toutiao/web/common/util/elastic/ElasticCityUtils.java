@@ -159,6 +159,17 @@ public class ElasticCityUtils {
         return getESIndexMap(ESIndexConstant.RENT_TYPE,cityCode);
     }
 
+
+    public static  String getAgentIndex(String cityCode)
+    {
+        return  getESIndexMap(ESIndexConstant.AGENT_INDEX,cityCode);
+    }
+
+    public static  String getAgentType(String cityCode)
+    {
+        return  getESIndexMap(ESIndexConstant.AGENT_TYPE,cityCode);
+    }
+
 //
 //    public static String getESMap(String esName){
 //
