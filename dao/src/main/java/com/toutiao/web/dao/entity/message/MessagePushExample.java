@@ -286,62 +286,62 @@ public class MessagePushExample {
         }
 
         public Criteria andMessageIsNull() {
-            addCriterion("message is null");
+            addCriterion("message_theme is null");
             return (Criteria) this;
         }
 
         public Criteria andMessageIsNotNull() {
-            addCriterion("message is not null");
+            addCriterion("message_theme is not null");
             return (Criteria) this;
         }
 
         public Criteria andMessageEqualTo(String value) {
-            addCriterion("message =", value, "message");
+            addCriterion("message_theme =", value, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageNotEqualTo(String value) {
-            addCriterion("message <>", value, "message");
+            addCriterion("message_theme <>", value, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageGreaterThan(String value) {
-            addCriterion("message >", value, "message");
+            addCriterion("message_theme >", value, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageGreaterThanOrEqualTo(String value) {
-            addCriterion("message >=", value, "message");
+            addCriterion("message_theme >=", value, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageLessThan(String value) {
-            addCriterion("message <", value, "message");
+            addCriterion("message_theme <", value, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageLessThanOrEqualTo(String value) {
-            addCriterion("message <=", value, "message");
+            addCriterion("message_theme <=", value, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageIn(List<String> values) {
-            addCriterion("message in", values, "message");
+            addCriterion("message_theme in", values, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageNotIn(List<String> values) {
-            addCriterion("message not in", values, "message");
+            addCriterion("message_theme not in", values, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageBetween(String value1, String value2) {
-            addCriterion("message between", value1, value2, "message");
+            addCriterion("message_theme between", value1, value2, "messageTheme");
             return (Criteria) this;
         }
 
         public Criteria andMessageNotBetween(String value1, String value2) {
-            addCriterion("message not between", value1, value2, "message");
+            addCriterion("message_theme not between", value1, value2, "messageTheme");
             return (Criteria) this;
         }
 
@@ -642,6 +642,246 @@ public class MessagePushExample {
 
         public Criteria andHousedataNotBetween(String value1, String value2) {
             addCriterion("house_data not between", value1, value2, "houseData");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushIsNull() {
+            addCriterion("is_push is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushIsNotNull() {
+            addCriterion("is_push is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushEqualTo(Short value) {
+            addCriterion("is_push =", value, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushNotEqualTo(Short value) {
+            addCriterion("is_push <>", value, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushGreaterThan(Short value) {
+            addCriterion("is_push >", value, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushGreaterThanOrEqualTo(Short value) {
+            addCriterion("is_push >=", value, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushLessThan(Short value) {
+            addCriterion("is_push <", value, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushLessThanOrEqualTo(Short value) {
+            addCriterion("is_push <=", value, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushIn(List<Short> values) {
+            addCriterion("is_push in", values, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushNotIn(List<Short> values) {
+            addCriterion("is_push not in", values, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushBetween(Short value1, Short value2) {
+            addCriterion("is_push between", value1, value2, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsPushNotBetween(Short value1, Short value2) {
+            addCriterion("is_push not between", value1, value2, "isPush");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdIsNull() {
+            addCriterion("city_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdIsNotNull() {
+            addCriterion("city_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdEqualTo(Integer value) {
+            addCriterion("city_id =", value, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdNotEqualTo(Integer value) {
+            addCriterion("city_id <>", value, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdGreaterThan(Integer value) {
+            addCriterion("city_id >", value, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("city_id >=", value, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdLessThan(Integer value) {
+            addCriterion("city_id <", value, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdLessThanOrEqualTo(Integer value) {
+            addCriterion("city_id <=", value, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdIn(List<Integer> values) {
+            addCriterion("city_id in", values, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdNotIn(List<Integer> values) {
+            addCriterion("city_id not in", values, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdBetween(Integer value1, Integer value2) {
+            addCriterion("city_id between", value1, value2, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andCityIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("city_id not between", value1, value2, "cityId");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeIsNull() {
+            addCriterion("newcode is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeIsNotNull() {
+            addCriterion("newcode is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeEqualTo(Integer value) {
+            addCriterion("newcode =", value, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeNotEqualTo(Integer value) {
+            addCriterion("newcode <>", value, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeGreaterThan(Integer value) {
+            addCriterion("newcode >", value, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("newcode >=", value, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeLessThan(Integer value) {
+            addCriterion("newcode <", value, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeLessThanOrEqualTo(Integer value) {
+            addCriterion("newcode <=", value, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeIn(List<Integer> values) {
+            addCriterion("newcode in", values, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeNotIn(List<Integer> values) {
+            addCriterion("newcode not in", values, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeBetween(Integer value1, Integer value2) {
+            addCriterion("newcode between", value1, value2, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andNewcodeNotBetween(Integer value1, Integer value2) {
+            addCriterion("newcode not between", value1, value2, "newcode");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIsNull() {
+            addCriterion("house_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIsNotNull() {
+            addCriterion("house_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdEqualTo(String value) {
+            addCriterion("house_id =", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotEqualTo(String value) {
+            addCriterion("house_id <>", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThan(String value) {
+            addCriterion("house_id >", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdGreaterThanOrEqualTo(String value) {
+            addCriterion("house_id >=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThan(String value) {
+            addCriterion("house_id <", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdLessThanOrEqualTo(String value) {
+            addCriterion("house_id <=", value, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdIn(List<String> values) {
+            addCriterion("house_id in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotIn(List<String> values) {
+            addCriterion("house_id not in", values, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdBetween(String value1, String value2) {
+            addCriterion("house_id between", value1, value2, "houseId");
+            return (Criteria) this;
+        }
+
+        public Criteria andHouseIdNotBetween(String value1, String value2) {
+            addCriterion("house_id not between", value1, value2, "houseId");
             return (Criteria) this;
         }
     }

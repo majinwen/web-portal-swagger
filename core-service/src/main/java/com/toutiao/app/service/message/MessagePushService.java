@@ -8,8 +8,8 @@ import java.util.List;
 public interface MessagePushService {
     /**
      * 获取消息
+     *  @param messagePushQuery
      *
-     * @param messagePushQuery
      */
     List<MessagePush> getMessage(MessagePushDoQuery messagePushQuery);
 

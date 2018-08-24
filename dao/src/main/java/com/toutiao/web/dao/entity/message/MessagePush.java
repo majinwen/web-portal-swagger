@@ -24,7 +24,7 @@ public class MessagePush {
     /**
      * 消息内容
      */
-    private String message;
+    private String messageTheme;
 
     /**
      * 是否删除
@@ -50,4 +50,24 @@ public class MessagePush {
      * 房源信息
      */
     private String houseData;
+
+    /**
+     * 是否推送(0-未推送,1-已推送)
+     */
+    private Short isPush;
+
+    /**
+     * 城市id
+     */
+    private Integer cityId;
+
+    /**
+     * 小区id
+     */
+    private Integer newcode;
+
+    /**
+     * 房源id
+     */
+    private String houseId;
 }

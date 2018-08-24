@@ -5,12 +5,16 @@
         <id column="id" property="id" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="INTEGER"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
-        <result column="message" property="message" jdbcType="OTHER"/>
+        <result column="message_theme" property="messageTheme" jdbcType="VARCHAR"/>
         <result column="is_del" property="isDel" jdbcType="SMALLINT"/>
         <result column="message_type" property="messageType" jdbcType="INTEGER"/>
         <result column="push_type" property="pushType" jdbcType="INTEGER"/>
         <result column="content_type" property="contentType" jdbcType="INTEGER"/>
         <result column="house_data" property="houseData" jdbcType="VARCHAR"/>
+        <result column="is_push" property="isPush" jdbcType="SMALLINT"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="newcode" property="newcode" jdbcType="INTEGER"/>
+        <result column="house_id" property="houseId" jdbcType="VARCHAR"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -73,8 +77,8 @@
         </where>
     </sql>
     <sql id="Base_Column_List">
-    id, user_id, create_time, message, is_del, message_type, push_type, content_type, 
-    house_data
+        id, user_id, create_time, message_theme, is_del, message_type, push_type, content_type,
+        house_data, is_push, city_id, newcode, house_id
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap"
             parameterType="com.toutiao.web.dao.entity.message.MessagePushExample">
@@ -100,7 +104,7 @@
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from message_push
     where id = #{id,jdbcType=INTEGER}
-  </delete>
+    </delete>
     <delete id="deleteByExample" parameterType="com.toutiao.web.dao.entity.message.MessagePushExample">
         delete from message_push
         <if test="_parameter != null">
@@ -108,13 +112,16 @@
         </if>
     </delete>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.message.MessagePush">
-    insert into message_push (id, user_id, create_time, 
-      message, is_del, message_type, 
-      push_type, content_type, house_data
+    insert into message_push (id, user_id, create_time,
+        message_theme, is_del, message_type,
+        push_type, content_type, house_data,
+        is_push, city_id, newcode, house_id
       )
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
-      #{message,jdbcType=VARCHAR}, #{isDel,jdbcType=SMALLINT}, #{messageType,jdbcType=INTEGER},
-      #{pushType,jdbcType=INTEGER}, #{contentType,jdbcType=INTEGER}, #{houseData,jdbcType=VARCHAR}
+    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+        #{message_theme,jdbcType=VARCHAR}, #{isDel,jdbcType=SMALLINT}, #{messageType,jdbcType=INTEGER},
+        #{pushType,jdbcType=INTEGER}, #{contentType,jdbcType=INTEGER}, #{houseData,jdbcType=VARCHAR},
+        #{isPush,jdbcType=SMALLINT}, #{cityId,jdbcType=INTEGER}, #{newcode,jdbcType=INTEGER},
+        #{houseId,jdbcType=VARCHAR}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.message.MessagePush">
@@ -129,8 +136,8 @@
             <if test="createTime != null">
                 create_time,
             </if>
-            <if test="message != null">
-                message,
+            <if test="message_theme != null">
+                message_theme,
             </if>
             <if test="isDel != null">
                 is_del,
@@ -147,6 +154,18 @@
             <if test="houseData != null">
                 house_data,
             </if>
+            <if test="isPush != null">
+                is_push,
+            </if>
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="newcode != null">
+                newcode,
+            </if>
+            <if test="houseId != null">
+                house_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -158,8 +177,8 @@
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="message != null">
-                #{message,jdbcType=VARCHAR},
+            <if test="message_theme != null">
+                #{message_theme,jdbcType=VARCHAR},
             </if>
             <if test="isDel != null">
                 #{isDel,jdbcType=SMALLINT},
@@ -175,6 +194,18 @@
             </if>
             <if test="houseData != null">
                 #{houseData,jdbcType=VARCHAR},
+            </if>
+            <if test="isPush != null">
+                #{isPush,jdbcType=SMALLINT},
+            </if>
+            <if test="cityId != null">
+                #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="newcode != null">
+                #{newcode,jdbcType=INTEGER},
+            </if>
+            <if test="houseId != null">
+                #{houseId,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -197,8 +228,8 @@
             <if test="record.createTime != null">
                 create_time = #{record.createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="record.message != null">
-                message = #{record.message,jdbcType=VARCHAR},
+            <if test="record.message_theme != null">
+                message_theme = #{record.message_theme,jdbcType=VARCHAR},
             </if>
             <if test="record.isDel != null">
                 is_del = #{record.isDel,jdbcType=SMALLINT},
@@ -215,6 +246,18 @@
             <if test="record.houseData != null">
                 house_data = #{record.houseData,jdbcType=VARCHAR},
             </if>
+            <if test="record.isPush != null">
+                is_push = #{record.isPush,jdbcType=SMALLINT},
+            </if>
+            <if test="record.cityId != null">
+                city_id = #{record.cityId,jdbcType=INTEGER},
+            </if>
+            <if test="record.newcode != null">
+                newcode = #{record.newcode,jdbcType=INTEGER},
+            </if>
+            <if test="record.houseId != null">
+                house_id = #{record.houseId,jdbcType=VARCHAR},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -225,12 +268,16 @@
         set id = #{record.id,jdbcType=INTEGER},
         user_id = #{record.userId,jdbcType=INTEGER},
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
-        message = #{record.message,jdbcType=VARCHAR},
+        message_theme = #{record.message_theme,jdbcType=VARCHAR},
         is_del = #{record.isDel,jdbcType=SMALLINT},
         message_type = #{record.messageType,jdbcType=INTEGER},
         push_type = #{record.pushType,jdbcType=INTEGER},
         content_type = #{record.contentType,jdbcType=INTEGER},
-        house_data = #{record.houseData,jdbcType=VARCHAR}
+        house_data = #{record.houseData,jdbcType=VARCHAR},
+        is_push = #{record.isPush,jdbcType=SMALLINT},
+        city_id = #{record.cityId,jdbcType=INTEGER},
+        newcode = #{record.newcode,jdbcType=INTEGER},
+        house_id = #{record.houseId,jdbcType=VARCHAR}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -244,8 +291,8 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="message != null">
-                message = #{message,jdbcType=VARCHAR},
+            <if test="message_theme != null">
+                message_theme = #{message_theme,jdbcType=VARCHAR},
             </if>
             <if test="isDel != null">
                 is_del = #{isDel,jdbcType=SMALLINT},
@@ -262,6 +309,18 @@
             <if test="houseData != null">
                 house_data = #{houseData,jdbcType=VARCHAR},
             </if>
+            <if test="isPush != null">
+                is_push = #{record.isPush,jdbcType=SMALLINT},
+            </if>
+            <if test="cityId != null">
+                city_id = #{record.cityId,jdbcType=INTEGER},
+            </if>
+            <if test="newcode != null">
+                newcode = #{record.newcode,jdbcType=INTEGER},
+            </if>
+            <if test="houseId != null">
+                house_id = #{record.houseId,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -269,12 +328,16 @@
     update message_push
     set user_id = #{userId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      message = #{message,jdbcType=VARCHAR},
+        message_theme = #{message_theme,jdbcType=VARCHAR},
       is_del = #{isDel,jdbcType=SMALLINT},
       message_type = #{messageType,jdbcType=INTEGER},
       push_type = #{pushType,jdbcType=INTEGER},
       content_type = #{contentType,jdbcType=INTEGER},
-      house_data = #{houseData,jdbcType=VARCHAR}
+        house_data = #{houseData,jdbcType=VARCHAR},
+        is_push = #{record.isPush,jdbcType=SMALLINT},
+        city_id = #{record.cityId,jdbcType=INTEGER},
+        newcode = #{record.newcode,jdbcType=INTEGER},
+        house_id = #{record.houseId,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
