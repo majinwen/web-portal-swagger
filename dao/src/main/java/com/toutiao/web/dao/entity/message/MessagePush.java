@@ -22,7 +22,7 @@ public class MessagePush {
     private Date createTime;
 
     /**
-     * 消息内容
+     * 消息主题
      */
     private String messageTheme;
 

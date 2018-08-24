@@ -1,8 +1,8 @@
 package com.toutiao.web.apiimpl.rest.message;
 
 import com.toutiao.app.domain.message.MessagePushDoQuery;
+import com.toutiao.app.domain.message.MessagePushDomain;
 import com.toutiao.app.service.message.MessagePushService;
-import com.toutiao.web.dao.entity.message.MessagePush;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 消息推送定时任务
@@ -33,7 +32,7 @@ public class MessagePushSchedulerTask {
         calendar.set(Calendar.SECOND, 0);
         Date zero = calendar.getTime();
         messagePushDoQuery.setCreateTime(zero);
-        List<MessagePush> message = messagePushService.getMessage(messagePushDoQuery);
+        MessagePushDomain message = messagePushService.getMessage(messagePushDoQuery);
         System.out.println("符合找房条件的房源上新，now time:" + zero + ",信息：" + message.toString());
     }
 
