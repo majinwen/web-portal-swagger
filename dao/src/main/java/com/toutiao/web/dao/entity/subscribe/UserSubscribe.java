@@ -6,6 +6,7 @@ import java.util.Date;
 
 @Data
 public class UserSubscribe {
+
     private Integer id;
 
     private Integer userId;
@@ -15,4 +16,6 @@ public class UserSubscribe {
     private Date createTime;
 
     private Date updateTime;
+
+    private Integer subscribeType;
 }
