@@ -72,10 +72,10 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                     houseBusinessAndRoomDo.setTagsName(tagsName);
                     houseBusinessAndRoomDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
                 } else {
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
                 houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
                 houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags());
