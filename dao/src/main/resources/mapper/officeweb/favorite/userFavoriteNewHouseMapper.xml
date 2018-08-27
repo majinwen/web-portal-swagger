@@ -26,8 +26,22 @@
     from user_favorite_newhouse
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectNewHouseFavoriteByUserId" parameterType="com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteListDoQuery" resultMap="BaseResultMap">
-    SELECT  * FROM user_favorite_newhouse
+  <select id="selectNewHouseFavoriteByUserId" parameterType="com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteDo" resultType="com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteDo">
+    SELECT
+      id AS Id,
+      user_id AS userId,
+      building_id AS buildingId,
+      create_time AS createTime,
+      is_del AS  isDel,
+      average_price AS averagePrice,
+      house_min_area AS houseMinArea,
+      house_max_area AS houseMaxArea,
+      building_name AS buildingName,
+      building_title_img AS buildingTitleImg,
+      status AS  status,
+      total_price AS totalPrice,
+      city_id AS cityId
+     FROM user_favorite_newhouse
     WHERE user_id = #{userId} AND is_del = 0 ORDER BY create_time DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >

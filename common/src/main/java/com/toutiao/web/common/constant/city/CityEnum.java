@@ -39,6 +39,17 @@ public enum  CityEnum implements IntBaseType {
     }
 
 
+    public static String getId(Integer id) {
+        CityEnum[] cityEnums = values();
+        for (CityEnum cityEnum : cityEnums) {
+            if (cityEnum.value==id) {
+                return cityEnum.desc;
+            }
+        }
+        return null;
+    }
+
+
 
     @Override
     public int getValue() {

@@ -57,4 +57,14 @@ public class CityUtils {
     }
 
 
+    public static String retuenCityCode(Integer cityId){
+        if(StringTool.isBlank(cityId)){
+            return CityEnum.BEIJING.getDesc();
+        }else{
+            String cityCode = CityEnum.getId(cityId);
+            return cityCode;
+        }
+    }
+
+
 }
