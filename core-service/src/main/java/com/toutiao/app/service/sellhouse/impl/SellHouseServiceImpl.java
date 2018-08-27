@@ -165,10 +165,10 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
-        JSONObject jsonObject = null;
+        String jsonObject = null;
         if(hits.length>0){
             Map<String, Object> sourceAsMap = hits[0].getSourceAsMap();
-            jsonObject = (JSONObject) JSONObject.parse(JSON.toJSONString(sourceAsMap));
+            jsonObject = JSON.toJSONString(sourceAsMap);
         }
 
         return NashResult.build(jsonObject);

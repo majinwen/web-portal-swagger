@@ -33,10 +33,10 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     private String searchEnginesIndex ;
     @Value("${tt.search.engines.type}")
     private String searchEnginesType;
-    @Value("${tt.messagePush.index}")
-    private String messagePushIndex;
-    @Value("${tt.messagePush.type}")
-    private String messagePushType;
+    @Value("${tt.esfFullAmount.index}")
+    private String esfFullAmountIndex;
+    @Value("${tt.esfFullAmountType.type}")
+    private String esfFullAmountType;
 
 
 
@@ -180,9 +180,9 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     @Override
     public SearchResponse querySellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(messagePushIndex).setTypes(messagePushType);
+        SearchRequestBuilder srb = client.prepareSearch(esfFullAmountIndex).setTypes(esfFullAmountType);
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder)
-                .setFetchSource(new String[]{""},null)
+                .setFetchSource(new String[]{"houseId"},null)
                 .execute().actionGet();
         return searchresponse;
     }
