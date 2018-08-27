@@ -241,7 +241,7 @@ public class HomePageServiceImpl implements HomePageRestService {
      * @return
      */
     @Override
-    public HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery) {
+    public HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery, String city) {
 
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -292,7 +292,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                         homePageNearEsfDo.setTagsName((List) sourceAsMap.get("claimTagsName"));
                         homePageNearEsfDo.setHousePhotoTitle((String) sourceAsMap.get("claimHousePhotoTitle"));
 
-                        agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
+                        agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"), city);
 
                     }else {
                         agent.setAgentCompany(hit.getSource().get("ofCompany").toString());
@@ -356,7 +356,7 @@ public class HomePageServiceImpl implements HomePageRestService {
      * @return
      */
     @Override
-    public HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery) {
+    public HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city) {
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         HomePageNearEsfListDo homePageNearEsfListDo = new HomePageNearEsfListDo();
@@ -394,7 +394,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                     homePageNearEsfDo.setTagsName((List) sourceAsMap.get("claimTagsName"));
                     homePageNearEsfDo.setHousePhotoTitle((String) sourceAsMap.get("claimHousePhotoTitle"));
 
-                    agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
+                    agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"), city);
 
                 }else {
                     agent.setAgentCompany(hit.getSource().get("ofCompany").toString());

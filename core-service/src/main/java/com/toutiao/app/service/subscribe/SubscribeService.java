@@ -22,12 +22,12 @@ public interface SubscribeService {
      * @param userId
      * @return
      */
-    List<UserSubscribeListDo> getMySubscribeInfo(Integer userId);
+    List<UserSubscribeListDo> getMySubscribeInfo(Integer userId, String city);
 
     /**
      * 获取首页订阅数据
      * @param userId
      * @return
      */
-    List<UserSubscribeListDo> getIndexSubscribeInfo(Integer userId);
+    List<UserSubscribeListDo> getIndexSubscribeInfo(Integer userId, String city);
 }

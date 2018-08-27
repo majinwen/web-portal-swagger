@@ -44,7 +44,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
      * 获取商圈+户型
      */
     @Override
-    public HouseBusinessAndRoomDomain getHouseBusinessAndRoomHouses(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
+    public HouseBusinessAndRoomDomain getHouseBusinessAndRoomHouses(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery,String city) {
         LinkedList<HouseBusinessAndRoomDo> houseBusinessAndRoomDos = new LinkedList<>();
         BoolQueryBuilder boolQueryBuilder = filterBusinessRoomChooseService.filterBusinessRoomChoose(houseBusinessAndRoomDoQuery);
         Integer pageNum = houseBusinessAndRoomDoQuery.getPageNum();
@@ -62,7 +62,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                 String oldHouseId = houseBusinessAndRoomDo.getHouseId();
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (houseBusinessAndRoomDo.getIsClaim() == 1 && StringTool.isNotEmpty(houseBusinessAndRoomDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getUserId().toString(),city);
                     //认领状态取认领数据
                     houseBusinessAndRoomDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
                     houseBusinessAndRoomDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());

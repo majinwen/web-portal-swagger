@@ -159,15 +159,42 @@ public class ElasticCityUtils {
         return getESIndexMap(ESIndexConstant.RENT_TYPE,cityCode);
     }
 
-
+    /**
+     * 获取经纪人表索引
+     * @param cityCode
+     * @return
+     */
     public static  String getAgentIndex(String cityCode)
     {
         return  getESIndexMap(ESIndexConstant.AGENT_INDEX,cityCode);
     }
 
+    /**
+     * 获取经纪人的type
+     * @param cityCode
+     * @return
+     */
     public static  String getAgentType(String cityCode)
     {
         return  getESIndexMap(ESIndexConstant.AGENT_TYPE,cityCode);
+    }
+
+    /**
+     * 获取二手房全量表index
+     * @param cityCode
+     * @return
+     */
+    public static String getEsfFullAmountIndex(String cityCode){
+        return  getESIndexMap(ESIndexConstant.ESF_FULL_AMOUNT_INDEX,cityCode);
+    }
+
+    /**
+     * 获取二手房全量表type
+     * @param cityCode
+     * @return
+     */
+    public static String getEsfFullAmountType(String cityCode){
+        return  getESIndexMap(ESIndexConstant.ESF_FULL_AMOUNT_TYPE,cityCode);
     }
 
 //

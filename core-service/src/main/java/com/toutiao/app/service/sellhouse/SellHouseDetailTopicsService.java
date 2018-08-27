@@ -11,7 +11,7 @@ public interface SellHouseDetailTopicsService {
      * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getNearbyTopicsSellHouse(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getNearbyTopicsSellHouse(SellHouseDoQuery sellHouseQueryDo, String city);
 
 
     /**
@@ -19,21 +19,21 @@ public interface SellHouseDetailTopicsService {
      * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getCutPriceTopicsSellHouse(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getCutPriceTopicsSellHouse(SellHouseDoQuery sellHouseQueryDo, String city);
 
     /**
      * 获取洼地专题房源详情
      * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getLowPriceTopicsSellHouse(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getLowPriceTopicsSellHouse(SellHouseDoQuery sellHouseQueryDo, String city);
 
     /**
      * 获取逢出毕抢专题房源详情
      * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getMustRobTopicsSellHouseDetail(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getMustRobTopicsSellHouseDetail(SellHouseDoQuery sellHouseQueryDo, String city);
 
 
     /**
@@ -41,7 +41,7 @@ public interface SellHouseDetailTopicsService {
      * @param sellHouseQueryDo
      * @return
      */
-    SellHouseDomain getAreaRoomTopicsSellHouseDetail(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getAreaRoomTopicsSellHouseDetail(SellHouseDoQuery sellHouseQueryDo, String city);
 
 
 

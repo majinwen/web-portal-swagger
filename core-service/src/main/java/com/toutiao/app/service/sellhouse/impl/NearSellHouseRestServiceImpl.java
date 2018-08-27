@@ -134,7 +134,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
             }
 
             if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(nearBySellHousesDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString());
+                agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString(), city);
 
                 if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
                     if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){

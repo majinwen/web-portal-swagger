@@ -44,7 +44,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
      * 获取不买亏二手房Domain
      */
     @Override
-    public MustBuyShellHouseDomain getMustBuySellHouse(MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery, Integer topicType) {
+    public MustBuyShellHouseDomain getMustBuySellHouse(MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery, Integer topicType, String city) {
         MustBuyShellHouseDomain mustBuyShellHouseDomain = new MustBuyShellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
@@ -91,7 +91,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         }
         Integer pageNum = mustBuyShellHouseDoQuery.getPageNum();
         Integer pageSize = mustBuyShellHouseDoQuery.getPageSize();
-        SearchResponse cutPriceSellHouse = mustBuySellHouseEsDao.getMustBuySellHouse(booleanQueryBuilder, sort, pageNum, pageSize, topicType);
+        SearchResponse cutPriceSellHouse = mustBuySellHouseEsDao.getMustBuySellHouse(booleanQueryBuilder, sort, pageNum, pageSize, topicType, city);
 
         SearchHits hits = cutPriceSellHouse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -102,7 +102,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
                 MustBuyShellHouseDo mustBuyShellHouseDo = JSON.parseObject(details, MustBuyShellHouseDo.class);
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (mustBuyShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(mustBuyShellHouseDo.getUserId())) {
-                    agentBaseDo = agentService.queryAgentInfoByUserId(mustBuyShellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(mustBuyShellHouseDo.getUserId().toString(), city);
                     //认领状态取认领数据
                     mustBuyShellHouseDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
                     mustBuyShellHouseDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());

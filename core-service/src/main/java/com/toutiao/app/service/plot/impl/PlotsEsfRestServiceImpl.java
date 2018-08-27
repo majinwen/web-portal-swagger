@@ -123,7 +123,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
 
 

@@ -1,5 +1,6 @@
 package com.toutiao.web.common.util.elastic;
 
+import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.constant.elastic.ESIndexConstant;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -97,6 +98,14 @@ public class ElasticIndexInit implements CommandLineRunner {
     //城市
     @Value("${city.bidewu.substation}")
     private String cityIds;
+    /**
+     * 二手房全量索引
+     */
+    private String esfFullAmountIndex;
+    /**
+     * 二手房全量类型
+     */
+    private String esfFullAmountType;
 
     public static Map<String,Map<String, String>> esIndexMaps = new HashMap<>();
 
@@ -168,5 +177,10 @@ public class ElasticIndexInit implements CommandLineRunner {
                 esIndexMaps.put(CITY_BJ,esMap);
             }
         }
+        //添加公共elastic索引
+        Map<String ,String> map = new HashMap<>();
+        map.put(ESIndexConstant.ESF_FULL_AMOUNT_INDEX,esfFullAmountIndex);
+        map.put(ESIndexConstant.ESF_FULL_AMOUNT_TYPE,esfFullAmountType);
+        esIndexMaps.put(CityConstant.ABBREVIATION_QUANGUO,map);
     }
 }

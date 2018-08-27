@@ -101,7 +101,7 @@ public class HomePageRestController {
     public NashResult homePageNearEsf(@Validated NearHouseRequest nearHouseRequest){
         NearHouseDoQuery nearHouseDoQuery = new NearHouseDoQuery();
         BeanUtils.copyProperties(nearHouseRequest,nearHouseDoQuery);
-        HomePageNearEsfListDo homePageNearEsf = homePageRestService.getHomePageNearEsf(nearHouseDoQuery);
+        HomePageNearEsfListDo homePageNearEsf = homePageRestService.getHomePageNearEsf(nearHouseDoQuery, CityUtils.getCity());
         HomePageNearEsfListResponse homePageNearEsfListResponse = JSON.parseObject(JSON.toJSONString(homePageNearEsf), HomePageNearEsfListResponse.class);
         return NashResult.build(homePageNearEsfListResponse);
     }
@@ -125,7 +125,7 @@ public class HomePageRestController {
     public NashResult esfSpecialPage(@Validated NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
         NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery = new NearHouseSpecialPageDoQuery();
         BeanUtils.copyProperties(nearHouseSpecialPageRequest, nearHouseSpecialPageDoQuery);
-        HomePageNearEsfListDo esfSpecialPage = homePageRestService.getEsfSpecialPage(nearHouseSpecialPageDoQuery);
+        HomePageNearEsfListDo esfSpecialPage = homePageRestService.getEsfSpecialPage(nearHouseSpecialPageDoQuery,CityUtils.getCity());
         HomePageNearEsfListResponse homePageNearEsfListResponse = JSON.parseObject(JSON.toJSONString(esfSpecialPage), HomePageNearEsfListResponse.class);
         return NashResult.build(homePageNearEsfListResponse);
     }

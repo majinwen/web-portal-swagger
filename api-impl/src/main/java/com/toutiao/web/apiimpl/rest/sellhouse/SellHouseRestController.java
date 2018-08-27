@@ -117,7 +117,7 @@ public class SellHouseRestController {
         SellHouseBeSureToSnatchResponse sellHouseBeSureToSnatchResponses=new SellHouseBeSureToSnatchResponse();
         SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery=new SellHouseBeSureToSnatchDoQuery();
         BeanUtils.copyProperties(sellHouseBeSureToSnatchRequest,sellHouseBeSureToSnatchDoQuery);
-        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseBeSureToSnatchDos,sellHouseBeSureToSnatchResponses);
         return  NashResult.build(sellHouseBeSureToSnatchResponses);
     }
@@ -134,7 +134,7 @@ public class SellHouseRestController {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
         RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
         BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
         return NashResult.build(sellHouseSearchDomainResponse);
     }

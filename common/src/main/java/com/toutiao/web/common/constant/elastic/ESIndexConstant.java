@@ -33,7 +33,8 @@ public class ESIndexConstant {
     public static final String SCOPE_TYPE = "scopeType";
     public static final String AREA_ROOM_INDEX = "areaRoomIndex";
     public static final String AREA_ROOM_TYPE = "areaRoomType";
-
+    public static final String ESF_FULL_AMOUNT_INDEX = "esfFullAmountIndex";
+    public static final String ESF_FULL_AMOUNT_TYPE = "esfFullAmountType";
 
 
 }

@@ -70,7 +70,26 @@ public interface SellHouseEsDao {
      */
     SearchResponse getHouseByIds(IdsQueryBuilder idsQueryBuilder);
 
+    /**
+     * 获取对比二手房列表
+     * @param idsQueryBuilder
+     * @return
+     */
+    SearchResponse getComparedHouseByIds(IdsQueryBuilder idsQueryBuilder);
+
+    /**
+     * 根据关键字查询小区
+     * @param booleanQueryBuilder
+     * @return
+     */
     SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
 
+    /**
+     * 根据小区别名关键字查询小区
+     * @param booleanQueryBuilder
+     * @return
+     */
     SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
+
+
 }

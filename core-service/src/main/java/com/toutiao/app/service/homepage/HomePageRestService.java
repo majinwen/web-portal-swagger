@@ -37,7 +37,7 @@ public interface HomePageRestService {
      * @param nearHouseDoQuery
      * @return
      */
-    HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery);
+    HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery, String city);
 
     /**
      * 专题着陆页-附近小区
@@ -51,7 +51,7 @@ public interface HomePageRestService {
      * @param nearHouseSpecialPageDoQuery
      * @return
      */
-    HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
+    HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city);
 
     /**
      * 首页获取不买亏二手房8条

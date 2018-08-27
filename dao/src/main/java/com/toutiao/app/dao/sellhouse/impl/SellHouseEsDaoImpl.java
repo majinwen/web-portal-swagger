@@ -1,6 +1,7 @@
 package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
+import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -156,6 +157,20 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
                 .setQuery(idsQueryBuilder)
                 .execute().actionGet();
         return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getComparedHouseByIds(IdsQueryBuilder idsQueryBuilder) {
+
+        TransportClient client = esClientTools.init();
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getEsfFullAmountIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .setTypes(ElasticCityUtils.getEsfFullAmountType(CityConstant.ABBREVIATION_QUANGUO))
+                .setQuery(idsQueryBuilder)
+                .execute().actionGet();
+
+        return searchresponse;
+
+
     }
 
     @Override

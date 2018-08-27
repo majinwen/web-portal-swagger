@@ -42,7 +42,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
      * @return
      */
     @Override
-    public SellHouseDomain getNearbyTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery) {
+    public SellHouseDomain getNearbyTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery, String city) {
 
 
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
@@ -69,7 +69,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                 sellHouseDo.setUid(searchHit.getSortValues()[1].toString().split("#")[1]);
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
                 }else{
 
@@ -105,7 +105,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
      * @return
      */
     @Override
-    public SellHouseDomain getCutPriceTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery) {
+    public SellHouseDomain getCutPriceTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery, String city) {
 
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -131,7 +131,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                 sellHouseDo.setSortFields(searchHit.getSortValues()[0].toString());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(sellHouseDo.getUserId()) && sellHouseDo.getIsClaim()==1){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
                 }else{
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
@@ -165,7 +165,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
      * @return
      */
     @Override
-    public SellHouseDomain getLowPriceTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery) {
+    public SellHouseDomain getLowPriceTopicsSellHouse(SellHouseDoQuery sellHouseDoQuery,String city) {
 
 
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
@@ -191,7 +191,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(sellHouseDo.getUserId()) && sellHouseDo.getIsClaim()==1){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
                 }else{
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
@@ -224,7 +224,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
      * @return
      */
     @Override
-    public SellHouseDomain getMustRobTopicsSellHouseDetail(SellHouseDoQuery sellHouseDoQuery) {
+    public SellHouseDomain getMustRobTopicsSellHouseDetail(SellHouseDoQuery sellHouseDoQuery, String city) {
 
 
 
@@ -252,7 +252,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(sellHouseDo.getUserId()) && sellHouseDo.getIsClaim()==1){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
                 }else{
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
@@ -287,7 +287,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
      * @return
      */
     @Override
-    public SellHouseDomain getAreaRoomTopicsSellHouseDetail(SellHouseDoQuery sellHouseDoQuery) {
+    public SellHouseDomain getAreaRoomTopicsSellHouseDetail(SellHouseDoQuery sellHouseDoQuery, String city) {
 
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -312,7 +312,7 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(sellHouseDo.getUserId()) && sellHouseDo.getIsClaim()==1){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
 
                 }else{
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());

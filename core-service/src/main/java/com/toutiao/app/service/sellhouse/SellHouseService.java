@@ -51,7 +51,7 @@ public interface SellHouseService {
      * @param sellHouseBeSureToSnatchDoQuery
      * @return
      */
-    SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery);
+    SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery, String city);
 
     /**
      * 推荐房源
@@ -59,5 +59,5 @@ public interface SellHouseService {
      * @param recommendEsf5DoQuery
      * @return
      */
-    SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery);
+    SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery, String city);
 }

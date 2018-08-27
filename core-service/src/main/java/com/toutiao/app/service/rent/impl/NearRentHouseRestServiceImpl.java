@@ -136,7 +136,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
 
                 }else{
                     agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency").toString());

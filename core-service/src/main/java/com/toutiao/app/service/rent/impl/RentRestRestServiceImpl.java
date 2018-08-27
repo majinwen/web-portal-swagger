@@ -77,13 +77,13 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsDo queryRentDetailByHouseId(String rentId, String cityCode) {
+    public RentDetailsDo queryRentDetailByHouseId(String rentId, String city) {
         RentDetailsDo rentDetailsDo = new RentDetailsDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del",IS_DEL));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",RELEASE_STATUS));
-        SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder,cityCode);
+        SearchResponse searchResponse = rentEsDao.queryRentByRentId(boolQueryBuilder,city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         if (hits.length>0){
@@ -102,7 +102,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
                 if (rentDetailsDo.getRentHouseType()==1&&StringTool.isNotEmpty(rentDetailsDo.getUserId())){
                     //经纪人信息
-                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsDo.getUserId().toString(),city);
                     if (StringTool.isNotEmpty(agentBaseDo)){
                         rentDetailsDo.setPhone(agentBaseDo.getDisplayPhone());
                         rentDetailsDo.setAgentHeadPhoto(agentBaseDo.getHeadPhoto());
@@ -155,7 +155,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
 
                 }else{
                     agentBaseDo.setAgentName(hit.getSource().get("estate_agent").toString());
@@ -339,7 +339,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
 
                 }else{
                     agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent").toString());
@@ -390,7 +390,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
 
                 }else{
                     agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent").toString());
@@ -505,7 +505,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
 
                 }else{
                     agentBaseDo.setAgentName(hit.getSource().get("estate_agent").toString());

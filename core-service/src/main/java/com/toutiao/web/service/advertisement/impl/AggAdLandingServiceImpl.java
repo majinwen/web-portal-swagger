@@ -1384,7 +1384,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             }
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(),null);
                 if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
                     if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
                         int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));

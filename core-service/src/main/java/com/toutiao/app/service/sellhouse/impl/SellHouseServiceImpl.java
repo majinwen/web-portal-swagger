@@ -90,7 +90,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 BeanUtils.copyProperties(sellAndClaimHouseDetailsDo,sellHouseDetailsDo);
                 if (StringTool.isNotEmpty(sellAndClaimHouseDetailsDo.getUserId())&&sellAndClaimHouseDetailsDo.getIsClaim()==1){
                     //经纪人信息
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString(), city);
 
                     sellHouseDetailsDo.setTagsName(sellAndClaimHouseDetailsDo.getClaimTagsName());
                     sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
@@ -265,7 +265,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
 
                 }else{
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
@@ -346,7 +346,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
 
                 }else{
                     agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
@@ -474,7 +474,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(),city);
 
 
 //                    if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
@@ -581,7 +581,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
     @Override
-    public SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery) {
+    public SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery, String city) {
         SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDomain=new SellHouseBeSureToSnatchDomain();
         NearBySellHouseQueryDo nearBySellHouseQueryDo=new NearBySellHouseQueryDo();
         BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,nearBySellHouseQueryDo);
@@ -627,7 +627,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHouseBeSureToSnatchDo.setHouseTitle(sellHouseBeSureToSnatchDo.getClaimHouseTitle());
 
                 if (StringTool.isNotEmpty(sellHouseBeSureToSnatchDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseBeSureToSnatchDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseBeSureToSnatchDo.getUserId().toString(),city);
                 }
 
             }else{
@@ -678,7 +678,7 @@ public class SellHouseServiceImpl implements SellHouseService{
      * @return
      */
     @Override
-    public SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery) {
+    public SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery, String city) {
         SellHouseSearchDomain sellHouseSearchDomain = new SellHouseSearchDomain();
         BoolQueryBuilder recommendEsf5 = filterSellHouseChooseService.getRecommendEsf5(recommendEsf5DoQuery);
         FieldSortBuilder sortFile = null;
@@ -700,7 +700,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 SellHousesSearchDo sellHousesSearchDo = JSON.parseObject(details, SellHousesSearchDo.class);
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (sellHousesSearchDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())) {
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(), city);
                     //认领状态取认领数据
                     sellHousesSearchDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
                     sellHousesSearchDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
