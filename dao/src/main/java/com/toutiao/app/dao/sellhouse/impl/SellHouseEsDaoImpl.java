@@ -11,12 +11,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +33,11 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     private String searchEnginesIndex ;
     @Value("${tt.search.engines.type}")
     private String searchEnginesType;
+    @Value("${tt.messagePush.index}")
+    private String messagePushIndex;
+    @Value("${tt.messagePush.type}")
+    private String messagePushType;
+
 
 
     @Override
@@ -174,6 +174,16 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse querySellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(messagePushIndex).setTypes(messagePushType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder)
+                .setFetchSource(new String[]{""},null)
+                .execute().actionGet();
         return searchresponse;
     }
 
