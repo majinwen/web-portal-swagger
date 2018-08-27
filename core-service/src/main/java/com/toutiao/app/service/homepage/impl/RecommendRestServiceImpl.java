@@ -6,6 +6,7 @@ import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import com.toutiao.app.service.homepage.RecommendRestService;
+import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.aggregations.Aggregation;
@@ -268,7 +269,9 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                 }else{
                     recommendTopicDo.setDistrictId("");
                 }
-
+                if(StringTool.isEmpty(recommendTopicDoQuery.getDistrictId())){
+                    recommendTopicDo.setDistrictId("");
+                }
                 recommendTopicDo.setLowestPrice(lowestPrice.getValue());
                 recommendTopicDo.setHighestPrice(highestPrice.getValue());
                 recommendTopicDo.setCount((int)internalCardinality.getValue());
