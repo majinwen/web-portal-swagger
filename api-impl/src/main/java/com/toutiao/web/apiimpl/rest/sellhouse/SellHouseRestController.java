@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/rest/esf")
@@ -29,9 +31,9 @@ public class SellHouseRestController {
      */
     @RequestMapping(value = "/querySellHouseByHouseId",method = RequestMethod.GET)
     public NashResult querySellHouseByHouseId(@Param("houseId") String houseId){
-        MessageSellHouseDo messageSellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
-        if (StringTool.isNotEmpty(messageSellHouseDo)) {
-            return NashResult.build(messageSellHouseDo);
+        List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(houseId.split(","));
+        if (StringTool.isNotEmpty(messageSellHouseDos)) {
+            return NashResult.build(messageSellHouseDos);
         } else {
             return NashResult.Fail("获取消息推送失败");
         }

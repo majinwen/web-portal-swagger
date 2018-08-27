@@ -155,22 +155,26 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
     @Override
-    public MessageSellHouseDo querySellHouseByHouseId(String houseId) {
+    public List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseIds) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
-        if(houseId.indexOf("FS")>-1){
-            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseId));
-        }else {
-            boolQueryBuilder.must(QueryBuilders.termQuery("houseId",houseId));
-        }
+//        if(houseIds.indexOf("FS")>-1){
+//            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
+//        }else {
+        boolQueryBuilder.must(QueryBuilders.termsQuery("houseIds", houseIds));
+//        }
         SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
-        SearchHit[] hits = searchResponse.getHits().getHits();
-        MessageSellHouseDo messageSellHouseDo = null;
-        if(hits.length>0){
-            String sourceAsString = hits[0].getSourceAsString();
-            messageSellHouseDo = JSON.parseObject(sourceAsString, MessageSellHouseDo.class);
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String sourceAsString = searchHit.getSourceAsString();
+                MessageSellHouseDo messageSellHouseDo = JSON.parseObject(sourceAsString, MessageSellHouseDo.class);
+                messageSellHouseDos.add(messageSellHouseDo);
+            }
         }
-        return messageSellHouseDo;
+        return messageSellHouseDos;
     }
 
 
