@@ -1,6 +1,7 @@
 package com.toutiao.app.service.sellhouse;
 
 
+import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.sellhouse.*;
 
 
@@ -18,7 +19,7 @@ public interface SellHouseService {
      * @param houseId
      * @return
      */
-    SellHouseDo querySellHouseByHouseId(String houseId);
+    MessageSellHouseDo querySellHouseByHouseId(String houseId);
 
     /**
      * 认领二手房房源经纪人

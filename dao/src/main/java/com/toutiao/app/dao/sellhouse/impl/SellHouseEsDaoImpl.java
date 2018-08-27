@@ -182,8 +182,10 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(esfFullAmountIndex).setTypes(esfFullAmountType);
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder)
-                .setFetchSource(new String[]{"houseId", "area", "plotName", "buildArea", "room", "forwardName",
-                        "houseTotalPrices", "isCutPrice", "isLowPrice", "isMustRob"}, null)
+                .setFetchSource(new String[]{"houseId", "housePhotoTitle", "area", "areaId", "houseBusinessNameId",
+                                "houseBusinessName", "plotName", "newcode", "buildArea", "room", "forwardName",
+                                "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob"},
+                        null)
                 .execute().actionGet();
         return searchresponse;
     }
