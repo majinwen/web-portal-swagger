@@ -17,7 +17,6 @@ import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
-import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -155,7 +154,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
     @Override
-    public NashResult querySellHouseByHouseId(String houseId) {
+    public SellHouseDo querySellHouseByHouseId(String houseId) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
         if(houseId.indexOf("FS")>-1){
@@ -165,13 +164,12 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
-        String jsonObject = null;
+        SellHouseDo sellHouseDo = null;
         if(hits.length>0){
-            Map<String, Object> sourceAsMap = hits[0].getSourceAsMap();
-            jsonObject = JSON.toJSONString(sourceAsMap);
+            String sourceAsString = hits[0].getSourceAsString();
+            sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
         }
-
-        return NashResult.build(jsonObject);
+        return sellHouseDo;
     }
 
 

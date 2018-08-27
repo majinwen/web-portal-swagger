@@ -7,6 +7,7 @@ import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,12 @@ public class SellHouseRestController {
      */
     @RequestMapping(value = "/querySellHouseByHouseId",method = RequestMethod.GET)
     public NashResult querySellHouseByHouseId(@Param("houseId") String houseId){
-        return sellHouseService.querySellHouseByHouseId(houseId);
+        SellHouseDo sellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
+        if (StringTool.isNotEmpty(sellHouseDo)) {
+            return NashResult.build(sellHouseDo);
+        } else {
+            return NashResult.Fail("获取消息推送失败");
+        }
     }
 
     /**
