@@ -2,6 +2,7 @@ package com.toutiao.app.service.sellhouse;
 
 
 import com.toutiao.app.domain.sellhouse.*;
+import com.toutiao.web.common.restmodel.NashResult;
 
 
 public interface SellHouseService {
@@ -12,6 +13,13 @@ public interface SellHouseService {
      * @return
      */
     SellHouseDetailsDo getSellHouseByHouseId(String houseId);
+
+    /**
+     * 二手房房源详情消息推送
+     * @param houseId
+     * @return
+     */
+    NashResult querySellHouseByHouseId(String houseId);
 
     /**
      * 认领二手房房源经纪人
