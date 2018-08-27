@@ -17,7 +17,6 @@ import com.toutiao.web.dao.mapper.message.MessagePushMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -37,6 +36,7 @@ public class MessagePushServiceImpl implements MessagePushService {
      */
     @Override
     public MessagePushDomain getMessage(MessagePushDoQuery messagePushQuery) {
+        System.out.println(messagePushQuery.toString());
         MessagePushExample example = new MessagePushExample();
         example.setOrderByClause("create_time DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
@@ -76,13 +76,9 @@ public class MessagePushServiceImpl implements MessagePushService {
         List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
         for (MessagePushDo messagePushDo : messagePushDos) {
             String houseIds = messagePushDo.getHouseId();
-            List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
             if (!"{}".equals(houseIds)) {
                 String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
-                for (String houseId : split) {
-                    MessageSellHouseDo messageSellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
-                    messageSellHouseDos.add(messageSellHouseDo);
-                }
+                List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(split);
                 messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
             }
         }
