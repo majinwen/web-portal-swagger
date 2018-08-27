@@ -142,6 +142,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         if (StringTool.isNotEmpty(rentType)){
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",rentType));
         }
@@ -191,6 +192,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder);
         long zhengzu = ((InternalFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
         long hezu = ((InternalFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();
