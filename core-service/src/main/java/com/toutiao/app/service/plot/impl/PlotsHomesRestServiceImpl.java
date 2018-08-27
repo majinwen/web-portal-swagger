@@ -48,6 +48,7 @@ public class PlotsHomesRestServiceImpl implements PlotsHomesRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         SearchResponse rentResponse = rentEsDao.queryRentCountByPlotId(boolQueryBuilder);
         SearchHit[] rentHits = rentResponse.getHits().getHits();
         if(rentHits!=null){
@@ -59,7 +60,7 @@ public class PlotsHomesRestServiceImpl implements PlotsHomesRestService {
         queryBuilder.must(QueryBuilders.termQuery("is_del",0));
         queryBuilder.must(QueryBuilders.termQuery("release_status",1));
         queryBuilder.must(QueryBuilders.termQuery("zufang_id", plotId));
-
+        queryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         SearchResponse rentPriceResponse = rentEsDao.getRentPriceByPlotId(queryBuilder);
         Map aggMap =rentPriceResponse.getAggregations().asMap();
         InternalMin minHouse = (InternalMin) aggMap.get("minRentPrice");
