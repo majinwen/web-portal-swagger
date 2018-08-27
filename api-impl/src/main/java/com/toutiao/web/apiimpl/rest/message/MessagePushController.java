@@ -7,14 +7,15 @@ import com.toutiao.web.api.chance.request.message.MessagePushRequest;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 消息推送接口
  */
-@RestController
+@Controller
 @RequestMapping("/rest/messagePush")
 public class MessagePushController {
     @Autowired
@@ -23,8 +24,8 @@ public class MessagePushController {
     /**
      * 获取消息推送
      */
+    @RequestMapping(value = "/getMessage", method = RequestMethod.GET)
     @ResponseBody
-    @RequestMapping(value = "/getMessage")
     public NashResult getMessage(MessagePushRequest messagePushRequest) {
         MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
         BeanUtils.copyProperties(messagePushRequest, messagePushQuery);

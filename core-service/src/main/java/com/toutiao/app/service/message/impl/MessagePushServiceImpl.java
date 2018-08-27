@@ -31,7 +31,6 @@ public class MessagePushServiceImpl implements MessagePushService {
      */
     @Override
     public MessagePushDomain getMessage(MessagePushDoQuery messagePushQuery) {
-        MessagePushDomain messagePushDomain = new MessagePushDomain();
         MessagePushExample example = new MessagePushExample();
         example.setOrderByClause("create_time DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
@@ -62,13 +61,18 @@ public class MessagePushServiceImpl implements MessagePushService {
         if (messagePushQuery.getPushType() != null) {
             criteria.andPushTypeEqualTo(messagePushQuery.getPushType());
         }
+
+        //分页并统计总数
         Page<MessagePush> page = PageHelper.startPage(messagePushQuery.getPageNum(), messagePushQuery.getPageSize(), true);
+
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
         List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
+
+        MessagePushDomain messagePushDomain = new MessagePushDomain();
         messagePushDomain.setData(messagePushDos);
-        //分页前总数
         messagePushDomain.setTotalCount(page.getTotal());
+
         return messagePushDomain;
     }
 }
