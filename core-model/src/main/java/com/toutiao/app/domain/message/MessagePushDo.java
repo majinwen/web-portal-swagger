@@ -1,6 +1,5 @@
 package com.toutiao.app.domain.message;
 
-import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import lombok.Data;
 
 import java.util.Date;
@@ -76,5 +75,5 @@ public class MessagePushDo {
     /**
      * 房源信息
      */
-    private List<SellHouseDo> sellHouseDos;
+    private List<MessageSellHouseDo> messageSellHouseDos;
 }

@@ -7,6 +7,7 @@ import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
+import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
@@ -154,7 +155,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
     @Override
-    public SellHouseDo querySellHouseByHouseId(String houseId) {
+    public MessageSellHouseDo querySellHouseByHouseId(String houseId) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
         if(houseId.indexOf("FS")>-1){
@@ -164,12 +165,12 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
-        SellHouseDo sellHouseDo = null;
+        MessageSellHouseDo messageSellHouseDo = null;
         if(hits.length>0){
             String sourceAsString = hits[0].getSourceAsString();
-            sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+            messageSellHouseDo = JSON.parseObject(sourceAsString, MessageSellHouseDo.class);
         }
-        return sellHouseDo;
+        return messageSellHouseDo;
     }
 
 

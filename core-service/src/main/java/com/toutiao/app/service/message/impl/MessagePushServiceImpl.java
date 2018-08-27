@@ -8,7 +8,7 @@ import com.github.pagehelper.PageHelper;
 import com.toutiao.app.domain.message.MessagePushDo;
 import com.toutiao.app.domain.message.MessagePushDoQuery;
 import com.toutiao.app.domain.message.MessagePushDomain;
-import com.toutiao.app.domain.sellhouse.SellHouseDo;
+import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.service.message.MessagePushService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.dao.entity.message.MessagePush;
@@ -76,14 +76,14 @@ public class MessagePushServiceImpl implements MessagePushService {
         List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
         for (MessagePushDo messagePushDo : messagePushDos) {
             String houseIds = messagePushDo.getHouseId();
-            List<SellHouseDo> sellHouseDos = new ArrayList<>();
+            List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
             if (!"{}".equals(houseIds)) {
                 String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
                 for (String houseId : split) {
-                    SellHouseDo sellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
-                    sellHouseDos.add(sellHouseDo);
+                    MessageSellHouseDo messageSellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
+                    messageSellHouseDos.add(messageSellHouseDo);
                 }
-                messagePushDo.setSellHouseDos(sellHouseDos);
+                messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
             }
         }
         MessagePushDomain messagePushDomain = new MessagePushDomain();

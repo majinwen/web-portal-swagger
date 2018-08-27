@@ -3,6 +3,7 @@ package com.toutiao.web.apiimpl.rest.sellhouse;
 
 import com.toutiao.app.api.chance.request.sellhouse.*;
 import com.toutiao.app.api.chance.response.sellhouse.*;
+import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.assertUtils.First;
@@ -28,9 +29,9 @@ public class SellHouseRestController {
      */
     @RequestMapping(value = "/querySellHouseByHouseId",method = RequestMethod.GET)
     public NashResult querySellHouseByHouseId(@Param("houseId") String houseId){
-        SellHouseDo sellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
-        if (StringTool.isNotEmpty(sellHouseDo)) {
-            return NashResult.build(sellHouseDo);
+        MessageSellHouseDo messageSellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
+        if (StringTool.isNotEmpty(messageSellHouseDo)) {
+            return NashResult.build(messageSellHouseDo);
         } else {
             return NashResult.Fail("获取消息推送失败");
         }
