@@ -79,6 +79,11 @@ public class MessageSellHouseDo {
     private Integer isCutPrice;
 
     /**
+     * 价格浮动(单位:万)
+     */
+    private Double priceFloat;
+
+    /**
      * 是否逢出必抢房(0-否，1-是)
      */
     private Integer isMustRob;
