@@ -106,7 +106,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     Boolean isFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDoQuery);
                     plotDetailsDo.setIsFavorite(isFavorite);
                 }
-
+                plotDetailsDo.setAvgPrice((double) Math.round(plotDetailsDo.getAvgPrice()));
                 if ("商电".equals(plotDetailsDo.getElectricSupply())){
                     plotDetailsDo.setElectricFee(1.33);
                 }else {
@@ -528,6 +528,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     public void commonMethod(SearchHit hit,String key,List<PlotDetailsFewDo> plotDetailsFewDoList){
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
+        plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
         if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()&&""!=key){
             plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
         }

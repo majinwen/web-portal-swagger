@@ -82,6 +82,14 @@ public class IntelligenceFhResJson {
      */
     @JSONField(name = "districtId")
     private String districtId;
+    /**
+     * 用户选择类型
+     */
+    private String layoutArray;
 
+    /**
+     * 用户传递的区域id数组
+     */
+    private String districtArray;
 
 }

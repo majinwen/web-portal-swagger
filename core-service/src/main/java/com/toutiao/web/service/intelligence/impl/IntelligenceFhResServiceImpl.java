@@ -1,8 +1,11 @@
 package com.toutiao.web.service.intelligence.impl;
 
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhResMapper;
+import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,14 @@ public class IntelligenceFhResServiceImpl implements IntelligenceFhResService {
     public IntelligenceFhRes queryResById(Integer id) {
         IntelligenceFhRes intelligenceFhRes = intelligenceFhResMapper.selectByPrimaryKey(id);
         if (null!=intelligenceFhRes){
+            if (StringTool.isNotEmpty(intelligenceFhRes.getDistrictArray())){
+                String[] split = intelligenceFhRes.getDistrictArray().split(" ");
+                String[] districtArray = new String[split.length];
+                for (int i = 0;i<split.length;i++){
+                    districtArray[i] = DistrictMap.getDistrict(split[i]);
+                }
+                intelligenceFhRes.setDistrictArray(StringUtils.join(districtArray," "));
+            }
             return intelligenceFhRes;
         }
         return null;

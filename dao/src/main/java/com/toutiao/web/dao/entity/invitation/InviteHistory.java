@@ -41,4 +41,8 @@ public class InviteHistory {
      */
     private String equipmentNo;
 
+    /**
+     * 用户手机号
+     */
+    private String phone;
 }

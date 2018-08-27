@@ -33,6 +33,11 @@ public class InvitationCodeDo {
     private String userId;
 
     /**
+     * 用户手机号
+     */
+    private String phone;
+
+    /**
      * 邀请记录
      */
     private List<InviteHistoryDo> invateHistoryDos;
