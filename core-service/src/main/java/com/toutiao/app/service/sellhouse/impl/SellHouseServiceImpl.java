@@ -153,6 +153,24 @@ public class SellHouseServiceImpl implements SellHouseService{
         return sellHouseDetailsDo;
     }
 
+    @Override
+    public SellHouseDo querySellHouseByHouseId(String houseId) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        if(houseId.indexOf("FS")>-1){
+            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseId));
+        }else {
+            boolQueryBuilder.must(QueryBuilders.termQuery("houseId",houseId));
+        }
+        SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        SellHouseDo sellHouseDo = null;
+        if(hits.length>0){
+            String sourceAsString = hits[0].getSourceAsString();
+            sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+        }
+        return sellHouseDo;
+    }
 
 
     /**

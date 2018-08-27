@@ -8,13 +8,16 @@ import com.github.pagehelper.PageHelper;
 import com.toutiao.app.domain.message.MessagePushDo;
 import com.toutiao.app.domain.message.MessagePushDoQuery;
 import com.toutiao.app.domain.message.MessagePushDomain;
+import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import com.toutiao.app.service.message.MessagePushService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.dao.entity.message.MessagePush;
 import com.toutiao.web.dao.entity.message.MessagePushExample;
 import com.toutiao.web.dao.mapper.message.MessagePushMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +26,9 @@ import java.util.List;
 public class MessagePushServiceImpl implements MessagePushService {
     @Autowired
     private MessagePushMapper messagePushMapper;
+
+    @Autowired
+    private SellHouseService sellHouseService;
 
     /**
      * 获取消息
@@ -39,7 +45,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
 
         if (messagePushQuery.getCreateTime() != null) {
-            criteria.andCreateTimeLessThanOrEqualTo(messagePushQuery.getCreateTime());
+            criteria.andCreateTimeLessThan(messagePushQuery.getCreateTime());
         } else {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(new Date());
@@ -68,7 +74,18 @@ public class MessagePushServiceImpl implements MessagePushService {
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
         List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
-
+        for (MessagePushDo messagePushDo : messagePushDos) {
+            String houseIds = messagePushDo.getHouseId();
+            List<SellHouseDo> sellHouseDos = new ArrayList<>();
+            if (!"{}".equals(houseIds)) {
+                String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
+                for (String houseId : split) {
+                    SellHouseDo sellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
+                    sellHouseDos.add(sellHouseDo);
+                }
+                messagePushDo.setSellHouseDos(sellHouseDos);
+            }
+        }
         MessagePushDomain messagePushDomain = new MessagePushDomain();
         messagePushDomain.setData(messagePushDos);
         messagePushDomain.setTotalCount(page.getTotal());

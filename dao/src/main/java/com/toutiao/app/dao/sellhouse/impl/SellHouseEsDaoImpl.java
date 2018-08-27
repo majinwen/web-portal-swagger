@@ -11,12 +11,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +33,11 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     private String searchEnginesIndex ;
     @Value("${tt.search.engines.type}")
     private String searchEnginesType;
+    @Value("${tt.esfFullAmount.index}")
+    private String esfFullAmountIndex;
+    @Value("${tt.esfFullAmountType.type}")
+    private String esfFullAmountType;
+
 
 
     @Override
@@ -174,6 +174,17 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse querySellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(esfFullAmountIndex).setTypes(esfFullAmountType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder)
+                .setFetchSource(new String[]{"houseId", "area", "plotName", "buildArea", "room", "forwardName",
+                        "houseTotalPrices", "isCutPrice", "isLowPrice", "isMustRob"}, null)
+                .execute().actionGet();
         return searchresponse;
     }
 

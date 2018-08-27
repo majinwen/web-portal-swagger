@@ -7,6 +7,8 @@ import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -21,6 +23,18 @@ public class SellHouseRestController {
     @Autowired
     private SellHouseService sellHouseService;
 
+    /**
+     * 消息推送二手房列表信息
+     */
+    @RequestMapping(value = "/querySellHouseByHouseId",method = RequestMethod.GET)
+    public NashResult querySellHouseByHouseId(@Param("houseId") String houseId){
+        SellHouseDo sellHouseDo = sellHouseService.querySellHouseByHouseId(houseId);
+        if (StringTool.isNotEmpty(sellHouseDo)) {
+            return NashResult.build(sellHouseDo);
+        } else {
+            return NashResult.Fail("获取消息推送失败");
+        }
+    }
 
     /**
      *  二手房房源详情

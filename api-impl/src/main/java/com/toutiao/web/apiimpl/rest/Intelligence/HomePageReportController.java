@@ -1,9 +1,15 @@
 package com.toutiao.web.apiimpl.rest.Intelligence;
 
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.request.homepage.UserFavoriteConditionRequest;
+import com.toutiao.app.api.chance.response.user.UserLoginResponse;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.Intelligence.HomePageReportService;
+import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.CookieUtils;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
@@ -21,6 +27,8 @@ import java.util.Map;
 @RestController
 @RequestMapping("/rest/findhouse/byHouseReport")
 public class HomePageReportController {
+    @Autowired
+    private UserBasicInfoService userBasicInfoService;
     @Autowired
     private IntelligenceFhTdService intelligenceFhTdService;
     @Autowired
@@ -51,8 +59,15 @@ public class HomePageReportController {
      */
     @ResponseBody
     @RequestMapping(value = "/getHomePageReport",method = RequestMethod.GET)
-    public NashResult getHomePageReport(@RequestParam("reportId") String reportId,HttpServletRequest request, HttpServletResponse response) {
+    public NashResult getHomePageReport(@RequestParam("reportId") String reportId,@RequestParam(value = "title",required = false) String title,HttpServletRequest request, HttpServletResponse response) {
         Map<Object,Object> map = new HashMap();
+        if(StringTool.isNotBlank(reportId)){
+            if(StringTool.isNotBlank(title)){
+                String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+                UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+                UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+                intelligenceFhResService.updateMyReportCollectStatus(reportId, userBasic.getPhone());
+            }
             IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
             String datajson = ((PGobject) intelligenceFhRes.getFhResult()).getValue();
 //            JSONArray objects = JSONArray.parseArray(datajson);
@@ -66,6 +81,8 @@ public class HomePageReportController {
             map.put("fhpt",fhpt);
             map.put("fhtp",fhtp);
             map.put("collectStatus",intelligenceFhRes.getCollectStatus());
+            map.put("backUrl", request.getRequestURI());
+        }
         return NashResult.build(map);
     }
 }

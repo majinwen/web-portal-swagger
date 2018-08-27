@@ -70,4 +70,8 @@ public interface SellHouseEsDao {
     SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
 
     SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
+
+    SearchResponse querySellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder);
+
+
 }

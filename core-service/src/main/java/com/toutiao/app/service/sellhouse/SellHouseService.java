@@ -14,6 +14,13 @@ public interface SellHouseService {
     SellHouseDetailsDo getSellHouseByHouseId(String houseId);
 
     /**
+     * 二手房房源详情消息推送
+     * @param houseId
+     * @return
+     */
+    SellHouseDo querySellHouseByHouseId(String houseId);
+
+    /**
      * 认领二手房房源经纪人
      * @param houseId
      * @return
