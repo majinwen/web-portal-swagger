@@ -29,8 +29,26 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <!--收藏列表-->
-  <select id="selectSellHouseFavoriteByUserId" parameterType="com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery" resultMap="BaseResultMap">
-    SELECT  * FROM user_favorite_eshouse
+  <select id="selectSellHouseFavoriteByUserId" parameterType="com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo"
+          resultType="com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo">
+    SELECT
+      id AS Id,
+      user_id AS userId,
+      house_id AS houseId,
+      create_time AS createTime,
+      is_del AS isDel,
+      status AS status,
+      building_name AS buildingName,
+      build_area AS buildArea,
+      room AS room,
+      forward AS forward,
+      house_total_prices AS houseTotalPrice,
+      house_photo_title AS housePhotoTitle,
+      house_title AS houseTitle,
+      price_increase_decline AS priceIncreaseDecline,
+      is_claim AS isClaim,
+      city_id AS cityId
+     FROM user_favorite_eshouse
     WHERE user_id = #{userId} AND is_del = 0 ORDER BY create_time DESC
   </select>
 

@@ -30,8 +30,25 @@
   </select>
 
   <!--收藏列表-->
-  <select id="selectRentFavoritesByUserId" parameterType="com.toutiao.app.domain.favorite.rent.RentFavoriteListDoQuery" resultMap="BaseResultMap">
-    SELECT  * FROM user_favorite_rent
+  <select id="selectRentFavoritesByUserId" parameterType="com.toutiao.app.domain.favorite.rent.RentFavoriteDo" resultType="com.toutiao.app.domain.favorite.rent.RentFavoriteDo">
+    SELECT
+     id AS Id,
+     user_id AS  userId,
+     create_time AS createTime,
+     is_del AS isDel,
+     house_id AS houseId,
+     status AS status,
+     rent_price AS rentPrice,
+     rent_type AS rentType,
+     house_area AS houseArea,
+     room AS room,
+     forward AS forward,
+     building_name AS buildingName,
+     house_photo_title AS housePhotoTitle,
+     house_title AS houseTitle,
+     rent_type_name AS rentTypeName,
+     city_id AS cityId
+     FROM user_favorite_rent
     WHERE user_id = #{userId} AND is_del = 0 ORDER BY create_time DESC
   </select>
 

@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.favorite.sellhouse;
 
 import com.toutiao.web.common.assertUtils.ChangeName;
+import com.toutiao.web.common.constant.city.CityEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -58,4 +59,19 @@ public class SellHouseFavoriteDo {
      */
     @ChangeName("housePhotoTitleTags")
     private String priceIncreaseDecline;
+
+    /**
+     * 城市信息
+     */
+    private Integer cityId;
+
+    private String city;
+
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+        if(null!=cityId){
+            this.city = CityEnum.getId(cityId);
+        }
+    }
 }
