@@ -446,7 +446,10 @@
         </#list>
     </#if></ul>
 </section>
-
+<div class="company-bottom">
+    <p>©2018 北京比得屋科技有限责任公司</p>
+    <p>京ICP备18026731号</p>
+</div>
 
 <#include "user.ftl">
 <#include "search.ftl">
