@@ -184,7 +184,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder)
                 .setFetchSource(new String[]{"houseId", "housePhotoTitle", "area", "areaId", "houseBusinessNameId",
                                 "houseBusinessName", "plotName", "newcode", "buildArea", "room", "forwardName",
-                                "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob"},
+                                "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob", "status"},
                         null)
                 .execute().actionGet();
         return searchresponse;

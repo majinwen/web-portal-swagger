@@ -82,4 +82,10 @@ public class MessageSellHouseDo {
      * 是否逢出必抢房(0-否，1-是)
      */
     private Integer isMustRob;
+
+    /**
+     * 状态(0-未发布/1-已发布)
+     */
+    @ChangeName("releaseStatus")
+    private Short status;
 }
