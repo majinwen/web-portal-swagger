@@ -10,6 +10,7 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.message.MessagePush;
 import com.toutiao.web.dao.entity.message.MessagePushExample;
 import com.toutiao.web.dao.mapper.message.MessagePushMapper;
+import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -127,15 +128,26 @@ public class MessagePushServiceImpl implements MessagePushService {
         Integer lastMessageId = null;
         if (messagePushDos.size() > 5) {
             List<MessagePushDo> message = messagePushDos.subList(0, 5);
+            getDistrictNameById(message);
             messagePushDomain.setData(message);
             lastMessageId = message.get(message.size() - 1).getId();
         } else {
+            getDistrictNameById(messagePushDos);
             messagePushDomain.setData(messagePushDos);
             lastMessageId = messagePushDos.get(messagePushDos.size() - 1).getId();
         }
         messagePushDomain.setLastMessageId(lastMessageId);
         messagePushDomain.setTotalCount(messagePushDomain.getData().size());
         return messagePushDomain;
+    }
+
+    private void getDistrictNameById(List<MessagePushDo> message) {
+        for (MessagePushDo messagePushDo : message) {
+            JSONObject jsStr = JSONObject.parseObject(messagePushDo.getMessageTheme());
+            String district = DistrictMap.getDistrict(String.valueOf(jsStr.get("districtId")));
+            jsStr.put("districtName", district);
+            messagePushDo.setMessageTheme(jsStr.toString());
+        }
     }
 
     /**
@@ -158,14 +170,14 @@ public class MessagePushServiceImpl implements MessagePushService {
             //推送类型(0-系统消息, 1-定向推送)
             criteria.andPushTypeEqualTo(1);
             criteria.andContentTypeEqualTo(i);
-            if (i == 3 && homeMessageDoQuery.getConditionHouseDate() != null) {
-                criteria.andCreateTimeGreaterThanOrEqualTo(homeMessageDoQuery.getConditionHouseDate());
-            } else if (i == 4 && homeMessageDoQuery.getFavoritePlotDate() != null) {
-                criteria.andCreateTimeGreaterThanOrEqualTo(homeMessageDoQuery.getFavoritePlotDate());
-            } else if (i == 5 && homeMessageDoQuery.getFavoriteHouseDate() != null) {
-                criteria.andCreateTimeGreaterThanOrEqualTo(homeMessageDoQuery.getFavoriteHouseDate());
-            } else if (i == 6 && homeMessageDoQuery.getSubscribeThemeDate() != null) {
-                criteria.andCreateTimeGreaterThanOrEqualTo(homeMessageDoQuery.getSubscribeThemeDate());
+            if (i == 3 && homeMessageDoQuery.getConditionHouseDate() != 0) {
+                criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
+            } else if (i == 4 && homeMessageDoQuery.getFavoritePlotDate() != 0) {
+                criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoritePlotDate()));
+            } else if (i == 5 && homeMessageDoQuery.getFavoriteHouseDate() != 0) {
+                criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteHouseDate()));
+            } else if (i == 6 && homeMessageDoQuery.getSubscribeThemeDate() != 0) {
+                criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getSubscribeThemeDate()));
             }
             Date date = new Date();
             criteria.andCreateTimeLessThan(date);
