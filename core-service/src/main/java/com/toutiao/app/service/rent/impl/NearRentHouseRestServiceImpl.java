@@ -58,6 +58,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 
         //添加筛选条件
         BoolQueryBuilder booleanQueryBuilder = getBoolQueryBuilder(boolQueryBuilder, nearHouseListDoQuery);
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));//目前只展示导入的房源
         booleanQueryBuilder.must(location);
 
         //设置基础分(录入优先展示)(录入:1,导入1/3)

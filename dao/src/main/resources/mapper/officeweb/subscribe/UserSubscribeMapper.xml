@@ -7,10 +7,11 @@
         <result column="user_subscribe_map" property="userSubscribeMap" jdbcType="VARCHAR"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="subscribe_type" property="subscribeType" jdbcType="INTEGER"/>
         <result column="city_id" property="cityId" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_id, user_subscribe_map, create_time, update_time, city_id
+    id, user_id, user_subscribe_map, create_time, update_time, subscribe_type, city_id
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -24,9 +25,9 @@
   </delete>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.subscribe.UserSubscribe">
     insert into user_subscribe (id, user_id, user_subscribe_map, 
-      create_time, update_time, city_id)
+      create_time, update_time,subscribe_type, city_id)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userSubscribeMap,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{cityId,jdbcType=INTEGER})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{subscribeType,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER})
   </insert>
     <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.subscribe.UserSubscribe" useGeneratedKeys="true" keyProperty="id">
         insert into user_subscribe
@@ -45,6 +46,9 @@
             </if>
             <if test="updateTime != null">
                 update_time,
+            </if>
+            <if test="subscribeType != null">
+                subscribe_type,
             </if>
             <if test="cityId != null" >
                 city_id,
@@ -66,6 +70,9 @@
             <if test="updateTime != null">
                 #{updateTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="subscribeType != null">
+                #{subscribeType,jdbcType=INTEGER},
+            </if>
             <if test="cityId != null" >
                 #{cityId,jdbcType=INTEGER},
             </if>
@@ -86,6 +93,9 @@
             <if test="updateTime != null">
                 update_time = #{updateTime,jdbcType=TIMESTAMP},
             </if>
+            <if test="subscribeType != null">
+                subscribe_type = #{subscribeType,jdbcType=INTEGER},
+            </if>
             <if test="cityId != null" >
                 city_id = #{cityId,jdbcType=INTEGER},
             </if>
@@ -98,6 +108,7 @@
       user_subscribe_map = #{userSubscribeMap,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
+      subscribe_type = #{subscribeType,jdbcType=INTEGER},
       city_id = #{cityId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -127,7 +138,69 @@
         select
         <include refid="Base_Column_List" />
         from user_subscribe
-        where user_id = #{userId,jdbcType=INTEGER}
+        where user_id = #{userId,jdbcType=INTEGER} AND subscribe_type = 0
         order by id desc
+    </select>
+
+    <select id="selectConditionSubscribeByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from user_subscribe
+        where user_id = #{userId,jdbcType=INTEGER} AND subscribe_type = 1
+        order by id desc
+    </select>
+
+    <select id="selectConditionSubscribeByUserSubscribeMap" resultMap="BaseResultMap"
+            parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from user_subscribe
+        where user_id = #{userId,jdbcType=INTEGER}
+        <if test="record.districtId != null">
+            and user_subscribe_map->>'districtId' = cast(#{record.districtId,jdbcType=VARCHAR} as text)
+        </if>
+        <if test="record.areaId != null">
+            and user_subscribe_map->>'areaId' = cast(#{record.areaId,jdbcType=VARCHAR} as text)
+        </if>
+        <if test="record.subwayLineId != null">
+            and user_subscribe_map->>'subwayLineId' = cast(#{record.subwayLineId,jdbcType=VARCHAR} as text)
+        </if>
+        <if test="record.subwayStationId != null">
+            and user_subscribe_map->>'subwayStationId' = cast(#{record.subwayStationId,jdbcType=VARCHAR} as text)
+        </if>
+        <if test="record.beginPrice != null">
+            and user_subscribe_map->>'beginPrice' = cast(#{record.beginPrice,jdbcType=INTEGER} as text)
+        </if>
+        <if test="record.endPrice != null">
+            and user_subscribe_map->>'endPrice' = cast(#{record.endPrice,jdbcType=INTEGER} as text)
+        </if>
+        <if test="record.layoutId != null">
+            and user_subscribe_map->>'layoutId' = cast(#{record.layoutId,jdbcType=VARCHAR} as text)
+        </if>
+        <if test="record.beginArea != null">
+            and user_subscribe_map->>'beginArea' = cast(#{record.beginArea,jdbcType=DOUBLE} as text)
+        </if>
+        <if test="record.endArea != null">
+            and user_subscribe_map->>'endArea' = cast(#{record.endArea,jdbcType=DOUBLE} as text)
+        </if>
+        <if test="record.forwardId != null">
+            and user_subscribe_map->>'forwardId' = cast(#{record.forwardId,jdbcType=VARCHAR} as text)
+        </if>
+        <if test="record.houseYearId != null">
+            and user_subscribe_map->>'houseYearId' = cast(#{record.houseYearId,jdbcType=VARCHAR} as text)
+        </if>
+        <if test="record.labelId != null">
+            and user_subscribe_map->>'labelId' = cast(#{record.labelId,jdbcType=VARCHAR} as text)
+        </if>
+        <if test="record.isCutPrice != null">
+            and user_subscribe_map->>'isCutPrice' = cast(#{record.isCutPrice,jdbcType=INTEGER} as text)
+        </if>
+        <if test="record.isLowPrice != null">
+            and user_subscribe_map->>'isLowPrice' = cast(#{record.isLowPrice,jdbcType=INTEGER} as text)
+        </if>
+        <if test="record.isMustRob != null">
+            and user_subscribe_map->>'isMustRob' = cast(#{record.isMustRob,jdbcType=INTEGER} as text)
+        </if>
+        limit 1
     </select>
 </mapper>

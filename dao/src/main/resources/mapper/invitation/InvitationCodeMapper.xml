@@ -8,6 +8,15 @@
         <result column="invite_total" property="inviteTotal" jdbcType="INTEGER"/>
         <result column="user_id" property="userId" jdbcType="VARCHAR"/>
     </resultMap>
+
+    <resultMap id="BaseResultMap1" type="com.toutiao.web.dao.entity.invitation.InvitationCode">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="code" property="code" jdbcType="INTEGER"/>
+        <result column="invite_total" property="inviteTotal" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+    </resultMap>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -70,6 +79,10 @@
     </sql>
     <sql id="Base_Column_List">
         id, create_time, code, invite_total, user_id
+    </sql>
+
+    <sql id="Base_Column_List1">
+        id, code.create_time, code, invite_total, base.user_id, phone
     </sql>
     <select id="selectByExample" resultMap="BaseResultMap"
             parameterType="com.toutiao.web.dao.entity.invitation.InvitationCodeExample">
@@ -238,10 +251,12 @@
         where code = #{code,jdbcType=INTEGER}
     </select>
 
-    <select id="getCodeInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="getCodeInfo" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
         select
-        <include refid="Base_Column_List"/>
-        from invitation_code
+        <include refid="Base_Column_List1"/>
+        from invitation_code code
+        left join user_basic base
+        on code.user_id = base.user_id
         <if test="code != null">
             where code = #{code,jdbcType=INTEGER}
         </if>
