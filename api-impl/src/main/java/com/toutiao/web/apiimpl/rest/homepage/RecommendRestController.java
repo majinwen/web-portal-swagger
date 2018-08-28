@@ -5,6 +5,7 @@ import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
 import com.toutiao.app.service.homepage.RecommendRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,7 +39,7 @@ public class RecommendRestController {
         RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
         BeanUtils.copyProperties(recommendRequest, recommendTopicDoQuery);
 
-        RecommendTopicDomain recommendTopicDomain= recommendRestService.getRecommendTopic(recommendTopicDoQuery);
+        RecommendTopicDomain recommendTopicDomain= recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
 
         return NashResult.build(recommendTopicDomain);
     }
