@@ -175,7 +175,7 @@ public class HomePageServiceImpl implements HomePageRestService {
      * @return
      */
     @Override
-    public HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery) {
+    public HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery, String city) {
 
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -203,10 +203,10 @@ public class HomePageServiceImpl implements HomePageRestService {
 
             boolQueryBuilder.must(location);
             boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(0));
-            homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
+            homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearHouseDoQuery.getSize(), sort, city);
         }else {
             boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",new int[]{1}));
-            homePageNearPlot = homePageEsDao.getHomePageNearPlotNoLocation(boolQueryBuilder, nearHouseDoQuery.getSize());
+            homePageNearPlot = homePageEsDao.getHomePageNearPlotNoLocation(boolQueryBuilder, nearHouseDoQuery.getSize(), city);
         }
 
         if (null!=homePageNearPlot){
@@ -268,9 +268,9 @@ public class HomePageServiceImpl implements HomePageRestService {
 //            sort.order(SortOrder.ASC);
             boolQueryBuilder.must(location);
 
-            homePageNearEsf = homePageEsDao.getHomePageNearEsf(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
+            homePageNearEsf = homePageEsDao.getHomePageNearEsf(boolQueryBuilder, nearHouseDoQuery.getSize(), sort, city);
         }else {
-            homePageNearEsf = homePageEsDao.getHomePageNearEsfNoLocation(boolQueryBuilder, nearHouseDoQuery.getSize());
+            homePageNearEsf = homePageEsDao.getHomePageNearEsfNoLocation(boolQueryBuilder, nearHouseDoQuery.getSize(), city);
         }
 
         if (null!=homePageNearEsf){
@@ -318,7 +318,7 @@ public class HomePageServiceImpl implements HomePageRestService {
      * @return
      */
     @Override
-    public HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery) {
+    public HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city) {
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         HomePageNearPlotDo homePageNearPlotDo = new HomePageNearPlotDo();
@@ -332,7 +332,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
 
-        SearchResponse plotSpecialPage = homePageEsDao.getPlotSpecialPage(boolQueryBuilder,sort);
+        SearchResponse plotSpecialPage = homePageEsDao.getPlotSpecialPage(boolQueryBuilder, sort, city);
 
         SearchHit[] hits = plotSpecialPage.getHits().getHits();
 
@@ -374,7 +374,7 @@ public class HomePageServiceImpl implements HomePageRestService {
 //        sort.unit(DistanceUnit.METERS);
 //        sort.order(SortOrder.ASC);
 
-        SearchResponse esfSpecialPage = homePageEsDao.getEsfSpecialPage(boolQueryBuilder,from,nearHouseSpecialPageDoQuery.getSize());
+        SearchResponse esfSpecialPage = homePageEsDao.getEsfSpecialPage(boolQueryBuilder,from,nearHouseSpecialPageDoQuery.getSize(),city);
 
         SearchHit[] hits = esfSpecialPage.getHits().getHits();
         if (hits.length>0){
@@ -463,14 +463,14 @@ public class HomePageServiceImpl implements HomePageRestService {
     public Map<String,HomePageTop50Do> getHomePageTop50() {
 
 //        List<HomePageTop50Do> homePageTop50Dos=new ArrayList<>();
-        List<Map<String,HomePageTop50Do>> homePageTop50Dos=new ArrayList<>();
+//        List<Map<String,HomePageTop50Do>> homePageTop50Dos=new ArrayList<>();
         Map<String,HomePageTop50Do> map = new HashMap<>();
         int [] isTop={1};
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",isTop));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve",1));
-        SearchResponse top50 = homePageEsDao.getHomePageTop50(boolQueryBuilder);
+        SearchResponse top50 = homePageEsDao.getHomePageTop50(boolQueryBuilder, CityUtils.getCity());
         Terms count = top50.getAggregations().get("count");
         List list= count.getBuckets();
         for (Object l:list)

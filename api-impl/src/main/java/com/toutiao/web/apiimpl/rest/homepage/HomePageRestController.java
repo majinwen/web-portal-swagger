@@ -89,7 +89,7 @@ public class HomePageRestController {
     public NashResult homePageNearPlot(@Validated NearHouseRequest nearHouseRequest){
         NearHouseDoQuery nearHouseDoQuery = new NearHouseDoQuery();
         BeanUtils.copyProperties(nearHouseRequest,nearHouseDoQuery);
-        HomePageNearPlotListDo homePageNearPlot = homePageRestService.getHomePageNearPlot(nearHouseDoQuery);
+        HomePageNearPlotListDo homePageNearPlot = homePageRestService.getHomePageNearPlot(nearHouseDoQuery, CityUtils.getCity());
         HomePageNearPlotListResponse homePageNearPlotListResponse = JSON.parseObject(JSON.toJSONString(homePageNearPlot), HomePageNearPlotListResponse.class);
         return NashResult.build(homePageNearPlotListResponse);
     }
@@ -113,7 +113,7 @@ public class HomePageRestController {
     public NashResult plotSpecialPage(@Validated NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
         NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery = new NearHouseSpecialPageDoQuery();
         BeanUtils.copyProperties(nearHouseSpecialPageRequest, nearHouseSpecialPageDoQuery);
-        HomePageNearPlotDo plotSpecialPage = homePageRestService.getPlotSpecialPage(nearHouseSpecialPageDoQuery);
+        HomePageNearPlotDo plotSpecialPage = homePageRestService.getPlotSpecialPage(nearHouseSpecialPageDoQuery, CityUtils.getCity());
         HomePageNearPlotResponse homePageNearPlotResponse = JSON.parseObject(JSON.toJSONString(plotSpecialPage), HomePageNearPlotResponse.class);
         return NashResult.build(homePageNearPlotResponse);
     }

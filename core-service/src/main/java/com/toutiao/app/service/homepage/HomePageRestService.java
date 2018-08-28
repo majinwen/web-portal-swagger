@@ -30,7 +30,7 @@ public interface HomePageRestService {
     /**
      * 首页附近小区
      */
-    HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery);
+    HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery,String city);
 
     /**
      * 首页附近二手房
@@ -44,7 +44,7 @@ public interface HomePageRestService {
      * @param nearHouseSpecialPageDoQuery
      * @return
      */
-    HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
+    HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city);
 
     /**
      * 专题着陆页-附近二手房
