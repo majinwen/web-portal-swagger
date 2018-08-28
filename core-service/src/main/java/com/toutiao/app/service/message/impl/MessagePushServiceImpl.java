@@ -3,8 +3,6 @@ package com.toutiao.app.service.message.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
 import com.toutiao.app.domain.message.MessagePushDo;
 import com.toutiao.app.domain.message.MessagePushDoQuery;
 import com.toutiao.app.domain.message.MessagePushDomain;
@@ -14,9 +12,12 @@ import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.dao.entity.message.MessagePush;
 import com.toutiao.web.dao.entity.message.MessagePushExample;
 import com.toutiao.web.dao.mapper.message.MessagePushMapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,6 @@ public class MessagePushServiceImpl implements MessagePushService {
      */
     @Override
     public MessagePushDomain getMessage(MessagePushDoQuery messagePushQuery) {
-        System.out.println(messagePushQuery.toString());
         MessagePushExample example = new MessagePushExample();
         example.setOrderByClause("create_time DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
@@ -69,22 +69,30 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
 
         //分页并统计总数
-        Page<MessagePush> page = PageHelper.startPage(messagePushQuery.getPageNum(), messagePushQuery.getPageSize(), true);
+//        Page<MessagePush> page = PageHelper.startPage(messagePushQuery.getPageNum(), messagePushQuery.getPageSize(), true);
 
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
         List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
+        List<MessagePushDo> result = new ArrayList<>();
         for (MessagePushDo messagePushDo : messagePushDos) {
             String houseIds = messagePushDo.getHouseId();
             if (!"{}".equals(houseIds)) {
                 String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
                 List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(split);
-                messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
+                if (!CollectionUtils.isEmpty(messageSellHouseDos)) {
+                    for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
+                        MessagePushDo message = new MessagePushDo();
+                        BeanUtils.copyProperties(messagePushDo, message);
+                        message.setMessageSellHouseDo(messageSellHouseDo);
+                        result.add(message);
+                    }
+                }
             }
         }
         MessagePushDomain messagePushDomain = new MessagePushDomain();
-        messagePushDomain.setData(messagePushDos);
-        messagePushDomain.setTotalCount(page.getTotal());
+        messagePushDomain.setData(result);
+//        messagePushDomain.setTotalCount(page.getTotal());
 
         return messagePushDomain;
     }

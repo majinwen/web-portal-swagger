@@ -161,7 +161,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 //        if(houseIds.indexOf("FS")>-1){
 //            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
 //        }else {
-        boolQueryBuilder.must(QueryBuilders.termsQuery("houseIds", houseIds));
+        boolQueryBuilder.must(QueryBuilders.termsQuery("houseId", houseIds));
 //        }
         SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
         SearchHits hits = searchResponse.getHits();
