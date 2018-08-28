@@ -34,6 +34,13 @@ public class ElasticCityUtils {
     }
 
     /**
+     * 小区表名(父表)
+     */
+    public static String getPlotChildType(String cityCode){
+        return getESIndexMap(ESIndexConstant.PLOT_TYPE_T2,cityCode);
+    }
+
+    /**
      * 二手房索引
      */
     public static String getEsfIndex(String cityCode) {

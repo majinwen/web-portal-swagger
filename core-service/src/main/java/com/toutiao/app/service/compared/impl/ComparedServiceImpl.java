@@ -122,7 +122,7 @@ public class ComparedServiceImpl implements ComparedService {
         for (String id : ids) {
             idsQueryBuilder.addIds(id);
         }
-        SearchResponse searchResponse = sellHouseEsDao.getHouseByIds(idsQueryBuilder);
+        SearchResponse searchResponse = sellHouseEsDao.getComparedHouseByIds(idsQueryBuilder);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
@@ -178,7 +178,7 @@ public class ComparedServiceImpl implements ComparedService {
         for (String id : ids) {
             idsQueryBuilder.addIds(id);
         }
-        SearchResponse searchResponse = sellHouseEsDao.getHouseByIds(idsQueryBuilder);
+        SearchResponse searchResponse = sellHouseEsDao.getComparedHouseByIds(idsQueryBuilder);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
