@@ -98,7 +98,7 @@ public class NewHouseRestController {
     public NashResult getOneNewHouseByRecommendCondition(UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
-        NewHouseDetailDo newHouseDetailDo= newHouseService.getOneNewHouseByRecommendCondition(userFavoriteConditionDoQuery);
+        NewHouseDetailDo newHouseDetailDo= newHouseService.getOneNewHouseByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
         return NashResult.build(newHouseDetailResponse);
     }

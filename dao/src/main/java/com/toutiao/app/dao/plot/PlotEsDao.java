@@ -101,7 +101,7 @@ public interface PlotEsDao {
     SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder ,Integer from,Integer size);
 
 
-    SearchResponse getPlotByRecommendCondition(BoolQueryBuilder boolQueryBuilder, ScriptSortBuilder scrip);
+    SearchResponse getPlotByRecommendCondition(BoolQueryBuilder boolQueryBuilder, ScriptSortBuilder scrip, String city);
 
 
     SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);

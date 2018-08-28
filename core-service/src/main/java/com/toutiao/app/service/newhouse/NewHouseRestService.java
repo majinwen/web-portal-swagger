@@ -36,7 +36,7 @@ public interface NewHouseRestService {
     /**
      * 根据推荐条件查询一条推荐房源
      */
-    NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+    NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
 
 

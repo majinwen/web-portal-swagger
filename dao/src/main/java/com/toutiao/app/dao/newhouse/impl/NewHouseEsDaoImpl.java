@@ -99,10 +99,10 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     }
 
     @Override
-    public SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder boolQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
         //查询
-        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city))
                 .setQuery(boolQueryBuilder).setSize(1)
                 .execute().actionGet();
         return  searchresponse;

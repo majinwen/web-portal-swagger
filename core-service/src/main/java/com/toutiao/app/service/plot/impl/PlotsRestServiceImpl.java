@@ -640,7 +640,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     }
 
     @Override
-    public List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+    public List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
         //构建筛选器
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
         List<PlotDetailsDo> list = new ArrayList<>();
@@ -667,7 +667,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
-        SearchResponse plotByRecommendCondition = plotEsDao.getPlotByRecommendCondition(booleanQueryBuilder,scrip);
+        SearchResponse plotByRecommendCondition = plotEsDao.getPlotByRecommendCondition(booleanQueryBuilder,scrip,city);
         SearchHit[] hits = plotByRecommendCondition.getHits().getHits();
         if (hits.length>0){
             for (SearchHit hit :hits){

@@ -405,7 +405,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+    public NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
         //构建筛选器
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
 
@@ -426,7 +426,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //查询
-        SearchResponse oneNewHouseByRecommendCondition = newHouseEsDao.getOneNewHouseByRecommendCondition(booleanQueryBuilder);
+        SearchResponse oneNewHouseByRecommendCondition = newHouseEsDao.getOneNewHouseByRecommendCondition(booleanQueryBuilder, city);
         SearchHit[] hits = oneNewHouseByRecommendCondition.getHits().getHits();
         NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         if (hits.length>0){
