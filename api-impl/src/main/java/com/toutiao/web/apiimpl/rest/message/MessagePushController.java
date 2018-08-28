@@ -50,7 +50,7 @@ public class MessagePushController {
     }
 
     /**
-     * 房源类消息列表
+     * 专题类消息列表
      */
     @RequestMapping(value = "/getThemeTypeMessage", method = RequestMethod.GET)
     @ResponseBody
