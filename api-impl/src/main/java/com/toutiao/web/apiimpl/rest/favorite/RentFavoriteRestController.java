@@ -5,7 +5,6 @@ import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.favorite.RentFavoriteListResponse;
 import com.toutiao.app.domain.favorite.DeleteRentFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.favorite.UserFavoriteRent;
 import com.toutiao.app.domain.favorite.UserFavoriteRentDoQuery;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteDomain;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteListDoQuery;

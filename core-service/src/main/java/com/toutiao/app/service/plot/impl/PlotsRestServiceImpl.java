@@ -227,7 +227,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @return
      */
     @Override
-    public List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId){
+    public List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId, String city){
         try {
             List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -240,7 +240,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
             boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
             boolQueryBuilder.mustNot(QueryBuilders.termQuery("id", plotId));
-            SearchResponse searchResponse = plotEsDao.queryNearPlotByLocationAndDistance(boolQueryBuilder, location, sort);
+            SearchResponse searchResponse = plotEsDao.queryNearPlotByLocationAndDistance(boolQueryBuilder, location, sort, city);
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
@@ -277,7 +277,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             SearchResponse searchResponse = null;
             bqbPlotName.must(QueryBuilders.termQuery("rc_accurate",plotListDoQuery.getKeyword()));
 //                    .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword();
-            searchResponse = plotEsDao.getPlotByKeyWord(bqbPlotName);
+            searchResponse = plotEsDao.getPlotByKeyWord(bqbPlotName,city);
             long total = searchResponse.getHits().getTotalHits();
             out: if(total > 0l){
                 break out;
@@ -609,7 +609,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      */
 
     @Override
-    public List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery,String userAgent,  String city) {
+    public List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery,String city) {
         List<PlotTop50Do> plotTop50Dos=new ArrayList<>();
         int [] isTop={1};
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -621,7 +621,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("areaId",plotTop50ListDoQuery.getDistrictId()));
         }
 
-        SearchResponse searchResponse= plotEsDao.getPlotTop50List(boolQueryBuilder,plotTop50ListDoQuery.getPageNum(),plotTop50ListDoQuery.getPageSize());
+        SearchResponse searchResponse= plotEsDao.getPlotTop50List(boolQueryBuilder,plotTop50ListDoQuery.getPageNum(),plotTop50ListDoQuery.getPageSize(),city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         for (SearchHit hit:hits){
             String sourceAsString = hit.getSourceAsString();

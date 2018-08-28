@@ -25,7 +25,7 @@ public interface PlotsRestService {
      * @param lon
      * @return
      */
-    List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId);
+    List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId, String city);
 
     /**
      * 获取小区列表
@@ -58,7 +58,7 @@ public interface PlotsRestService {
      * 小区top50查询
      */
 
-    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery,String userAgent,  String city);
+    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery,String city);
 
 
     List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);

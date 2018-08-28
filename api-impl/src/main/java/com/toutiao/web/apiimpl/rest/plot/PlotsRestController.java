@@ -55,7 +55,8 @@ public class PlotsRestController {
     @RequestMapping("/getAroundPlotByLocation")
     @ResponseBody
     public NashResult getPlotAroundByLocation(@Validated PlotAroundPlotRequest plotAroundPlotRequest){
-        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlotRequest.getLat(), plotAroundPlotRequest.getLon(), plotAroundPlotRequest.getPlotId());
+        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlotRequest.getLat(),
+                plotAroundPlotRequest.getLon(), plotAroundPlotRequest.getPlotId(),CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
         List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
         return NashResult.build(plotDetailsFewResponseList);
@@ -77,7 +78,7 @@ public class PlotsRestController {
     }
 
     /**
-     *
+     * 小区周边配套
      * @param plotAroundInfoRequest
      * @return
      * @throws InvocationTargetException
@@ -100,12 +101,12 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getTop50List",method = RequestMethod.GET)
     @ResponseBody
-    public  NashResult getTop50List(BaseQueryRequest baseQueryRequest,@RequestHeader("User-Agent") String userAgent, @CookieValue("select_city")String city)
+    public  NashResult getTop50List(BaseQueryRequest baseQueryRequest)
     {
         List<PlotTop50Response> plotTop50Responses=new ArrayList<>();
         PlotTop50ListDoQuery plotTop50ListDoQuery=new PlotTop50ListDoQuery();
         BeanUtils.copyProperties(baseQueryRequest,plotTop50ListDoQuery);
-        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery,userAgent,city);
+        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery,CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotTop50Dos));
         plotTop50Responses=JSONObject.parseArray(json.toJSONString(), PlotTop50Response.class);
         return  NashResult.build(plotTop50Responses);

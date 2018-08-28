@@ -31,7 +31,8 @@ public interface PlotEsDao {
      * @param
      * @return
      */
-    SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort);
+    SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,
+                                                      GeoDistanceSortBuilder sort, String city);
 
     /**
      * 查询附近小区列表
@@ -41,7 +42,8 @@ public interface PlotEsDao {
      * @return
      * @throws Exception
      */
-    SearchResponse queryNearPlotListByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort);
+    SearchResponse queryNearPlotListByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,
+                                                          GeoDistanceSortBuilder sort);
 
     /**
      * 查询小区列表
@@ -50,7 +52,8 @@ public interface PlotEsDao {
      * @param scoreSort
      * @return
      */
-    SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder, FieldSortBuilder scoreSort, Integer size);
+    SearchResponse queryPlotListByRequirement(Integer from, BoolQueryBuilder boolQueryBuilder, FieldSortBuilder scoreSort,
+                                              Integer size);
 
     /**
      * 查询小区列表
@@ -58,7 +61,8 @@ public interface PlotEsDao {
      * @param functionScoreQueryBuilder
      * @return
      */
-    SearchResponse queryPlotListByRequirementAndKeyword(Integer from, FunctionScoreQueryBuilder functionScoreQueryBuilder,Integer size);
+    SearchResponse queryPlotListByRequirementAndKeyword(Integer from, FunctionScoreQueryBuilder functionScoreQueryBuilder,
+                                                        Integer size);
 
     /**
      * 查询小区列表
@@ -67,7 +71,8 @@ public interface PlotEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort, String city);
+    SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder,Integer size,
+                    GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort, String city);
 
     /**
      * 普通小区列表(补)
@@ -98,13 +103,13 @@ public interface PlotEsDao {
     /**
      * 获取小区top50
      */
-    SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder ,Integer from,Integer size);
+    SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder ,Integer from,Integer size, String city);
 
 
     SearchResponse getPlotByRecommendCondition(BoolQueryBuilder boolQueryBuilder, ScriptSortBuilder scrip, String city);
 
 
-    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
     SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
