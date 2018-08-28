@@ -193,7 +193,7 @@ public class HomePageRestController {
     public NashResult saveRecommendCondition(@Validated(First.class)  UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
-        Integer integer = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery);
+        Integer integer = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         return NashResult.build(integer);
     }
 
@@ -203,7 +203,7 @@ public class HomePageRestController {
     @RequestMapping(value = "/getRecommendCondition",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getRecommendCondition(@Param("userId") Integer userId){
-        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userId);
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userId, CityUtils.getCity());
         return NashResult.build(recommendCondition);
     }
 
@@ -215,7 +215,7 @@ public class HomePageRestController {
     public NashResult updateRecommendCondition(@Validated(First.class) UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
-        Integer integer = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery);
+        Integer integer = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         return NashResult.build(integer);
     }
 
@@ -225,7 +225,8 @@ public class HomePageRestController {
     @RequestMapping(value = "/deleteRecommendCondition",method = RequestMethod.GET)
     @ResponseBody
     public NashResult deleteRecommendCondition(@Param("userId") Integer userId){
-        Integer integer = homePageRestService.deleteRecommendCondition(userId);
+        Integer city = CityUtils.returnCityId(CityUtils.getCity());
+        Integer integer = homePageRestService.deleteRecommendCondition(userId, city);
         return NashResult.build(integer);
     }
 }

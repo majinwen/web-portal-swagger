@@ -24,4 +24,8 @@ public class UserFavoriteConditionDo {
      * 户型id
      */
     private String[] layoutId;
+    /**
+     * 城市
+     */
+    private String city;
 }

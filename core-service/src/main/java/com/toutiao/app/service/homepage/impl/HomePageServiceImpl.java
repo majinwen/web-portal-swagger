@@ -17,6 +17,7 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper;
 import org.elasticsearch.action.search.SearchResponse;
@@ -524,11 +525,12 @@ public class HomePageServiceImpl implements HomePageRestService {
     }
 
     @Override
-    public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
-        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery.getUserId());
+    public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery.getUserId(), city);
         Integer result = 0;
         if (StringTool.isNotEmpty(recommendCondition.getUserId())){
-            result = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery);
+            result = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery, city);
             return result;
         }
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
@@ -537,34 +539,38 @@ public class HomePageServiceImpl implements HomePageRestService {
         userFavoriteCondition.setCreateTime(new Date());
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
+        userFavoriteCondition.setCityId(CityUtils.returnCityId(city));
         result = userFavoriteConditionMapper.insertSelective(userFavoriteCondition);
         return result;
     }
 
     @Override
-    public UserFavoriteConditionDo getRecommendCondition(Integer userId) {
+    public UserFavoriteConditionDo getRecommendCondition(Integer userId, String city) {
         UserFavoriteConditionDo userFavoriteConditionDo = new UserFavoriteConditionDo();
-        UserFavoriteCondition recommendCondition = userFavoriteConditionMapper.getRecommendCondition(userId);
+        UserFavoriteCondition recommendCondition = userFavoriteConditionMapper.getRecommendCondition(userId, CityUtils.returnCityId(city));
         if (StringTool.isNotEmpty(recommendCondition)&&StringTool.isNotEmpty(recommendCondition.getCondition())){
             JSONObject jsonObject = JSON.parseObject(((PGobject) recommendCondition.getCondition()).getValue());
             userFavoriteConditionDo = JSON.parseObject(JSON.toJSONString(jsonObject), UserFavoriteConditionDo.class);
+            userFavoriteConditionDo.setCity(CityUtils.retuenCityCode(recommendCondition.getCityId()));
         }
         return userFavoriteConditionDo;
     }
 
     @Override
-    public Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+    public Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
         userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
+        userFavoriteCondition.setCityId(CityUtils.returnCityId(city));
         int result = userFavoriteConditionMapper.updateRecommendCondition(userFavoriteCondition);
         return result;
     }
 
     @Override
-    public Integer deleteRecommendCondition(Integer userId) {
-        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId);
+    public Integer deleteRecommendCondition(Integer userId, Integer cityId) {
+
+        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId ,cityId);
         return result;
     }
 }
