@@ -9,4 +9,6 @@ public class MessagePushDomain {
     private List<MessagePushDo> data;
 
     private long totalCount;
+
+    private Integer lastMessageId;
 }
