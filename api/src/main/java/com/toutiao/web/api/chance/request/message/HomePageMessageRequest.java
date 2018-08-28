@@ -6,7 +6,6 @@ import java.util.Date;
 
 @Data
 public class HomePageMessageRequest {
-    private String userId;
     /**
      * 符合找房条件的房源上新消息最后阅读时间
      */
