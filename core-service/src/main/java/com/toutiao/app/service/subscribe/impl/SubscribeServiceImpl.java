@@ -11,6 +11,7 @@ import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.mapper.subscribe.UserSubscribeMapper;
 import org.springframework.beans.BeanUtils;
@@ -82,15 +83,15 @@ public class SubscribeServiceImpl implements SubscribeService {
     }
 
     @Override
-    public UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId) {
+    public UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId, String city) {
         if (userConditionSubscribeDetailDo.getBeginPrice() == null) {
             userConditionSubscribeDetailDo.setBeginPrice(0);
         }
         if (userConditionSubscribeDetailDo.getEndPrice() == null) {
             userConditionSubscribeDetailDo.setEndPrice(0);
         }
-
-        return userSubscribeMapper.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo, userId);
+        Integer cityId = CityUtils.returnCityId(city);
+        return userSubscribeMapper.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo, userId, cityId);
     }
 
     /**

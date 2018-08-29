@@ -46,7 +46,7 @@ public class HomePageRestController {
     @ResponseBody
     public NashResult getHomePageEsf()
     {
-       List<HomePageEsfDo> homePageEsfDos= homePageRestService.getHomePageEsf();
+        List<HomePageEsfDo> homePageEsfDos= homePageRestService.getHomePageEsf();
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageEsfDos));
         List<HomePageEsfResponse> homePageEsfResponseList= JSONObject.parseArray(json.toJSONString(),HomePageEsfResponse.class);
         return  NashResult.build(homePageEsfResponseList);
@@ -73,8 +73,8 @@ public class HomePageRestController {
     @RequestMapping(value = "/homePageEsfSearch",method = RequestMethod.GET)
     public  NashResult homePageEsfSearch(BaseQueryRequest baseQueryRequest)
     {
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
         BeanUtils.copyProperties(baseQueryRequest,sellHouseDoQuery);
         SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);

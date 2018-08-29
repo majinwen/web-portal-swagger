@@ -133,14 +133,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if (StringTool.isNotBlank(newHouseDoQuery.getKeyword())) {
             SearchResponse searchResponse = null;
             bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseDoQuery.getKeyword()));
-            searchResponse = newHouseEsDao.getPlotByKeyWord(bqbPlotName);
+            searchResponse = newHouseEsDao.getPlotByKeyWord(bqbPlotName, city);
             long total = searchResponse.getHits().getTotalHits();
             out: if(total > 0l){
                 break out;
             }else{
                 BoolQueryBuilder bqb = QueryBuilders.boolQuery();
                 bqb.must(QueryBuilders.multiMatchQuery(newHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
-                searchResponse = newHouseEsDao.getPlotByNickNameKeyWord(bqb);
+                searchResponse = newHouseEsDao.getPlotByNickNameKeyWord(bqb, city);
                 if(searchResponse.getHits().getTotalHits()>0l){
                     SearchHits hits = searchResponse.getHits();
 

@@ -41,5 +41,5 @@ public interface SubscribeService {
     List<UserSubscribe> getMyConditionSubscribeInfo(Integer userId);
 
 
-    UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId);
+    UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId, String city);
 }

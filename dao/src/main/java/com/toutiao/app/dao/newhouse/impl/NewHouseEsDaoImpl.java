@@ -110,19 +110,19 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
     @Override
-    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(newhouseIndex).setTypes(newhouseType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city));
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchresponse;
     }
 
     @Override
-    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getSearchEnginesIndex(city)).setTypes(ElasticCityUtils.getSearchEnginesType(city));
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchresponse;
     }
