@@ -70,4 +70,9 @@ public class MessagePush {
      * 房源id
      */
     private String houseId;
+
+    /**
+     * 房源信息
+     */
+    private Integer subscribeType;
 }
