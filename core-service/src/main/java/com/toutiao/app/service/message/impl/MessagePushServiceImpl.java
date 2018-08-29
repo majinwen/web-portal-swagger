@@ -32,6 +32,32 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final Integer FAVORITEHOUSE = 5;
     private static final Integer SUBSCRIBETHEME = 6;
 
+    /**
+     * 常用汉字
+     */
+    private static final String YOURFAVORITE = "您关注的";
+    private static final String YOURFAVORITEPLOT = "您关注的小区";
+    private static final String YOURSUBSCRIBE = "您订阅的";
+    private static final String ADD = "新增";
+    private static final String HOUSECOUNT = "套房源";
+    private static final String SPACE = " ";
+    private static final String MIDLINE = "-";
+    private static final String ALLBEIJING = "全北京";
+    private static final String ANYPRICE = "价格不限";
+    private static final String WANUP = "万以上";
+    private static final String WANDOWN = "万以下";
+    private static final String WAN = "万";
+    private static final String ROOM = "居";
+    private static final String LIVINGROOM = "居室";
+    private static final String ANYLIVINGROOM = "居室不限";
+    private static final String ADDONE = "新上一套";
+    private static final String SQUAREMETER = "㎡";
+    private static final String CHINESESQUAREMETER = "平米";
+    private static final String OF = "的";
+    private static final String RISE = "涨";
+    private static final String DROP = "降";
+
+
 
     /**
      * 房源类消息列表
@@ -115,6 +141,43 @@ public class MessagePushServiceImpl implements MessagePushService {
         return bs;
     }
 
+    private static boolean isEmpty(String str) {
+        return str == null || str.length() == 0 || str.trim().length() == 0 || str.equals("") || "0".equals(str);
+    }
+
+    /**
+     * 添加区域名称
+     *
+     * @param message
+     */
+    private void getDistrictNameById(List<MessagePushDo> message) {
+        for (MessagePushDo messagePushDo : message) {
+            JSONObject jsStr = JSONObject.parseObject(messagePushDo.getMessageTheme());
+            String districtIdStr = jsStr.get("districtId").toString();
+            if (StringTool.isEmpty(districtIdStr)) {
+                return;
+            }
+            String[] districtIds = districtIdStr.substring(1, districtIdStr.length() - 1).split(",");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String districtId : districtIds) {
+                if (StringTool.isEmpty(districtId)) {
+                    continue;
+                }
+                districtId = districtId.substring(1, districtId.length() - 1);
+                String district = DistrictMap.getDistrict(districtId);
+                stringBuilder.append(district).append(",");
+            }
+            String district = stringBuilder.substring(0, stringBuilder.length() - 1).toString();
+            jsStr.put("districtName", district);
+            messagePushDo.setMessageTheme(jsStr.toString());
+        }
+
+    }
+
+    private static boolean isNotEmpty(String str) {
+        return !isEmpty(str);
+    }
+
     /**
      * 专题类消息列表
      *
@@ -153,11 +216,11 @@ public class MessagePushServiceImpl implements MessagePushService {
         //配置专题展示数量
         if (messagePushDos.size() > 10) {
             List<MessagePushDo> message = messagePushDos.subList(0, 10);
-            getDistrictNameById(message);
+//            getDistrictNameById(message);
             messagePushDomain.setData(message);
             lastMessageId = message.get(message.size() - 1).getId();
         } else {
-            getDistrictNameById(messagePushDos);
+//            getDistrictNameById(messagePushDos);
             messagePushDomain.setData(messagePushDos);
             lastMessageId = messagePushDos.get(messagePushDos.size() - 1).getId();
         }
@@ -169,16 +232,13 @@ public class MessagePushServiceImpl implements MessagePushService {
     /**
      * 添加区域名称
      *
-     * @param message
+     * @param ids
      */
-    private void getDistrictNameById(List<MessagePushDo> message) {
-        for (MessagePushDo messagePushDo : message) {
-            JSONObject jsStr = JSONObject.parseObject(messagePushDo.getMessageTheme());
-            String districtIdStr = jsStr.get("districtId").toString();
-            if (StringTool.isEmpty(districtIdStr)) {
-                return;
+    private String getDistrictNameById(String ids) {
+        if (StringTool.isEmpty(ids) || "[\"\"]".equals(ids)) {
+            return ALLBEIJING;
             }
-            String[] districtIds = districtIdStr.substring(1, districtIdStr.length() - 1).split(",");
+        String[] districtIds = ids.replace("[", "").replace("]", "").split(",");
             StringBuilder stringBuilder = new StringBuilder();
             for (String districtId : districtIds) {
                 if (StringTool.isEmpty(districtId)) {
@@ -188,11 +248,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 String district = DistrictMap.getDistrict(districtId);
                 stringBuilder.append(district).append(",");
             }
-            String district = stringBuilder.substring(0, stringBuilder.length() - 1).toString();
-            jsStr.put("districtName", district);
-            messagePushDo.setMessageTheme(jsStr.toString());
-        }
-
+        return stringBuilder.substring(0, stringBuilder.length() - 1).toString();
     }
 
     /**
@@ -235,16 +291,92 @@ public class MessagePushServiceImpl implements MessagePushService {
             JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
             List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
             homeMessageDo.setUnReadCount(messagePushDos.size());
-            if (i == SUBSCRIBETHEME) {
-                getDistrictNameById(messagePushDos);
-            }
-            JSONObject contentJson = JSON.parseObject(messagePushDos.get(0).getMessageTheme());
-            homeMessageDo.setContent(contentJson);
-            JSONObject houseDataJson = JSON.parseObject(messagePushDos.get(0).getHouseData());
-            homeMessageDo.setHouseDate(houseDataJson);
+//            JSONObject contentJson = JSON.parseObject(messagePushDos.get(0).getMessageTheme());
+//            homeMessageDo.setContent(contentJson);
+//            JSONObject houseDataJson = JSON.parseObject(messagePushDos.get(0).getHouseData());
+//            homeMessageDo.setHouseDate(houseDataJson);
+            String[] messageContent = getMessageContent(messagePushDos.get(0), i);
+            homeMessageDo.setMessageContent(messageContent[0]);
+            homeMessageDo.setBoldMessageContent(messageContent[1]);
             homeMessageDo.setCreateTime(messagePushDos.get(0).getCreateTime().getTime());
             homeMessageDos.add(homeMessageDo);
         }
         return homeMessageDos;
+    }
+
+    /**
+     * 生成消息内容
+     *
+     * @param messagePushDo
+     * @param contentType
+     * @return
+     */
+    private String[] getMessageContent(MessagePushDo messagePushDo, Integer contentType) {
+        String[] contentArr = new String[2];
+        StringBuilder messageContent = new StringBuilder("");
+        StringBuilder blodMessageContent = new StringBuilder("");
+        JSONObject mcJson = JSON.parseObject(messagePushDo.getMessageTheme());
+        JSONObject hdJson = JSON.parseObject(messagePushDo.getHouseData());
+        if (contentType.equals(CONDITIONHOUSE) || contentType.equals(SUBSCRIBETHEME)) {
+            String districtName = getDistrictNameById(mcJson.get("districtId").toString());
+            blodMessageContent.append(districtName);
+
+            String beginPriceStr = "";
+            if (StringTool.isNotEmpty(mcJson.get("beginPrice"))) {
+                beginPriceStr = mcJson.get("beginPrice").toString();
+            }
+            String endPriceStr = "";
+            if (StringTool.isNotEmpty(mcJson.get("endPrice"))) {
+                endPriceStr = mcJson.get("endPrice").toString();
+            }
+            if (isNotEmpty(beginPriceStr) && isNotEmpty(endPriceStr)) {
+                blodMessageContent.append(beginPriceStr).append(MIDLINE).append(endPriceStr).append(WAN);
+            } else if (isEmpty(beginPriceStr) && isNotEmpty(endPriceStr)) {
+                blodMessageContent.append(endPriceStr).append(WANDOWN);
+            } else if (isNotEmpty(beginPriceStr) && isEmpty(endPriceStr)) {
+                blodMessageContent.append(beginPriceStr).append(WANUP);
+            } else {
+                blodMessageContent.append(ANYPRICE);
+            }
+
+            if (contentType.equals(CONDITIONHOUSE)) {
+                if (!"[]".equals(mcJson.get("layoutId")) || !"null".equals(mcJson.get("layoutId"))) {
+                    String layoutIdStr = mcJson.get("layoutId").toString().replace("\"", "");
+                    String substring = layoutIdStr.substring(1, layoutIdStr.length() - 1);
+                    blodMessageContent.append(substring).append(ROOM);
+                }
+            }
+
+            messageContent.append(YOURSUBSCRIBE).append(SPACE).append(blodMessageContent)
+                    .append(SPACE).append(ADD).append(hdJson.get("count")).append(HOUSECOUNT);
+
+        } else if (contentType.equals(FAVORITEPLOT)) {
+            JSONArray buildArea = (JSONArray) mcJson.get("buildArea");
+            JSONArray layoutIds = (JSONArray) mcJson.get("layoutId");
+            if (!buildArea.isEmpty() && !layoutIds.isEmpty()) {
+                blodMessageContent.append(mcJson.get("plotName"));
+                messageContent.append(YOURFAVORITEPLOT).append(SPACE).append(blodMessageContent).append(SPACE)
+                        .append(ADDONE).append(buildArea.get(0).toString()).append(SQUAREMETER).append(OF)
+                        .append(layoutIds.get(0).toString()).append(LIVINGROOM);
+            }
+        } else if (contentType.equals(FAVORITEHOUSE)) {
+            blodMessageContent.append(mcJson.get("building_name")).append(mcJson.get("build_area")).append(CHINESESQUAREMETER);
+            if (StringTool.isNotEmpty(mcJson.get("layoutId"))) {
+                blodMessageContent.append(mcJson.get("layoutId")).append(LIVINGROOM);
+            } else {
+                blodMessageContent.append(ANYLIVINGROOM);
+            }
+
+            if ("1".equals(mcJson.get("flag"))) {
+                blodMessageContent.append(SPACE).append(RISE).append(mcJson.get("money")).append(WAN);
+            } else {
+                blodMessageContent.append(SPACE).append(DROP).append(mcJson.get("money")).append(WAN);
+            }
+
+            messageContent.append(YOURFAVORITE).append(blodMessageContent);
+        }
+        contentArr[0] = blodMessageContent.toString();
+        contentArr[1] = messageContent.toString();
+        return contentArr;
     }
 }
