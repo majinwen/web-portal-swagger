@@ -4,9 +4,9 @@
     <#include "staticHeader.ftl">
     <link rel="stylesheet" href="${staticurl}/css/swiper-3.4.2.min.css?v=${staticversion}">
     <link rel="stylesheet" href="${staticurl}/css/index.css?v=${staticversion}">
-    <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
-    <title>懂房帝 买房秒懂</title>
+    <meta name="description" content="懂房帝-覆盖新房、二手房、租房房源的房产平台。懂房帝房源数据库与二手房经纪公司内网接通，为购房者提供一手真实房源信息。通过房产数据沉淀及大数据技术，多维度呈现房产信息，辅助用户购房决策。">
+    <meta name="keywords" content="北京房产,北京二手房,新房,租房">
+    <title>北京房产,北京二手房,新房,租房-北京懂房帝</title>
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "StatisticsHeader.ftl">
@@ -446,7 +446,10 @@
         </#list>
     </#if></ul>
 </section>
-
+<div class="company-bottom">
+    <p>©2018 北京比得屋科技有限责任公司</p>
+    <p>京ICP备18026731号</p>
+</div>
 
 <#include "user.ftl">
 <#include "search.ftl">

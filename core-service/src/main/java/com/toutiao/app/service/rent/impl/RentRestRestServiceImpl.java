@@ -142,6 +142,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         if (StringTool.isNotEmpty(rentType)){
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",rentType));
         }
@@ -191,6 +192,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder);
         long zhengzu = ((InternalFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
         long hezu = ((InternalFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();
@@ -316,6 +318,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 //        boolQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gte(0));
 //        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","1"));
 
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));//目前只展示导入的房源
         boolQueryBuilder.must(QueryBuilders.termQuery("rent_type","1"));
         boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gt(4000).lte(6000));
         Integer size = 10;
@@ -418,7 +421,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         //添加筛选条件
         BoolQueryBuilder booleanQueryBuilder = getRecommendRentBoolQueryBuilder(boolQueryBuilder, rentHouseDoQuery);
-
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));//目前只展示导入的房源
         FunctionScoreQueryBuilder query = null;
         //设置基础分(录入优先展示)(录入:1,导入1/3)
         FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("rentHouseTypeId")

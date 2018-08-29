@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="${staticurl}/css/plot-detail.css?v=${staticversion}">
     <title>来懂房帝看【${village['rc']!'小区'}】</title>
     <meta name="description" content="推荐你上懂房帝看看【${village['rc']!'小区'}】的价格走势与小区详情">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/echarts.min.js?v=${staticversion}"></script>
     <script>

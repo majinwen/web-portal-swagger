@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="${staticurl}/css/new-index.css?v=${staticversion}">
     <title>上懂房帝 找新房</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
