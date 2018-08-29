@@ -1,12 +1,12 @@
 package com.toutiao.app.service.message.impl;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.message.*;
 import com.toutiao.app.service.message.MessagePushService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.ToutiaoBeanUtils;
 import com.toutiao.web.dao.entity.message.MessagePush;
 import com.toutiao.web.dao.entity.message.MessagePushExample;
 import com.toutiao.web.dao.mapper.message.MessagePushMapper;
@@ -89,8 +89,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
 
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
-        List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
+        List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
         MessagePushDomain messagePushDomain = new MessagePushDomain();
         if (CollectionUtils.isEmpty(messagePushDos)) {
             return messagePushDomain;
@@ -145,35 +144,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         return str == null || str.length() == 0 || str.trim().length() == 0 || str.equals("") || "0".equals(str);
     }
 
-    /**
-     * 添加区域名称
-     *
-     * @param message
-     */
-    private void getDistrictNameById(List<MessagePushDo> message) {
-        for (MessagePushDo messagePushDo : message) {
-            JSONObject jsStr = JSONObject.parseObject(messagePushDo.getMessageTheme());
-            String districtIdStr = jsStr.get("districtId").toString();
-            if (StringTool.isEmpty(districtIdStr)) {
-                return;
-            }
-            String[] districtIds = districtIdStr.substring(1, districtIdStr.length() - 1).split(",");
-            StringBuilder stringBuilder = new StringBuilder();
-            for (String districtId : districtIds) {
-                if (StringTool.isEmpty(districtId)) {
-                    continue;
-                }
-                districtId = districtId.substring(1, districtId.length() - 1);
-                String district = DistrictMap.getDistrict(districtId);
-                stringBuilder.append(district).append(",");
-            }
-            String district = stringBuilder.substring(0, stringBuilder.length() - 1).toString();
-            jsStr.put("districtName", district);
-            messagePushDo.setMessageTheme(jsStr.toString());
-        }
-
-    }
-
     private static boolean isNotEmpty(String str) {
         return !isEmpty(str);
     }
@@ -205,8 +175,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
 
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
-        List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
+        List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
         MessagePushDomain messagePushDomain = new MessagePushDomain();
         if (CollectionUtils.isEmpty(messagePushDos)) {
             return messagePushDomain;
@@ -216,11 +185,9 @@ public class MessagePushServiceImpl implements MessagePushService {
         //配置专题展示数量
         if (messagePushDos.size() > 10) {
             List<MessagePushDo> message = messagePushDos.subList(0, 10);
-//            getDistrictNameById(message);
             messagePushDomain.setData(message);
             lastMessageId = message.get(message.size() - 1).getId();
         } else {
-//            getDistrictNameById(messagePushDos);
             messagePushDomain.setData(messagePushDos);
             lastMessageId = messagePushDos.get(messagePushDos.size() - 1).getId();
         }
@@ -288,12 +255,8 @@ public class MessagePushServiceImpl implements MessagePushService {
             if (CollectionUtils.isEmpty(messagePushes)) {
                 continue;
             }
-            JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
-            List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
-//            JSONObject contentJson = JSON.parseObject(messagePushDos.get(0).getMessageTheme());
-//            homeMessageDo.setContent(contentJson);
-//            JSONObject houseDataJson = JSON.parseObject(messagePushDos.get(0).getHouseData());
-//            homeMessageDo.setHouseDate(houseDataJson);
+
+            List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
             String[] messageContent = getMessageContent(messagePushDos.get(0), i);
             homeMessageDo.setMessageContent(messageContent[0]);
             homeMessageDo.setBoldMessageContent(messageContent[1]);
@@ -321,8 +284,8 @@ public class MessagePushServiceImpl implements MessagePushService {
         String[] contentArr = new String[2];
         StringBuilder messageContent = new StringBuilder("");
         StringBuilder blodMessageContent = new StringBuilder("");
-        JSONObject mcJson = JSON.parseObject(messagePushDo.getMessageTheme());
-        JSONObject hdJson = JSON.parseObject(messagePushDo.getHouseData());
+        JSONObject mcJson = messagePushDo.getMessageTheme();
+        JSONObject hdJson = messagePushDo.getHouseData();
         if (contentType.equals(CONDITIONHOUSE) || contentType.equals(SUBSCRIBETHEME)) {
             String districtName = getDistrictNameById(mcJson.get("districtId").toString());
             blodMessageContent.append(districtName);
@@ -381,8 +344,8 @@ public class MessagePushServiceImpl implements MessagePushService {
 
             messageContent.append(YOURFAVORITE).append(blodMessageContent);
         }
-        contentArr[0] = blodMessageContent.toString();
-        contentArr[1] = messageContent.toString();
+        contentArr[0] = messageContent.toString();
+        contentArr[1] = blodMessageContent.toString();
         return contentArr;
     }
 }
