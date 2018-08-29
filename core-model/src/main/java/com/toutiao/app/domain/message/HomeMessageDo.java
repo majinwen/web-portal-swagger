@@ -11,9 +11,14 @@ public class HomeMessageDo {
     private JSONObject content;
 
     /**
+     * 房源
+     */
+    private JSONObject houseDate;
+
+    /**
      * 未读条数
      */
-    private long count;
+    private long unReadCount;
 
     /**
      * 内容类型(3-符合找房条件的房源上新, 4-关注小区房源上新, 5-关注房源价格变动, 6-订阅的主题有更新)

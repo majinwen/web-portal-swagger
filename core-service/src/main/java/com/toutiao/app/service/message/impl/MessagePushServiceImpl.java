@@ -27,6 +27,11 @@ public class MessagePushServiceImpl implements MessagePushService {
     @Autowired
     private SellHouseService sellHouseService;
 
+    private static final Integer CONDITIONHOUSE = 3;
+    private static final Integer FAVORITEPLOT = 4;
+    private static final Integer FAVORITEHOUSE = 5;
+    private static final Integer SUBSCRIBETHEME = 6;
+
 
     /**
      * 房源类消息列表
@@ -169,9 +174,17 @@ public class MessagePushServiceImpl implements MessagePushService {
     private void getDistrictNameById(List<MessagePushDo> message) {
         for (MessagePushDo messagePushDo : message) {
             JSONObject jsStr = JSONObject.parseObject(messagePushDo.getMessageTheme());
-            String[] districtIds = String.valueOf(jsStr.get("districtId")).split(",");
+            String districtIdStr = jsStr.get("districtId").toString();
+            if (StringTool.isEmpty(districtIdStr)) {
+                return;
+            }
+            String[] districtIds = districtIdStr.substring(1, districtIdStr.length() - 1).split(",");
             StringBuilder stringBuilder = new StringBuilder();
             for (String districtId : districtIds) {
+                if (StringTool.isEmpty(districtId)) {
+                    continue;
+                }
+                districtId = districtId.substring(1, districtId.length() - 1);
                 String district = DistrictMap.getDistrict(districtId);
                 stringBuilder.append(district).append(",");
             }
@@ -179,6 +192,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             jsStr.put("districtName", district);
             messagePushDo.setMessageTheme(jsStr.toString());
         }
+
     }
 
     /**
@@ -201,13 +215,13 @@ public class MessagePushServiceImpl implements MessagePushService {
             //推送类型(0-系统消息, 1-定向推送)
             criteria.andPushTypeEqualTo(1);
             criteria.andContentTypeEqualTo(i);
-            if (i == 3 && homeMessageDoQuery.getConditionHouseDate() != 0) {
+            if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
                 criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
-            } else if (i == 4 && homeMessageDoQuery.getFavoritePlotDate() != 0) {
+            } else if (i == FAVORITEPLOT && homeMessageDoQuery.getFavoritePlotDate() != 0) {
                 criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoritePlotDate()));
-            } else if (i == 5 && homeMessageDoQuery.getFavoriteHouseDate() != 0) {
+            } else if (i == FAVORITEHOUSE && homeMessageDoQuery.getFavoriteHouseDate() != 0) {
                 criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteHouseDate()));
-            } else if (i == 6 && homeMessageDoQuery.getSubscribeThemeDate() != 0) {
+            } else if (i == SUBSCRIBETHEME && homeMessageDoQuery.getSubscribeThemeDate() != 0) {
                 criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getSubscribeThemeDate()));
             }
             Date date = new Date();
@@ -220,10 +234,14 @@ public class MessagePushServiceImpl implements MessagePushService {
             }
             JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
             List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
-            homeMessageDo.setCount(messagePushDos.size());
-            getDistrictNameById(messagePushDos);
-            JSONObject jsonObject = JSON.parseObject(messagePushDos.get(0).getMessageTheme());
-            homeMessageDo.setContent(jsonObject);
+            homeMessageDo.setUnReadCount(messagePushDos.size());
+            if (i == SUBSCRIBETHEME) {
+                getDistrictNameById(messagePushDos);
+            }
+            JSONObject contentJson = JSON.parseObject(messagePushDos.get(0).getMessageTheme());
+            homeMessageDo.setContent(contentJson);
+            JSONObject houseDataJson = JSON.parseObject(messagePushDos.get(0).getHouseData());
+            homeMessageDo.setHouseDate(houseDataJson);
             homeMessageDo.setCreateTime(messagePushDos.get(0).getCreateTime().getTime());
             homeMessageDos.add(homeMessageDo);
         }
