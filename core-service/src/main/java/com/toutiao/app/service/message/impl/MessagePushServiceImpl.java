@@ -54,7 +54,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         criteria.andPushTypeEqualTo(1);
 
         if (messagePushQuery.getLastMessageId() != null) {
-            criteria.andIdGreaterThanOrEqualTo(messagePushQuery.getLastMessageId());
+            criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
 
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
@@ -114,7 +114,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         criteria.andPushTypeEqualTo(1);
 
         if (messagePushQuery.getLastMessageId() != null) {
-            criteria.andIdGreaterThanOrEqualTo(messagePushQuery.getLastMessageId());
+            criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
 
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
@@ -144,7 +144,13 @@ public class MessagePushServiceImpl implements MessagePushService {
     private void getDistrictNameById(List<MessagePushDo> message) {
         for (MessagePushDo messagePushDo : message) {
             JSONObject jsStr = JSONObject.parseObject(messagePushDo.getMessageTheme());
-            String district = DistrictMap.getDistrict(String.valueOf(jsStr.get("districtId")));
+            String[] districtIds = String.valueOf(jsStr.get("districtId")).split(",");
+            StringBuilder stringBuilder = new StringBuilder();
+            for (String districtId : districtIds) {
+                String district = DistrictMap.getDistrict(districtId);
+                stringBuilder.append(district).append(",");
+            }
+            String district = stringBuilder.substring(0, stringBuilder.length() - 1).toString();
             jsStr.put("districtName", district);
             messagePushDo.setMessageTheme(jsStr.toString());
         }
