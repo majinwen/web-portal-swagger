@@ -290,7 +290,6 @@ public class MessagePushServiceImpl implements MessagePushService {
             }
             JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
             List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
-            homeMessageDo.setUnReadCount(messagePushDos.size());
 //            JSONObject contentJson = JSON.parseObject(messagePushDos.get(0).getMessageTheme());
 //            homeMessageDo.setContent(contentJson);
 //            JSONObject houseDataJson = JSON.parseObject(messagePushDos.get(0).getHouseData());
@@ -298,6 +297,13 @@ public class MessagePushServiceImpl implements MessagePushService {
             String[] messageContent = getMessageContent(messagePushDos.get(0), i);
             homeMessageDo.setMessageContent(messageContent[0]);
             homeMessageDo.setBoldMessageContent(messageContent[1]);
+
+            if (StringTool.isEmpty(messageContent[0]) || StringTool.isEmpty(messageContent[1])) {
+                homeMessageDo.setUnReadCount(0);
+            } else {
+                homeMessageDo.setUnReadCount(messagePushDos.size());
+            }
+
             homeMessageDo.setCreateTime(messagePushDos.get(0).getCreateTime().getTime());
             homeMessageDos.add(homeMessageDo);
         }
