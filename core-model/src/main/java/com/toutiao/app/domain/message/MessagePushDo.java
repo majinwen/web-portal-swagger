@@ -75,5 +75,7 @@ public class MessagePushDo {
     /**
      * 房源信息
      */
+    private Integer subscribeType;
+
     private List<MessageSellHouseDo> messageSellHouseDos;
 }
