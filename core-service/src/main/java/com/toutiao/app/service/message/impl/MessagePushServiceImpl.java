@@ -72,11 +72,13 @@ public class MessagePushServiceImpl implements MessagePushService {
             String houseIds = messagePushDo.getHouseId();
             if (!"{}".equals(houseIds)) {
                 String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
+                //配置房源展示数量
+                split = subStrings(split, 0, 10);
                 List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(split);
                 messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
                 messageHouseCount += split.length;
                 message.add(messagePushDo);
-                if (messageHouseCount > 5) {
+                if (messageHouseCount > 10) {
                     lastMessageId = messagePushDo.getId();
                     break;
                 } else {
@@ -89,6 +91,23 @@ public class MessagePushServiceImpl implements MessagePushService {
         messagePushDomain.setLastMessageId(lastMessageId);
 
         return messagePushDomain;
+    }
+
+    /**
+     * 截取数组指定长度元素
+     *
+     * @param src
+     * @param begin
+     * @param count
+     * @return
+     */
+    private String[] subStrings(String[] src, int begin, int count) {
+        if (src.length <= count) {
+            return src;
+        }
+        String[] bs = new String[count];
+        System.arraycopy(src, begin, bs, 0, count);
+        return bs;
     }
 
     /**
@@ -126,8 +145,9 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
 
         Integer lastMessageId = null;
-        if (messagePushDos.size() > 5) {
-            List<MessagePushDo> message = messagePushDos.subList(0, 5);
+        //配置专题展示数量
+        if (messagePushDos.size() > 10) {
+            List<MessagePushDo> message = messagePushDos.subList(0, 10);
             getDistrictNameById(message);
             messagePushDomain.setData(message);
             lastMessageId = message.get(message.size() - 1).getId();
@@ -141,6 +161,11 @@ public class MessagePushServiceImpl implements MessagePushService {
         return messagePushDomain;
     }
 
+    /**
+     * 添加区域名称
+     *
+     * @param message
+     */
     private void getDistrictNameById(List<MessagePushDo> message) {
         for (MessagePushDo messagePushDo : message) {
             JSONObject jsStr = JSONObject.parseObject(messagePushDo.getMessageTheme());
@@ -196,6 +221,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             JSONArray json = JSONArray.parseArray(JSON.toJSONString(messagePushes));
             List<MessagePushDo> messagePushDos = JSONObject.parseArray(json.toJSONString(), MessagePushDo.class);
             homeMessageDo.setCount(messagePushDos.size());
+            getDistrictNameById(messagePushDos);
             JSONObject jsonObject = JSON.parseObject(messagePushDos.get(0).getMessageTheme());
             homeMessageDo.setContent(jsonObject);
             homeMessageDo.setCreateTime(messagePushDos.get(0).getCreateTime().getTime());
