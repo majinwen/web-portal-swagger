@@ -5,7 +5,7 @@
     <#include "staticHeader.ftl">
     <title>地图页</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <link rel="stylesheet" href="${staticurl}/css/map.css?v=${staticversion}">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "StatisticsHeader.ftl">

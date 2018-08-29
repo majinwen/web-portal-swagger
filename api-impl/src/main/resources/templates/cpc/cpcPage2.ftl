@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="${staticurl}/css/cpc.css?v=${staticversion}">
     <title>懂房帝 买房秒懂</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <#include "../StatisticsHeader.ftl">
 </head>
 <body>

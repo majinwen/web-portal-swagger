@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="${appstaticurl}/css/intelligent.css?v=${staticversion}">
     <title>购房报告</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <script src="${appstaticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${appstaticurl}/js/jquery.fullpage.min.new.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
