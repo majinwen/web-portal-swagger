@@ -15,6 +15,7 @@
         <result column="city_id" property="cityId" jdbcType="INTEGER"/>
         <result column="newcode" property="newcode" jdbcType="INTEGER"/>
         <result column="house_id" property="houseId" jdbcType="VARCHAR"/>
+        <result column="subscribe_type" property="subscribeType" jdbcType="INTEGER"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -78,7 +79,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, user_id, create_time, message_theme, is_del, message_type, push_type, content_type,
-        house_data, is_push, city_id, newcode, house_id
+        house_data, is_push, city_id, newcode, house_id, subscribe_type
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap"
             parameterType="com.toutiao.web.dao.entity.message.MessagePushExample">
@@ -115,13 +116,14 @@
     insert into message_push (id, user_id, create_time,
         message_theme, is_del, message_type,
         push_type, content_type, house_data,
-        is_push, city_id, newcode, house_id
+        is_push, city_id, newcode, house_id,
+        subscribe_type
       )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
         #{message_theme,jdbcType=VARCHAR}, #{isDel,jdbcType=SMALLINT}, #{messageType,jdbcType=INTEGER},
         #{pushType,jdbcType=INTEGER}, #{contentType,jdbcType=INTEGER}, #{houseData,jdbcType=VARCHAR},
         #{isPush,jdbcType=SMALLINT}, #{cityId,jdbcType=INTEGER}, #{newcode,jdbcType=INTEGER},
-        #{houseId,jdbcType=VARCHAR}
+        #{houseId,jdbcType=VARCHAR}, #{subscribeType,jdbcType=INTEGER}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.message.MessagePush">
@@ -166,6 +168,9 @@
             <if test="houseId != null">
                 house_id,
             </if>
+            <if test="subscribeType != null">
+                subscribe_type,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -206,6 +211,9 @@
             </if>
             <if test="houseId != null">
                 #{houseId,jdbcType=VARCHAR},
+            </if>
+            <if test="subscribeType != null">
+                #{subscribeType,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -258,6 +266,9 @@
             <if test="record.houseId != null">
                 house_id = #{record.houseId,jdbcType=VARCHAR},
             </if>
+            <if test="record.subscribeType != null">
+                subscribe_type = #{record.subscribeType,jdbcType=INTEGER},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -277,7 +288,8 @@
         is_push = #{record.isPush,jdbcType=SMALLINT},
         city_id = #{record.cityId,jdbcType=INTEGER},
         newcode = #{record.newcode,jdbcType=INTEGER},
-        house_id = #{record.houseId,jdbcType=VARCHAR}
+        house_id = #{record.houseId,jdbcType=VARCHAR},
+        subscribe_type = #{record.subscribeType,jdbcType=INTEGER}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -321,6 +333,9 @@
             <if test="houseId != null">
                 house_id = #{record.houseId,jdbcType=VARCHAR},
             </if>
+            <if test="subscribeType != null">
+                subscribe_type = #{record.subscribeType,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -337,7 +352,8 @@
         is_push = #{record.isPush,jdbcType=SMALLINT},
         city_id = #{record.cityId,jdbcType=INTEGER},
         newcode = #{record.newcode,jdbcType=INTEGER},
-        house_id = #{record.houseId,jdbcType=VARCHAR}
+        house_id = #{record.houseId,jdbcType=VARCHAR},
+        subscribe_type = #{record.subscribeType,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
