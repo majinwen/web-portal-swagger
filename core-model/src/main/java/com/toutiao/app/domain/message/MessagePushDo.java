@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.message;
 
+import com.alibaba.fastjson.JSONObject;
 import lombok.Data;
 
 import java.util.Date;
@@ -25,7 +26,7 @@ public class MessagePushDo {
     /**
      * 消息主题
      */
-    private String messageTheme;
+    private JSONObject messageTheme;
 
     /**
      * 是否删除
@@ -50,7 +51,7 @@ public class MessagePushDo {
     /**
      * 房源信息
      */
-    private String houseData;
+    private JSONObject houseData;
 
     /**
      * 是否推送(0-未推送,1-已推送)
