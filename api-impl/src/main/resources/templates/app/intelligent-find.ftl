@@ -202,7 +202,7 @@
                         <li class="disabled" data-value="105042">房山</li>
                         <li class="disabled" data-value="105047">密云</li>
                         <li class="disabled" data-value="105051">门头沟</li>
-                        <li class="disabled" data-value="105050">平谷2</li>
+                        <li class="disabled" data-value="105050">平谷</li>
                         <li class="disabled" data-value="106013">北京周边</li>
                     <#--<li class="disabled" data-value="105048">怀柔</li>-->
                     <#--<li class="disabled" data-value="105049">延庆</li>-->
