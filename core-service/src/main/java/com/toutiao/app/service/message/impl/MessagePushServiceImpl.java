@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -115,6 +116,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
                 //配置房源展示数量
                 split = subStrings(split, 0, 10);
+                messagePushDo.setHouseId(Arrays.toString(split));
                 List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(split);
                 messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
                 messageHouseCount += split.length;
