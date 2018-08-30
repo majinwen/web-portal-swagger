@@ -157,6 +157,10 @@ public class MessagePushServiceImpl implements MessagePushService {
         return o == null || (Integer) o == 0;
     }
 
+    private static boolean isNotEmpty(Object o) {
+        return !isEmpty(o);
+    }
+
     /**
      * 首页消息列表
      *
@@ -210,10 +214,6 @@ public class MessagePushServiceImpl implements MessagePushService {
             homeMessageDos.add(homeMessageDo);
         }
         return homeMessageDos;
-    }
-
-    private static boolean isNotEmpty(Object o) {
-        return !isEmpty(o);
     }
 
     /**
@@ -314,7 +314,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             }
         } else if (contentType.equals(FAVORITEHOUSE)) {
             blodMessageContent.append(mcJson.get("building_name")).append(mcJson.get("build_area")).append(CHINESESQUAREMETER);
-            if (StringTool.isNotEmpty(mcJson.get("layoutId"))) {
+            if (isNotEmpty(mcJson.get("layoutId"))) {
                 blodMessageContent.append(mcJson.get("layoutId")).append(LIVINGROOM);
             } else {
                 blodMessageContent.append(ANYLIVINGROOM);
