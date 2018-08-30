@@ -92,4 +92,60 @@ public interface IntelligenceFindhouseMapper extends BaseDao {
      * @return
      */
     List<IntelligenceFindhouse> queryByStarProperty(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 搜索量前200
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByStarPropertyV1(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像1 A匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType1AV1(IntelligenceQuery intelligenceQuery);
+    /**
+     * 根据用户画像1 B匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType1BV1(IntelligenceQuery intelligenceQuery);
+    /**
+     * 根据用户画像1 C匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType1CV1(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 A匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2AV1(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 B匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2BV1(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像2 C匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType2CV1(IntelligenceQuery intelligenceQuery);
+
+    /**
+     * 根据用户画像3 A匹配
+     * @param intelligenceQuery
+     * @return
+     */
+    List<IntelligenceFindhouse> queryByUserType3AV1(IntelligenceQuery intelligenceQuery);
+
+
 }

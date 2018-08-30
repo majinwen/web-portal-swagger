@@ -20,6 +20,11 @@
 
 	<typeHandlers>
 
+		<typeHandler handler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayStringTypeHandler" />
+
+		<typeHandler handler="com.toutiao.web.common.extension.mybatis.typehandler.StringArrayTypeHandler"
+					 javaType="java.lang.Integer" jdbcType="ARRAY"/>
+
 		<typeHandler handler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"
 					 javaType="java.lang.Integer" jdbcType="ARRAY" />
 		<typeHandler handler="com.toutiao.web.common.extension.mybatis.typehandler.TextLtreeListTypeHandler"

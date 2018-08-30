@@ -7,6 +7,7 @@ import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
+import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
@@ -96,7 +97,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
                     sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
                     sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
-                    Date date = new Date();
+//                    Date date = new Date();
 //                    if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
 //                        if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
 //                            int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
@@ -153,6 +154,28 @@ public class SellHouseServiceImpl implements SellHouseService{
         return sellHouseDetailsDo;
     }
 
+    @Override
+    public List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseIds) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+//        if(houseIds.indexOf("FS")>-1){
+//            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
+//        }else {
+        boolQueryBuilder.must(QueryBuilders.termsQuery("houseId", houseIds));
+//        }
+        SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String sourceAsString = searchHit.getSourceAsString();
+                MessageSellHouseDo messageSellHouseDo = JSON.parseObject(sourceAsString, MessageSellHouseDo.class);
+                messageSellHouseDos.add(messageSellHouseDo);
+            }
+        }
+        return messageSellHouseDos;
+    }
 
 
     /**

@@ -335,7 +335,7 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                 }
                 //默认顺序
                 intelligence.setSortInex(index++);
-                if (null != intelligence.getNearestSubwayDesc()) {
+                if (StringTool.isNotEmpty(intelligence.getNearestSubwayDesc())) {
                     Integer distance = Integer.valueOf(intelligence.getNearestSubwayDesc().split("\\$")[2]);
                     intelligence.setMetroWithPlotDistance(distance);
                 }

@@ -198,6 +198,44 @@
         </where>
     </sql>
 
+    <sql id="queryHomePageReportInfo">
+        <where>
+            1=1
+            <if test="layoutArray!=null and layoutArray.indexOf('1') gte 0 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price1_min<= #{maxTotalPrice} and layout_price1_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layoutArray!=null and layoutArray.indexOf('2') gte 0 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price2_min<= #{maxTotalPrice} and layout_price2_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layoutArray!=null and layoutArray.indexOf('3') gte 0 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price3_min<= #{maxTotalPrice} and layout_price3_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layoutArray!=null and layoutArray.indexOf('4') gte 0 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price4_min<= #{maxTotalPrice} and layout_price4_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layoutArray!=null and layoutArray.indexOf('5') gte 0 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price5_min<= #{maxTotalPrice} and layout_price5_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layoutArray!=null and layoutArray.indexOf('6') gte 0 and minTotalPrice != null and maxTotalPrice!=null">
+                and <![CDATA[layout_price6_min<= #{maxTotalPrice} and layout_price6_max >= #{minTotalPrice}]]>
+            </if>
+            <if test="layoutArray != null">
+                AND <![CDATA[  layout_range && string_to_array('${layoutArray}',',')::INT[] ]]>
+            </if>
+            <if test="districtArray != null and districtArray != ''">
+                AND <![CDATA[   ARRAY[district_id] && string_to_array('${districtArray}',',')::INT[]]]>
+            </if>
+            <if test="school != null">
+                AND <![CDATA[  school_type_array @> '{${school}}' ]]>
+            </if>
+            <if test="hospital != null">
+                AND <![CDATA[  has_medical = ${hospital} ]]>
+            </if>
+            AND n_or_e = 1
+        </where>
+    </sql>
+
+
     <select id="test" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         SELECT * FROM intelligence_findhouse WHERE newcode = 11114240
     </select>
@@ -208,6 +246,16 @@
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
         <include refid="queryInfo"/>
+        ORDER BY star_property DESC nulls LAST
+        LIMIT 200
+    </select>
+    <select id="queryByStarPropertyV1"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryHomePageReportInfo"/>
         ORDER BY star_property DESC nulls LAST
         LIMIT 200
     </select>
@@ -277,6 +325,74 @@
         <include refid="intelligenceFindHouse"/>
         from intelligence_findhouse
         <include refid="queryInfo"/>
+        LIMIT 100
+    </select>
+    <select id="queryByUserType1AV1"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryHomePageReportInfo"/>
+        LIMIT 100
+    </select>
+    <select id="queryByUserType1BV1"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryHomePageReportInfo"/>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC
+        LIMIT 100
+    </select>
+    <select id="queryByUserType1CV1"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryHomePageReportInfo"/>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
+        LIMIT 100
+    </select>
+    <select id="queryByUserType2AV1"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryHomePageReportInfo"/>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC
+        LIMIT 100
+    </select>
+    <select id="queryByUserType2BV1"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryHomePageReportInfo"/>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
+        LIMIT 100
+    </select>
+    <select id="queryByUserType2CV1"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryHomePageReportInfo"/>
+        ORDER BY has_subway ASC,ring_road DESC,has_lift ASC,has_market ASC,propertyfee ASC,park_radio DESC
+        LIMIT 100
+    </select>
+    <select id="queryByUserType3AV1"
+            resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select
+        <include refid="intelligenceFindHouse"/>
+        from intelligence_findhouse
+        <include refid="queryHomePageReportInfo"/>
         LIMIT 100
     </select>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.officeweb.IntelligenceFindhouse">

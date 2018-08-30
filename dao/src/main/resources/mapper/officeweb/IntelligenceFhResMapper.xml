@@ -4,7 +4,7 @@
   <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="phone" property="phone" jdbcType="VARCHAR" />
-    <result column="fh_result" property="fhResult" jdbcType="OTHER" />
+    <result column="fh_result" property="fhResult" jdbcType="OTHER"/>
     <result column="down_payment" property="downPayment" jdbcType="INTEGER" />
     <result column="month_payment" property="monthPayment" jdbcType="INTEGER" />
     <result column="user_type" property="userType" jdbcType="INTEGER" />
@@ -16,9 +16,11 @@
     <result column="user_portrait" property="userPortrait" jdbcType="INTEGER" />
     <result column="collect_status" property="collectStatus" jdbcType="INTEGER" />
     <result column="district_id" property="districtId" jdbcType="VARCHAR" />
+    <result column="layout_array" property="layoutArray" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayStringTypeHandler"/>
+    <result column="district_array" property="districtArray" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayStringTypeHandler"/>
   </resultMap>
   <sql id="Base_Column_List" >
-    id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout, 
+    id, phone, fh_result, down_payment, month_payment, user_type, total_price, layout,layout_array,district_array,
     has_child, has_oldman,create_time,user_portrait,district_id,collect_status
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -95,6 +97,12 @@
       <if test="districtId != null" >
         district_id,
       </if>
+      <if test="layoutArray != null" >
+        layout_array,
+      </if>
+      <if test="districtArray != null" >
+        district_array,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -104,7 +112,7 @@
         #{phone,jdbcType=VARCHAR},
       </if>
       <if test="fhResult != null" >
-        '${fhResult}',
+        #{fhResult}::jsonb,
       </if>
       <if test="downPayment != null" >
         #{downPayment,jdbcType=INTEGER},
@@ -136,6 +144,12 @@
       <if test="districtId != null" >
         #{districtId,jdbcType=VARCHAR},
       </if>
+      <if test="layoutArray != null" >
+        string_to_array(#{layoutArray}, ',')::INT [],
+      </if>
+     <if test="districtArray != null" >
+       string_to_array(#{districtArray}, ',')::INT [],
+    </if>
     </trim>
   </insert>
 

@@ -81,4 +81,31 @@
         ORDER BY total DESC
     </select>
 
+    <select id="selectByTotalAndCategory2" resultMap="BaseResultMap" parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select * from total_room_ratio
+        <where>
+            <if test="layoutArray!=null">
+                <![CDATA[ ARRAY[room] && string_to_array('${layoutArray}',',')::INT[]]]>
+            </if>
+            <if test="minTotalPrice!=null and maxTotalPrice!=null ">
+                and  <![CDATA[#{minTotalPrice}<=total and total <= #{maxTotalPrice}]]>
+            </if>
+        </where>
+        ORDER BY total DESC
+    </select>
+
+    <select id="selectByTotalAndCategory3" resultMap="BaseResultMap" parameterType="com.toutiao.web.domain.query.IntelligenceQuery">
+        select * from total_room_ratio
+        <where>
+            <if test="layoutArray!=null">
+                <!--<![CDATA[ ARRAY[room] >=string_to_array(array_to_string('${layoutArray}',','),',')::INT[]]]>-->
+                ARRAY[room]>=string_to_array('${layoutArray}',',')::INT[]
+            </if>
+            <if test="maxTotalPrice!=null and minTotalPrice!=null ">
+                and  <![CDATA[#{minTotalPrice}<=total and total <= #{maxTotalPrice}]]>
+            </if>
+        </where>
+        ORDER BY total DESC
+    </select>
+
 </mapper>

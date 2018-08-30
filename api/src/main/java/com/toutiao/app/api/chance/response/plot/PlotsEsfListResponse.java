@@ -16,6 +16,11 @@ public class PlotsEsfListResponse {
     private String houseId;
 
     /**
+     * 房源标题
+     */
+    private String houseTitle;
+
+    /**
      * 室
      */
     private Integer room;
