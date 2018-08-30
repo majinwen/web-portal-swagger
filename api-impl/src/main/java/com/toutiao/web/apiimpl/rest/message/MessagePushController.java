@@ -71,7 +71,7 @@ public class MessagePushController {
      * @param homePageMessageRequest
      * @return
      */
-    @RequestMapping(value = "/getHomeMessage")
+    @RequestMapping(value = "/getHomeMessage", method = RequestMethod.GET)
     @ResponseBody
     public NashResult getHomeMessage(HomePageMessageRequest homePageMessageRequest, HttpServletRequest request, HttpServletResponse response) {
         String userId = getUserIdByCookie(request, response);
