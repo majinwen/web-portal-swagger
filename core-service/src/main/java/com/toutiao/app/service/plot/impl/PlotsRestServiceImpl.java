@@ -17,6 +17,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
@@ -388,15 +389,15 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
         //房源面积大小
         if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("sellHouseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city), QueryBuilders.rangeQuery("sellHouseArea")
                     .gte(plotListDoQuery.getBeginArea()).lte(plotListDoQuery.getEndArea()), ScoreMode.None));
 
         }else if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()==0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("sellHouseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city), QueryBuilders.rangeQuery("sellHouseArea")
                     .gte(plotListDoQuery.getBeginArea()), ScoreMode.None));
         }else if(plotListDoQuery.getBeginArea()==0 && plotListDoQuery.getEndArea()!=0){
 
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("sellHouseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city), QueryBuilders.rangeQuery("sellHouseArea")
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));
         }
 
@@ -652,13 +653,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
         //户型
         if (null!=userFavoriteConditionDoQuery.getLayoutId()&&userFavoriteConditionDoQuery.getLayoutId().length>0){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
         }
         //价格
         if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
         }else if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
         }
 
         //二手房个数

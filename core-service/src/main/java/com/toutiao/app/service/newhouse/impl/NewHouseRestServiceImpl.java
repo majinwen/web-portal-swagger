@@ -12,6 +12,7 @@ import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -244,7 +245,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if(newHouseDoQuery.getLayoutId()!=null && newHouseDoQuery.getLayoutId().length!=0 ){
 
             Integer[] longs =  newHouseDoQuery.getLayoutId();
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout", QueryBuilders.termsQuery("room",longs), ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city), QueryBuilders.termsQuery("room",longs), ScoreMode.None));
 
         }
 
@@ -416,13 +417,13 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
         //户型
         if (null!=userFavoriteConditionDoQuery.getLayoutId()&&userFavoriteConditionDoQuery.getLayoutId().length>0){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout",QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
         }
         //价格
         if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
         }else if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
         }
 
         //查询

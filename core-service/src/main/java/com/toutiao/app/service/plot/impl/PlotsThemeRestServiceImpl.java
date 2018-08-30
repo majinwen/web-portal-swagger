@@ -10,6 +10,7 @@ import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -61,13 +62,13 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         }
 
         if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .gte(plotsThemeDoQuery.getBeginPrice()).lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
         }else if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()==0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .gte(plotsThemeDoQuery.getBeginPrice()), ScoreMode.None));
         }else if(plotsThemeDoQuery.getBeginPrice()==0 && plotsThemeDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
         }
 
