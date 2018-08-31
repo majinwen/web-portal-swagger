@@ -7,6 +7,7 @@ import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutDo;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutPriceDo;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -54,7 +55,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
         List<NewHouseLayoutCountDo> newHouseLayoutCountDoList = new ArrayList<>();
         NewHouseLayoutCountDomain newHouseLayoutCountDomain = new NewHouseLayoutCountDomain();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
-        sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
+        sizeBuilder.must(JoinQueryBuilders.hasParentQuery(ElasticCityUtils.getNewHouseParentType(city),QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
         
         SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder,city);
 
