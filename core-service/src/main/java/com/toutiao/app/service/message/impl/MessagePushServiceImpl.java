@@ -181,36 +181,40 @@ public class MessagePushServiceImpl implements MessagePushService {
             //推送类型(0-系统消息, 1-定向推送)
             criteria.andPushTypeEqualTo(1);
             criteria.andContentTypeEqualTo(i);
-            if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
-                criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
-            } else if (i == FAVORITEPLOT && homeMessageDoQuery.getFavoritePlotDate() != 0) {
-                criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoritePlotDate()));
-            } else if (i == FAVORITEHOUSE && homeMessageDoQuery.getFavoriteHouseDate() != 0) {
-                criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteHouseDate()));
-            } else if (i == SUBSCRIBETHEME && homeMessageDoQuery.getSubscribeThemeDate() != 0) {
-                criteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getSubscribeThemeDate()));
-            }
-            Date date = new Date();
-            criteria.andCreateTimeLessThan(date);
             List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
-            HomeMessageDo homeMessageDo = new HomeMessageDo();
-            homeMessageDo.setContentType(i);
             if (CollectionUtils.isEmpty(messagePushes)) {
                 continue;
             }
-
             List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
+
             String[] messageContent = getMessageContent(messagePushDos.get(0), i);
+            HomeMessageDo homeMessageDo = new HomeMessageDo();
+            homeMessageDo.setContentType(i);
             homeMessageDo.setMessageContent(messageContent[0]);
             homeMessageDo.setBoldMessageContent(messageContent[1]);
-
-            if (StringTool.isEmpty(messageContent[0]) || StringTool.isEmpty(messageContent[1])) {
-                homeMessageDo.setUnReadCount(0);
-            } else {
-                homeMessageDo.setUnReadCount(messagePushDos.size());
-            }
-
             homeMessageDo.setCreateTime(messagePushDos.get(0).getCreateTime().getTime());
+
+            //查询一段时间内消息未读数量
+            MessagePushExample countExample = new MessagePushExample();
+            MessagePushExample.Criteria countCriteria = countExample.createCriteria();
+            if (StringTool.isNotEmpty(userId)) {
+                countCriteria.andUserIdEqualTo(Integer.valueOf(userId));
+            }
+            countCriteria.andPushTypeEqualTo(1);
+            countCriteria.andContentTypeEqualTo(i);
+            if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
+            } else if (i == FAVORITEPLOT && homeMessageDoQuery.getFavoritePlotDate() != 0) {
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoritePlotDate()));
+            } else if (i == FAVORITEHOUSE && homeMessageDoQuery.getFavoriteHouseDate() != 0) {
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteHouseDate()));
+            } else if (i == SUBSCRIBETHEME && homeMessageDoQuery.getSubscribeThemeDate() != 0) {
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getSubscribeThemeDate()));
+            }
+            int unreadCount = messagePushMapper.countByExample(countExample);
+            if (StringTool.isNotEmpty(messageContent[0])) {
+                homeMessageDo.setUnReadCount(unreadCount);
+            }
             homeMessageDos.add(homeMessageDo);
         }
         return homeMessageDos;
