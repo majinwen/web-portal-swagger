@@ -44,6 +44,8 @@ public class IntelligenceQuery {
      */
     private Integer layOut;
 
+
+
     /**
      * 用户画像类型1,2,3,4,5,6,7
      */
@@ -63,6 +65,7 @@ public class IntelligenceQuery {
      * 用户传递的区域id
      */
     private String districtId;
+
     /**
      * 教育配套标签标记
      */
@@ -112,11 +115,12 @@ public class IntelligenceQuery {
      * 用户画像
      */
     private Integer userPortrait;
-
-
-
-
-
-
-
+    /**
+     * 用户选择类型
+     */
+    private String layoutArray;
+    /**
+     * 用户传递的区域id数组
+     */
+    private String districtArray;
 }

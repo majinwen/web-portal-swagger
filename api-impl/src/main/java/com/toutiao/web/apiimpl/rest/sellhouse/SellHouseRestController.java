@@ -3,14 +3,19 @@ package com.toutiao.web.apiimpl.rest.sellhouse;
 
 import com.toutiao.app.api.chance.request.sellhouse.*;
 import com.toutiao.app.api.chance.response.sellhouse.*;
+import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -21,6 +26,18 @@ public class SellHouseRestController {
     @Autowired
     private SellHouseService sellHouseService;
 
+    /**
+     * 消息推送二手房列表信息
+     */
+    @RequestMapping(value = "/querySellHouseByHouseId",method = RequestMethod.GET)
+    public NashResult querySellHouseByHouseId(@Param("houseId") String houseId){
+        List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(houseId.split(","));
+        if (StringTool.isNotEmpty(messageSellHouseDos)) {
+            return NashResult.build(messageSellHouseDos);
+        } else {
+            return NashResult.Fail("获取消息推送失败");
+        }
+    }
 
     /**
      *  二手房房源详情
