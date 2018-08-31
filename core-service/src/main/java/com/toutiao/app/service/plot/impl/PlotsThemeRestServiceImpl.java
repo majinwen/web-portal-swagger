@@ -51,10 +51,10 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         if (recommendBuildTagsId != null) {
             if (recommendBuildTagsId == 6 && StringTool.isNotEmpty(nearestPark)) {
                 boolQueryBuilder.must(QueryBuilders.boolQuery()
-                        .must(QueryBuilders.termsQuery("recommendBuildTagsId", recommendBuildTagsId))
+                        .must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId))
                         .must(QueryBuilders.termQuery("nearestPark", nearestPark)));
             } else {
-                boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", recommendBuildTagsId));
+                boolQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId));
             }
         }
 
