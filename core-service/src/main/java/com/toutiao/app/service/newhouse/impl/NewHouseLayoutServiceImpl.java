@@ -95,7 +95,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
 
         BoolQueryBuilder detailsBuilder = boolQuery();
         List<NewHouseLayoutDo> newHouseLayoutDoList = new ArrayList<>();
-        detailsBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
+        detailsBuilder.must(JoinQueryBuilders.hasParentQuery(ElasticCityUtils.getNewHouseParentType(city),QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
         if(roomCount > 0){
             detailsBuilder.must(QueryBuilders.termQuery("room",roomCount));
         }
