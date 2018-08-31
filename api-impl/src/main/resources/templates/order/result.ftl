@@ -4,7 +4,7 @@
     <#include "../staticHeader.ftl">
     <title>充值</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <link rel="stylesheet" href="${staticurl}/css/payment-result.css?v=${staticversion}">
     <#include "../StatisticsHeader.ftl">
 </head>

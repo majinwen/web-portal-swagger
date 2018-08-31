@@ -4,7 +4,7 @@
     <#include "../staticHeader.ftl">
     <title>购买</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <link rel="stylesheet" href="${staticurl}/css/payment-purchase.css?v=${staticversion}">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script src="${staticurl}/js/main.js?v=${staticversion}"></script>

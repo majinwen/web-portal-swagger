@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="${appstaticurl}/css/my-report.css?v=${staticversion}">
     <title>我的购房报告</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <script src="${appstaticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>
