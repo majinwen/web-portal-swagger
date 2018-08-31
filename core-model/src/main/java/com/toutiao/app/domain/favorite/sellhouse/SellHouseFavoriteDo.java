@@ -44,13 +44,13 @@ public class SellHouseFavoriteDo {
 
     private  String buildingName;
 
-    private  Double houseTotalPrice;
+    private  Double houseTotalPrices;
 
     private  String  housePhotoTitle;
 
     private  String  houseTitle;
 
-    private  Double  houseArea;
+    private  Double  buildArea;
 
     private  String forward;
 
