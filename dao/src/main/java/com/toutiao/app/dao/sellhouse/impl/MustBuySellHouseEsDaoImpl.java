@@ -35,7 +35,7 @@ public class MustBuySellHouseEsDaoImpl implements MustBuySellHouseEsDao {
     @Override
     public SearchResponse getMustBuySellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize, Integer topicType, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils.getEsfType(city));
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         if (sort == 0) {
             srb.addSort("updateTimeSort", SortOrder.DESC);
         } else if (sort == 1) {

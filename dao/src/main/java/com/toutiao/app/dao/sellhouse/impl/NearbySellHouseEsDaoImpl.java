@@ -25,7 +25,7 @@ public class NearbySellHouseEsDaoImpl implements NearbySellHouseEsDao{
     public SearchResponse getNearbySellHouseByFilter(FunctionScoreQueryBuilder query, Integer pageNum,Integer pageSize,String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils.getEsfType(city));
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
 
         SearchResponse searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)/*.setFetchSource(
                 new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName",

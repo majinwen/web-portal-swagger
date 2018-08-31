@@ -98,7 +98,7 @@ public interface PlotEsDao {
      * @param idsQueryBuilder 小区ID列表
      * @return
      */
-    SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder);
+    SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder, String city);
 
     /**
      * 获取小区top50

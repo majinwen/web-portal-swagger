@@ -75,7 +75,7 @@ public interface SellHouseEsDao {
      * @param idsQueryBuilder
      * @return
      */
-    SearchResponse getComparedHouseByIds(IdsQueryBuilder idsQueryBuilder);
+    SearchResponse getComparedHouseByIds(IdsQueryBuilder idsQueryBuilder, String city);
 
     /**
      * 根据关键字查询小区

@@ -115,9 +115,9 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder) {
+    public SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder,String city) {
         TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = client.prepareSearch(index).setTypes(parentType)
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city))
                 .setQuery(idsQueryBuilder)
                 .execute().actionGet();
         return searchresponse;

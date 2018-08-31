@@ -21,15 +21,15 @@ public interface ComparedService {
 
     int updateByPrimaryKey(HouseCompared record);
 
-    HouseCompared selectByUserIdAndHouseId(Integer userId, String houseId);
+    HouseCompared selectByUserIdAndHouseId(Integer userId, String houseId, Integer cityId);
 
-    List<HouseComparedListDo> selectTempComparedByIds(List<String> ids);
+    List<HouseComparedListDo> selectTempComparedByIds(List<String> ids, String city);
 
-    List<HouseComparedListDo> selectComparedByHouseCompareds(List<HouseCompared> houseCompareds);
+    List<HouseComparedListDo> selectComparedByHouseCompareds(List<HouseCompared> houseCompareds, String city);
 
-    List<HouseCompared> selectByUserId (Integer userId);
+    List<HouseCompared> selectByUserId (Integer userId, Integer cityId);
 
-    List<HouseComparedDetailDo> selectComparedDetailByHouseIds (List<String> ids);
+    List<HouseComparedDetailDo> selectComparedDetailByHouseIds (List<String> ids, String city);
 
     /**
      * 比对列表

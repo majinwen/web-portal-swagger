@@ -36,7 +36,7 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
     public SearchResponse getRecommendByRecommendBuildTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils.getEsfType(city));
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchResponse = null;
 //        if(null!=recommendTopicDoQuery.getDistrictId()){
 //             searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
@@ -65,7 +65,7 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
     @Override
     public SearchResponse getRecommendByRecommendHouseTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils.getEsfType(city));
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchResponse = null;
 //        if(null!=recommendTopicDoQuery.getDistrictId()){
 //            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)

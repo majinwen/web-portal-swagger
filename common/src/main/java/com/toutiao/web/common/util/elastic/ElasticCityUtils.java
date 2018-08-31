@@ -40,25 +40,25 @@ public class ElasticCityUtils {
         return getESIndexMap(ESIndexConstant.PLOT_TYPE_T2,cityCode);
     }
 
-    /**
-     * 二手房索引
-     */
-    public static String getEsfIndex(String cityCode) {
-        if (StringTool.isEmpty(cityCode)) {
-            cityCode = "bj";
-        }
-        return getESIndexMap(ESIndexConstant.ESF_INDEX, cityCode);
-    }
-
-    /**
-     * 二手房表名
-     */
-    public static String getEsfType(String cityCode) {
-        if (StringTool.isEmpty(cityCode)) {
-            cityCode = "bj";
-        }
-        return getESIndexMap(ESIndexConstant.ESF_TYPE, cityCode);
-    }
+//    /**
+//     * 二手房索引
+//     */
+//    public static String getEsfIndex(String cityCode) {
+//        if (StringTool.isEmpty(cityCode)) {
+//            cityCode = "bj";
+//        }
+//        return getESIndexMap(ESIndexConstant.ESF_INDEX, cityCode);
+//    }
+//
+//    /**
+//     * 二手房表名
+//     */
+//    public static String getEsfType(String cityCode) {
+//        if (StringTool.isEmpty(cityCode)) {
+//            cityCode = "bj";
+//        }
+//        return getESIndexMap(ESIndexConstant.ESF_TYPE, cityCode);
+//    }
 
     /**
      * 新房索引

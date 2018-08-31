@@ -82,7 +82,7 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     @Override
     public SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils.getEsfType(city));
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC)
                 .setSize(size).addSort(sort).execute().actionGet();
         return searchResponse;
@@ -91,7 +91,7 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     @Override
     public SearchResponse getHomePageNearEsfNoLocation(BoolQueryBuilder boolQueryBuilder, Integer size, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfIndex(city)).setTypes(ElasticCityUtils.getEsfType(city));
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC)
                 .setSize(size).execute().actionGet();
         return searchResponse;
@@ -109,8 +109,8 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     @Override
     public SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfIndex(city))
-                .setTypes(ElasticCityUtils.getEsfType(city));
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city))
+                .setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC)
                 .setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
