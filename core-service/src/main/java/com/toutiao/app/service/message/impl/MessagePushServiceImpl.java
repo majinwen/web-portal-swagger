@@ -149,7 +149,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
             String housePhotoTitle = messageSellHouseDo.getHousePhotoTitle();
             if (StringTool.isNotEmpty(housePhotoTitle)) {
-                if (!housePhotoTitle.contains("http://") || !housePhotoTitle.contains("https://")) {
+                if (!(housePhotoTitle.contains("http://") || housePhotoTitle.contains("https://"))) {
                     housePhotoTitle = "http://s1.qn.toutiaofangchan.com/" + housePhotoTitle + "-dongfangdi400x300";
                 } else {
                     continue;
