@@ -118,6 +118,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 split = subStrings(split, 0, 10);
                 messagePushDo.setHouseId(Arrays.toString(split));
                 List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(split);
+                dealPhotoTitle(messageSellHouseDos);
                 messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
                 messageHouseCount += split.length;
                 message.add(messagePushDo);
@@ -134,6 +135,32 @@ public class MessagePushServiceImpl implements MessagePushService {
         messagePushDomain.setLastMessageId(lastMessageId);
 
         return messagePushDomain;
+    }
+
+    /**
+     * 处理房源标题图
+     *
+     * @param messageSellHouseDos
+     */
+    private void dealPhotoTitle(List<MessageSellHouseDo> messageSellHouseDos) {
+        if (CollectionUtils.isEmpty(messageSellHouseDos)) {
+            return;
+        }
+        for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
+            String housePhotoTitle = messageSellHouseDo.getHousePhotoTitle();
+            if (StringTool.isNotEmpty(housePhotoTitle)) {
+                if (!housePhotoTitle.contains("http")) {
+                    housePhotoTitle = "http://s1.qn.toutiaofangchan.com/" + housePhotoTitle + "-dongfangdi400x300";
+                } else {
+                    continue;
+                }
+            } else {
+                housePhotoTitle = "assets/image/imgLoadErr.png";
+            }
+            messageSellHouseDo.setHousePhotoTitle(housePhotoTitle);
+        }
+
+
     }
 
     /**
