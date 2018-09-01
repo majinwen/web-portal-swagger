@@ -155,7 +155,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                     continue;
                 }
             } else {
-                housePhotoTitle = "assets/image/imgLoadErr.png";
+                housePhotoTitle = "isNotExists";
             }
             messageSellHouseDo.setHousePhotoTitle(housePhotoTitle);
         }
