@@ -225,8 +225,8 @@
                                     <li class="bgtype-${fhResult_index+1}" data-href="${router_city('/xiaoqu/'+fhResult['newcode']?c+'.html')}">
                                         <div>
                                             <h4>${fhResult['projname']}</h4>
-                                            <#if fhResult['esfPrice']?exists&&fhResult['esfPrice']?number gt 0>
-                                                <p>${fhResult['esfPrice']?number?round}元/㎡</p>
+                                            <#if fhResult['averagePrice']?exists&&fhResult['averagePrice']?number gt 0>
+                                                <p>${fhResult['averagePrice']?number?round}元/㎡</p>
                                             <#else >
                                                 <p>${fhResult['price']?number?round}元/㎡</p>
                                             </#if>
