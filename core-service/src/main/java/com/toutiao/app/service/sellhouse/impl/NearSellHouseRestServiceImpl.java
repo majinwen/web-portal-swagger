@@ -165,7 +165,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                 agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
             }
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
-            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags());
+            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
             nearBySellHouses.add(nearBySellHousesDo);
             //增加地铁站与房源的距离
             String keys="";

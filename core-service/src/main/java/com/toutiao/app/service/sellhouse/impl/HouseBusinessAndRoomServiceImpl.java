@@ -78,7 +78,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
                 houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
-                houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 String houseId = houseBusinessAndRoomDoQuery.getHouseId();
                 if (StringTool.isNotEmpty(houseId) && houseId.equals(oldHouseId)) {
                     houseBusinessAndRoomDos.addFirst(houseBusinessAndRoomDo);

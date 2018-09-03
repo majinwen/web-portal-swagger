@@ -184,7 +184,7 @@ public class ComparedServiceImpl implements ComparedService {
         for (SearchHit hit : searchHists) {
             String details = hit.getSourceAsString();
             HouseComparedDetailDo houseComparedDetailDo = JSON.parseObject(details, HouseComparedDetailDo.class);
-            houseComparedDetailDo.setTypeCounts(communityRestService.getCountByBuildTags());
+            houseComparedDetailDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
             houseComparedDetailDo.setHouseId(hit.getId());
             houseComparedDetailDoDict.put(hit.getId(), houseComparedDetailDo);
             if (!newcodeDict.containsKey(houseComparedDetailDo.getNewcode())) {

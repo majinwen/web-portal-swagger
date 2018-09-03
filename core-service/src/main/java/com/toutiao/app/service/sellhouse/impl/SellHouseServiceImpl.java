@@ -128,7 +128,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
-                sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
             }
 
@@ -274,7 +274,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
 
-                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
 
@@ -358,7 +358,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                 }
-                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
 
@@ -508,7 +508,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                 }
-                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
@@ -642,7 +642,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
             sellHouseBeSureToSnatchDo.setAgentBaseDo(agentBaseDo);
 
-            sellHouseBeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags());
+            sellHouseBeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
 
             sellHouseBeSureToSnatchDo.setSort(sort[0]);
             sellHouseBeSureToSnatchDos.add(sellHouseBeSureToSnatchDo);
@@ -720,7 +720,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
                 }
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
-                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 sellHousesSearchDos.add(sellHousesSearchDo);
             }
             sellHouseSearchDomain.setData(sellHousesSearchDos);

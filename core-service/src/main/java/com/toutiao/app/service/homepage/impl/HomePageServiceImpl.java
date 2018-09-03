@@ -403,7 +403,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                     agent.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agent.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
                 }
-                homePageNearEsfDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                homePageNearEsfDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 homePageNearEsfDo.setAgentBaseDo(agent);
                 homePageNearEsfDo.setUnitPrice((double) Math.round((homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea())*10000));
                 list.add(homePageNearEsfDo);
@@ -452,7 +452,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 HomePageMustBuyDo homePageMustBuyDo = JSON.parseObject(sourceAsString, HomePageMustBuyDo.class);
-                homePageMustBuyDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                //homePageMustBuyDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 homePageMustBuyDos.add(homePageMustBuyDo);
             }
         }
@@ -511,7 +511,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             String details = "";
             details = hit.getSourceAsString();
             HomeSureToSnatchDo  homeSureToSnatchDo = JSON.parseObject(details, HomeSureToSnatchDo.class);
-            homeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags());
+//            homeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags());
             if(homeSureToSnatchDo.getIsClaim().equals(1))
             {
                 homeSureToSnatchDo.setHousePhotoTitle(homeSureToSnatchDo.getClaimHousePhotoTitle());

@@ -134,7 +134,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
                 agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
                 agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
             }
-            sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
+            sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
             sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDoList.add(sellHouseDo);
         }

@@ -118,7 +118,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
 
-                mustBuyShellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                mustBuyShellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
 
                 mustBuyShellHouseDo.setAgentBaseDo(agentBaseDo);
                 mustBuyShellHouseDos.add(mustBuyShellHouseDo);
