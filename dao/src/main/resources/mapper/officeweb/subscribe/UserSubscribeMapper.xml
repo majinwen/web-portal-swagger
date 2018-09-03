@@ -138,7 +138,7 @@
         select
         <include refid="Base_Column_List" />
         from user_subscribe
-        where user_id = #{userId,jdbcType=INTEGER} AND subscribe_type = 0
+        where user_id = #{userId,jdbcType=INTEGER} AND subscribe_type = 0 AND city_id = #{cityId,jdbcType=INTEGER}
         order by id desc
     </select>
 

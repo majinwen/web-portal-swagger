@@ -24,7 +24,7 @@ public interface UserSubscribeMapper {
 
     int updateByPrimaryKey(UserSubscribe record);
 
-    List<UserSubscribe> selectByUserId(@Param("userId")Integer userId);
+    List<UserSubscribe> selectByUserId(@Param("userId")Integer userId, @Param("cityId")Integer cityId);
 
     List<UserSubscribe> selectConditionSubscribeByUserId(@Param("userId")Integer userId);
 
