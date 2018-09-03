@@ -101,7 +101,7 @@ public class SubscribeServiceImpl implements SubscribeService {
      */
     public List<UserSubscribeListDo> selectByUserId(Integer userId, Boolean isGetHouseDetail, String city) {
         List<UserSubscribeListDo> userSubscribeListDoList = new ArrayList<>();
-        List<UserSubscribe> userSubscribeList = userSubscribeMapper.selectByUserId(userId, CityUtils.returnCityId(city));
+        List<UserSubscribe> userSubscribeList = userSubscribeMapper.selectByUserId(userId);
         for (UserSubscribe userSubscribe : userSubscribeList) {
             UserSubscribeListDo userSubscribeListDo = new UserSubscribeListDo();
             BeanUtils.copyProperties(userSubscribe, userSubscribeListDo);
