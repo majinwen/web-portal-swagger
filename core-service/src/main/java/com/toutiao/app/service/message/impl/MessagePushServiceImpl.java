@@ -14,13 +14,21 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class MessagePushServiceImpl implements MessagePushService {
+    private static final Map<Integer, String> cityId2Name = new HashMap<>();
+    private static final Map<Integer, String> cityId2Abbreviation = new HashMap<>();
+    private static final String ALL = "全";
+
+    static {
+        cityId2Name.put(12, "北京");
+        cityId2Name.put(13, "上海");
+        cityId2Name.put(14, "天津");
+    }
+
+
     @Autowired
     private MessagePushMapper messagePushMapper;
 
@@ -54,7 +62,12 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String HOUSECOUNT = "套房源";
     private static final String SPACE = " ";
     private static final String MIDLINE = "-";
-    private static final String ALLBEIJING = "全北京";
+
+    static {
+        cityId2Abbreviation.put(12, "bj");
+        cityId2Abbreviation.put(13, "sh");
+        cityId2Abbreviation.put(14, "tj");
+    }
     private static final String ANYPRICE = "价格不限";
     private static final String WANUP = "万以上";
     private static final String WANDOWN = "万以下";
@@ -68,8 +81,6 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String OF = "的";
     private static final String RISE = "涨";
     private static final String DROP = "降";
-
-
 
     /**
      * 房源类消息列表
@@ -118,7 +129,8 @@ public class MessagePushServiceImpl implements MessagePushService {
                 split = subStrings(split, 0, 10);
                 messagePushDo.setHouseId(Arrays.toString(split));
                 List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(split);
-                dealPhotoTitle(messageSellHouseDos);
+                //处理房源标题图和详情页Url
+                dealPhotoTitleAndDetailUrl(messageSellHouseDos, messagePushDo.getCityId());
                 messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
                 messageHouseCount += split.length;
                 message.add(messagePushDo);
@@ -141,26 +153,30 @@ public class MessagePushServiceImpl implements MessagePushService {
      * 处理房源标题图
      *
      * @param messageSellHouseDos
+     * @param cityId
      */
-    private void dealPhotoTitle(List<MessageSellHouseDo> messageSellHouseDos) {
+    private void dealPhotoTitleAndDetailUrl(List<MessageSellHouseDo> messageSellHouseDos, Integer cityId) {
         if (CollectionUtils.isEmpty(messageSellHouseDos)) {
             return;
         }
         for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
+            String houseDetailUrl = null;
+            if (StringTool.isNotEmpty(cityId2Abbreviation.get(cityId))) {
+                houseDetailUrl = String.format("/#/%s/details/secondHand?houseId=%s",
+                        cityId2Abbreviation.get(cityId), messageSellHouseDo.getHouseId());
+            }
+            messageSellHouseDo.setHouseDetailUrl(houseDetailUrl);
+
             String housePhotoTitle = messageSellHouseDo.getHousePhotoTitle();
             if (StringTool.isNotEmpty(housePhotoTitle)) {
                 if (!(housePhotoTitle.contains("http://") || housePhotoTitle.contains("https://"))) {
                     housePhotoTitle = "http://s1.qn.toutiaofangchan.com/" + housePhotoTitle + "-dongfangdi400x300";
-                } else {
-                    continue;
                 }
             } else {
                 housePhotoTitle = "isNotExists";
             }
             messageSellHouseDo.setHousePhotoTitle(housePhotoTitle);
         }
-
-
     }
 
     /**
@@ -284,15 +300,43 @@ public class MessagePushServiceImpl implements MessagePushService {
         //配置专题展示数量
         if (messagePushDos.size() > 10) {
             List<MessagePushDo> message = messagePushDos.subList(0, 10);
+            dealThemeDetailUrl(message);
             messagePushDomain.setData(message);
             lastMessageId = message.get(message.size() - 1).getId();
         } else {
+            dealThemeDetailUrl(messagePushDos);
             messagePushDomain.setData(messagePushDos);
             lastMessageId = messagePushDos.get(messagePushDos.size() - 1).getId();
         }
         messagePushDomain.setLastMessageId(lastMessageId);
         messagePushDomain.setTotalCount(messagePushDomain.getData().size());
         return messagePushDomain;
+    }
+
+    /**
+     * 处理专题列表Url
+     *
+     * @param messagePushDos
+     */
+    private void dealThemeDetailUrl(List<MessagePushDo> messagePushDos) {
+        for (MessagePushDo messagePushDo : messagePushDos) {
+            String themeDetailUrl = null;
+            Integer subscribeType = messagePushDo.getSubscribeType();
+            if (subscribeType == 1) {
+                themeDetailUrl = "/#/topics/reduction";
+            } else if (subscribeType == 2) {
+                themeDetailUrl = "/#/topics/low";
+            } else if (subscribeType == 3) {
+                themeDetailUrl = "/#/topics/mustbuy";
+            }
+            JSONObject messageTheme = messagePushDo.getMessageTheme();
+            String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
+                    .replace("]", "");
+            String params = String.format("districtIds=%s&beginPrice=%s&endPrice=%s", districtIdArr,
+                    messageTheme.get("beginPrice").toString(), messageTheme.get("endPrice").toString());
+            messagePushDo.setThemeDetailUrl(themeDetailUrl + "?" + params);
+        }
+
     }
 
     /**
@@ -309,7 +353,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         JSONObject mcJson = messagePushDo.getMessageTheme();
         JSONObject hdJson = messagePushDo.getHouseData();
         if (contentType.equals(CONDITIONHOUSE) || contentType.equals(SUBSCRIBETHEME)) {
-            String districtName = dealDistrictName(mcJson.get("districtName").toString());
+            String districtName = dealDistrictName(mcJson.get("districtName").toString(), messagePushDo.getCityId());
             blodMessageContent.append(districtName);
             if (isNotEmpty(mcJson.get("beginPrice")) && isNotEmpty(mcJson.get("endPrice"))) {
                 blodMessageContent.append(mcJson.get("beginPrice")).append(MIDLINE).append(mcJson.get("endPrice")).append(WAN);
@@ -368,10 +412,15 @@ public class MessagePushServiceImpl implements MessagePushService {
      * 处理区域名称
      *
      * @param districtName
+     * @param cityId
      */
-    private String dealDistrictName(String districtName) {
+    private String dealDistrictName(String districtName, Integer cityId) {
         if (StringTool.isEmpty(districtName) || "[\"\"]".equals(districtName) || "[]".equals(districtName)) {
-            return ALLBEIJING;
+            if (StringTool.isNotEmpty(cityId2Name.get(cityId))) {
+                return ALL + cityId2Name.get(cityId);
+            } else {
+                return "";
+            }
         }
         return districtName.replace("\"", "").replace("[", "")
                 .replace("]", "");
