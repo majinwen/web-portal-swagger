@@ -37,6 +37,8 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,9 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
+
+
+    private Logger logger = LoggerFactory.getLogger(ProjHouseInfoServiceImpl.class);
 
     @Autowired
     private ESClientTools esClientTools;
@@ -1036,6 +1041,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //            }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("二手房列表异常={}",e.getStackTrace());
         }
         return null;
     }
@@ -1233,6 +1239,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
         } catch (Exception e) {
             e.printStackTrace();
+
+            logger.error("二手房列表异常location={}",e.getStackTrace());
         }
         return houseList;
     }
