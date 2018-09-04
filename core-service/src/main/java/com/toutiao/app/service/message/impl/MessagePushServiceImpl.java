@@ -20,13 +20,16 @@ import java.util.*;
 @Service
 public class MessagePushServiceImpl implements MessagePushService {
     private static final Map<Integer, String> CITYID2NAME = new HashMap<>();
-    private static final Map<Integer, String> CITYID2ABBREVIATION = new HashMap<>();
-    private static final String ALL = "全";
-
     static {
         CITYID2NAME.put(12, "北京");
         CITYID2NAME.put(13, "上海");
         CITYID2NAME.put(14, "天津");
+    }
+    private static final Map<Integer, String> CITYID2ABBREVIATION = new HashMap<>();
+    static {
+        CITYID2ABBREVIATION.put(12, "bj");
+        CITYID2ABBREVIATION.put(13, "sh");
+        CITYID2ABBREVIATION.put(14, "tj");
     }
 
     private static final String URL = "http://fenzhan.toutiaofangchan.com";
@@ -58,12 +61,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String HOUSECOUNT = "套房源";
     private static final String SPACE = " ";
     private static final String MIDLINE = "-";
-
-    static {
-        CITYID2ABBREVIATION.put(12, "bj");
-        CITYID2ABBREVIATION.put(13, "sh");
-        CITYID2ABBREVIATION.put(14, "tj");
-    }
+    private static final String ALL = "全";
     private static final String ANYPRICE = "价格不限";
     private static final String WANUP = "万以上";
     private static final String WANDOWN = "万以下";
@@ -348,14 +346,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         return contentArr;
     }
 
-    private static boolean isNotEmpty(Object o) {
-        return !isEmpty(o);
-    }
-
-    private static boolean isEmpty(Object o) {
-        return o == null || (Integer) o == 0;
-    }
-
     /**
      * 处理房源标题图
      *
@@ -430,5 +420,13 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
         return districtName.replace("\"", "").replace("[", "")
                 .replace("]", "");
+    }
+
+    private static boolean isNotEmpty(Object o) {
+        return !isEmpty(o);
+    }
+
+    private static boolean isEmpty(Object o) {
+        return o == null || (Integer) o == 0;
     }
 }
