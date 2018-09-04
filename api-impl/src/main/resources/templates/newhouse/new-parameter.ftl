@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="${staticurl}/css/parameter.css?v=${staticversion}">
     <title>新房参数</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">
 </head>

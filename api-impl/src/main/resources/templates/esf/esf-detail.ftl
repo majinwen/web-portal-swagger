@@ -8,7 +8,7 @@
         ㎡</#if> <#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if></title>
     <meta name="description"
           content="我在懂房帝发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="${staticurl}/js/loghub-tracking.js" async></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
