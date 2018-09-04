@@ -12,6 +12,7 @@ import com.toutiao.web.dao.entity.message.MessagePushExample;
 import com.toutiao.web.dao.mapper.message.MessagePushMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -19,8 +20,6 @@ import java.util.*;
 @Service
 public class MessagePushServiceImpl implements MessagePushService {
     private static final Map<Integer, String> cityId2Name = new HashMap<>();
-    private static final Map<Integer, String> cityId2Abbreviation = new HashMap<>();
-    private static final String ALL = "全";
 
     static {
         cityId2Name.put(12, "北京");
@@ -28,12 +27,26 @@ public class MessagePushServiceImpl implements MessagePushService {
         cityId2Name.put(14, "天津");
     }
 
+    private static final Map<Integer, String> cityId2Abbreviation = new HashMap<>();
+    //TODO 上线记得修改过来
+    private static final String URL = "http://fenzhan.toutiaofangchan.com";
+
 
     @Autowired
     private MessagePushMapper messagePushMapper;
 
     @Autowired
     private SellHouseService sellHouseService;
+    private static final String ALL = "全";
+
+    static {
+        cityId2Abbreviation.put(12, "bj");
+        cityId2Abbreviation.put(13, "sh");
+        cityId2Abbreviation.put(14, "tj");
+    }
+
+    @Value("${qiniu.img_domain}")
+    private String qinniuImg;
 
     /**
      * 搜索订阅
@@ -62,12 +75,8 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String HOUSECOUNT = "套房源";
     private static final String SPACE = " ";
     private static final String MIDLINE = "-";
-
-    static {
-        cityId2Abbreviation.put(12, "bj");
-        cityId2Abbreviation.put(13, "sh");
-        cityId2Abbreviation.put(14, "tj");
-    }
+    @Value("${app.domain.name}")
+    private String appName;
     private static final String ANYPRICE = "价格不限";
     private static final String WANUP = "万以上";
     private static final String WANDOWN = "万以下";
@@ -162,7 +171,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
             String houseDetailUrl = null;
             if (StringTool.isNotEmpty(cityId2Abbreviation.get(cityId))) {
-                houseDetailUrl = String.format("/#/%s/details/secondHand?houseId=%s",
+                houseDetailUrl = String.format(URL + "/#/%s/details/secondHand?houseId=%s",
                         cityId2Abbreviation.get(cityId), messageSellHouseDo.getHouseId());
             }
             messageSellHouseDo.setHouseDetailUrl(houseDetailUrl);
@@ -170,7 +179,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             String housePhotoTitle = messageSellHouseDo.getHousePhotoTitle();
             if (StringTool.isNotEmpty(housePhotoTitle)) {
                 if (!(housePhotoTitle.contains("http://") || housePhotoTitle.contains("https://"))) {
-                    housePhotoTitle = "http://s1.qn.toutiaofangchan.com/" + housePhotoTitle + "-dongfangdi400x300";
+                    housePhotoTitle = qinniuImg + "/" + housePhotoTitle + "-dongfangdi400x300";
                 }
             } else {
                 housePhotoTitle = "isNotExists";
@@ -296,7 +305,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             return messagePushDomain;
         }
 
-        Integer lastMessageId = null;
+        Integer lastMessageId;
         //配置专题展示数量
         if (messagePushDos.size() > 10) {
             List<MessagePushDo> message = messagePushDos.subList(0, 10);
@@ -323,11 +332,11 @@ public class MessagePushServiceImpl implements MessagePushService {
             String themeDetailUrl = null;
             Integer subscribeType = messagePushDo.getSubscribeType();
             if (subscribeType == 1) {
-                themeDetailUrl = "/#/topics/reduction";
+                themeDetailUrl = URL + "/#/topics/reduction";
             } else if (subscribeType == 2) {
-                themeDetailUrl = "/#/topics/low";
+                themeDetailUrl = URL + "/#/topics/low";
             } else if (subscribeType == 3) {
-                themeDetailUrl = "/#/topics/mustbuy";
+                themeDetailUrl = URL + "/#/topics/mustbuy";
             }
             JSONObject messageTheme = messagePushDo.getMessageTheme();
             String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
