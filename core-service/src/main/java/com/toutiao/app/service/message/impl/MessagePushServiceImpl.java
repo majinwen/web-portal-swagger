@@ -28,16 +28,6 @@ public class MessagePushServiceImpl implements MessagePushService {
     }
 
     private static final Map<Integer, String> cityId2Abbreviation = new HashMap<>();
-    //TODO 上线记得修改过来
-    private static final String URL = "http://fenzhan.toutiaofangchan.com";
-
-
-    @Autowired
-    private MessagePushMapper messagePushMapper;
-
-    @Autowired
-    private SellHouseService sellHouseService;
-    private static final String ALL = "全";
 
     static {
         cityId2Abbreviation.put(12, "bj");
@@ -45,8 +35,16 @@ public class MessagePushServiceImpl implements MessagePushService {
         cityId2Abbreviation.put(14, "tj");
     }
 
+    //TODO 上线记得修改过来
+    private static final String URL = "http://fenzhan.toutiaofangchan.com";
+    private static final String ALL = "全";
+
     @Value("${qiniu.img_domain}")
     private String qinniuImg;
+    @Autowired
+    private MessagePushMapper messagePushMapper;
+    @Autowired
+    private SellHouseService sellHouseService;
 
     /**
      * 搜索订阅
@@ -329,23 +327,25 @@ public class MessagePushServiceImpl implements MessagePushService {
      */
     private void dealThemeDetailUrl(List<MessagePushDo> messagePushDos) {
         for (MessagePushDo messagePushDo : messagePushDos) {
-            String themeDetailUrl = null;
-            Integer subscribeType = messagePushDo.getSubscribeType();
-            if (subscribeType == 1) {
-                themeDetailUrl = URL + "/#/topics/reduction";
-            } else if (subscribeType == 2) {
-                themeDetailUrl = URL + "/#/topics/low";
-            } else if (subscribeType == 3) {
-                themeDetailUrl = URL + "/#/topics/mustbuy";
+            String city = cityId2Abbreviation.get(messagePushDo.getCityId());
+            if (StringTool.isNotEmpty(city)) {
+                String themeDetailUrl = null;
+                Integer subscribeType = messagePushDo.getSubscribeType();
+                if (subscribeType == 1) {
+                    themeDetailUrl = URL + String.format("/#/%s/topics/reduction", city);
+                } else if (subscribeType == 2) {
+                    themeDetailUrl = URL + String.format("/#/%s/topics/low", city);
+                } else if (subscribeType == 3) {
+                    themeDetailUrl = URL + String.format("/#/%s/topics/mustbuy", city);
+                }
+                JSONObject messageTheme = messagePushDo.getMessageTheme();
+                String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
+                        .replace("]", "");
+                String params = String.format("?districtIds=%s&beginPrice=%s&endPrice=%s", districtIdArr,
+                        messageTheme.get("beginPrice").toString(), messageTheme.get("endPrice").toString());
+                messagePushDo.setThemeDetailUrl(themeDetailUrl + params);
             }
-            JSONObject messageTheme = messagePushDo.getMessageTheme();
-            String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
-                    .replace("]", "");
-            String params = String.format("districtIds=%s&beginPrice=%s&endPrice=%s", districtIdArr,
-                    messageTheme.get("beginPrice").toString(), messageTheme.get("endPrice").toString());
-            messagePushDo.setThemeDetailUrl(themeDetailUrl + "?" + params);
         }
-
     }
 
     /**
