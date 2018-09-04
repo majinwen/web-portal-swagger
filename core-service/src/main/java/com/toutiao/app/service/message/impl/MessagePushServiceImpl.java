@@ -35,16 +35,17 @@ public class MessagePushServiceImpl implements MessagePushService {
         cityId2Abbreviation.put(14, "tj");
     }
 
+    @Autowired
+    private MessagePushMapper messagePushMapper;
+
+    @Autowired
+    private SellHouseService sellHouseService;
+
     //TODO 上线记得修改过来
     private static final String URL = "http://fenzhan.toutiaofangchan.com";
     private static final String ALL = "全";
-
     @Value("${qiniu.img_domain}")
     private String qinniuImg;
-    @Autowired
-    private MessagePushMapper messagePushMapper;
-    @Autowired
-    private SellHouseService sellHouseService;
 
     /**
      * 搜索订阅
