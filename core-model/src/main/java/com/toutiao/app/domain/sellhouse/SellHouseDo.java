@@ -100,6 +100,7 @@ public class SellHouseDo {
     @ChangeName("districtName")
     private String area;
 
+
     /**
      * 区域id
      */

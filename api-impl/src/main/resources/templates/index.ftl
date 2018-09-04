@@ -449,6 +449,7 @@
 <div class="company-bottom">
     <p>©2018 北京比得屋科技有限责任公司</p>
     <p>京ICP备18026731号</p>
+    <p>联系电话<a href="tel: 010-56028711">010-56028711</a></p>
 </div>
 
 <#include "user.ftl">

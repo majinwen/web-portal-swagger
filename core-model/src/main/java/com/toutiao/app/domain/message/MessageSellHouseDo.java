@@ -93,4 +93,9 @@ public class MessageSellHouseDo {
      */
     @ChangeName("releaseStatus")
     private Short status;
+
+    /**
+     * 房源详情Url
+     */
+    private String houseDetailUrl;
 }
