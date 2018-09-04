@@ -1315,6 +1315,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     instance.setHouseProxyPhone(agentBaseMap.get("display_phone").toString());
                     //经纪人头像
                     instance.setHouseProxyPhoto(agentBaseMap.get("head_photo").toString());
+                    //经纪人名片
+                    instance.setAgentBusinessCard("http://s1.qn.toutiaofangchan.com/"+agentBaseMap.get("agentBusinessCard").toString()+"-agent300x400");
                 }
 
 //                //朝向

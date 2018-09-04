@@ -1,10 +1,7 @@
 package com.toutiao.web.domain.query;
 
-import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
-import org.jboss.logging.Field;
 
-import java.util.Date;
 import java.util.Map;
 
 @Data
@@ -327,5 +324,7 @@ public class ProjHouseInfoResponse {
     private Integer is_claim;
 
     private Integer userId;
+
+    private String agentBusinessCard;
 
 }
