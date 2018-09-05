@@ -636,7 +636,8 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sortFile= SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.ASC);
             }
         }
-        SearchResponse searchResponse= sellHouseEsDao.getBeSureToSnatchList(booleanQueryBuilder,sellHouseBeSureToSnatchDoQuery.getPageNum(),sellHouseBeSureToSnatchDoQuery.getPageSize(),sortFile);
+        SearchResponse searchResponse= sellHouseEsDao.getBeSureToSnatchList(booleanQueryBuilder,sellHouseBeSureToSnatchDoQuery.getPageNum(),
+                sellHouseBeSureToSnatchDoQuery.getPageSize(),sortFile, city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit searchHit : searchHists)
@@ -717,7 +718,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
         }
         SearchResponse RecommendEsf5List = sellHouseEsDao.getBeSureToSnatchList(recommendEsf5,
-                recommendEsf5DoQuery.getPageNum(), recommendEsf5DoQuery.getPageSize(), sortFile);
+                recommendEsf5DoQuery.getPageNum(), recommendEsf5DoQuery.getPageSize(), sortFile, city);
         SearchHits hits = RecommendEsf5List.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHousesSearchDo> sellHousesSearchDos = new ArrayList<>();

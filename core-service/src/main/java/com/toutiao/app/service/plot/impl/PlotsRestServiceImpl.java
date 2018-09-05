@@ -672,7 +672,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             bqb.must(QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9));
         }
 
-        booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",bqb,ScoreMode.None));
+        booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),bqb,ScoreMode.None));
         //二手房个数
         booleanQueryBuilder.must(QueryBuilders.rangeQuery("house_count").gt(0));
 

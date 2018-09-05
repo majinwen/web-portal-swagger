@@ -57,7 +57,7 @@ public interface SellHouseEsDao {
     SearchResponse getRecommendSellHouse(FunctionScoreQueryBuilder query, String uid, Integer pageSize, String city);
 
 
-    SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder,Integer pageNum, Integer pageSize,FieldSortBuilder sortFile );
+    SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder,Integer pageNum, Integer pageSize,FieldSortBuilder sortFile, String city);
 
 
 

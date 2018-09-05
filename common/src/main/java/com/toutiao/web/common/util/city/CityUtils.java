@@ -34,7 +34,7 @@ public class CityUtils {
         String cityCode = request.getHeader(CookieUtils.COOKIE_NAME_CITY);
         if(null ==cityCode){
             //测试用sh;正式默认bj
-            cityCode = CityConstant.ABBREVIATION_SHANGHAI;
+            cityCode = CityConstant.ABBREVIATION_BEIJING;
         }
 
         return cityCode;
