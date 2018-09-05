@@ -51,7 +51,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
         Integer pageSize = houseBusinessAndRoomDoQuery.getPageSize();
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         SearchResponse houseBusinessAndRoomHouses = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomHouses(
-                boolQueryBuilder, pageNum, pageSize);
+                boolQueryBuilder, pageNum, pageSize, city);
         SearchHits hits = houseBusinessAndRoomHouses.getHits();
         SearchHit[] searchHists = hits.getHits();
         HouseBusinessAndRoomDomain houseBusinessAndRoomDomain = new HouseBusinessAndRoomDomain();
@@ -94,7 +94,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
 
         BoolQueryBuilder averagePriceBuilder = filterBusinessRoomChooseService.filterBusinessRoomAveragePriceChoose
                 (houseBusinessAndRoomDoQuery);
-        SearchResponse averagePrice = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomAveragePrice(averagePriceBuilder);
+        SearchResponse averagePrice = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomAveragePrice(averagePriceBuilder, city);
         SearchHits averagePriceHits = averagePrice.getHits();
         SearchHit[] averagePriceSearchHists = averagePriceHits.getHits();
         if (averagePriceSearchHists.length > 0){

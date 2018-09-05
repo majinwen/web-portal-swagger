@@ -144,7 +144,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                 esMap.put(ESIndexConstant.SCOPE_INDEX,scopeIndex+"_"+city[i]);
                 esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType+"_"+city[i]);
                 esMap.put(ESIndexConstant.AREA_ROOM_INDEX,areaRoomIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.AREA_ROOM_TYPE,enginesType+"_"+city[i]);
+                esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType+"_"+city[i]);
 
                 esIndexMaps.put(city[i],esMap);
             }else{
@@ -172,7 +172,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                 esMap.put(ESIndexConstant.SCOPE_INDEX,scopeIndex);
                 esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType);
                 esMap.put(ESIndexConstant.AREA_ROOM_INDEX,areaRoomIndex);
-                esMap.put(ESIndexConstant.AREA_ROOM_TYPE,enginesType);
+                esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType);
 
                 esIndexMaps.put(CITY_BJ,esMap);
             }
