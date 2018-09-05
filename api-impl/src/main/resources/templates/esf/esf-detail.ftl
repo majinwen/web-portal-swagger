@@ -286,7 +286,7 @@
                     <span>
                         <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
                         <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if>
-                        <#if houseDetail.agent.agentBusinessCard?exists && houseDetail.agent.agentBusinessCard != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                        <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
                     </span>
                     <em>房屋信息发布人</em>
                 </p>
