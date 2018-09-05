@@ -622,7 +622,7 @@
 <div class="agent-card-prev">
     <div class="agent-card-content">
         <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
-        <img src="${houseDetail.agentBusinessCard}"/>
+        <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''></#if><img src="${houseDetail.agentBusinessCard}"/>
     </div>
 </div>
 <!-------- photoswipe -------->
