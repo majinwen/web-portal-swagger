@@ -1327,6 +1327,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         //经纪人名片
                         if(StringTool.isNotEmpty(agentBaseMap.get("agentBusinessCard").toString())){
                             instance.setAgentBusinessCard("http://s1.qn.toutiaofangchan.com/"+agentBaseMap.get("agentBusinessCard").toString()+"-agent300x400");
+                        }else {
+                            instance.setAgentBusinessCard("");
                         }
 
                     }
