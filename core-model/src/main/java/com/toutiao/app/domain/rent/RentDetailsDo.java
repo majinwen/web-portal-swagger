@@ -1,7 +1,6 @@
 package com.toutiao.app.domain.rent;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
-import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -247,4 +246,8 @@ public class RentDetailsDo {
      * 是否收藏
      */
     private Boolean isFavorite = false;
+    /**
+     * 名片
+     */
+    private String agentBusinessCard;
 }
