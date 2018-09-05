@@ -351,7 +351,7 @@
 
             <div class="picture-box">
                 <#assign item=houseDetail['plotPhoto']>
-                <#if item[0]?exists><img src="${qiniuimage}/${item}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+                <#if item?exists><img src="${qiniuimage}/${item}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
             </div>
             <div id="tilePlotDesc" class="tilelist-content">
                 <h4>

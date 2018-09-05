@@ -266,7 +266,7 @@ public class ProjHouseInfoResponse {
 
 
     //小区照片
-    private String[] plotPhoto;
+    private String plotPhoto;
 
     //小区描述
 
