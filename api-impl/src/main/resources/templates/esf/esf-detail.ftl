@@ -285,7 +285,9 @@
                 <p>
                     <span>
                         <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
-                        <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if></span>
+                        <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if>
+                        <#if houseDetail.agent.agentBusinessCard?exists && houseDetail.agent.agentBusinessCard != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                    </span>
                     <em>房屋信息发布人</em>
                 </p>
                 <#if houseDetail['houseProxyPhone']?exists&&houseDetail['houseProxyPhone']!=''>
@@ -314,7 +316,9 @@
                 <p>
                     <span>
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
-                        <#if houseDetail.houseProxyName?exists&&houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if></span>
+                        <#if houseDetail.houseProxyName?exists&&houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>
+                        <#if houseDetail.agentBusinessCard?exists && houseDetail.agentBusinessCard != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                    </span>
                     <em>房屋信息发布人</em>
                 </p>
                 <#if houseDetail.houseProxyPhone?exists&&houseDetail.houseProxyPhone!=''>
@@ -615,6 +619,13 @@
     </div>
 </div>
 </#if>
+<div class="agent-card-prev">
+    <div class="agent-card-content">
+        <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
+        <#--<img src="${infoDetailData.agent.agentBusinessCard}"/>-->
+        <img src="http://img.maitian.cn/image/broCard/a64/a84/a64a84fa26c74286ac0273883d98f4fc_220x296.jpg" alt="">
+    </div>
+</div>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -631,6 +642,12 @@
         $('.reservation-pop').on('click', '.mask', function (e) {
             $('.reservation-pop').addClass('none');
         });
+        $('.imagePreviewAgent').on('click', function() {
+            $('.agent-card-prev').show()
+        })
+        $('#closeAgent').on('click', function() {
+            $('.agent-card-prev').hide()
+        })
         var subPhone = false;
         var reservationData = {};
 
