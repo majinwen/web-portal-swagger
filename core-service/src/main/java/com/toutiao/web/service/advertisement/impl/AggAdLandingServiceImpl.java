@@ -1408,10 +1408,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
 
             }else{
-                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
-                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
                 agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
             }
             sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
             sellHousesSearchDos.add(sellHousesSearchDo);

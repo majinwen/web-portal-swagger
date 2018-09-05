@@ -159,10 +159,10 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
 
                 }else{
-                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent").toString());
-                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency").toString());
+                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent")==null?"":hit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency")==null?"":hit.getSourceAsMap().get("brokerage_agency").toString());
                     agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto")==null?"":hit.getSourceAsMap().get("agent_headphoto").toString());
-                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone")==null?"":hit.getSourceAsMap().get("phone").toString());
                 }
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
 
@@ -345,9 +345,9 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
 
                 }else{
-                    agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("brokerage_agency").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("phone").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent")==null?"":searchHit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("brokerage_agency")==null?"":searchHit.getSourceAsMap().get("brokerage_agency").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("phone")==null?"":searchHit.getSourceAsMap().get("phone").toString());
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("agent_headphoto")==null?"":searchHit.getSourceAsMap().get("agent_headphoto").toString());
 
                 }
@@ -396,9 +396,9 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
 
                 }else{
-                    agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("brokerage_agency").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("phone").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent")==null?"":searchHit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("brokerage_agency")==null?"":searchHit.getSourceAsMap().get("brokerage_agency").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("phone")==null?"":searchHit.getSourceAsMap().get("phone").toString());
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("agent_headphoto")==null?"":searchHit.getSourceAsMap().get("agent_headphoto").toString());
 
                 }
@@ -511,10 +511,10 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
 
                 }else{
-                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent").toString());
-                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency").toString());
+                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent")==null?"":hit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency")==null?"":hit.getSourceAsMap().get("brokerage_agency").toString());
                     agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto")==null?"":hit.getSourceAsMap().get("agent_headphoto").toString());
-                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone")==null?"":hit.getSourceAsMap().get("phone").toString());
                 }
                 //增加房子与地铁的距离
                 String keys="";

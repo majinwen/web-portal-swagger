@@ -57,7 +57,7 @@ public interface SellHouseService {
 
 
     /**
-     *
+     * 缝出必抢专题页
      * @param sellHouseBeSureToSnatchDoQuery
      * @return
      */
