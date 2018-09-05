@@ -95,7 +95,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 if (StringTool.isNotEmpty(agentBaseDo.getUserId())){
                     //经纪人信息
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString());
-                    if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())){
+                    if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard().toString())){
                         agentBaseDo.setAgentBusinessCard("http://s1.qn.toutiaofangchan.com/"+agentBaseDo.getAgentBusinessCard().toString()+"-agent300x400");
                     }
                     sellHouseDetailsDo.setTagsName(sellAndClaimHouseDetailsDo.getClaimTagsName());

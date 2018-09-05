@@ -101,7 +101,9 @@ public class RentRestRestServiceImpl implements RentRestService {
                         rentDetailsDo.setAgentHeadPhoto(agentBaseDo.getHeadPhoto());
                         rentDetailsDo.setBrokerageAgency(agentBaseDo.getAgentCompany());
                         rentDetailsDo.setEstateAgent(agentBaseDo.getAgentName());
-                        rentDetailsDo.setAgentBusinessCard("http://s1.qn.toutiaofangchan.com/"+agentBaseDo.getAgentBusinessCard().toString()+"-agent300x400");
+                        if(StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard().toString())){
+                            rentDetailsDo.setAgentBusinessCard("http://s1.qn.toutiaofangchan.com/"+agentBaseDo.getAgentBusinessCard().toString()+"-agent300x400");
+                        }
                     }
                 }else {
                     agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent")==null?"":searchHit.getSource().get("estate_agent").toString());
