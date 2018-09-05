@@ -3,8 +3,6 @@ package com.toutiao.app.api.chance.response.rent;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
-import java.util.List;
-import java.util.Map;
 
 @Data
 public class RentDetailResponse {
@@ -199,6 +197,9 @@ public class RentDetailResponse {
    */
   private Boolean isFavorite;
 
-
+ /**
+  * 名片
+  */
+ private String agentBusinessCard;
 
 }
