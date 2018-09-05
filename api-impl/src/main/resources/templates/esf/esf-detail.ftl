@@ -622,8 +622,7 @@
 <div class="agent-card-prev">
     <div class="agent-card-content">
         <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
-        <#--<img src="${infoDetailData.agent.agentBusinessCard}"/>-->
-        <img src="http://img.maitian.cn/image/broCard/a64/a84/a64a84fa26c74286ac0273883d98f4fc_220x296.jpg" alt="">
+        <img src="${houseDetail.agentBusinessCard}"/>
     </div>
 </div>
 <!-------- photoswipe -------->

@@ -196,7 +196,7 @@
                         <p>
                             <span>
                                 <#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if>
-                                <i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i>
+                                <#if rentHouse['agentBusinessCard']><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
                             </span>
                             <em><#if agent['of_company']?exists&&agent['of_company']!=''> ${agent['of_company']}</em></#if>
                         </p>
@@ -234,7 +234,7 @@
                         <p>
                             <span>
                                 ${rentHouse['estate_agent']}
-                                <i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i>
+                                <#if rentHouse['agentBusinessCard']><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
                             </span>
                             <em>${rentHouse['brokerage_agency']}</em>
                         </p>
@@ -353,8 +353,7 @@
 <div class="agent-card-prev">
     <div class="agent-card-content">
         <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
-    <#--<img src="${infoDetailData.agent.agentBusinessCard}"/>-->
-        <img src="http://img.maitian.cn/image/broCard/a64/a84/a64a84fa26c74286ac0273883d98f4fc_220x296.jpg" alt="">
+        <img src="${agent.agentBusinessCard}"/>
     </div>
 </div>
 <!-------- photoswipe -------->
