@@ -158,7 +158,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                         source.put("estate_agent",agentBaseMap.get("agent_name").toString());
                         source.put("phone",agentBaseMap.get("display_phone").toString());
                         source.put("agent_headphoto",agentBaseMap.get("head_photo").toString());
-                        if(StringTool.isNotEmpty(agentBaseMap.get("agentBusinessCard"))){
+                        if(StringTool.isNotEmpty(agentBaseMap.get("agentBusinessCard").toString())&&agentBaseMap.get("agentBusinessCard").toString().length()>0){
                             source.put("agentBusinessCard","http://s1.qn.toutiaofangchan.com/"+agentBaseMap.get("agentBusinessCard").toString()+"-agent300x400");
                         }
                     }
