@@ -397,7 +397,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 JSONObject messageTheme = messagePushDo.getMessageTheme();
                 String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
                         .replace("]", "");
-                String params = String.format("?districtIds=%s&beginPrice=%s&endPrice=%s", districtIdArr,
+                String params = String.format("?districtId=%s&beginPrice=%s&endPrice=%s", districtIdArr,
                         messageTheme.get("beginPrice").toString(), messageTheme.get("endPrice").toString());
                 messagePushDo.setThemeDetailUrl(themeDetailUrl + params);
             }
