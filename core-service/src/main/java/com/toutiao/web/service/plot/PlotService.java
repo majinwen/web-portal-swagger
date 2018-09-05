@@ -19,4 +19,11 @@ public interface PlotService {
     void saveChild(ProjHouseInfoES projHouseInfoes);
 
     Map queryPlotByRentId(String rentPlotId);
+
+    /**
+     * 根据小区id查询小区信息
+     * @param PlotId
+     * @return
+     */
+    Map queryPlotByPlotId(String PlotId);
 }
