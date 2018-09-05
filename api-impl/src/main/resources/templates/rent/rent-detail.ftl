@@ -196,7 +196,7 @@
                         <p>
                             <span>
                                 <#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if>
-                                <#if rentHouse['agentBusinessCard']><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                                <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
                             </span>
                             <em><#if agent['of_company']?exists&&agent['of_company']!=''> ${agent['of_company']}</em></#if>
                         </p>
@@ -234,7 +234,7 @@
                         <p>
                             <span>
                                 ${rentHouse['estate_agent']}
-                                <#if rentHouse['agentBusinessCard']><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                                <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
                             </span>
                             <em>${rentHouse['brokerage_agency']}</em>
                         </p>
@@ -353,7 +353,7 @@
 <div class="agent-card-prev">
     <div class="agent-card-content">
         <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
-        <img src="${agent.agentBusinessCard}"/>
+        <img src="${rentHouse.agentBusinessCard}"/>
     </div>
 </div>
 <!-------- photoswipe -------->
