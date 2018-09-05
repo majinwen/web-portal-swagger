@@ -280,10 +280,12 @@ public class HomePageReportServiceImpl implements HomePageReportService {
             if(userPhone!=null){
                 intelligenceFhRes.setPhone(userPhone);
             }
-            if(StringTool.isNotEmpty(intelligenceQuery.getMaxTotalPrice())&&StringTool.isNotEmpty(intelligenceQuery.getMinTotalPrice())){
+            if(StringTool.isNotEmpty(intelligenceQuery.getMaxTotalPrice())&&StringTool.isNotEmpty(intelligenceQuery.getMinTotalPrice())&&intelligenceQuery.getMinTotalPrice()>0){
                 intelligenceFhRes.setTotalPrice((int)((intelligenceQuery.getMinTotalPrice()+intelligenceQuery.getMaxTotalPrice())/2));
             }else if(StringTool.isEmpty(intelligenceQuery.getMaxTotalPrice())&&StringTool.isNotEmpty(intelligenceQuery.getMinTotalPrice())){
                 intelligenceFhRes.setTotalPrice(Integer.parseInt(new java.text.DecimalFormat("0").format(intelligenceQuery.getMinTotalPrice())));
+            }else if(intelligenceQuery.getMinTotalPrice()==0&&StringTool.isNotEmpty(intelligenceQuery.getMaxTotalPrice())){
+                intelligenceFhRes.setTotalPrice(Integer.parseInt(new java.text.DecimalFormat("0").format(intelligenceQuery.getMaxTotalPrice())));
             }
 
             intelligenceFhResMapper.saveData(intelligenceFhRes);

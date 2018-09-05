@@ -34,5 +34,8 @@ public class AgentBaseDo {
      * 经纪人融云信息
      */
     private String rcToken;
-
+    /**
+     * 名片
+     */
+    private String agentBusinessCard;
 }

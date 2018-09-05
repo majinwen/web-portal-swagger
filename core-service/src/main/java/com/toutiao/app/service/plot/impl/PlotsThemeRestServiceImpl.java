@@ -16,7 +16,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
 import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,10 +51,10 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         if (recommendBuildTagsId != null) {
             if (recommendBuildTagsId == 6 && StringTool.isNotEmpty(nearestPark)) {
                 boolQueryBuilder.must(QueryBuilders.boolQuery()
-                        .must(QueryBuilders.termsQuery("recommendBuildTagsId", new int[]{recommendBuildTagsId}))
+                        .must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId))
                         .must(QueryBuilders.termQuery("nearestPark", nearestPark)));
             } else {
-                boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",  new int[]{recommendBuildTagsId}));
+                boolQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId));
             }
         }
 
@@ -72,7 +71,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 
         //区域
         Integer[] districtIds = plotsThemeDoQuery.getDistrictIds();
-        if (districtIds != null) {
+        if (StringTool.isNotEmpty(districtIds) && districtIds[0] != 0) {
             boolQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
         }
         Integer pageNum = plotsThemeDoQuery.getPageNum();
