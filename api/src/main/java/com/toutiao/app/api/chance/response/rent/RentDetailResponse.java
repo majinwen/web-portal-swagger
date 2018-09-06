@@ -201,10 +201,4 @@ public class RentDetailResponse {
   */
  private String agentBusinessCard;
 
-
- /**
-  * 名片
-  */
- private String agentBusinessCard;
-
 }
