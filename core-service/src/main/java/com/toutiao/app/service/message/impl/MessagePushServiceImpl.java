@@ -92,7 +92,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     @Override
     public MessagePushDomain getHouseTypeMessage(MessagePushDoQuery messagePushQuery, String userId) {
         MessagePushExample example = new MessagePushExample();
-        example.setOrderByClause("create_time DESC");
+        example.setOrderByClause("create_time DESC, id ASC");
         MessagePushExample.Criteria criteria = example.createCriteria();
         if (StringTool.isNotEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
@@ -167,6 +167,114 @@ public class MessagePushServiceImpl implements MessagePushService {
     }
 
     /**
+     * 处理房源标题图
+     *
+     * @param messageSellHouseDos
+     * @param cityId
+     */
+    private void dealPhotoTitleAndDetailUrl(List<MessageSellHouseDo> messageSellHouseDos, Integer cityId) {
+        if (CollectionUtils.isEmpty(messageSellHouseDos)) {
+            return;
+        }
+        for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
+            String houseDetailUrl = null;
+            if (StringTool.isNotEmpty(CITYID2ABBREVIATION.get(cityId))) {
+                houseDetailUrl = String.format(appName + "/#/%s/details/secondHand?houseId=%s",
+                        CITYID2ABBREVIATION.get(cityId), messageSellHouseDo.getHouseId());
+            }
+            messageSellHouseDo.setHouseDetailUrl(houseDetailUrl);
+
+            String housePhotoTitle = messageSellHouseDo.getHousePhotoTitle();
+            if (StringTool.isNotEmpty(housePhotoTitle)) {
+                if (!(housePhotoTitle.contains("http://") || housePhotoTitle.contains("https://"))) {
+                    housePhotoTitle = qinniuImg + "/" + housePhotoTitle + "-dongfangdi400x300";
+                }
+            } else {
+                housePhotoTitle = "isNotExists";
+            }
+            messageSellHouseDo.setHousePhotoTitle(housePhotoTitle);
+        }
+    }
+
+    /**
+     * 专题类消息列表
+     *
+     * @param messagePushQuery
+     * @param userId
+     * @return
+     */
+    @Override
+    public MessagePushDomain getThemeTypeMessage(MessagePushDoQuery messagePushQuery, String userId) {
+        MessagePushExample example = new MessagePushExample();
+        example.setOrderByClause("create_time DESC, id ASC");
+        MessagePushExample.Criteria criteria = example.createCriteria();
+        if (StringTool.isNotEmpty(userId)) {
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+        }
+        //内容类型(6-订阅的主题有更新)
+        criteria.andContentTypeEqualTo(SUBSCRIBETHEME);
+        //消息类型(0-资讯类, 1-系统消息, 2-房源类, 3-专题类)
+        criteria.andMessageTypeEqualTo(3);
+        //推送类型(0-系统消息, 1-定向推送)
+        criteria.andPushTypeEqualTo(1);
+
+        if (messagePushQuery.getLastMessageId() != null) {
+            criteria.andIdLessThan(messagePushQuery.getLastMessageId());
+        }
+
+        List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
+        List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
+        MessagePushDomain messagePushDomain = new MessagePushDomain();
+        if (CollectionUtils.isEmpty(messagePushDos)) {
+            return messagePushDomain;
+        }
+
+        Integer lastMessageId;
+        //配置专题展示数量
+        if (messagePushDos.size() > 10) {
+            List<MessagePushDo> message = messagePushDos.subList(0, 10);
+            dealThemeDetailUrl(message);
+            messagePushDomain.setData(message);
+            lastMessageId = message.get(message.size() - 1).getId();
+        } else {
+            dealThemeDetailUrl(messagePushDos);
+            messagePushDomain.setData(messagePushDos);
+            lastMessageId = messagePushDos.get(messagePushDos.size() - 1).getId();
+        }
+        messagePushDomain.setLastMessageId(lastMessageId);
+        messagePushDomain.setTotalCount(messagePushDomain.getData().size());
+        return messagePushDomain;
+    }
+
+    /**
+     * 处理专题列表Url
+     *
+     * @param messagePushDos
+     */
+    private void dealThemeDetailUrl(List<MessagePushDo> messagePushDos) {
+        for (MessagePushDo messagePushDo : messagePushDos) {
+            String city = CITYID2ABBREVIATION.get(messagePushDo.getCityId());
+            if (StringTool.isNotEmpty(city)) {
+                String themeDetailUrl = null;
+                Integer subscribeType = messagePushDo.getSubscribeType();
+                if (subscribeType == 1) {
+                    themeDetailUrl = appName + String.format("/#/%s/topics/reduction", city);
+                } else if (subscribeType == 2) {
+                    themeDetailUrl = appName + String.format("/#/%s/topics/low", city);
+                } else if (subscribeType == 3) {
+                    themeDetailUrl = appName + String.format("/#/%s/topics/mustbuy", city);
+                }
+                JSONObject messageTheme = messagePushDo.getMessageTheme();
+                String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
+                        .replace("]", "");
+                String params = String.format("?districtId=%s&beginPrice=%s&endPrice=%s", districtIdArr,
+                        messageTheme.get("beginPrice").toString(), messageTheme.get("endPrice").toString());
+                messagePushDo.setThemeDetailUrl(themeDetailUrl + params);
+            }
+        }
+    }
+
+    /**
      * 首页消息列表
      *
      * @param homeMessageDoQuery
@@ -178,7 +286,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
         for (int i = 3; i < 7; i++) {
             MessagePushExample example = new MessagePushExample();
-            example.setOrderByClause("create_time DESC");
+            example.setOrderByClause("create_time DESC, id ASC");
             MessagePushExample.Criteria criteria = example.createCriteria();
             if (StringTool.isNotEmpty(userId)) {
                 criteria.andUserIdEqualTo(Integer.valueOf(userId));
@@ -223,56 +331,6 @@ public class MessagePushServiceImpl implements MessagePushService {
             homeMessageDos.add(homeMessageDo);
         }
         return homeMessageDos;
-    }
-
-    /**
-     * 专题类消息列表
-     *
-     * @param messagePushQuery
-     * @param userId
-     * @return
-     */
-    @Override
-    public MessagePushDomain getThemeTypeMessage(MessagePushDoQuery messagePushQuery, String userId) {
-        MessagePushExample example = new MessagePushExample();
-        example.setOrderByClause("create_time DESC");
-        MessagePushExample.Criteria criteria = example.createCriteria();
-        if (StringTool.isNotEmpty(userId)) {
-            criteria.andUserIdEqualTo(Integer.valueOf(userId));
-        }
-        //内容类型(6-订阅的主题有更新)
-        criteria.andContentTypeEqualTo(SUBSCRIBETHEME);
-        //消息类型(0-资讯类, 1-系统消息, 2-房源类, 3-专题类)
-        criteria.andMessageTypeEqualTo(3);
-        //推送类型(0-系统消息, 1-定向推送)
-        criteria.andPushTypeEqualTo(1);
-
-        if (messagePushQuery.getLastMessageId() != null) {
-            criteria.andIdLessThan(messagePushQuery.getLastMessageId());
-        }
-
-        List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
-        List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
-        MessagePushDomain messagePushDomain = new MessagePushDomain();
-        if (CollectionUtils.isEmpty(messagePushDos)) {
-            return messagePushDomain;
-        }
-
-        Integer lastMessageId;
-        //配置专题展示数量
-        if (messagePushDos.size() > 10) {
-            List<MessagePushDo> message = messagePushDos.subList(0, 10);
-            dealThemeDetailUrl(message);
-            messagePushDomain.setData(message);
-            lastMessageId = message.get(message.size() - 1).getId();
-        } else {
-            dealThemeDetailUrl(messagePushDos);
-            messagePushDomain.setData(messagePushDos);
-            lastMessageId = messagePushDos.get(messagePushDos.size() - 1).getId();
-        }
-        messagePushDomain.setLastMessageId(lastMessageId);
-        messagePushDomain.setTotalCount(messagePushDomain.getData().size());
-        return messagePushDomain;
     }
 
     /**
@@ -342,64 +400,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         contentArr[0] = messageContent.toString();
         contentArr[1] = blodMessageContent.toString();
         return contentArr;
-    }
-
-    /**
-     * 处理房源标题图
-     *
-     * @param messageSellHouseDos
-     * @param cityId
-     */
-    private void dealPhotoTitleAndDetailUrl(List<MessageSellHouseDo> messageSellHouseDos, Integer cityId) {
-        if (CollectionUtils.isEmpty(messageSellHouseDos)) {
-            return;
-        }
-        for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
-            String houseDetailUrl = null;
-            if (StringTool.isNotEmpty(CITYID2ABBREVIATION.get(cityId))) {
-                houseDetailUrl = String.format(appName + "/#/%s/details/secondHand?houseId=%s",
-                        CITYID2ABBREVIATION.get(cityId), messageSellHouseDo.getHouseId());
-            }
-            messageSellHouseDo.setHouseDetailUrl(houseDetailUrl);
-
-            String housePhotoTitle = messageSellHouseDo.getHousePhotoTitle();
-            if (StringTool.isNotEmpty(housePhotoTitle)) {
-                if (!(housePhotoTitle.contains("http://") || housePhotoTitle.contains("https://"))) {
-                    housePhotoTitle = qinniuImg + "/" + housePhotoTitle + "-dongfangdi400x300";
-                }
-            } else {
-                housePhotoTitle = "isNotExists";
-            }
-            messageSellHouseDo.setHousePhotoTitle(housePhotoTitle);
-        }
-    }
-
-    /**
-     * 处理专题列表Url
-     *
-     * @param messagePushDos
-     */
-    private void dealThemeDetailUrl(List<MessagePushDo> messagePushDos) {
-        for (MessagePushDo messagePushDo : messagePushDos) {
-            String city = CITYID2ABBREVIATION.get(messagePushDo.getCityId());
-            if (StringTool.isNotEmpty(city)) {
-                String themeDetailUrl = null;
-                Integer subscribeType = messagePushDo.getSubscribeType();
-                if (subscribeType == 1) {
-                    themeDetailUrl = appName + String.format("/#/%s/topics/reduction", city);
-                } else if (subscribeType == 2) {
-                    themeDetailUrl = appName + String.format("/#/%s/topics/low", city);
-                } else if (subscribeType == 3) {
-                    themeDetailUrl = appName + String.format("/#/%s/topics/mustbuy", city);
-                }
-                JSONObject messageTheme = messagePushDo.getMessageTheme();
-                String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
-                        .replace("]", "");
-                String params = String.format("?districtId=%s&beginPrice=%s&endPrice=%s", districtIdArr,
-                        messageTheme.get("beginPrice").toString(), messageTheme.get("endPrice").toString());
-                messagePushDo.setThemeDetailUrl(themeDetailUrl + params);
-            }
-        }
     }
 
     /**
