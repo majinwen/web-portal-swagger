@@ -102,7 +102,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                         rentDetailsDo.setBrokerageAgency(agentBaseDo.getAgentCompany());
                         rentDetailsDo.setEstateAgent(agentBaseDo.getAgentName());
                         if(StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard().toString())){
-                            rentDetailsDo.setAgentBusinessCard("http://s1.qn.toutiaofangchan.com/"+agentBaseDo.getAgentBusinessCard().toString()+"-agent300x400");
+                            rentDetailsDo.setAgentBusinessCard(agentBaseDo.getAgentBusinessCard().toString());
                         }
                     }
                 }else {
