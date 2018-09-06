@@ -623,10 +623,10 @@
     <div class="agent-card-content">
         <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
         <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''>
-            <#if houseDetail['agentBusinessCard'].indexOf('http') < 0>
-                <img src="http://s1.qn.toutiaofangchan.com/${houseDetail.agentBusinessCard}-agent200x300" />
-            <#else >
+            <#if houseDetail['agentBusinessCard']?index_of('http') gt -1>
                 <img src="${houseDetail.agentBusinessCard}" />
+            <#else >
+                <img src="${qiniuimage}/${houseDetail.agentBusinessCard}-agent200x300" />
             </#if>
         </#if>
     </div>

@@ -354,10 +354,10 @@
     <div class="agent-card-content">
         <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
         <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''>
-            <#if rentHouse['agentBusinessCard'].indexOf('http') < 0>
-                <img src="http://s1.qn.toutiaofangchan.com/${rentHouse.agentBusinessCard}-agent200x300"/>
-            <#else >
+            <#if rentHouse['agentBusinessCard']?index_of('http') gt -1>
                 <img src="${rentHouse.agentBusinessCard}"/>
+            <#else >
+                <img src="${qiniuimage}/${rentHouse.agentBusinessCard}-agent200x300"/>
             </#if>
         </#if>
     </div>
