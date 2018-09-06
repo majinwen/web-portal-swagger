@@ -4,15 +4,6 @@ import lombok.Data;
 
 @Data
 public class HomeMessageDo {
-    /**
-     * 内容
-     */
-//    private JSONObject content;
-
-    /**
-     * 房源
-     */
-//    private JSONObject houseDate;
 
     /**
      * 未读条数

@@ -427,4 +427,24 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static boolean isEmpty(Object o) {
         return o == null || (Integer) o == 0;
     }
+
+    /**
+     * 修改消息已读
+     *
+     * @param messageIsReadQuery
+     * @param userId
+     */
+    @Override
+    public int updateIsRead(MessageIsReadQuery messageIsReadQuery, String userId) {
+        MessagePushExample example = new MessagePushExample();
+        MessagePushExample.Criteria criteria = example.createCriteria();
+        criteria.andContentTypeEqualTo(messageIsReadQuery.getContentType());
+        if (StringTool.isNotEmpty(userId)){
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+        }
+        criteria.andCreateTimeLessThan(new Date(messageIsReadQuery.getTime()));
+        MessagePush messagePush = new MessagePush();
+        messagePush.setIsRead((short)1);
+        return messagePushMapper.updateByExampleSelective(messagePush, example);
+    }
 }
