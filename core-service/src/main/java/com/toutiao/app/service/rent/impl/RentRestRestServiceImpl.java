@@ -101,7 +101,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                         rentDetailsDo.setAgentHeadPhoto(agentBaseDo.getHeadPhoto());
                         rentDetailsDo.setBrokerageAgency(agentBaseDo.getAgentCompany());
                         rentDetailsDo.setEstateAgent(agentBaseDo.getAgentName());
-                        if(StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard().toString())){
+                        if(StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())){
                             rentDetailsDo.setAgentBusinessCard(agentBaseDo.getAgentBusinessCard().toString());
                         }
                     }
