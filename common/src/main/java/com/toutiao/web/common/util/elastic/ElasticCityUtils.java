@@ -204,6 +204,24 @@ public class ElasticCityUtils {
         return  getESIndexMap(ESIndexConstant.ESF_FULL_AMOUNT_TYPE,cityCode);
     }
 
+    /**
+     * 获取商圈户型index
+     * @param cityCode
+     * @return
+     */
+    public static String getAreaRoomIndex(String cityCode){
+        return  getESIndexMap(ESIndexConstant.AREA_ROOM_INDEX,cityCode);
+    }
+
+    /**
+     * 获取商圈户型type
+     * @param cityCode
+     * @return
+     */
+    public static String getAreaRoomType(String cityCode){
+        return  getESIndexMap(ESIndexConstant.AREA_ROOM_TYPE,cityCode);
+    }
+
 //
 //    public static String getESMap(String esName){
 //
