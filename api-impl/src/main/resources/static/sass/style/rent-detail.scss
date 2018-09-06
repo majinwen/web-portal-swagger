@@ -83,7 +83,6 @@
             }
 
             span {
-                position: relative;
                 display: block;
                 position: absolute;
                 left: rem(-10);
@@ -461,16 +460,16 @@
         @include font-dpr(28);
     }
 }
-
 .agent-card-prev {
     display: none;
     position: fixed;
     top: 0;
     bottom: 0;
-    right: 0;
-    left: 0;
+    width: 100%;
+    max-width: rem(750);
     background-color: rgba(0, 0, 0, 0.7);
     z-index: 999;
+    overflow-y: auto;
 
     .agent-card-content {
         position: absolute;
@@ -489,5 +488,8 @@
             width: 100%;
             margin-top: rem(20);
         }
+    }
+    &::-webkit-scrollbar {
+        display: none;
     }
 }

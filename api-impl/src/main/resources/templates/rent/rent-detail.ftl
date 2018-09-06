@@ -353,7 +353,13 @@
 <div class="agent-card-prev">
     <div class="agent-card-content">
         <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
-        <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''><img src="${rentHouse.agentBusinessCard}"/></#if>
+        <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''>
+            <#if rentHouse['agentBusinessCard']?index_of('http') gt -1>
+                <img src="${rentHouse.agentBusinessCard}"/>
+            <#else >
+                <img src="${qiniuimage}/${rentHouse.agentBusinessCard}-agent200x300"/>
+            </#if>
+        </#if>
     </div>
 </div>
 <!-------- photoswipe -------->
@@ -406,7 +412,6 @@
         $('#closeAgent').on('click', function() {
             $('.agent-card-prev').hide()
         })
-
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
             var s = text.substring(1);

@@ -89,15 +89,16 @@ public class SellHouseServiceImpl implements SellHouseService{
                 String sourceAsString = searchHit.getSourceAsString();
                 sellAndClaimHouseDetailsDo = JSON.parseObject(sourceAsString,SellAndClaimHouseDetailsDo.class);
                 BeanUtils.copyProperties(sellAndClaimHouseDetailsDo,sellHouseDetailsDo);
-                if(StringTool.isNotEmpty(sellAndClaimHouseDetailsDo.getUserId())&&sellAndClaimHouseDetailsDo.getIsClaim()==1){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString());
-                }
-                if (StringTool.isNotEmpty(agentBaseDo.getUserId())){
+                if (StringTool.isNotEmpty(sellAndClaimHouseDetailsDo.getUserId())&&sellAndClaimHouseDetailsDo.getIsClaim()==1){
                     //经纪人信息
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString());
-                    if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard().toString())){
-                        agentBaseDo.setAgentBusinessCard("http://s1.qn.toutiaofangchan.com/"+agentBaseDo.getAgentBusinessCard().toString()+"-agent300x400");
+                    if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())){
+                        agentBaseDo.setAgentBusinessCard(agentBaseDo.getAgentBusinessCard().toString());
+                    }else {
+                        agentBaseDo.setAgentBusinessCard("");
+
                     }
+
                     sellHouseDetailsDo.setTagsName(sellAndClaimHouseDetailsDo.getClaimTagsName());
                     sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
                     sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
