@@ -84,13 +84,13 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
      * @return
      */
     @Override
-    public SearchResponse getEsfCountByPlotsId(Integer plotsId) {
+    public SearchResponse getEsfCountByPlotsId(Integer plotsId, String city) {
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotsId));
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();
 
         return searchResponse;

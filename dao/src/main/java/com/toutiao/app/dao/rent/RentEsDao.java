@@ -48,7 +48,7 @@ public interface RentEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder, String city);
 
     /**
      * 获取租房推荐列表

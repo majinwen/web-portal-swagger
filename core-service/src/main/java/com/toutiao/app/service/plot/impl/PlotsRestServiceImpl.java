@@ -139,7 +139,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 //                return plotDetailsDo;
             }
 
-            PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId);
+            PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId,city);
 
             plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
             plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);

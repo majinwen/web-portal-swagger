@@ -65,10 +65,10 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getRentIndex(city)).setTypes(ElasticCityUtils.getRentType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).execute().actionGet();
         return searchResponse;
     }
