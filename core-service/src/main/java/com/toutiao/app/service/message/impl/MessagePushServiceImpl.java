@@ -32,8 +32,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         CITYID2ABBREVIATION.put(14, "tj");
     }
 
-    private static final String URL = "http://fenzhan.toutiaofangchan.com";
-
     /**
      * 搜索订阅
      */
@@ -359,7 +357,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
             String houseDetailUrl = null;
             if (StringTool.isNotEmpty(CITYID2ABBREVIATION.get(cityId))) {
-                houseDetailUrl = String.format(URL + "/#/%s/details/secondHand?houseId=%s",
+                houseDetailUrl = String.format(appName + "/#/%s/details/secondHand?houseId=%s",
                         CITYID2ABBREVIATION.get(cityId), messageSellHouseDo.getHouseId());
             }
             messageSellHouseDo.setHouseDetailUrl(houseDetailUrl);
@@ -388,11 +386,11 @@ public class MessagePushServiceImpl implements MessagePushService {
                 String themeDetailUrl = null;
                 Integer subscribeType = messagePushDo.getSubscribeType();
                 if (subscribeType == 1) {
-                    themeDetailUrl = URL + String.format("/#/%s/topics/reduction", city);
+                    themeDetailUrl = appName + String.format("/#/%s/topics/reduction", city);
                 } else if (subscribeType == 2) {
-                    themeDetailUrl = URL + String.format("/#/%s/topics/low", city);
+                    themeDetailUrl = appName + String.format("/#/%s/topics/low", city);
                 } else if (subscribeType == 3) {
-                    themeDetailUrl = URL + String.format("/#/%s/topics/mustbuy", city);
+                    themeDetailUrl = appName + String.format("/#/%s/topics/mustbuy", city);
                 }
                 JSONObject messageTheme = messagePushDo.getMessageTheme();
                 String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
