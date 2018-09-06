@@ -449,6 +449,10 @@ public class SellHouseDetailsDo {
      * 同小区同户型范围内做低价排名
      */
     private Integer rankInLowCommunityLayout;
+    /**
+     * 名片
+     */
+    private String agentBusinessCard;
 
     /**
      * 名片
