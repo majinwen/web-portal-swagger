@@ -622,7 +622,13 @@
 <div class="agent-card-prev">
     <div class="agent-card-content">
         <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
-        <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''><img src="${houseDetail.agentBusinessCard}"/></#if>
+        <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''>
+            <#if houseDetail['agentBusinessCard'].indexOf('http') < 0>
+                <img src="http://s1.qn.toutiaofangchan.com/${houseDetail.agentBusinessCard}-agent200x300" />
+            <#else >
+                <img src="${houseDetail.agentBusinessCard}" />
+            </#if>
+        </#if>
     </div>
 </div>
 <!-------- photoswipe -------->
