@@ -38,4 +38,5 @@ public class AgentBaseDo {
      * 名片
      */
     private String agentBusinessCard;
+
 }

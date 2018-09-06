@@ -250,4 +250,5 @@ public class RentDetailsDo {
      * 名片
      */
     private String agentBusinessCard;
+
 }

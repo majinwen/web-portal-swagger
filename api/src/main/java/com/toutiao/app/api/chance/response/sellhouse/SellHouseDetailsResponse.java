@@ -450,4 +450,6 @@ public class SellHouseDetailsResponse {
      * 名片
      */
     private String agentBusinessCard;
+
+
 }

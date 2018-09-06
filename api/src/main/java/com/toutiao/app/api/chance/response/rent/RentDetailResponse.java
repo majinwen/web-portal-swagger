@@ -196,6 +196,11 @@ public class RentDetailResponse {
    * 是否收藏
    */
   private Boolean isFavorite;
+ /**
+  * 名片
+  */
+ private String agentBusinessCard;
+
 
  /**
   * 名片
