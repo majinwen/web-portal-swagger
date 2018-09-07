@@ -489,6 +489,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     finalList.add(list.get(index));
                 }
                 list.remove(index);
+                if(list.size()<= 0){
+                    flag = true;
+                }
             }
         }
     }
