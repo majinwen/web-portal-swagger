@@ -92,7 +92,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     @Override
     public MessagePushDomain getHouseTypeMessage(MessagePushDoQuery messagePushQuery, String userId) {
         MessagePushExample example = new MessagePushExample();
-        example.setOrderByClause("create_time DESC, id ASC");
+        example.setOrderByClause("id DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
         if (StringTool.isNotEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
@@ -206,7 +206,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     @Override
     public MessagePushDomain getThemeTypeMessage(MessagePushDoQuery messagePushQuery, String userId) {
         MessagePushExample example = new MessagePushExample();
-        example.setOrderByClause("create_time DESC, id ASC");
+        example.setOrderByClause("id DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
         if (StringTool.isNotEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
@@ -286,7 +286,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
         for (int i = 3; i < 7; i++) {
             MessagePushExample example = new MessagePushExample();
-            example.setOrderByClause("create_time DESC, id ASC");
+            example.setOrderByClause("id DESC");
             MessagePushExample.Criteria criteria = example.createCriteria();
             if (StringTool.isNotEmpty(userId)) {
                 criteria.andUserIdEqualTo(Integer.valueOf(userId));
