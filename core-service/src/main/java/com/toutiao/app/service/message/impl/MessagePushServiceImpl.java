@@ -438,6 +438,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     public int updateIsRead(MessageIsReadQuery messageIsReadQuery, String userId) {
         MessagePushExample example = new MessagePushExample();
         MessagePushExample.Criteria criteria = example.createCriteria();
+        criteria.andIsReadEqualTo((short)0);
         criteria.andContentTypeEqualTo(messageIsReadQuery.getContentType());
         if (StringTool.isNotEmpty(userId)){
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
