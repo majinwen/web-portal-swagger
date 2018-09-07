@@ -154,19 +154,80 @@ public class CommunityRestServiceImpl implements CommunityRestService{
             changeHomeCountMap.put("105052",6);
 
 
-//            parkCountMap.put("陶然亭公园",18);
-//            parkCountMap.put("北海公园",5);
-//            parkCountMap.put("朝阳公园",17);
-//            parkCountMap.put("颐和园",11);
-//            parkCountMap.put("南海子公园",16);
-//            parkCountMap.put("奥林匹克森林公园",23);
-//            parkCountMap.put("园博园",5);
-//            parkCountMap.put("紫竹院公园",11);
+            parkCountMap.put("中山公园",27);
+            parkCountMap.put("世纪公园",21);
+            parkCountMap.put("不夜城绿地",25);
+            parkCountMap.put("顾村公园",32);
+            parkCountMap.put("东平森林公园",6);
+            parkCountMap.put("佘山国家森林公园",38);
+            parkCountMap.put("新江湾城公园",35);
+            parkCountMap.put("闵行体育公园",33);
+            parkCountMap.put("金水湖湿地公园",6);
+            parkCountMap.put("共青森林公园",18);
+            parkCountMap.put("大宁灵石公园",30);
+            parkCountMap.put("延中广场公园",22);
+            parkCountMap.put("滨江公园",22);
+            parkCountMap.put("上海古猗园",25);
+            parkCountMap.put("上海辰山植物园",16);
+
+        }else if(CityConstant.ABBREVIATION_TIANJIN.equals(city)){
+
+            luxuryHouseCountMap.put("106069",2);
+            luxuryHouseCountMap.put("106066",1);
+            luxuryHouseCountMap.put("106059",13);
+            luxuryHouseCountMap.put("106063",1);
+            luxuryHouseCountMap.put("106060",3);
+            luxuryHouseCountMap.put("106061",11);
+            luxuryHouseCountMap.put("106064",1);
+            luxuryHouseCountMap.put("106067",1);
+            luxuryHouseCountMap.put("106062",16);
+            luxuryHouseCountMap.put("106065",1);
+
+
+            villaCountMap.put("106070",6);
+            villaCountMap.put("106069",8);
+            villaCountMap.put("106066",5);
+            villaCountMap.put("106067",6);
+            villaCountMap.put("106065",8);
+
+            firstHomeCountMap.put("106070",6);
+            firstHomeCountMap.put("106069",11);
+            firstHomeCountMap.put("106066",13);
+            firstHomeCountMap.put("106059",2);
+            firstHomeCountMap.put("106063",8);
+            firstHomeCountMap.put("106060",16);
+            firstHomeCountMap.put("106061",6);
+            firstHomeCountMap.put("106064",9);
+            firstHomeCountMap.put("106067",7);
+            firstHomeCountMap.put("106062",24);
+            firstHomeCountMap.put("106065",10);
+
+            changeHomeCountMap.put("106070",7);
+            changeHomeCountMap.put("106069",14);
+            changeHomeCountMap.put("106066",8);
+            changeHomeCountMap.put("106059",8);
+            changeHomeCountMap.put("106063",16);
+            changeHomeCountMap.put("106060",17);
+            changeHomeCountMap.put("106061",15);
+            changeHomeCountMap.put("106064",7);
+            changeHomeCountMap.put("106062",37);
+            changeHomeCountMap.put("106065",8);
+
+            parkCountMap.put("北宁公园",24);
+            parkCountMap.put("二宫公园",22);
+            parkCountMap.put("海河外滩公园",21);
+            parkCountMap.put("海河中心广场公园",24);
+            parkCountMap.put("河东公园",27);
+            parkCountMap.put("南翠屏公园",23);
+            parkCountMap.put("人民公园",23);
+            parkCountMap.put("水上公园",22);
+            parkCountMap.put("天津湾公园",20);
+            parkCountMap.put("西沽公园",23);
+            parkCountMap.put("长虹生态园",23);
+            parkCountMap.put("中山公园",22);
+
+
         }
-
-
-
-
 
 
         resMap.put(2,firstHomeCountMap);
