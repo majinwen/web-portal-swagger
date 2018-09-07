@@ -285,7 +285,9 @@
                 <p>
                     <span>
                         <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
-                        <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if></span>
+                        <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if>
+                        <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                    </span>
                     <em>房屋信息发布人</em>
                 </p>
                 <#if houseDetail['houseProxyPhone']?exists&&houseDetail['houseProxyPhone']!=''>
@@ -314,7 +316,9 @@
                 <p>
                     <span>
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
-                        <#if houseDetail.houseProxyName?exists&&houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if></span>
+                        <#if houseDetail.houseProxyName?exists&&houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>
+                        <#if houseDetail.agentBusinessCard?exists && houseDetail.agentBusinessCard != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                    </span>
                     <em>房屋信息发布人</em>
                 </p>
                 <#if houseDetail.houseProxyPhone?exists&&houseDetail.houseProxyPhone!=''>
@@ -347,7 +351,7 @@
 
             <div class="picture-box">
                 <#assign item=houseDetail['plotPhoto']>
-                <#if item[0]?exists><img src="${qiniuimage}/${item[0]}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+                <#if item?exists><img src="${qiniuimage}/${item}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
             </div>
             <div id="tilePlotDesc" class="tilelist-content">
                 <h4>
@@ -615,6 +619,18 @@
     </div>
 </div>
 </#if>
+<div class="agent-card-prev">
+    <div class="agent-card-content">
+        <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
+        <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''>
+            <#if houseDetail['agentBusinessCard']?index_of('http') gt -1>
+                <img src="${houseDetail.agentBusinessCard}" />
+            <#else >
+                <img src="${qiniuimage}/${houseDetail.agentBusinessCard}-agent200x300" />
+            </#if>
+        </#if>
+    </div>
+</div>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -630,6 +646,12 @@
         });
         $('.reservation-pop').on('click', '.mask', function (e) {
             $('.reservation-pop').addClass('none');
+        });
+        $('.imagePreviewAgent').on('click', function() {
+            $('.agent-card-prev').show()
+        });
+        $('#closeAgent').on('click', function() {
+            $('.agent-card-prev').hide()
         });
         var subPhone = false;
         var reservationData = {};

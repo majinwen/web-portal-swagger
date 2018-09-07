@@ -194,7 +194,10 @@
                             <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                         <p>
-                            <span><#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if></span>
+                            <span>
+                                <#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if>
+                                <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                            </span>
                             <em><#if agent['of_company']?exists&&agent['of_company']!=''> ${agent['of_company']}</em></#if>
                         </p>
                         <#if agent['agent_phone']?exists&&agent['agent_phone']!=''>
@@ -229,7 +232,10 @@
                             <img class="source-icon" src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中">
                         </#if>
                         <p>
-                            <span>${rentHouse['estate_agent']}</span>
+                            <span>
+                                ${rentHouse['estate_agent']}
+                                <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                            </span>
                             <em>${rentHouse['brokerage_agency']}</em>
                         </p>
                         <#if rentHouse['phone']?exists>
@@ -344,6 +350,18 @@
         </div>
     </section>
 </div>
+<div class="agent-card-prev">
+    <div class="agent-card-content">
+        <i id="closeAgent"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
+        <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''>
+            <#if rentHouse['agentBusinessCard']?index_of('http') gt -1>
+                <img src="${rentHouse.agentBusinessCard}"/>
+            <#else >
+                <img src="${qiniuimage}/${rentHouse.agentBusinessCard}-agent200x300"/>
+            </#if>
+        </#if>
+    </div>
+</div>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -388,6 +406,12 @@
     }
 
     $(function () {
+        $('.imagePreviewAgent').on('click', function() {
+            $('.agent-card-prev').show()
+        })
+        $('#closeAgent').on('click', function() {
+            $('.agent-card-prev').hide()
+        })
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
             var s = text.substring(1);

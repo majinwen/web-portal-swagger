@@ -734,4 +734,23 @@ public class PlotServiceImpl implements PlotService {
         }
         return null;
     }
+
+    @Override
+    public Map queryPlotByPlotId(String PlotId) {
+        try{
+            TransportClient client = esClientTools.init();
+            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("id",PlotId));
+            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"photo","rc","id","avgPrice"}, null).execute().actionGet();
+            SearchHit[] hits = searchResponse.getHits().getHits();
+            if (hits.length>0){
+                Map source = hits[0].getSource();
+                return source;
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

@@ -85,7 +85,19 @@
             span {
                 display: block;
                 position: absolute;
+                left: rem(-10);
                 @include font-dpr(32);
+
+                .agent-business-card {
+                    position: absolute;
+                    padding: rem(20);
+                    left: 100%;
+                    top: rem(-22);
+
+                    img {
+                        width: rem(36);
+                    }
+                }
             }
         }
 
@@ -446,5 +458,38 @@
         margin-bottom: rem(10);
         color: #999;
         @include font-dpr(28);
+    }
+}
+.agent-card-prev {
+    display: none;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: rem(750);
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 999;
+    overflow-y: auto;
+
+    .agent-card-content {
+        position: absolute;
+        left: 50%;
+        top: 15%;
+        width: 70%;
+        margin-left: -35%;
+        text-align: right;
+
+        i {
+            display: inline-block;
+            width: rem(36);
+            margin-right: rem(-36);
+        }
+        img {
+            width: 100%;
+            margin-top: rem(20);
+        }
+    }
+    &::-webkit-scrollbar {
+        display: none;
     }
 }

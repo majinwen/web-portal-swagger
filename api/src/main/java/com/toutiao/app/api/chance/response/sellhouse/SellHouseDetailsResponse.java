@@ -446,5 +446,10 @@ public class SellHouseDetailsResponse {
      */
     private Integer rankInLowCommunityLayout;
 
+    /**
+     * 名片
+     */
+    private String agentBusinessCard;
+
 
 }
