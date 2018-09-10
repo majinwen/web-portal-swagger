@@ -69,7 +69,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String ANYLIVINGROOM = "居室不限";
     private static final String ADDONE = "新上一套";
     private static final String SQUAREMETER = "㎡";
-    private static final String CHINESESQUAREMETER = "平米";
+//    private static final String CHINESESQUAREMETER = "平米";
     private static final String OF = "的";
     private static final String RISE = "涨";
     private static final String DROP = "降";
@@ -92,7 +92,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     @Override
     public MessagePushDomain getHouseTypeMessage(MessagePushDoQuery messagePushQuery, String userId) {
         MessagePushExample example = new MessagePushExample();
-        example.setOrderByClause("create_time DESC, id ASC");
+        example.setOrderByClause("id DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
         if (StringTool.isNotEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
@@ -206,7 +206,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     @Override
     public MessagePushDomain getThemeTypeMessage(MessagePushDoQuery messagePushQuery, String userId) {
         MessagePushExample example = new MessagePushExample();
-        example.setOrderByClause("create_time DESC, id ASC");
+        example.setOrderByClause("id DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
         if (StringTool.isNotEmpty(userId)) {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
@@ -286,7 +286,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
         for (int i = 3; i < 7; i++) {
             MessagePushExample example = new MessagePushExample();
-            example.setOrderByClause("create_time DESC, id ASC");
+            example.setOrderByClause("id DESC");
             MessagePushExample.Criteria criteria = example.createCriteria();
             if (StringTool.isNotEmpty(userId)) {
                 criteria.andUserIdEqualTo(Integer.valueOf(userId));
@@ -382,7 +382,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                         .append(layoutIds.get(0).toString()).append(LIVINGROOM);
             }
         } else if (contentType.equals(FAVORITEHOUSE)) {
-            blodMessageContent.append(mcJson.get("building_name")).append(mcJson.get("build_area")).append(CHINESESQUAREMETER);
+            blodMessageContent.append(mcJson.get("building_name")).append(mcJson.get("build_area")).append(SQUAREMETER);
             if (isNotEmpty(mcJson.get("layoutId"))) {
                 blodMessageContent.append(mcJson.get("layoutId")).append(LIVINGROOM);
             } else {
