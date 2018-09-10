@@ -110,19 +110,19 @@
                             <span data-info="4">北</span>
                         </dd>
                     </dl>
-                    <dl>
-                        <dt data-type="ht">供暖</dt>
-                        <dd>
-                            <span data-info="1">集体供暖</span>
-                            <span data-info="2">自供暖</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="ht">供暖</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="1">集体供暖</span>-->
+                            <#--<span data-info="2">自供暖</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                     <dl>
                         <dt data-type="tags">特色</dt>
                         <dd>
                             <span data-info="1">近地铁</span>
                             <#--<span data-info="2">免佣</span>-->
-                            <span data-info="6">集中供暖</span>
+                            <#--<span data-info="6">集中供暖</span>-->
                             <span data-info="4">有电梯</span>
                         </dd>
                     </dl>
