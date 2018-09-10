@@ -1,19 +1,12 @@
 package com.toutiao.web.apiimpl.rest.favorite;
 
 
-import com.toutiao.app.api.chance.request.favorite.*;
 import com.toutiao.app.api.chance.response.favorite.UserCenterFavoriteCountResponse;
-import com.toutiao.app.api.chance.response.plot.PlotFavoriteListResponse;
 import com.toutiao.app.domain.favorite.*;
-import com.toutiao.app.domain.plot.PlotFavoriteListDo;
-import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.app.service.favorite.FavoriteRestService;
-import com.toutiao.web.common.assertUtils.First;
-import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

@@ -17,6 +17,8 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -95,10 +97,10 @@ public class HomePageServiceImpl implements HomePageRestService {
      */
 
     @Override
-    public NewHouseListDomain getHomePageNewHouse() {
+    public NewHouseListDomain getHomePageNewHouse(String city) {
         NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
         newHouseDoQuery.setPageSize(5);
-        NewHouseListDomain newHouseListDomain = newHouseRestService.getNewHouseList(newHouseDoQuery);
+        NewHouseListDomain newHouseListDomain = newHouseRestService.getNewHouseList(newHouseDoQuery,city);
 
         return newHouseListDomain;
 
@@ -173,7 +175,7 @@ public class HomePageServiceImpl implements HomePageRestService {
      * @return
      */
     @Override
-    public HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery) {
+    public HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery, String city) {
 
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -201,10 +203,10 @@ public class HomePageServiceImpl implements HomePageRestService {
 
             boolQueryBuilder.must(location);
             boolQueryBuilder.must(QueryBuilders.rangeQuery("avgPrice").gt(0));
-            homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
+            homePageNearPlot = homePageEsDao.getHomePageNearPlot(boolQueryBuilder, nearHouseDoQuery.getSize(), sort, city);
         }else {
             boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",new int[]{1}));
-            homePageNearPlot = homePageEsDao.getHomePageNearPlotNoLocation(boolQueryBuilder, nearHouseDoQuery.getSize());
+            homePageNearPlot = homePageEsDao.getHomePageNearPlotNoLocation(boolQueryBuilder, nearHouseDoQuery.getSize(), city);
         }
 
         if (null!=homePageNearPlot){
@@ -215,7 +217,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                     String sourceAsString = hit.getSourceAsString();
                     HomePageNearPlotDo homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
 
-                    PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId());
+                    PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId(), CityUtils.getCity());
                     if(null != plotsEsfRoomCountDomain.getTotalCount()){
                         homePageNearPlotDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
                     }else{
@@ -240,7 +242,7 @@ public class HomePageServiceImpl implements HomePageRestService {
      * @return
      */
     @Override
-    public HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery) {
+    public HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery, String city) {
 
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -266,9 +268,9 @@ public class HomePageServiceImpl implements HomePageRestService {
 //            sort.order(SortOrder.ASC);
             boolQueryBuilder.must(location);
 
-            homePageNearEsf = homePageEsDao.getHomePageNearEsf(boolQueryBuilder, nearHouseDoQuery.getSize(), sort);
+            homePageNearEsf = homePageEsDao.getHomePageNearEsf(boolQueryBuilder, nearHouseDoQuery.getSize(), sort, city);
         }else {
-            homePageNearEsf = homePageEsDao.getHomePageNearEsfNoLocation(boolQueryBuilder, nearHouseDoQuery.getSize());
+            homePageNearEsf = homePageEsDao.getHomePageNearEsfNoLocation(boolQueryBuilder, nearHouseDoQuery.getSize(), city);
         }
 
         if (null!=homePageNearEsf){
@@ -291,7 +293,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                         homePageNearEsfDo.setTagsName((List) sourceAsMap.get("claimTagsName"));
                         homePageNearEsfDo.setHousePhotoTitle((String) sourceAsMap.get("claimHousePhotoTitle"));
 
-                        agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
+                        agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"), city);
 
                     }else {
                         agent.setAgentCompany(hit.getSource().get("ofCompany").toString());
@@ -316,7 +318,7 @@ public class HomePageServiceImpl implements HomePageRestService {
      * @return
      */
     @Override
-    public HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery) {
+    public HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city) {
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         HomePageNearPlotDo homePageNearPlotDo = new HomePageNearPlotDo();
@@ -330,7 +332,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         sort.unit(DistanceUnit.METERS);
         sort.order(SortOrder.ASC);
 
-        SearchResponse plotSpecialPage = homePageEsDao.getPlotSpecialPage(boolQueryBuilder,sort);
+        SearchResponse plotSpecialPage = homePageEsDao.getPlotSpecialPage(boolQueryBuilder, sort, city);
 
         SearchHit[] hits = plotSpecialPage.getHits().getHits();
 
@@ -339,7 +341,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             homePageNearPlotDo = JSON.parseObject(sourceAsString, HomePageNearPlotDo.class);
             homePageNearPlotDo.setDistance((double) Math.round((Double) hits[0].getSortValues()[0]));
 
-            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId());
+            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(homePageNearPlotDo.getId(),CityUtils.getCity());
             if(null != plotsEsfRoomCountDomain.getTotalCount()){
                 homePageNearPlotDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
             }else{
@@ -355,7 +357,7 @@ public class HomePageServiceImpl implements HomePageRestService {
      * @return
      */
     @Override
-    public HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery) {
+    public HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city) {
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         HomePageNearEsfListDo homePageNearEsfListDo = new HomePageNearEsfListDo();
@@ -372,7 +374,7 @@ public class HomePageServiceImpl implements HomePageRestService {
 //        sort.unit(DistanceUnit.METERS);
 //        sort.order(SortOrder.ASC);
 
-        SearchResponse esfSpecialPage = homePageEsDao.getEsfSpecialPage(boolQueryBuilder,from,nearHouseSpecialPageDoQuery.getSize());
+        SearchResponse esfSpecialPage = homePageEsDao.getEsfSpecialPage(boolQueryBuilder,from,nearHouseSpecialPageDoQuery.getSize(),city);
 
         SearchHit[] hits = esfSpecialPage.getHits().getHits();
         if (hits.length>0){
@@ -393,7 +395,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                     homePageNearEsfDo.setTagsName((List) sourceAsMap.get("claimTagsName"));
                     homePageNearEsfDo.setHousePhotoTitle((String) sourceAsMap.get("claimHousePhotoTitle"));
 
-                    agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"));
+                    agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"), city);
 
                 }else {
                     agent.setAgentCompany(hit.getSource().get("ofCompany").toString());
@@ -401,7 +403,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                     agent.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agent.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
                 }
-                homePageNearEsfDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                homePageNearEsfDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 homePageNearEsfDo.setAgentBaseDo(agent);
                 homePageNearEsfDo.setUnitPrice((double) Math.round((homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea())*10000));
                 list.add(homePageNearEsfDo);
@@ -450,7 +452,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 HomePageMustBuyDo homePageMustBuyDo = JSON.parseObject(sourceAsString, HomePageMustBuyDo.class);
-                homePageMustBuyDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                //homePageMustBuyDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 homePageMustBuyDos.add(homePageMustBuyDo);
             }
         }
@@ -461,14 +463,14 @@ public class HomePageServiceImpl implements HomePageRestService {
     public Map<String,HomePageTop50Do> getHomePageTop50() {
 
 //        List<HomePageTop50Do> homePageTop50Dos=new ArrayList<>();
-        List<Map<String,HomePageTop50Do>> homePageTop50Dos=new ArrayList<>();
+//        List<Map<String,HomePageTop50Do>> homePageTop50Dos=new ArrayList<>();
         Map<String,HomePageTop50Do> map = new HashMap<>();
         int [] isTop={1};
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",isTop));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve",1));
-        SearchResponse top50 = homePageEsDao.getHomePageTop50(boolQueryBuilder);
+        SearchResponse top50 = homePageEsDao.getHomePageTop50(boolQueryBuilder, CityUtils.getCity());
         Terms count = top50.getAggregations().get("count");
         List list= count.getBuckets();
         for (Object l:list)
@@ -509,7 +511,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             String details = "";
             details = hit.getSourceAsString();
             HomeSureToSnatchDo  homeSureToSnatchDo = JSON.parseObject(details, HomeSureToSnatchDo.class);
-            homeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags());
+//            homeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags());
             if(homeSureToSnatchDo.getIsClaim().equals(1))
             {
                 homeSureToSnatchDo.setHousePhotoTitle(homeSureToSnatchDo.getClaimHousePhotoTitle());
@@ -523,11 +525,12 @@ public class HomePageServiceImpl implements HomePageRestService {
     }
 
     @Override
-    public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
-        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery.getUserId());
+    public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery.getUserId(), city);
         Integer result = 0;
         if (StringTool.isNotEmpty(recommendCondition.getUserId())){
-            result = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery);
+            result = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery, city);
             return result;
         }
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
@@ -536,34 +539,38 @@ public class HomePageServiceImpl implements HomePageRestService {
         userFavoriteCondition.setCreateTime(new Date());
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
+        userFavoriteCondition.setCityId(CityUtils.returnCityId(city));
         result = userFavoriteConditionMapper.insertSelective(userFavoriteCondition);
         return result;
     }
 
     @Override
-    public UserFavoriteConditionDo getRecommendCondition(Integer userId) {
+    public UserFavoriteConditionDo getRecommendCondition(Integer userId, String city) {
         UserFavoriteConditionDo userFavoriteConditionDo = new UserFavoriteConditionDo();
-        UserFavoriteCondition recommendCondition = userFavoriteConditionMapper.getRecommendCondition(userId);
+        UserFavoriteCondition recommendCondition = userFavoriteConditionMapper.getRecommendCondition(userId, CityUtils.returnCityId(city));
         if (StringTool.isNotEmpty(recommendCondition)&&StringTool.isNotEmpty(recommendCondition.getCondition())){
             JSONObject jsonObject = JSON.parseObject(((PGobject) recommendCondition.getCondition()).getValue());
             userFavoriteConditionDo = JSON.parseObject(JSON.toJSONString(jsonObject), UserFavoriteConditionDo.class);
+            userFavoriteConditionDo.setCity(CityUtils.retuenCityCode(recommendCondition.getCityId()));
         }
         return userFavoriteConditionDo;
     }
 
     @Override
-    public Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+    public Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
         userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
+        userFavoriteCondition.setCityId(CityUtils.returnCityId(city));
         int result = userFavoriteConditionMapper.updateRecommendCondition(userFavoriteCondition);
         return result;
     }
 
     @Override
-    public Integer deleteRecommendCondition(Integer userId) {
-        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId);
+    public Integer deleteRecommendCondition(Integer userId, Integer cityId) {
+
+        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId ,cityId);
         return result;
     }
 }

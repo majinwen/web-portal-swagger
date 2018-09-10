@@ -16,6 +16,6 @@ public interface PlotsHomesRestService {
      * @param plotId
      * @return
      */
-    PlotsHousesDomain queryPlotsHomesByPlotId(Integer plotId);
+    PlotsHousesDomain queryPlotsHomesByPlotId(Integer plotId, String city);
 
 }

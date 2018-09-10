@@ -9,7 +9,6 @@ import com.toutiao.app.api.chance.response.user.UserLoginResponse;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.assertUtils.First;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.Constant;
 import com.toutiao.web.common.util.CookieUtils;

@@ -11,7 +11,7 @@ public interface NearRentHouseRestService {
      * @param nearHouseListDoQuery
      * @return
      */
-    RentDetailsListDo queryNearHouseByLocation(NearHouseListDoQuery nearHouseListDoQuery);
+    RentDetailsListDo queryNearHouseByLocation(NearHouseListDoQuery nearHouseListDoQuery, String city);
 
     /**
      * 对关键字进行分词

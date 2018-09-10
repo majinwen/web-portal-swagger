@@ -3,6 +3,8 @@ package com.toutiao.app.dao.plot.impl;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
@@ -19,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
 @Service
@@ -41,17 +45,17 @@ public class PlotEsDaoImpl implements PlotEsDao {
 
 
     @Override
-    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder){
+    public SearchResponse queryPlotDetail(BoolQueryBuilder booleanQueryBuilder,  String city){
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort){
+    public SearchResponse queryNearPlotByLocationAndDistance(BoolQueryBuilder boolQueryBuilder,GeoDistanceQueryBuilder location,GeoDistanceSortBuilder sort, String city){
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(5).setPostFilter(location).addSort(sort).execute().actionGet();
         return searchResponse;
     }
@@ -81,17 +85,18 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort) {
+    public SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort,  String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+//        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb=client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(levelSort).addSort(plotScoreSort).setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword) {
+    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = null;
         if (StringTool.isNotEmpty(keyword)){
             searchResponse = srb.setQuery(boolQueryBuilder).setFrom(from).setSize(size).addSort("_score",SortOrder.DESC).addSort("level", SortOrder.ASC).addSort("plotScore", SortOrder.DESC).execute().actionGet();
@@ -110,37 +115,37 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder) {
+    public SearchResponse getPlotByIds(IdsQueryBuilder idsQueryBuilder,String city) {
         TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = client.prepareSearch(index).setTypes(parentType)
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city))
                 .setQuery(idsQueryBuilder)
                 .execute().actionGet();
         return searchresponse;
     }
 
     @Override
-    public SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
+    public SearchResponse getPlotTop50List(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom((from - 1) * size).setSize(size).execute().actionGet();
         return  searchResponse;
 
     }
 
     @Override
-    public SearchResponse getPlotByRecommendCondition(BoolQueryBuilder boolQueryBuilder,ScriptSortBuilder scrip) {
+    public SearchResponse getPlotByRecommendCondition(BoolQueryBuilder boolQueryBuilder,ScriptSortBuilder scrip, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).addSort(scrip).setSize(5).execute().actionGet();
         return  searchResponse;
     }
 
 
     @Override
-    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchresponse;
     }

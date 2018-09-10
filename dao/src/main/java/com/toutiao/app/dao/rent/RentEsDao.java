@@ -18,14 +18,14 @@ public interface RentEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from) ;
+    SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder,Integer from, String city) ;
 
     /**
      * 根据出租房源的id查询出租房源详情
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder) ;
+    SearchResponse queryRentByRentId(BoolQueryBuilder booleanQueryBuilder, String cityCode) ;
 
     /**
      * 附近5km内出租房源(规则:app的是吧，那就优先三公里的录入房源由近到远)
@@ -41,14 +41,14 @@ public interface RentEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse queryRentNumByPlotId(BoolQueryBuilder boolQueryBuilder, String city);
 
     /**
      * 根据小区id查询该小区下的出租房源的个数（非聚合）
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse queryRentCountByPlotId(BoolQueryBuilder boolQueryBuilder, String city);
 
     /**
      * 获取租房推荐列表
@@ -57,7 +57,7 @@ public interface RentEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder,Integer from, Integer size);
+    SearchResponse queryRentList(BoolQueryBuilder boolQueryBuilder,Integer from, Integer size, String city);
 
     /**
      * 获取推优房源
@@ -65,7 +65,7 @@ public interface RentEsDao {
      * @param uid
      * @return
      */
-    SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder,String uid);
+    SearchResponse queryRecommendRentList(BoolQueryBuilder boolQueryBuilder,String uid, String city);
 
     /**
      * 获取附近的出租房源
@@ -73,7 +73,7 @@ public interface RentEsDao {
      * @param from
      * @return
      */
-    SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from);
+    SearchResponse queryNearRentHouse(FunctionScoreQueryBuilder query, Integer from, String city);
 
     /**
      * 获取搜索列表
@@ -84,7 +84,7 @@ public interface RentEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size);
+    SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city);
 
     /**
      * 获取小区出租房源均价最低

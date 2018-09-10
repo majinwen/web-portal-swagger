@@ -54,5 +54,6 @@ public class UserFavoriteRentDoQuery {
 
     private  String forward;
 
+    private Integer cityId;
 
 }

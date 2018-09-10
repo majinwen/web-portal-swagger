@@ -5,8 +5,8 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 
 
 public interface PlotsThemeEsDao {
-    SearchResponse getPlotsThemeList(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize);
+    SearchResponse getPlotsThemeList(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String city);
 
 
-    SearchResponse getHouseAreaByPlotId(Integer plotId);
+    SearchResponse getHouseAreaByPlotId(Integer plotId, String city);
 }

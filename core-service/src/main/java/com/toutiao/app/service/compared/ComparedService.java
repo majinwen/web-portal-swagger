@@ -2,10 +2,10 @@ package com.toutiao.app.service.compared;
 
 import com.toutiao.app.domain.compared.HouseComparedDetailDo;
 import com.toutiao.app.domain.compared.HouseComparedListDo;
-import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
 
-import java.util.Dictionary;
 import java.util.List;
 
 public interface ComparedService {
@@ -21,13 +21,21 @@ public interface ComparedService {
 
     int updateByPrimaryKey(HouseCompared record);
 
-    HouseCompared selectByUserIdAndHouseId(Integer userId, String houseId);
+    HouseCompared selectByUserIdAndHouseId(Integer userId, String houseId, Integer cityId);
 
-    List<HouseComparedListDo> selectTempComparedByIds(List<String> ids);
+    List<HouseComparedListDo> selectTempComparedByIds(List<String> ids, String city);
 
-    List<HouseComparedListDo> selectComparedByHouseCompareds(List<HouseCompared> houseCompareds);
+    List<HouseComparedListDo> selectComparedByHouseCompareds(List<HouseCompared> houseCompareds, String city);
 
-    List<HouseCompared> selectByUserId (Integer userId);
+    List<HouseCompared> selectByUserId (Integer userId, Integer cityId);
 
-    List<HouseComparedDetailDo> selectComparedDetailByHouseIds (List<String> ids);
+    List<HouseComparedDetailDo> selectComparedDetailByHouseIds (List<String> ids, String city);
+
+    /**
+     * 比对列表
+     * @param sellHouseFavoriteListDoQuery
+     * @return
+     */
+    SellHouseFavoriteDomain queryComparedList(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery);
+
 }
