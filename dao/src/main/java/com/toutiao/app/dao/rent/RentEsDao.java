@@ -91,6 +91,6 @@ public interface RentEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getRentPriceByPlotId(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getRentPriceByPlotId(BoolQueryBuilder boolQueryBuilder, String city);
 
 }

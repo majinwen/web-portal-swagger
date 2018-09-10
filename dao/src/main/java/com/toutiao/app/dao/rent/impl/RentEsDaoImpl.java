@@ -132,11 +132,11 @@ public class RentEsDaoImpl implements RentEsDao {
      * @return
      */
     @Override
-    public SearchResponse getRentPriceByPlotId(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getRentPriceByPlotId(BoolQueryBuilder boolQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
 
-        SearchRequestBuilder srb = client.prepareSearch(rentIndex).setTypes(rentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getRentIndex(city)).setTypes(ElasticCityUtils.getRentType(city));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
                 .addAggregation(AggregationBuilders.min("minRentPrice").field("rent_house_price")).execute().actionGet();
 
