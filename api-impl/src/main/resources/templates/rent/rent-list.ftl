@@ -83,13 +83,13 @@
             <!-- 更多 -->
             <div class="filter-item" data-mark="panel-more">
                 <div class="more-list">
-                    <dl>
-                        <dt data-type="source">来源</dt>
-                        <dd>
-                            <span data-info="0">经纪人</span>
-                            <span data-info="1">相寓</span>
-                        </dd>
-                    </dl>
+                    <#--<dl>-->
+                        <#--<dt data-type="source">来源</dt>-->
+                        <#--<dd>-->
+                            <#--<span data-info="0">经纪人</span>-->
+                            <#--<span data-info="1">相寓</span>-->
+                        <#--</dd>-->
+                    <#--</dl>-->
                     <dl>
                         <dt data-type="houseAreaSize">面积</dt>
                         <dd>
