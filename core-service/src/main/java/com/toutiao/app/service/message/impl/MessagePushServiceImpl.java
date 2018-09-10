@@ -69,7 +69,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String ANYLIVINGROOM = "居室不限";
     private static final String ADDONE = "新上一套";
     private static final String SQUAREMETER = "㎡";
-    private static final String CHINESESQUAREMETER = "平米";
+//    private static final String CHINESESQUAREMETER = "平米";
     private static final String OF = "的";
     private static final String RISE = "涨";
     private static final String DROP = "降";
@@ -382,7 +382,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                         .append(layoutIds.get(0).toString()).append(LIVINGROOM);
             }
         } else if (contentType.equals(FAVORITEHOUSE)) {
-            blodMessageContent.append(mcJson.get("building_name")).append(mcJson.get("build_area")).append(CHINESESQUAREMETER);
+            blodMessageContent.append(mcJson.get("building_name")).append(mcJson.get("build_area")).append(SQUAREMETER);
             if (isNotEmpty(mcJson.get("layoutId"))) {
                 blodMessageContent.append(mcJson.get("layoutId")).append(LIVINGROOM);
             } else {
