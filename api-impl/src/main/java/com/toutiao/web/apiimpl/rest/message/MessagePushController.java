@@ -2,12 +2,10 @@ package com.toutiao.web.apiimpl.rest.message;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.response.user.UserLoginResponse;
-import com.toutiao.app.domain.message.HomeMessageDo;
-import com.toutiao.app.domain.message.HomeMessageDoQuery;
-import com.toutiao.app.domain.message.MessagePushDoQuery;
-import com.toutiao.app.domain.message.MessagePushDomain;
+import com.toutiao.app.domain.message.*;
 import com.toutiao.app.service.message.MessagePushService;
 import com.toutiao.web.api.chance.request.message.HomePageMessageRequest;
+import com.toutiao.web.api.chance.request.message.MessageIsReadRequest;
 import com.toutiao.web.api.chance.request.message.MessagePushRequest;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
@@ -99,5 +97,30 @@ public class MessagePushController {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 修改消息已读
+     *
+     * @param messageIsReadRequest
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/updateMessageRead", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult updateMessageRead(@Validated MessageIsReadRequest messageIsReadRequest, HttpServletRequest request,
+                                        HttpServletResponse response) {
+        String userId = getUserIdByCookie(request, response);
+        if (StringTool.isEmpty(userId)) {
+            return NashResult.Fail("用户未登录");
+        }
+        MessageIsReadQuery messageIsReadQuery = new MessageIsReadQuery();
+        BeanUtils.copyProperties(messageIsReadRequest, messageIsReadQuery);
+        int i = messagePushService.updateIsRead(messageIsReadQuery, userId);
+        if (i > 0){
+            return NashResult.build("消息已读!");
+        }
+        return NashResult.Fail("消息读取失败!");
     }
 }

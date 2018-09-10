@@ -1,9 +1,6 @@
 package com.toutiao.app.service.message;
 
-import com.toutiao.app.domain.message.HomeMessageDo;
-import com.toutiao.app.domain.message.HomeMessageDoQuery;
-import com.toutiao.app.domain.message.MessagePushDoQuery;
-import com.toutiao.app.domain.message.MessagePushDomain;
+import com.toutiao.app.domain.message.*;
 
 import java.util.List;
 
@@ -34,4 +31,12 @@ public interface MessagePushService {
      * @return
      */
     List<HomeMessageDo> getHomeMessage(HomeMessageDoQuery homeMessageDoQuery, String userId);
+
+    /**
+     * 修改消息已读
+     *
+     * @param messageIsReadQuery
+     * @param userId
+     */
+    int updateIsRead(MessageIsReadQuery messageIsReadQuery, String userId);
 }

@@ -16,6 +16,7 @@
         <result column="newcode" property="newcode" jdbcType="INTEGER"/>
         <result column="house_id" property="houseId" jdbcType="VARCHAR"/>
         <result column="subscribe_type" property="subscribeType" jdbcType="INTEGER"/>
+        <result column="is_read" property="isRead" jdbcType="SMALLINT"/>
     </resultMap>
     <sql id="Example_Where_Clause">
         <where>
@@ -79,7 +80,7 @@
     </sql>
     <sql id="Base_Column_List">
         id, user_id, create_time, message_theme, is_del, message_type, push_type, content_type,
-        house_data, is_push, city_id, newcode, house_id, subscribe_type
+        house_data, is_push, city_id, newcode, house_id, subscribe_type, is_read
   </sql>
     <select id="selectByExample" resultMap="BaseResultMap"
             parameterType="com.toutiao.web.dao.entity.message.MessagePushExample">
@@ -117,13 +118,13 @@
         message_theme, is_del, message_type,
         push_type, content_type, house_data,
         is_push, city_id, newcode, house_id,
-        subscribe_type
+        subscribe_type, is_read
       )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
-        #{message_theme,jdbcType=VARCHAR}, #{isDel,jdbcType=SMALLINT}, #{messageType,jdbcType=INTEGER},
+        #{messageTheme,jdbcType=VARCHAR}, #{isDel,jdbcType=SMALLINT}, #{messageType,jdbcType=INTEGER},
         #{pushType,jdbcType=INTEGER}, #{contentType,jdbcType=INTEGER}, #{houseData,jdbcType=VARCHAR},
         #{isPush,jdbcType=SMALLINT}, #{cityId,jdbcType=INTEGER}, #{newcode,jdbcType=INTEGER},
-        #{houseId,jdbcType=VARCHAR}, #{subscribeType,jdbcType=INTEGER}
+        #{houseId,jdbcType=VARCHAR}, #{subscribeType,jdbcType=INTEGER}, #{isRead,jdbcType=SMALLINT}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.message.MessagePush">
@@ -138,7 +139,7 @@
             <if test="createTime != null">
                 create_time,
             </if>
-            <if test="message_theme != null">
+            <if test="messageTheme != null">
                 message_theme,
             </if>
             <if test="isDel != null">
@@ -171,6 +172,9 @@
             <if test="subscribeType != null">
                 subscribe_type,
             </if>
+            <if test="isRead != null">
+                is_read,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -182,8 +186,8 @@
             <if test="createTime != null">
                 #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="message_theme != null">
-                #{message_theme,jdbcType=VARCHAR},
+            <if test="messageTheme != null">
+                #{messageTheme,jdbcType=VARCHAR},
             </if>
             <if test="isDel != null">
                 #{isDel,jdbcType=SMALLINT},
@@ -215,6 +219,9 @@
             <if test="subscribeType != null">
                 #{subscribeType,jdbcType=INTEGER},
             </if>
+            <if test="isRead != null">
+                #{isRead,jdbcType=SMALLINT},
+            </if>
         </trim>
     </insert>
     <select id="countByExample" parameterType="com.toutiao.web.dao.entity.message.MessagePushExample"
@@ -236,8 +243,8 @@
             <if test="record.createTime != null">
                 create_time = #{record.createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="record.message_theme != null">
-                message_theme = #{record.message_theme,jdbcType=VARCHAR},
+            <if test="record.messageTheme != null">
+                message_theme = #{record.messageTheme,jdbcType=VARCHAR},
             </if>
             <if test="record.isDel != null">
                 is_del = #{record.isDel,jdbcType=SMALLINT},
@@ -269,6 +276,9 @@
             <if test="record.subscribeType != null">
                 subscribe_type = #{record.subscribeType,jdbcType=INTEGER},
             </if>
+            <if test="record.isRead != null">
+                is_read = #{record.isRead,jdbcType=SMALLINT},
+            </if>
         </set>
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
@@ -279,7 +289,7 @@
         set id = #{record.id,jdbcType=INTEGER},
         user_id = #{record.userId,jdbcType=INTEGER},
         create_time = #{record.createTime,jdbcType=TIMESTAMP},
-        message_theme = #{record.message_theme,jdbcType=VARCHAR},
+        message_theme = #{record.messageTheme,jdbcType=VARCHAR},
         is_del = #{record.isDel,jdbcType=SMALLINT},
         message_type = #{record.messageType,jdbcType=INTEGER},
         push_type = #{record.pushType,jdbcType=INTEGER},
@@ -289,7 +299,8 @@
         city_id = #{record.cityId,jdbcType=INTEGER},
         newcode = #{record.newcode,jdbcType=INTEGER},
         house_id = #{record.houseId,jdbcType=VARCHAR},
-        subscribe_type = #{record.subscribeType,jdbcType=INTEGER}
+        subscribe_type = #{record.subscribeType,jdbcType=INTEGER},
+        is_read = #{record.isRead,jdbcType=SMALLINT}
         <if test="_parameter != null">
             <include refid="Update_By_Example_Where_Clause"/>
         </if>
@@ -303,8 +314,8 @@
             <if test="createTime != null">
                 create_time = #{createTime,jdbcType=TIMESTAMP},
             </if>
-            <if test="message_theme != null">
-                message_theme = #{message_theme,jdbcType=VARCHAR},
+            <if test="messageTheme != null">
+                message_theme = #{messageTheme,jdbcType=VARCHAR},
             </if>
             <if test="isDel != null">
                 is_del = #{isDel,jdbcType=SMALLINT},
@@ -336,6 +347,9 @@
             <if test="subscribeType != null">
                 subscribe_type = #{record.subscribeType,jdbcType=VARCHAR},
             </if>
+            <if test="isRead != null">
+                is_read = #{record.isRead,jdbcType=SMALLINT},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -343,7 +357,7 @@
     update message_push
     set user_id = #{userId,jdbcType=INTEGER},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-        message_theme = #{message_theme,jdbcType=VARCHAR},
+        message_theme = #{messageTheme,jdbcType=VARCHAR},
       is_del = #{isDel,jdbcType=SMALLINT},
       message_type = #{messageType,jdbcType=INTEGER},
       push_type = #{pushType,jdbcType=INTEGER},
@@ -353,7 +367,8 @@
         city_id = #{record.cityId,jdbcType=INTEGER},
         newcode = #{record.newcode,jdbcType=INTEGER},
         house_id = #{record.houseId,jdbcType=VARCHAR},
-        subscribe_type = #{record.subscribeType,jdbcType=VARCHAR}
+        subscribe_type = #{record.subscribeType,jdbcType=VARCHAR},
+        is_read = #{record.isRead,jdbcType=SMALLINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>
