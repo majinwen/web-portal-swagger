@@ -61,7 +61,7 @@ public class PlotsHomesRestServiceImpl implements PlotsHomesRestService {
         queryBuilder.must(QueryBuilders.termQuery("release_status",1));
         queryBuilder.must(QueryBuilders.termQuery("zufang_id", plotId));
         queryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
-        SearchResponse rentPriceResponse = rentEsDao.getRentPriceByPlotId(queryBuilder);
+        SearchResponse rentPriceResponse = rentEsDao.getRentPriceByPlotId(queryBuilder,city);
         Map aggMap =rentPriceResponse.getAggregations().asMap();
         InternalMin minHouse = (InternalMin) aggMap.get("minRentPrice");
 
