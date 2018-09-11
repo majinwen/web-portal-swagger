@@ -18,10 +18,16 @@
                     <div class="module-bottom-fill">
                         <div class="my-report-item">
                             <div class="report-item-content">
-                                <a class="report-link-block" href="#">
+                                <a class="report-link-block" href="${router_city('/findhouse/dongfangdi/showMyReport/'+myReport.id)}">
                                     <i class="item-report-icon"></i>
                                     <div class="item-report-title">
-                                        <h3>懂房帝--我的报告</h3>
+                                        <#if myReport['downPayment']?exists && myReport['downPayment']?number gt 0>
+                                            <h3>首付${myReport.downPayment}万 购房报告</h3>
+                                        <#elseif myReport['totalPrice']?exists && myReport['totalPrice']?number gt 0 >
+                                            <h3>总价${myReport.totalPrice}万 购房报告</h3>
+                                        <#else >
+                                            <h3>懂房帝 购房报告</h3>
+                                        </#if>
                                         <p>${myReport.createTime}</p>
                                     </div>
                                 </a>
