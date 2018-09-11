@@ -11,6 +11,7 @@ import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
+import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -315,8 +316,15 @@ public class RentRestRestServiceImpl implements RentRestService {
 //        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","1"));
 
         boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));//目前只展示导入的房源
-        boolQueryBuilder.must(QueryBuilders.termQuery("rent_type","1"));
-        boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gt(4000).lte(6000));
+//        boolQueryBuilder.must(QueryBuilders.termQuery("rent_type","1"));
+        if(CityConstant.ABBREVIATION_BEIJING.equals(city)){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gt(4000).lte(6000));
+        }else if(CityConstant.ABBREVIATION_SHANGHAI.equals(city)){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gt(2000).lte(4000));
+        }else if(CityConstant.ABBREVIATION_TIANJIN.equals(city)){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gt(1300).lte(1500));
+        }
+
         Integer size = 10;
         Integer from = (rentHouseDoQuery.getPageNum()-1)*size;
 
