@@ -6,6 +6,7 @@ import com.toutiao.app.domain.hotplot.SearchHotProjDo;
 import com.toutiao.app.domain.hotplot.SearchHotProjDomain;
 import com.toutiao.app.service.plot.HotPlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,8 +33,8 @@ public class HotPlotsRestController {
     @RequestMapping(value = "/getHotPlotByCityId")
     @ResponseBody
     public NashResult getSuggestByKeyword(){
-        String city = "12";
-        SearchHotProjDomain searchHotProjDomain = hotPlotsRestService.getHotPlotsByCityId(city);
+//        String city = "12";
+        SearchHotProjDomain searchHotProjDomain = hotPlotsRestService.getHotPlotsByCityId(CityUtils.getCity());
         HotPlotListResponse hotPlotListResponse = new HotPlotListResponse();
         BeanUtils.copyProperties(searchHotProjDomain,hotPlotListResponse);
 
