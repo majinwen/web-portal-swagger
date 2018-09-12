@@ -60,7 +60,7 @@ public class SuggestServiceImpl implements SuggestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
 //        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
-        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
+        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("100%")));
 
         if (property!=null){
             String searchType = getSearchType(property);
@@ -107,7 +107,12 @@ public class SuggestServiceImpl implements SuggestService {
 
         if (scopeDoList.size()<10 && scopeDoList.size()>0){
             if(null!=enginesDoList && enginesDoList.size()>0){
-                suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+                if(enginesDoList.size()>scopeDoList.size()){
+                    suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+                }else if(enginesDoList.size()<= scopeDoList.size()){
+
+                    suggestDo.setSearchEnginesList(enginesDoList);
+                }
             }
         }else if(scopeDoList.size() == 0){
             suggestDo.setSearchEnginesList(enginesDoList);
