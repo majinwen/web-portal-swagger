@@ -19,4 +19,6 @@ public class SellHouseFavoriteListDoQuery {
 
     private Integer from;
 
+    private Integer cityId;
+
 }

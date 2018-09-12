@@ -51,7 +51,7 @@ public class SuggestServiceImpl implements SuggestService {
      * @return
      */
     @Override
-    public SuggestDo suggest(String keyword, String property) {
+    public SuggestDo suggest(String keyword, String property, String city) {
         SuggestDo suggestDo = new SuggestDo();
         List<SearchScopeDo> scopeDoList = new ArrayList<>();
         List<SearchEnginesDo> enginesDoList = new ArrayList<>();
@@ -73,7 +73,7 @@ public class SuggestServiceImpl implements SuggestService {
             }
         }
 
-        SearchResponse areaAndDistrictSuggest = suggestEsDao.getAreaAndDistrictSuggest(boolQueryBuilder);
+        SearchResponse areaAndDistrictSuggest = suggestEsDao.getAreaAndDistrictSuggest(boolQueryBuilder, city);
 
         SearchHit[] hits = areaAndDistrictSuggest.getHits().getHits();
         if (hits.length>0){
@@ -89,11 +89,11 @@ public class SuggestServiceImpl implements SuggestService {
         suggestDo.setRentNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("rent")).getDocCount());
         suggestDo.setApartmentNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("apartment")).getDocCount());
 
-
-        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_nickname").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
-        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
-        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
-        SearchResponse keywordSuggest = suggestEsDao.getKeywordSuggest(boolQueryBuilder);
+        BoolQueryBuilder boolQueryBuilderNickname = QueryBuilders.boolQuery();
+        boolQueryBuilderNickname.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_nickname").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
+        boolQueryBuilderNickname.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
+        boolQueryBuilderNickname.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
+        SearchResponse keywordSuggest = suggestEsDao.getKeywordSuggest(boolQueryBuilderNickname, city);
         SearchHit[] keywordHits = keywordSuggest.getHits().getHits();
         if (keywordHits.length>0){
             for (SearchHit hit :keywordHits) {
@@ -106,7 +106,9 @@ public class SuggestServiceImpl implements SuggestService {
         suggestDo.setSearchScopeList(scopeDoList);
 
         if (scopeDoList.size()<10 && scopeDoList.size()>0){
-            suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+            if(null!=enginesDoList && enginesDoList.size()>0){
+                suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+            }
         }else if(scopeDoList.size() == 0){
             suggestDo.setSearchEnginesList(enginesDoList);
         }

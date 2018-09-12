@@ -1,6 +1,5 @@
 package com.toutiao.app.service.homepage;
 
-import com.toutiao.app.domain.homepage.RecommendTopicDo;
 import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
 
@@ -19,6 +18,6 @@ public interface RecommendRestService {
      */
 //    RecommendTopicDomain getRecommendTopic(RecommendTopicDoQuery recommendTopicDoQuery);
 
-    RecommendTopicDomain getRecommendTopic(RecommendTopicDoQuery recommendTopicDoQuery);
+    RecommendTopicDomain getRecommendTopic(RecommendTopicDoQuery recommendTopicDoQuery, String city);
 }
 

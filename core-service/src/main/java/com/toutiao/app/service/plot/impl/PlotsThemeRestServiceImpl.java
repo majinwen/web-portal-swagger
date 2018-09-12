@@ -9,6 +9,8 @@ import com.toutiao.app.domain.plot.PlotsThemeDomain;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -40,7 +42,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
      * 获取小区主题数据
      */
     @Override
-    public PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery) {
+    public PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery, String city) {
         List<PlotsThemeDo> plotsThemeDos = new ArrayList<>();
         //小区筛选条件
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
@@ -59,13 +61,13 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         }
 
         if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .gte(plotsThemeDoQuery.getBeginPrice()).lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
         }else if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()==0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .gte(plotsThemeDoQuery.getBeginPrice()), ScoreMode.None));
         }else if(plotsThemeDoQuery.getBeginPrice()==0 && plotsThemeDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
         }
 
@@ -76,7 +78,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         }
         Integer pageNum = plotsThemeDoQuery.getPageNum();
         Integer pageSize = plotsThemeDoQuery.getPageSize();
-        SearchResponse plotsThemeList = plotsThemeEsDao.getPlotsThemeList(boolQueryBuilder, pageNum, pageSize);
+        SearchResponse plotsThemeList = plotsThemeEsDao.getPlotsThemeList(boolQueryBuilder, pageNum, pageSize, city);
 
         SearchHits hits = plotsThemeList.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -87,7 +89,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 PlotsThemeDo plotsThemeDo = JSON.parseObject(details, PlotsThemeDo.class);
 
                 //查询小区房源最大最小面积
-                SearchResponse searchResponse= plotsThemeEsDao.getHouseAreaByPlotId(plotsThemeDo.getId());
+                SearchResponse searchResponse= plotsThemeEsDao.getHouseAreaByPlotId(plotsThemeDo.getId(),city);
                 Map aggMap =searchResponse.getAggregations().asMap();
                 InternalMin minHouse = (InternalMin) aggMap.get("minHouse");
                 InternalMax maxHouse = (InternalMax) aggMap.get("maxHouse");
@@ -95,7 +97,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 plotsThemeDo.setHouseMaxArea(maxHouse.getValue());
                 plotsThemeDo.setHouseMinArea(minHouse.getValue());
                 //二手房房源数量
-                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotsThemeDo.getId());
+                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotsThemeDo.getId(), city);
 
                 if(plotsEsfRoomCountDomain.getTotalCount()!= null){
                     plotsThemeDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());

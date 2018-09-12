@@ -44,14 +44,14 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
      * 获取商圈+户型
      */
     @Override
-    public HouseBusinessAndRoomDomain getHouseBusinessAndRoomHouses(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
+    public HouseBusinessAndRoomDomain getHouseBusinessAndRoomHouses(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery,String city) {
         LinkedList<HouseBusinessAndRoomDo> houseBusinessAndRoomDos = new LinkedList<>();
         BoolQueryBuilder boolQueryBuilder = filterBusinessRoomChooseService.filterBusinessRoomChoose(houseBusinessAndRoomDoQuery);
         Integer pageNum = houseBusinessAndRoomDoQuery.getPageNum();
         Integer pageSize = houseBusinessAndRoomDoQuery.getPageSize();
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         SearchResponse houseBusinessAndRoomHouses = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomHouses(
-                boolQueryBuilder, pageNum, pageSize);
+                boolQueryBuilder, pageNum, pageSize, city);
         SearchHits hits = houseBusinessAndRoomHouses.getHits();
         SearchHit[] searchHists = hits.getHits();
         HouseBusinessAndRoomDomain houseBusinessAndRoomDomain = new HouseBusinessAndRoomDomain();
@@ -62,7 +62,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                 String oldHouseId = houseBusinessAndRoomDo.getHouseId();
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (houseBusinessAndRoomDo.getIsClaim() == 1 && StringTool.isNotEmpty(houseBusinessAndRoomDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getUserId().toString(),city);
                     //认领状态取认领数据
                     houseBusinessAndRoomDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
                     houseBusinessAndRoomDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
@@ -78,7 +78,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                 }
                 houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
-                houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags());
+                houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 String houseId = houseBusinessAndRoomDoQuery.getHouseId();
                 if (StringTool.isNotEmpty(houseId) && houseId.equals(oldHouseId)) {
                     houseBusinessAndRoomDos.addFirst(houseBusinessAndRoomDo);
@@ -94,7 +94,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
 
         BoolQueryBuilder averagePriceBuilder = filterBusinessRoomChooseService.filterBusinessRoomAveragePriceChoose
                 (houseBusinessAndRoomDoQuery);
-        SearchResponse averagePrice = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomAveragePrice(averagePriceBuilder);
+        SearchResponse averagePrice = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomAveragePrice(averagePriceBuilder, city);
         SearchHits averagePriceHits = averagePrice.getHits();
         SearchHit[] averagePriceSearchHists = averagePriceHits.getHits();
         if (averagePriceSearchHists.length > 0){

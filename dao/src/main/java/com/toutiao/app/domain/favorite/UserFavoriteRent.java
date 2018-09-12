@@ -79,4 +79,9 @@ public class UserFavoriteRent {
      * 出租类型中文名称
      */
     private  String rentTypeName;
+
+    /**
+     * 城市
+     */
+    private Integer cityId;
 }

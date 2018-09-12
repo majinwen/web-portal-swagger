@@ -1325,8 +1325,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         //经纪人头像
                         instance.setHouseProxyPhoto(agentBaseMap.get("head_photo")==null?"":agentBaseMap.get("head_photo").toString());
                         //经纪人名片
-                        if(StringTool.isNotEmpty(agentBaseMap.get("agentBusinessCard").toString())){
-                            instance.setAgentBusinessCard(agentBaseMap.get("agentBusinessCard").toString());
+                        if(StringTool.isNotEmpty(agentBaseMap.get("agentBusinessCard"))){
+                            instance.setAgentBusinessCard(agentBaseMap.get("agentBusinessCard")==null?"":agentBaseMap.get("agentBusinessCard").toString());
                         }else {
                             instance.setAgentBusinessCard("");
                         }

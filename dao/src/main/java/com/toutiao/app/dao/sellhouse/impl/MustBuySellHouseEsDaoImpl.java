@@ -2,6 +2,7 @@ package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.MustBuySellHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -32,9 +33,9 @@ public class MustBuySellHouseEsDaoImpl implements MustBuySellHouseEsDao {
      * 查询降价房列表
      */
     @Override
-    public SearchResponse getMustBuySellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize, Integer topicType) {
+    public SearchResponse getMustBuySellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize, Integer topicType, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         if (sort == 0) {
             srb.addSort("updateTimeSort", SortOrder.DESC);
         } else if (sort == 1) {

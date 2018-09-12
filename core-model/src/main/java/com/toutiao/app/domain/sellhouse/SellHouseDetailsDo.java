@@ -4,6 +4,9 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -231,6 +234,20 @@ public class SellHouseDetailsDo {
      */
     @ChangeName("totalPrice")
     private Double houseTotalPrices;
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+        try {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
+         Date date = format.parse(updateTime);
+            this.updateTime = format.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     /**
      * 更新时间
      */

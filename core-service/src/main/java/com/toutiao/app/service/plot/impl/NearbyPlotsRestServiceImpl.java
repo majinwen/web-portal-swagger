@@ -14,6 +14,7 @@ import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.slf4j.Logger;
@@ -103,7 +104,7 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
             plotDetailsFewDo.setMetroWithPlotsDistance(null);
             //二手房总数
             try {
-                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());
+                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId(),CityUtils.getCity());
                 plotDetailsFewDo.setSellHouseTotalNum(Math.toIntExact(plotsEsfRoomCountDomain.getTotalCount()));
             }catch (BaseException e){
                 logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
@@ -113,7 +114,7 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
             }
             //租房总数
             try {
-                RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId());
+                RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId(), CityUtils.getCity());
                 plotDetailsFewDo.setRentTotalNum(rentNumListDo.getTotalNum());
             }catch (BaseException e){
                 logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());

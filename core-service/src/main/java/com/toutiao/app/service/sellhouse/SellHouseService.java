@@ -14,7 +14,7 @@ public interface SellHouseService {
      * @param houseId
      * @return
      */
-    SellHouseDetailsDo getSellHouseByHouseId(String houseId);
+    SellHouseDetailsDo getSellHouseByHouseId(String houseId,String city);
 
     /**
      * 二手房房源详情消息推送
@@ -33,16 +33,18 @@ public interface SellHouseService {
     /**
      * 条件查询二手房房源
      * @param sellHouseQueryDo
+     * @param city
      * @return
      */
-    SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo, String city);
 
     /**
      * 查询二手房推荐房源
      * @param sellHouseQueryDo
+     * @param city
      * @return
      */
-    SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseQueryDo, String city);
 
 
     /**
@@ -50,16 +52,16 @@ public interface SellHouseService {
      * @param sellHouseDoQuery
      * @return
      */
-    SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery);
+    SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery,String city);
 
 
 
     /**
-     *
+     * 缝出必抢专题页
      * @param sellHouseBeSureToSnatchDoQuery
      * @return
      */
-    SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery);
+    SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery, String city);
 
     /**
      * 推荐房源
@@ -67,5 +69,5 @@ public interface SellHouseService {
      * @param recommendEsf5DoQuery
      * @return
      */
-    SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery);
+    SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery, String city);
 }

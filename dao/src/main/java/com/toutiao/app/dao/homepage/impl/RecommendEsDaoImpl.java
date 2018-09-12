@@ -3,6 +3,7 @@ package com.toutiao.app.dao.homepage.impl;
 import com.toutiao.app.dao.homepage.RecommendEsDao;
 import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -32,10 +33,10 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
     private String esfType;//二手房索引类
 
     @Override
-    public SearchResponse getRecommendByRecommendBuildTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getRecommendByRecommendBuildTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchResponse = null;
 //        if(null!=recommendTopicDoQuery.getDistrictId()){
 //             searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)
@@ -62,9 +63,9 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
     }
 
     @Override
-    public SearchResponse getRecommendByRecommendHouseTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getRecommendByRecommendHouseTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(esfIndex).setTypes(esfType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchResponse = null;
 //        if(null!=recommendTopicDoQuery.getDistrictId()){
 //            searchResponse = srb.setQuery(boolQueryBuilder).setSize(0)

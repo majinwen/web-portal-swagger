@@ -19,7 +19,7 @@ public interface AgentHouseEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
 

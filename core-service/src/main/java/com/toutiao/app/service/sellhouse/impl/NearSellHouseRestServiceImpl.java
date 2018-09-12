@@ -50,7 +50,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
     private CommunityRestService communityRestService;
 
     @Override
-    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo) {
+    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo,String city) {
 
         NearBySellHouseDomain nearBySellHouseDomain=new NearBySellHouseDomain();
         NearBySellHousesDo  nearBySellHousesDo=new NearBySellHousesDo();
@@ -115,7 +115,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
         }
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
-        SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHouseQueryDo.getPageNum(),nearBySellHouseQueryDo.getPageSize());
+        SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHouseQueryDo.getPageNum(),nearBySellHouseQueryDo.getPageSize(),city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
@@ -134,7 +134,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
             }
 
             if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(nearBySellHousesDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString());
+                agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString(), city);
 
                 if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
                     if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
@@ -165,7 +165,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                 agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
             }
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
-            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags());
+            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
             nearBySellHouses.add(nearBySellHousesDo);
             //增加地铁站与房源的距离
             String keys="";

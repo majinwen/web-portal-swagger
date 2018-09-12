@@ -4,6 +4,8 @@ package com.toutiao.app.service.plot;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -14,7 +16,7 @@ public interface PlotsRestService {
      * @param plotId
      * @return
      */
-    PlotDetailsDo queryPlotDetailByPlotId(Integer plotId);
+    PlotDetailsDo queryPlotDetailByPlotId(Integer plotId, String city);
 
 
     /**
@@ -23,21 +25,21 @@ public interface PlotsRestService {
      * @param lon
      * @return
      */
-    List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId);
+    List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId, String city);
 
     /**
      * 获取小区列表
      * @param plotListDoQuery
      * @return
      */
-    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery);
+    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery, String city);
 
     /**
      * 获取小区列表含坐标
      * @param plotListDoQuery
      * @return
      */
-    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
+//    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
 
 
     /**
@@ -56,10 +58,10 @@ public interface PlotsRestService {
      * 小区top50查询
      */
 
-    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery);
+    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery,String city);
 
 
-    List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+    List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
 
 }

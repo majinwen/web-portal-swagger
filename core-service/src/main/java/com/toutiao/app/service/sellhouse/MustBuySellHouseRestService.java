@@ -7,5 +7,5 @@ public interface MustBuySellHouseRestService {
     /**
      * 获取不卖亏二手房List
      */
-    MustBuyShellHouseDomain getMustBuySellHouse(MustBuyShellHouseDoQuery cutPriceHouseRequest, Integer topicType);
+    MustBuyShellHouseDomain getMustBuySellHouse(MustBuyShellHouseDoQuery cutPriceHouseRequest, Integer topicType ,String city);
 }

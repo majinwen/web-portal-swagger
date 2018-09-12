@@ -4,7 +4,6 @@ import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.service.favorite.SellHouseFavoriteRestService;
-import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;

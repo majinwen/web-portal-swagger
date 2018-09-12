@@ -27,7 +27,7 @@ public interface HomePageEsDao {
      * @param boolQueryBuilder
      * @return 首页top50
      */
-    SearchResponse getHomePageTop50(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getHomePageTop50(BoolQueryBuilder boolQueryBuilder, String city);
 
     /**
      * 缝出必抢
@@ -40,7 +40,7 @@ public interface HomePageEsDao {
      * @param sort
      * @return
              */
-    SearchResponse getHomePageNearPlot(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort);
+    SearchResponse getHomePageNearPlot(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort, String city);
 
     /**
      * 首页获取附近小区(无坐标)
@@ -48,7 +48,7 @@ public interface HomePageEsDao {
      * @param size
      * @return
      */
-    SearchResponse getHomePageNearPlotNoLocation(BoolQueryBuilder boolQueryBuilder,Integer size);
+    SearchResponse getHomePageNearPlotNoLocation(BoolQueryBuilder boolQueryBuilder,Integer size, String city);
 
     /**
      * 首页获取附近的二手房
@@ -57,27 +57,27 @@ public interface HomePageEsDao {
      * @param sort
      * @return
      */
-    SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort);
+    SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder,Integer size,GeoDistanceSortBuilder sort, String city);
     /**
      * 首页获取附近的二手房
      * @param boolQueryBuilder
      * @param size
      * @return
      */
-    SearchResponse getHomePageNearEsfNoLocation(BoolQueryBuilder boolQueryBuilder,Integer size);
+    SearchResponse getHomePageNearEsfNoLocation(BoolQueryBuilder boolQueryBuilder,Integer size, String city);
 
     /**
      * 专题着陆页-附近小区
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder sort);
+    SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder sort, String city);
 
     /**
      * 专题着陆页-附近二手房
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
+    SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size, String city);
 
 }

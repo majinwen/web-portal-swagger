@@ -4,8 +4,8 @@ import com.toutiao.app.api.chance.request.suggest.SuggestRequest;
 import com.toutiao.app.api.chance.response.suggest.SuggestResponse;
 import com.toutiao.app.domain.suggest.SuggestDo;
 import com.toutiao.app.service.suggest.SuggestService;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +29,7 @@ public class SuggestRestController {
     @RequestMapping(value = "/getSuggestByKeyword",method = RequestMethod.GET)
     public NashResult getSuggestByKeyword(@Validated SuggestRequest suggestRequest){
         SuggestResponse suggestResponse = new SuggestResponse();
-        SuggestDo suggest = suggestService.suggest(suggestRequest.getKeyword(), suggestRequest.getProperty());
+        SuggestDo suggest = suggestService.suggest(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
         BeanUtils.copyProperties(suggest,suggestResponse);
         return NashResult.build(suggestResponse);
     }

@@ -12,6 +12,7 @@ import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -79,11 +80,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
      * @return
      */
     @Override
-    public NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode) {
+    public NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode, String city) {
         NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newCode));
-        SearchResponse buildResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder);
+        SearchResponse buildResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder, city);
         SearchHit[] searchHists = buildResponse.getHits().getHits();
         String details = "";
         for (SearchHit searchHit : searchHists) {
@@ -120,7 +121,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
 
     @Override
-    public NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseDoQuery) {
+    public NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseDoQuery, String city) {
         NewHouseListDomain newHouseListVo=new NewHouseListDomain();
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
@@ -133,14 +134,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if (StringTool.isNotBlank(newHouseDoQuery.getKeyword())) {
             SearchResponse searchResponse = null;
             bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseDoQuery.getKeyword()));
-            searchResponse = newHouseEsDao.getPlotByKeyWord(bqbPlotName);
+            searchResponse = newHouseEsDao.getPlotByKeyWord(bqbPlotName, city);
             long total = searchResponse.getHits().getTotalHits();
             out: if(total > 0l){
                 break out;
             }else{
                 BoolQueryBuilder bqb = QueryBuilders.boolQuery();
                 bqb.must(QueryBuilders.multiMatchQuery(newHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
-                searchResponse = newHouseEsDao.getPlotByNickNameKeyWord(bqb);
+                searchResponse = newHouseEsDao.getPlotByNickNameKeyWord(bqb, city);
                 if(searchResponse.getHits().getTotalHits()>0l){
                     SearchHits hits = searchResponse.getHits();
 
@@ -179,9 +180,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //城市
-        if(newHouseDoQuery.getCityId()!=null && newHouseDoQuery.getCityId()!=0){
-            booleanQueryBuilder.must(termQuery("city_id",newHouseDoQuery.getCityId()));
-        }
+//        if(newHouseDoQuery.getCityId()!=null && newHouseDoQuery.getCityId()!=0){
+//            booleanQueryBuilder.must(termQuery("city_id",newHouseDoQuery.getCityId()));
+//        }
         //区域
         if(newHouseDoQuery.getDistrictId()!=null && newHouseDoQuery.getDistrictId() !=0){
             booleanQueryBuilder.must(termQuery("district_id",newHouseDoQuery.getDistrictId()));
@@ -244,7 +245,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if(newHouseDoQuery.getLayoutId()!=null && newHouseDoQuery.getLayoutId().length!=0 ){
 
             Integer[] longs =  newHouseDoQuery.getLayoutId();
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout", QueryBuilders.termsQuery("room",longs), ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city), QueryBuilders.termsQuery("room",longs), ScoreMode.None));
 
         }
 
@@ -280,7 +281,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
 
-            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize(),levelSort,buildingSort);
+            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize(),levelSort,buildingSort,city);
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             if(searchHists.length > 0){
@@ -294,7 +295,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                newHouseListDos.setNearbysubway(null);
                     try{
                         //获取新房下户型的数量
-                        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId());
+                        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(),city);
 //                        if (null!=newHouseLayoutCountDomain.getTotalCount())
 //                        {
 //                            newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
@@ -325,7 +326,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
                     newHouseDynamicDoQuery.setNewCode(newHouseListDos.getBuildingNameId());
                     newHouseDynamicDoQuery.setPageSize(1);
-                    List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery);
+                    List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery,city);
                     newHouseListDos.setNewHouseDynamic(newHouseDynamicDoList);
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
@@ -344,12 +345,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery) {
+    public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery, String city) {
         List<NewHouseDynamicDo> newHouseDynamicDoList=new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode",newHouseDynamicDoQuery.getNewCode()));
         try {
-            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDoQuery.getPageNum(),newHouseDynamicDoQuery.getPageSize());
+            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDoQuery.getPageNum(),newHouseDynamicDoQuery.getPageSize(), city);
             SearchHits hits = dynamicResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit searchHit : searchHists) {
@@ -367,7 +368,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode) {
+    public NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String city) {
         MapInfo mapInfo = new MapInfo();
         NewHouseTrafficDo newHouseTrafficDo=new NewHouseTrafficDo();
         mapInfo =  mapService.getMapInfo(newCode);
@@ -385,7 +386,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //获取地铁和环线位置
-        NewHouseDetailDo newHouseDetailDo=newHouseService.getNewHouseBuildByNewCode(newCode);
+        NewHouseDetailDo newHouseDetailDo=newHouseService.getNewHouseBuildByNewCode(newCode, city);
         if (null!=newHouseDetailDo.getRoundstation() &&!"".equals(newHouseDetailDo.getRoundstation()))
         {  String []  trafficInfo=newHouseDetailDo.getRoundstation().split("\\$");
             newHouseTrafficDo.setSubwayStation(trafficInfo[1]);
@@ -405,7 +406,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     }
 
     @Override
-    public NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery) {
+    public NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
         //构建筛选器
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
 
@@ -416,17 +417,17 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
         //户型
         if (null!=userFavoriteConditionDoQuery.getLayoutId()&&userFavoriteConditionDoQuery.getLayoutId().length>0){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout",QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
         }
         //价格
         if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
         }else if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery("layout",QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
         }
 
         //查询
-        SearchResponse oneNewHouseByRecommendCondition = newHouseEsDao.getOneNewHouseByRecommendCondition(booleanQueryBuilder);
+        SearchResponse oneNewHouseByRecommendCondition = newHouseEsDao.getOneNewHouseByRecommendCondition(booleanQueryBuilder, city);
         SearchHit[] hits = oneNewHouseByRecommendCondition.getHits().getHits();
         NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         if (hits.length>0){

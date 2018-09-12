@@ -31,11 +31,12 @@ public class HotPlotsRestServiceImpl implements HotPlotsRestService {
      */
     @Override
     public SearchHotProjDomain getHotPlotsByCityId(String city) {
-
-        Integer cityId = Integer.valueOf(city);//暂时写死
-        List<SearchHotProjDo> searchHotProjs = searchHotProjMapper.queryHotPlotsByCityId(cityId);
         SearchHotProjDomain searchHotProjDomain = new SearchHotProjDomain();
-        searchHotProjDomain.setData(searchHotProjs);
+        if(!"".equals(city)){
+            Integer cityId = Integer.valueOf(city);//暂时写死
+            List<SearchHotProjDo> searchHotProjs = searchHotProjMapper.queryHotPlotsByCityId(cityId);
+            searchHotProjDomain.setData(searchHotProjs);
+        }
         return searchHotProjDomain;
     }
 }
