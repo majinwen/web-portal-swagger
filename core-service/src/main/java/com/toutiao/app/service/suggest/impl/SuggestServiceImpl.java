@@ -60,7 +60,7 @@ public class SuggestServiceImpl implements SuggestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
 //        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
-        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("100%")));
+        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
 
         if (property!=null){
             String searchType = getSearchType(property);
@@ -89,11 +89,11 @@ public class SuggestServiceImpl implements SuggestService {
         suggestDo.setRentNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("rent")).getDocCount());
         suggestDo.setApartmentNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("apartment")).getDocCount());
 
-        BoolQueryBuilder boolQueryBuilderNickname = QueryBuilders.boolQuery();
-        boolQueryBuilderNickname.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_nickname").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
-        boolQueryBuilderNickname.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
-        boolQueryBuilderNickname.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
-        SearchResponse keywordSuggest = suggestEsDao.getKeywordSuggest(boolQueryBuilderNickname, city);
+
+        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_nickname").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
+        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
+        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
+        SearchResponse keywordSuggest = suggestEsDao.getKeywordSuggest(boolQueryBuilder, city);
         SearchHit[] keywordHits = keywordSuggest.getHits().getHits();
         if (keywordHits.length>0){
             for (SearchHit hit :keywordHits) {
@@ -106,14 +106,7 @@ public class SuggestServiceImpl implements SuggestService {
         suggestDo.setSearchScopeList(scopeDoList);
 
         if (scopeDoList.size()<10 && scopeDoList.size()>0){
-            if(null!=enginesDoList && enginesDoList.size()>0){
-                if(enginesDoList.size()>scopeDoList.size()){
-                    suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
-                }else if(enginesDoList.size()<= scopeDoList.size()){
-
-                    suggestDo.setSearchEnginesList(enginesDoList);
-                }
-            }
+            suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
         }else if(scopeDoList.size() == 0){
             suggestDo.setSearchEnginesList(enginesDoList);
         }
