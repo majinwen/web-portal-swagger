@@ -285,6 +285,9 @@ public class MessagePushServiceImpl implements MessagePushService {
     public List<HomeMessageDo> getHomeMessage(HomeMessageDoQuery homeMessageDoQuery, String userId) {
         ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
         for (int i = 3; i < 7; i++) {
+            if (i == 5){
+                continue;
+            }
             MessagePushExample example = new MessagePushExample();
             example.setOrderByClause("id DESC");
             MessagePushExample.Criteria criteria = example.createCriteria();
@@ -395,7 +398,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 blodMessageContent.append(SPACE).append(DROP).append(mcJson.get("money")).append(WAN);
             }
 
-            messageContent.append(YOURFAVORITE).append(blodMessageContent);
+            messageContent.append(YOURFAVORITE).append(SPACE).append(blodMessageContent);
         }
         contentArr[0] = messageContent.toString();
         contentArr[1] = blodMessageContent.toString();
