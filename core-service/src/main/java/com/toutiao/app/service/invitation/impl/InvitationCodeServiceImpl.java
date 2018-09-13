@@ -20,8 +20,6 @@ import java.util.List;
 
 @Service
 public class InvitationCodeServiceImpl implements InvitationCodeService {
-    private static final String[] ZEROTONINE = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    private static final String[] ONETONINE = {"1", "2", "3", "4", "5", "6", "7", "8", "9"};
 
     @Autowired
     private InvitationCodeMapper invitationCodeMapper;
@@ -62,7 +60,6 @@ public class InvitationCodeServiceImpl implements InvitationCodeService {
             InvitationCode invitation = invitationCodeMapper.getInvitation(invitationCodeDoQuery.getUserId());
             if (invitation == null) {
                 invitation = new InvitationCode();
-                invitation.setCode(Integer.valueOf(randomDigits(1, ONETONINE) + randomDigits(7, ZEROTONINE)));
                 invitation.setCreateTime(new Date());
                 invitation.setUserId(invitationCodeDoQuery.getUserId());
                 invitation.setInviteTotal(0);
