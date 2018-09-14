@@ -168,9 +168,8 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     public SearchResponse getComparedHouseByIds(IdsQueryBuilder idsQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city))
-                .setTypes(ElasticCityUtils.getEsfHouseTpye(city))
-                .setQuery(idsQueryBuilder)
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchResponse searchresponse = srb.setQuery(idsQueryBuilder).setSize(1000)
                 .execute().actionGet();
 
         return searchresponse;

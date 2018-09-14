@@ -93,7 +93,11 @@ public class ComparedServiceImpl implements ComparedService {
         List<HouseComparedListDo> houseComparedListDoList = new ArrayList<>();
         Dictionary<String, HouseComparedListDo> houseComparedListDoDict = getESHouseComparedListDo(ids, city);
         for (String id : ids) {
-            houseComparedListDoList.add(houseComparedListDoDict.get(id));
+            if(null==houseComparedListDoDict.get(id)){
+
+            }else{
+                houseComparedListDoList.add(houseComparedListDoDict.get(id));
+            }
         }
         return houseComparedListDoList;
     }
