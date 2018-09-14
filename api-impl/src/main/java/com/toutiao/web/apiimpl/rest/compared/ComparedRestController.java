@@ -110,7 +110,7 @@ public class ComparedRestController {
     public NashResult listCompared() {
         UserBasic userBasic = UserBasic.getCurrent();
         String city = CityUtils.getCity();
-        List<HouseCompared> houseComparedList = comparedService.selectByUserId(Integer.parseInt("72"),
+        List<HouseCompared> houseComparedList = comparedService.selectByUserId(Integer.parseInt(userBasic.getUserId()),
                 CityUtils.returnCityId(city));
         return NashResult.build(comparedService.selectComparedByHouseCompareds(houseComparedList, city));
     }
