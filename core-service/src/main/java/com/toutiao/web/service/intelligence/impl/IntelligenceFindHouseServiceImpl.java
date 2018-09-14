@@ -374,7 +374,8 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             }
             BeanUtils.copyProperties(intelligenceFhRes, intelligenceFhResDo);
             intelligenceFhResMapper.saveData(intelligenceFhResDo);
-
+            BeanUtils.copyProperties(intelligenceFhResDo, intelligenceFhRes);
+            intelligenceFhRes.setLayout(String.valueOf(intelligenceFhResDo.getLayout()));
             return intelligenceFhRes;
         }
         return null;
