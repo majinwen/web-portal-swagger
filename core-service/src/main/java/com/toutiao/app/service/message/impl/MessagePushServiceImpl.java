@@ -107,7 +107,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
 
-        if (messagePushQuery.getLastMessageId() != null) {
+        if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
 
@@ -145,6 +145,11 @@ public class MessagePushServiceImpl implements MessagePushService {
         messagePushDomain.setData(message);
         messagePushDomain.setTotalCount(message.size());
         messagePushDomain.setLastMessageId(lastMessageId);
+
+        //清空消息
+        if (messagePushQuery.getLastMessageId() == null || messagePushQuery.getLastMessageId() == 0){
+            updateIsRead(messagePushQuery.getContentType(), userId);
+        }
 
         return messagePushDomain;
     }
@@ -218,7 +223,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
 
-        if (messagePushQuery.getLastMessageId() != null) {
+        if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
 
@@ -243,6 +248,12 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
         messagePushDomain.setLastMessageId(lastMessageId);
         messagePushDomain.setTotalCount(messagePushDomain.getData().size());
+
+        //清空消息
+        if (messagePushQuery.getLastMessageId() == null || messagePushQuery.getLastMessageId() == 0){
+            updateIsRead(messagePushQuery.getContentType(), userId);
+        }
+
         return messagePushDomain;
     }
 
@@ -316,6 +327,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             if (StringTool.isNotEmpty(userId)) {
                 countCriteria.andUserIdEqualTo(Integer.valueOf(userId));
             }
+            countCriteria.andIsReadEqualTo((short)0);
             countCriteria.andPushTypeEqualTo(1);
             countCriteria.andContentTypeEqualTo(i);
             if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
@@ -434,19 +446,17 @@ public class MessagePushServiceImpl implements MessagePushService {
     /**
      * 修改消息已读
      *
-     * @param messageIsReadQuery
+     * @param contentType
      * @param userId
      */
-    @Override
-    public int updateIsRead(MessageIsReadQuery messageIsReadQuery, String userId) {
+    private int updateIsRead(Integer contentType, String userId) {
         MessagePushExample example = new MessagePushExample();
         MessagePushExample.Criteria criteria = example.createCriteria();
         criteria.andIsReadEqualTo((short)0);
-        criteria.andContentTypeEqualTo(messageIsReadQuery.getContentType());
+        criteria.andContentTypeEqualTo(contentType);
         if (StringTool.isNotEmpty(userId)){
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
-        criteria.andCreateTimeLessThan(new Date(messageIsReadQuery.getTime()));
         MessagePush messagePush = new MessagePush();
         messagePush.setIsRead((short)1);
         return messagePushMapper.updateByExampleSelective(messagePush, example);
