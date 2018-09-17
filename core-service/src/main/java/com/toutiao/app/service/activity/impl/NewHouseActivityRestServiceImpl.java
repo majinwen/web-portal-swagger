@@ -6,7 +6,6 @@ import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
 import com.toutiao.app.service.activity.NewHouseActivityRestService;
-import com.toutiao.web.common.constant.activity.ActivityEnum;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.activity.UserNewBuildingActivityMapper;
