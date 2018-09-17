@@ -110,7 +110,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
-
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
         List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
         MessagePushDomain messagePushDomain = new MessagePushDomain();
@@ -122,19 +121,31 @@ public class MessagePushServiceImpl implements MessagePushService {
         Integer lastMessageId = null;
         List<MessagePushDo> message = new ArrayList<>();
         for (MessagePushDo messagePushDo : messagePushDos) {
-            String houseIds = messagePushDo.getHouseId();
-            if (!"{}".equals(houseIds)) {
-                String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
-                //配置房源展示数量
-                split = subStrings(split, 0, 10);
-                messagePushDo.setHouseId(Arrays.toString(split));
-                List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(split);
-                //处理房源标题图和详情页Url
-                dealPhotoTitleAndDetailUrl(messageSellHouseDos, messagePushDo.getCityId());
-                messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
-                messageHouseCount += split.length;
+            JSONObject esfInfo = messagePushDo.getEsfInfo();
+            List<MessageSellHouseDo> messageSellHouseDos1 = new ArrayList<>();
+            if (esfInfo != null && messageHouseCount < 10) {
+                Set<String> houseIdSet = esfInfo.keySet();
+                for (String houseId : houseIdSet){
+                    List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(new String[]{houseId});
+                    JSONObject jsonObject = esfInfo.getJSONObject(houseId);
+                    if (CollectionUtils.isEmpty(messageSellHouseDos)) {
+                        jsonObject.put("status", 1);
+                    } else {
+                        MessageSellHouseDo messageSellHouseDo = messageSellHouseDos.get(0);
+                        jsonObject.put("status", 0);
+                        jsonObject.put("houseTotalPrices", messageSellHouseDo.getHouseTotalPrices());
+                        jsonObject.put("priceFloat", messageSellHouseDo.getPriceFloat());
+                        jsonObject.put("housePhotoTitle", dealPhotoTitle(messageSellHouseDo.getHousePhotoTitle()));
+                        jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                    }
+                    jsonObject.put("houseId", houseId);
+                    messageSellHouseDos1.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+
+                }
+                messagePushDo.setMessageSellHouseDos(messageSellHouseDos1);
                 message.add(messagePushDo);
-                if (messageHouseCount > 10) {
+                messageHouseCount += houseIdSet.size();
+                if (messageHouseCount >= 10) {
                     lastMessageId = messagePushDo.getId();
                     break;
                 } else {
@@ -460,5 +471,25 @@ public class MessagePushServiceImpl implements MessagePushService {
         MessagePush messagePush = new MessagePush();
         messagePush.setIsRead((short)1);
         return messagePushMapper.updateByExampleSelective(messagePush, example);
+    }
+
+    private String dealPhotoTitle(String photoUrl) {
+        if (StringTool.isNotEmpty(photoUrl)) {
+            if (!(photoUrl.contains("http://") || photoUrl.contains("https://"))) {
+                photoUrl = qinniuImg + "/" + photoUrl + "-dongfangdi400x300";
+            }
+        } else {
+            photoUrl = "isNotExists";
+        }
+        return photoUrl;
+    }
+
+    private String dealDetailUrl(String houseId, Integer cityId) {
+        String houseDetailUrl = null;
+        if (StringTool.isNotEmpty(houseId) && StringTool.isNotEmpty(CITYID2ABBREVIATION.get(cityId))) {
+            houseDetailUrl = String.format(appName + "/#/%s/details/secondHand?houseId=%s",
+                    CITYID2ABBREVIATION.get(cityId), houseId);
+        }
+        return houseDetailUrl;
     }
 }

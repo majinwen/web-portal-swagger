@@ -36,31 +36,27 @@ public class MessageSellHouseDo {
     /**
      * 区域名称
      */
-    @ChangeName("districtName")
-    private String area;
+    private String districtName;
 
     /**
      * 区域id
      */
-    @ChangeName("districtId")
-    private String areaId;
+    private String districtId;
 
     /**
      * 商圈id
      */
-    @ChangeName("areaId")
-    private String houseBusinessNameId;
+    private String areaId;
     /**
      * 商圈名称
      */
-    @ChangeName("areaName")
-    private String houseBusinessName;
+    private String areaName;
 
     /**
      * 小区名称
      */
     @ChangeName("buildingName")
-    private String plotName;
+    private String projname;
 
     /**
      * 小区id
