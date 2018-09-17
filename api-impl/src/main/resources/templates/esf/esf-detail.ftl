@@ -729,10 +729,10 @@
     });
     function desc(url) {
         if(url.indexOf('esf')>-1){
-            return '二手房-进入二手房详情页'
+            return 'wap-二手房列表-点击进入二手房'
         }
         if(url.indexOf('/ad')>-1){
-            return '广告-进入二手房详情页'
+            return 'wap-广告-二手房详情页'
         }
         if(url.indexOf(window.location.hostname)>-1){
             return '大首页-点击二手房推荐'
@@ -751,7 +751,7 @@
         'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
     });
 
-    zhuge.track('二手房详情页点击量', {
+    zhuge.track('wap-二手房详情页点击整体', {
         '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
         '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
         '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
@@ -766,7 +766,7 @@
 
     <#if houseDetail?exists>
         <#if houseDetail['claimHouseId']?exists && houseDetail['claimHouseId']!=''>
-        zhuge.track('出售房源认领统计', {
+        zhuge.track('wap-二手房认领详情页', {
             '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
             '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
             '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',

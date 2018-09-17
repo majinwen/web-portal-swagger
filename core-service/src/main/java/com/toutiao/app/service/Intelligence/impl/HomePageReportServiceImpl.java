@@ -409,6 +409,9 @@ public class HomePageReportServiceImpl implements HomePageReportService {
                     finalList.add(list.get(index));
                 }
                 list.remove(index);
+                if(list.size()<= 0){
+                    flag = true;
+                }
             }
         }
     }

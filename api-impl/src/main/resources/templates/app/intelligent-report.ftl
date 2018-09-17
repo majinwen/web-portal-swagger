@@ -192,7 +192,7 @@
                                     </#if>
                                     </li>
                                     <li><#if intelligenceFhRes['districtId']?exists&&intelligenceFhRes['districtId']!=''><#assign Districts = intelligenceFhRes['districtId']?split(',')><#list Districts as district><em>${district} </em></#list><#else ><em>-</em></#if></li>
-                                    <li><#if intelligenceFhRes['layout']?exists&&intelligenceFhRes['layout']?number gt 0>${intelligenceFhRes['layout']}居<#else >-</#if> </li>
+                                    <li><#if intelligenceFhRes['layout']?exists&&intelligenceFhRes['layout']!=''>${intelligenceFhRes['layout']}居<#else >-</#if> </li>
                                 </ul>
                                 <div class="tip-text">
                                     <span>交通便利</span>

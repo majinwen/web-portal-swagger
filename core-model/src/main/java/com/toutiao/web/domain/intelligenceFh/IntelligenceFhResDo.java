@@ -1,11 +1,11 @@
-package com.toutiao.web.dao.entity.officeweb;
+package com.toutiao.web.domain.intelligenceFh;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Data;
 
 @Data
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
-public class IntelligenceFhRes {
+public class IntelligenceFhResDo {
     /**
      * id
      */
@@ -44,7 +44,7 @@ public class IntelligenceFhRes {
     /**
      * 户型
      */
-    private String layout;
+    private Integer layout;
 
     /**
      * 是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）

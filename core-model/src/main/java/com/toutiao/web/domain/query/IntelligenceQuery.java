@@ -42,7 +42,7 @@ public class IntelligenceQuery {
     /**
      * 用户选择的户型
      */
-    private Integer layout;
+    private Integer layOut;
 
 
 

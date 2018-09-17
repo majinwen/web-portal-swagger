@@ -10,6 +10,7 @@ import com.toutiao.web.dao.mapper.officeweb.*;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.intelligenceFh.DistictInfo;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFh;
+import com.toutiao.web.domain.intelligenceFh.IntelligenceFhResDo;
 import com.toutiao.web.domain.query.IntelligenceQuery;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
 import com.toutiao.web.service.map.MapService;
@@ -313,9 +314,11 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
      */
     public IntelligenceFhRes save(IntelligenceQuery intelligenceQuery, List<IntelligenceFindhouse> finalList, String userPhone) {
         IntelligenceFhRes intelligenceFhRes = new IntelligenceFhRes();
+        IntelligenceFhResDo intelligenceFhResDo = new IntelligenceFhResDo();
         String str = JSONObject.toJSONString(intelligenceQuery);
         IntelligenceFhResJson intelligenceFhResJson = JSON.parseObject(str, IntelligenceFhResJson.class);
         BeanUtils.copyProperties(intelligenceFhResJson, intelligenceFhRes);
+        intelligenceFhResDo.setLayout(intelligenceFhResJson.getLayout());
 //        List<IntelligenceFindhouse> test = intelligenceFindhouseMapper.test(11114240);
 //        finalList = test;
         int index = 1;
@@ -369,8 +372,10 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
             if(userPhone!=null){
                 intelligenceFhRes.setPhone(userPhone);
             }
-            intelligenceFhResMapper.saveData(intelligenceFhRes);
-
+            BeanUtils.copyProperties(intelligenceFhRes, intelligenceFhResDo);
+            intelligenceFhResMapper.saveData(intelligenceFhResDo);
+            BeanUtils.copyProperties(intelligenceFhResDo, intelligenceFhRes);
+            intelligenceFhRes.setLayout(String.valueOf(intelligenceFhResDo.getLayout()));
             return intelligenceFhRes;
         }
         return null;
@@ -489,6 +494,9 @@ public class IntelligenceFindHouseServiceImpl implements IntelligenceFindHouseSe
                     finalList.add(list.get(index));
                 }
                 list.remove(index);
+                if(list.size()<= 0){
+                    flag = true;
+                }
             }
         }
     }

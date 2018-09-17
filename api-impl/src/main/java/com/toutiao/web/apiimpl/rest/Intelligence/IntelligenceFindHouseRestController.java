@@ -89,7 +89,7 @@ public class IntelligenceFindHouseRestController {
 
                 if (StringTool.isNotBlank(intelligenceFhRes)) {
                     if(StringTool.isNotEmpty(intelligenceFhRes.getLayoutArray())){
-                        intelligenceFhRes.setLayout(Integer.valueOf(intelligenceFhRes.getLayoutArray()));
+                        intelligenceFhRes.setLayout(intelligenceFhRes.getLayoutArray());
                     }else{
                         intelligenceFhRes.setLayout(intelligenceFhRes.getLayout());
                     }

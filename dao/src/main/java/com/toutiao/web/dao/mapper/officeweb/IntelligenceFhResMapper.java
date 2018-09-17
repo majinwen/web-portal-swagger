@@ -2,6 +2,7 @@ package com.toutiao.web.dao.mapper.officeweb;
 
 import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
+import com.toutiao.web.domain.intelligenceFh.IntelligenceFhResDo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,8 @@ public interface IntelligenceFhResMapper extends BaseDao {
     int updateByPrimaryKey(IntelligenceFhRes record);
 
     List<IntelligenceFhRes> selectByUserPhone(String userPhone);
+
+    Integer saveData(IntelligenceFhResDo intelligenceFhResDo);
 
     Integer saveData(IntelligenceFhRes intelligenceFhRes);
 
