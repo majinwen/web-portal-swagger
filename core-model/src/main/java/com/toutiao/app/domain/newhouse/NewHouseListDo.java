@@ -180,4 +180,10 @@ public class NewHouseListDo  {
     @ChangeName("houseAddress")
     private  String buildingAddress;
 
+    /**
+     * 新房动态数量
+     */
+    private Long dynamicTotal;
+
+
 }

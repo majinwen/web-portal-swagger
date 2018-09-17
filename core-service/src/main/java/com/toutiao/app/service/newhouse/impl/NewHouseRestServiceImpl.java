@@ -318,6 +318,13 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     }catch (Exception e){
                         logger.error("获取新房户型信息异常信息={}",e.getStackTrace());
                     }
+                    //新房动态
+                    BoolQueryBuilder queryBuilderDynamic = boolQuery();//声明符合查询方法
+                    queryBuilderDynamic.must(QueryBuilders.termQuery("newcode",newHouseListDos.getBuildingNameId()));
+                    SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(queryBuilderDynamic,1,10, city);
+                    long dynamicTotal = dynamicResponse.getHits().totalHits;//动态总数
+                    newHouseListDos.setDynamicTotal(dynamicTotal);
+
                     //获取新房户型价格范围
                     NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId());
                     newHouseListDos.setHouseMinPrice(newHouseLayoutPriceDo.getHouseMinPrice());
@@ -333,6 +340,29 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
                     newHouseListDoList.add(newHouseListDos);
                 }
+
+
+
+//                booleanQueryBuilder.must(QueryBuilders.termQuery("newcode",newHouseDynamicDoQuery.getNewCode()));
+//                try {
+//                    SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDoQuery.getPageNum(),newHouseDynamicDoQuery.getPageSize(), city);
+//                    SearchHits hits = dynamicResponse.getHits();
+//                    SearchHit[] searchHists = hits.getHits();
+//                    for (SearchHit searchHit : searchHists) {
+//                        String details = "";
+//                        details=searchHit.getSourceAsString();
+//                        NewHouseDynamicDo newHouseDynamic=JSON.parseObject(details,NewHouseDynamicDo.class);
+//                        newHouseDynamicDoList.add(newHouseDynamic);
+//                    }
+//                }catch (Exception e)
+//                {
+//                    logger.error("获取新房动态信息异常信息"+newHouseDynamicDoQuery.getNewCode().toString()+"={}",e.getStackTrace());
+//                }
+
+
+
+
+
                 newHouseListVo.setData(newHouseListDoList);
                 newHouseListVo.setTotalCount(hits.getTotalHits());
             }else{
