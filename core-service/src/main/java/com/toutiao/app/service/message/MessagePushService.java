@@ -35,8 +35,8 @@ public interface MessagePushService {
     /**
      * 修改消息已读
      *
-     * @param messageIsReadQuery
+     * @param contentType
      * @param userId
      */
-    int updateIsRead(MessageIsReadQuery messageIsReadQuery, String userId);
+//    int updateIsRead(Integer contentType, String userId);
 }

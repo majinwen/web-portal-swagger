@@ -111,16 +111,7 @@ public class MessagePushController {
     @ResponseBody
     public NashResult updateMessageRead(@Validated MessageIsReadRequest messageIsReadRequest, HttpServletRequest request,
                                         HttpServletResponse response) {
-        String userId = getUserIdByCookie(request, response);
-        if (StringTool.isEmpty(userId)) {
-            return NashResult.Fail("用户未登录");
-        }
-        MessageIsReadQuery messageIsReadQuery = new MessageIsReadQuery();
-        BeanUtils.copyProperties(messageIsReadRequest, messageIsReadQuery);
-        int i = messagePushService.updateIsRead(messageIsReadQuery, userId);
-        if (i > 0){
-            return NashResult.build("消息已读!");
-        }
-        return NashResult.Fail("消息读取失败!");
+        //TODO 仍有地方调用，但是接口无效
+        return NashResult.build("消息已读!");
     }
 }

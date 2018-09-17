@@ -325,4 +325,5 @@ public class ProjHouseInfoResponse {
 
     private Integer userId;
     private String agentBusinessCard;
+    private String companyCard;
 }
