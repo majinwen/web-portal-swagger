@@ -32,7 +32,7 @@ public class CityUtils {
         //从header中获取城市信息12
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
         String cityCode = request.getHeader(CookieUtils.COOKIE_NAME_CITY);
-        if(null ==cityCode){
+        if(null ==cityCode || "".equals(cityCode)){
             //测试用sh;正式默认bj
             cityCode = CityConstant.ABBREVIATION_BEIJING;
         }
