@@ -180,4 +180,7 @@ public class NewHouseListDo  {
     @ChangeName("houseAddress")
     private  String buildingAddress;
 
+    @ChangeName("salePhone")
+    private String saletelphone;
+
 }
