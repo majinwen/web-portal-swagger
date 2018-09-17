@@ -185,5 +185,8 @@ public class NewHouseListDo  {
      */
     private Long dynamicTotal;
 
+    @ChangeName("salePhone")
+    private String saletelphone;
+
 
 }
