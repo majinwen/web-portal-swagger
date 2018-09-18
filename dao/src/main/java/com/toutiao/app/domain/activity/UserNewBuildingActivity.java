@@ -32,7 +32,7 @@ public class UserNewBuildingActivity {
     /**
      * 用户昵称
      */
-    private String userNickname;
+    private String userCallName;
 
     /**
      * 参与活动楼盘id

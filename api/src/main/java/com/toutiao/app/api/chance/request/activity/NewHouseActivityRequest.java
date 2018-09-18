@@ -21,7 +21,7 @@ public class NewHouseActivityRequest {
     /**
      * 用户id
      */
-    @NotNull(groups ={First.class},message = "缺少用户id")
+    @NotNull(groups ={First.class,Second.class},message = "缺少用户id")
     private Integer userId;
 
     /**
@@ -33,8 +33,8 @@ public class NewHouseActivityRequest {
     /**
      * 用户昵称
      */
-    @NotEmpty(groups ={First.class},message = "缺少用户昵称")
-    private String userNickname;
+    @NotEmpty(groups ={First.class},message = "缺少用户称呼名")
+    private String userCallName;
 
     /**
      * 参与活动楼盘id

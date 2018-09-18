@@ -16,10 +16,11 @@
     <result column="identifier" property="identifier" jdbcType="VARCHAR" />
     <result column="rong_cloud_token" property="rongCloudToken" jdbcType="VARCHAR" />
     <result column="user_only_sign" property="userOnlySign" jdbcType="VARCHAR" />
+    <result column="user_call_name" property="userCallName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, user_name, user_pwd, phone, avatar, create_time, login_time, update_time, 
-    user_status, register_source, identity_type, identifier, rong_cloud_token, user_only_sign
+    user_status, register_source, identity_type, identifier, rong_cloud_token, user_only_sign,user_call_name
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -63,12 +64,12 @@
       phone, avatar, create_time, 
       login_time, update_time, user_status, 
       register_source, identity_type, identifier, 
-      rong_cloud_token, user_only_sign)
+      rong_cloud_token, user_only_sign,user_call_name)
     values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{loginTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=SMALLINT}, 
       #{registerSource,jdbcType=SMALLINT}, #{identityType,jdbcType=SMALLINT}, #{identifier,jdbcType=VARCHAR}, 
-      #{rongCloudToken,jdbcType=VARCHAR}, #{userOnlySign,jdbcType=VARCHAR})
+      #{rongCloudToken,jdbcType=VARCHAR}, #{userOnlySign,jdbcType=VARCHAR}, #{userCallName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
     insert into user_basic
@@ -115,6 +116,9 @@
       <if test="userOnlySign != null" >
         user_only_sign,
       </if>
+      <if test="userCallName != null" >
+        user_call_name,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -158,6 +162,9 @@
       </if>
       <if test="userOnlySign != null" >
         #{userOnlySign,jdbcType=VARCHAR},
+      </if>
+      <if test="userCallName != null" >
+        #{userCallName,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -203,6 +210,9 @@
       <if test="userOnlySign != null" >
         user_only_sign = #{userOnlySign,jdbcType=VARCHAR},
       </if>
+      <if test="userCallName != null" >
+        user_call_name = #{userCallName,jdbcType=VARCHAR},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
@@ -220,7 +230,8 @@
       identity_type = #{identityType,jdbcType=SMALLINT},
       identifier = #{identifier,jdbcType=VARCHAR},
       rong_cloud_token = #{rongCloudToken,jdbcType=VARCHAR},
-      user_only_sign = #{userOnlySign,jdbcType=VARCHAR}
+      user_only_sign = #{userOnlySign,jdbcType=VARCHAR},
+      user_call_name = #{userCallName,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
 </mapper>

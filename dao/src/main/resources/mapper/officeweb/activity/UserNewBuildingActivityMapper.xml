@@ -5,7 +5,7 @@
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="user_id" property="userId" jdbcType="INTEGER" />
     <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
-    <result column="user_nickname" property="userNickname" jdbcType="VARCHAR" />
+    <result column="user_call_name" property="userCallName" jdbcType="VARCHAR" />
     <result column="activity_building_id" property="activityBuildingId" jdbcType="INTEGER" />
     <result column="activity_building_name" property="activityBuildingName" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
@@ -13,7 +13,7 @@
     <result column="activity_id" property="activityId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, user_phone, user_nickname, activity_building_id, activity_building_name, create_time, city_id, activity_id
+    id, user_id, user_phone, user_call_name, activity_building_id, activity_building_name, create_time, city_id, activity_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -27,10 +27,10 @@
   </delete>
   <insert id="insert" parameterType="com.toutiao.app.domain.activity.UserNewBuildingActivity" >
     insert into user_new_building_activity (id, user_id, user_phone, 
-      user_nickname, activity_building_id, activity_building_name, create_time,
+      user_call_name, activity_building_id, activity_building_name, create_time,
       city_id, activity_id)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userPhone,jdbcType=VARCHAR}, 
-      #{userNickname,jdbcType=VARCHAR}, #{activityBuildingId,jdbcType=INTEGER}, #{activityBuildingName,jdbcType=VARCHAR}, 
+      #{userCallName,jdbcType=VARCHAR}, #{activityBuildingId,jdbcType=INTEGER}, #{activityBuildingName,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP},
       #{cityId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER})
   </insert>
@@ -46,8 +46,8 @@
       <if test="userPhone != null" >
         user_phone,
       </if>
-      <if test="userNickname != null" >
-        user_nickname,
+      <if test="userCallName != null" >
+        user_call_name,
       </if>
       <if test="activityBuildingId != null" >
         activity_building_id,
@@ -75,8 +75,8 @@
       <if test="userPhone != null" >
         #{userPhone,jdbcType=VARCHAR},
       </if>
-      <if test="userNickname != null" >
-        #{userNickname,jdbcType=VARCHAR},
+      <if test="userCallName != null" >
+        #{userCallName,jdbcType=VARCHAR},
       </if>
       <if test="activityBuildingId != null" >
         #{activityBuildingId,jdbcType=INTEGER},
@@ -104,8 +104,8 @@
       <if test="userPhone != null" >
         user_phone = #{userPhone,jdbcType=VARCHAR},
       </if>
-      <if test="userNickname != null" >
-        user_nickname = #{userNickname,jdbcType=VARCHAR},
+      <if test="userCallName != null" >
+        user_call_name = #{userCallName,jdbcType=VARCHAR},
       </if>
       <if test="activityBuildingId != null" >
         activity_building_id = #{activityBuildingId,jdbcType=INTEGER},
@@ -129,7 +129,7 @@
     update user_new_building_activity
     set user_id = #{userId,jdbcType=INTEGER},
       user_phone = #{userPhone,jdbcType=VARCHAR},
-      user_nickname = #{userNickname,jdbcType=VARCHAR},
+      user_call_name = #{userCallName,jdbcType=VARCHAR},
       activity_building_id = #{activityBuildingId,jdbcType=INTEGER},
       activity_building_name = #{activityBuildingName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
@@ -153,7 +153,7 @@
       id,
       user_id AS userId,
       user_phone AS userPhone,
-      user_nickname AS  userNickname,
+      user_call_name AS  userCallName,
       activity_building_id AS activityBuildingId,
       activity_building_name AS  activityBuildingName,
       create_time AS createTime,
@@ -173,8 +173,8 @@
     <if test="activityId !=null and activityId != '' ">
       AND activity_id = #{activityId}
     </if>
-    <if test="userNickname !=null and userNickname != '' ">
-      AND user_nickname = #{userNickname}
+    <if test="userCallName !=null and userCallName != '' ">
+      AND user_call_name = #{userCallName}
     </if>
   </select>
 </mapper>
