@@ -287,6 +287,7 @@
                         <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
                         <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if>
                         <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                        <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''><i class="agent-business-card imagePreviewAgentCompany"><img src="${staticurl}/images/global/yingyezhizhao.png"></i></#if>
                     </span>
                     <em>房屋信息发布人</em>
                 </p>
@@ -318,6 +319,7 @@
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
                         <#if houseDetail.houseProxyName?exists&&houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>
                         <#if houseDetail.agentBusinessCard?exists && houseDetail.agentBusinessCard != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                        <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''><i class="agent-business-card imagePreviewAgentCompany"><img src="${staticurl}/images/global/yingyezhizhao.png"></i></#if>
                     </span>
                     <em>房屋信息发布人</em>
                 </p>
@@ -631,6 +633,18 @@
         </#if>
     </div>
 </div>
+<div class="agent-card-company-prev">
+    <div class="agent-card-content">
+        <i id="closeAgentCompany"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
+    <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''>
+        <#if houseDetail['companyCard']?index_of('http') gt -1>
+            <img src="${houseDetail.companyCard}" />
+        <#else >
+            <img src="${qiniuimage}/${houseDetail.companyCard}-agent200x300" />
+        </#if>
+    </#if>
+    </div>
+</div>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -653,6 +667,13 @@
         $('#closeAgent').on('click', function() {
             $('.agent-card-prev').hide()
         });
+        $('.imagePreviewAgentCompany').on('click', function() {
+            $('.agent-card-company-prev').show()
+        });
+        $('#closeAgentCompany').on('click', function() {
+            $('.agent-card-company-prev').hide()
+        });
+
         var subPhone = false;
         var reservationData = {};
 
