@@ -47,9 +47,6 @@ public class RentHouseController {
         //房源详情
         Map map = rentHouseService.queryHouseById(rentHouseQuery);
         if(map!=null){
-            if(!map.containsKey("companyCard")){
-                map.put("companyCard","");
-            }
             model.addAttribute("rentHouse",map);
             RentHouseQuery queryNearHouse = new RentHouseQuery();
             String house_id = map.get("house_id").toString();
