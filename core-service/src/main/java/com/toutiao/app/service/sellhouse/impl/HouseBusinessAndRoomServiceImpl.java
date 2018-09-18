@@ -12,6 +12,7 @@ import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.FilterBusinessRoomChooseService;
 import com.toutiao.app.service.sellhouse.HouseBusinessAndRoomService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -69,14 +70,20 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                     List<String> tags = (List<String>) searchHit.getSource().get("claimTagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
-                    houseBusinessAndRoomDo.setTagsName(tagsName);
                     houseBusinessAndRoomDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
-                } else {
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    houseBusinessAndRoomDo.setTagsName(tagsName);
+
+                }else if(houseBusinessAndRoomDo.getIsClaim() == 0){
+                    if(StringUtil.isNotNullString(houseBusinessAndRoomDo.getProjExpertUserId())){
+                        agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getProjExpertUserId(),city);
+                    }else{
+                        agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
+                        agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
+                        agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    }
                 }
+
                 houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
                 houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
                 String houseId = houseBusinessAndRoomDoQuery.getHouseId();

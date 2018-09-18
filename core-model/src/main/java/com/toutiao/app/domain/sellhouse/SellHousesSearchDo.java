@@ -316,4 +316,9 @@ public class SellHousesSearchDo {
      * 推荐房源主题排序
      */
     private Integer recommendHouseTopicSort;
+
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
 }
