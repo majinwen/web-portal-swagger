@@ -81,6 +81,10 @@ public class UserBasic {
      */
     private String userOnlySign;
 
+    /**
+     * 用户称呼
+     */
+    private String userCallName;
 
     public static UserBasic getCurrent() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();

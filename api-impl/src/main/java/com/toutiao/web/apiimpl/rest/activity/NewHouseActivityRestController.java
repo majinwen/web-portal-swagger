@@ -2,11 +2,16 @@ package com.toutiao.web.apiimpl.rest.activity;
 
 import com.github.pagehelper.PageInfo;
 import com.toutiao.app.api.chance.request.activity.NewHouseActivityRequest;
+import com.toutiao.app.api.chance.response.user.UserInfoActivityResponse;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
+import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.activity.NewHouseActivityRestService;
+import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.assertUtils.First;
+import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -29,7 +34,14 @@ public class NewHouseActivityRestController {
 
     @Autowired
     private NewHouseActivityRestService newHouseActivityRestService;
+    @Autowired
+    private UserBasicInfoService userBasicInfoService;
 
+    /**
+     * 提交活动表单
+     * @param newHouseActivityRequest
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/saveUserActivityMsg",method = RequestMethod.POST)
     public NashResult saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest) {
@@ -41,7 +53,11 @@ public class NewHouseActivityRestController {
     }
 
 
-
+    /**
+     * 查询活动信息--后台使用
+     * @param newHouseActivityRequest
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/queryUserActivityMsg",method = RequestMethod.GET)
     public NashResult queryUserActivityMsg(NewHouseActivityRequest newHouseActivityRequest) {
@@ -54,6 +70,25 @@ public class NewHouseActivityRestController {
 
         return NashResult.build(userNewBuildingActivityDoPageInfo);
     }
+
+    /**
+     * 查询用户信息
+     * @param newHouseActivityRequest
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryUserMsg",method = RequestMethod.GET)
+    public NashResult queryUserMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest) {
+
+        UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(newHouseActivityRequest.getUserId().toString());
+        if(StringUtil.isNullString(userBasicDo.getUserCallName())){
+            userBasicDo.setUserCallName("");
+        }
+        UserInfoActivityResponse userInfoActivityResponse = new UserInfoActivityResponse();
+        BeanUtils.copyProperties(userBasicDo,userInfoActivityResponse);
+        return NashResult.build(userInfoActivityResponse);
+    }
+
 
 
 }
