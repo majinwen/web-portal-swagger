@@ -358,7 +358,7 @@
                     <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
                 </h4>
                 <p>
-                    <#if village['abbreviatedAge']?exists||(village['abbreviatedAge']!='')>
+                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']!='')>
                     <#--<#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>-->
                         <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
                     </#if>
