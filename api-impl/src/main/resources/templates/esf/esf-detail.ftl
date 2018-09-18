@@ -779,8 +779,7 @@
             'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
         });
         var bdwlogger = new window.Tracker();
-        bdwlogger.logger({
-            '__topic__':'wap-二手房认领详情页',
+        bdwlogger.logger('wap-二手房认领详情页',{
             '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
             '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
             '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
