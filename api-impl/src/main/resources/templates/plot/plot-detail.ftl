@@ -20,7 +20,12 @@
 <#--<#assign ptCD1 = tradeline['arealine']>-->
 <#--<#assign ptCD2 = tradeline['tradearealine']>-->
 <#--<#assign mouthList = tradeline['mouthList']>-->
-<img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]!""}-ttfc1200x640" alt="">
+<#if village['photo']?exists && village['photo']?length gt 0>
+    <img class="shareTopImg" height="0" width="0" src="${qiniuimage}/${village['photo'][0]}-ttfc1200x640" alt="">
+<#else >
+    <img class="shareTopImg" height="0" width="0" src="${staticurl}/images/global/tpzw_image.png" alt="">
+</#if>
+
 <div class="carousel-box">
     <div class="swiper-container carousel-swiper" id="detail-swiper">
         <ul class="swiper-wrapper" id="house-pic-container">
@@ -330,7 +335,7 @@
             <div class="column item-only-one">
                 <div class="info-card-item" id="base-info">
                 <#if village['rc']?exists>${village['rc']}</#if>
-                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
+                <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']!='')>,<em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅</#if>
                 <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>,共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
                 <#if village['sumHousehold']?exists>
                     <#if village['sumHousehold']?number gt 0>

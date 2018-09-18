@@ -350,8 +350,8 @@
         <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
 
             <div class="picture-box">
-                <#assign item=houseDetail['plotPhoto']>
-                <#if item?exists && item != ''><img src="${qiniuimage}/${item}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+                <#--<#assign item=houseDetail['plotPhoto']>-->
+                <#if houseDetail['plotPhoto']?exists && houseDetail['plotPhoto'] != ''><img src="${qiniuimage}/${houseDetail['plotPhoto']}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
             </div>
             <div id="tilePlotDesc" class="tilelist-content">
                 <h4>
