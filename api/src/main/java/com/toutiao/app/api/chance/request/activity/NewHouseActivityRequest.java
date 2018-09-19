@@ -55,14 +55,19 @@ public class NewHouseActivityRequest {
     private Integer activityId;
 
     /**
+     * 城市id
+     */
+    private Integer cityId;
+
+    /**
      * 当前页码
      */
-    private int pageNum = 1;
+    private int pageNum;
 
     /**
      * 每页记录数
      */
-    private int pageSize = 10;
+    private int pageSize;
 
 
 }
