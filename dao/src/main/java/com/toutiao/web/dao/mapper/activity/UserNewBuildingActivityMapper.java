@@ -25,13 +25,14 @@ public interface UserNewBuildingActivityMapper extends BaseDao {
 
     /**
      * 查询用户活动信息
-     * @param userId
      * @param buildingId
-     * @param activityId
      * @return
      */
-    UserNewBuildingActivity selectActivityByUser(@Param("userId")Integer userId,@Param("activityBuildingId")Integer buildingId,
-                                                 @Param("activityId")Integer activityId);
+//    UserNewBuildingActivity selectActivityByUser(@Param("userId")Integer userId,@Param("activityBuildingId")Integer buildingId,
+//                                                 @Param("activityId")Integer activityId);
+
+    List<UserNewBuildingActivity> selectActivityByUser(@Param("userPhone")String userPhone,
+                                                 @Param("activityBuildingId")Integer buildingId);
 
     /**
      *  查询用户活动信息--城市后台使用
