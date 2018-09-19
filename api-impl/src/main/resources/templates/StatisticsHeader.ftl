@@ -7,7 +7,7 @@
         s.parentNode.insertBefore(hm, s);
     })();
 </script>
-<script src="http://wap-qn.toutiaofangchan.com/bidewu_tracking.js" type="text/javascript"></script>
+<script src="http://wap-qn.toutiaofangchan.com/bidewu_tracking2.js" type="text/javascript"></script>
 <script type="text/javascript">
     window.zhuge = window.zhuge || [];
     window.zhuge.methods = "_init debug identify track trackLink trackForm page".split(" ");
