@@ -49,6 +49,9 @@
                     img {
                         width: rem(36);
                     }
+                    &:nth-child(n+2) {
+                        margin-left: rem(76);
+                    }
                 }
             }
         }
@@ -255,7 +258,7 @@
         }
     }
 }
-.agent-card-prev {
+.agent-card-prev, .agent-card-company-prev {
     display: none;
     position: fixed;
     top: 0;
