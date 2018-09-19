@@ -471,5 +471,10 @@ public class SellHouseDetailsDo {
      */
     private String agentBusinessCard;
 
+    /**
+     * 经济公司营业执照
+     */
+    private String companyCard;
+
 
 }

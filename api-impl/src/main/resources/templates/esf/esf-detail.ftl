@@ -287,6 +287,7 @@
                         <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
                         <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if>
                         <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                        <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''><i class="agent-business-card imagePreviewAgentCompany"><img src="${staticurl}/images/global/yingyezhizhao.png"></i></#if>
                     </span>
                     <em>房屋信息发布人</em>
                 </p>
@@ -318,6 +319,7 @@
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
                         <#if houseDetail.houseProxyName?exists&&houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>
                         <#if houseDetail.agentBusinessCard?exists && houseDetail.agentBusinessCard != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                        <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''><i class="agent-business-card imagePreviewAgentCompany"><img src="${staticurl}/images/global/yingyezhizhao.png"></i></#if>
                     </span>
                     <em>房屋信息发布人</em>
                 </p>
@@ -350,15 +352,16 @@
         <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
 
             <div class="picture-box">
-                <#assign item=houseDetail['plotPhoto']>
-                <#if item?exists><img src="${qiniuimage}/${item}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+                <#--<#assign item=houseDetail['plotPhoto']>-->
+                <#if houseDetail['plotPhoto']?exists && houseDetail['plotPhoto'] != ''><img src="${qiniuimage}/${houseDetail['plotPhoto']}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
             </div>
             <div id="tilePlotDesc" class="tilelist-content">
                 <h4>
                     <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
                 </h4>
                 <p>
-                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
+                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']!='')>
+                    <#--<#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>-->
                         <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
                     </#if>
                     <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
@@ -631,6 +634,18 @@
         </#if>
     </div>
 </div>
+<div class="agent-card-company-prev">
+    <div class="agent-card-content">
+        <i id="closeAgentCompany"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
+    <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''>
+        <#if houseDetail['companyCard']?index_of('http') gt -1>
+            <img src="${houseDetail.companyCard}" />
+        <#else >
+            <img src="${qiniuimage}/${houseDetail.companyCard}-agent200x300" />
+        </#if>
+    </#if>
+    </div>
+</div>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -653,6 +668,13 @@
         $('#closeAgent').on('click', function() {
             $('.agent-card-prev').hide()
         });
+        $('.imagePreviewAgentCompany').on('click', function() {
+            $('.agent-card-company-prev').show()
+        });
+        $('#closeAgentCompany').on('click', function() {
+            $('.agent-card-company-prev').hide()
+        });
+
         var subPhone = false;
         var reservationData = {};
 
