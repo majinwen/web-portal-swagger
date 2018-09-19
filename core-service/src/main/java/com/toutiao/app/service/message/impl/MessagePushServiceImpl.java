@@ -98,12 +98,10 @@ public class MessagePushServiceImpl implements MessagePushService {
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
 
-        //内容类型(3-符合找房条件的房源上新, 4-关注小区房源上新, 5-关注房源价格变动)
+        //内容类型(3-符合找房条件的房源上新, 4-关注小区房源上新, 5-关注房源价格变动, 6-专题订阅)
         if (messagePushQuery.getContentType() != null) {
             criteria.andContentTypeEqualTo(messagePushQuery.getContentType());
         }
-        //消息类型(0-资讯类, 1-系统消息, 2-房源类, 3-专题类)
-        criteria.andMessageTypeEqualTo(2);
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
 
@@ -123,28 +121,47 @@ public class MessagePushServiceImpl implements MessagePushService {
         for (MessagePushDo messagePushDo : messagePushDos) {
             JSONObject esfInfo = messagePushDo.getEsfInfo();
             List<MessageSellHouseDo> messageSellHouseDos1 = new ArrayList<>();
-            if (esfInfo != null && messageHouseCount < 10) {
-                Set<String> houseIdSet = esfInfo.keySet();
-                for (String houseId : houseIdSet){
-                    List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(new String[]{houseId});
-                    JSONObject jsonObject = esfInfo.getJSONObject(houseId);
-                    if (CollectionUtils.isEmpty(messageSellHouseDos)) {
-                        jsonObject.put("status", 1);
+            String houseIds = messagePushDo.getHouseId();
+            if (!"{}".equals(houseIds)) {
+                String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
+                //配置房源展示数量
+                split = subStrings(split, 0, 10);
+                for (String houseId : split){
+                    JSONObject jsonObject;
+                    List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(
+                            new String[]{houseId}, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
+                    MessageSellHouseDo tempMessageSellHouseDo = null;
+                    if (esfInfo == null){
+                        //旧数据查不到，从Es表查询
+                        jsonObject = new JSONObject();
+                        if (CollectionUtils.isNotEmpty(messageSellHouseDos)){
+                            jsonObject = (JSONObject)JSONObject.toJSON(messageSellHouseDos.get(0));
+                            jsonObject.put("status", 0);
+                            tempMessageSellHouseDo = messageSellHouseDos.get(0);
+                        }
                     } else {
-                        MessageSellHouseDo messageSellHouseDo = messageSellHouseDos.get(0);
-                        jsonObject.put("status", 0);
-                        jsonObject.put("houseTotalPrices", messageSellHouseDo.getHouseTotalPrices());
-                        jsonObject.put("priceFloat", messageSellHouseDo.getPriceFloat());
-                        jsonObject.put("housePhotoTitle", dealPhotoTitle(messageSellHouseDo.getHousePhotoTitle()));
+                        jsonObject = esfInfo.getJSONObject(houseId);
+                        //新数据可以从esfInfo查询，判断是否下架
+                        if (CollectionUtils.isEmpty(messageSellHouseDos)){
+                            jsonObject.put("status", 1);
+                            tempMessageSellHouseDo = JSONObject.toJavaObject(jsonObject, MessageSellHouseDo.class);
+                        } else {
+                            jsonObject.put("status", 0);
+                            tempMessageSellHouseDo = messageSellHouseDos.get(0);
+                        }
+                        jsonObject.put("houseId", houseId);
+                    }
+                    if (tempMessageSellHouseDo != null){
+                        jsonObject.put("houseTotalPrices", tempMessageSellHouseDo.getHouseTotalPrices());
+                        jsonObject.put("priceFloat", tempMessageSellHouseDo.getPriceFloat());
+                        jsonObject.put("housePhotoTitle", dealPhotoTitle(tempMessageSellHouseDo.getHousePhotoTitle()));
                         jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
                     }
-                    jsonObject.put("houseId", houseId);
                     messageSellHouseDos1.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-
                 }
                 messagePushDo.setMessageSellHouseDos(messageSellHouseDos1);
                 message.add(messagePushDo);
-                messageHouseCount += houseIdSet.size();
+                messageHouseCount += split.length;
                 if (messageHouseCount >= 10) {
                     lastMessageId = messagePushDo.getId();
                     break;

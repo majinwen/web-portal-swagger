@@ -36,27 +36,31 @@ public class MessageSellHouseDo {
     /**
      * 区域名称
      */
-    private String districtName;
+    @ChangeName("districtName")
+    private String area;
 
     /**
      * 区域id
      */
-    private String districtId;
+    @ChangeName("districtId")
+    private String areaId;
 
     /**
      * 商圈id
      */
-    private String areaId;
+    @ChangeName("areaId")
+    private String houseBusinessNameId;
     /**
      * 商圈名称
      */
-    private String areaName;
+    @ChangeName("areaName")
+    private String houseBusinessName;
 
     /**
      * 小区名称
      */
     @ChangeName("buildingName")
-    private String projname;
+    private String plotName;
 
     /**
      * 小区id
@@ -94,4 +98,9 @@ public class MessageSellHouseDo {
      * 房源详情Url
      */
     private String houseDetailUrl;
+
+    /**
+     * 厅
+     */
+    private String hall;
 }
