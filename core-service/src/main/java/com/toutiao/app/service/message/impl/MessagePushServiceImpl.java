@@ -130,32 +130,32 @@ public class MessagePushServiceImpl implements MessagePushService {
                     JSONObject jsonObject;
                     List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(
                             new String[]{houseId}, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
-                    MessageSellHouseDo tempMessageSellHouseDo = null;
                     if (esfInfo == null){
                         //旧数据查不到，从Es表查询
                         jsonObject = new JSONObject();
                         if (CollectionUtils.isNotEmpty(messageSellHouseDos)){
                             jsonObject = (JSONObject)JSONObject.toJSON(messageSellHouseDos.get(0));
                             jsonObject.put("status", 0);
-                            tempMessageSellHouseDo = messageSellHouseDos.get(0);
+                            jsonObject.put("houseTotalPrices", messageSellHouseDos.get(0).getHouseTotalPrices());
+                            jsonObject.put("priceFloat", messageSellHouseDos.get(0).getPriceFloat());
+                            jsonObject.put("housePhotoTitle", dealPhotoTitle(messageSellHouseDos.get(0).getHousePhotoTitle()));
+                            jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
                         }
                     } else {
                         jsonObject = esfInfo.getJSONObject(houseId);
                         //新数据可以从esfInfo查询，判断是否下架
                         if (CollectionUtils.isEmpty(messageSellHouseDos)){
                             jsonObject.put("status", 1);
-                            tempMessageSellHouseDo = JSONObject.toJavaObject(jsonObject, MessageSellHouseDo.class);
+                            jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
+                            jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
                         } else {
                             jsonObject.put("status", 0);
-                            tempMessageSellHouseDo = messageSellHouseDos.get(0);
+                            jsonObject.put("houseTotalPrices", messageSellHouseDos.get(0).getHouseTotalPrices());
+                            jsonObject.put("priceFloat", messageSellHouseDos.get(0).getPriceFloat());
+                            jsonObject.put("housePhotoTitle", dealPhotoTitle(messageSellHouseDos.get(0).getHousePhotoTitle()));
+                            jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
                         }
                         jsonObject.put("houseId", houseId);
-                    }
-                    if (tempMessageSellHouseDo != null){
-                        jsonObject.put("houseTotalPrices", tempMessageSellHouseDo.getHouseTotalPrices());
-                        jsonObject.put("priceFloat", tempMessageSellHouseDo.getPriceFloat());
-                        jsonObject.put("housePhotoTitle", dealPhotoTitle(tempMessageSellHouseDo.getHousePhotoTitle()));
-                        jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
                     }
                     messageSellHouseDos1.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
                 }

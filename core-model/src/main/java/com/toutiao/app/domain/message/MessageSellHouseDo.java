@@ -50,10 +50,11 @@ public class MessageSellHouseDo {
      */
     @ChangeName("areaId")
     private String houseBusinessNameId;
+
     /**
      * 商圈名称
      */
-    @ChangeName("areaName")
+    @ChangeName("area")
     private String houseBusinessName;
 
     /**
