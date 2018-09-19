@@ -62,11 +62,9 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
         if(null!=userNewBuildingActivity){
             return NashResult.Fail("1","已参与此活动！");
         }else{
-            String city = CityUtils.getCity();
-
             UserNewBuildingActivity activity = new UserNewBuildingActivity();
             BeanUtils.copyProperties(userNewBuildingActivityDoQuery,activity);
-            activity.setCityId(CityUtils.returnCityId(city));
+            activity.setCityId(userNewBuildingActivityDoQuery.getCityId());
             activity.setCreateTime(new Date());
             activity.setActivityBuildingId(buildingId);
             activity.setActivityBuildingName(userNewBuildingActivityDoQuery.getBuildingName());

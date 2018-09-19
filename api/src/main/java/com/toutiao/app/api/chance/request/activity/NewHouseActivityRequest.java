@@ -33,7 +33,7 @@ public class NewHouseActivityRequest {
     /**
      * 用户昵称
      */
-    @NotEmpty(groups ={First.class},message = "缺少用户称呼名")
+    //@NotEmpty(groups ={First.class},message = "缺少用户称呼名")
     private String userCallName;
 
     /**
@@ -51,18 +51,23 @@ public class NewHouseActivityRequest {
     /**
      * 活动id
      */
-    @NotNull(groups ={First.class},message = "缺少活动id")
+    //@NotNull(groups ={First.class},message = "缺少活动id")
     private Integer activityId;
+
+    /**
+     * 城市id
+     */
+    private Integer cityId;
 
     /**
      * 当前页码
      */
-    private int pageNum = 1;
+    private int pageNum;
 
     /**
      * 每页记录数
      */
-    private int pageSize = 10;
+    private int pageSize;
 
 
 }

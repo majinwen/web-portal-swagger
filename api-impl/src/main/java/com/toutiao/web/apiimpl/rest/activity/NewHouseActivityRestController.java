@@ -11,7 +11,10 @@ import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
+import org.elasticsearch.common.recycler.Recycler;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -45,6 +48,10 @@ public class NewHouseActivityRestController {
     @ResponseBody
     @RequestMapping(value = "/saveUserActivityMsg",method = RequestMethod.POST)
     public NashResult saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest) {
+
+        if(StringTool.isBlank(newHouseActivityRequest.getCityId())){
+            newHouseActivityRequest.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        }
 
         UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
         BeanUtils.copyProperties(newHouseActivityRequest,userNewBuildingActivityDoQuery);
