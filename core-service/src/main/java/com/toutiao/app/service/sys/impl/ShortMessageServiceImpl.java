@@ -1,6 +1,7 @@
 package com.toutiao.app.service.sys.impl;
 
 import com.aliyuncs.exceptions.ClientException;
+import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.web.common.constant.syserror.ShortMessageInterfaceErrorCodeEnum;
 import com.toutiao.web.common.restmodel.InvokeResult;
@@ -63,5 +64,24 @@ public class ShortMessageServiceImpl implements ShortMessageService {
             return NashResult.Fail(exceptionCode.toString(), e.getMessage());
         }
 
+    }
+
+
+    /**
+     * 发送优惠活动短信信息
+     * @param userPhone
+     * @param userNewBuildingActivity
+     * @return
+     */
+    @Override
+    public NashResult sendSmsByActivity(String userPhone, UserNewBuildingActivity userNewBuildingActivity) {
+
+
+
+
+
+
+
+        return null;
     }
 }
