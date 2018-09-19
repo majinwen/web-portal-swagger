@@ -37,11 +37,11 @@ public class UserNewBuildingActivityDoQuery {
      * 参与活动楼盘名称
      */
     private String buildingName;
-
-    /**
-     * 参与活动类型标志
-     */
-    private Integer activityType;
+//
+//    /**
+//     * 参与活动类型标志
+//     */
+//    private Integer activityType;
 
     /**
      * 活动id
@@ -49,14 +49,19 @@ public class UserNewBuildingActivityDoQuery {
     private Integer activityId;
 
     /**
+     * 城市id
+     */
+    private Integer cityId;
+
+    /**
      * 当前页码
      */
-    private int pageNum = 1;
+    private int pageNum;
 
     /**
      * 每页记录数
      */
-    private int pageSize = 10;
+    private int pageSize;
 
 
 }

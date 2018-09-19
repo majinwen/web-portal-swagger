@@ -7,6 +7,8 @@ import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
 import com.toutiao.app.service.activity.NewHouseActivityRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.mapper.activity.UserNewBuildingActivityMapper;
@@ -50,31 +52,25 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
 
         Integer userId = userNewBuildingActivityDoQuery.getUserId();
 
-        UserBasic userBasic = userBasicMapper.selectByPrimaryKey(userId.toString());
-
-        if(userBasic==null){
-            logger.error("查询用户信息错误,无此用户，userId："+userId+"={}");
-            return NashResult.Fail("2","保存失败");
-        }
         Integer buildingId = userNewBuildingActivityDoQuery.getBuildingId();
         Integer activityId = userNewBuildingActivityDoQuery.getActivityId();
-        UserNewBuildingActivity userNewBuildingActivity = userNewBuildingActivityMapper.selectActivityByUser(userId,buildingId,activityId);
-        if(null!=userNewBuildingActivity){
+        String userPhone = userNewBuildingActivityDoQuery.getUserPhone();
+//        UserNewBuildingActivity userNewBuildingActivity = userNewBuildingActivityMapper.selectActivityByUser(userId,userPhone,buildingId,activityId);
+        List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone,buildingId);
+        if(null != userNewBuildingActivityList && userNewBuildingActivityList.size() > 0){
             return NashResult.Fail("1","已参与此活动！");
         }else{
-            String city = CityUtils.getCity();
-
             UserNewBuildingActivity activity = new UserNewBuildingActivity();
             BeanUtils.copyProperties(userNewBuildingActivityDoQuery,activity);
-            activity.setCityId(CityUtils.returnCityId(city));
+            activity.setCityId(userNewBuildingActivityDoQuery.getCityId());
             activity.setCreateTime(new Date());
             activity.setActivityBuildingId(buildingId);
             activity.setActivityBuildingName(userNewBuildingActivityDoQuery.getBuildingName());
             try {
                 Integer saveResult = userNewBuildingActivityMapper.insertSelective(activity);
-                if(saveResult > 0){
+                if(saveResult > 0 && StringTool.isNotBlank(userId)){
                     //不论称呼是否一样都更新一下
-//                    UserBasic userBasic = new UserBasic();
+                    UserBasic userBasic = new UserBasic();
                     userBasic.setUserId(userId.toString());
                     userBasic.setUserCallName(activity.getUserCallName());
                     Integer updateResult = userBasicMapper.updateByPrimaryKeySelective(userBasic);
@@ -85,6 +81,8 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
                         return NashResult.Fail("2","保存失败");
                     }
 
+                }else if(saveResult > 0 && StringTool.isBlank(userId)){
+                    return NashResult.build("保存成功");
                 }else{
                     logger.error("保存用户活动信息失败，userId："+userId+"={}");
                     return NashResult.Fail("2","保存失败");
