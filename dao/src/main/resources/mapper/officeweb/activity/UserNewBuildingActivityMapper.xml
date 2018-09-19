@@ -150,9 +150,9 @@
     <if test="userPhone !=null and userPhone != '' ">
       AND user_phone = #{userPhone,jdbcType=INTEGER}
     </if>
-    <!--<if test="activityId !=null and activityId != '' ">-->
-      <!--AND activity_id = #{activityId,jdbcType=INTEGER}-->
-    <!--</if>-->
+    <if test="activityId !=null and activityId != '' ">
+      AND activity_id = #{activityId,jdbcType=INTEGER}
+    </if>
     <if test="activityBuildingId !=null and activityBuildingId != '' ">
       AND activity_building_id = #{activityBuildingId,jdbcType=INTEGER}
     </if>

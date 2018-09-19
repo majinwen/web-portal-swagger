@@ -6,6 +6,7 @@ import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
 import com.toutiao.app.service.activity.NewHouseActivityRestService;
+import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -17,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -38,6 +40,8 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
     private UserNewBuildingActivityMapper userNewBuildingActivityMapper;
     @Autowired
     private UserBasicMapper userBasicMapper;
+    @Autowired
+    private ShortMessageService shortMessageService;
 
 
 
@@ -56,7 +60,7 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
         Integer activityId = userNewBuildingActivityDoQuery.getActivityId();
         String userPhone = userNewBuildingActivityDoQuery.getUserPhone();
 //        UserNewBuildingActivity userNewBuildingActivity = userNewBuildingActivityMapper.selectActivityByUser(userId,userPhone,buildingId,activityId);
-        List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone,buildingId);
+        List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone,buildingId,activityId);
         if(null != userNewBuildingActivityList && userNewBuildingActivityList.size() > 0){
             return NashResult.Fail("1","已参与此活动！");
         }else{
@@ -75,6 +79,8 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
                     userBasic.setUserCallName(activity.getUserCallName());
                     Integer updateResult = userBasicMapper.updateByPrimaryKeySelective(userBasic);
                     if(updateResult > 0){
+                        //todo
+                        //shortMessageService.sendSmsByActivity(userPhone,activity);
                         return NashResult.build("保存成功");
                     }else{
                         logger.error("更新用户称呼失败，userId："+userId+"={}");
@@ -82,6 +88,8 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
                     }
 
                 }else if(saveResult > 0 && StringTool.isBlank(userId)){
+                    //todo
+                    //shortMessageService.sendSmsByActivity(userPhone,activity);
                     return NashResult.build("保存成功");
                 }else{
                     logger.error("保存用户活动信息失败，userId："+userId+"={}");

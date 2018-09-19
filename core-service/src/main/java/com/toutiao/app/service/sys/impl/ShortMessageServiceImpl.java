@@ -10,6 +10,7 @@ import com.toutiao.web.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -20,6 +21,10 @@ import org.springframework.stereotype.Service;
 public class ShortMessageServiceImpl implements ShortMessageService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShortMessageServiceImpl.class);
+
+    @Value("${activity.proj.agent.phones}")
+    private String smsPhone;
+
     @Autowired
     private RedisSessionUtils redis;
 
@@ -77,11 +82,33 @@ public class ShortMessageServiceImpl implements ShortMessageService {
     public NashResult sendSmsByActivity(String userPhone, UserNewBuildingActivity userNewBuildingActivity) {
 
 
+        String activityBuildingName = userNewBuildingActivity.getActivityBuildingName();
+        String userCallName = userNewBuildingActivity.getUserCallName();
+        //发送短信
+        try {
+            //发送短信给用户
+            String userCode = smsUtils.sendActivitySms(smsPhone,activityBuildingName,"",1);
+            if (null != userCode && "OK".equals(userCode)) {
+                logger.info("发送用户短信息成功，电话："+userPhone+"={}");
+            }else if ("isv.BUSINESS_LIMIT_CONTROL".equals(userCode)) {
+                logger.error("发送用户短信息过于频繁或已超出限制，电话："+userPhone+"={}");
+            }else{
+                logger.error("发送用户短信息失败，电话："+userPhone+"={}");
+            }
 
-
-
-
-
-        return null;
+            //发送短信给经纪人
+            userCallName = userCallName+userNewBuildingActivity.getUserPhone();
+            String agentCode = smsUtils.sendActivitySms(smsPhone,activityBuildingName,userCallName,2);
+            if (null != agentCode && "OK".equals(agentCode)) {
+                logger.info("发送经纪人短信息成功，电话："+userPhone+"={}");
+            }else if ("isv.BUSINESS_LIMIT_CONTROL".equals(userCode)) {
+                logger.error("发送经纪人短信息过于频繁或已超出限制，电话："+userPhone+"={}");
+            }else{
+                logger.error("发送经纪人短信息失败，电话："+userPhone+"={}");
+            }
+        } catch (ClientException e) {
+            e.printStackTrace();
+        }
+        return NashResult.build("");
     }
 }

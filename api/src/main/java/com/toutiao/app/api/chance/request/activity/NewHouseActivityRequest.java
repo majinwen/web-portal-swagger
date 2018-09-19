@@ -21,13 +21,13 @@ public class NewHouseActivityRequest {
     /**
      * 用户id
      */
-//    @NotNull(groups ={First.class,Second.class},message = "缺少用户id")
+    @NotNull(groups ={Second.class},message = "缺少用户id")
     private Integer userId;
 
     /**
      * 用户手机号
      */
-    @NotEmpty(groups ={First.class},message = "缺少用户手机号码")
+    //@NotEmpty(groups ={First.class},message = "缺少用户手机号码")
     private String userPhone;
 
     /**
