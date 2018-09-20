@@ -1,6 +1,8 @@
 package com.toutiao.app.service.invitation.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.toutiao.app.domain.invitation.SuperInviteHistoryDo;
+import com.toutiao.app.domain.invitation.SuperInviteHistoryDoQuery;
 import com.toutiao.app.service.invitation.InviteHistoryService;
 import com.toutiao.web.dao.entity.invitation.InviteHistory;
 import com.toutiao.web.dao.mapper.invitation.InviteHistoryMapper;
@@ -50,5 +52,16 @@ public class InviteHistoryServiceImpl implements InviteHistoryService {
         PageHelper.startPage(pageNum, pageSize);
         List<InviteHistory> inviteHistoryByCode = inviteHistoryMapper.getInviteHistoryByCode(code);
         return inviteHistoryByCode;
+    }
+
+    @Override
+    public List<SuperInviteHistoryDo> getSuperInviteHistory(SuperInviteHistoryDoQuery superInviteHistoryDoQuery) {
+        PageHelper.startPage(superInviteHistoryDoQuery.getPageNum(), superInviteHistoryDoQuery.getPageSize());
+        return inviteHistoryMapper.getSuperInviteHistory(superInviteHistoryDoQuery);
+    }
+
+    @Override
+    public int getCountByEquipmentNo(String equipmentNo) {
+        return inviteHistoryMapper.getCountByEquipmentNo(equipmentNo);
     }
 }

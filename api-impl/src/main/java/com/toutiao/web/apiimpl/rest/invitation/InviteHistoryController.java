@@ -1,9 +1,12 @@
 package com.toutiao.web.apiimpl.rest.invitation;
 
+import com.toutiao.app.domain.invitation.SuperInviteHistoryDo;
+import com.toutiao.app.domain.invitation.SuperInviteHistoryDoQuery;
 import com.toutiao.app.service.invitation.InvitationCodeService;
 import com.toutiao.app.service.invitation.InviteHistoryService;
 import com.toutiao.web.api.chance.request.invitation.GetInviteHistoryRequest;
 import com.toutiao.web.api.chance.request.invitation.InviteHistoryRequest;
+import com.toutiao.web.api.chance.request.invitation.SuperInviteHistoryRequest;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.dao.entity.invitation.InvitationCode;
 import com.toutiao.web.dao.entity.invitation.InviteHistory;
@@ -42,6 +45,10 @@ public class InviteHistoryController {
         if (invitationValid == null) {
             return NashResult.Fail("邀请码无效！");
         }
+        int countByEquipmentNo = inviteHistoryService.getCountByEquipmentNo(inviteHistory.getEquipmentNo());
+        if (countByEquipmentNo > 0){
+            NashResult.build("该设备已成功添加邀请码");
+        }
         int i = inviteHistoryService.saveInviteHistory(inviteHistory);
         List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
         if (!CollectionUtils.isEmpty(inviteHistoryByCode)) {
@@ -66,5 +73,20 @@ public class InviteHistoryController {
         List<InviteHistory> inviteHistoryList = inviteHistoryService.getInviteHistoryList(getInviteHistoryRequest.getCode(),
                 getInviteHistoryRequest.getPageSize(), getInviteHistoryRequest.getPageNum());
         return NashResult.build(inviteHistoryList);
+    }
+
+    /**
+     * 获取三级邀请信息
+     *
+     * @param superInviteHistoryRequest
+     * @return
+     */
+    @RequestMapping(value = "/getSuperInviteHistory", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getSuperInviteHistory (SuperInviteHistoryRequest superInviteHistoryRequest) {
+        SuperInviteHistoryDoQuery superInviteHistoryDoQuery = new SuperInviteHistoryDoQuery();
+        BeanUtils.copyProperties(superInviteHistoryRequest, superInviteHistoryDoQuery);
+        List<SuperInviteHistoryDo> superInviteHistory = inviteHistoryService.getSuperInviteHistory(superInviteHistoryDoQuery);
+        return NashResult.build(superInviteHistory);
     }
 }
