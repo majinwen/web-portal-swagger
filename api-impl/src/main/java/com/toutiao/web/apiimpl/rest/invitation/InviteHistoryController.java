@@ -47,7 +47,7 @@ public class InviteHistoryController {
         }
         int countByEquipmentNo = inviteHistoryService.getCountByEquipmentNo(inviteHistory.getEquipmentNo());
         if (countByEquipmentNo > 0){
-            NashResult.build("该设备已成功添加邀请码");
+            return NashResult.build("该设备已成功添加邀请码");
         }
         int i = inviteHistoryService.saveInviteHistory(inviteHistory);
         List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
