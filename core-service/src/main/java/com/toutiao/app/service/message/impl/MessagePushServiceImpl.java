@@ -69,7 +69,6 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String ANYLIVINGROOM = "居室不限";
     private static final String ADDONE = "新上一套";
     private static final String SQUAREMETER = "㎡";
-//    private static final String CHINESESQUAREMETER = "平米";
     private static final String OF = "的";
     private static final String RISE = "涨";
     private static final String DROP = "降";
@@ -120,48 +119,17 @@ public class MessagePushServiceImpl implements MessagePushService {
         List<MessagePushDo> message = new ArrayList<>();
         for (MessagePushDo messagePushDo : messagePushDos) {
             JSONObject esfInfo = messagePushDo.getEsfInfo();
-            List<MessageSellHouseDo> messageSellHouseDos1 = new ArrayList<>();
+            List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
             String houseIds = messagePushDo.getHouseId();
             if (!"{}".equals(houseIds)) {
                 String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
                 //配置房源展示数量
-                split = subStrings(split, 0, 10);
                 for (String houseId : split){
-                    JSONObject jsonObject;
-                    List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(
-                            new String[]{houseId}, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
-                    if (esfInfo == null){
-                        //旧数据查不到，从Es表查询
-                        jsonObject = new JSONObject();
-                        if (CollectionUtils.isNotEmpty(messageSellHouseDos)){
-                            jsonObject = (JSONObject)JSONObject.toJSON(messageSellHouseDos.get(0));
-                            jsonObject.put("status", 0);
-                            jsonObject.put("houseTotalPrices", messageSellHouseDos.get(0).getHouseTotalPrices());
-                            jsonObject.put("priceFloat", messageSellHouseDos.get(0).getPriceFloat());
-                            jsonObject.put("housePhotoTitle", dealPhotoTitle(messageSellHouseDos.get(0).getHousePhotoTitle()));
-                            jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                        }
-                    } else {
-                        jsonObject = esfInfo.getJSONObject(houseId);
-                        //新数据可以从esfInfo查询，判断是否下架
-                        if (CollectionUtils.isEmpty(messageSellHouseDos)){
-                            jsonObject.put("status", 1);
-                            jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
-                            jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                        } else {
-                            jsonObject.put("status", 0);
-                            jsonObject.put("houseTotalPrices", messageSellHouseDos.get(0).getHouseTotalPrices());
-                            jsonObject.put("priceFloat", messageSellHouseDos.get(0).getPriceFloat());
-                            jsonObject.put("housePhotoTitle", dealPhotoTitle(messageSellHouseDos.get(0).getHousePhotoTitle()));
-                            jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                        }
-                        jsonObject.put("houseId", houseId);
-                    }
-                    messageSellHouseDos1.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                    replaceHouseDo(messagePushDo, esfInfo, houseId, messageSellHouseDos);
                 }
-                messagePushDo.setMessageSellHouseDos(messageSellHouseDos1);
+                messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
                 message.add(messagePushDo);
-                messageHouseCount += split.length;
+                messageHouseCount += messageSellHouseDos.size();
                 if (messageHouseCount >= 10) {
                     lastMessageId = messagePushDo.getId();
                     break;
@@ -181,6 +149,72 @@ public class MessagePushServiceImpl implements MessagePushService {
 
         return messagePushDomain;
     }
+
+    private void replaceHouseDo(MessagePushDo messagePushDo, JSONObject esfInfo, String houseId, List<MessageSellHouseDo> messageSellHouseDos) {
+        JSONObject jsonObject;
+        List<MessageSellHouseDo> esHouseDos = sellHouseService.querySellHouseByHouseId(
+                new String[]{houseId}, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
+        Integer subscribeType = messagePushDo.getSubscribeType();
+        if (esfInfo == null){
+            //旧数据查不到，从Es表查询
+            if (CollectionUtils.isNotEmpty(messageSellHouseDos)){
+                jsonObject = (JSONObject)JSONObject.toJSON(esHouseDos.get(0));
+                jsonObject.put("status", 0);
+                jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
+                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                if (subscribeType == 1 && (Integer) jsonObject.get("isCutPrice") == 1) {
+                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                } else if (subscribeType == 2 && (Integer) jsonObject.get("isLowPrice") == 1) {
+                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                } else if (subscribeType == 3 && (Integer) jsonObject.get("isMustRob") == 1) {
+                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                } else if (subscribeType == 0){
+                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                }
+            }
+        } else {
+            jsonObject = esfInfo.getJSONObject(houseId);
+            //新数据可以从esfInfo查询，判断是否下架
+            if (CollectionUtils.isEmpty(esHouseDos)){
+                jsonObject.put("status", 1);
+                jsonObject.put("houseId", houseId);
+                jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
+                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+            } else {
+                jsonObject.put("status", 0);
+                jsonObject.put("houseId", houseId);
+                jsonObject.put("houseTotalPrices", esHouseDos.get(0).getHouseTotalPrices());
+                jsonObject.put("priceFloat", esHouseDos.get(0).getPriceFloat());
+                jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
+                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                //如果是专题类消息，要替换isCutPrice、isLowPrice、isMustRob内容
+                if (isAddList(subscribeType, jsonObject, esHouseDos)) {
+                    jsonObject.put("isCutPrice", esHouseDos.get(0).getIsCutPrice());
+                    jsonObject.put("isLowPrice", esHouseDos.get(0).getIsLowPrice());
+                    jsonObject.put("isMustRob", esHouseDos.get(0).getIsMustRob());
+                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                } else if (subscribeType == 0){
+                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                }
+            }
+        }
+    }
+
+    /**
+     * 判断专题类消息房源是否加入List
+     *
+     * @param subscribeType
+     * @param jsonObject
+     * @param esHouseDos
+     * @return
+     */
+    private boolean isAddList(Integer subscribeType, JSONObject jsonObject, List<MessageSellHouseDo> esHouseDos) {
+        MessageSellHouseDo messageSellHouseDo = esHouseDos.get(0);
+        return (subscribeType == 1 && Integer.valueOf(jsonObject.get("isCutPrice").toString()).equals(messageSellHouseDo.getIsCutPrice())) ||
+                (subscribeType == 2 && Integer.valueOf(jsonObject.get("isLowPrice").toString()).equals(messageSellHouseDo.getIsLowPrice())) ||
+                (subscribeType == 3 && Integer.valueOf(jsonObject.get("isMustRob").toString()).equals(messageSellHouseDo.getIsMustRob()));
+    }
+
 
     /**
      * 截取数组指定长度元素
