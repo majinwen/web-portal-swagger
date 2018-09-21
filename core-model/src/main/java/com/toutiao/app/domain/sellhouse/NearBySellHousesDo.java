@@ -311,6 +311,11 @@ public class NearBySellHousesDo {
      */
     private Integer rankInLowCommunityLayout;
 
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
+
 
 
 }

@@ -252,6 +252,8 @@ public class HouseBusinessAndRoomDo {
      * 近公园
      */
     private String nearPark;
-
-
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
 }

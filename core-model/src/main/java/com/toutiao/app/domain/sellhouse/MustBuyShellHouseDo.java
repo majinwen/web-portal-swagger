@@ -251,5 +251,10 @@ public class MustBuyShellHouseDo {
      */
     private String nearPark;
 
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
+
 
 }

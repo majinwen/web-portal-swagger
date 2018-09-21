@@ -42,7 +42,13 @@ public class InviteHistoryController {
         if (invitationValid == null) {
             return NashResult.Fail("邀请码无效！");
         }
-        int i = inviteHistoryService.saveInviteHistory(inviteHistory);
+        int i;
+        try {
+             i = inviteHistoryService.saveInviteHistory(inviteHistory);
+        }catch (Exception e){
+            //机器码加了唯一约束，重复提交会报错
+            return NashResult.build("该设备已添加过邀请码！");
+        }
         List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
         if (!CollectionUtils.isEmpty(inviteHistoryByCode)) {
             invitationCodeService.updateInviteTotal(inviteHistoryRequest.getInvitationCode(), inviteHistoryByCode.size());
