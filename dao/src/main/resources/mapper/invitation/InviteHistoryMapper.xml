@@ -308,7 +308,7 @@
                 AND h.equipment_no = #{equipmentNo}
             </if>
             <if test="createTime != null">
-                AND h.createTime = #{createTime}
+                AND h.createTime >= #{createTime}
             </if>
         </where>
         ORDER BY h.create_time DESC
