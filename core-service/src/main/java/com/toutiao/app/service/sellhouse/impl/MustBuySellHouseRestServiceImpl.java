@@ -48,7 +48,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
     public MustBuyShellHouseDomain getMustBuySellHouse(MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery, Integer topicType, String city) {
         MustBuyShellHouseDomain mustBuyShellHouseDomain = new MustBuyShellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", 11111341));
+//        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", 11111341));
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         if (topicType == 1) {
             //降价房
