@@ -14,17 +14,17 @@ public class SuperInviteHistoryDo {
     /**
      * 一级邀请码
      */
-    private Integer firstLevelCode;
+    private String firstLevelCode;
 
     /**
      * 二级邀请码
      */
-    private Integer secondLevelCode;
+    private String secondLevelCode;
 
     /**
      * 三级邀请码
      */
-    private Integer thirdLevelCode;
+    private String thirdLevelCode;
 
     /**
      * 用户Id

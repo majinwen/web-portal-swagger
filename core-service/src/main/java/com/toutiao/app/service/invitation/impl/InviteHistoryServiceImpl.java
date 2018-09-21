@@ -56,7 +56,7 @@ public class InviteHistoryServiceImpl implements InviteHistoryService {
 
     @Override
     public List<SuperInviteHistoryDo> getSuperInviteHistory(SuperInviteHistoryDoQuery superInviteHistoryDoQuery) {
-        PageHelper.startPage(superInviteHistoryDoQuery.getPageNum(), superInviteHistoryDoQuery.getPageSize());
+        PageHelper.startPage(superInviteHistoryDoQuery.getPageSize(), superInviteHistoryDoQuery.getPageNum());
         return inviteHistoryMapper.getSuperInviteHistory(superInviteHistoryDoQuery);
     }
 
