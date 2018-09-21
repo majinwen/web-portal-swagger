@@ -476,5 +476,10 @@ public class SellHouseDetailsDo {
      */
     private String companyCard;
 
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
+
 
 }

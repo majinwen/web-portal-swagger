@@ -435,4 +435,10 @@ public class SellAndClaimHouseDetailsDo {
      */
     private String companyCard;
 
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
+
+
 }
