@@ -3,6 +3,7 @@ package com.toutiao.web.apiimpl.rest.activity;
 import com.github.pagehelper.PageInfo;
 import com.toutiao.app.api.chance.request.activity.NewHouseActivityRequest;
 import com.toutiao.app.api.chance.response.user.UserInfoActivityResponse;
+import com.toutiao.app.domain.activity.ActivityStatisticsDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
 import com.toutiao.app.domain.user.UserBasicDo;
@@ -124,12 +125,9 @@ public class NewHouseActivityRestController {
     public NashResult queryActivityMsgCount() {
 
 
+        ActivityStatisticsDo activityCount = newHouseActivityRestService.getActivityCount();
 
-//        PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
-
-
-
-        return NashResult.build("");
+        return NashResult.build(activityCount);
     }
 
 

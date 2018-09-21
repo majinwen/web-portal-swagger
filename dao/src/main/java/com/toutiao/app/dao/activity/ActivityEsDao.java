@@ -13,7 +13,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 public interface ActivityEsDao {
 
 
-    SearchResponse getAgentHouseByHouseId(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getActivityCount(BoolQueryBuilder booleanQueryBuilder);
 
 
 }
