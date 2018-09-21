@@ -147,10 +147,16 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
     public ActivityStatisticsDo getActivityCount() {
 
         ActivityStatisticsDo activityStatisticsDo = new ActivityStatisticsDo();
+        //获取参与活动楼盘总量--es查询
 
-        int count = userNewBuildingActivityMapper.selectActivityCount();
 
-        activityStatisticsDo.setCumulativeAmount(count);
+
+
+//        int count = userNewBuildingActivityMapper.selectActivityCount();
+//
+//        activityStatisticsDo.setCumulativeAmount(count);
+
+
 
         return null;
     }
