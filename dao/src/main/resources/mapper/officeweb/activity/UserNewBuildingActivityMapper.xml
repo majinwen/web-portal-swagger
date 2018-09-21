@@ -11,9 +11,13 @@
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="city_id" property="cityId" jdbcType="INTEGER" />
     <result column="activity_id" property="activityId" jdbcType="INTEGER" />
+    <result column="activity_type" property="activityType" jdbcType="INTEGER" />
+    <result column="activity_title" property="activityTitle" jdbcType="VARCHAR" />
+    <result column="activity_subtitle" property="activitySubtitle" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, user_phone, user_call_name, activity_building_id, activity_building_name, create_time, city_id, activity_id
+    id, user_id, user_phone, user_call_name, activity_building_id, activity_building_name, create_time, city_id, activity_id,
+    activity_type, activity_title, activity_subtitle
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,11 +32,12 @@
   <insert id="insert" parameterType="com.toutiao.app.domain.activity.UserNewBuildingActivity" >
     insert into user_new_building_activity (id, user_id, user_phone, 
       user_call_name, activity_building_id, activity_building_name, create_time,
-      city_id, activity_id)
+      city_id, activity_id,activity_type, activity_title, activity_subtitle)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userPhone,jdbcType=VARCHAR}, 
       #{userCallName,jdbcType=VARCHAR}, #{activityBuildingId,jdbcType=INTEGER}, #{activityBuildingName,jdbcType=VARCHAR},
       #{createTime,jdbcType=TIMESTAMP},
-      #{cityId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER})
+      #{cityId,jdbcType=INTEGER}, #{activityId,jdbcType=INTEGER}, #{activityType,jdbcType=INTEGER}, #{activityTitle,jdbcType=VARCHAR},
+      #{activitySubtitle,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.app.domain.activity.UserNewBuildingActivity" >
     insert into user_new_building_activity
@@ -64,6 +69,15 @@
       <if test="activityId != null" >
         activity_id,
       </if>
+      <if test="activityType != null" >
+        activity_type,
+      </if>
+      <if test="activityTitle != null" >
+        activity_title,
+      </if>
+      <if test="activitySubtitle != null" >
+        activity_subtitle,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -92,6 +106,15 @@
       </if>
       <if test="activityId != null" >
         #{activityId,jdbcType=INTEGER},
+      </if>
+      <if test="activityType != null" >
+        #{activityType,jdbcType=INTEGER},
+      </if>
+      <if test="activityTitle != null" >
+        #{activityTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="activitySubtitle != null" >
+        #{activitySubtitle,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -122,6 +145,15 @@
       <if test="activityId != null" >
         activity_id = #{activityId,jdbcType=INTEGER},
       </if>
+      <if test="activityType != null" >
+        activity_type = #{activityType,jdbcType=INTEGER},
+      </if>
+      <if test="activityTitle != null" >
+        activity_title = #{activityTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="activitySubtitle != null" >
+        activity_subtitle = #{activitySubtitle,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -134,7 +166,10 @@
       activity_building_name = #{activityBuildingName,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       city_id = #{cityId,jdbcType=INTEGER},
-      activity_id = #{activityId,jdbcType=INTEGER}
+      activity_id = #{activityId,jdbcType=INTEGER},
+      activity_type = #{activityType,jdbcType=INTEGER},
+      activity_title = #{activityTitle,jdbcType=VARCHAR},
+      activity_subtitle = #{activitySubtitle,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -170,7 +205,10 @@
       activity_building_name AS  activityBuildingName,
       create_time AS createTime,
       city_id AS cityId,
-      activity_id AS activityId
+      activity_id AS activityId,
+      activity_type AS activityType,
+      activity_title AS activityTitle,
+      activity_subtitle AS activitySubtitle
     from user_new_building_activity
     where 1=1
     <if test="userPhone !=null and userPhone != '' ">
@@ -188,5 +226,14 @@
     <if test="userCallName !=null and userCallName != '' ">
       AND user_call_name = #{userCallName}
     </if>
+    <if test="userId !=null and userId != '' ">
+      AND user_id = #{userId}
+    </if>
+  </select>
+
+
+  <select id="selectActivityCount" resultType="java.lang.Integer" >
+    select count(*) from user_new_building_activity
+
   </select>
 </mapper>

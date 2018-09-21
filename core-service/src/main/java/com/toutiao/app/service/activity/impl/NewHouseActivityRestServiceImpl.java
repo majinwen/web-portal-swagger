@@ -2,6 +2,7 @@ package com.toutiao.app.service.activity.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.toutiao.app.domain.activity.ActivityStatisticsDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
@@ -107,7 +108,7 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
 
 
     /**
-     * 查询用户参与新房活动信息
+     * 查询用户参与新房活动信息--后台使用
      * @param userNewBuildingActivityDoQuery
      * @return
      */
@@ -122,6 +123,37 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
         return listUserActivityMsg;
     }
 
+
+    /**
+     * 查询用户参与新房活动信息--前台个人中心使用
+     * @param userNewBuildingActivityDoQuery
+     * @return
+     */
+    @Override
+    public PageInfo<UserNewBuildingActivityDo> listActivityMsg(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery) {
+        PageHelper.startPage(userNewBuildingActivityDoQuery.getPageNum(), userNewBuildingActivityDoQuery.getPageSize());
+
+        List<UserNewBuildingActivityDo> userActivityMsgList = userNewBuildingActivityMapper.selectUserActivityMsg(userNewBuildingActivityDoQuery);
+
+        PageInfo<UserNewBuildingActivityDo> listUserActivityMsg = new PageInfo<>(userActivityMsgList);
+        return listUserActivityMsg;
+    }
+
+    /**
+     *
+     * @return
+     */
+    @Override
+    public ActivityStatisticsDo getActivityCount() {
+
+        ActivityStatisticsDo activityStatisticsDo = new ActivityStatisticsDo();
+
+        int count = userNewBuildingActivityMapper.selectActivityCount();
+
+        activityStatisticsDo.setCumulativeAmount(count);
+
+        return null;
+    }
 
 
 }

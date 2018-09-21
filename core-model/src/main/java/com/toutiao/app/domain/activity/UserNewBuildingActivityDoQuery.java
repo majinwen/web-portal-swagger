@@ -37,16 +37,26 @@ public class UserNewBuildingActivityDoQuery {
      * 参与活动楼盘名称
      */
     private String buildingName;
-//
-//    /**
-//     * 参与活动类型标志
-//     */
-//    private Integer activityType;
 
     /**
      * 活动id
      */
     private Integer activityId;
+
+    /**
+     * 活动类型,1:折扣
+     */
+    private Integer activityType;
+
+    /**
+     * 活动文案
+     */
+    private String activityTitle;
+
+    /**
+     * 活动优惠信息
+     */
+    private String activitySubtitle;
 
     /**
      * 城市id

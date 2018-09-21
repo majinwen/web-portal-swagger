@@ -40,4 +40,10 @@ public interface UserNewBuildingActivityMapper extends BaseDao {
      * @return
      */
     List<UserNewBuildingActivityDo> selectUserActivityMsg(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
+
+    /**
+     * 累计获得总计
+     * @return
+     */
+    int selectActivityCount();
 }

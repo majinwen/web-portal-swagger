@@ -97,5 +97,46 @@ public class NewHouseActivityRestController {
     }
 
 
+    /**
+     * 查询活动信息--前台个人中心使用
+     * @param newHouseActivityRequest
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryActivityMsg",method = RequestMethod.GET)
+    public NashResult queryActivityMsg(NewHouseActivityRequest newHouseActivityRequest) {
+
+        UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
+        BeanUtils.copyProperties(newHouseActivityRequest,userNewBuildingActivityDoQuery);
+
+
+        PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
+
+        return NashResult.build(userNewBuildingActivityDoPageInfo);
+    }
+
+    /**
+     * 个人中心l累计数量
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryActivityMsgCount",method = RequestMethod.GET)
+    public NashResult queryActivityMsgCount() {
+
+
+
+//        PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
+
+
+
+        return NashResult.build("");
+    }
+
+
+
+
+
+
+
 
 }
