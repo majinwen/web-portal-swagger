@@ -53,6 +53,7 @@ public class MustBuySellHouseEsDaoImpl implements MustBuySellHouseEsDao {
         }
         SearchResponse searchResponse = new SearchResponse();
         searchResponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+        System.out.println(srb);
         return searchResponse;
     }
 }
