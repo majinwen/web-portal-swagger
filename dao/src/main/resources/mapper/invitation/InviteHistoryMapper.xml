@@ -307,8 +307,8 @@
             <if test="equipmentNo != null">
                 AND h.equipment_no = #{equipmentNo}
             </if>
-            <if test="createTime != null">
-                AND h.create_time >= #{createTime}
+            <if test="createTimeStart != null and createTimeEnd != null">
+                AND (h.create_time BETWEEN #{createTimeStart} AND #{createTimeEnd})
             </if>
         </where>
         ORDER BY h.create_time DESC
