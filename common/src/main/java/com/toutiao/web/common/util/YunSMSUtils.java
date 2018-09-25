@@ -1,10 +1,12 @@
 package com.toutiao.web.common.util;
 
-import com.yunpian.sdk.YunpianClient;
-import com.yunpian.sdk.model.Result;
-import com.yunpian.sdk.model.SmsSingleSend;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
+
+import static com.toutiao.web.common.httpUtil.HttpUtils.post;
 
 /**
  * 云片短信调用工具
@@ -12,32 +14,48 @@ import java.util.Map;
  */
 public class YunSMSUtils {
 
-    //apikey
-    private static String apikey = "b24d4af5614de7850e39bbe7ae674f7d";
+//    @Autowired
+//    private SendConfig sendConfig;
 
-    public static YunpianClient getInstance() {
-        return YunpianClientHolder.instance;
-    }
+    //    @Value("${yunpian.send.apikey}")
+    private String apikey = "b24d4af5614de7850e39bbe7ae674f7d";
 
-    //单例模式获取YunpianClient(静态内部类加载)
-    private static class YunpianClientHolder {
-        private static YunpianClient instance = new YunpianClient(apikey).init();
-    }
+    //    @Value("${yunpian.send.modelid1}")
+    private String modelid1 = "2501662";
 
-    //发送短信
-    public Result sendSms(String mobile, String text) {
-        //获取YunpianClient实例
-        YunpianClient client = YunSMSUtils.getInstance();
-        //发送短信
-        Map<String, String> param = client.newParam(2);
-        param.put(YunpianClient.MOBILE, mobile);
-        param.put(YunpianClient.TEXT, text);
-        Result<SmsSingleSend> result = client.sms().single_send(param);
-        return result;
-    }
+    //    @Value("${yunpian.send.modelid2}")
+    private String modelid2 = "2501666";
+
+    //    @Value("${yunpian.send.encoding}")
+    private String ENCODING = "UTF-8";
 
     public static void main(String[] args) {
         YunSMSUtils yunSMSUtils = new YunSMSUtils();
-        yunSMSUtils.sendSms("18722079068", "【懂房帝】远洋国际打折案场优惠领取成功。");
+        try {
+            yunSMSUtils.sendSms("18722079068", 2);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //发送短信
+    public String sendSms(String mobile, Integer code) throws UnsupportedEncodingException {
+        //发送短信
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("apikey", apikey);
+        params.put("mobile", mobile);
+        /**
+         * 1表示用户  2表示销售
+         */
+        if (code == 1) {
+            params.put("tpl_id", modelid1);
+            params.put("tpl_value", URLEncoder.encode("#activityBuildingName#", ENCODING) + "=" + URLEncoder.encode("远洋山水", ENCODING));
+        } else if (code == 2) {
+            params.put("tpl_id", modelid2);
+            String tpl_value = URLEncoder.encode("#activityBuildingName#", ENCODING) + "=" +
+                    URLEncoder.encode("远洋山水", ENCODING) + "&" + URLEncoder.encode("#userCallName#", ENCODING) + "=" + URLEncoder.encode("张三", ENCODING);
+            params.put("tpl_value", tpl_value);
+        }
+        return post("https://sms.yunpian.com/v2/sms/tpl_batch_send.json", params);
     }
 }
