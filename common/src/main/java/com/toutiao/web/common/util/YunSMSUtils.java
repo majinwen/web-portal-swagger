@@ -19,11 +19,6 @@ public class YunSMSUtils {
         return YunpianClientHolder.instance;
     }
 
-    public static void main(String[] args) {
-        YunSMSUtils yunSMSUtils = new YunSMSUtils();
-        yunSMSUtils.sendSms("18722079068", "【懂房帝】远洋国际打折案场优惠领取成功。");
-    }
-
     //发送短信
     public Result sendSms(String mobile, String text) {
         //获取YunpianClient实例
@@ -35,10 +30,14 @@ public class YunSMSUtils {
         Result<SmsSingleSend> result = client.sms().single_send(param);
         return result;
     }
-
+    
     //单例模式获取YunpianClient(静态内部类加载)
     private static class YunpianClientHolder {
         private static YunpianClient instance = new YunpianClient(apikey).init();
     }
 
+    public static void main(String[] args) {
+        YunSMSUtils yunSMSUtils = new YunSMSUtils();
+        yunSMSUtils.sendSms("18722079068", "【懂房帝】远洋国际打折案场优惠领取成功。");
+    }
 }
