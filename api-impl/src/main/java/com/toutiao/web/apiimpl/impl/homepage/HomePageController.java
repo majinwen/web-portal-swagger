@@ -3,6 +3,10 @@ package com.toutiao.web.apiimpl.impl.homepage;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.apiimpl.authentication.RedisSession;
+import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.CookieUtils;
+import com.toutiao.web.common.util.RedisSessionUtils;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.domain.query.VillageRequest;
 import com.toutiao.web.service.newhouse.NewHouseService;
@@ -13,7 +17,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +41,8 @@ public class HomePageController {
     @Autowired
     private ProjHouseInfoService projHouseInfoService;
 
+    @Autowired
+    private RedisSessionUtils redis;
 
     @RequestMapping(value={""})
     public String index(){
@@ -64,5 +74,16 @@ public class HomePageController {
         model.addAttribute("esfList",esfList);
         return "index";
 
+    }
+
+
+    @RequestMapping(value = "/getRedisCityForJson")
+    @ResponseBody
+    public NashResult getRedisCityForJson(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String cityCode = CityUtils.getCity();
+        String TradeQuotations = "TradeQuotations_"+cityCode;
+        JSONObject res =  JSONObject.parseObject(redis.getValue(TradeQuotations));
+        return NashResult.build(res);
     }
 }

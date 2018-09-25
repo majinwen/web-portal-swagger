@@ -20,6 +20,18 @@ public class CityConstant {
 
     public static final String ABBREVIATION_QUANGUO = "all";
 
+    public static final String ABBREVIATION_SUZHOU = "suzhou";
+
+    public static final String ABBREVIATION_HANGZHOU= "hz";
+
+    public static final String ABBREVIATION_GUANGZHOU = "gz";
+
+    public static final String ABBREVIATION_SHENZHEN= "sz";
+
+
+
+
+
 
     /**
      * 城市代码
@@ -32,5 +44,12 @@ public class CityConstant {
 
     public static final Integer CODE_TIANJIN = 14;//天津
 
+    public static final Integer CODE_SUZHOU= 67;//苏州
+
+    public static final Integer CODE_HANGZHOU = 26;//杭州
+
+    public static final Integer CODE_GUANGZHOU= 16;//广州
+
+    public static final Integer CODE_SHENZHEN = 17;//深圳
 
 }
