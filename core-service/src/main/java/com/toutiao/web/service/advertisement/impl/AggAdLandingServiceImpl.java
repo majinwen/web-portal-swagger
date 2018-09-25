@@ -38,9 +38,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Service
 public class AggAdLandingServiceImpl implements AggAdLandingService{
@@ -1367,7 +1365,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
         List<SellHousesSearchDo> sellHousesSearchDos =new ArrayList<>();
         //ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
-        SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query,null,null,aggAdLandingDo.getPn(),aggAdLandingDo.getPs());
+        SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query, null, null, aggAdLandingDo.getPn(),
+                aggAdLandingDo.getPs(), null);
 
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -1385,7 +1384,7 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             }
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString());
+                agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(),null);
                 if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
                     if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
                         int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
@@ -1409,10 +1408,10 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
 
             }else{
-                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
-                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
                 agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
             }
             sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
             sellHousesSearchDos.add(sellHousesSearchDo);

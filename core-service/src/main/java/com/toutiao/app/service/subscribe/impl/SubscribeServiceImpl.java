@@ -11,6 +11,7 @@ import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.mapper.subscribe.UserSubscribeMapper;
 import org.springframework.beans.BeanUtils;
@@ -67,13 +68,13 @@ public class SubscribeServiceImpl implements SubscribeService {
     }
 
     @Override
-    public List<UserSubscribeListDo> getMySubscribeInfo(Integer userId) {
-        return selectByUserId(userId, Boolean.FALSE);
+    public List<UserSubscribeListDo> getMySubscribeInfo(Integer userId, String city) {
+        return selectByUserId(userId, Boolean.FALSE, city);
     }
 
     @Override
-    public List<UserSubscribeListDo> getIndexSubscribeInfo(Integer userId) {
-        return selectByUserId(userId, Boolean.TRUE);
+    public List<UserSubscribeListDo> getIndexSubscribeInfo(Integer userId, String city) {
+        return selectByUserId(userId, Boolean.TRUE, city);
     }
 
     @Override
@@ -82,15 +83,15 @@ public class SubscribeServiceImpl implements SubscribeService {
     }
 
     @Override
-    public UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId) {
+    public UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId, String city) {
         if (userConditionSubscribeDetailDo.getBeginPrice() == null) {
             userConditionSubscribeDetailDo.setBeginPrice(0);
         }
         if (userConditionSubscribeDetailDo.getEndPrice() == null) {
             userConditionSubscribeDetailDo.setEndPrice(0);
         }
-
-        return userSubscribeMapper.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo, userId);
+        Integer cityId = CityUtils.returnCityId(city);
+        return userSubscribeMapper.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo, userId, cityId);
     }
 
     /**
@@ -98,7 +99,7 @@ public class SubscribeServiceImpl implements SubscribeService {
      * @param isGetHouseDetail 是否获取符合订阅条件的房源详情
      * @return
      */
-    public List<UserSubscribeListDo> selectByUserId(Integer userId, Boolean isGetHouseDetail) {
+    public List<UserSubscribeListDo> selectByUserId(Integer userId, Boolean isGetHouseDetail, String city) {
         List<UserSubscribeListDo> userSubscribeListDoList = new ArrayList<>();
         List<UserSubscribe> userSubscribeList = userSubscribeMapper.selectByUserId(userId);
         for (UserSubscribe userSubscribe : userSubscribeList) {
@@ -107,10 +108,10 @@ public class SubscribeServiceImpl implements SubscribeService {
             UserSubscribeDetailDo userSubscribeDetailDo = JSONObject.parseObject(userSubscribe.getUserSubscribeMap(), UserSubscribeDetailDo.class);
             userSubscribeListDo.setUserSubscribeDetail(userSubscribeDetailDo);
             //填充新增数量
-            userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo));
+            userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo,city));
             if (isGetHouseDetail) {
                 //填充房源列表数据
-                userSubscribeListDo.setHouseList(getHouseListBySubscribe(userSubscribeDetailDo));
+                userSubscribeListDo.setHouseList(getHouseListBySubscribe(userSubscribeDetailDo,city));
             }
             userSubscribeListDoList.add(userSubscribeListDo);
         }
@@ -131,7 +132,7 @@ public class SubscribeServiceImpl implements SubscribeService {
         return userSubscribeMapper.selectByUserSubscribeMap(userSubscribeDetailDo, userId);
     }
 
-    private Long getNewCountBySubscribe(UserSubscribeDetailDo userSubscribeDetailDo) {
+    private Long getNewCountBySubscribe(UserSubscribeDetailDo userSubscribeDetailDo, String city) {
         Integer pageIndex = 1;
         Integer pageSize = 1;
         if (userSubscribeDetailDo.getTopicType() == 3) {
@@ -149,7 +150,7 @@ public class SubscribeServiceImpl implements SubscribeService {
             if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
                 sellHouseBeSureToSnatchDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
-            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery,city);
             return sellHouseBeSureToSnatchDos.getTotalCount();
         } else if (userSubscribeDetailDo.getTopicType() == 1 || userSubscribeDetailDo.getTopicType() == 2) {
             MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
@@ -166,12 +167,12 @@ public class SubscribeServiceImpl implements SubscribeService {
             mustBuyShellHouseDoQuery.setIsNew(1);
             mustBuyShellHouseDoQuery.setPageSize(pageSize);
             mustBuyShellHouseDoQuery.setPageNum(pageIndex);
-            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType()).getTotalCount();
+            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType(), city).getTotalCount();
         }
         return 0L;
     }
 
-    private Object getHouseListBySubscribe(UserSubscribeDetailDo userSubscribeDetailDo) {
+    private Object getHouseListBySubscribe(UserSubscribeDetailDo userSubscribeDetailDo, String city) {
         Integer pageIndex = 1;
         Integer pageSize = 5;
         if (userSubscribeDetailDo.getTopicType() == 3) {
@@ -188,7 +189,7 @@ public class SubscribeServiceImpl implements SubscribeService {
             if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
                 sellHouseBeSureToSnatchDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
-            return sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+            return sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery, city);
         } else if (userSubscribeDetailDo.getTopicType() == 1 || userSubscribeDetailDo.getTopicType() == 2) {
             MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
             if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
@@ -203,7 +204,7 @@ public class SubscribeServiceImpl implements SubscribeService {
             }
             mustBuyShellHouseDoQuery.setPageSize(pageSize);
             mustBuyShellHouseDoQuery.setPageNum(pageIndex);
-            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType());
+            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType(), city);
         }
         return null;
     }

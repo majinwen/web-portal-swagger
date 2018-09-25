@@ -44,7 +44,7 @@ public class IntelligenceFhRes {
     /**
      * 户型
      */
-    private Integer layout;
+    private String layout;
 
     /**
      * 是否有小孩（0：无，1：0-3，2：5-10，3:10-13,4:14-18,5:18+）

@@ -579,7 +579,7 @@
 //            document.getElementById("primary-header").setAttribute("class",classVal);
         }
 
-        zhuge.track('进入新房详情页', {
+        zhuge.track('wap-进入新房详情页', {
             '页面来源' : window.location.href,
             '区域' : '${build['district_name']!''}',
             '商圈' : '${build['area_name']!''}',

@@ -11,5 +11,5 @@ public interface PlotsThemeRestService {
     /**
      * 获取小区主题数据
      */
-    PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery);
+    PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery, String city);
 }

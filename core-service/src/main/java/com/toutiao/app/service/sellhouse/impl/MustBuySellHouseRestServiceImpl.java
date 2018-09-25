@@ -12,6 +12,7 @@ import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
@@ -44,7 +45,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
      * 获取不买亏二手房Domain
      */
     @Override
-    public MustBuyShellHouseDomain getMustBuySellHouse(MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery, Integer topicType) {
+    public MustBuyShellHouseDomain getMustBuySellHouse(MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery, Integer topicType, String city) {
         MustBuyShellHouseDomain mustBuyShellHouseDomain = new MustBuyShellHouseDomain();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
@@ -91,7 +92,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         }
         Integer pageNum = mustBuyShellHouseDoQuery.getPageNum();
         Integer pageSize = mustBuyShellHouseDoQuery.getPageSize();
-        SearchResponse cutPriceSellHouse = mustBuySellHouseEsDao.getMustBuySellHouse(booleanQueryBuilder, sort, pageNum, pageSize, topicType);
+        SearchResponse cutPriceSellHouse = mustBuySellHouseEsDao.getMustBuySellHouse(booleanQueryBuilder, sort, pageNum, pageSize, topicType, city);
 
         SearchHits hits = cutPriceSellHouse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -102,7 +103,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
                 MustBuyShellHouseDo mustBuyShellHouseDo = JSON.parseObject(details, MustBuyShellHouseDo.class);
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (mustBuyShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(mustBuyShellHouseDo.getUserId())) {
-                    agentBaseDo = agentService.queryAgentInfoByUserId(mustBuyShellHouseDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(mustBuyShellHouseDo.getUserId().toString(), city);
                     //认领状态取认领数据
                     mustBuyShellHouseDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
                     mustBuyShellHouseDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
@@ -111,14 +112,19 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
                     tags.toArray(tagsName);
                     mustBuyShellHouseDo.setTagsName(tagsName);
                     mustBuyShellHouseDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
-                } else {
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                }else if(mustBuyShellHouseDo.getIsClaim() == 0){
+                    if(StringUtil.isNotNullString(mustBuyShellHouseDo.getProjExpertUserId())){
+                        agentBaseDo = agentService.queryAgentInfoByUserId(mustBuyShellHouseDo.getProjExpertUserId(), city);
+                    }else {
+                        agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
+                        agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
+                        agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    }
                 }
 
-                mustBuyShellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
+
+                mustBuyShellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
 
                 mustBuyShellHouseDo.setAgentBaseDo(agentBaseDo);
                 mustBuyShellHouseDos.add(mustBuyShellHouseDo);

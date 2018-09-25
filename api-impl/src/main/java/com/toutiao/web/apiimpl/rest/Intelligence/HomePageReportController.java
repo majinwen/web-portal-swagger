@@ -99,8 +99,18 @@ public class HomePageReportController {
             Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
             map.put("datajson",datajson);
             map.put("totalPrice",intelligenceFhRes.getTotalPrice());
-            map.put("layout",intelligenceFhRes.getLayoutArray());
-            map.put("district",intelligenceFhRes.getDistrictArray());
+            if(StringTool.isNotEmpty(intelligenceFhRes.getLayoutArray())){
+                map.put("layout",intelligenceFhRes.getLayoutArray());
+            }else{
+                map.put("layout",intelligenceFhRes.getLayout());
+            }
+
+            if(StringTool.isNotEmpty(intelligenceFhRes.getDistrictArray())){
+                map.put("district",intelligenceFhRes.getDistrictArray());
+            }else{
+                map.put("district",intelligenceFhRes.getDistrictId());
+            }
+
             map.put("fhpt",fhpt);
             map.put("fhtp",fhtp);
             map.put("collectStatus",intelligenceFhRes.getCollectStatus());

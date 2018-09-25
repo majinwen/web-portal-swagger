@@ -8,6 +8,7 @@ import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.StringTool;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
@@ -31,7 +32,8 @@ public class SellHouseRestController {
      */
     @RequestMapping(value = "/querySellHouseByHouseId",method = RequestMethod.GET)
     public NashResult querySellHouseByHouseId(@Param("houseId") String houseId){
-        List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(houseId.split(","));
+        List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(houseId.split(","),
+                CityUtils.getCity());
         if (StringTool.isNotEmpty(messageSellHouseDos)) {
             return NashResult.build(messageSellHouseDos);
         } else {
@@ -47,7 +49,7 @@ public class SellHouseRestController {
     @RequestMapping(value = "/getSellHouseByHouseId",method = RequestMethod.GET)
     public NashResult getSellHouseByHouseId(@Validated SellHouseDerailsRequest sellHouseDerailsRequest) {
         SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
-        SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId());
+        SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId(),CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseByHouse, sellHouseDetailsResponse);
         return NashResult.build(sellHouseDetailsResponse);
     }
@@ -79,7 +81,7 @@ public class SellHouseRestController {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);
@@ -96,7 +98,7 @@ public class SellHouseRestController {
         SellHouseResponse sellHouseResponse = new SellHouseResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseService.getRecommendSellHouse(sellHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
         return NashResult.build(sellHouseResponse);
@@ -115,7 +117,7 @@ public class SellHouseRestController {
 
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery,CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
         return NashResult.build(sellHouseSearchDomainResponse);
     }
@@ -131,7 +133,7 @@ public class SellHouseRestController {
         SellHouseBeSureToSnatchResponse sellHouseBeSureToSnatchResponses=new SellHouseBeSureToSnatchResponse();
         SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery=new SellHouseBeSureToSnatchDoQuery();
         BeanUtils.copyProperties(sellHouseBeSureToSnatchRequest,sellHouseBeSureToSnatchDoQuery);
-        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery);
+        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos= sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseBeSureToSnatchDos,sellHouseBeSureToSnatchResponses);
         return  NashResult.build(sellHouseBeSureToSnatchResponses);
     }
@@ -148,7 +150,7 @@ public class SellHouseRestController {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
         RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
         BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
         return NashResult.build(sellHouseSearchDomainResponse);
     }

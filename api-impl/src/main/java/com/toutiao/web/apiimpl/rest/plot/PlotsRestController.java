@@ -14,14 +14,14 @@ import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class PlotsRestController {
     @RequestMapping("/getPlotDetailByPlotId")
     @ResponseBody
     public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
-        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId());
+        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId(),CityUtils.getCity());
         PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
         BeanUtils.copyProperties(plotDetailsDo,plotDetailsResponse);
         return NashResult.build(plotDetailsResponse);
@@ -55,7 +55,8 @@ public class PlotsRestController {
     @RequestMapping("/getAroundPlotByLocation")
     @ResponseBody
     public NashResult getPlotAroundByLocation(@Validated PlotAroundPlotRequest plotAroundPlotRequest){
-        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlotRequest.getLat(), plotAroundPlotRequest.getLon(), plotAroundPlotRequest.getPlotId());
+        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlotRequest.getLat(),
+                plotAroundPlotRequest.getLon(), plotAroundPlotRequest.getPlotId(),CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
         List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
         return NashResult.build(plotDetailsFewResponseList);
@@ -71,13 +72,13 @@ public class PlotsRestController {
     public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
-        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery);
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery,CityUtils.getCity());
         PlotListResponse plotListResponse = JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class);
         return NashResult.build(plotListResponse);
     }
 
     /**
-     *
+     * 小区周边配套
      * @param plotAroundInfoRequest
      * @return
      * @throws InvocationTargetException
@@ -105,7 +106,7 @@ public class PlotsRestController {
         List<PlotTop50Response> plotTop50Responses=new ArrayList<>();
         PlotTop50ListDoQuery plotTop50ListDoQuery=new PlotTop50ListDoQuery();
         BeanUtils.copyProperties(baseQueryRequest,plotTop50ListDoQuery);
-        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery);
+        List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery,CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotTop50Dos));
         plotTop50Responses=JSONObject.parseArray(json.toJSONString(), PlotTop50Response.class);
         return  NashResult.build(plotTop50Responses);
@@ -119,7 +120,7 @@ public class PlotsRestController {
     public NashResult getPlotByRecommendCondition(UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
-        List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery);
+        List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
         List<PlotDetailsFewDo> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewDo.class);
         return NashResult.build(plotDetailsFewDos);

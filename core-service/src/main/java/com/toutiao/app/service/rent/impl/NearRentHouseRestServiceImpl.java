@@ -49,7 +49,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
     private AgentService agentService;
 
     @Override
-    public RentDetailsListDo queryNearHouseByLocation(NearHouseListDoQuery nearHouseListDoQuery) {
+    public RentDetailsListDo queryNearHouseByLocation(NearHouseListDoQuery nearHouseListDoQuery, String city) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -114,7 +114,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryNearRentHouse(query, (nearHouseListDoQuery.getPageNum() - 1) * 10);
+        SearchResponse searchResponse = rentEsDao.queryNearRentHouse(query, (nearHouseListDoQuery.getPageNum() - 1) * 10, city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
             for (SearchHit hit:hits){
@@ -137,12 +137,12 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
 
                 }else{
-                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency").toString());
-                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent").toString());
-                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone").toString());
+                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency")==null?"":hit.getSourceAsMap().get("brokerage_agency").toString());
+                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent")==null?"":hit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone")==null?"":hit.getSourceAsMap().get("phone").toString());
                     agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto")==null?"":hit.getSourceAsMap().get("agent_headphoto").toString());
 
                 }

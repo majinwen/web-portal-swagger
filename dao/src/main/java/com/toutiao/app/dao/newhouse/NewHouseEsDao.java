@@ -11,7 +11,7 @@ public interface NewHouseEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder, String city);
 
 
     /**
@@ -21,19 +21,19 @@ public interface NewHouseEsDao {
      * @param pageSize
      * @return
      */
-    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort );
+    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String city);
 
 
 
-    SearchResponse getDynamicByNewCode(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize);
+    SearchResponse getDynamicByNewCode(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize, String city);
 
 
-    SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder  boolQueryBuilder);
+    SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder  boolQueryBuilder ,String city);
 
-    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
-    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
 }

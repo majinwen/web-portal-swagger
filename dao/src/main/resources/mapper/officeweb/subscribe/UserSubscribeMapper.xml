@@ -8,9 +8,10 @@
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
         <result column="subscribe_type" property="subscribeType" jdbcType="INTEGER"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER" />
     </resultMap>
     <sql id="Base_Column_List">
-    id, user_id, user_subscribe_map, create_time, update_time, subscribe_type
+    id, user_id, user_subscribe_map, create_time, update_time, subscribe_type, city_id
   </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
@@ -24,9 +25,9 @@
   </delete>
     <insert id="insert" parameterType="com.toutiao.web.dao.entity.subscribe.UserSubscribe">
     insert into user_subscribe (id, user_id, user_subscribe_map, 
-      create_time, update_time,subscribe_type)
+      create_time, update_time,subscribe_type, city_id)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{userSubscribeMap,jdbcType=VARCHAR},
-      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{subscribeType,jdbcType=INTEGER})
+      #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{subscribeType,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER})
   </insert>
     <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.subscribe.UserSubscribe" useGeneratedKeys="true" keyProperty="id">
         insert into user_subscribe
@@ -49,6 +50,9 @@
             <if test="subscribeType != null">
                 subscribe_type,
             </if>
+            <if test="cityId != null" >
+                city_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -68,6 +72,9 @@
             </if>
             <if test="subscribeType != null">
                 #{subscribeType,jdbcType=INTEGER},
+            </if>
+            <if test="cityId != null" >
+                #{cityId,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -89,6 +96,9 @@
             <if test="subscribeType != null">
                 subscribe_type = #{subscribeType,jdbcType=INTEGER},
             </if>
+            <if test="cityId != null" >
+                city_id = #{cityId,jdbcType=INTEGER},
+            </if>
         </set>
         where id = #{id,jdbcType=INTEGER}
     </update>
@@ -98,7 +108,8 @@
       user_subscribe_map = #{userSubscribeMap,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      subscribe_type = #{subscribeType,jdbcType=INTEGER}
+      subscribe_type = #{subscribeType,jdbcType=INTEGER},
+      city_id = #{cityId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -144,7 +155,7 @@
         select
         <include refid="Base_Column_List"/>
         from user_subscribe
-        where user_id = #{userId,jdbcType=INTEGER}
+        where user_id = #{userId,jdbcType=INTEGER} AND city_id = #{cityId,jdbcType=INTEGER}
         <if test="record.districtId != null">
             and user_subscribe_map->>'districtId' = cast(#{record.districtId,jdbcType=VARCHAR} as text)
         </if>

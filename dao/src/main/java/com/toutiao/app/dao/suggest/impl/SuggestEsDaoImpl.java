@@ -2,6 +2,7 @@ package com.toutiao.app.dao.suggest.impl;
 
 import com.toutiao.app.dao.suggest.SuggestEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -38,9 +39,9 @@ public class SuggestEsDaoImpl implements SuggestEsDao{
      * @return
      */
     @Override
-    public SearchResponse getAreaAndDistrictSuggest(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getAreaAndDistrictSuggest(BoolQueryBuilder booleanQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srbScope = client.prepareSearch(search_scope_index).setTypes(search_scope_type);
+        SearchRequestBuilder srbScope = client.prepareSearch(ElasticCityUtils.getSearchScopeIndex(city)).setTypes(ElasticCityUtils.getSearchScopeType(city));
         srbScope.addSort("search_sort", SortOrder.ASC)
                 .addAggregation(AggregationBuilders.filter("plot", QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
                 .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
@@ -57,9 +58,9 @@ public class SuggestEsDaoImpl implements SuggestEsDao{
      * @return
      */
     @Override
-    public SearchResponse getKeywordSuggest(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getKeywordSuggest(BoolQueryBuilder booleanQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srbEngines = client.prepareSearch(search_engines_index).setTypes(search_engines_type);
+        SearchRequestBuilder srbEngines = client.prepareSearch(ElasticCityUtils.getSearchEnginesIndex(city)).setTypes(ElasticCityUtils.getSearchEnginesType(city));
         srbEngines.addAggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
                   .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
                   .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)))

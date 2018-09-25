@@ -15,6 +15,7 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.favorite.NewHouseFavoriteRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -71,6 +72,7 @@ public class NewHouseFavoriteRestController {
     public NashResult addNewHouseFavorite(@Validated @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest){
         NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
         BeanUtils.copyProperties(newHouseAddFavoriteRequest,newHouseAddFavoriteDoQuery);
+        newHouseAddFavoriteDoQuery.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         return favoriteRestService.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
     }
 

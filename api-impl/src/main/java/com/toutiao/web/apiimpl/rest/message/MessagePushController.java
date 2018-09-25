@@ -8,6 +8,7 @@ import com.toutiao.app.domain.message.MessagePushDoQuery;
 import com.toutiao.app.domain.message.MessagePushDomain;
 import com.toutiao.app.service.message.MessagePushService;
 import com.toutiao.web.api.chance.request.message.HomePageMessageRequest;
+import com.toutiao.web.api.chance.request.message.MessageIsReadRequest;
 import com.toutiao.web.api.chance.request.message.MessagePushRequest;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
@@ -99,5 +100,21 @@ public class MessagePushController {
         } else {
             return null;
         }
+    }
+
+    /**
+     * 修改消息已读
+     *
+     * @param messageIsReadRequest
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/updateMessageRead", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult updateMessageRead(@Validated MessageIsReadRequest messageIsReadRequest, HttpServletRequest request,
+                                        HttpServletResponse response) {
+        //TODO 仍有地方调用，但是接口无效
+        return NashResult.build("消息已读!");
     }
 }

@@ -75,4 +75,14 @@ public class MessagePush {
      * 房源信息
      */
     private Integer subscribeType;
+
+    /**
+     * 是否读取(0-未读, 1-已读)
+     */
+    private Short isRead;
+
+    /**
+     * 二手房信息
+     */
+    private String esfInfo;
 }

@@ -17,9 +17,10 @@
     <result column="house_total_prices" property="houseTotalPrices" jdbcType="DOUBLE" />
     <result column="price_increase_decline" property="priceIncreaseDecline" jdbcType="INTEGER" />
     <result column="is_claim" property="isClaim" jdbcType="INTEGER" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, house_id, create_time, is_del,status,building_name,build_area,room,forward,house_total_prices,house_photo_title,house_title,price_increase_decline,is_claim
+    id, user_id, house_id, create_time, is_del,status,building_name,build_area,room,forward,house_total_prices,house_photo_title,house_title,price_increase_decline,is_claim, city_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -28,9 +29,33 @@
     where id = #{id,jdbcType=INTEGER}
   </select>
   <!--收藏列表-->
-  <select id="selectSellHouseFavoriteByUserId" parameterType="com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery" resultMap="BaseResultMap">
-    SELECT  * FROM user_favorite_eshouse
+  <select id="selectSellHouseFavoriteByUserId" parameterType="com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo"
+          resultType="com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo">
+    SELECT
+      id AS Id,
+      user_id AS userId,
+      house_id AS houseId,
+      create_time AS createTime,
+      is_del AS isDel,
+      status AS status,
+      building_name AS buildingName,
+      build_area AS buildArea,
+      room AS room,
+      forward AS forward,
+      house_total_prices AS houseTotalPrices,
+      house_photo_title AS housePhotoTitle,
+      house_title AS houseTitle,
+      price_increase_decline AS priceIncreaseDecline,
+      is_claim AS isClaim,
+      city_id AS cityId
+     FROM user_favorite_eshouse
     WHERE user_id = #{userId} AND is_del = 0 ORDER BY create_time DESC
+  </select>
+
+  <!--比对列表-->
+  <select id="selectComparedList" parameterType="com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery" resultMap="BaseResultMap">
+    SELECT  * FROM user_favorite_eshouse
+    WHERE user_id = #{userId} and city_id = #{cityId} AND is_del = 0 ORDER BY create_time DESC
   </select>
 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
@@ -39,11 +64,11 @@
   </delete>
   <insert id="insert" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
     insert into user_favorite_eshouse (id, user_id, house_id, 
-      create_time, is_del,status,building_name,build_area,room,forward,house_total_prices,house_photo_title,house_title,price_increase_decline,is_claim)
+      create_time, is_del,status,building_name,build_area,room,forward,house_total_prices,house_photo_title,house_title,price_increase_decline,is_claim, city_id)
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT},#{status,jdbcType=INTEGER},#{buildingName,jdbcType=VARCHAR},#{buildArea,jdbcType=DOUBLE},
       #{room,jdbcType=INTEGER},#{forward,jdbcType=VARCHAR},#{houseTotalPrices,jdbcType=DOUBLE},#{housePhotoTitle,jdbcType=VARCHAR},#{houseTitle,jdbcType=VARCHAR},
-      #{priceIncreaseDecline,jdbcType=INTEGER},#{isClaim,jdbcType=INTEGER})
+      #{priceIncreaseDecline,jdbcType=INTEGER},#{isClaim,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
     insert into user_favorite_eshouse
@@ -93,6 +118,9 @@
       <if test="isClaim != null" >
         is_claim,
       </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -139,6 +167,9 @@
       </if>
       <if test="isClaim != null" >
         #{isClaim,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>

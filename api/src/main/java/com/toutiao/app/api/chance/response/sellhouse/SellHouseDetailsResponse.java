@@ -451,5 +451,13 @@ public class SellHouseDetailsResponse {
      */
     private String agentBusinessCard;
 
+    /**
+     * 经济公司营业执照
+     */
+    private String companyCard;
 
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
 }

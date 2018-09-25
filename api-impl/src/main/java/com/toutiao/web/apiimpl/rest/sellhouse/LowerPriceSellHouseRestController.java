@@ -6,6 +6,7 @@ import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDomain;
 import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +33,7 @@ public class LowerPriceSellHouseRestController {
     public NashResult getLowerPriceShellHouse(MustBuyShellHouseRequest mustBuyShellHouseRequest) {
         MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
         BeanUtils.copyProperties(mustBuyShellHouseRequest, mustBuyShellHouseDoQuery);
-        MustBuyShellHouseDomain lowerPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, 2);
+        MustBuyShellHouseDomain lowerPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, 2, CityUtils.getCity());
         MustBuyShellHouseResponse lowerPriceShellHouseResponse = new MustBuyShellHouseResponse();
         BeanUtils.copyProperties(lowerPriceShellHouses, lowerPriceShellHouseResponse);
         return NashResult.build(lowerPriceShellHouses);

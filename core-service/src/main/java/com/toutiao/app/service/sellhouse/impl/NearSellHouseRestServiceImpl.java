@@ -50,7 +50,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
     private CommunityRestService communityRestService;
 
     @Override
-    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo) {
+    public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo,String city) {
 
         NearBySellHouseDomain nearBySellHouseDomain=new NearBySellHouseDomain();
         NearBySellHousesDo  nearBySellHousesDo=new NearBySellHousesDo();
@@ -115,7 +115,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
         }
         List<NearBySellHousesDo> nearBySellHouses =new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
-        SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHouseQueryDo.getPageNum(),nearBySellHouseQueryDo.getPageSize());
+        SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query,nearBySellHouseQueryDo.getPageNum(),nearBySellHouseQueryDo.getPageSize(),city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
@@ -134,38 +134,20 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
             }
 
             if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(nearBySellHousesDo.getUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString());
-
-                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
-                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
-                        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
-                        if(claimDays>=0 && claimDays<30){
-                            nearBySellHousesDo.setHousePhotoTitleTags(Integer.valueOf(nearBySellHousesDo.getPriceIncreaseDecline()));
-                        }
-                    }else {
-                        int importFlag = -1;
-                        if(StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
-                            int importDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("import_time").toString()));
-                            if(importDays>=0 && importDays<7){
-                                importFlag = 3;
-                                nearBySellHousesDo.setHousePhotoTitleTags(importFlag);
-                            }else{
-                                nearBySellHousesDo.setHousePhotoTitleTags(importFlag);
-                            }
-                        }
-                    }
+                agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString(), city);
+            }else if(claimSellHouseDo.getIsClaim()==0){
+                if(StringUtil.isNotNullString(nearBySellHousesDo.getProjExpertUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getProjExpertUserId(), city);
+                }else {
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
                 }
-
-
-
-            }else{
-                agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
-                agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
             }
+
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
-            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags());
+            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
             nearBySellHouses.add(nearBySellHousesDo);
             //增加地铁站与房源的距离
             String keys="";

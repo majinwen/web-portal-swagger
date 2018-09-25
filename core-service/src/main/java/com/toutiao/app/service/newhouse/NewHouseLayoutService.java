@@ -13,7 +13,7 @@ public interface NewHouseLayoutService {
      * @param newHouseId
      * @return
      */
-    NewHouseLayoutCountDomain getNewHouseLayoutByNewHouseId(Integer newHouseId);
+    NewHouseLayoutCountDomain getNewHouseLayoutByNewHouseId(Integer newHouseId, String city);
 
     /**
      * 根据新房id获取该户型下的户型列表
@@ -21,7 +21,7 @@ public interface NewHouseLayoutService {
      * @param roomCount
      * @return
      */
-    List<NewHouseLayoutDo> getNewHouseLayoutList(Integer newHouseId, Integer roomCount);
+    List<NewHouseLayoutDo> getNewHouseLayoutList(Integer newHouseId, Integer roomCount, String city);
 
 
     /**

@@ -6,6 +6,7 @@ import com.toutiao.app.api.chance.request.subscribe.ConditionSubscribeRequest;
 import com.toutiao.app.domain.subscribe.UserConditionSubscribeDetailDo;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.joda.time.DateTime;
@@ -40,6 +41,7 @@ public class ConditionSubscribeRestController {
         userSubscribe.setUpdateTime(DateTime.now().toDate());
         userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
         userSubscribe.setSubscribeType(1);
+        userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userConditionSubscribeDetailDo, SerializerFeature.WriteMapNullValue,
                 SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
         try {
@@ -91,7 +93,8 @@ public class ConditionSubscribeRestController {
         UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
         BeanUtils.copyProperties(conditionSubscribeRequest, userConditionSubscribeDetailDo);
 
-        UserSubscribe userSubscribe = subscribeService.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo, Integer.parseInt(userBasic.getUserId()));
+        UserSubscribe userSubscribe = subscribeService.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo,
+                Integer.parseInt(userBasic.getUserId()), CityUtils.getCity());
         return NashResult.build(userSubscribe);
     }
 

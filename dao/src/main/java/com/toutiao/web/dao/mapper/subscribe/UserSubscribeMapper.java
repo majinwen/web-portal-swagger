@@ -28,6 +28,7 @@ public interface UserSubscribeMapper {
 
     List<UserSubscribe> selectConditionSubscribeByUserId(@Param("userId")Integer userId);
 
-    UserSubscribe selectConditionSubscribeByUserSubscribeMap(@Param(value = "record")UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, @Param(value = "userId")Integer userId);
+    UserSubscribe selectConditionSubscribeByUserSubscribeMap(@Param(value = "record")UserConditionSubscribeDetailDo userConditionSubscribeDetailDo,
+                                                             @Param(value = "userId")Integer userId, @Param(value = "cityId")Integer cityId);
 
 }

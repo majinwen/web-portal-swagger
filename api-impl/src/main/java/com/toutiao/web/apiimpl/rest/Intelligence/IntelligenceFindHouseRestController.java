@@ -86,7 +86,21 @@ public class IntelligenceFindHouseRestController {
                 }
                 //查询用户是否有报告数据
                 IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
+
                 if (StringTool.isNotBlank(intelligenceFhRes)) {
+                    if(StringTool.isNotEmpty(intelligenceFhRes.getLayoutArray())){
+                        intelligenceFhRes.setLayout(intelligenceFhRes.getLayoutArray());
+                    }else{
+                        intelligenceFhRes.setLayout(intelligenceFhRes.getLayout());
+                    }
+
+                    if(StringTool.isNotEmpty(intelligenceFhRes.getDistrictArray())){
+                        intelligenceFhRes.setDistrictId(intelligenceFhRes.getDistrictArray());
+                    }else{
+                        intelligenceFhRes.setDistrictId(intelligenceFhRes.getDistrictId());
+                    }
+
+//                    intelligenceFhRes.setDistrictId(intelligenceFhRes.getDistrictArray());
 
                     List list = JSONObject.parseArray(((PGobject) intelligenceFhRes.getFhResult()).getValue());
                     for(int i=0;i<list.size();i++){

@@ -11,21 +11,21 @@ public interface RentRestService {
      * @param rentId
      * @return
      */
-    RentDetailsDo queryRentDetailByHouseId(String rentId);
+    RentDetailsDo queryRentDetailByHouseId(String rentId,String cityCode);
 
     /**
      * 根据小区id查询该小区下的出租房源
      * @param plotId
      * @return
      */
-    RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum);
+    RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum,  String city);
 
     /**
      * 根据小区id查询该小区下的出租房源个数
      * @param plotId
      * @return
      */
-    RentNumListDo queryRentNumByPlotId(Integer plotId);
+    RentNumListDo queryRentNumByPlotId(Integer plotId, String city);
 
     /**
      * 根据出租房源的id查询该房源的经纪人
@@ -46,21 +46,21 @@ public interface RentRestService {
      * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery);
+    RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery, String city);
 
     /**
      * 推优房源
      * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery);
+    RentDetailsFewDo queryRecommendRent(RentHouseDoQuery rentHouseDoQuery, String city);
 
     /**
      * 租房搜索结果
      * @param rentHouseDoQuery
      * @return
      */
-    RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery);
+    RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city);
 
 
 }
