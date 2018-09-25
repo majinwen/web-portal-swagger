@@ -20,13 +20,8 @@ public class YunSMSUtils {
     }
 
     public static void main(String[] args) {
-        //获取YunpianClient实例
-        YunpianClient client = YunSMSUtils.getInstance();
-        //发送短信
-        Map<String, String> param = client.newParam(2);
-        param.put(YunpianClient.MOBILE, "18722079068");
-        param.put(YunpianClient.TEXT, "【懂房帝】远洋国际打折案场优惠领取成功。");
-        Result<SmsSingleSend> result = client.sms().single_send(param);
+        YunSMSUtils yunSMSUtils = new YunSMSUtils();
+        yunSMSUtils.sendSms("18722079068", "【懂房帝】远洋国际打折案场优惠领取成功。");
     }
 
     //发送短信
