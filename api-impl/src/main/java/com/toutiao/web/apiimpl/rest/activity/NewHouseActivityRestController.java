@@ -105,7 +105,7 @@ public class NewHouseActivityRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/queryActivityMsg",method = RequestMethod.GET)
-    public NashResult queryActivityMsg(NewHouseActivityRequest newHouseActivityRequest) {
+    public NashResult queryActivityMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest) {
 
         UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
         BeanUtils.copyProperties(newHouseActivityRequest,userNewBuildingActivityDoQuery);
