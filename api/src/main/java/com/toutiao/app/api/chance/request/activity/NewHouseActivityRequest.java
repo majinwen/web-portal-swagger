@@ -21,13 +21,13 @@ public class NewHouseActivityRequest {
     /**
      * 用户id
      */
-//    @NotNull(groups ={First.class,Second.class},message = "缺少用户id")
+    @NotNull(groups ={Second.class},message = "缺少用户id")
     private Integer userId;
 
     /**
      * 用户手机号
      */
-    @NotEmpty(groups ={First.class},message = "缺少用户手机号码")
+    //@NotEmpty(groups ={First.class},message = "缺少用户手机号码")
     private String userPhone;
 
     /**
@@ -53,6 +53,21 @@ public class NewHouseActivityRequest {
      */
     //@NotNull(groups ={First.class},message = "缺少活动id")
     private Integer activityId;
+
+    /**
+     * 活动类型,1:折扣
+     */
+    private Integer activityType;
+
+    /**
+     * 活动文案
+     */
+    private String activityTitle;
+
+    /**
+     * 活动优惠信息
+     */
+    private String activitySubtitle;
 
     /**
      * 城市id

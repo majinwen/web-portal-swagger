@@ -3,6 +3,7 @@ package com.toutiao.web.apiimpl.rest.activity;
 import com.github.pagehelper.PageInfo;
 import com.toutiao.app.api.chance.request.activity.NewHouseActivityRequest;
 import com.toutiao.app.api.chance.response.user.UserInfoActivityResponse;
+import com.toutiao.app.domain.activity.ActivityStatisticsDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
 import com.toutiao.app.domain.user.UserBasicDo;
@@ -95,6 +96,44 @@ public class NewHouseActivityRestController {
         BeanUtils.copyProperties(userBasicDo,userInfoActivityResponse);
         return NashResult.build(userInfoActivityResponse);
     }
+
+
+    /**
+     * 查询活动信息--前台个人中心使用
+     * @param newHouseActivityRequest
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryActivityMsg",method = RequestMethod.GET)
+    public NashResult queryActivityMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest) {
+
+        UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
+        BeanUtils.copyProperties(newHouseActivityRequest,userNewBuildingActivityDoQuery);
+
+
+        PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
+
+        return NashResult.build(userNewBuildingActivityDoPageInfo);
+    }
+
+    /**
+     * 个人中心l累计数量
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/queryActivityMsgCount",method = RequestMethod.GET)
+    public NashResult queryActivityMsgCount() {
+
+
+        ActivityStatisticsDo activityCount = newHouseActivityRestService.getActivityCount();
+
+        return NashResult.build(activityCount);
+    }
+
+
+
+
+
 
 
 

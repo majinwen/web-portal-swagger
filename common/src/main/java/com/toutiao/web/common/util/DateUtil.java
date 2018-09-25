@@ -1212,6 +1212,15 @@ public class DateUtil {
 		return date;
 	}
 
+	public static boolean isToday(Date date){
+		SimpleDateFormat fmt=new SimpleDateFormat("yyyy-MM-dd");
+		if(fmt.format(date).toString().equals(fmt.format(new Date()).toString())){//格式化为相同格式
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 //	public static void main(String[] args) {
 //		String sss = "2018-05-16 09:17:34";
 //

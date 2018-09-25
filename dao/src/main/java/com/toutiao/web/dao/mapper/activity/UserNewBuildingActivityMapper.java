@@ -31,8 +31,8 @@ public interface UserNewBuildingActivityMapper extends BaseDao {
 //    UserNewBuildingActivity selectActivityByUser(@Param("userId")Integer userId,@Param("activityBuildingId")Integer buildingId,
 //                                                 @Param("activityId")Integer activityId);
 
-    List<UserNewBuildingActivity> selectActivityByUser(@Param("userPhone")String userPhone,
-                                                 @Param("activityBuildingId")Integer buildingId);
+    List<UserNewBuildingActivity> selectActivityByUser(@Param("userPhone")String userPhone, @Param("activityBuildingId")Integer buildingId,
+                                                       @Param("activityId")Integer activityId);
 
     /**
      *  查询用户活动信息--城市后台使用
@@ -40,4 +40,10 @@ public interface UserNewBuildingActivityMapper extends BaseDao {
      * @return
      */
     List<UserNewBuildingActivityDo> selectUserActivityMsg(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
+
+    /**
+     * 累计获得总计
+     * @return
+     */
+    int selectActivityCount();
 }

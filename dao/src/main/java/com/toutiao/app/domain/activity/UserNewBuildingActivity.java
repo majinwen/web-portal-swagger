@@ -44,7 +44,6 @@ public class UserNewBuildingActivity {
      */
     private String activityBuildingName;
 
-
     /**
      * 创建时间
      */
@@ -59,5 +58,20 @@ public class UserNewBuildingActivity {
      * 活动id
      */
     private Integer activityId;
+
+    /**
+     * 活动类型,1:折扣
+     */
+    private Integer activityType;
+
+    /**
+     * 活动文案
+     */
+    private String activityTitle;
+
+    /**
+     * 活动优惠信息
+     */
+    private String activitySubtitle;
 
 }
