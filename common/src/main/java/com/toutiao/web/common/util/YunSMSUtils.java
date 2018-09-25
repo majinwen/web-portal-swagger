@@ -19,6 +19,11 @@ public class YunSMSUtils {
         return YunpianClientHolder.instance;
     }
 
+    //单例模式获取YunpianClient(静态内部类加载)
+    private static class YunpianClientHolder {
+        private static YunpianClient instance = new YunpianClient(apikey).init();
+    }
+    
     //发送短信
     public Result sendSms(String mobile, String text) {
         //获取YunpianClient实例
@@ -29,11 +34,6 @@ public class YunSMSUtils {
         param.put(YunpianClient.TEXT, text);
         Result<SmsSingleSend> result = client.sms().single_send(param);
         return result;
-    }
-    
-    //单例模式获取YunpianClient(静态内部类加载)
-    private static class YunpianClientHolder {
-        private static YunpianClient instance = new YunpianClient(apikey).init();
     }
 
     public static void main(String[] args) {
