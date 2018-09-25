@@ -10,7 +10,7 @@
           content="我在懂房帝发现一套 【<#if houseDetail.plotName?exists&&houseDetail.plotName!=''>${houseDetail.plotName}</#if>】【 <#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>】【<#if houseDetail.room?exists&&houseDetail.hall?exists>${houseDetail.room}室${houseDetail.hall}厅</#if>】的房子推荐给你">
     <meta name="keywords" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
-    <script type="text/javascript" src="${staticurl}/js/loghub-tracking.js" async></script>
+    <#--<script type="text/javascript" src="${staticurl}/js/loghub-tracking.js" async></script>-->
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
     <script type="text/javascript">
@@ -287,6 +287,7 @@
                         <#if houseDetail['ofCompany']?exists&&houseDetail['ofCompany']!=''>【${houseDetail['ofCompany']}】</#if>
                         <#if houseDetail['houseProxyName']?exists&&houseDetail['houseProxyName']!=''>${houseDetail['houseProxyName']}</#if>
                         <#if houseDetail['agentBusinessCard']?exists && houseDetail['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                        <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''><i class="agent-business-card imagePreviewAgentCompany"><img src="${staticurl}/images/global/yingyezhizhao.png"></i></#if>
                     </span>
                     <em>房屋信息发布人</em>
                 </p>
@@ -318,6 +319,7 @@
                         <#if houseDetail.ofCompany?exists&&houseDetail.ofCompany!=''>【${houseDetail.ofCompany}】</#if>
                         <#if houseDetail.houseProxyName?exists&&houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>
                         <#if houseDetail.agentBusinessCard?exists && houseDetail.agentBusinessCard != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                        <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''><i class="agent-business-card imagePreviewAgentCompany"><img src="${staticurl}/images/global/yingyezhizhao.png"></i></#if>
                     </span>
                     <em>房屋信息发布人</em>
                 </p>
@@ -350,15 +352,16 @@
         <a onclick="plotDetailInfo_2(this)" href="${router_city('/xiaoqu/'+houseDetail.newcode+'.html')}">
 
             <div class="picture-box">
-                <#assign item=houseDetail['plotPhoto']>
-                <#if item?exists><img src="${qiniuimage}/${item}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
+                <#--<#assign item=houseDetail['plotPhoto']>-->
+                <#if houseDetail['plotPhoto']?exists && houseDetail['plotPhoto'] != ''><img src="${qiniuimage}/${houseDetail['plotPhoto']}-tt400x300" alt="${houseDetail.plotName}"><#else ><img src="${staticurl}/images/global/tpzw_image.png" alt="拍摄中"></#if>
             </div>
             <div id="tilePlotDesc" class="tilelist-content">
                 <h4>
                     <#if houseDetail.plotName?exists>${houseDetail.plotName}<#else></#if>
                 </h4>
                 <p>
-                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>
+                    <#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']!='')>
+                    <#--<#if village['abbreviatedAge']?exists&&(village['abbreviatedAge']?number gt 0)>-->
                         <em class="high-light-red">${village['abbreviatedAge']}</em>年建成住宅,
                     </#if>
                     <#if village['sumBuilding']?exists&&(village['sumBuilding']!='')>共<em class="high-light-red">${village['sumBuilding']}</em>栋</#if>
@@ -631,6 +634,18 @@
         </#if>
     </div>
 </div>
+<div class="agent-card-company-prev">
+    <div class="agent-card-content">
+        <i id="closeAgentCompany"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
+    <#if houseDetail['companyCard']?exists && houseDetail['companyCard'] != ''>
+        <#if houseDetail['companyCard']?index_of('http') gt -1>
+            <img src="${houseDetail.companyCard}" />
+        <#else >
+            <img src="${qiniuimage}/${houseDetail.companyCard}-agent200x300" />
+        </#if>
+    </#if>
+    </div>
+</div>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -653,6 +668,13 @@
         $('#closeAgent').on('click', function() {
             $('.agent-card-prev').hide()
         });
+        $('.imagePreviewAgentCompany').on('click', function() {
+            $('.agent-card-company-prev').show()
+        });
+        $('#closeAgentCompany').on('click', function() {
+            $('.agent-card-company-prev').hide()
+        });
+
         var subPhone = false;
         var reservationData = {};
 
@@ -772,6 +794,19 @@
             '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
             '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
             '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
+            '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
+            '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
+            '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',
+            '经济人电话' : '<#if houseDetail.houseProxyPhone?exists&& houseDetail.houseProxyPhone!=''>${houseDetail.houseProxyPhone}</#if>',
+            'ID' : '<#if houseDetail.houseId?exists>${houseDetail.houseId}</#if>'
+        });
+        var bdwlogger = new window.Tracker();
+        bdwlogger.logger('wap-二手房认领详情页',{
+            '区域' : '<#if houseDetail.area?exists&& houseDetail.area!=''>${houseDetail.area}</#if>',
+            '商圈' : '<#if houseDetail.houseBusinessName?exists&& houseDetail.houseBusinessName!=''>${houseDetail.houseBusinessName}</#if>',
+            '小区名称' : '<#if houseDetail.plotName?exists&& houseDetail.plotName!=''>${houseDetail.plotName}</#if>',
+            '总价' : '<#if houseDetail.houseTotalPrices?exists&&(houseDetail.houseTotalPrices!=0)>${houseDetail.houseTotalPrices}</#if>'+'万',
+        '面积' : '<#if houseDetail.buildArea?exists&& houseDetail.buildArea!=0>${houseDetail.buildArea}'+"㎡"</#if>,
             '户型' : '<#if houseDetail.room?exists>${houseDetail.room}室</#if><#if houseDetail.hall?exists>${houseDetail.hall}厅</#if>',
             '经济公司' : '<#if houseDetail.ofCompany?exists&& houseDetail.ofCompany!=''>${houseDetail.ofCompany}</#if>',
             '经济人' : '<#if houseDetail.houseProxyName?exists&& houseDetail.houseProxyName!=''>${houseDetail.houseProxyName}</#if>',

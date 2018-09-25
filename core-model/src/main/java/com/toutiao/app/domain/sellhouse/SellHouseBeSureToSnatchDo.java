@@ -267,5 +267,10 @@ public class SellHouseBeSureToSnatchDo {
      */
     private Integer rankLowInBizcircleLayout;
 
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
+
 
 }
