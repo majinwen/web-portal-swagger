@@ -9,6 +9,10 @@ import com.toutiao.web.dao.mapper.invitation.InviteHistoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +61,36 @@ public class InviteHistoryServiceImpl implements InviteHistoryService {
     @Override
     public List<SuperInviteHistoryDo> getSuperInviteHistory(SuperInviteHistoryDoQuery superInviteHistoryDoQuery) {
         PageHelper.startPage(superInviteHistoryDoQuery.getPageSize(), superInviteHistoryDoQuery.getPageNum());
+        Date createTime = superInviteHistoryDoQuery.getCreateTime();
+        if (createTime != null){
+            Date createTimeStart = getStartOfDay(createTime);
+            Date createTimeEnd = getEndOfDay(createTime);
+            superInviteHistoryDoQuery.setCreateTimeStart(createTimeStart);
+            superInviteHistoryDoQuery.setCreateTimeEnd(createTimeEnd);
+        }
         return inviteHistoryMapper.getSuperInviteHistory(superInviteHistoryDoQuery);
+    }
+
+    /**
+     * 获得某天最大时间 2017-10-15 23:59:59
+     * @param date
+     * @return
+     */
+    public static Date getEndOfDay(Date date) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());;
+        LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+        return Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+    }
+
+    /**
+     * 获得某天最小时间 2017-10-15 00:00:00
+     * @param date
+     * @return
+     */
+    public static Date getStartOfDay(Date date) {
+        LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
+        LocalDateTime startOfDay = localDateTime.with(LocalTime.MIN);
+        return Date.from(startOfDay.atZone(ZoneId.systemDefault()).toInstant());
     }
 
     @Override

@@ -19,4 +19,8 @@ public class SuperInviteHistoryDoQuery {
     private Integer pageNum;
 
     private Integer pageSize;
+
+    private Date createTimeStart;
+
+    private Date createTimeEnd;
 }
