@@ -41,5 +41,4 @@ public class YunSMSUtils {
         private static YunpianClient instance = new YunpianClient(apikey).init();
     }
 
-
 }
