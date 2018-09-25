@@ -180,6 +180,11 @@ public class NewHouseListDo  {
     @ChangeName("houseAddress")
     private  String buildingAddress;
 
+    /**
+     * 新房动态数量
+     */
+    private Long dynamicTotal;
+
     @ChangeName("salePhone")
     private String saletelphone;
     /**
@@ -190,5 +195,6 @@ public class NewHouseListDo  {
      * 优惠活动
      */
     private List<ActivityInfoDo> activityInfo;
+
 
 }

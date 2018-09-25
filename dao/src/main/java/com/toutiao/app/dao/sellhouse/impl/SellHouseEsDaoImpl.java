@@ -1,7 +1,6 @@
 package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
-import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
@@ -196,13 +195,13 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     }
 
     @Override
-    public SearchResponse querySellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse querySellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(esfFullAmountIndex).setTypes(esfFullAmountType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder)
                 .setFetchSource(new String[]{"houseId", "housePhotoTitle", "area", "areaId", "houseBusinessNameId",
                                 "houseBusinessName", "plotName", "newcode", "buildArea", "room", "forwardName",
-                                "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob"},
+                                "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob", "hall"},
                         null)
                 .execute().actionGet();
         return searchresponse;

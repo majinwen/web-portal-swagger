@@ -32,7 +32,8 @@ public class SellHouseRestController {
      */
     @RequestMapping(value = "/querySellHouseByHouseId",method = RequestMethod.GET)
     public NashResult querySellHouseByHouseId(@Param("houseId") String houseId){
-        List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(houseId.split(","));
+        List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(houseId.split(","),
+                CityUtils.getCity());
         if (StringTool.isNotEmpty(messageSellHouseDos)) {
             return NashResult.build(messageSellHouseDos);
         } else {

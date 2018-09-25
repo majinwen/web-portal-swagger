@@ -278,4 +278,43 @@
         </if>
         order by create_time DESC
     </select>
+
+    <select id="getSuperInviteHistory" parameterType="com.toutiao.app.domain.invitation.SuperInviteHistoryDoQuery"
+            resultType="com.toutiao.app.domain.invitation.SuperInviteHistoryDo">
+        SELECT
+        h.id AS id, h.equipment_no AS equipmentNo, c.code AS firstLevelCode, c1.code AS secondLevelCode,
+        c2.code AS thirdLevelCode, h.user_id AS userId, h.create_time AS createTime, h.is_valid AS isValid,
+        h.pay_time AS payTime, b.phone AS phone
+        FROM
+        invite_history h
+        LEFT JOIN user_basic b ON h.user_id = b.user_id
+        LEFT JOIN invitation_code c ON h.invitation_code = c.code
+        LEFT JOIN invite_history h1 ON c.user_id = h1.user_id
+        LEFT JOIN invitation_code c1 ON h1.invitation_code =c1.code
+        LEFT JOIN invite_history h2 ON c1.user_id = h2.user_id
+        LEFT JOIN invitation_code c2 ON h2.invitation_code =c2.code
+        <where>
+            1 = 1
+            <if test="firstLevelCode != null">
+                AND c.code = #{firstLevelCode}
+            </if>
+            <if test="secondLevelCode != null">
+                AND c1.code = #{secondLevelCode}
+            </if>
+            <if test="thirdLevelCode != null">
+                AND c2.code = #{thirdLevelCode}
+            </if>
+            <if test="equipmentNo != null">
+                AND h.equipment_no = #{equipmentNo}
+            </if>
+            <if test="createTimeStart != null and createTimeEnd != null">
+                AND (h.create_time BETWEEN #{createTimeStart} AND #{createTimeEnd})
+            </if>
+        </where>
+        ORDER BY h.create_time DESC
+    </select>
+
+    <select id="getCountByEquipmentNo" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from invite_history where equipment_no = #{equipmentNo}
+    </select>
 </mapper>
