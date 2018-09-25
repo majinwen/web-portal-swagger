@@ -24,12 +24,20 @@ public class MessagePushServiceImpl implements MessagePushService {
         CITYID2NAME.put(12, "北京");
         CITYID2NAME.put(13, "上海");
         CITYID2NAME.put(14, "天津");
+        CITYID2NAME.put(16, "广州");
+        CITYID2NAME.put(17, "深圳");
+        CITYID2NAME.put(26, "杭州");
+        CITYID2NAME.put(67, "苏州");
     }
     private static final Map<Integer, String> CITYID2ABBREVIATION = new HashMap<>();
     static {
         CITYID2ABBREVIATION.put(12, "bj");
         CITYID2ABBREVIATION.put(13, "sh");
         CITYID2ABBREVIATION.put(14, "tj");
+        CITYID2ABBREVIATION.put(16, "gz");
+        CITYID2ABBREVIATION.put(17, "sz");
+        CITYID2ABBREVIATION.put(26, "hz");
+        CITYID2ABBREVIATION.put(67, "suzhou");
     }
 
     /**
