@@ -25,4 +25,18 @@ public class SendConfig {
     private String product;
     @Value("${send.domain}")
     private String domain;
+
+
+    /**
+     * 云信sms
+     *
+     */
+    @Value("${yunpian.send.apikey}")
+    private String apiKey;
+
+    @Value("${yunpian.user.template}")
+    private String userTemplate;
+
+    @Value("${yunpian.agent.template}")
+    private String agentTemplate;
 }

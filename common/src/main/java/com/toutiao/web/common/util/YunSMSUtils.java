@@ -1,6 +1,8 @@
 package com.toutiao.web.common.util;
 
 
+import org.springframework.stereotype.Component;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -12,48 +14,44 @@ import static com.toutiao.web.common.httpUtil.HttpUtils.post;
  * 云片短信调用工具
  * Created by CuiShihao on 2018/9/21
  */
+@Component
 public class YunSMSUtils {
 
-//    @Autowired
-//    private SendConfig sendConfig;
 
-    //    @Value("${yunpian.send.apikey}")
-    private String apikey = "b24d4af5614de7850e39bbe7ae674f7d";
+    private SendConfig sendConfig;
 
-    //    @Value("${yunpian.send.modelid1}")
-    private String modelid1 = "2501662";
-
-    //    @Value("${yunpian.send.modelid2}")
-    private String modelid2 = "2501666";
-
-    //    @Value("${yunpian.send.encoding}")
-    private String ENCODING = "UTF-8";
-
-    public static void main(String[] args) {
-        YunSMSUtils yunSMSUtils = new YunSMSUtils();
-        try {
-            yunSMSUtils.sendSms("18722079068", 2);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    public YunSMSUtils(SendConfig sendConfig) {
+        this.sendConfig = sendConfig;
     }
 
-    //发送短信
-    public String sendSms(String mobile, Integer code) throws UnsupportedEncodingException {
+
+    private String ENCODING = "UTF-8";
+
+
+    /**
+     * 发送优惠活动短信接口
+     * @param mobile  手机号
+     * @param code  发送对象表示码
+     * @param userCallName  用户称呼名
+     * @param activityBuildingName  参与活动楼盘名称
+     * @return
+     * @throws UnsupportedEncodingException
+     */
+    public String sendActivitySms(String mobile, Integer code, String userCallName, String activityBuildingName) throws UnsupportedEncodingException {
         //发送短信
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("apikey", apikey);
+        Map<String, String> params = new HashMap<>();
+        params.put("apikey", sendConfig.getApiKey());
         params.put("mobile", mobile);
         /**
          * 1表示用户  2表示销售
          */
         if (code == 1) {
-            params.put("tpl_id", modelid1);
-            params.put("tpl_value", URLEncoder.encode("#activityBuildingName#", ENCODING) + "=" + URLEncoder.encode("远洋山水", ENCODING));
+            params.put("tpl_id", sendConfig.getUserTemplate());
+            params.put("tpl_value", URLEncoder.encode("#activityBuildingName#", ENCODING) + "=" + URLEncoder.encode(activityBuildingName, ENCODING));
         } else if (code == 2) {
-            params.put("tpl_id", modelid2);
+            params.put("tpl_id", sendConfig.getAgentTemplate());
             String tpl_value = URLEncoder.encode("#activityBuildingName#", ENCODING) + "=" +
-                    URLEncoder.encode("远洋山水", ENCODING) + "&" + URLEncoder.encode("#userCallName#", ENCODING) + "=" + URLEncoder.encode("张三", ENCODING);
+                    URLEncoder.encode(activityBuildingName, ENCODING) + "&" + URLEncoder.encode("#userCallName#", ENCODING) + "=" + URLEncoder.encode(userCallName, ENCODING);
             params.put("tpl_value", tpl_value);
         }
         return post("https://sms.yunpian.com/v2/sms/tpl_batch_send.json", params);

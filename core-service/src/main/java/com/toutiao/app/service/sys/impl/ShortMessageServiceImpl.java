@@ -1,10 +1,10 @@
 package com.toutiao.app.service.sys.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.web.common.constant.syserror.ShortMessageInterfaceErrorCodeEnum;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
 import org.slf4j.Logger;
@@ -30,6 +30,9 @@ public class ShortMessageServiceImpl implements ShortMessageService {
 
     @Autowired
     private SMSUtils smsUtils;
+
+    @Autowired
+    private YunSMSUtils yunSMSUtils;
 
     /**
      * 短信验证码发送接口
@@ -87,26 +90,14 @@ public class ShortMessageServiceImpl implements ShortMessageService {
         //发送短信
         try {
             //发送短信给用户
-            String userCode = smsUtils.sendActivitySms(smsPhone,activityBuildingName,"",1);
-            if (null != userCode && "OK".equals(userCode)) {
-                logger.info("发送用户短信息成功，电话："+userPhone+"={}");
-            }else if ("isv.BUSINESS_LIMIT_CONTROL".equals(userCode)) {
-                logger.error("发送用户短信息过于频繁或已超出限制，电话："+userPhone+"={}");
-            }else{
-                logger.error("发送用户短信息失败，电话："+userPhone+"={}");
-            }
+            yunSMSUtils.sendActivitySms(userPhone,1,userCallName,activityBuildingName);
 
             //发送短信给经纪人
             userCallName = userCallName+userNewBuildingActivity.getUserPhone();
-            String agentCode = smsUtils.sendActivitySms(smsPhone,activityBuildingName,userCallName,2);
-            if (null != agentCode && "OK".equals(agentCode)) {
-                logger.info("发送经纪人短信息成功，电话："+userPhone+"={}");
-            }else if ("isv.BUSINESS_LIMIT_CONTROL".equals(userCode)) {
-                logger.error("发送经纪人短信息过于频繁或已超出限制，电话："+userPhone+"={}");
-            }else{
-                logger.error("发送经纪人短信息失败，电话："+userPhone+"={}");
-            }
-        } catch (ClientException e) {
+            smsPhone = smsPhone.replace(".",",");
+            yunSMSUtils.sendActivitySms(smsPhone,2,userCallName,activityBuildingName);
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return NashResult.build("");

@@ -41,6 +41,28 @@ public class NewHouseActivityRestController {
     @Autowired
     private UserBasicInfoService userBasicInfoService;
 
+
+    /**
+     * 是否参加此活动
+     * @param newHouseActivityRequest
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/isActivity",method = RequestMethod.POST)
+    public NashResult isActivity(NewHouseActivityRequest newHouseActivityRequest) {
+
+        if(StringTool.isBlank(newHouseActivityRequest.getCityId())){
+            newHouseActivityRequest.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        }
+        UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
+        BeanUtils.copyProperties(newHouseActivityRequest,userNewBuildingActivityDoQuery);
+
+        return newHouseActivityRestService.isActivity(userNewBuildingActivityDoQuery);
+    }
+
+
+
+
     /**
      * 提交活动表单
      * @param newHouseActivityRequest

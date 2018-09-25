@@ -51,6 +51,20 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
     private ActivityStatisticsMapper activityStatisticsMapper;
 
 
+    @Override
+    public NashResult isActivity(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery) {
+
+        Integer buildingId = userNewBuildingActivityDoQuery.getBuildingId();
+        Integer activityId = userNewBuildingActivityDoQuery.getActivityId();
+        String userPhone = userNewBuildingActivityDoQuery.getUserPhone();
+        List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone,buildingId,activityId);
+        if(null != userNewBuildingActivityList && userNewBuildingActivityList.size() > 0){
+            return NashResult.Fail("1","已参与此活动！");
+        }else {
+            return NashResult.Fail("0","尚未参与此活动！");
+        }
+
+    }
 
     /**
      * 表单提交--用户提交参与的活动楼盘信息
@@ -86,8 +100,9 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
                     userBasic.setUserCallName(activity.getUserCallName());
                     Integer updateResult = userBasicMapper.updateByPrimaryKeySelective(userBasic);
                     if(updateResult > 0){
-                        //todo
-                        //shortMessageService.sendSmsByActivity(userPhone,activity);
+
+                        shortMessageService.sendSmsByActivity(userPhone,activity);
+
                         return NashResult.build("保存成功");
                     }else{
                         logger.error("更新用户称呼失败，userId："+userId+"={}");
@@ -95,8 +110,9 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
                     }
 
                 }else if(saveResult > 0 && StringTool.isBlank(userId)){
-                    //todo
+
                     //shortMessageService.sendSmsByActivity(userPhone,activity);
+                    shortMessageService.sendSmsByActivity(userPhone,activity);
                     return NashResult.build("保存成功");
                 }else{
                     logger.error("保存用户活动信息失败，userId："+userId+"={}");
@@ -204,5 +220,13 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
         return activityStatisticsDo;
     }
 
+    public static void main(String[] args) {
+
+        String dsss = "17746543687";
+
+        String ddd = dsss.replace(".",",");
+        System.out.println(ddd);
+
+    }
 
 }

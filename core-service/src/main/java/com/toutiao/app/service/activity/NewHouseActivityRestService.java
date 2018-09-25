@@ -15,6 +15,14 @@ import com.toutiao.web.common.restmodel.NashResult;
  */
 public interface NewHouseActivityRestService {
 
+
+    /**
+     * 表单提交--用户提交参与的活动楼盘信息
+     * @param userNewBuildingActivityDoQuery
+     * @return
+     */
+    NashResult isActivity(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
+
     /**
      * 表单提交--用户提交参与的活动楼盘信息
      * @param userNewBuildingActivityDoQuery
