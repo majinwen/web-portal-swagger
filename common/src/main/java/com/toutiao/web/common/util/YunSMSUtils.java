@@ -23,7 +23,7 @@ public class YunSMSUtils {
     private static class YunpianClientHolder {
         private static YunpianClient instance = new YunpianClient(apikey).init();
     }
-    
+
     //发送短信
     public Result sendSms(String mobile, String text) {
         //获取YunpianClient实例
