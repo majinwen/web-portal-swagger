@@ -361,9 +361,10 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //标签
         if (StringTool.isNotEmpty(plotListDoQuery.getLabelId())){
             Integer[] labelId = plotListDoQuery.getLabelId();
-            boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
+//            boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
+            boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", labelId));
             for (Integer i:labelId){
-                if (i==1){
+                if (i==0){
                     boolQueryBuilder.must(QueryBuilders.termQuery("has_subway",1));
                 }
             }
@@ -416,13 +417,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
 
 
-        /**
-         * top 50小区
-         */
-        if(StringTool.isNotEmpty(plotListDoQuery.getIsTop())){
-            int [] isTop={plotListDoQuery.getIsTop()};
-            boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", isTop));
-        }
+//        /**
+//         * top 50小区
+//         */
+//        if(StringTool.isNotEmpty(plotListDoQuery.getIsTop())){
+//            int [] isTop={plotListDoQuery.getIsTop()};
+//            boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", isTop));
+//        }
 
         Integer from = 0;
         //分页起始位置
