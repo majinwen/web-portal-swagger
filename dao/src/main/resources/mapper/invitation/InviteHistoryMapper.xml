@@ -308,6 +308,9 @@
             <if test="equipmentNo != null">
                 AND h.equipment_no = #{equipmentNo}
             </if>
+            <if test="phone != null">
+                AND b.phone = #{phone}
+            </if>
             <if test="createTimeStart != null and createTimeEnd != null">
                 AND (h.create_time BETWEEN #{createTimeStart} AND #{createTimeEnd})
             </if>
