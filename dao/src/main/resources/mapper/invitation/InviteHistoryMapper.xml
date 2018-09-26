@@ -290,9 +290,9 @@
         invite_history h
         LEFT JOIN user_basic b ON h.user_id = b.user_id
         LEFT JOIN invitation_code c ON h.invitation_code = c.code
-        LEFT JOIN invite_history h1 ON c.user_id = h1.user_id
+        LEFT JOIN  (SELECT * FROM (select invitation_code,user_id,row_number() over(partition BY user_id) AS row FROM invite_history WHERE user_id <> '') t1 WHERE t1.row =1) h1 ON c.user_id = h1.user_id
         LEFT JOIN invitation_code c1 ON h1.invitation_code =c1.code
-        LEFT JOIN invite_history h2 ON c1.user_id = h2.user_id
+        LEFT JOIN  (SELECT * FROM (select invitation_code,user_id,row_number() over(partition BY user_id) AS row FROM invite_history WHERE user_id <> '') t1 WHERE t1.row =1)  h2 ON c1.user_id = h2.user_id
         LEFT JOIN invitation_code c2 ON h2.invitation_code =c2.code
         <where>
             1 = 1
