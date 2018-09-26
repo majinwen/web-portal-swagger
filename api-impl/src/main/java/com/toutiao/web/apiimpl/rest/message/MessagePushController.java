@@ -32,7 +32,7 @@ public class MessagePushController {
     private MessagePushService messagePushService;
 
     /**
-     * 房源类消息列表(旧版本使用)
+     * 房源类消息列表(旧版本)
      */
     @RequestMapping(value = "/getHouseTypeMessage", method = RequestMethod.GET)
     @ResponseBody
@@ -65,7 +65,7 @@ public class MessagePushController {
     }
 
     /**
-     * 专题类消息列表(旧版本使用)
+     * 专题类消息列表(旧版本专题类消息使用此接口，新版用getHouseTypeMessageNew)
      */
     @RequestMapping(value = "/getThemeTypeMessage", method = RequestMethod.GET)
     @ResponseBody
@@ -81,7 +81,7 @@ public class MessagePushController {
     }
 
     /**
-     * 首页消息列表
+     * 首页消息列表(旧版本)
      *
      * @param homePageMessageRequest
      * @return
@@ -100,7 +100,7 @@ public class MessagePushController {
     }
 
     /**
-     * 首页消息列表
+     * 首页消息列表(新版本)
      *
      * @param homePageMessageRequest
      * @return
