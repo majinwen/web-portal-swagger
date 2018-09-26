@@ -631,6 +631,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 jsonObject.put("houseId", houseId);
                 jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
                 jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
             } else {
                 jsonObject.put("status", 0);
                 jsonObject.put("houseId", houseId);
