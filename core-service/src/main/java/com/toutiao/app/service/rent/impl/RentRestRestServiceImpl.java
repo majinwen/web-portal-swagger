@@ -6,9 +6,6 @@ import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
-import com.toutiao.app.domain.rent.RentAgentDo;
-import com.toutiao.app.domain.rent.RentDetailsDo;
-import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
@@ -17,7 +14,6 @@ import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
-import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
@@ -39,15 +35,12 @@ import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @Service
 public class RentRestRestServiceImpl implements RentRestService {
@@ -108,6 +101,9 @@ public class RentRestRestServiceImpl implements RentRestService {
                         rentDetailsDo.setAgentHeadPhoto(agentBaseDo.getHeadPhoto());
                         rentDetailsDo.setBrokerageAgency(agentBaseDo.getAgentCompany());
                         rentDetailsDo.setEstateAgent(agentBaseDo.getAgentName());
+                        if(StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())){
+                            rentDetailsDo.setAgentBusinessCard(agentBaseDo.getAgentBusinessCard().toString());
+                        }
                     }
                 }else {
                     agentBaseDo.setAgentName(searchHit.getSource().get("estate_agent")==null?"":searchHit.getSource().get("estate_agent").toString());
@@ -142,6 +138,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         if (StringTool.isNotEmpty(rentType)){
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",rentType));
         }
@@ -191,6 +188,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("zufang_id",plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder);
         long zhengzu = ((InternalFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
         long hezu = ((InternalFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();
@@ -316,6 +314,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 //        boolQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gte(0));
 //        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","1"));
 
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));//目前只展示导入的房源
         boolQueryBuilder.must(QueryBuilders.termQuery("rent_type","1"));
         boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gt(4000).lte(6000));
         Integer size = 10;
@@ -418,7 +417,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         //添加筛选条件
         BoolQueryBuilder booleanQueryBuilder = getRecommendRentBoolQueryBuilder(boolQueryBuilder, rentHouseDoQuery);
-
+        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));//目前只展示导入的房源
         FunctionScoreQueryBuilder query = null;
         //设置基础分(录入优先展示)(录入:1,导入1/3)
         FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("rentHouseTypeId")

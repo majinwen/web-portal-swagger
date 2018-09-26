@@ -11,12 +11,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
-import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +33,11 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     private String searchEnginesIndex ;
     @Value("${tt.search.engines.type}")
     private String searchEnginesType;
+    @Value("${tt.esfFullAmount.index}")
+    private String esfFullAmountIndex;
+    @Value("${tt.esfFullAmountType.type}")
+    private String esfFullAmountType;
+
 
 
     @Override
@@ -138,7 +138,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 //                        "plotName", "year", "parkRadio", "subwayDistince", "housePlotLocation", "newcode", "housePhoto", "is_claim", "userId",
 //                        "houseProxyName", "ofCompany", "houseProxyPhone", "houseProxyPhoto", "claim_time", "price_increase_decline", "import_time", "price_increase_decline_amount"}, null)
 //                .execute().actionGet();
-                new String[] {"houseId","housePhotoTitle","houseTitle","tagsName","claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
+                new String[] {"areaId","houseId","housePhotoTitle","houseTitle","tagsName","claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
                         "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
                         "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","housePhoto","is_claim","userId",
                         "houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto","claim_time","price_increase_decline","import_time","price_increase_decline_amount",
@@ -154,7 +154,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     public SearchResponse getHouseByIds(IdsQueryBuilder idsQueryBuilder) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(idsQueryBuilder)
+                .setQuery(idsQueryBuilder).setSize(1000)
                 .execute().actionGet();
         return searchresponse;
     }
@@ -174,6 +174,19 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse querySellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(esfFullAmountIndex).setTypes(esfFullAmountType);
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder)
+                .setFetchSource(new String[]{"houseId", "housePhotoTitle", "area", "areaId", "houseBusinessNameId",
+                                "houseBusinessName", "plotName", "newcode", "buildArea", "room", "forwardName",
+                                "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob"},
+                        null)
+                .execute().actionGet();
         return searchresponse;
     }
 

@@ -4,7 +4,7 @@
     <#include "../staticHeader.ftl">
     <title>我的优惠卡</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <link rel="stylesheet" href="${staticurl}/css/payment-coupon-detail.css?v=${staticversion}">
     <script src="${staticurl}/js/code.js?v=${staticversion}"></script>
     <#include "../StatisticsHeader.ftl">

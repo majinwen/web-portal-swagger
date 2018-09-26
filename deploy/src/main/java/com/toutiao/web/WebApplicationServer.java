@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"com.toutiao.web","com.toutiao.app"})
 public class WebApplicationServer {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(WebApplicationServer.class, args);
     }
 

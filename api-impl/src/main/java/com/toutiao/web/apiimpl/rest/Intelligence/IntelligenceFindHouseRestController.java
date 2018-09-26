@@ -16,6 +16,7 @@ import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
 import com.toutiao.web.service.intelligence.IntelligenceFhResService;
 import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import com.toutiao.web.service.intelligence.IntelligenceFindHouseService;
+import com.toutiao.web.service.plot.PlotService;
 import org.postgresql.util.PGobject;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,8 @@ public class IntelligenceFindHouseRestController {
     private IntelligenceFhPricetrendService intelligenceFhPricetrendService;
     @Autowired
     private UserBasicInfoService userBasicInfoService;
+    @Autowired
+    private PlotService plotService;
 
 
 
@@ -85,11 +88,25 @@ public class IntelligenceFindHouseRestController {
                 IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
                 if (StringTool.isNotBlank(intelligenceFhRes)) {
 
+                    List list = JSONObject.parseArray(((PGobject) intelligenceFhRes.getFhResult()).getValue());
+                    for(int i=0;i<list.size();i++){
+                        if(StringTool.isNotEmpty(((JSONObject) list.get(i)).get("newcode"))){
+                            String plotId = ((JSONObject) list.get(i)).get("newcode").toString();
+
+                            Map plotMap = plotService.queryPlotByPlotId(plotId);
+                            ((JSONObject) list.get(i)).put("esfPrice",plotMap.get("avgPrice"));
+                            ((JSONObject) list.get(i)).put("plotImage",plotMap.get("photo").toString().replaceAll("[\\[\\]]",""));
+
+                        }
+                    }
+                    intelligenceFhRes.setFhResult(JSONObject.toJSONString(list));
+
                     Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
                     Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
                     model.addAttribute("fhpt", fhpt);
                     model.addAttribute("trend", JSON.toJSON(fhtp.getOrDefault("trend", new ArrayList<String>())).toString());
-                    String datajson = ((PGobject) intelligenceFhRes.getFhResult()).getValue();
+//                    String datajson = ((PGobject) intelligenceFhRes.getFhResult()).getValue();
+                    String datajson = list.toString();
                     model.addAttribute("ptlists", JSON.toJSON(fhpt.getOrDefault("ptlists", new ArrayList<String>())).toString());
                     model.addAttribute("datajson", datajson);
                     model.addAttribute("fhtp", fhtp);

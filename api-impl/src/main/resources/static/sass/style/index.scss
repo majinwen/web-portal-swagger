@@ -129,3 +129,22 @@
         }
     }
 }
+.company-bottom {
+    position: relative;
+    padding-top: rem(30);
+    padding-bottom: rem(29);
+    text-align: center;
+    background-color: #f1f1f1;
+
+    p {
+        display: block;
+        line-height: 1;
+        color: #888;
+        font-weight: 500;
+        @include font-dpr(22);
+
+        &:nth-child(2), &:nth-child(3) {
+            margin-top: rem(15);
+        }
+    }
+}

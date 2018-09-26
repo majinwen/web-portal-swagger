@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="${staticurl}/css/new-index.css?v=${staticversion}">
     <title>上懂房帝 找新房</title>
     <meta name="description" content="懂房帝 买房秒懂">
-    <meta name="keyword" content="">
+    <meta name="keywords" content="">
     <script src="${staticurl}/js/jquery-2.1.4.min.js?v=${staticversion}"></script>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=UrflQIXBCuEZUVkwxgC3xE5y8rRPpjpS"></script>
     <#include "../StatisticsHeader.ftl">
@@ -187,6 +187,19 @@
 <a href="${router_city('/loupan')}" class="new-index-pull-down">
     <p>想查看更多房源，跟我来！</p><img src="${staticurl}/images/newindex/sy_xf_icon_xl.png" alt="查看更多房源">
 </a>
+<div class="download-app-bottom-tips">
+    <div class="detail">
+        <img src="http://wap-qn.toutiaofangchan.com/ic_launcher.png" alt="懂房帝">
+        <p>
+            <strong>看看你家房子涨价没？</strong>
+            <span>下载懂房帝APP随时查看</span>
+        </p>
+    </div>
+    <div class="btn">打开APP</div>
+    <div class="download-app-bottom-tips-close">
+        <img src="${staticurl}/images/download/download-app-bottom-tips-close.png" alt="">
+    </div>
+</div>
 <#include "../user.ftl">
 <#include "../search.ftl">
 
@@ -212,6 +225,12 @@
 </html>
 <script>
     $(function () {
+        $('.download-app-bottom-tips-close').on('click', function () {
+            $('.download-app-bottom-tips').hide()
+        });
+        $('.download-app-bottom-tips .btn').on('click', function () {
+            location.href = "https://at.umeng.com/onelink/K9nqai"
+        });
 
         var referer = document.referrer||''
         if(referer.indexOf(".toutiao.com")>0){

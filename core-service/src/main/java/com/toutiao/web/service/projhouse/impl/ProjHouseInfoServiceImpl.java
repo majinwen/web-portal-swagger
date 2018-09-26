@@ -37,6 +37,8 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,9 @@ import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
+
+
+    private Logger logger = LoggerFactory.getLogger(ProjHouseInfoServiceImpl.class);
 
     @Autowired
     private ESClientTools esClientTools;
@@ -1036,6 +1041,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //            }
         } catch (Exception e) {
             e.printStackTrace();
+            logger.error("二手房列表异常={}",e.getStackTrace());
         }
         return null;
     }
@@ -1233,6 +1239,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
         } catch (Exception e) {
             e.printStackTrace();
+
+            logger.error("二手房列表异常location={}",e.getStackTrace());
         }
         return houseList;
     }
@@ -1307,14 +1315,24 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 if(null!=instance.getUserId() && !"".equals(instance.getUserId())){
                     GetResponse agentBaseResponse = client.prepareGet(agentBaseIndex,agentBaseType,instance.getUserId().toString()).execute().actionGet();
                     Map<String, Object> agentBaseMap = agentBaseResponse.getSourceAsMap();
-                    //经济人id
+                    if(null!=agentBaseMap){
+                        //经济人id
 //                    instance.setUserId(Integer.valueOf(agentBaseMap.get("userId").toString()));
-                    //经济人名称
-                    instance.setHouseProxyName(agentBaseMap.get("agent_name").toString());
-                    //展示电话
-                    instance.setHouseProxyPhone(agentBaseMap.get("display_phone").toString());
-                    //经纪人头像
-                    instance.setHouseProxyPhoto(agentBaseMap.get("head_photo").toString());
+                        //经济人名称
+                        instance.setHouseProxyName(agentBaseMap.get("agent_name")==null?"":agentBaseMap.get("agent_name").toString());
+                        //展示电话
+                        instance.setHouseProxyPhone(agentBaseMap.get("display_phone")==null?"":agentBaseMap.get("display_phone").toString());
+                        //经纪人头像
+                        instance.setHouseProxyPhoto(agentBaseMap.get("head_photo")==null?"":agentBaseMap.get("head_photo").toString());
+                        //经纪人名片
+                        if(StringTool.isNotEmpty(agentBaseMap.get("agentBusinessCard"))){
+                            instance.setAgentBusinessCard(agentBaseMap.get("agentBusinessCard")==null?"":agentBaseMap.get("agentBusinessCard").toString());
+                        }else {
+                            instance.setAgentBusinessCard("");
+                        }
+
+                    }
+
                 }
 
 //                //朝向

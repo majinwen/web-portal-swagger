@@ -30,4 +30,9 @@ public class InvitationCode {
      * 用户Id
      */
     private String userId;
+
+    /**
+     * 用户手机号
+     */
+    private String phone;
 }

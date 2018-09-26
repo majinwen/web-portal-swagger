@@ -7,6 +7,7 @@ import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
+import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
@@ -91,12 +92,18 @@ public class SellHouseServiceImpl implements SellHouseService{
                 if (StringTool.isNotEmpty(sellAndClaimHouseDetailsDo.getUserId())&&sellAndClaimHouseDetailsDo.getIsClaim()==1){
                     //经纪人信息
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString());
+                    if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())){
+                        agentBaseDo.setAgentBusinessCard(agentBaseDo.getAgentBusinessCard().toString());
+                    }else {
+                        agentBaseDo.setAgentBusinessCard("");
+
+                    }
 
                     sellHouseDetailsDo.setTagsName(sellAndClaimHouseDetailsDo.getClaimTagsName());
                     sellHouseDetailsDo.setHouseTitle(sellAndClaimHouseDetailsDo.getClaimHouseTitle());
                     sellHouseDetailsDo.setHouseId(sellAndClaimHouseDetailsDo.getClaimHouseId());
                     sellHouseDetailsDo.setHousePhotoTitle(sellAndClaimHouseDetailsDo.getClaimHousePhotoTitle());
-                    Date date = new Date();
+//                    Date date = new Date();
 //                    if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
 //                        if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
 //                            int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
@@ -127,6 +134,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
                     agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
                     agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setAgentBusinessCard(searchHit.getSource().get("agentBusinessCard")==null?"":searchHit.getSource().get("agentBusinessCard").toString());
                 }
                 sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
@@ -153,6 +161,28 @@ public class SellHouseServiceImpl implements SellHouseService{
         return sellHouseDetailsDo;
     }
 
+    @Override
+    public List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseIds) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+//        if(houseIds.indexOf("FS")>-1){
+//            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
+//        }else {
+        boolQueryBuilder.must(QueryBuilders.termsQuery("houseId", houseIds));
+//        }
+        SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String sourceAsString = searchHit.getSourceAsString();
+                MessageSellHouseDo messageSellHouseDo = JSON.parseObject(sourceAsString, MessageSellHouseDo.class);
+                messageSellHouseDos.add(messageSellHouseDo);
+            }
+        }
+        return messageSellHouseDos;
+    }
 
 
     /**
@@ -347,10 +377,14 @@ public class SellHouseServiceImpl implements SellHouseService{
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString());
 
                 }else{
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
+//                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+//                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+//                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+//                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto").toString());
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                 }
                 sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
@@ -496,10 +530,15 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
                 }else{
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+//                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName").toString());
+//                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany").toString());
+//                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+//                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+
+                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                 }
                 sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags());
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);

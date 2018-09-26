@@ -10,6 +10,17 @@
         <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
         <result column="equipment_no" property="equipmentNo" jdbcType="VARCHAR"/>
     </resultMap>
+
+    <resultMap id="BaseResultMap1" type="com.toutiao.web.dao.entity.invitation.InviteHistory">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="invitation_code" property="invitationCode" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="is_valid" property="isValid" jdbcType="SMALLINT"/>
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="equipment_no" property="equipmentNo" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+    </resultMap>
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -72,6 +83,10 @@
     </sql>
     <sql id="Base_Column_List">
         id, invitation_code, user_id, create_time, is_valid, pay_time, equipment_no
+    </sql>
+
+    <sql id="Base_Column_List1">
+        id, invitation_code, base.user_id, base.phone, history.create_time, is_valid, pay_time, equipment_no
     </sql>
     <select id="selectByExample" resultMap="BaseResultMap"
             parameterType="com.toutiao.web.dao.entity.invitation.InviteHistoryExample">
@@ -252,10 +267,12 @@
         where equipment_no = #{equipmentNo,jdbcType=VARCHAR}
     </select>
 
-    <select id="getInviteHistoryByCode" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="getInviteHistoryByCode" parameterType="java.lang.Integer" resultMap="BaseResultMap1">
         select
-        <include refid="Base_Column_List"/>
-        from invite_history
+        <include refid="Base_Column_List1"/>
+        from invite_history history
+        left join user_basic base
+        on history.user_id = base.user_id
         <if test="code != null">
             where invitation_code = #{code,jdbcType=INTEGER}
         </if>
