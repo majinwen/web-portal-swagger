@@ -31,4 +31,9 @@ public class SearchHotProj {
      */
     private Date time;
 
+    /**
+     * 小区类型  1表示新房  2表示二手房  3表示租房
+     */
+    private Integer houseType;
+
 }
