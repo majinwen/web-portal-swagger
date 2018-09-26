@@ -32,7 +32,7 @@ public class MessagePushController {
     private MessagePushService messagePushService;
 
     /**
-     * 房源类消息列表
+     * 房源类消息列表(旧版本使用)
      */
     @RequestMapping(value = "/getHouseTypeMessage", method = RequestMethod.GET)
     @ResponseBody
@@ -48,7 +48,24 @@ public class MessagePushController {
     }
 
     /**
-     * 专题类消息列表
+     * 房源类消息列表(新版本所有消息都调用此接口)
+     */
+    @RequestMapping(value = "/getHouseTypeMessageNew", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHouseTypeMessageNew(@Validated MessagePushRequest messagePushRequest, HttpServletRequest
+            request, HttpServletResponse response) {
+        String userId = getUserIdByCookie(request, response);
+        if (StringTool.isEmpty(userId)) {
+            return NashResult.Fail("用户未登录");
+        }
+        MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
+        BeanUtils.copyProperties(messagePushRequest, messagePushQuery);
+        MessagePushDomain message = messagePushService.getHouseTypeMessageNew(messagePushQuery, userId);
+        return NashResult.build(message);
+    }
+
+    /**
+     * 专题类消息列表(旧版本使用)
      */
     @RequestMapping(value = "/getThemeTypeMessage", method = RequestMethod.GET)
     @ResponseBody
@@ -79,6 +96,26 @@ public class MessagePushController {
         HomeMessageDoQuery homeMessageDoQuery = new HomeMessageDoQuery();
         BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
         List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessage(homeMessageDoQuery, userId);
+        return NashResult.build(homePageMessage);
+    }
+
+    /**
+     * 首页消息列表
+     *
+     * @param homePageMessageRequest
+     * @return
+     */
+    @RequestMapping(value = "/getHomeMessageNew", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHomeMessageNew(HomePageMessageRequest homePageMessageRequest, HttpServletRequest request,
+                                      HttpServletResponse response) {
+        String userId = getUserIdByCookie(request, response);
+        if (StringTool.isEmpty(userId)) {
+            return NashResult.Fail("用户未登录");
+        }
+        HomeMessageDoQuery homeMessageDoQuery = new HomeMessageDoQuery();
+        BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
+        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
         return NashResult.build(homePageMessage);
     }
 
