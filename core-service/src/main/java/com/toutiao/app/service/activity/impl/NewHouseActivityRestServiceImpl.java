@@ -4,8 +4,10 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.toutiao.app.dao.activity.ActivityEsDao;
 import com.toutiao.app.domain.activity.*;
+import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.activity.NewHouseActivityRestService;
 import com.toutiao.app.service.sys.ShortMessageService;
+import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
@@ -49,6 +51,8 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
     private ActivityEsDao activityEsDao;
     @Autowired
     private ActivityStatisticsMapper activityStatisticsMapper;
+    @Autowired
+    private UserBasicInfoService userBasicInfoService;
 
 
     @Override
@@ -56,7 +60,11 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
 
         Integer buildingId = userNewBuildingActivityDoQuery.getBuildingId();
         Integer activityId = userNewBuildingActivityDoQuery.getActivityId();
-        String userPhone = userNewBuildingActivityDoQuery.getUserPhone();
+
+        UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(userNewBuildingActivityDoQuery.getUserId().toString());
+
+
+        String userPhone = userBasicDo.getPhone();
         List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone,buildingId,activityId);
         if(null != userNewBuildingActivityList && userNewBuildingActivityList.size() > 0){
             return NashResult.Fail("fail","已参与此活动！");
