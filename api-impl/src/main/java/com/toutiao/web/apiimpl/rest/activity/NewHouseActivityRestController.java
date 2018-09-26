@@ -48,7 +48,7 @@ public class NewHouseActivityRestController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/isActivity",method = RequestMethod.POST)
+    @RequestMapping(value = "/isAttendedActivity",method = RequestMethod.POST)
     public NashResult isActivity(NewHouseActivityRequest newHouseActivityRequest) {
 
         if(StringTool.isBlank(newHouseActivityRequest.getCityId())){
@@ -57,7 +57,7 @@ public class NewHouseActivityRestController {
         UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
         BeanUtils.copyProperties(newHouseActivityRequest,userNewBuildingActivityDoQuery);
 
-        return newHouseActivityRestService.isActivity(userNewBuildingActivityDoQuery);
+        return newHouseActivityRestService.isAttendedActivity(userNewBuildingActivityDoQuery);
     }
 
 

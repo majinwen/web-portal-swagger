@@ -21,7 +21,7 @@ public interface NewHouseActivityRestService {
      * @param userNewBuildingActivityDoQuery
      * @return
      */
-    NashResult isActivity(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
+    NashResult isAttendedActivity(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
 
     /**
      * 表单提交--用户提交参与的活动楼盘信息

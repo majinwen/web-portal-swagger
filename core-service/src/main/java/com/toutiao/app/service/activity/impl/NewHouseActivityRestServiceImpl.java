@@ -52,16 +52,16 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
 
 
     @Override
-    public NashResult isActivity(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery) {
+    public NashResult isAttendedActivity(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery) {
 
         Integer buildingId = userNewBuildingActivityDoQuery.getBuildingId();
         Integer activityId = userNewBuildingActivityDoQuery.getActivityId();
         String userPhone = userNewBuildingActivityDoQuery.getUserPhone();
         List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone,buildingId,activityId);
         if(null != userNewBuildingActivityList && userNewBuildingActivityList.size() > 0){
-            return NashResult.Fail("1","已参与此活动！");
+            return NashResult.Fail("fail","已参与此活动！");
         }else {
-            return NashResult.Fail("0","尚未参与此活动！");
+            return NashResult.build("尚未参与此活动！");
         }
 
     }
