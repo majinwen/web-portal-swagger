@@ -14,6 +14,8 @@ public class SuperInviteHistoryRequest{
 
     private String equipmentNo;
 
+    private String phone;
+
     private Date createTime;
 
     private Integer pageNum = 1;
