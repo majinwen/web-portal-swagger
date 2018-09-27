@@ -1,5 +1,4 @@
 package com.toutiao.app.service.message.impl;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -78,6 +77,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String ANYLIVINGROOM = "居室不限";
     private static final String ADDONE = "新上一套";
     private static final String SQUAREMETER = "㎡";
+    //    private static final String CHINESESQUAREMETER = "平米";
     private static final String OF = "的";
     private static final String RISE = "涨";
     private static final String DROP = "降";
@@ -118,6 +118,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
+
         List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
         List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
         MessagePushDomain messagePushDomain = new MessagePushDomain();
@@ -160,72 +161,6 @@ public class MessagePushServiceImpl implements MessagePushService {
 
         return messagePushDomain;
     }
-
-    private void replaceHouseDo(MessagePushDo messagePushDo, JSONObject esfInfo, String houseId, List<MessageSellHouseDo> messageSellHouseDos) {
-        JSONObject jsonObject;
-        List<MessageSellHouseDo> esHouseDos = sellHouseService.querySellHouseByHouseId(
-                new String[]{houseId}, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
-        Integer subscribeType = messagePushDo.getSubscribeType();
-        if (esfInfo == null){
-            //旧数据查不到，从Es表查询
-            if (CollectionUtils.isNotEmpty(messageSellHouseDos)){
-                jsonObject = (JSONObject)JSONObject.toJSON(esHouseDos.get(0));
-                jsonObject.put("status", 0);
-                jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
-                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                if (subscribeType == 1 && (Integer) jsonObject.get("isCutPrice") == 1) {
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                } else if (subscribeType == 2 && (Integer) jsonObject.get("isLowPrice") == 1) {
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                } else if (subscribeType == 3 && (Integer) jsonObject.get("isMustRob") == 1) {
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                } else if (subscribeType == 0){
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                }
-            }
-        } else {
-            jsonObject = esfInfo.getJSONObject(houseId);
-            //新数据可以从esfInfo查询，判断是否下架
-            if (CollectionUtils.isEmpty(esHouseDos)){
-                jsonObject.put("status", 1);
-                jsonObject.put("houseId", houseId);
-                jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
-                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-            } else {
-                jsonObject.put("status", 0);
-                jsonObject.put("houseId", houseId);
-                jsonObject.put("houseTotalPrices", esHouseDos.get(0).getHouseTotalPrices());
-                jsonObject.put("priceFloat", esHouseDos.get(0).getPriceFloat());
-                jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
-                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                //如果是专题类消息，要替换isCutPrice、isLowPrice、isMustRob内容
-                if (isAddList(subscribeType, jsonObject, esHouseDos)) {
-                    jsonObject.put("isCutPrice", esHouseDos.get(0).getIsCutPrice());
-                    jsonObject.put("isLowPrice", esHouseDos.get(0).getIsLowPrice());
-                    jsonObject.put("isMustRob", esHouseDos.get(0).getIsMustRob());
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                } else if (subscribeType == 0){
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                }
-            }
-        }
-    }
-
-    /**
-     * 判断专题类消息房源是否加入List
-     *
-     * @param subscribeType
-     * @param jsonObject
-     * @param esHouseDos
-     * @return
-     */
-    private boolean isAddList(Integer subscribeType, JSONObject jsonObject, List<MessageSellHouseDo> esHouseDos) {
-        MessageSellHouseDo messageSellHouseDo = esHouseDos.get(0);
-        return (subscribeType == 1 && Integer.valueOf(jsonObject.get("isCutPrice").toString()).equals(messageSellHouseDo.getIsCutPrice())) ||
-                (subscribeType == 2 && Integer.valueOf(jsonObject.get("isLowPrice").toString()).equals(messageSellHouseDo.getIsLowPrice())) ||
-                (subscribeType == 3 && Integer.valueOf(jsonObject.get("isMustRob").toString()).equals(messageSellHouseDo.getIsMustRob()));
-    }
-
 
     /**
      * 截取数组指定长度元素
@@ -770,24 +705,5 @@ public class MessagePushServiceImpl implements MessagePushService {
                 (subscribeType == 2 && Integer.valueOf(jsonObject.get("isLowPrice").toString()).equals(messageSellHouseDo.getIsLowPrice())) ||
                 (subscribeType == 3 && Integer.valueOf(jsonObject.get("isMustRob").toString()).equals(messageSellHouseDo.getIsMustRob()));
     }
-
-    private String dealPhotoTitle(String photoUrl) {
-        if (StringTool.isNotEmpty(photoUrl)) {
-            if (!(photoUrl.contains("http://") || photoUrl.contains("https://"))) {
-                photoUrl = qinniuImg + "/" + photoUrl + "-dongfangdi400x300";
-            }
-        } else {
-            photoUrl = "isNotExists";
-        }
-        return photoUrl;
-    }
-
-    private String dealDetailUrl(String houseId, Integer cityId) {
-        String houseDetailUrl = null;
-        if (StringTool.isNotEmpty(houseId) && StringTool.isNotEmpty(CITYID2ABBREVIATION.get(cityId))) {
-            houseDetailUrl = String.format(appName + "/#/%s/details/secondHand?houseId=%s",
-                    CITYID2ABBREVIATION.get(cityId), houseId);
-        }
-        return houseDetailUrl;
-    }
 }
+
