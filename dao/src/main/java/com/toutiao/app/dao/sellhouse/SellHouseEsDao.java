@@ -96,4 +96,5 @@ public interface SellHouseEsDao {
     SearchResponse querySellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
+    SearchResponse querySellHouseByHouseIdNew(BoolQueryBuilder boolQueryBuilder, String city);
 }

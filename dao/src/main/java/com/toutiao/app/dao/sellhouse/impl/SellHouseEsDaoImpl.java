@@ -208,6 +208,20 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     }
 
     @Override
+    public SearchResponse querySellHouseByHouseIdNew(BoolQueryBuilder booleanQueryBuilder, String city) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder)
+                .setFetchSource(new String[]{"houseId", "housePhotoTitle", "area", "areaId", "houseBusinessNameId",
+                                "houseBusinessName", "plotName", "newcode", "buildArea", "room", "forwardName",
+                                "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob", "hall"},
+                        null)
+                .execute().actionGet();
+        return searchresponse;
+
+    }
+
+    @Override
     public SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize, FieldSortBuilder sortFile, String city) {
 
         TransportClient client = esClientTools.init();
