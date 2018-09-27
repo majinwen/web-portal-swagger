@@ -227,7 +227,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 for(int i=0;i<longs.length;i++){
                     if(longs[i].equals(1)){
                         boolQueryBuilder.should(QueryBuilders.termQuery("has_subway", longs[i]));
+                    } else if(longs[i].equals(1)){
+
                     } else {
+
                         tagOther[idx++] = longs[i];
                     }
                 }
