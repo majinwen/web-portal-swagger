@@ -660,11 +660,11 @@ public class MessagePushServiceImpl implements MessagePushService {
      * @param subscribeType
      */
     private void addHouseDoToList(List<MessageSellHouseDo> messageSellHouseDos, JSONObject jsonObject, Integer subscribeType) {
-        if (subscribeType == 1 && (Integer) jsonObject.get("isCutPrice") == 1) {
+        if (subscribeType == 1 && "1".equals(jsonObject.get("isCutPrice"))) {
             messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-        } else if (subscribeType == 2 && (Integer) jsonObject.get("isLowPrice") == 1) {
+        } else if (subscribeType == 2 && "1".equals(jsonObject.get("isLowPrice"))) {
             messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-        } else if (subscribeType == 3 && (Integer) jsonObject.get("isMustRob") == 1) {
+        } else if (subscribeType == 3 && "1".equals(jsonObject.get("isMustRob"))) {
             messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
         } else if (subscribeType == 0){
             messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
