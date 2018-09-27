@@ -25,6 +25,14 @@ public interface SellHouseService {
     List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseId, String city);
 
     /**
+     * 二手房房源详情消息推送
+     * @param houseId
+     * @param city
+     * @return
+     */
+    List<MessageSellHouseDo> querySellHouseByHouseIdNew(String[] houseId, String city);
+
+    /**
      * 认领二手房房源经纪人
      * @param houseId
      * @return

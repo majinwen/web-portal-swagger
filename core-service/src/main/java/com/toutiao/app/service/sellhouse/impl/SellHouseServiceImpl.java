@@ -199,6 +199,30 @@ public class SellHouseServiceImpl implements SellHouseService{
         return messageSellHouseDos;
     }
 
+    @Override
+    public List<MessageSellHouseDo> querySellHouseByHouseIdNew(String[] houseIds, String city) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+//        if(houseIds.indexOf("FS")>-1){
+//            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
+//        }else {
+        boolQueryBuilder.must(QueryBuilders.termsQuery("_id", houseIds));
+//        }
+        SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseIdNew(boolQueryBuilder, city);
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String sourceAsString = searchHit.getSourceAsString();
+                MessageSellHouseDo messageSellHouseDo = JSON.parseObject(sourceAsString, MessageSellHouseDo.class);
+                messageSellHouseDos.add(messageSellHouseDo);
+            }
+        }
+        return messageSellHouseDos;
+
+    }
+
 
     /**
      * 认领二手房房源经纪人
