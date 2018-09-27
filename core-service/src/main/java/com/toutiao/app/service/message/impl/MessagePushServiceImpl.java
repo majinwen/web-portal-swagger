@@ -601,6 +601,14 @@ public class MessagePushServiceImpl implements MessagePushService {
         return messagePushDomain;
     }
 
+    /**
+     * 替换实时更新的属性
+     *
+     * @param messagePushDo
+     * @param esfInfo
+     * @param houseId
+     * @param messageSellHouseDos
+     */
     private void replaceHouseDo(MessagePushDo messagePushDo, JSONObject esfInfo, String houseId, List<MessageSellHouseDo> messageSellHouseDos) {
         JSONObject jsonObject;
         List<MessageSellHouseDo> esHouseDos = sellHouseService.querySellHouseByHouseIdNew(new String[]{houseId},
@@ -613,15 +621,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 jsonObject.put("status", 0);
                 jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
                 jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                if (subscribeType == 1 && (Integer) jsonObject.get("isCutPrice") == 1) {
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                } else if (subscribeType == 2 && (Integer) jsonObject.get("isLowPrice") == 1) {
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                } else if (subscribeType == 3 && (Integer) jsonObject.get("isMustRob") == 1) {
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                } else if (subscribeType == 0){
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                }
+                addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
             }
         } else {
             jsonObject = esfInfo.getJSONObject(houseId);
@@ -631,7 +631,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 jsonObject.put("houseId", houseId);
                 jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
                 jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
             } else {
                 jsonObject.put("status", 0);
                 jsonObject.put("houseId", houseId);
@@ -649,6 +649,26 @@ public class MessagePushServiceImpl implements MessagePushService {
                     messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
                 }
             }
+        }
+    }
+
+    /**
+     * 如果是专题订阅，不符合该专题的房源不添加；
+     * 如果是其他消息类型，则添加
+     *
+     * @param messageSellHouseDos
+     * @param jsonObject
+     * @param subscribeType
+     */
+    private void addHouseDoToList(List<MessageSellHouseDo> messageSellHouseDos, JSONObject jsonObject, Integer subscribeType) {
+        if (subscribeType == 1 && (Integer) jsonObject.get("isCutPrice") == 1) {
+            messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+        } else if (subscribeType == 2 && (Integer) jsonObject.get("isLowPrice") == 1) {
+            messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+        } else if (subscribeType == 3 && (Integer) jsonObject.get("isMustRob") == 1) {
+            messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+        } else if (subscribeType == 0){
+            messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
         }
     }
 
