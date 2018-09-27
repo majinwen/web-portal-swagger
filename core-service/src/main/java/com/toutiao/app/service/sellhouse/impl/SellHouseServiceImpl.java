@@ -177,7 +177,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
     @Override
-    public List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseIds) {
+    public List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseIds, String city) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
 //        if(houseIds.indexOf("FS")>-1){
@@ -185,7 +185,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 //        }else {
         boolQueryBuilder.must(QueryBuilders.termsQuery("_id", houseIds));
 //        }
-        SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder);
+        SearchResponse searchResponse = sellHouseEsDao.querySellHouseByHouseId(boolQueryBuilder, city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
