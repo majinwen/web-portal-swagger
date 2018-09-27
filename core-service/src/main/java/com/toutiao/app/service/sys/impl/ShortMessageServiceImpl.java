@@ -1,14 +1,16 @@
 package com.toutiao.app.service.sys.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
+import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.web.common.constant.syserror.ShortMessageInterfaceErrorCodeEnum;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,11 +21,18 @@ import org.springframework.stereotype.Service;
 public class ShortMessageServiceImpl implements ShortMessageService {
 
     private static final Logger logger = LoggerFactory.getLogger(ShortMessageServiceImpl.class);
+
+    @Value("${activity.proj.agent.phones}")
+    private String smsPhone;
+
     @Autowired
     private RedisSessionUtils redis;
 
     @Autowired
     private SMSUtils smsUtils;
+
+    @Autowired
+    private YunSMSUtils yunSMSUtils;
 
     /**
      * 短信验证码发送接口
@@ -63,5 +72,34 @@ public class ShortMessageServiceImpl implements ShortMessageService {
             return NashResult.Fail(exceptionCode.toString(), e.getMessage());
         }
 
+    }
+
+
+    /**
+     * 发送优惠活动短信信息
+     * @param userPhone
+     * @param userNewBuildingActivity
+     * @return
+     */
+    @Override
+    public NashResult sendSmsByActivity(String userPhone, UserNewBuildingActivity userNewBuildingActivity) {
+
+
+        String activityBuildingName = userNewBuildingActivity.getActivityBuildingName();
+        String userCallName = userNewBuildingActivity.getUserCallName();
+        //发送短信
+        try {
+            //发送短信给用户
+            yunSMSUtils.sendActivitySms(userPhone,1,userCallName,activityBuildingName);
+
+            //发送短信给经纪人
+            userCallName = userCallName+userNewBuildingActivity.getUserPhone();
+            smsPhone = smsPhone.replace(".",",");
+            yunSMSUtils.sendActivitySms(smsPhone,2,userCallName,activityBuildingName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return NashResult.build("");
     }
 }
