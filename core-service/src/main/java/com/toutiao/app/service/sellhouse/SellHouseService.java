@@ -22,7 +22,7 @@ public interface SellHouseService {
      * @param city
      * @return
      */
-    List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseId, String city);
+    List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseId);
 
     /**
      * 二手房房源详情消息推送
