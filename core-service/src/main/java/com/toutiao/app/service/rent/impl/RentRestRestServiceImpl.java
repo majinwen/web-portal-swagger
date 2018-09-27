@@ -750,20 +750,27 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         }
 
-
-
-
-
-
-
         //标签
         if (StringTool.isNotEmpty(rentHouseDoQuery.getLabelId())){
             Integer[] split = rentHouseDoQuery.getLabelId();
-            boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", split));
-            for (Integer i:split){
-                if (i==0){
-                    boolQueryBuilder.must(QueryBuilders.termQuery("has_subway", 1));
+            BoolQueryBuilder booleanQueryBuilder = boolQuery();
+            boolean has_subway = Arrays.asList(split).contains(0);
+            if(has_subway){
+                Integer[] tagOther = new Integer[split.length-1];
+                int idx = 0;
+                for(int i=0;i<split.length;i++){
+                    if(split[i].equals(0)){
+                        booleanQueryBuilder.should(QueryBuilders.termQuery("has_subway", 1));
+                    }else {
+                        tagOther[idx++] = split[i];
+                    }
                 }
+                if(tagOther.length!=0){
+                    booleanQueryBuilder.should(QueryBuilders.termsQuery("rent_house_tags_id", tagOther));
+                }
+                boolQueryBuilder.must(booleanQueryBuilder);
+            }else{
+                boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", split));
             }
         }
 
