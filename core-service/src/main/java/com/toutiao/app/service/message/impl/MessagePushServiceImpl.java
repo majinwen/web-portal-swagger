@@ -1,5 +1,4 @@
 package com.toutiao.app.service.message.impl;
-
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -78,6 +77,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String ANYLIVINGROOM = "居室不限";
     private static final String ADDONE = "新上一套";
     private static final String SQUAREMETER = "㎡";
+    //    private static final String CHINESESQUAREMETER = "平米";
     private static final String OF = "的";
     private static final String RISE = "涨";
     private static final String DROP = "降";
@@ -706,3 +706,4 @@ public class MessagePushServiceImpl implements MessagePushService {
                 (subscribeType == 3 && Integer.valueOf(jsonObject.get("isMustRob").toString()).equals(messageSellHouseDo.getIsMustRob()));
     }
 }
+
