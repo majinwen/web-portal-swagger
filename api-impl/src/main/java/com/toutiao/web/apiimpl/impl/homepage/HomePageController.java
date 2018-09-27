@@ -76,14 +76,14 @@ public class HomePageController {
 
     }
 
-
-    @RequestMapping(value = "/getRedisCityForJson")
-    @ResponseBody
-    public NashResult getRedisCityForJson(){
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String cityCode = CityUtils.getCity();
-        String TradeQuotations = "TradeQuotations_"+cityCode;
-        JSONObject res =  JSONObject.parseObject(redis.getValue(TradeQuotations));
-        return NashResult.build(res);
-    }
+//
+//    @RequestMapping(value = "/getRedisCityForJson")
+//    @ResponseBody
+//    public NashResult getRedisCityForJson(){
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//        String cityCode = CityUtils.getCity();
+//        String TradeQuotations = "TradeQuotations_"+cityCode;
+//        JSONObject res =  JSONObject.parseObject(redis.getValue(TradeQuotations));
+//        return NashResult.build(res);
+//    }
 }

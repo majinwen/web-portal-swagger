@@ -20,13 +20,17 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.RedisSessionUtils;
 import com.toutiao.web.common.util.city.CityUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +43,9 @@ public class HomePageRestController {
 
     @Autowired
     private SellHouseService sellHouseService;
+
+    @Autowired
+    private RedisSessionUtils redis;
     /**
      * 首页获取二手房推荐5条
      */
@@ -228,5 +235,15 @@ public class HomePageRestController {
         Integer city = CityUtils.returnCityId(CityUtils.getCity());
         Integer integer = homePageRestService.deleteRecommendCondition(userId, city);
         return NashResult.build(integer);
+    }
+
+    @RequestMapping(value = "/getTradeQuotations")
+    @ResponseBody
+    public NashResult getRedisCityForJson(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String cityCode = CityUtils.getCity();
+        String TradeQuotations = "TradeQuotations_"+cityCode;
+        JSONObject res =  JSONObject.parseObject(redis.getValue(TradeQuotations));
+        return NashResult.build(res);
     }
 }
