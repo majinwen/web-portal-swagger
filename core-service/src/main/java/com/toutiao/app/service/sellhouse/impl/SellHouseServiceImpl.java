@@ -375,10 +375,16 @@ public class SellHouseServiceImpl implements SellHouseService{
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
-        if(null==userFavoriteConditionDoQuery.getLayoutId()&&null==userFavoriteConditionDoQuery.getDistrictId()&&userFavoriteConditionDoQuery.getBeginPrice()<=0&&null==userFavoriteConditionDoQuery.getEndPrice()){
+        //无预设条件
+        if(userFavoriteConditionDoQuery.getFlag()==0){
             SellHouseDomain sellHouseNoCondition = getSellHouseNoCondition(userFavoriteConditionDoQuery, city);
             return sellHouseNoCondition;
         }
+        //有预设条件
+        if(userFavoriteConditionDoQuery.getFlag()==1){
+
+        }
+
         return null;
     }
 
@@ -396,6 +402,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
         //默认条件
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isNew",1));
 
         //使用functionnscore增加isNew为1的房源分数
         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);

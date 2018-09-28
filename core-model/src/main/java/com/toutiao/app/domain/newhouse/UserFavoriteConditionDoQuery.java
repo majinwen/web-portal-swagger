@@ -38,4 +38,8 @@ public class UserFavoriteConditionDoQuery {
      * 每页大小
      */
     private Integer pageSize;
+    /**
+     * 是否有预设条件(0:无,1:有 默认0)
+     */
+    private Integer flag ;
 }

@@ -41,5 +41,9 @@ public class UserFavoriteConditionRequest {
      * 每页大小
      */
     private Integer pageSize = 10;
+    /**
+     * 是否有预设条件(0:无,1:有 默认0)
+     */
+    private Integer flag = 0;
 }
 
