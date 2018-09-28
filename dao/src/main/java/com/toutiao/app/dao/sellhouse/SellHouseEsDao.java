@@ -46,6 +46,9 @@ public interface SellHouseEsDao {
     SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer
             pageNum, Integer pageSize, String city);
 
+    SearchResponse getSellHouseNoCondition(FunctionScoreQueryBuilder query,Integer
+            pageNum, Integer pageSize, String city);
+
     /**
      * 获取推荐二手房
      * @param query

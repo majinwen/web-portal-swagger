@@ -32,5 +32,14 @@ public class UserFavoriteConditionRequest {
      * 城市
      */
     private String city;
+    /**
+     * 当前页
+     */
+    private Integer pageNum = 1;
+
+    /**
+     * 每页大小
+     */
+    private Integer pageSize = 10;
 }
 

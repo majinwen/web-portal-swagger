@@ -8,6 +8,7 @@ import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
@@ -363,6 +364,59 @@ public class SellHouseServiceImpl implements SellHouseService{
         return sellHouseDomain;
     }
 
+    /**
+     * 二手房推荐列表V1
+     * @param userFavoriteConditionDoQuery
+     * @param city
+     * @return
+     */
+    @Override
+    public SellHouseDomain getSellHouseByChooseV1(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        if(null==userFavoriteConditionDoQuery.getLayoutId()&&null==userFavoriteConditionDoQuery.getDistrictId()&&userFavoriteConditionDoQuery.getBeginPrice()<=0&&null==userFavoriteConditionDoQuery.getEndPrice()){
+            SellHouseDomain sellHouseNoCondition = getSellHouseNoCondition(userFavoriteConditionDoQuery, city);
+            return sellHouseNoCondition;
+        }
+        return null;
+    }
+
+    /**
+     * 二手房推荐列表V1(无预设条件)
+     * @param userFavoriteConditionDoQuery
+     * @param city
+     * @return
+     */
+    @Override
+    public SellHouseDomain getSellHouseNoCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        SellHouseDomain sellHouseDomain = new SellHouseDomain();
+        List<SellHouseDo> list = new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        //默认条件
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+
+        //使用functionnscore增加isNew为1的房源分数
+        ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);
+        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(boolQueryBuilder, scoreFunctionBuilder).boostMode(CombineFunction.SUM);
+
+        SearchResponse sellHouseNoCondition = sellHouseEsDao.getSellHouseNoCondition(functionScoreQueryBuilder,userFavoriteConditionDoQuery.getPageNum(),userFavoriteConditionDoQuery.getPageSize(),city);
+        SearchHit[] hits = sellHouseNoCondition.getHits().getHits();
+        if(hits.length>0){
+            for (SearchHit hit : hits){
+                String sourceAsString = hit.getSourceAsString();
+                SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+                list.add(sellHouseDo);
+            }
+            sellHouseDomain.setSellHouseList(list);
+            sellHouseDomain.setTotal((int) sellHouseNoCondition.getHits().getTotalHits());
+        }
+
+        return sellHouseDomain;
+    }
+
+
     public static void main(String[] args) {
         Date date = new Date();
         int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate("2018-05-25 09:58:48"))-1;
@@ -448,6 +502,8 @@ public class SellHouseServiceImpl implements SellHouseService{
 
         return sellHouseDomain;
     }
+
+
 
     @Override
     public SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery,String city) {

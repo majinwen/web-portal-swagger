@@ -1,15 +1,18 @@
 package com.toutiao.web.apiimpl.rest.sellhouse;
 
 
+import com.alibaba.fastjson.JSON;
+import com.toutiao.app.api.chance.request.homepage.UserFavoriteConditionRequest;
 import com.toutiao.app.api.chance.request.sellhouse.*;
 import com.toutiao.app.api.chance.response.sellhouse.*;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
-import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,6 +86,19 @@ public class SellHouseRestController {
         SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChoose(sellHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseDomain,sellHouseResponse);
 
+        return NashResult.build(sellHouseResponse);
+    }
+    /**
+     *  二手房房源默认列表V1
+     * @param userFavoriteConditionRequest
+     * @return
+     */
+    @RequestMapping("/getSellHouseByChooseV1")
+    @ResponseBody
+    public NashResult getSellHouseV1(UserFavoriteConditionRequest userFavoriteConditionRequest){
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = JSON.parseObject(JSON.toJSONString(userFavoriteConditionRequest), UserFavoriteConditionDoQuery.class);
+        SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChooseV1(userFavoriteConditionDoQuery, CityUtils.getCity());
+        SellHouseResponse sellHouseResponse = JSON.parseObject(JSON.toJSONString(sellHouseDomain), SellHouseResponse.class);
         return NashResult.build(sellHouseResponse);
     }
 
