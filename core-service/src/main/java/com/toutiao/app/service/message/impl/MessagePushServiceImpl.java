@@ -114,7 +114,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         criteria.andMessageTypeEqualTo(2);
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-        criteria.andIsPushEqualTo((short)1);
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
@@ -230,7 +229,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         criteria.andMessageTypeEqualTo(3);
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-        criteria.andIsPushEqualTo((short)1);
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
@@ -316,7 +314,6 @@ public class MessagePushServiceImpl implements MessagePushService {
             //推送类型(0-系统消息, 1-定向推送)
             criteria.andPushTypeEqualTo(1);
             criteria.andContentTypeEqualTo(i);
-            criteria.andIsPushEqualTo((short)1);
             List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
             if (CollectionUtils.isEmpty(messagePushes)) {
                 continue;
@@ -339,7 +336,6 @@ public class MessagePushServiceImpl implements MessagePushService {
             countCriteria.andIsReadEqualTo((short)0);
             countCriteria.andPushTypeEqualTo(1);
             countCriteria.andContentTypeEqualTo(i);
-            countCriteria.andIsPushEqualTo((short)1);
             if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
                 countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
             } else if (i == FAVORITEPLOT && homeMessageDoQuery.getFavoritePlotDate() != 0) {
@@ -378,7 +374,6 @@ public class MessagePushServiceImpl implements MessagePushService {
             //推送类型(0-系统消息, 1-定向推送)
             criteria.andPushTypeEqualTo(1);
             criteria.andContentTypeEqualTo(i);
-            criteria.andIsPushEqualTo((short)1);
             List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
             if (CollectionUtils.isEmpty(messagePushes)) {
                 continue;
@@ -401,7 +396,6 @@ public class MessagePushServiceImpl implements MessagePushService {
             countCriteria.andIsReadEqualTo((short)0);
             countCriteria.andPushTypeEqualTo(1);
             countCriteria.andContentTypeEqualTo(i);
-            countCriteria.andIsPushEqualTo((short)1);
             if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
                 countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
             } else if (i == FAVORITEPLOT && homeMessageDoQuery.getFavoritePlotDate() != 0) {
@@ -527,7 +521,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         MessagePushExample.Criteria criteria = example.createCriteria();
         criteria.andIsReadEqualTo((short)0);
         criteria.andContentTypeEqualTo(contentType);
-        criteria.andIsPushEqualTo((short)1);
         if (StringTool.isNotEmpty(userId)){
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
@@ -558,7 +551,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-        criteria.andIsPushEqualTo((short)1);
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
