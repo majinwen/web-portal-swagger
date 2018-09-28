@@ -13,6 +13,7 @@ import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -134,7 +135,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
                 agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
                 agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
             }
-            sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+            sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
             sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDoList.add(sellHouseDo);
         }

@@ -403,7 +403,7 @@ public class HomePageServiceImpl implements HomePageRestService {
                     agent.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
                     agent.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
                 }
-                homePageNearEsfDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+                homePageNearEsfDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 homePageNearEsfDo.setAgentBaseDo(agent);
                 homePageNearEsfDo.setUnitPrice((double) Math.round((homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea())*10000));
                 list.add(homePageNearEsfDo);
