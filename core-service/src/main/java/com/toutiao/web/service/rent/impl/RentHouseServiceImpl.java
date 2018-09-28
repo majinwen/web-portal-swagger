@@ -16,6 +16,7 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
+import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
@@ -967,6 +968,7 @@ public class RentHouseServiceImpl implements RentHouseService{
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
                         .should(QueryBuilders.matchQuery("zufang_name", rentHouseQuery.getKeyword()).boost(2))
                         .should(QueryBuilders.matchQuery("area_name_search", rentHouseQuery.getKeyword()))
+                        .should(QueryBuilders.matchQuery("zufang_nickname",rentHouseQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("district_name_search", rentHouseQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseQuery.getKeyword())));
             }

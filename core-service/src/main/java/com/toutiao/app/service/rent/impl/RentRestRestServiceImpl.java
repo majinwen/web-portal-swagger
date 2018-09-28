@@ -562,7 +562,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             }else {
                 queryBuilder
                         .should(QueryBuilders.matchQuery("zufang_name", rentHouseDoQuery.getKeyword()).boost(2))
-                        .should(QueryBuilders.matchQuery("plotNickname",rentHouseDoQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("zufang_nickname",rentHouseDoQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("area_name_search", rentHouseDoQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("district_name_search", rentHouseDoQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseDoQuery.getKeyword()));
