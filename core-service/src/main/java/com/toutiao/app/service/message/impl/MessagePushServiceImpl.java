@@ -316,6 +316,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             //推送类型(0-系统消息, 1-定向推送)
             criteria.andPushTypeEqualTo(1);
             criteria.andContentTypeEqualTo(i);
+            criteria.andIsPushEqualTo((short)1);
             List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
             if (CollectionUtils.isEmpty(messagePushes)) {
                 continue;
@@ -376,6 +377,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             //推送类型(0-系统消息, 1-定向推送)
             criteria.andPushTypeEqualTo(1);
             criteria.andContentTypeEqualTo(i);
+            criteria.andIsPushEqualTo((short)1);
             List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
             if (CollectionUtils.isEmpty(messagePushes)) {
                 continue;
