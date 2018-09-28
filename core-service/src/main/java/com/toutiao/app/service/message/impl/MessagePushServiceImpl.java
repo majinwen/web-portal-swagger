@@ -339,6 +339,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             countCriteria.andIsReadEqualTo((short)0);
             countCriteria.andPushTypeEqualTo(1);
             countCriteria.andContentTypeEqualTo(i);
+            countCriteria.andIsPushEqualTo((short)1);
             if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
                 countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
             } else if (i == FAVORITEPLOT && homeMessageDoQuery.getFavoritePlotDate() != 0) {
@@ -400,6 +401,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             countCriteria.andIsReadEqualTo((short)0);
             countCriteria.andPushTypeEqualTo(1);
             countCriteria.andContentTypeEqualTo(i);
+            countCriteria.andIsPushEqualTo((short)1);
             if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
                 countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
             } else if (i == FAVORITEPLOT && homeMessageDoQuery.getFavoritePlotDate() != 0) {
