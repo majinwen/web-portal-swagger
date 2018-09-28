@@ -130,30 +130,30 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         FieldSortBuilder buildingSort=null;
 
 
-        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
-        if (StringTool.isNotBlank(newHouseDoQuery.getKeyword())) {
-            SearchResponse searchResponse = null;
-            bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseDoQuery.getKeyword()));
-            searchResponse = newHouseEsDao.getPlotByKeyWord(bqbPlotName, city);
-            long total = searchResponse.getHits().getTotalHits();
-            out: if(total > 0l){
-                break out;
-            }else{
-                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-                bqb.must(QueryBuilders.multiMatchQuery(newHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
-                searchResponse = newHouseEsDao.getPlotByNickNameKeyWord(bqb, city);
-                if(searchResponse.getHits().getTotalHits()>0l){
-                    SearchHits hits = searchResponse.getHits();
-
-                    SearchHit[] searchHists = hits.getHits();
-                    outFor:for (SearchHit hit : searchHists) {
-                        hit.getSource().get("search_name");
-                        newHouseDoQuery.setKeyword(hit.getSource().get("search_name").toString());
-                        break outFor ;
-                    }
-                }
-            }
-        }
+//        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+//        if (StringTool.isNotBlank(newHouseDoQuery.getKeyword())) {
+//            SearchResponse searchResponse = null;
+//            bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseDoQuery.getKeyword()));
+//            searchResponse = newHouseEsDao.getPlotByKeyWord(bqbPlotName, city);
+//            long total = searchResponse.getHits().getTotalHits();
+//            out: if(total > 0l){
+//                break out;
+//            }else{
+//                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+//                bqb.must(QueryBuilders.multiMatchQuery(newHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+//                searchResponse = newHouseEsDao.getPlotByNickNameKeyWord(bqb, city);
+//                if(searchResponse.getHits().getTotalHits()>0l){
+//                    SearchHits hits = searchResponse.getHits();
+//
+//                    SearchHit[] searchHists = hits.getHits();
+//                    outFor:for (SearchHit hit : searchHists) {
+//                        hit.getSource().get("search_name");
+//                        newHouseDoQuery.setKeyword(hit.getSource().get("search_name").toString());
+//                        break outFor ;
+//                    }
+//                }
+//            }
+//        }
 
 
 
@@ -166,6 +166,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             } else {
                 queryBuilder = QueryBuilders.disMaxQuery()
                         .add(QueryBuilders.matchQuery("building_name", newHouseDoQuery.getKeyword()).analyzer("ik_max_word").operator(Operator.AND))
+                        .add(QueryBuilders.matchQuery("building_nickname",newHouseDoQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("building_name_accurate", newHouseDoQuery.getKeyword()).boost(2).operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("area_name", newHouseDoQuery.getKeyword()).operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getKeyword()).operator(Operator.AND)).tieBreaker(0.3f);
