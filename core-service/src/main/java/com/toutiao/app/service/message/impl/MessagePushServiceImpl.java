@@ -114,7 +114,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         criteria.andMessageTypeEqualTo(2);
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-
+        criteria.andIsPushEqualTo((short)1);
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
@@ -230,7 +230,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         criteria.andMessageTypeEqualTo(3);
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-
+        criteria.andIsPushEqualTo((short)1);
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
@@ -555,7 +555,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-
+        criteria.andIsPushEqualTo((short)1);
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
