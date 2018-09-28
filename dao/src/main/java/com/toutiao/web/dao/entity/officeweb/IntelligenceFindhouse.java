@@ -773,5 +773,9 @@ public class IntelligenceFindhouse {
      * 地铁和小区的距离
      */
     private Integer metroWithPlotDistance = 2000000000;
+    /**
+     * 均价
+     */
+    private Double averagePrice;
 
 }

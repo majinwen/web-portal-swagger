@@ -84,4 +84,9 @@ public class MessagePushDo {
     private String themeDetailUrl;
 
     private List<MessageSellHouseDo> messageSellHouseDos;
+
+    /**
+     * 二手房信息
+     */
+    private JSONObject esfInfo;
 }

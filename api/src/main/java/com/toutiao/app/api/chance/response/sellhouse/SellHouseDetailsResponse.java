@@ -460,5 +460,4 @@ public class SellHouseDetailsResponse {
      * 楼盘专家
      */
     private String projExpertUserId;
-
 }

@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.newhouse;
-import com.alibaba.fastjson.annotation.JSONField;
+
+import com.toutiao.app.domain.newhouse.ActivityInfoDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -293,5 +294,12 @@ public class NewHouseDetailResponse {
     @ChangeName("avgGreening")
     private Double virescencerate;
 
-
+    /**
+     * 是否参与活动(0:未参与,1:参与)
+     */
+    private Integer isActive;
+    /**
+     * 优惠活动
+     */
+    private List<ActivityInfoDo> activityInfo;
 }

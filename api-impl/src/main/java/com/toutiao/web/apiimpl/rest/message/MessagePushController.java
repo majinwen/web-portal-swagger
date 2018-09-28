@@ -2,7 +2,10 @@ package com.toutiao.web.apiimpl.rest.message;
 
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.response.user.UserLoginResponse;
-import com.toutiao.app.domain.message.*;
+import com.toutiao.app.domain.message.HomeMessageDo;
+import com.toutiao.app.domain.message.HomeMessageDoQuery;
+import com.toutiao.app.domain.message.MessagePushDoQuery;
+import com.toutiao.app.domain.message.MessagePushDomain;
 import com.toutiao.app.service.message.MessagePushService;
 import com.toutiao.web.api.chance.request.message.HomePageMessageRequest;
 import com.toutiao.web.api.chance.request.message.MessageIsReadRequest;
@@ -32,7 +35,7 @@ public class MessagePushController {
     private MessagePushService messagePushService;
 
     /**
-     * 房源类消息列表
+     * 房源类消息列表(旧版本)
      */
     @RequestMapping(value = "/getHouseTypeMessage", method = RequestMethod.GET)
     @ResponseBody
@@ -48,7 +51,24 @@ public class MessagePushController {
     }
 
     /**
-     * 专题类消息列表
+     * 房源类消息列表(新版本所有消息都调用此接口)
+     */
+    @RequestMapping(value = "/getHouseTypeMessageNew", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHouseTypeMessageNew(@Validated MessagePushRequest messagePushRequest, HttpServletRequest
+            request, HttpServletResponse response) {
+        String userId = getUserIdByCookie(request, response);
+        if (StringTool.isEmpty(userId)) {
+            return NashResult.Fail("用户未登录");
+        }
+        MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
+        BeanUtils.copyProperties(messagePushRequest, messagePushQuery);
+        MessagePushDomain message = messagePushService.getHouseTypeMessageNew(messagePushQuery, userId);
+        return NashResult.build(message);
+    }
+
+    /**
+     * 专题类消息列表(旧版本专题类消息使用此接口，新版用getHouseTypeMessageNew)
      */
     @RequestMapping(value = "/getThemeTypeMessage", method = RequestMethod.GET)
     @ResponseBody
@@ -64,7 +84,7 @@ public class MessagePushController {
     }
 
     /**
-     * 首页消息列表
+     * 首页消息列表(旧版本)
      *
      * @param homePageMessageRequest
      * @return
@@ -79,6 +99,26 @@ public class MessagePushController {
         HomeMessageDoQuery homeMessageDoQuery = new HomeMessageDoQuery();
         BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
         List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessage(homeMessageDoQuery, userId);
+        return NashResult.build(homePageMessage);
+    }
+
+    /**
+     * 首页消息列表(新版本)
+     *
+     * @param homePageMessageRequest
+     * @return
+     */
+    @RequestMapping(value = "/getHomeMessageNew", method = RequestMethod.GET)
+    @ResponseBody
+    public NashResult getHomeMessageNew(HomePageMessageRequest homePageMessageRequest, HttpServletRequest request,
+                                      HttpServletResponse response) {
+        String userId = getUserIdByCookie(request, response);
+        if (StringTool.isEmpty(userId)) {
+            return NashResult.Fail("用户未登录");
+        }
+        HomeMessageDoQuery homeMessageDoQuery = new HomeMessageDoQuery();
+        BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
+        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
         return NashResult.build(homePageMessage);
     }
 

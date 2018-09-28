@@ -187,5 +187,14 @@ public class NewHouseListDo  {
 
     @ChangeName("salePhone")
     private String saletelphone;
+    /**
+     * 是否参与活动(0:未参与,1:参与)
+     */
+    private Integer isActive;
+    /**
+     * 优惠活动
+     */
+    private List<ActivityInfoDo> activityInfo;
+
 
 }

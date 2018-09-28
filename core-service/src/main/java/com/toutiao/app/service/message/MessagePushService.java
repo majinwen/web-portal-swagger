@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface MessagePushService {
     /**
-     * 房源类消息列表
+     * 房源类消息列表(旧版本)
      *
      * @param messagePushQuery
      * @param userId
@@ -31,6 +31,24 @@ public interface MessagePushService {
      * @return
      */
     List<HomeMessageDo> getHomeMessage(HomeMessageDoQuery homeMessageDoQuery, String userId);
+
+    /**
+     * 获取消息列表(新版本)
+     *
+     * @param messagePushQuery
+     * @param userId
+     * @return
+     */
+    MessagePushDomain getHouseTypeMessageNew(MessagePushDoQuery messagePushQuery, String userId);
+
+    /**
+     * 首页消息列表(新)
+     *
+     * @param homeMessageDoQuery
+     * @param userId
+     * @return
+     */
+    List<HomeMessageDo> getHomeMessageNew(HomeMessageDoQuery homeMessageDoQuery, String userId);
 
     /**
      * 修改消息已读

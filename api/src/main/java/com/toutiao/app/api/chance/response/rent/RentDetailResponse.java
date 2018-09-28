@@ -206,7 +206,4 @@ public class RentDetailResponse {
     */
    private String companyCard;
 
-
-
-
 }
