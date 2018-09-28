@@ -527,6 +527,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         MessagePushExample.Criteria criteria = example.createCriteria();
         criteria.andIsReadEqualTo((short)0);
         criteria.andContentTypeEqualTo(contentType);
+        criteria.andIsPushEqualTo((short)1);
         if (StringTool.isNotEmpty(userId)){
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
