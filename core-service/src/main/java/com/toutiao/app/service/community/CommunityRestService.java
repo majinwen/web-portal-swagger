@@ -16,7 +16,8 @@ public interface CommunityRestService {
      * 标签数量
      * @return
      */
-    Map<Integer,Map<String,Integer>> getCountByBuildTags(String city);
+
+    public Map<Integer, Map<String, Integer>> getCountByBuildTags(Integer id) ;
 
 
 }

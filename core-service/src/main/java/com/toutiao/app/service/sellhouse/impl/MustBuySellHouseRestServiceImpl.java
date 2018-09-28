@@ -13,6 +13,7 @@ import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
@@ -124,7 +125,7 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
                 }
 
 
-                mustBuyShellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+                mustBuyShellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
 
                 mustBuyShellHouseDo.setAgentBaseDo(agentBaseDo);
                 mustBuyShellHouseDos.add(mustBuyShellHouseDo);

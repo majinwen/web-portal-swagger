@@ -15,6 +15,7 @@ import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.action.search.SearchResponse;
@@ -147,7 +148,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
             }
 
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
-            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+            nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
             nearBySellHouses.add(nearBySellHousesDo);
             //增加地铁站与房源的距离
             String keys="";
