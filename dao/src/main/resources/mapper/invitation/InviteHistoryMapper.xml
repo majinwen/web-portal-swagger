@@ -284,8 +284,7 @@
         SELECT
         h.id AS id, h.equipment_no AS equipmentNo, c.code AS firstLevelCode, c1.code AS secondLevelCode,
         c2.code AS thirdLevelCode, h.user_id AS userId, h.create_time AS createTime, h.is_valid AS isValid,
-        h.pay_time AS payTime, b.phone AS phone,
-        (SELECT code FROM invitation_code self WHERE self.user_id = h.user_id) AS yourCode
+        h.pay_time AS payTime, b.phone AS phone,c3.code AS yourCode
         FROM
         invite_history h
         LEFT JOIN user_basic b ON h.user_id = b.user_id
@@ -294,6 +293,7 @@
         LEFT JOIN invitation_code c1 ON h1.invitation_code =c1.code
         LEFT JOIN  (SELECT * FROM (select invitation_code,user_id,row_number() over(partition BY user_id) AS row FROM invite_history WHERE user_id &lt;&gt; '') t1 WHERE t1.row =1)  h2 ON c1.user_id = h2.user_id
         LEFT JOIN invitation_code c2 ON h2.invitation_code =c2.code
+        LEFT JOIN invitation_code c3 ON h.user_id=c3.user_id
         <where>
             1 = 1
             <if test="firstLevelCode != null">
