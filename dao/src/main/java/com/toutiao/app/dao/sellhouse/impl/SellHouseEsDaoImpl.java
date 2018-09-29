@@ -126,7 +126,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     }
 
     @Override
-    public SearchResponse getSellHouseNoCondition(FunctionScoreQueryBuilder query, Integer pageNum, Integer pageSize, String city) {
+    public SearchResponse getSellHouseByCondition(FunctionScoreQueryBuilder query, Integer pageNum, Integer pageSize, String city) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils
                 .getEsfHouseTpye(city));

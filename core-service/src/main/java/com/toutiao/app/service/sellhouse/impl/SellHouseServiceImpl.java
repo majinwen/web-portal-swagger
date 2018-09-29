@@ -26,6 +26,7 @@ import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
@@ -372,21 +373,202 @@ public class SellHouseServiceImpl implements SellHouseService{
      */
     @Override
     public SellHouseDomain getSellHouseByChooseV1(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        BoolQueryBuilder boolQueryBuilderT1 = QueryBuilders.boolQuery();
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        List<SellHouseDo> list = new ArrayList<>();
 
         //无预设条件
         if(userFavoriteConditionDoQuery.getFlag()==0){
             SellHouseDomain sellHouseNoCondition = getSellHouseNoCondition(userFavoriteConditionDoQuery, city);
             return sellHouseNoCondition;
         }
-        //有预设条件
-        if(userFavoriteConditionDoQuery.getFlag()==1){
 
+        boolQueryBuilderT1.must(QueryBuilders.termQuery("isDel",0));
+
+        //区域
+        if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
+            boolQueryBuilderT1.must(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+        }
+        //户型
+        if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
+            boolQueryBuilderT1.must(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+        }
+        //价格
+        if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()>0){
+            boolQueryBuilderT1.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+        }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()==0){
+            boolQueryBuilderT1.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+        }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
+            boolQueryBuilderT1.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
         }
 
-        return null;
+        //使用functionnscore增加isNew为1的房源分数
+        ScoreFunctionBuilder scoreFunctionBuilderT1 = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);
+        FunctionScoreQueryBuilder functionScoreQueryBuilderT1 = QueryBuilders.functionScoreQuery(boolQueryBuilderT1, scoreFunctionBuilderT1).boostMode(CombineFunction.SUM);
+
+        SearchResponse sellHouseByConditionT1 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT1,userFavoriteConditionDoQuery.getPageNum(), userFavoriteConditionDoQuery.getPageSize(), city);
+        SearchHit[] hitsT1 = sellHouseByConditionT1.getHits().getHits();
+        int totalHits_T1 = (int) sellHouseByConditionT1.getHits().getTotalHits();
+        if(hitsT1.length>0){
+            for (SearchHit hit:hitsT1){
+                String sourceAsString = hit.getSourceAsString();
+                SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+
+                //经纪人信息
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+
+                }else if(sellHouseDo.getIsClaim()==0){
+                    if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
+                    }else{
+                        agentBaseDo.setAgentName(hit.getSource().get("houseProxyName")==null?"":hit.getSource().get("houseProxyName").toString());
+                        agentBaseDo.setAgentCompany(hit.getSource().get("ofCompany")==null?"":hit.getSource().get("ofCompany").toString());
+                        agentBaseDo.setHeadPhoto(hit.getSource().get("houseProxyPhoto")==null?"":hit.getSource().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone")==null?"":hit.getSource().get("houseProxyPhone").toString());
+                    }
+                }
+                sellHouseDo.setAgentBaseDo(agentBaseDo);
+                list.add(sellHouseDo);
+            }
+            sellHouseDomain.setSellHouseList(list);
+            sellHouseDomain.setTotal(totalHits_T1);
+        }
+
+
+        //当T1条件分页结果不足每页大小,查询T2条件并补充
+        if (list.size()<userFavoriteConditionDoQuery.getPageSize()){
+            BoolQueryBuilder boolQueryBuilderT2 = QueryBuilders.boolQuery();
+            //获取pageNum和pageSize
+            int pageNum_T1 = totalHits_T1 / userFavoriteConditionDoQuery.getPageSize();
+            int pageNum_T2 = userFavoriteConditionDoQuery.getPageNum()-pageNum_T1;
+            int pageSize_T2 = userFavoriteConditionDoQuery.getPageSize();
+            if (pageNum_T2==1){
+                pageSize_T2 = userFavoriteConditionDoQuery.getPageSize()-totalHits_T1 % userFavoriteConditionDoQuery.getPageSize();
+            }
+
+            boolQueryBuilderT2.must(QueryBuilders.termQuery("isDel",0));
+
+            //只符合价格条件的房源
+            //价格
+            if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()>0){
+                boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+                //区域
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+                }
+                //户型
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                }
+            }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()==0){
+                boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+                //区域
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+                }
+                //户型
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                }
+            }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
+                boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+                //区域
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+                }
+                //户型
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                }
+            }
+
+            //使用functionnscore增加isNew为1的房源分数
+            ScoreFunctionBuilder scoreFunctionBuilderT2 = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);
+            FunctionScoreQueryBuilder functionScoreQueryBuilderT2 = QueryBuilders.functionScoreQuery(boolQueryBuilderT2, scoreFunctionBuilderT2).boostMode(CombineFunction.SUM);
+
+            SearchResponse sellHouseByConditionT2 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT2, pageNum_T2, pageSize_T2, city);
+            SearchHit[] hitsT2 = sellHouseByConditionT2.getHits().getHits();
+            int totalHits_T2 = (int) sellHouseByConditionT2.getHits().getTotalHits();
+            if(hitsT2.length>0){
+                for (SearchHit hit:hitsT2){
+                    String sourceAsString = hit.getSourceAsString();
+                    SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+                    //经纪人信息
+                    AgentBaseDo agentBaseDo = new AgentBaseDo();
+                    if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+
+                    }else if(sellHouseDo.getIsClaim()==0){
+                        if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
+                            agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
+                        }else{
+                            agentBaseDo.setAgentName(hit.getSource().get("houseProxyName")==null?"":hit.getSource().get("houseProxyName").toString());
+                            agentBaseDo.setAgentCompany(hit.getSource().get("ofCompany")==null?"":hit.getSource().get("ofCompany").toString());
+                            agentBaseDo.setHeadPhoto(hit.getSource().get("houseProxyPhoto")==null?"":hit.getSource().get("houseProxyPhoto").toString());
+                            agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone")==null?"":hit.getSource().get("houseProxyPhone").toString());
+                        }
+                    }
+                    sellHouseDo.setAgentBaseDo(agentBaseDo);
+                    list.add(sellHouseDo);
+                }
+                sellHouseDomain.setSellHouseList(list);
+                sellHouseDomain.setTotal(totalHits_T2);
+            }
+
+            //当T2条件分页结果不足每页大小,查询T3条件并补充
+            if (list.size()<userFavoriteConditionDoQuery.getPageSize()){
+                BoolQueryBuilder boolQueryBuilderT3 = QueryBuilders.boolQuery();
+                //获取pageNum和pageSize
+                pageNum_T2 = (totalHits_T2+totalHits_T1)/ userFavoriteConditionDoQuery.getPageSize();
+                int pageNum_T3 = userFavoriteConditionDoQuery.getPageNum()-pageNum_T2;
+                int pageSize_T3 = userFavoriteConditionDoQuery.getPageSize();
+                if (pageNum_T3==1){
+                    pageSize_T3 = userFavoriteConditionDoQuery.getPageSize()-(totalHits_T2+totalHits_T1) % userFavoriteConditionDoQuery.getPageSize();
+                }
+
+                boolQueryBuilderT3.must(QueryBuilders.termQuery("isDel",0));
+                //展示全部房源 即所有条件为不限
+
+                //使用functionnscore增加isNew为1的房源分数
+                ScoreFunctionBuilder scoreFunctionBuilderT3 = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);
+                FunctionScoreQueryBuilder functionScoreQueryBuilderT3 = QueryBuilders.functionScoreQuery(boolQueryBuilderT3, scoreFunctionBuilderT2).boostMode(CombineFunction.SUM);
+
+                SearchResponse sellHouseByConditionT3 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT3, pageNum_T3, pageSize_T3, city);
+                SearchHit[] hitsT3 = sellHouseByConditionT3.getHits().getHits();
+                int totalHits_T3 = (int) sellHouseByConditionT3.getHits().getTotalHits();
+                if(hitsT3.length>0){
+                    for (SearchHit hit:hitsT3){
+                        String sourceAsString = hit.getSourceAsString();
+                        SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+                        //经纪人信息
+                        AgentBaseDo agentBaseDo = new AgentBaseDo();
+                        if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                            agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+
+                        }else if(sellHouseDo.getIsClaim()==0){
+                            if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
+                                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
+                            }else{
+                                agentBaseDo.setAgentName(hit.getSource().get("houseProxyName")==null?"":hit.getSource().get("houseProxyName").toString());
+                                agentBaseDo.setAgentCompany(hit.getSource().get("ofCompany")==null?"":hit.getSource().get("ofCompany").toString());
+                                agentBaseDo.setHeadPhoto(hit.getSource().get("houseProxyPhoto")==null?"":hit.getSource().get("houseProxyPhoto").toString());
+                                agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone")==null?"":hit.getSource().get("houseProxyPhone").toString());
+                            }
+                        }
+                        sellHouseDo.setAgentBaseDo(agentBaseDo);
+                        list.add(sellHouseDo);
+                    }
+                    sellHouseDomain.setSellHouseList(list);
+                    sellHouseDomain.setTotal(totalHits_T3);
+                }
+            }
+        }
+        return sellHouseDomain;
     }
+
+
 
     /**
      * 二手房推荐列表V1(无预设条件)
@@ -402,18 +584,33 @@ public class SellHouseServiceImpl implements SellHouseService{
 
         //默认条件
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
-        boolQueryBuilder.must(QueryBuilders.termQuery("isNew",1));
 
         //使用functionnscore增加isNew为1的房源分数
         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);
         FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(boolQueryBuilder, scoreFunctionBuilder).boostMode(CombineFunction.SUM);
 
-        SearchResponse sellHouseNoCondition = sellHouseEsDao.getSellHouseNoCondition(functionScoreQueryBuilder,userFavoriteConditionDoQuery.getPageNum(),userFavoriteConditionDoQuery.getPageSize(),city);
+        SearchResponse sellHouseNoCondition = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilder,userFavoriteConditionDoQuery.getPageNum(),userFavoriteConditionDoQuery.getPageSize(),city);
         SearchHit[] hits = sellHouseNoCondition.getHits().getHits();
         if(hits.length>0){
             for (SearchHit hit : hits){
                 String sourceAsString = hit.getSourceAsString();
                 SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+                //经纪人信息
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+
+                }else if(sellHouseDo.getIsClaim()==0){
+                    if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
+                    }else{
+                        agentBaseDo.setAgentName(hit.getSource().get("houseProxyName")==null?"":hit.getSource().get("houseProxyName").toString());
+                        agentBaseDo.setAgentCompany(hit.getSource().get("ofCompany")==null?"":hit.getSource().get("ofCompany").toString());
+                        agentBaseDo.setHeadPhoto(hit.getSource().get("houseProxyPhoto")==null?"":hit.getSource().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone")==null?"":hit.getSource().get("houseProxyPhone").toString());
+                    }
+                }
+                sellHouseDo.setAgentBaseDo(agentBaseDo);
                 list.add(sellHouseDo);
             }
             sellHouseDomain.setSellHouseList(list);
