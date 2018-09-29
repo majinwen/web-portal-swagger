@@ -25,6 +25,7 @@ import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.service.map.MapService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
@@ -45,10 +46,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 
@@ -362,11 +360,26 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //标签
         if (StringTool.isNotEmpty(plotListDoQuery.getLabelId())){
             Integer[] labelId = plotListDoQuery.getLabelId();
-            boolQueryBuilder.must(QueryBuilders.termsQuery("labelId",labelId));
-            for (Integer i:labelId){
-                if (i==1){
-                    boolQueryBuilder.must(QueryBuilders.termQuery("has_subway",1));
+            BoolQueryBuilder booleanQueryBuilder = boolQuery();
+            boolean has_subway = Arrays.asList(labelId).contains(0);
+            if(has_subway){
+                Integer[] tagOther = new Integer[labelId.length-1];
+                int idx = 0;
+                for(int i=0;i<labelId.length;i++){
+                    if(labelId[i].equals(0)){
+                        booleanQueryBuilder.should(QueryBuilders.termQuery("has_subway",1));
+                    }else {
+
+                        tagOther[idx++] = labelId[i];
+
+                    }
                 }
+                if(tagOther.length!=0){
+                    booleanQueryBuilder.should(QueryBuilders.termsQuery("recommendBuildTagsId", tagOther));
+                }
+                boolQueryBuilder.must(booleanQueryBuilder);
+            }else{
+                boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", labelId));
             }
         }
 
@@ -417,13 +430,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
 
 
-        /**
-         * top 50小区
-         */
-        if(StringTool.isNotEmpty(plotListDoQuery.getIsTop())){
-            int [] isTop={plotListDoQuery.getIsTop()};
-            boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", isTop));
-        }
+//        /**
+//         * top 50小区
+//         */
+//        if(StringTool.isNotEmpty(plotListDoQuery.getIsTop())){
+//            int [] isTop={plotListDoQuery.getIsTop()};
+//            boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", isTop));
+//        }
 
         Integer from = 0;
         //分页起始位置
