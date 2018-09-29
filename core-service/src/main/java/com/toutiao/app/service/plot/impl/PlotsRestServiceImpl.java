@@ -360,9 +360,17 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //标签
         if (StringTool.isNotEmpty(plotListDoQuery.getLabelId())){
             Integer[] labelId = plotListDoQuery.getLabelId();
-            BoolQueryBuilder booleanQueryBuilder = boolQuery();
-            boolean has_subway = Arrays.asList(labelId).contains(0);
-            if(has_subway){
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+
+            for(int i=0;i<labelId.length;i++){
+                if(labelId[i].equals(0)){
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway",1));
+                }else {
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", labelId[i]));
+                }
+            }
+            boolQueryBuilder.must(booleanQueryBuilder);
+       /*     if(has_subway){
                 Integer[] tagOther = new Integer[labelId.length-1];
                 int idx = 0;
                 for(int i=0;i<labelId.length;i++){
@@ -380,7 +388,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 boolQueryBuilder.must(booleanQueryBuilder);
             }else{
                 boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId", labelId));
-            }
+            }*/
         }
 
 

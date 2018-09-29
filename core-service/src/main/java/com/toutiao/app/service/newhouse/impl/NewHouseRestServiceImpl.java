@@ -220,16 +220,24 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             Integer[] longs = newHouseDoQuery.getLabelId();
-            boolean has_subway = Arrays.asList(longs).contains(1);
 
-            if(has_subway){
+          /*  boolean has_subway = Arrays.asList(longs).contains(1);*/
+
+            for(int i=0;i<longs.length;i++){
+                if(longs[i].equals(1)){
+                    boolQueryBuilder.must(QueryBuilders.termQuery("has_subway", longs[i]));
+                }else {
+                    boolQueryBuilder.must(QueryBuilders.termQuery("building_tags_id", longs[i]));
+                }
+            }
+            booleanQueryBuilder.must(boolQueryBuilder);
+          /*  if(has_subway){
                 Integer[] tagOther = new Integer[longs.length-1];
                 int idx = 0;
                 for(int i=0;i<longs.length;i++){
                     if(longs[i].equals(1)){
                         boolQueryBuilder.should(QueryBuilders.termQuery("has_subway", longs[i]));
                     }else {
-
                         tagOther[idx++] = longs[i];
                     }
                 }
@@ -239,7 +247,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 booleanQueryBuilder.must(boolQueryBuilder);
             }else{
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("building_tags_id", longs));
-            }
+            }*/
 
         }
 
