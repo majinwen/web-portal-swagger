@@ -384,6 +384,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
 
         boolQueryBuilderT1.must(QueryBuilders.termQuery("isDel",0));
+        boolQueryBuilderT1.must(QueryBuilders.termQuery("is_claim",0));
 
         //区域
         if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
@@ -447,7 +448,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             if (pageNum_T2==1){
                 pageSize_T2 = userFavoriteConditionDoQuery.getPageSize()-totalHits_T1 % userFavoriteConditionDoQuery.getPageSize();
             }
-
+            boolQueryBuilderT2.must(QueryBuilders.termQuery("is_claim",0));
             boolQueryBuilderT2.must(QueryBuilders.termQuery("isDel",0));
 
             //只符合价格条件的房源
@@ -527,7 +528,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 if (pageNum_T3==1){
                     pageSize_T3 = userFavoriteConditionDoQuery.getPageSize()-(totalHits_T2+totalHits_T1) % userFavoriteConditionDoQuery.getPageSize();
                 }
-
+                boolQueryBuilderT3.must(QueryBuilders.termQuery("is_claim",0));
                 boolQueryBuilderT3.must(QueryBuilders.termQuery("isDel",0));
                 //展示全部房源 即所有条件为不限
 
