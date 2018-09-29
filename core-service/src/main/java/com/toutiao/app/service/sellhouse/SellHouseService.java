@@ -2,6 +2,7 @@ package com.toutiao.app.service.sellhouse;
 
 
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 
 import java.util.List;
@@ -45,6 +46,22 @@ public interface SellHouseService {
      * @return
      */
     SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo, String city);
+
+    /**
+     * 条件查询二手房房源V1
+     * @param userFavoriteConditionDoQuery
+     * @param city
+     * @return
+     */
+    SellHouseDomain getSellHouseByChooseV1(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
+
+    /**
+     * 条件查询二手房房源(无预设条件)
+     * @param userFavoriteConditionDoQuery
+     * @param city
+     * @return
+     */
+    SellHouseDomain getSellHouseNoCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
     /**
      * 查询二手房推荐房源
