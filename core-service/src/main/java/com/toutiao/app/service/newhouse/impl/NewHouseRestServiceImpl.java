@@ -166,7 +166,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             } else {
                 queryBuilder = QueryBuilders.disMaxQuery()
                         .add(QueryBuilders.matchQuery("building_name", newHouseDoQuery.getKeyword()).analyzer("ik_max_word").operator(Operator.AND))
-                        .add(QueryBuilders.matchQuery("building_nickname",newHouseDoQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
+                        .add(QueryBuilders.matchQuery("building_nickname",newHouseDoQuery.getKeyword()).fuzziness("AUTO").analyzer("ik_smart").operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("building_name_accurate", newHouseDoQuery.getKeyword()).boost(2).operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("area_name", newHouseDoQuery.getKeyword()).operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getKeyword()).operator(Operator.AND)).tieBreaker(0.3f);
