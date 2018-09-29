@@ -93,7 +93,7 @@ public class SellHouseRestController {
      * @param userFavoriteConditionRequest
      * @return
      */
-    @RequestMapping("/getSellHouseByChooseV1")
+    @RequestMapping(value = "/getSellHouseByChooseV1",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getSellHouseV1(UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = JSON.parseObject(JSON.toJSONString(userFavoriteConditionRequest), UserFavoriteConditionDoQuery.class);
