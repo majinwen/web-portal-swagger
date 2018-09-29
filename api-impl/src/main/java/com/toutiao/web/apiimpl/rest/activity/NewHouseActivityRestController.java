@@ -48,7 +48,7 @@ public class NewHouseActivityRestController {
      */
     @ResponseBody
     @RequestMapping(value = "/isAttendedActivity",method = RequestMethod.POST)
-    public NashResult isActivity(NewHouseActivityRequest newHouseActivityRequest) {
+    public NashResult isActivity(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest) {
 
         if(StringTool.isBlank(newHouseActivityRequest.getCityId())){
             newHouseActivityRequest.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
