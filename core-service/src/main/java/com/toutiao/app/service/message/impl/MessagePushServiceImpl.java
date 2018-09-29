@@ -114,7 +114,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         criteria.andMessageTypeEqualTo(2);
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
@@ -230,7 +229,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         criteria.andMessageTypeEqualTo(3);
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
@@ -553,7 +551,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
         //推送类型(0-系统消息, 1-定向推送)
         criteria.andPushTypeEqualTo(1);
-
         if (messagePushQuery.getLastMessageId() != null && messagePushQuery.getLastMessageId() != 0) {
             criteria.andIdLessThan(messagePushQuery.getLastMessageId());
         }
@@ -615,7 +612,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         Integer subscribeType = messagePushDo.getSubscribeType();
         if (esfInfo == null || "{}".equals(esfInfo.toString())){
             //旧数据查不到，从Es表查询
-            if (CollectionUtils.isNotEmpty(messageSellHouseDos)){
+            if (CollectionUtils.isNotEmpty(esHouseDos)){
                 jsonObject = (JSONObject)JSONObject.toJSON(esHouseDos.get(0));
                 jsonObject.put("status", 0);
                 jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
@@ -660,11 +657,11 @@ public class MessagePushServiceImpl implements MessagePushService {
      * @param subscribeType
      */
     private void addHouseDoToList(List<MessageSellHouseDo> messageSellHouseDos, JSONObject jsonObject, Integer subscribeType) {
-        if (subscribeType == 1 && "1".equals(jsonObject.get("isCutPrice"))) {
+        if (subscribeType == 1 && "1".equals(jsonObject.get("isCutPrice").toString())) {
             messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-        } else if (subscribeType == 2 && "1".equals(jsonObject.get("isLowPrice"))) {
+        } else if (subscribeType == 2 && "1".equals(jsonObject.get("isLowPrice").toString())) {
             messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-        } else if (subscribeType == 3 && "1".equals(jsonObject.get("isMustRob"))) {
+        } else if (subscribeType == 3 && "1".equals(jsonObject.get("isMustRob").toString())) {
             messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
         } else if (subscribeType == 0){
             messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
