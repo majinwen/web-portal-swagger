@@ -272,32 +272,32 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
 
-        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
-
-        if (StringTool.isNotBlank(plotListDoQuery.getKeyword())) {
-            SearchResponse searchResponse = null;
-            bqbPlotName.must(QueryBuilders.termQuery("rc_accurate",plotListDoQuery.getKeyword()));
-//                    .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword();
-            searchResponse = plotEsDao.getPlotByKeyWord(bqbPlotName,city);
-            long total = searchResponse.getHits().getTotalHits();
-            out: if(total > 0l){
-                break out;
-            }else{
-                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-                bqb.must(QueryBuilders.multiMatchQuery(plotListDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
-                searchResponse = plotEsDao.getPlotByNickNameKeyWord(bqb);
-                if(searchResponse.getHits().getTotalHits()>0l){
-                    SearchHits hits = searchResponse.getHits();
-
-                    SearchHit[] searchHists = hits.getHits();
-                    outFor:for (SearchHit hit : searchHists) {
-                        hit.getSource().get("search_name");
-                        plotListDoQuery.setKeyword(hit.getSource().get("search_name").toString());
-                        break outFor ;
-                    }
-                }
-            }
-        }
+//        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+//
+//        if (StringTool.isNotBlank(plotListDoQuery.getKeyword())) {
+//            SearchResponse searchResponse = null;
+//            bqbPlotName.must(QueryBuilders.termQuery("rc_accurate",plotListDoQuery.getKeyword()));
+////                    .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword();
+//            searchResponse = plotEsDao.getPlotByKeyWord(bqbPlotName,city);
+//            long total = searchResponse.getHits().getTotalHits();
+//            out: if(total > 0l){
+//                break out;
+//            }else{
+//                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+//                bqb.must(QueryBuilders.multiMatchQuery(plotListDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+//                searchResponse = plotEsDao.getPlotByNickNameKeyWord(bqb);
+//                if(searchResponse.getHits().getTotalHits()>0l){
+//                    SearchHits hits = searchResponse.getHits();
+//
+//                    SearchHit[] searchHists = hits.getHits();
+//                    outFor:for (SearchHit hit : searchHists) {
+//                        hit.getSource().get("search_name");
+//                        plotListDoQuery.setKeyword(hit.getSource().get("search_name").toString());
+//                        break outFor ;
+//                    }
+//                }
+//            }
+//        }
 
 
 
@@ -320,6 +320,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 queryBuilder
                         .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword()).boost(2))
                         .should(QueryBuilders.matchQuery("rc", plotListDoQuery.getKeyword()).analyzer("ik_max_word"))
+                        .should(QueryBuilders.matchQuery("rc_nickname",plotListDoQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("area", plotListDoQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("tradingArea", plotListDoQuery.getKeyword()));
             }

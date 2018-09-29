@@ -26,10 +26,7 @@ import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
 import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
@@ -565,6 +562,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             }else {
                 queryBuilder
                         .should(QueryBuilders.matchQuery("zufang_name", rentHouseDoQuery.getKeyword()).boost(2))
+                        .should(QueryBuilders.matchQuery("zufang_nickname",rentHouseDoQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("area_name_search", rentHouseDoQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("district_name_search", rentHouseDoQuery.getKeyword()))
                         .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseDoQuery.getKeyword()));

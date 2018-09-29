@@ -74,28 +74,28 @@ public class NewHouseServiceImpl implements NewHouseService{
 
         TransportClient client = esClientTools.init();
 
-        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
-        if (StringTool.isNotBlank(newHouseQuery.getKeyword())) {
-            SearchResponse searchResponse = null;
-            bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseQuery.getKeyword()));
-            searchResponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType).setQuery(bqbPlotName).execute().actionGet();
-            long total = searchResponse.getHits().getTotalHits();
-            out: if(total > 0l){
-                break out;
-            }else{
-                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-                bqb.must(QueryBuilders.multiMatchQuery(newHouseQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
-                searchResponse = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType).setQuery(bqb).execute().actionGet();
-                if(searchResponse.getHits().getTotalHits()>0l){
-                    SearchHits hits = searchResponse.getHits();
-                    SearchHit[] searchHists = hits.getHits();
-                    outFor:for (SearchHit hit : searchHists) {
-                        newHouseQuery.setKeyword(hit.getSource().get("search_name").toString());
-                        break outFor ;
-                    }
-                }
-            }
-        }
+//        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+//        if (StringTool.isNotBlank(newHouseQuery.getKeyword())) {
+//            SearchResponse searchResponse = null;
+//            bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseQuery.getKeyword()));
+//            searchResponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType).setQuery(bqbPlotName).execute().actionGet();
+//            long total = searchResponse.getHits().getTotalHits();
+//            out: if(total > 0l){
+//                break out;
+//            }else{
+//                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+//                bqb.must(QueryBuilders.multiMatchQuery(newHouseQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+//                searchResponse = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType).setQuery(bqb).execute().actionGet();
+//                if(searchResponse.getHits().getTotalHits()>0l){
+//                    SearchHits hits = searchResponse.getHits();
+//                    SearchHit[] searchHists = hits.getHits();
+//                    outFor:for (SearchHit hit : searchHists) {
+//                        newHouseQuery.setKeyword(hit.getSource().get("search_name").toString());
+//                        break outFor ;
+//                    }
+//                }
+//            }
+//        }
         //
         SearchResponse searchresponse = new SearchResponse();
         //校验筛选条件，根据晒选条件展示列表
@@ -109,9 +109,10 @@ public class NewHouseServiceImpl implements NewHouseService{
                         .add(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword()).analyzer("ik_smart")).tieBreaker(0.3f);
             } else {
             queryBuilder = QueryBuilders.disMaxQuery()
-                    .add(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()).boost(2))
-                    .add(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()).analyzer("ik_max_word"))
-                    .add(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()))
+                    .add(QueryBuilders.matchQuery("building_name_accurate", newHouseQuery.getKeyword()).operator(Operator.AND).boost(2))
+                    .add(QueryBuilders.matchQuery("building_nickname",newHouseQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
+                    .add(QueryBuilders.matchQuery("building_name", newHouseQuery.getKeyword()).operator(Operator.AND).analyzer("ik_max_word"))
+                    .add(QueryBuilders.matchQuery("area_name", newHouseQuery.getKeyword()).operator(Operator.AND))
                     .add(QueryBuilders.matchQuery("district_name", newHouseQuery.getKeyword())).tieBreaker(0.3f);
             }
 
