@@ -18,6 +18,6 @@ public interface HotPlotsRestService {
      * @param city
      * @return
      */
-    SearchHotProjDomain getHotPlotsByCityId(String city);
+    SearchHotProjDomain getHotPlotsByCityId(Integer houseType, String city);
 
 }
