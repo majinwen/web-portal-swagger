@@ -391,7 +391,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         //户型
         if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-            boolQueryBuilderT1.must(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+            boolQueryBuilderT1.must(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
         }
         //价格
         if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()>0){
@@ -460,7 +460,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
                 }
             }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()==0){
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
@@ -470,7 +470,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
                 }
             }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
@@ -480,7 +480,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
                 }
             }
 
