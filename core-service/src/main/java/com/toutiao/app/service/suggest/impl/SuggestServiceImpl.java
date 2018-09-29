@@ -105,12 +105,12 @@ public class SuggestServiceImpl implements SuggestService {
 
         suggestDo.setSearchScopeList(scopeDoList);
 
-        if (scopeDoList.size()<10 && scopeDoList.size()>0){
-            suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
-        }else if(scopeDoList.size() == 0){
-            suggestDo.setSearchEnginesList(enginesDoList);
-        }
-
+//        if (scopeDoList.size()<10 && scopeDoList.size()>0){
+//            suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+//        }else if(scopeDoList.size() == 0){
+//            suggestDo.setSearchEnginesList(enginesDoList);
+//        }
+        suggestDo.setSearchEnginesList(enginesDoList);
         suggestDo.setPlotNum(suggestDo.getPlotNum()+(int) ((InternalFilter)keywordSuggest.getAggregations().get("plot")).getDocCount());
         suggestDo.setEsfNum(suggestDo.getEsfNum()+(int) ((InternalFilter)keywordSuggest.getAggregations().get("esf")).getDocCount());
         suggestDo.setNewHouseNum(suggestDo.getNewHouseNum()+(int) ((InternalFilter)keywordSuggest.getAggregations().get("newHouse")).getDocCount());

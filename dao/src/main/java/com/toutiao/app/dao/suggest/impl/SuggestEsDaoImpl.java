@@ -42,7 +42,8 @@ public class SuggestEsDaoImpl implements SuggestEsDao{
     public SearchResponse getAreaAndDistrictSuggest(BoolQueryBuilder booleanQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
         SearchRequestBuilder srbScope = client.prepareSearch(ElasticCityUtils.getSearchScopeIndex(city)).setTypes(ElasticCityUtils.getSearchScopeType(city));
-        srbScope.addSort("search_sort", SortOrder.ASC)
+        srbScope
+//                .addSort("search_sort", SortOrder.ASC)
                 .addAggregation(AggregationBuilders.filter("plot", QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
                 .addAggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
                 .addAggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)))
