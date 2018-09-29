@@ -384,6 +384,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
 
         boolQueryBuilderT1.must(QueryBuilders.termQuery("isDel",0));
+        boolQueryBuilderT1.must(QueryBuilders.termQuery("is_claim",0));
 
         //区域
         if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
@@ -391,7 +392,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         //户型
         if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-            boolQueryBuilderT1.must(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+            boolQueryBuilderT1.must(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
         }
         //价格
         if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()>0){
@@ -447,7 +448,7 @@ public class SellHouseServiceImpl implements SellHouseService{
             if (pageNum_T2==1){
                 pageSize_T2 = userFavoriteConditionDoQuery.getPageSize()-totalHits_T1 % userFavoriteConditionDoQuery.getPageSize();
             }
-
+            boolQueryBuilderT2.must(QueryBuilders.termQuery("is_claim",0));
             boolQueryBuilderT2.must(QueryBuilders.termQuery("isDel",0));
 
             //只符合价格条件的房源
@@ -460,7 +461,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
                 }
             }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()==0){
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
@@ -470,7 +471,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
                 }
             }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
@@ -480,7 +481,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("houseBusinessNameId",userFavoriteConditionDoQuery.getLayoutId()));
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
                 }
             }
 
@@ -527,7 +528,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 if (pageNum_T3==1){
                     pageSize_T3 = userFavoriteConditionDoQuery.getPageSize()-(totalHits_T2+totalHits_T1) % userFavoriteConditionDoQuery.getPageSize();
                 }
-
+                boolQueryBuilderT3.must(QueryBuilders.termQuery("is_claim",0));
                 boolQueryBuilderT3.must(QueryBuilders.termQuery("isDel",0));
                 //展示全部房源 即所有条件为不限
 
