@@ -622,27 +622,29 @@ public class MessagePushServiceImpl implements MessagePushService {
         } else {
             jsonObject = esfInfo.getJSONObject(houseId);
             //新数据可以从esfInfo查询，判断是否下架
-            if (CollectionUtils.isEmpty(esHouseDos)){
-                jsonObject.put("status", 1);
-                jsonObject.put("houseId", houseId);
-                jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
-                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
-            } else {
-                jsonObject.put("status", 0);
-                jsonObject.put("houseId", houseId);
-                jsonObject.put("houseTotalPrices", esHouseDos.get(0).getHouseTotalPrices());
-                jsonObject.put("priceFloat", esHouseDos.get(0).getPriceFloat());
-                jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
-                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
-                //如果是专题类消息，要替换isCutPrice、isLowPrice、isMustRob内容
-                if (isAddList(subscribeType, jsonObject, esHouseDos)) {
-                    jsonObject.put("isCutPrice", esHouseDos.get(0).getIsCutPrice());
-                    jsonObject.put("isLowPrice", esHouseDos.get(0).getIsLowPrice());
-                    jsonObject.put("isMustRob", esHouseDos.get(0).getIsMustRob());
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
-                } else if (subscribeType == 0){
-                    messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+            if(jsonObject != null){
+                if (CollectionUtils.isEmpty(esHouseDos)){
+                    jsonObject.put("status", 1);
+                    jsonObject.put("houseId", houseId);
+                    jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
+                    jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                    addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
+                } else {
+                    jsonObject.put("status", 0);
+                    jsonObject.put("houseId", houseId);
+                    jsonObject.put("houseTotalPrices", esHouseDos.get(0).getHouseTotalPrices());
+                    jsonObject.put("priceFloat", esHouseDos.get(0).getPriceFloat());
+                    jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
+                    jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                    //如果是专题类消息，要替换isCutPrice、isLowPrice、isMustRob内容
+                    if (isAddList(subscribeType, jsonObject, esHouseDos)) {
+                        jsonObject.put("isCutPrice", esHouseDos.get(0).getIsCutPrice());
+                        jsonObject.put("isLowPrice", esHouseDos.get(0).getIsLowPrice());
+                        jsonObject.put("isMustRob", esHouseDos.get(0).getIsMustRob());
+                        messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                    } else if (subscribeType == 0){
+                        messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
+                    }
                 }
             }
         }
