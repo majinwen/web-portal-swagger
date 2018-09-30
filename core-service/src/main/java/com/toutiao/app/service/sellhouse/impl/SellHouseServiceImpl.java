@@ -584,6 +584,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         //默认条件
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
 
         //使用functionnscore增加isNew为1的房源分数
