@@ -45,7 +45,7 @@ public class HomePageNearEsfDo {
      * 房源标题图
      */
     private String housePhotoTitle;
-    /**
+    /**，
      * 室
      */
     private Integer room;

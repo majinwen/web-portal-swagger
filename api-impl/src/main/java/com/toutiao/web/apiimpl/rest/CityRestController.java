@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.rest;
 
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.CookieUtils;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,6 +46,27 @@ public class CityRestController {
 
         String cityCode = request.getHeader("select_city");
         return NashResult.build(cityCode);
+    }
+
+    /**
+     * 城市
+     * @param cityId
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/testCity",method = RequestMethod.GET)
+    public NashResult testCity()
+    {
+
+//        System.out.println(city);
+//        Cookie cookie = CookieUtils.setCookie(request, response, CookieUtils.COOKIE_NAME_CITY, cityId);
+
+//        esIndexUtils.getESByCity1(request, response, cookie.getValue());
+
+
+        String cityCode = request.getHeader("select_city");
+       Integer re= CityUtils.returnCityId(cityCode);
+        return NashResult.build(re);
     }
 
 
