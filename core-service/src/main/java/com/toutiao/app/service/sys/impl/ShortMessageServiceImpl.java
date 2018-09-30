@@ -62,6 +62,9 @@ public class ShortMessageServiceImpl implements ShortMessageService {
             } else if ("isv.BUSINESS_LIMIT_CONTROL".equals(sendResult)) {//超出短信发送限制
                 exceptionCode = ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_LIMIT.getValue();
                 return NashResult.Fail(exceptionCode.toString(),"短信验证码发送过于频繁或已超出限制");
+            } else if ("isv.MOBILE_NUMBER_ILLEGAL".equals(sendResult)) {//超出短信发送限制
+                exceptionCode = ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_MOBILE_NUMBER_ILLEGAL.getValue();
+                return NashResult.Fail(exceptionCode.toString(),"非法手机号");
             } else {//其它返回码
                 exceptionCode = ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_SEND_ERROR.getValue();
                 return NashResult.Fail(exceptionCode.toString(), sendResult);

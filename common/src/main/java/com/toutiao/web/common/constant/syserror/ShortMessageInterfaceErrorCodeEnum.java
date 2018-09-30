@@ -14,7 +14,8 @@ public enum ShortMessageInterfaceErrorCodeEnum implements IntBaseType {
     SHORT_MESSAGE_LIMIT("短信验证码发送过于频繁或已超出限制",20008),
     SHORT_MESSAGE_SEND_ERROR("短信验证码发送失败", 20009),
     SHORT_MESSAGE_PLATFORM_EXCEPTION("短信平台异常", 20010),
-    SHORT_MESSAGE_QUERY_OVERRUN("短信验证码发送超出APP限制",20011);
+    SHORT_MESSAGE_QUERY_OVERRUN("短信验证码发送超出APP限制",20011),
+    SHORT_MESSAGE_MOBILE_NUMBER_ILLEGAL("非法手机号", 20012);
 
 
     private String desc;
