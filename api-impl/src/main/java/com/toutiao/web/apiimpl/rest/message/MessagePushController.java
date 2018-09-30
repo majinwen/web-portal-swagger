@@ -118,7 +118,9 @@ public class MessagePushController {
         }
         HomeMessageDoQuery homeMessageDoQuery = new HomeMessageDoQuery();
         BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
-        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
+//        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
+        //新版本也暂时隐掉二手房动态消息
+        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessage(homeMessageDoQuery, userId);
         return NashResult.build(homePageMessage);
     }
 
