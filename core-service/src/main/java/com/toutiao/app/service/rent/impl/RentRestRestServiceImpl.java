@@ -753,7 +753,17 @@ public class RentRestRestServiceImpl implements RentRestService {
             Integer[] split = rentHouseDoQuery.getLabelId();
             BoolQueryBuilder booleanQueryBuilder = boolQuery();
             boolean has_subway = Arrays.asList(split).contains(0);
-            if(has_subway){
+
+            for(int i=0;i<split.length;i++){
+                if(split[i].equals(0)){
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("has_subway", 1));
+                }else {
+                    booleanQueryBuilder.must(QueryBuilders.termQuery("rent_house_tags_id", split[i]));
+                }
+            }
+            boolQueryBuilder.must(booleanQueryBuilder);
+
+        /*    if(has_subway){
                 Integer[] tagOther = new Integer[split.length-1];
                 int idx = 0;
                 for(int i=0;i<split.length;i++){
@@ -769,7 +779,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 boolQueryBuilder.must(booleanQueryBuilder);
             }else{
                 boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", split));
-            }
+            }*/
         }
 
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
