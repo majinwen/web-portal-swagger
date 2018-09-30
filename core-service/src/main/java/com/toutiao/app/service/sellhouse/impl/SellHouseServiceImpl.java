@@ -22,6 +22,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
@@ -153,7 +154,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 //                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
 //                    agentBaseDo.setAgentBusinessCard(searchHit.getSource().get("agentBusinessCard")==null?"":searchHit.getSource().get("agentBusinessCard").toString());
 //                }
-                sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+                sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
             }
 
@@ -350,7 +351,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     }
                 }
 
-                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
 
@@ -694,7 +695,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
                 }
 
-                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+                sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);
 
@@ -828,7 +829,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                     }
 
                 }
-                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
@@ -969,7 +970,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
             sellHouseBeSureToSnatchDo.setAgentBaseDo(agentBaseDo);
 
-            sellHouseBeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+            sellHouseBeSureToSnatchDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
 
             sellHouseBeSureToSnatchDo.setSort(sort[0]);
             sellHouseBeSureToSnatchDos.add(sellHouseBeSureToSnatchDo);
@@ -1052,7 +1053,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
 
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
-                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+                sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHousesSearchDos.add(sellHousesSearchDo);
             }
             sellHouseSearchDomain.setData(sellHousesSearchDos);

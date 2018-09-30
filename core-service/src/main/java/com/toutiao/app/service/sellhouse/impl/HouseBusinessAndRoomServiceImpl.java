@@ -13,6 +13,7 @@ import com.toutiao.app.service.sellhouse.FilterBusinessRoomChooseService;
 import com.toutiao.app.service.sellhouse.HouseBusinessAndRoomService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -85,7 +86,7 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                 }
 
                 houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
-                houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags(city));
+                houseBusinessAndRoomDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 String houseId = houseBusinessAndRoomDoQuery.getHouseId();
                 if (StringTool.isNotEmpty(houseId) && houseId.equals(oldHouseId)) {
                     houseBusinessAndRoomDos.addFirst(houseBusinessAndRoomDo);
