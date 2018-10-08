@@ -17,7 +17,6 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper;
 import org.elasticsearch.action.search.SearchResponse;
@@ -100,6 +99,7 @@ public class HomePageServiceImpl implements HomePageRestService {
     public NewHouseListDomain getHomePageNewHouse(String city) {
         NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
         newHouseDoQuery.setPageSize(5);
+        newHouseDoQuery.setSaleStatusId(new Integer[]{1});
         NewHouseListDomain newHouseListDomain = newHouseRestService.getNewHouseList(newHouseDoQuery,city);
 
         return newHouseListDomain;
