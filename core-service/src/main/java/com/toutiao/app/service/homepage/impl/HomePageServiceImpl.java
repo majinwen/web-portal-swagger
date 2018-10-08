@@ -99,7 +99,7 @@ public class HomePageServiceImpl implements HomePageRestService {
     public NewHouseListDomain getHomePageNewHouse(String city) {
         NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
         newHouseDoQuery.setPageSize(5);
-        newHouseDoQuery.setSaleStatusId(new Integer[]{1});
+//        newHouseDoQuery.setSaleStatusId(new Integer[]{1});
         NewHouseListDomain newHouseListDomain = newHouseRestService.getNewHouseList(newHouseDoQuery,city);
 
         return newHouseListDomain;
