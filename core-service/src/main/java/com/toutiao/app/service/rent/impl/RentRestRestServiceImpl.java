@@ -549,16 +549,16 @@ public class RentRestRestServiceImpl implements RentRestService {
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
             if(StringUtil.isNotNullString(DistrictMap.getDistricts(rentHouseDoQuery.getKeyword()))){
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("zufang_name", rentHouseDoQuery.getKeyword()).operator(Operator.AND))
-                        .should(QueryBuilders.matchQuery("area_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"));
+//                        .should(QueryBuilders.matchQuery("zufang_name", rentHouseDoQuery.getKeyword()).operator(Operator.AND))
+//                        .should(QueryBuilders.matchQuery("area_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2));
+//                        .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"));
             }else if(StringUtil.isNotNullString(AreaMap.getAreas(rentHouseDoQuery.getKeyword()))){
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("area_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("zufang_name", rentHouseDoQuery.getKeyword()).operator(Operator.AND))
-                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2));
+                        .should(QueryBuilders.matchQuery("area_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2));
+//                        .should(QueryBuilders.matchQuery("zufang_name", rentHouseDoQuery.getKeyword()).operator(Operator.AND))
+//                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"));
+//                        .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2));
             }else {
                 queryBuilder
                         .should(QueryBuilders.matchQuery("zufang_name", rentHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))

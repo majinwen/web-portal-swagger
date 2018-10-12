@@ -160,8 +160,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if(StringUtil.isNotNullString(newHouseDoQuery.getKeyword())){
             if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseDoQuery.getKeyword()))){
                 queryBuilder = QueryBuilders.disMaxQuery()
-                        .add(QueryBuilders.matchQuery("building_name", newHouseDoQuery.getKeyword()).analyzer("ik_smart"))
-                        .add(QueryBuilders.matchQuery("area_name", newHouseDoQuery.getKeyword()).analyzer("ik_smart"))
+//                        .add(QueryBuilders.matchQuery("building_name", newHouseDoQuery.getKeyword()).analyzer("ik_smart"))
+//                        .add(QueryBuilders.matchQuery("area_name", newHouseDoQuery.getKeyword()).analyzer("ik_smart"))
                         .add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getKeyword()).analyzer("ik_smart")).tieBreaker(0.3f);
             } else {
                 queryBuilder = QueryBuilders.disMaxQuery()

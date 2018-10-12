@@ -304,15 +304,15 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
             if(StringUtil.isNotNullString(DistrictMap.getDistricts(plotListDoQuery.getKeyword()))){
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("rc", plotListDoQuery.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("area", plotListDoQuery.getKeyword()).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("tradingArea", plotListDoQuery.getKeyword()).analyzer("ik_smart"));
+//                        .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword()))
+//                        .should(QueryBuilders.matchQuery("rc", plotListDoQuery.getKeyword()).analyzer("ik_smart"))
+                        .should(QueryBuilders.matchQuery("area", plotListDoQuery.getKeyword()).analyzer("ik_smart").boost(2));
+//                        .should(QueryBuilders.matchQuery("tradingArea", plotListDoQuery.getKeyword()).analyzer("ik_smart"));
             }else if(StringUtil.isNotNullString(AreaMap.getAreas(plotListDoQuery.getKeyword()))){
                 queryBuilder
-                        .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("rc", plotListDoQuery.getKeyword()).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("area", plotListDoQuery.getKeyword()).analyzer("ik_smart"))
+//                        .should(QueryBuilders.matchQuery("rc_accurate", plotListDoQuery.getKeyword()))
+//                        .should(QueryBuilders.matchQuery("rc", plotListDoQuery.getKeyword()).analyzer("ik_smart"))
+//                        .should(QueryBuilders.matchQuery("area", plotListDoQuery.getKeyword()).analyzer("ik_smart"))
                         .should(QueryBuilders.matchQuery("tradingArea", plotListDoQuery.getKeyword()).analyzer("ik_max_word").boost(2));
             }else {
                 queryBuilder
