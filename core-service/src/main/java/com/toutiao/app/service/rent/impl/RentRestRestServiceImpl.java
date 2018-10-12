@@ -557,7 +557,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 queryBuilder
                         .should(QueryBuilders.matchQuery("area_name_search", rentHouseDoQuery.getKeyword()).analyzer("ik_smart").boost(2))
                         .should(QueryBuilders.matchQuery("zufang_name", rentHouseDoQuery.getKeyword()))
-                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseDoQuery.getKeyword()).analyzer("ik_max_word"))
+                        .should(QueryBuilders.matchQuery("district_name_search", rentHouseDoQuery.getKeyword()).analyzer("ik_smart"))
                         .should(QueryBuilders.matchQuery("zufang_name_search", rentHouseDoQuery.getKeyword()).analyzer("ik_smart").boost(2));
             }else {
                 queryBuilder
