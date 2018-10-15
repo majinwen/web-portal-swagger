@@ -3,6 +3,7 @@ package com.toutiao.app.dao.sellhouse.impl;
 import com.toutiao.app.dao.sellhouse.SellHouseKeywordEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
@@ -28,26 +29,26 @@ public class SellHouseKeywordEsDaoImpl implements SellHouseKeywordEsDao {
 
 
     @Override
-    public List<String> filterKeyWords(String keywords) {
+    public List<String> filterKeyWords(String keywords, String city) {
 
 
         List<String> searchTermList = new ArrayList<>();
 
         TransportClient client = esClientTools.init();
         if (StringUtil.isNotNullString(DistrictMap.getDistricts(keywords))) {
-            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,projhouseIndex,keywords);
+            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE, ElasticCityUtils.getEsfHouseIndex(city),keywords);
             ikRequest.setTokenizer("ik_smart");
             List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
             ikTokenList.forEach(ikToken -> { searchTermList.add(ikToken.getTerm()); });
 
         } else if (StringUtil.isNotNullString(AreaMap.getAreas(keywords))) {
-            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,projhouseIndex,keywords);
+            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,ElasticCityUtils.getEsfHouseIndex(city),keywords);
             ikRequest.setTokenizer("ik_max_word");
             List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
             ikTokenList.forEach(ikToken -> { searchTermList.add(ikToken.getTerm()); });
         } else {
 
-            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,projhouseIndex,keywords);
+            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,ElasticCityUtils.getEsfHouseIndex(city),keywords);
             ikRequest.setTokenizer("ik_max_word");
             List<AnalyzeResponse.AnalyzeToken>
                     ikTokenList = ikRequest.execute().actionGet().getTokens();

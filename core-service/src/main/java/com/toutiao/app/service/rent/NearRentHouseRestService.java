@@ -18,5 +18,5 @@ public interface NearRentHouseRestService {
      * @param keywords
      * @return
      */
-    List<String> getAnalyzeByKeyWords(String keywords);
+    List<String> getAnalyzeByKeyWords(String keywords,String city);
 }

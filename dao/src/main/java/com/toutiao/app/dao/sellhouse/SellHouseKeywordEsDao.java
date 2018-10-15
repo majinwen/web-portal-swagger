@@ -5,5 +5,5 @@ import java.util.List;
 public interface SellHouseKeywordEsDao {
 
 
-    List<String> filterKeyWords(String keywords);
+    List<String> filterKeyWords(String keywords,String city);
 }

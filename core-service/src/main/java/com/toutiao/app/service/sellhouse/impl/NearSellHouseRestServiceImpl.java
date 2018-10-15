@@ -83,7 +83,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
         //获取5km内所有的二手房
         FunctionScoreQueryBuilder query5kmBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
         if (StringUtil.isNotNullString(nearBySellHouseQueryDo.getKeyword())) {
-            List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(nearBySellHouseQueryDo.getKeyword());
+            List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(nearBySellHouseQueryDo.getKeyword(),city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
             if (StringUtil.isNotNullString(AreaMap.getAreas(nearBySellHouseQueryDo.getKeyword()))) {
                 for(int i=0 ;i<searchKeyword.size();i++){

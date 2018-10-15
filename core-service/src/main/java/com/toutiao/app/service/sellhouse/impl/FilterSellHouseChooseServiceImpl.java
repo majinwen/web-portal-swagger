@@ -189,9 +189,9 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
      * @return
      */
     @Override
-    public List<String> filterKeyWords(String keywords) {
+    public List<String> filterKeyWords(String keywords,String city) {
 
-        List<String> keyword = sellHouseKeywordEsDao.filterKeyWords(keywords);
+        List<String> keyword = sellHouseKeywordEsDao.filterKeyWords(keywords,city);
 
         return keyword;
     }

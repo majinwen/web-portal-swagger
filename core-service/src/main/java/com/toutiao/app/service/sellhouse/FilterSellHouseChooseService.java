@@ -22,7 +22,7 @@ public interface FilterSellHouseChooseService {
      * @param keywords
      * @return
      */
-    List<String> filterKeyWords(String keywords);
+    List<String> filterKeyWords(String keywords,String city);
 
     /**
      * 过滤二手房查询条件

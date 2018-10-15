@@ -80,7 +80,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
         FunctionScoreQueryBuilder query = null;
 
         if (StringUtil.isNotNullString(nearHouseListDoQuery.getKeyword())) {
-            List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(nearHouseListDoQuery.getKeyword());
+            List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(nearHouseListDoQuery.getKeyword(),city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
             if (StringUtil.isNotNullString(AreaMap.getAreas(nearHouseListDoQuery.getKeyword()))) {
                 for(int i=0 ;i<searchKeyword.size();i++){
@@ -161,8 +161,8 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
      * @return
      */
     @Override
-    public List<String> getAnalyzeByKeyWords(String keywords) {
-        List<String> strings = sellHouseKeywordEsDao.filterKeyWords(keywords);
+    public List<String> getAnalyzeByKeyWords(String keywords, String city) {
+        List<String> strings = sellHouseKeywordEsDao.filterKeyWords(keywords,city);
         return strings;
     }
 

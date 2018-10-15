@@ -286,7 +286,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 //        queryBuilderOfWeek.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("import_time").gt(pastDateOfWeek).lte(nowDate)));
         boolQueryBuilder.should(queryBuilderOfWeek);
-        FunctionScoreQueryBuilder query = getQuery(sellHouseQueryDo,boolQueryBuilder);
+        FunctionScoreQueryBuilder query = getQuery(sellHouseQueryDo,boolQueryBuilder,city);
 
           //这个注释的方法有问题，暂时不删除
 //        Date date = new Date();
@@ -646,7 +646,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
         boolQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));
-        FunctionScoreQueryBuilder query = getQuery(sellHouseDoQuery,boolQueryBuilder);
+        FunctionScoreQueryBuilder query = getQuery(sellHouseDoQuery,boolQueryBuilder,city);
         SearchResponse searchResponse = sellHouseEsDao.getRecommendSellHouse(query, sellHouseDoQuery.getUid(),
                 sellHouseDoQuery.getPageSize(), city);
         SearchHits hits = searchResponse.getHits();
@@ -747,7 +747,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         queryKmBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
         if (StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())) {
-            List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword());
+            List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword(), city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
             if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
@@ -863,11 +863,11 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
 
-    public FunctionScoreQueryBuilder getQuery(SellHouseDoQuery sellHouseDoQuery,BoolQueryBuilder boolQueryBuilder){
+    public FunctionScoreQueryBuilder getQuery(SellHouseDoQuery sellHouseDoQuery,BoolQueryBuilder boolQueryBuilder,String city){
         FunctionScoreQueryBuilder query = null;
         List<String> searchKeyword = new ArrayList<>();
         if(StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())){
-            searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword());
+            searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword(),city);
         }
 
         if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())){

@@ -444,7 +444,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
 
         if (StringUtil.isNotNullString(rentHouseDoQuery.getKeyword())) {
-            List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(rentHouseDoQuery.getKeyword());
+            List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(rentHouseDoQuery.getKeyword(), city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
             if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance())){
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
