@@ -608,7 +608,7 @@ public class MessagePushServiceImpl implements MessagePushService {
     private String getHostOfUrl(HttpServletRequest request) {
         StringBuffer requestURL = request.getRequestURL();
         String tempContextUrl = requestURL.delete(requestURL.length() - request.getRequestURI().length(),
-                requestURL.length()).append("/").toString();
+                requestURL.length()).toString();
         return tempContextUrl;
     }
 
@@ -725,4 +725,3 @@ public class MessagePushServiceImpl implements MessagePushService {
                 (subscribeType == 3 && Integer.valueOf(jsonObject.get("isMustRob").toString()).equals(messageSellHouseDo.getIsMustRob()));
     }
 }
-
