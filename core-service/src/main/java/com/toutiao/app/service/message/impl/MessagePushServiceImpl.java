@@ -1,5 +1,4 @@
 package com.toutiao.app.service.message.impl;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.message.*;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 @Service
@@ -534,10 +534,11 @@ public class MessagePushServiceImpl implements MessagePushService {
      *
      * @param messagePushQuery
      * @param userId
+     * @param request
      * @return
      */
     @Override
-    public MessagePushDomain getHouseTypeMessageNew(MessagePushDoQuery messagePushQuery, String userId) {
+    public MessagePushDomain getHouseTypeMessageNew(MessagePushDoQuery messagePushQuery, String userId, HttpServletRequest request) {
         MessagePushExample example = new MessagePushExample();
         example.setOrderByClause("id DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
@@ -571,8 +572,9 @@ public class MessagePushServiceImpl implements MessagePushService {
             if (!"{}".equals(houseIds)) {
                 String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
                 //配置房源展示数量
+                String hostUrl = getHostOfUrl(request);
                 for (String houseId : split){
-                    replaceHouseDo(messagePushDo, esfInfo, houseId, messageSellHouseDos);
+                    replaceHouseDo(messagePushDo, esfInfo, houseId, messageSellHouseDos, hostUrl);
                 }
                 messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
                 message.add(messagePushDo);
@@ -598,14 +600,32 @@ public class MessagePushServiceImpl implements MessagePushService {
     }
 
     /**
-     * 替换实时更新的属性
+     * 获取域名
      *
-     * @param messagePushDo
+     * @param request
+     * @return
+     */
+    private String getHostOfUrl(HttpServletRequest request) {
+        StringBuffer requestURL = request.getRequestURL();
+        String tempContextUrl = requestURL.delete(requestURL.length() - request.getRequestURI().length(),
+                requestURL.length()).append("/").toString();
+        return tempContextUrl;
+    }
+
+    /**
+     * 替换实时更新的属性
+     *  @param messagePushDo
      * @param esfInfo
      * @param houseId
      * @param messageSellHouseDos
+     * @param hostUrl
      */
-    private void replaceHouseDo(MessagePushDo messagePushDo, JSONObject esfInfo, String houseId, List<MessageSellHouseDo> messageSellHouseDos) {
+    private void replaceHouseDo(
+            MessagePushDo messagePushDo,
+            JSONObject esfInfo,
+            String houseId,
+            List<MessageSellHouseDo> messageSellHouseDos,
+            String hostUrl) {
         JSONObject jsonObject;
         List<MessageSellHouseDo> esHouseDos = sellHouseService.querySellHouseByHouseIdNew(new String[]{houseId},
                 CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
@@ -616,18 +636,18 @@ public class MessagePushServiceImpl implements MessagePushService {
                 jsonObject = (JSONObject)JSONObject.toJSON(esHouseDos.get(0));
                 jsonObject.put("status", 0);
                 jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
-                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId(), hostUrl));
                 addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
             }
         } else {
             jsonObject = esfInfo.getJSONObject(houseId);
             //新数据可以从esfInfo查询，判断是否下架
-            if(jsonObject != null){
+//            if(jsonObject != null){
                 if (CollectionUtils.isEmpty(esHouseDos)){
                     jsonObject.put("status", 1);
                     jsonObject.put("houseId", houseId);
                     jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
-                    jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                    jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId(), hostUrl));
                     addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
                 } else {
                     jsonObject.put("status", 0);
@@ -635,7 +655,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                     jsonObject.put("houseTotalPrices", esHouseDos.get(0).getHouseTotalPrices());
                     jsonObject.put("priceFloat", esHouseDos.get(0).getPriceFloat());
                     jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
-                    jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId()));
+                    jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId(), hostUrl));
                     //如果是专题类消息，要替换isCutPrice、isLowPrice、isMustRob内容
                     if (isAddList(subscribeType, jsonObject, esHouseDos)) {
                         jsonObject.put("isCutPrice", esHouseDos.get(0).getIsCutPrice());
@@ -646,7 +666,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                         messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
                     }
                 }
-            }
+//            }
         }
     }
 
@@ -681,10 +701,10 @@ public class MessagePushServiceImpl implements MessagePushService {
         return photoUrl;
     }
 
-    private String dealDetailUrl(String houseId, Integer cityId) {
+    private String dealDetailUrl(String houseId, Integer cityId, String hostUrl) {
         String houseDetailUrl = null;
         if (StringTool.isNotEmpty(houseId) && StringTool.isNotEmpty(CITYID2ABBREVIATION.get(cityId))) {
-            houseDetailUrl = String.format(appName + "/#/%s/details/secondHand?houseId=%s",
+            houseDetailUrl = String.format(hostUrl + "/#/%s/details/secondHand?houseId=%s",
                     CITYID2ABBREVIATION.get(cityId), houseId);
         }
         return houseDetailUrl;

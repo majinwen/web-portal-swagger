@@ -2,6 +2,7 @@ package com.toutiao.app.service.message;
 
 import com.toutiao.app.domain.message.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public interface MessagePushService {
@@ -37,9 +38,10 @@ public interface MessagePushService {
      *
      * @param messagePushQuery
      * @param userId
+     * @param request
      * @return
      */
-    MessagePushDomain getHouseTypeMessageNew(MessagePushDoQuery messagePushQuery, String userId);
+    MessagePushDomain getHouseTypeMessageNew(MessagePushDoQuery messagePushQuery, String userId, HttpServletRequest request);
 
     /**
      * 首页消息列表(新)

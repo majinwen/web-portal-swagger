@@ -63,7 +63,7 @@ public class MessagePushController {
         }
         MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
         BeanUtils.copyProperties(messagePushRequest, messagePushQuery);
-        MessagePushDomain message = messagePushService.getHouseTypeMessageNew(messagePushQuery, userId);
+        MessagePushDomain message = messagePushService.getHouseTypeMessageNew(messagePushQuery, userId, request);
         return NashResult.build(message);
     }
 
