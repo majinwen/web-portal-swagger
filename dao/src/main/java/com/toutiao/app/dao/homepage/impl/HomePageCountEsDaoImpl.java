@@ -12,9 +12,6 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
-
 /**
  * Created by CuiShihao on 2018/10/19
  */
@@ -30,10 +27,10 @@ public class HomePageCountEsDaoImpl implements HomePageCountEsDao {
     public SearchResponse getNewCount(String city) {
         TransportClient client = esClientTools.init();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(termsQuery("sale_status_id", 0, 1, 5, 6));
-        boolQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
-        boolQueryBuilder.must(termQuery("is_del", IS_DEL));
-        boolQueryBuilder.must(termsQuery("property_type_id", 1, 2));
+        boolQueryBuilder.must(QueryBuilders.termsQuery("sale_status_id", 0, 1, 5, 6));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", IS_APPROVE));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
+        boolQueryBuilder.must(QueryBuilders.termsQuery("property_type_id", 1, 2));
         SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0).addAggregation(AggregationBuilders.terms("buildingCount").field("sale_status_id"))
                 .addAggregation(AggregationBuilders.terms("preferentialCount").field("is_active"))/*.addAggregation(AggregationBuilders.count("onsaleCount").field(""))
