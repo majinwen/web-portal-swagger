@@ -45,8 +45,8 @@ public class HomePageCountEsDaoImpl implements HomePageCountEsDao {
     public SearchResponse getEsfCount(String city) {
         TransportClient client = esClientTools.init();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+        boolQueryBuilder.must(termQuery("isDel", "0"));
+        boolQueryBuilder.must(termQuery("is_claim", "0"));
         SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse response = srb.setQuery(boolQueryBuilder).setSize(0).addAggregation(AggregationBuilders.terms("reduceCount").field("isCutPrice"))
                 .addAggregation(AggregationBuilders.terms("hotSaleCount").field("isMustRob")).addAggregation(AggregationBuilders.terms("missingCount").field("isLowPrice"))
