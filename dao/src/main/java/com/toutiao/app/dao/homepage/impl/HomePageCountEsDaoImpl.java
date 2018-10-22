@@ -27,6 +27,7 @@ public class HomePageCountEsDaoImpl implements HomePageCountEsDao {
     public SearchResponse getNewCount(String city) {
         TransportClient client = esClientTools.init();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//        boolQueryBuilder.must(QueryBuilders.termsQuery("sale_status_id", 0, 1, 5, 6));
         boolQueryBuilder.must(QueryBuilders.termsQuery("sale_status_id", 0, 1, 5, 6));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", IS_APPROVE));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", IS_DEL));
@@ -42,7 +43,7 @@ public class HomePageCountEsDaoImpl implements HomePageCountEsDao {
     public SearchResponse getEsfCount(String city) {
         TransportClient client = esClientTools.init();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
         SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         SearchResponse response = srb.setQuery(boolQueryBuilder).setSize(0).addAggregation(AggregationBuilders.terms("reduceCount").field("isCutPrice"))
