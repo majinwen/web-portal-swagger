@@ -31,12 +31,24 @@ public class HomePageCountServiceImpl implements HomePageCountService {
         Map map = response.getAggregations().asMap();
         Terms terms = (Terms) map.get("buildingCount");
         Terms.Bucket onSaleBucket = terms.getBucketByKey("1");
-        homePageNewCountDo.setOnsaleCount(onSaleBucket.getDocCount());
+        if (onSaleBucket == null) {
+            homePageNewCountDo.setOnsaleCount(0);
+        } else {
+            homePageNewCountDo.setOnsaleCount(onSaleBucket.getDocCount());
+        }
         Terms.Bucket forthBucket = terms.getBucketByKey("5");
-        homePageNewCountDo.setForthcomingCount(forthBucket.getDocCount());
+        if (forthBucket == null) {
+            homePageNewCountDo.setForthcomingCount(0);
+        } else {
+            homePageNewCountDo.setForthcomingCount(forthBucket.getDocCount());
+        }
         Terms terms2 = (Terms) map.get("preferentialCount");
         Terms.Bucket activeBucket = terms2.getBucketByKey("1");
-        homePageNewCountDo.setPreferentialCount(activeBucket.getDocCount());
+        if (activeBucket == null) {
+            homePageNewCountDo.setPreferentialCount(0);
+        } else {
+            homePageNewCountDo.setPreferentialCount(activeBucket.getDocCount());
+        }
         return homePageNewCountDo;
     }
 
@@ -55,13 +67,25 @@ public class HomePageCountServiceImpl implements HomePageCountService {
         Map map = response.getAggregations().asMap();
         Terms terms = (Terms) map.get("reduceCount");
         Terms.Bucket reduceBucket = terms.getBucketByKey("1");
-        homePageEsfCountDo.setReduceCount(reduceBucket.getDocCount());
+        if (reduceBucket == null) {
+            homePageEsfCountDo.setReduceCount(0);
+        } else {
+            homePageEsfCountDo.setReduceCount(reduceBucket.getDocCount());
+        }
         Terms terms2 = (Terms) map.get("hotSaleCount");
         Terms.Bucket hotBucket = terms2.getBucketByKey("1");
-        homePageEsfCountDo.setHotSaleCount(hotBucket.getDocCount());
+        if (hotBucket == null) {
+            homePageEsfCountDo.setHotSaleCount(0);
+        } else {
+            homePageEsfCountDo.setHotSaleCount(hotBucket.getDocCount());
+        }
         Terms terms3 = (Terms) map.get("missingCount");
         Terms.Bucket missBucket = terms3.getBucketByKey("1");
-        homePageEsfCountDo.setMissingCount(missBucket.getDocCount());
+        if (missBucket == null) {
+            homePageEsfCountDo.setMissingCount(0);
+        } else {
+            homePageEsfCountDo.setMissingCount(missBucket.getDocCount());
+        }
         return homePageEsfCountDo;
     }
 }
