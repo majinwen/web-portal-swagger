@@ -5,6 +5,7 @@ import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -95,4 +96,13 @@ public interface SellHouseService {
      * @return
      */
     SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery, String city);
+
+    /**
+     * 二手房判断是否上传默认图
+     * @param importTime
+     * @param today
+     * @param image
+     * @return
+     */
+    int isDefaultImage(String importTime, Date today, String image);
 }

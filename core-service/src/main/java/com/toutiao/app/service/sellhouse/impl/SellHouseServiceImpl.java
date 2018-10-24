@@ -374,6 +374,7 @@ public class SellHouseServiceImpl implements SellHouseService{
      */
     @Override
     public SellHouseDomain getSellHouseByChooseV1(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        Date date = new Date();
         BoolQueryBuilder boolQueryBuilderT1 = QueryBuilders.boolQuery();
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         List<SellHouseDo> list = new ArrayList<>();
@@ -415,6 +416,13 @@ public class SellHouseServiceImpl implements SellHouseService{
             for (SearchHit hit:hitsT1){
                 String sourceAsString = hit.getSourceAsString();
                 SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = sellHouseDo.getImportTime();
+                int isDefault = isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    sellHouseDo.setIsDefaultImage(1);
+                }
 
                 //经纪人信息
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
@@ -497,6 +505,12 @@ public class SellHouseServiceImpl implements SellHouseService{
                 for (SearchHit hit:hitsT2){
                     String sourceAsString = hit.getSourceAsString();
                     SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+                    //判断3天内导入，且无图片，默认上显示默认图
+                    String importTime = sellHouseDo.getImportTime();
+                    int isDefault = isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
+                    if(isDefault==1){
+                        sellHouseDo.setIsDefaultImage(1);
+                    }
                     //经纪人信息
                     AgentBaseDo agentBaseDo = new AgentBaseDo();
                     if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
@@ -544,6 +558,12 @@ public class SellHouseServiceImpl implements SellHouseService{
                     for (SearchHit hit:hitsT3){
                         String sourceAsString = hit.getSourceAsString();
                         SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+                        //判断3天内导入，且无图片，默认上显示默认图
+                        String importTime = sellHouseDo.getImportTime();
+                        int isDefault = isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
+                        if(isDefault==1){
+                            sellHouseDo.setIsDefaultImage(1);
+                        }
                         //经纪人信息
                         AgentBaseDo agentBaseDo = new AgentBaseDo();
                         if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
@@ -595,9 +615,17 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchResponse sellHouseNoCondition = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilder,userFavoriteConditionDoQuery.getPageNum(),userFavoriteConditionDoQuery.getPageSize(),city);
         SearchHit[] hits = sellHouseNoCondition.getHits().getHits();
         if(hits.length>0){
+            Date date = new Date();
             for (SearchHit hit : hits){
                 String sourceAsString = hit.getSourceAsString();
                 SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = sellHouseDo.getImportTime();
+                int isDefault = isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    sellHouseDo.setIsDefaultImage(1);
+                }
                 //经纪人信息
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
@@ -807,6 +835,12 @@ public class SellHouseServiceImpl implements SellHouseService{
                 String details = "";
                 details=searchHit.getSourceAsString();
                 sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = sellHousesSearchDo.getImportTime();
+                int isDefault = isDefaultImage(importTime ,date, sellHousesSearchDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    sellHousesSearchDo.setIsDefaultImage(1);
+                }
                 claimSellHouseDo=JSON.parseObject(details,ClaimSellHouseDo.class);
                 if (null!=claimSellHouseDo.getIsClaim() && claimSellHouseDo.getIsClaim()==1)
                 {   //将认领信息替换
@@ -846,8 +880,6 @@ public class SellHouseServiceImpl implements SellHouseService{
                 {
                     sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
                 }
-
-
 
             }
             sellHouseSearchDomain.setData(sellHousesSearchDos);
@@ -907,6 +939,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     @Override
     public SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery, String city) {
+        Date date = new Date();
         SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDomain=new SellHouseBeSureToSnatchDomain();
         NearBySellHouseQueryDo nearBySellHouseQueryDo=new NearBySellHouseQueryDo();
         BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,nearBySellHouseQueryDo);
@@ -938,12 +971,21 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHouseBeSureToSnatchDoQuery.getPageSize(),sortFile, city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
+
         for (SearchHit searchHit : searchHists)
         {
             String details = "";
             Object [] sort=searchHit.getSortValues();
             details=searchHit.getSourceAsString();
             SellHouseBeSureToSnatchDo sellHouseBeSureToSnatchDo=JSON.parseObject(details,SellHouseBeSureToSnatchDo.class);
+
+            //判断3天内导入，且无图片，默认上显示默认图
+            String importTime = sellHouseBeSureToSnatchDo.getImportTime();
+            int isDefault = isDefaultImage(importTime ,date, sellHouseBeSureToSnatchDo.getHousePhotoTitle());
+            if(isDefault==1){
+                sellHouseBeSureToSnatchDo.setIsDefaultImage(1);
+            }
+
             AgentBaseDo agentBaseDo = new AgentBaseDo();
             if(sellHouseBeSureToSnatchDo.getIsClaim().equals(1))
             {
@@ -1027,9 +1069,18 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchHit[] searchHists = hits.getHits();
         List<SellHousesSearchDo> sellHousesSearchDos = new ArrayList<>();
         if (searchHists.length > 0) {
+            Date date = new Date();
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
                 SellHousesSearchDo sellHousesSearchDo = JSON.parseObject(details, SellHousesSearchDo.class);
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = sellHousesSearchDo.getImportTime();
+                int isDefault = isDefaultImage(importTime ,date, sellHousesSearchDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    sellHousesSearchDo.setIsDefaultImage(1);
+                }
+
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (sellHousesSearchDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(), city);
@@ -1062,6 +1113,23 @@ public class SellHouseServiceImpl implements SellHouseService{
             throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND, "二手房列表为空");
         }
         return sellHouseSearchDomain;
+    }
+
+    @Override
+    public int isDefaultImage(String importTime, Date today, String image) {
+        if(StringTool.isEmpty(image)){
+            if(StringTool.isNotEmpty(importTime)){
+                int betweenDays = DateUtil.daysBetween(today,DateUtil.parseV1(importTime));
+                if(betweenDays <= 3){
+                    return 1;
+                } else {
+                   return 0;
+                }
+            }
+        }else {
+            return 0;
+        }
+        return 0;
     }
 
 }

@@ -15,6 +15,7 @@ import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
@@ -297,7 +298,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      */
     @Override
     public RentDetailsListDo getRentList(RentHouseDoQuery rentHouseDoQuery,String city) {
-
+        Date date = new Date();
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder = getRecommendRentBoolQueryBuilder(boolQueryBuilder, rentHouseDoQuery);
@@ -334,6 +335,13 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit searchHit:hits){
                 String sourceAsString = searchHit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = rentDetailsFewDo.getCreateTime();
+                int isDefault = isDefaultImage(importTime ,date, rentDetailsFewDo.getHouseTitleImg());
+                if(isDefault==1){
+                    rentDetailsFewDo.setIsDefaultImage(1);
+                }
 
                 List<Map<String,String>> rentHouseImg = (List<Map<String, String>>) searchHit.getSource().get("rent_house_img");
                 for(int i=0; i<rentHouseImg.size();i++){
@@ -418,7 +426,7 @@ public class RentRestRestServiceImpl implements RentRestService {
     public RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
+        Date date = new Date();
 
         //添加筛选条件
         BoolQueryBuilder booleanQueryBuilder = getRecommendRentBoolQueryBuilder(boolQueryBuilder, rentHouseDoQuery);
@@ -501,6 +509,14 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
 
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = rentDetailsFewDo.getCreateTime();
+                int isDefault = isDefaultImage(importTime ,date, rentDetailsFewDo.getHouseTitleImg());
+                if(isDefault==1){
+                    rentDetailsFewDo.setIsDefaultImage(1);
+                }
+
+
                 List<Map<String,String>> rentHouseImg = (List<Map<String, String>>) hit.getSource().get("rent_house_img");
                 for(int i=0; i<rentHouseImg.size();i++){
                     imgs.add(rentHouseImg.get(i).get("image_path"));
@@ -539,6 +555,23 @@ public class RentRestRestServiceImpl implements RentRestService {
         rentDetailsListDo.setRentDetailsList(rentDetailsFewDos);
         rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
         return rentDetailsListDo;
+    }
+
+    @Override
+    public int isDefaultImage(String importTime, Date today, String image) {
+        if(StringTool.isEmpty(image)){
+            if(StringTool.isNotEmpty(importTime)){
+                int betweenDays = DateUtil.daysBetween(today,DateUtil.parseV1(importTime));
+                if(betweenDays <= 3){
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        }else {
+            return 0;
+        }
+        return 0;
     }
 
 

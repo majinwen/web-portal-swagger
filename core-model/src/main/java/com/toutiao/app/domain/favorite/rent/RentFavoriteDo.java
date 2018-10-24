@@ -90,6 +90,11 @@ public class RentFavoriteDo {
 
     private String city;
 
+    /**
+     * 是否显示默认图片标志
+     */
+    private Integer isDefaultImage = 0;
+
     public void setCityId(Integer cityId) {
         this.cityId = cityId;
         if(null!=cityId){

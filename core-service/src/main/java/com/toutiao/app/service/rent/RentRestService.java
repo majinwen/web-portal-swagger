@@ -3,6 +3,7 @@ package com.toutiao.app.service.rent;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.rent.*;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RentRestService {
@@ -61,6 +62,15 @@ public interface RentRestService {
      * @return
      */
     RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city);
+
+    /**
+     * 租房判断是否上传默认图
+     * @param importTime
+     * @param today
+     * @param image
+     * @return
+     */
+    int isDefaultImage(String importTime, Date today, String image);
 
 
 }
