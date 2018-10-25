@@ -325,6 +325,11 @@ public class HouseComparedDetailDo {
      */
     private String nearPark;
 
+    /**
+     * 是否显示默认图片
+     */
+    private Integer isDefaultImage;
+
 
 
 }

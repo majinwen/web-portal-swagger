@@ -11,6 +11,7 @@ import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.compared.ComparedService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -25,10 +26,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ComparedServiceImpl implements ComparedService {
@@ -46,6 +44,9 @@ public class ComparedServiceImpl implements ComparedService {
 
     @Autowired
     private CommunityRestService communityRestService;
+
+    @Autowired
+    private SellHouseService sellHouseService;
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
@@ -121,6 +122,7 @@ public class ComparedServiceImpl implements ComparedService {
     }
 
     private Hashtable<String, HouseComparedListDo> getESHouseComparedListDo(List<String> ids, String city) {
+        Date date = new Date();
         Hashtable<String, HouseComparedListDo> houseComparedListDoDict = new Hashtable<>();
         IdsQueryBuilder idsQueryBuilder = new IdsQueryBuilder();
         for (String id : ids) {
@@ -131,7 +133,14 @@ public class ComparedServiceImpl implements ComparedService {
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
             String details = hit.getSourceAsString();
+            Object import_time = hit.getSource().get("import_time");
             HouseComparedListDo houseComparedListDo = JSON.parseObject(details, HouseComparedListDo.class);
+
+            int times = sellHouseService.isDefaultImage((String)import_time,date,houseComparedListDo.getHousePhotoTitle());
+            if(times==1){
+                houseComparedListDo.setIsDefaultImage(1);
+            }
+
             houseComparedListDo.setHouseId(hit.getId());
             houseComparedListDoDict.put(hit.getId(), houseComparedListDo);
         }
@@ -176,6 +185,7 @@ public class ComparedServiceImpl implements ComparedService {
     }
 
     private Hashtable<String, HouseComparedDetailDo> getESHouseComparedDetailDo(List<String> ids, String city) {
+        Date date = new Date();
         Hashtable<String, HouseComparedDetailDo> houseComparedDetailDoDict = new Hashtable<>();
         Hashtable<String, List<String>> newcodeDict = new Hashtable<>();
         IdsQueryBuilder idsQueryBuilder = new IdsQueryBuilder();
@@ -191,6 +201,11 @@ public class ComparedServiceImpl implements ComparedService {
             houseComparedDetailDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
             houseComparedDetailDo.setHouseId(hit.getId());
             houseComparedDetailDoDict.put(hit.getId(), houseComparedDetailDo);
+            Object import_time = hit.getSource().get("import_time");
+            int times = sellHouseService.isDefaultImage((String)import_time,date,houseComparedDetailDo.getHousePhotoTitle());
+            if(times==1){
+                houseComparedDetailDo.setIsDefaultImage(1);
+            }
             if (!newcodeDict.containsKey(houseComparedDetailDo.getNewcode())) {
                 List<String> houseIds = new ArrayList<>();
                 houseIds.add(hit.getId());
