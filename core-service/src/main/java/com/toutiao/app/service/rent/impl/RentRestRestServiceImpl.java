@@ -70,6 +70,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      */
     @Override
     public RentDetailsDo queryRentDetailByHouseId(String rentId, String city) {
+        Date date = new Date();
         RentDetailsDo rentDetailsDo = new RentDetailsDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("house_id",rentId));
@@ -84,6 +85,14 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit searchHit : hits) {
                 String sourceAsString = searchHit.getSourceAsString();
                 rentDetailsDo = JSON.parseObject(sourceAsString, RentDetailsDo.class);
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = rentDetailsDo.getCreateTime();
+                int isDefault = isDefaultImage(importTime ,date, rentDetailsDo.getHouseTitleImg());
+                if(isDefault==1){
+                    rentDetailsDo.setIsDefaultImage(1);
+                }
+
 
                 List<Map<String,String>> rentHouseImg = (List<Map<String, String>>) searchHit.getSource().get("rent_house_img");
                 for(int i=0; i<rentHouseImg.size();i++){

@@ -75,6 +75,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         //二手房房源详情
         SellAndClaimHouseDetailsDo sellAndClaimHouseDetailsDo = new SellAndClaimHouseDetailsDo();
         SellHouseDetailsDo sellHouseDetailsDo = new SellHouseDetailsDo();
+        Date date = new Date();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         if ("FS".equals(houseId.substring(0,2))){
             booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
@@ -92,6 +93,18 @@ public class SellHouseServiceImpl implements SellHouseService{
                 String sourceAsString = searchHit.getSourceAsString();
                 sellAndClaimHouseDetailsDo = JSON.parseObject(sourceAsString,SellAndClaimHouseDetailsDo.class);
                 BeanUtils.copyProperties(sellAndClaimHouseDetailsDo,sellHouseDetailsDo);
+
+
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = sellHouseDetailsDo.getImportTime();
+                int isDefault = isDefaultImage(importTime ,date, sellHouseDetailsDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    sellHouseDetailsDo.setIsDefaultImage(1);
+                }
+
+
+
                 if (StringTool.isNotEmpty(sellAndClaimHouseDetailsDo.getUserId())&&sellAndClaimHouseDetailsDo.getIsClaim()==1){
                     //经纪人信息
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString(), city);

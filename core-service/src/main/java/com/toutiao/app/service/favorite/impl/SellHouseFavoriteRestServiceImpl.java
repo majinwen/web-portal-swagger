@@ -72,6 +72,7 @@ public class SellHouseFavoriteRestServiceImpl implements SellHouseFavoriteRestSe
                     if(isDefault==1){
                         sellHouseFavoriteDos.get(i).setIsDefaultImage(1);
                     }
+                    sellHouseFavoriteDos.get(i).setHousePhotoTitle(housePhotoTitle);
                 }
             }
         }

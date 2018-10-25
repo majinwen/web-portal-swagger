@@ -66,6 +66,7 @@ public class RentFavoriteRestServiceImpl implements RentFavoriteRestService {
                     if(isDefault==1){
                         rentFavoriteDos.get(i).setIsDefaultImage(1);
                     }
+                    rentFavoriteDos.get(i).setHousePhotoTitle(housePhotoTitle);
                 }
             }
         }
