@@ -67,6 +67,8 @@ public class SellHouseFavoriteDo {
 
     private String city;
 
+    private Integer isDefaultImage = 0;
+
 
     public void setCityId(Integer cityId) {
         this.cityId = cityId;

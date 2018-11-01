@@ -10,7 +10,9 @@ import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -26,6 +28,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -41,6 +44,9 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
 
     @Autowired
     private CommunityRestService communityRestService;
+
+    @Autowired
+    private SellHouseService sellHouseService;
 
     /**
      * 获取不买亏二手房Domain
@@ -99,9 +105,17 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
         SearchHit[] searchHists = hits.getHits();
         List<MustBuyShellHouseDo> mustBuyShellHouseDos = new ArrayList<>();
         if (searchHists.length > 0) {
+            Date date = new Date();
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
                 MustBuyShellHouseDo mustBuyShellHouseDo = JSON.parseObject(details, MustBuyShellHouseDo.class);
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = mustBuyShellHouseDo.getImportTime();
+                int isDefault = sellHouseService.isDefaultImage(importTime ,date, mustBuyShellHouseDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    mustBuyShellHouseDo.setIsDefaultImage(1);
+                }
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (mustBuyShellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(mustBuyShellHouseDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(mustBuyShellHouseDo.getUserId().toString(), city);

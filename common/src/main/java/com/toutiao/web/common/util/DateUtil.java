@@ -490,6 +490,10 @@ public class DateUtil {
 		return defaultDatePattern;
 	}
 
+	public static String getDatePatternV1() {
+		return fullDatePattern;
+	}
+
 	/**
 	 * 返回预设Format的当前日期字符串
 	 */
@@ -575,6 +579,10 @@ public class DateUtil {
 	 */
 	public static Date parse(String strDate) {
 		return StringUtils.isBlank(strDate) ? null : parse(strDate, getDatePattern());
+	}
+
+	public static Date parseV1(String strDate) {
+		return StringUtils.isBlank(strDate) ? null : parse(strDate, getDatePatternV1());
 	}
 
 	/**
