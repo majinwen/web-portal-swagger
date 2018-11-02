@@ -16,6 +16,7 @@ import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper;
@@ -59,6 +60,9 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private HomePageRestService homePageRestService;
+
+    @Autowired
+    private SellHouseService sellHouseService;
     /**
      * @return 获取二手房5条
      */
@@ -244,6 +248,7 @@ public class HomePageServiceImpl implements HomePageRestService {
     @Override
     public HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery, String city) {
 
+        Date date = new Date();
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         HomePageNearEsfListDo homePageNearEsfListDo = new HomePageNearEsfListDo();
@@ -281,6 +286,14 @@ public class HomePageServiceImpl implements HomePageRestService {
                     String sourceAsString = hit.getSourceAsString();
                     Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                     HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
+
+                    //判断3天内导入，且无图片，默认上显示默认图
+                    String importTime = homePageNearEsfDo.getImportTime();
+                    int isDefault = sellHouseService.isDefaultImage(importTime ,date, homePageNearEsfDo.getHousePhotoTitle());
+                    if(isDefault==1){
+                        homePageNearEsfDo.setIsDefaultImage(1);
+                    }
+
                     if (flag){
                         homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[1]));
                     }
@@ -358,6 +371,8 @@ public class HomePageServiceImpl implements HomePageRestService {
      */
     @Override
     public HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city) {
+
+        Date date = new Date();
         //构建筛选器
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         HomePageNearEsfListDo homePageNearEsfListDo = new HomePageNearEsfListDo();
@@ -383,6 +398,14 @@ public class HomePageServiceImpl implements HomePageRestService {
                 String sourceAsString = hit.getSourceAsString();
                 Map<String, Object> sourceAsMap = hit.getSourceAsMap();
                 HomePageNearEsfDo homePageNearEsfDo = JSON.parseObject(sourceAsString, HomePageNearEsfDo.class);
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = homePageNearEsfDo.getImportTime();
+                int isDefault = sellHouseService.isDefaultImage(importTime ,date, homePageNearEsfDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    homePageNearEsfDo.setIsDefaultImage(1);
+                }
+
 //                homePageNearEsfDo.setUpTimestamp(hit.getSortValues()[0].toString());
 //                homePageNearEsfDo.setUid(hit.getSortValues()[1].toString().split("#")[1]);
 //                homePageNearEsfDo.setDistance((double) Math.round((Double) hit.getSortValues()[2]));
