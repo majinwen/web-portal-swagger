@@ -47,7 +47,11 @@ public class AdNewHouseRestController {
         return NashResult.build(newHouseListResponses);
     }
 
-
+    /**
+     * 新房列表广告信息
+     * @param adNewHouse
+     * @return
+     */
     @ResponseBody
     @RequestMapping(value = "/getAdNewHouseListByIds",method = RequestMethod.GET)
     public NashResult getAdNewHouseListByIds(@Validated AdNewHouse adNewHouse){
