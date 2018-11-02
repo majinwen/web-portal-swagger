@@ -10,6 +10,7 @@ import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
@@ -25,10 +26,8 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import javax.xml.crypto.Data;
+import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
@@ -46,6 +45,8 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
     private AgentService agentService;
     @Autowired
     private CommunityRestService communityRestService;
+    @Autowired
+    private SellHouseService sellHouseService;
 
     /**
      * 根据小区id获取小区下房源数量
@@ -97,6 +98,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
     @Override
     public List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize,String city) {
 
+        Date date = new Date();
         BoolQueryBuilder detailsBuilder = boolQuery();
         List<SellAndClaimHouseDetailsDo> sellHouseDoList = new ArrayList<>();
         detailsBuilder.must(termQuery("newcode",plotsId));
@@ -117,6 +119,15 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
         for (SearchHit hit : searchHists) {
             details = hit.getSourceAsString();
             SellAndClaimHouseDetailsDo sellHouseDo = JSON.parseObject(details,SellAndClaimHouseDetailsDo.class);
+
+            //判断3天内导入，且无图片，默认上显示默认图
+            String importTime = sellHouseDo.getImportTime();
+            int isDefault = sellHouseService.isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
+            if(isDefault==1){
+                sellHouseDo.setIsDefaultImage(1);
+            }
+
+
             if(hit.getSource().get("is_claim").toString().equals("1")){
                 sellHouseDo.setHousePhotoTitle(hit.getSource().get("claimHousePhotoTitle").toString());
                 sellHouseDo.setHouseId(hit.getSource().get("claimHouseId").toString());
