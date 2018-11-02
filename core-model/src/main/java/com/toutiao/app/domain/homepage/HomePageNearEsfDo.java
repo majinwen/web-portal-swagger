@@ -168,4 +168,14 @@ public class HomePageNearEsfDo {
 
     private Double totalAbsoluteWithBizcircle;
     private Double isLowPrice;
+
+    /**
+     * 房源导入时间
+     */
+    private String importTime;
+
+    /**
+     * 是否显示默认图片标志
+     */
+    private Integer isDefaultImage = 0;
 }
