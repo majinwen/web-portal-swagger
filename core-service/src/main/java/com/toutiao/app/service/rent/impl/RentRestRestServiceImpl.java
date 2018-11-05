@@ -140,6 +140,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      */
     @Override
     public RentDetailsListDo queryRentListByPlotId(Integer plotId,Integer rentType,Integer pageNum,String city) {
+        Date date = new Date();
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -158,6 +159,12 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
 
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = rentDetailsFewDo.getCreateTime();
+                int isDefault = isDefaultImage(importTime ,date, rentDetailsFewDo.getHouseTitleImg());
+                if(isDefault==1){
+                    rentDetailsFewDo.setIsDefaultImage(1);
+                }
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(),city);
