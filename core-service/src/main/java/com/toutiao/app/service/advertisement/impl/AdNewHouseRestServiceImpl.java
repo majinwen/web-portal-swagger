@@ -6,6 +6,8 @@ import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.service.advertisement.AdNewHouseRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -43,6 +45,9 @@ public class AdNewHouseRestServiceImpl implements AdNewHouseRestService {
     @Autowired
     private NewHouseEsDao newHouseEsDao;
 
+    @Autowired
+    private NewHouseRestService newHouseService;
+
 
     @Override
     public NewHouseListDomain getAdNewHouseHomePage(Integer[] newHouseIds, String city) {
@@ -50,31 +55,39 @@ public class AdNewHouseRestServiceImpl implements AdNewHouseRestService {
         List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
         Map<String,NewHouseListDo> newHouseMap = new HashMap<>();
         NewHouseListDomain newHouseListVo=new NewHouseListDomain();
-        BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
-        booleanQueryBuilder.must(termQuery("is_approve",1 ));
-        booleanQueryBuilder.must(termQuery("is_del", 0));
-        booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
-        booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
-        booleanQueryBuilder.must(termsQuery("_id",newHouseIds));
-        SearchResponse adRecommendNewHouse = adNewHouseEsDao.getAdNewHouse(booleanQueryBuilder, city);
+        int newHouseCount = 0;
+        if(null!=newHouseIds && newHouseIds.length >0){
+            newHouseCount = newHouseIds.length;
+            BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
+            booleanQueryBuilder.must(termQuery("is_approve",1 ));
+            booleanQueryBuilder.must(termQuery("is_del", 0));
+            booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
+            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
+            booleanQueryBuilder.must(termsQuery("_id",newHouseIds));
+            SearchResponse adRecommendNewHouse = adNewHouseEsDao.getAdNewHouse(booleanQueryBuilder, city);
 
-        SearchHits hits = adRecommendNewHouse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        if(searchHists.length > 0){
-            for (SearchHit searchHit : searchHists) {
-                String details=searchHit.getSourceAsString();
-                NewHouseListDo newHouseList= JSON.parseObject(details,NewHouseListDo.class);
-                newHouseMap.put(searchHit.getId(),newHouseList);
-            }
-            for(Integer newHouseId : newHouseIds){
-                if(newHouseMap.containsKey(newHouseId.toString())){
-                    NewHouseListDo newHouseList = newHouseMap.get(newHouseId.toString());
-                    newHouseListDoList.add(newHouseList);
+            SearchHits hits = adRecommendNewHouse.getHits();
+            SearchHit[] searchHists = hits.getHits();
+            if(searchHists.length > 0){
+                for (SearchHit searchHit : searchHists) {
+                    String details=searchHit.getSourceAsString();
+                    NewHouseListDo newHouseList= JSON.parseObject(details,NewHouseListDo.class);
+                    newHouseMap.put(searchHit.getId(),newHouseList);
+                }
+                for(Integer newHouseId : newHouseIds){
+                    if(newHouseMap.containsKey(newHouseId.toString())){
+                        NewHouseListDo newHouseList = newHouseMap.get(newHouseId.toString());
+                        newHouseListDoList.add(newHouseList);
+                    }
                 }
             }
-            newHouseListVo.setData(newHouseListDoList);
-            newHouseListVo.setTotalCount(hits.getTotalHits());
         }
+        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
+        newHouseDoQuery.setPageSize(5-newHouseCount);
+        NewHouseListDomain newHouseListDomain = newHouseService.getNewHouseList(newHouseDoQuery, city);
+        newHouseListDoList.addAll(newHouseListDomain.getData());
+        newHouseListVo.setData(newHouseListDoList);
+        newHouseListVo.setTotalCount(newHouseListDoList.size());
         return newHouseListVo;
     }
 

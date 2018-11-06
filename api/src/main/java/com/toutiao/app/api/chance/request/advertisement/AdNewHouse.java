@@ -15,7 +15,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Data
 public class AdNewHouse {
 
-    @NotEmpty(message = "楼盘id不能为空")
+//    @NotEmpty(message = "楼盘id不能为空")
     private Integer [] newHouseIds;
 
 }
