@@ -42,13 +42,13 @@ public class AdCommunityRestServiceImpl implements AdCommunityRestService {
     @Override
     public List<PlotTop50Do> getExcellentCommunityByIds(Integer[] communityIds, String city) {
 
-        int [] isTop={1};
+//        int [] isTop={1};
         List<PlotTop50Do> plotTop50Dos=new ArrayList<>();
         Map<String,PlotTop50Do> communityMap = new HashMap<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del", 0));
-        boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",isTop));
+//        boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",isTop));
         boolQueryBuilder.must(termsQuery("_id",communityIds));
 
         SearchResponse searchResponse = adCommunityEsDao.getAdCommunity(boolQueryBuilder, city);
