@@ -11,6 +11,7 @@ import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.FilterBusinessRoomChooseService;
 import com.toutiao.app.service.sellhouse.HouseBusinessAndRoomService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -22,6 +23,7 @@ import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -42,11 +44,15 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
     @Autowired
     private CommunityRestService communityRestService;
 
+    @Autowired
+    private SellHouseService sellHouseService;
+
     /**
      * 获取商圈+户型
      */
     @Override
     public HouseBusinessAndRoomDomain getHouseBusinessAndRoomHouses(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery,String city) {
+        Date date = new Date();
         LinkedList<HouseBusinessAndRoomDo> houseBusinessAndRoomDos = new LinkedList<>();
         BoolQueryBuilder boolQueryBuilder = filterBusinessRoomChooseService.filterBusinessRoomChoose(houseBusinessAndRoomDoQuery);
         Integer pageNum = houseBusinessAndRoomDoQuery.getPageNum();
@@ -83,6 +89,13 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                         agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
                         agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
                     }
+                }
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = houseBusinessAndRoomDo.getImportTime();
+                int isDefault = sellHouseService.isDefaultImage(importTime ,date, houseBusinessAndRoomDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    houseBusinessAndRoomDo.setIsDefaultImage(1);
                 }
 
                 houseBusinessAndRoomDo.setAgentBaseDo(agentBaseDo);
