@@ -12,6 +12,7 @@ import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -49,6 +50,9 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
 
     @Autowired
     private CommunityRestService communityRestService;
+
+    @Autowired
+    private SellHouseService sellHouseService;
 
     @Override
     public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo,String city) {
@@ -146,6 +150,14 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService{
                     agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
                 }
             }
+
+            //判断3天内导入，且无图片，默认上显示默认图
+            String importTime = nearBySellHousesDo.getImportTime();
+            int isDefault = sellHouseService.isDefaultImage(importTime ,date, nearBySellHousesDo.getHousePhotoTitle());
+            if(isDefault==1){
+                nearBySellHousesDo.setIsDefaultImage(1);
+            }
+
 
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
             nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
