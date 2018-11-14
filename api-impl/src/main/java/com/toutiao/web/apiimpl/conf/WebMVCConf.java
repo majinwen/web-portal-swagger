@@ -49,7 +49,10 @@ public class WebMVCConf extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/**");
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/**")
+                .excludePathPatterns("/static/**")
+                .excludePathPatterns("/swagger-ui.html/**")
+                .excludePathPatterns("/swagger-resources/**");
 
     }
 
