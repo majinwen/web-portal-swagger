@@ -2,6 +2,7 @@ package com.toutiao.app.dao.homepage.impl;
 
 import com.toutiao.app.dao.homepage.HomePageEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -63,60 +64,66 @@ public class HomePageEsDaoImpl implements HomePageEsDao {
     }
 
     @Override
-    public SearchResponse getHomePageNearPlot(BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort) {
+    public SearchResponse getHomePageNearPlot(BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(plotIndex).setTypes(parentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).setSize(size).addSort(sort).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse getHomePageNearPlotNoLocation(BoolQueryBuilder boolQueryBuilder, Integer size) {
+    public SearchResponse getHomePageNearPlotNoLocation(BoolQueryBuilder boolQueryBuilder, Integer size, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(plotIndex).setTypes(parentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).setSize(size).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort) {
+    public SearchResponse getHomePageNearEsf(BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC).setSize(size).addSort(sort).execute().actionGet();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC)
+                .setSize(size).addSort(sort).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse getHomePageNearEsfNoLocation(BoolQueryBuilder boolQueryBuilder, Integer size) {
+    public SearchResponse getHomePageNearEsfNoLocation(BoolQueryBuilder boolQueryBuilder, Integer size, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC).setSize(size).execute().actionGet();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC)
+                .setSize(size).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder sort) {
+    public SearchResponse getPlotSpecialPage(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder sort, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(plotIndex).setTypes(parentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getPlotIndex(city))
+                .setTypes(ElasticCityUtils.getPlotParentType(city));
         SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort(sort).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size) {
+    public SearchResponse getEsfSpecialPage(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-
-        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC).setFrom(from).setSize(size).execute().actionGet();
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city))
+                .setTypes(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchResponse searchResponse = searchRequestBuilder.setQuery(boolQueryBuilder).addSort("extraTagsCount",SortOrder.DESC)
+                .setFrom(from).setSize(size).execute().actionGet();
         return searchResponse;
     }
 
     @Override
-    public SearchResponse getHomePageTop50(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getHomePageTop50(BoolQueryBuilder boolQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder searchRequestBuilder = client.prepareSearch(ElasticCityUtils.getPlotIndex(city))
+                .setTypes(ElasticCityUtils.getPlotParentType(city));
         AggregationBuilder agg_tophits = AggregationBuilders.topHits("group_hits").size(1);
-        SearchResponse response=searchRequestBuilder.setQuery(boolQueryBuilder).addAggregation(AggregationBuilders.terms("count").field("areaId").subAggregation(agg_tophits)).get();
+        SearchResponse response=searchRequestBuilder.setQuery(boolQueryBuilder).addAggregation(AggregationBuilders.terms("count")
+                .field("areaId").subAggregation(agg_tophits)).get();
         return  response;
 
     }

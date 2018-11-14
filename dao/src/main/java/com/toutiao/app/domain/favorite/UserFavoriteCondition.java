@@ -35,5 +35,9 @@ public class UserFavoriteCondition {
      * 条件
      */
     private Object condition;
+    /**
+     * 城市
+     */
+    private Integer cityId;
 
 }

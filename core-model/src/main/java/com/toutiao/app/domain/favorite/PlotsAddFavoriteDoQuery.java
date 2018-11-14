@@ -32,4 +32,6 @@ public class PlotsAddFavoriteDoQuery {
      * 是否删除(0-未删除，1-已删除)
      */
     private Short isDel;
+
+    private Integer cityId;
 }

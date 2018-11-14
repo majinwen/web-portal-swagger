@@ -5,11 +5,19 @@ import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.compared.HouseComparedDetailDo;
 import com.toutiao.app.domain.compared.HouseComparedListDo;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDomain;
+import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.compared.ComparedService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
 import com.toutiao.web.dao.mapper.compared.HouseComparedMapper;
+import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.search.SearchHit;
@@ -18,14 +26,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ComparedServiceImpl implements ComparedService {
-
+    @Autowired
+    private UserFavoriteEsHouseMapper userFavoriteEsHouseMapper;
 
     @Autowired
     HouseComparedMapper houseComparedMapper;
@@ -38,6 +44,9 @@ public class ComparedServiceImpl implements ComparedService {
 
     @Autowired
     private CommunityRestService communityRestService;
+
+    @Autowired
+    private SellHouseService sellHouseService;
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
@@ -76,28 +85,32 @@ public class ComparedServiceImpl implements ComparedService {
     }
 
     @Override
-    public HouseCompared selectByUserIdAndHouseId(Integer userId, String houseId) {
-        return houseComparedMapper.selectByUserIdAndHouseId(userId, houseId);
+    public HouseCompared selectByUserIdAndHouseId(Integer userId, String houseId, Integer cityId) {
+        return houseComparedMapper.selectByUserIdAndHouseId(userId, houseId, cityId);
     }
 
     @Override
-    public List<HouseComparedListDo> selectTempComparedByIds(List<String> ids) {
+    public List<HouseComparedListDo> selectTempComparedByIds(List<String> ids, String city) {
         List<HouseComparedListDo> houseComparedListDoList = new ArrayList<>();
-        Dictionary<String, HouseComparedListDo> houseComparedListDoDict = getESHouseComparedListDo(ids);
+        Dictionary<String, HouseComparedListDo> houseComparedListDoDict = getESHouseComparedListDo(ids, city);
         for (String id : ids) {
-            houseComparedListDoList.add(houseComparedListDoDict.get(id));
+            if(null==houseComparedListDoDict.get(id)){
+
+            }else{
+                houseComparedListDoList.add(houseComparedListDoDict.get(id));
+            }
         }
         return houseComparedListDoList;
     }
 
     @Override
-    public List<HouseComparedListDo> selectComparedByHouseCompareds(List<HouseCompared> houseCompareds) {
+    public List<HouseComparedListDo> selectComparedByHouseCompareds(List<HouseCompared> houseCompareds, String city) {
         List<HouseComparedListDo> houseComparedListDoList = new ArrayList<>();
         List<String> ids = new ArrayList<>();
         for (HouseCompared houseCompared : houseCompareds) {
             ids.add(houseCompared.getHouseId());
         }
-        Hashtable<String, HouseComparedListDo> houseComparedListDoDict = getESHouseComparedListDo(ids);
+        Hashtable<String, HouseComparedListDo> houseComparedListDoDict = getESHouseComparedListDo(ids, city);
         for (HouseCompared houseCompared : houseCompareds) {
             if (houseComparedListDoDict.containsKey(houseCompared.getHouseId())) {
                 HouseComparedListDo houseComparedListDo = houseComparedListDoDict.get(houseCompared.getHouseId());
@@ -108,18 +121,26 @@ public class ComparedServiceImpl implements ComparedService {
         return houseComparedListDoList;
     }
 
-    private Hashtable<String, HouseComparedListDo> getESHouseComparedListDo(List<String> ids) {
+    private Hashtable<String, HouseComparedListDo> getESHouseComparedListDo(List<String> ids, String city) {
+        Date date = new Date();
         Hashtable<String, HouseComparedListDo> houseComparedListDoDict = new Hashtable<>();
         IdsQueryBuilder idsQueryBuilder = new IdsQueryBuilder();
         for (String id : ids) {
             idsQueryBuilder.addIds(id);
         }
-        SearchResponse searchResponse = sellHouseEsDao.getHouseByIds(idsQueryBuilder);
+        SearchResponse searchResponse = sellHouseEsDao.getComparedHouseByIds(idsQueryBuilder, city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
             String details = hit.getSourceAsString();
+            Object import_time = hit.getSource().get("import_time");
             HouseComparedListDo houseComparedListDo = JSON.parseObject(details, HouseComparedListDo.class);
+
+            int times = sellHouseService.isDefaultImage((String)import_time,date,houseComparedListDo.getHousePhotoTitle());
+            if(times==1){
+                houseComparedListDo.setIsDefaultImage(1);
+            }
+
             houseComparedListDo.setHouseId(hit.getId());
             houseComparedListDoDict.put(hit.getId(), houseComparedListDo);
         }
@@ -127,14 +148,14 @@ public class ComparedServiceImpl implements ComparedService {
     }
 
     @Override
-    public List<HouseCompared> selectByUserId(Integer userId) {
-        return houseComparedMapper.selectByUserId(userId);
+    public List<HouseCompared> selectByUserId(Integer userId, Integer cityId) {
+        return houseComparedMapper.selectByUserId(userId, cityId);
     }
 
     @Override
-    public List<HouseComparedDetailDo> selectComparedDetailByHouseIds(List<String> ids) {
+    public List<HouseComparedDetailDo> selectComparedDetailByHouseIds(List<String> ids, String city) {
         List<HouseComparedDetailDo> houseComparedListDoList = new ArrayList<>();
-        Hashtable<String, HouseComparedDetailDo> houseComparedDetailDoDict = getESHouseComparedDetailDo(ids);
+        Hashtable<String, HouseComparedDetailDo> houseComparedDetailDoDict = getESHouseComparedDetailDo(ids,city);
         for (String id : ids) {
             HouseComparedDetailDo houseComparedDetailDo = new HouseComparedDetailDo();
             if (houseComparedDetailDoDict.containsKey(id)) {
@@ -149,22 +170,42 @@ public class ComparedServiceImpl implements ComparedService {
         return houseComparedListDoList;
     }
 
-    private Hashtable<String, HouseComparedDetailDo> getESHouseComparedDetailDo(List<String> ids) {
+    @Override
+    public SellHouseFavoriteDomain queryComparedList(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery) {
+        SellHouseFavoriteDomain sellHouseFavoriteDomain = new SellHouseFavoriteDomain();
+        sellHouseFavoriteListDoQuery.setFrom((sellHouseFavoriteListDoQuery.getPageNum()-1)*sellHouseFavoriteListDoQuery.getSize());
+        sellHouseFavoriteListDoQuery.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        List<SellHouseFavoriteDo> sellHouseFavoriteDos = userFavoriteEsHouseMapper.selectComparedList(sellHouseFavoriteListDoQuery);
+        if(null!=sellHouseFavoriteDos && sellHouseFavoriteDos.size()>0){
+            sellHouseFavoriteDomain.setData(sellHouseFavoriteDos);
+        }else{
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_NOT_FOUND,"比对列表为空");
+        }
+        return sellHouseFavoriteDomain;
+    }
+
+    private Hashtable<String, HouseComparedDetailDo> getESHouseComparedDetailDo(List<String> ids, String city) {
+        Date date = new Date();
         Hashtable<String, HouseComparedDetailDo> houseComparedDetailDoDict = new Hashtable<>();
         Hashtable<String, List<String>> newcodeDict = new Hashtable<>();
         IdsQueryBuilder idsQueryBuilder = new IdsQueryBuilder();
         for (String id : ids) {
             idsQueryBuilder.addIds(id);
         }
-        SearchResponse searchResponse = sellHouseEsDao.getHouseByIds(idsQueryBuilder);
+        SearchResponse searchResponse = sellHouseEsDao.getComparedHouseByIds(idsQueryBuilder,city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
             String details = hit.getSourceAsString();
             HouseComparedDetailDo houseComparedDetailDo = JSON.parseObject(details, HouseComparedDetailDo.class);
-            houseComparedDetailDo.setTypeCounts(communityRestService.getCountByBuildTags());
+            houseComparedDetailDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
             houseComparedDetailDo.setHouseId(hit.getId());
             houseComparedDetailDoDict.put(hit.getId(), houseComparedDetailDo);
+            Object import_time = hit.getSource().get("import_time");
+            int times = sellHouseService.isDefaultImage((String)import_time,date,houseComparedDetailDo.getHousePhotoTitle());
+            if(times==1){
+                houseComparedDetailDo.setIsDefaultImage(1);
+            }
             if (!newcodeDict.containsKey(houseComparedDetailDo.getNewcode())) {
                 List<String> houseIds = new ArrayList<>();
                 houseIds.add(hit.getId());
@@ -177,7 +218,7 @@ public class ComparedServiceImpl implements ComparedService {
         for (String id : newcodeDict.keySet()) {
             idsQueryBuilder.addIds(id);
         }
-        searchResponse = plotEsDao.getPlotByIds(idsQueryBuilder);
+        searchResponse = plotEsDao.getPlotByIds(idsQueryBuilder, city);
         hits = searchResponse.getHits();
         searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {

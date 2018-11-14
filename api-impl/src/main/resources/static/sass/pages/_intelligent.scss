@@ -799,34 +799,41 @@ $inteColorRed: #e42929;
                     margin: rem(25) rem(-15) rem(136);
 
                     li {
+                        position: relative;
                         display: block;
                         float: left;
-                        width: rem(114);
-                        height: rem(46);
-                        line-height: rem(44);
-                        margin: rem(10) rem(15);
+                        width: rem(124);
+                        height: rem(56);
+                        line-height: rem(56);
+                        margin: rem(5) rem(10);
                         text-align: center;
-                        border: rem(1) solid #999;
                         @include box-sizing;
 
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            top: rem(4);
+                            bottom: rem(4);
+                            right: rem(4);
+                            left: rem(4);
+                            border: rem(1) solid #999;
+                            box-sizing: border-box;
+                        }
                         &:last-child {
                             @include font-dpr(20);
                         }
-
                         &.disabled {
                             color: #999;
                         }
-
                         &.current {
                             color: $baseWhite;
-                            border: none;
-                            width: rem(124);
-                            height: rem(56);
-                            line-height: rem(56);
-                            margin: rem(5) rem(10);
                             @include bg-image('/static/images/intelligent/distict-box');
                             -webkit-background-size: 100% 100%;
                             background-size: 100% 100%;
+
+                            &:after {
+                                content: none;
+                            }
                         }
                     }
                 }

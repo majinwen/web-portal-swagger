@@ -6,6 +6,7 @@ import com.toutiao.app.domain.plot.PlotsThemeDoQuery;
 import com.toutiao.app.domain.plot.PlotsThemeDomain;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class PlotsThemeRestController {
     public NashResult getPlotsTheme(PlotsThemeRequest plotsThemeRequest) {
         PlotsThemeDoQuery plotsThemeDoQuery = new PlotsThemeDoQuery();
         BeanUtils.copyProperties(plotsThemeRequest, plotsThemeDoQuery);
-        PlotsThemeDomain plotsThemeDos = plotsThemeRestService.getPlotsThemeList(plotsThemeDoQuery);
+        PlotsThemeDomain plotsThemeDos = plotsThemeRestService.getPlotsThemeList(plotsThemeDoQuery, CityUtils.getCity());
         PlotsThemeResponse plotsThemeResponse = new PlotsThemeResponse();
         BeanUtils.copyProperties(plotsThemeDos, plotsThemeResponse);
         return NashResult.build(plotsThemeResponse);

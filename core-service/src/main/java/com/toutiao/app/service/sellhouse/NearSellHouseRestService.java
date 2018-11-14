@@ -11,5 +11,5 @@ public interface NearSellHouseRestService {
      * @param nearBySellHouseQueryDo
      * @return
      */
-    NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo);
+    NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo, String city);
 }

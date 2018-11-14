@@ -122,5 +122,15 @@ public class RentDetailsFewDo {
      */
     private String houseDesc;
 
+    /**
+     * 入库时间
+     */
+    private String createTime;
+
+    /**
+     * 是否显示默认图片标志
+     */
+    private Integer isDefaultImage = 0;
+
 
 }

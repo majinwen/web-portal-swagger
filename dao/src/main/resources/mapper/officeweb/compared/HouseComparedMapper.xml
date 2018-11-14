@@ -8,9 +8,10 @@
     <result column="house_status" property="houseStatus" jdbcType="SMALLINT" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="is_del" property="isDel" jdbcType="SMALLINT" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, user_id, house_id, house_status, create_time, is_del
+    id, user_id, house_id, house_status, create_time, is_del, city_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,10 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.toutiao.web.dao.entity.compared.HouseCompared" >
     insert into house_compared (id, user_id, house_id, 
-      house_status, create_time, is_del
+      house_status, create_time, is_del, city_id
       )
     values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{houseId,jdbcType=VARCHAR}, 
-      #{houseStatus,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT}
+      #{houseStatus,jdbcType=SMALLINT}, #{createTime,jdbcType=TIMESTAMP}, #{isDel,jdbcType=SMALLINT},
+      #{cityId,jdbcType=SMALLINT}
       )
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.compared.HouseCompared" useGeneratedKeys="true" keyProperty="id">
@@ -51,6 +53,9 @@
       <if test="isDel != null" >
         is_del,
       </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -70,6 +75,9 @@
       </if>
       <if test="isDel != null" >
         #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=SMALLINT},
       </if>
     </trim>
   </insert >
@@ -91,6 +99,9 @@
       <if test="isDel != null" >
         is_del = #{isDel,jdbcType=SMALLINT},
       </if>
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=SMALLINT},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -100,7 +111,8 @@
       house_id = #{houseId,jdbcType=VARCHAR},
       house_status = #{houseStatus,jdbcType=SMALLINT},
       create_time = #{createTime,jdbcType=TIMESTAMP},
-      is_del = #{isDel,jdbcType=SMALLINT}
+      is_del = #{isDel,jdbcType=SMALLINT},
+      city_id = #{cityId,jdbcType=SMALLINT}
     where id = #{id,jdbcType=INTEGER}
   </update>
 
@@ -108,13 +120,13 @@
     select
     <include refid="Base_Column_List" />
     from house_compared
-    where user_id = #{userId,jdbcType=INTEGER} and house_id = #{houseId,jdbcType=VARCHAR} limit 1
+    where user_id = #{userId,jdbcType=INTEGER} and house_id = #{houseId,jdbcType=VARCHAR} and city_id = #{cityId,jdbcType=INTEGER} limit 1
   </select>
   <select id="selectByUserId" resultMap="BaseResultMap" parameterType="map" >
     select
     <include refid="Base_Column_List" />
     from house_compared
-    where user_id = #{userId,jdbcType=INTEGER} and is_del = 0
+    where user_id = #{userId,jdbcType=INTEGER} and is_del = 0 and city_id = #{cityId,jdbcType=INTEGER}
     order by create_time DESC
   </select>
 </mapper>

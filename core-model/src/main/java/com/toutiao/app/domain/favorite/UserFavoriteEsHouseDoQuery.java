@@ -65,4 +65,6 @@ public class UserFavoriteEsHouseDoQuery {
 
     private Integer housePhotoTitleTags;
 
+    private Integer cityId;
+
 }

@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.favorite.newhouse;
 
+import com.toutiao.web.common.constant.city.CityEnum;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -67,4 +68,20 @@ public class NewHouseFavoriteDo {
      * 上下架(0-上架,1-下架)
      */
     private Short status;
+
+    /**
+     * 城市信息
+     */
+    private Integer cityId;
+
+    private String city;
+
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+        if(null!=cityId){
+            this.city = CityEnum.getId(cityId);
+        }
+    }
+
 }

@@ -50,7 +50,9 @@ public class UserLoginServiceImpl implements UserLoginService {
 
         String tempVerifyCode = "";
         tempVerifyCode = redis.getValue(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + "_" + userBasicDo.getUserPhone());
-        if (userBasicDo.getUserPhone().equals("13900000000")) {
+        if (userBasicDo.getUserPhone().equals("13100000000") || userBasicDo.getUserPhone().equals("13200000000")||
+                userBasicDo.getUserPhone().equals("13300000000")||userBasicDo.getUserPhone().equals("13400000000")||
+                userBasicDo.getUserPhone().equals("13500000000")||userBasicDo.getUserPhone().equals("13900000000")) {
             tempVerifyCode = "1243";
             userBasicDo.setVerifyCode("1243");
         }

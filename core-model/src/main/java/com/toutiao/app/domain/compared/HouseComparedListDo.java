@@ -70,4 +70,10 @@ public class HouseComparedListDo {
      * 是否同户型小区均价最低(0-否，1-是)
      */
     private Integer isLowest;
+
+    /**
+     * 是否显示默认图片
+     */
+    private Integer isDefaultImage;
+
 }

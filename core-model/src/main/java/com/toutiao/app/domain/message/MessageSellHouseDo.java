@@ -50,10 +50,11 @@ public class MessageSellHouseDo {
      */
     @ChangeName("areaId")
     private String houseBusinessNameId;
+
     /**
      * 商圈名称
      */
-    @ChangeName("areaName")
+    @ChangeName("area")
     private String houseBusinessName;
 
     /**
@@ -93,4 +94,14 @@ public class MessageSellHouseDo {
      */
     @ChangeName("releaseStatus")
     private Short status;
+
+    /**
+     * 房源详情Url
+     */
+    private String houseDetailUrl;
+
+    /**
+     * 厅
+     */
+    private String hall;
 }

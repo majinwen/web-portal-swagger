@@ -78,5 +78,15 @@ public class MessagePushDo {
      */
     private Integer subscribeType;
 
+    /**
+     * 专题列表Url
+     */
+    private String themeDetailUrl;
+
     private List<MessageSellHouseDo> messageSellHouseDos;
+
+    /**
+     * 二手房信息
+     */
+    private JSONObject esfInfo;
 }

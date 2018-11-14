@@ -6,6 +6,7 @@ import com.toutiao.app.domain.sellhouse.HouseBusinessAndRoomDoQuery;
 import com.toutiao.app.domain.sellhouse.HouseBusinessAndRoomDomain;
 import com.toutiao.app.service.sellhouse.HouseBusinessAndRoomService;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -32,7 +33,7 @@ public class HouseBusinessAndRoomRestController {
         HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery = new HouseBusinessAndRoomDoQuery();
         BeanUtils.copyProperties(houseBusinessAndRoomRequest, houseBusinessAndRoomDoQuery);
         HouseBusinessAndRoomDomain houseBusinessAndRoomHouses = houseBusinessAndRoomService
-            .getHouseBusinessAndRoomHouses(houseBusinessAndRoomDoQuery);
+            .getHouseBusinessAndRoomHouses(houseBusinessAndRoomDoQuery, CityUtils.getCity());
         HouseBusinessAndRoomResponse houseBusinessAndRoomResponse = new HouseBusinessAndRoomResponse();
         BeanUtils.copyProperties(houseBusinessAndRoomHouses, houseBusinessAndRoomResponse);
         return NashResult.build(houseBusinessAndRoomResponse);

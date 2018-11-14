@@ -18,11 +18,11 @@ public class AgentServiceImpl implements AgentService {
     private AgentHouseEsDao agentHouseEsDao;
 
     @Override
-    public AgentBaseDo queryAgentInfoByUserId(String userId) {
+    public AgentBaseDo queryAgentInfoByUserId(String userId, String city) {
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("user_id", userId));
-        SearchResponse searchResponse = agentHouseEsDao.getRentInfoByUserId(boolQueryBuilder);
+        SearchResponse searchResponse = agentHouseEsDao.getRentInfoByUserId(boolQueryBuilder, city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
             String sourceAsString = hits[0].getSourceAsString();

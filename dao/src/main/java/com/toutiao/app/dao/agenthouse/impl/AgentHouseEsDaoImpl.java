@@ -2,6 +2,7 @@ package com.toutiao.app.dao.agenthouse.impl;
 
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -47,9 +48,9 @@ public class AgentHouseEsDaoImpl implements AgentHouseEsDao{
     }
 
     @Override
-    public SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
-        SearchResponse searchResponse = client.prepareSearch(agentBaseIndex).setTypes(agentBaseType).setQuery(booleanQueryBuilder)
+        SearchResponse searchResponse = client.prepareSearch(ElasticCityUtils.getAgentIndex(city)).setTypes(ElasticCityUtils.getAgentType(city)).setQuery(booleanQueryBuilder)
                 .execute().actionGet();
         return searchResponse;
     }

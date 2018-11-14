@@ -2,6 +2,7 @@ package com.toutiao.app.dao.plot.impl;
 
 import com.toutiao.app.dao.plot.PlotsThemeEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -32,9 +33,9 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
 
 
     @Override
-    public SearchResponse getPlotsThemeList(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize) {
+    public SearchResponse getPlotsThemeList(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotParentType(city));
         srb.addSort("house_count", SortOrder.DESC);
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFrom((pageNum - 1) * pageSize)
                 .setSize(pageSize).execute().actionGet();
@@ -42,14 +43,14 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
     }
 
     @Override
-    public SearchResponse getHouseAreaByPlotId(Integer plotId) {
+    public SearchResponse getHouseAreaByPlotId(Integer plotId, String city) {
 
         TransportClient client = esClientTools.init();
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
         boolQueryBuilder.must(QueryBuilders.termQuery("plotId", plotId));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
-        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(childType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getPlotIndex(city)).setTypes(ElasticCityUtils.getPlotChildType(city));
         SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(0).addAggregation(AggregationBuilders.max("maxHouse").field("sellHouseArea"))
                 .addAggregation(AggregationBuilders.min("minHouse").field("sellHouseArea")).execute().actionGet();
 

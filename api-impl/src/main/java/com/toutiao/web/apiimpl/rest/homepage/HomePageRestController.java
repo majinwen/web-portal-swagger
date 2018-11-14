@@ -20,15 +20,17 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.RedisSessionUtils;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +43,9 @@ public class HomePageRestController {
 
     @Autowired
     private SellHouseService sellHouseService;
+
+    @Autowired
+    private RedisSessionUtils redis;
     /**
      * 首页获取二手房推荐5条
      */
@@ -48,7 +53,7 @@ public class HomePageRestController {
     @ResponseBody
     public NashResult getHomePageEsf()
     {
-       List<HomePageEsfDo> homePageEsfDos= homePageRestService.getHomePageEsf();
+        List<HomePageEsfDo> homePageEsfDos= homePageRestService.getHomePageEsf();
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageEsfDos));
         List<HomePageEsfResponse> homePageEsfResponseList= JSONObject.parseArray(json.toJSONString(),HomePageEsfResponse.class);
         return  NashResult.build(homePageEsfResponseList);
@@ -63,7 +68,7 @@ public class HomePageRestController {
     @ResponseBody
     public  NashResult getHomePageNewHouse()
     {
-        NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse();
+        NewHouseListDomain newHouseListDomain= homePageRestService.getHomePageNewHouse(CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(newHouseListDomain.getData()));
         List<HomePageNewHouseResponse> newHouseListResponses=JSONObject.parseArray(json.toJSONString(),HomePageNewHouseResponse.class);
         return  NashResult.build(newHouseListResponses);
@@ -75,10 +80,10 @@ public class HomePageRestController {
     @RequestMapping(value = "/homePageEsfSearch",method = RequestMethod.GET)
     public  NashResult homePageEsfSearch(BaseQueryRequest baseQueryRequest)
     {
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse =  new SellHouseSearchDomainResponse();
         BeanUtils.copyProperties(baseQueryRequest,sellHouseDoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain,sellHouseSearchDomainResponse);
         return NashResult.build(sellHouseSearchDomainResponse);
 
@@ -91,7 +96,7 @@ public class HomePageRestController {
     public NashResult homePageNearPlot(@Validated NearHouseRequest nearHouseRequest){
         NearHouseDoQuery nearHouseDoQuery = new NearHouseDoQuery();
         BeanUtils.copyProperties(nearHouseRequest,nearHouseDoQuery);
-        HomePageNearPlotListDo homePageNearPlot = homePageRestService.getHomePageNearPlot(nearHouseDoQuery);
+        HomePageNearPlotListDo homePageNearPlot = homePageRestService.getHomePageNearPlot(nearHouseDoQuery, CityUtils.getCity());
         HomePageNearPlotListResponse homePageNearPlotListResponse = JSON.parseObject(JSON.toJSONString(homePageNearPlot), HomePageNearPlotListResponse.class);
         return NashResult.build(homePageNearPlotListResponse);
     }
@@ -103,7 +108,7 @@ public class HomePageRestController {
     public NashResult homePageNearEsf(@Validated NearHouseRequest nearHouseRequest){
         NearHouseDoQuery nearHouseDoQuery = new NearHouseDoQuery();
         BeanUtils.copyProperties(nearHouseRequest,nearHouseDoQuery);
-        HomePageNearEsfListDo homePageNearEsf = homePageRestService.getHomePageNearEsf(nearHouseDoQuery);
+        HomePageNearEsfListDo homePageNearEsf = homePageRestService.getHomePageNearEsf(nearHouseDoQuery, CityUtils.getCity());
         HomePageNearEsfListResponse homePageNearEsfListResponse = JSON.parseObject(JSON.toJSONString(homePageNearEsf), HomePageNearEsfListResponse.class);
         return NashResult.build(homePageNearEsfListResponse);
     }
@@ -115,7 +120,7 @@ public class HomePageRestController {
     public NashResult plotSpecialPage(@Validated NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
         NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery = new NearHouseSpecialPageDoQuery();
         BeanUtils.copyProperties(nearHouseSpecialPageRequest, nearHouseSpecialPageDoQuery);
-        HomePageNearPlotDo plotSpecialPage = homePageRestService.getPlotSpecialPage(nearHouseSpecialPageDoQuery);
+        HomePageNearPlotDo plotSpecialPage = homePageRestService.getPlotSpecialPage(nearHouseSpecialPageDoQuery, CityUtils.getCity());
         HomePageNearPlotResponse homePageNearPlotResponse = JSON.parseObject(JSON.toJSONString(plotSpecialPage), HomePageNearPlotResponse.class);
         return NashResult.build(homePageNearPlotResponse);
     }
@@ -127,7 +132,7 @@ public class HomePageRestController {
     public NashResult esfSpecialPage(@Validated NearHouseSpecialPageRequest nearHouseSpecialPageRequest){
         NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery = new NearHouseSpecialPageDoQuery();
         BeanUtils.copyProperties(nearHouseSpecialPageRequest, nearHouseSpecialPageDoQuery);
-        HomePageNearEsfListDo esfSpecialPage = homePageRestService.getEsfSpecialPage(nearHouseSpecialPageDoQuery);
+        HomePageNearEsfListDo esfSpecialPage = homePageRestService.getEsfSpecialPage(nearHouseSpecialPageDoQuery,CityUtils.getCity());
         HomePageNearEsfListResponse homePageNearEsfListResponse = JSON.parseObject(JSON.toJSONString(esfSpecialPage), HomePageNearEsfListResponse.class);
         return NashResult.build(homePageNearEsfListResponse);
     }
@@ -195,7 +200,7 @@ public class HomePageRestController {
     public NashResult saveRecommendCondition(@Validated(First.class)  UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
-        Integer integer = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery);
+        Integer integer = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         return NashResult.build(integer);
     }
 
@@ -205,7 +210,7 @@ public class HomePageRestController {
     @RequestMapping(value = "/getRecommendCondition",method = RequestMethod.GET)
     @ResponseBody
     public NashResult getRecommendCondition(@Param("userId") Integer userId){
-        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userId);
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userId, CityUtils.getCity());
         return NashResult.build(recommendCondition);
     }
 
@@ -217,7 +222,7 @@ public class HomePageRestController {
     public NashResult updateRecommendCondition(@Validated(First.class) UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
-        Integer integer = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery);
+        Integer integer = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         return NashResult.build(integer);
     }
 
@@ -227,7 +232,18 @@ public class HomePageRestController {
     @RequestMapping(value = "/deleteRecommendCondition",method = RequestMethod.GET)
     @ResponseBody
     public NashResult deleteRecommendCondition(@Param("userId") Integer userId){
-        Integer integer = homePageRestService.deleteRecommendCondition(userId);
+        Integer city = CityUtils.returnCityId(CityUtils.getCity());
+        Integer integer = homePageRestService.deleteRecommendCondition(userId, city);
         return NashResult.build(integer);
+    }
+
+    @RequestMapping(value = "/getTradeQuotations")
+    @ResponseBody
+    public NashResult getRedisCityForJson(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String cityCode = CityUtils.getCity();
+        String TradeQuotations = "TradeQuotations_"+cityCode;
+        JSONObject res =  JSONObject.parseObject(redis.getValue(TradeQuotations));
+        return NashResult.build(res);
     }
 }

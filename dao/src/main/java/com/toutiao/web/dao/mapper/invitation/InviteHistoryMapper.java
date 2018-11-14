@@ -1,6 +1,8 @@
 package com.toutiao.web.dao.mapper.invitation;
 
 import com.toutiao.app.domain.invitation.InviteHistoryDo;
+import com.toutiao.app.domain.invitation.SuperInviteHistoryDo;
+import com.toutiao.app.domain.invitation.SuperInviteHistoryDoQuery;
 import com.toutiao.web.dao.entity.invitation.InviteHistory;
 import com.toutiao.web.dao.entity.invitation.InviteHistoryExample;
 import org.apache.ibatis.annotations.Param;
@@ -35,4 +37,8 @@ public interface InviteHistoryMapper {
     List<InviteHistoryDo> getInviteHistorys(String equipmentNo);
 
     List<InviteHistory> getInviteHistoryByCode(@Param("code") Integer invitationCode);
+
+    List<SuperInviteHistoryDo> getSuperInviteHistory(SuperInviteHistoryDoQuery superInviteHistoryDoQuery);
+
+    int getCountByEquipmentNo(String equipmentNo);
 }

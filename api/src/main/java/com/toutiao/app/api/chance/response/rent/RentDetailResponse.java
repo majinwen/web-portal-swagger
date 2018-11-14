@@ -185,23 +185,35 @@ public class RentDetailResponse {
    /**
     * 配套设施(字符串数组)
     */
-   private String[] supportingFacilities;
+    private String[] supportingFacilities;
    /**
     * 经纪人信息
     */
-   @ChangeName("agent")
-   private AgentBaseDo agentBaseDo;
+    @ChangeName("agent")
+    private AgentBaseDo agentBaseDo;
+
+   /**
+    * 是否收藏
+    */
+   private Boolean isFavorite;
+   /**
+    * 名片
+    */
+   private String agentBusinessCard;
+
+   /**
+    * 经济公司营业执照
+    */
+   private String companyCard;
 
   /**
-   * 是否收藏
+   * 房源导入时间
    */
-  private Boolean isFavorite;
- /**
-  * 名片
-  */
- private String agentBusinessCard;
+  private String importTime;
 
-
-
+  /**
+   * 是否显示默认图片标志
+   */
+  private Integer isDefaultImage = 0;
 
 }

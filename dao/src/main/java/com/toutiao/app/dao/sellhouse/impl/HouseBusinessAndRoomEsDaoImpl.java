@@ -2,6 +2,7 @@ package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.HouseBusinessAndRoomEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -45,18 +46,21 @@ public class HouseBusinessAndRoomEsDaoImpl implements HouseBusinessAndRoomEsDao{
     private String areaRoomType;
 
     @Override
-    public SearchResponse getHouseBusinessAndRoomHouses(BoolQueryBuilder query, Integer pageNum, Integer pageSize) {
+    public SearchResponse getHouseBusinessAndRoomHouses(BoolQueryBuilder query, Integer pageNum, Integer pageSize, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
         srb.addSort("houseTotalPrices", SortOrder.ASC);
 //        srb.addSort("_uid", SortOrder.DESC);
-        return srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+        SearchResponse searchResponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+        return searchResponse;
     }
 
     @Override
-    public SearchResponse getHouseBusinessAndRoomAveragePrice(BoolQueryBuilder query) {
+    public SearchResponse getHouseBusinessAndRoomAveragePrice(BoolQueryBuilder query, String city) {
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(areaRoomIndex).setTypes(areaRoomType);
-        return srb.setQuery(query).execute().actionGet();
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getAreaRoomIndex(city)).setTypes(ElasticCityUtils.getAreaRoomType(city));
+
+        SearchResponse searchResponse = srb.setQuery(query).execute().actionGet();
+        return searchResponse;
     }
 }

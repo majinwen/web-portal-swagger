@@ -6,6 +6,7 @@ import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.joda.time.DateTime;
@@ -39,6 +40,7 @@ public class SubscribeRestController {
         userSubscribe.setCreateTime(DateTime.now().toDate());
         userSubscribe.setUpdateTime(DateTime.now().toDate());
         userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
+        userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
         try {
             subscribeService.insertSelective(userSubscribe);
@@ -73,7 +75,7 @@ public class SubscribeRestController {
     @RequestMapping(value = "/listSubscribe", method = RequestMethod.GET)
     public NashResult listSubscribe() {
         UserBasic userBasic = UserBasic.getCurrent();
-        return NashResult.build(subscribeService.getMySubscribeInfo(Integer.parseInt(userBasic.getUserId())));
+        return NashResult.build(subscribeService.getMySubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity()));
     }
 
 
@@ -85,7 +87,7 @@ public class SubscribeRestController {
     @RequestMapping(value = "/listIndexSubscribe", method = RequestMethod.GET)
     public NashResult listIndexSubscribe() {
         UserBasic userBasic = UserBasic.getCurrent();
-        return NashResult.build(subscribeService.getIndexSubscribeInfo(Integer.parseInt(userBasic.getUserId())));
+        return NashResult.build(subscribeService.getIndexSubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity()));
     }
 
     /**

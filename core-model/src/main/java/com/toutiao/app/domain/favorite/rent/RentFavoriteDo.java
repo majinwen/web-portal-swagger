@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.favorite.rent;
 
+import com.toutiao.web.common.constant.city.CityEnum;
 import lombok.Data;
 
 import java.util.Date;
@@ -81,4 +82,23 @@ public class RentFavoriteDo {
      * 房租出租类型中文名
      */
     private  String rentTypeName;
+
+    /**
+     * 城市信息
+     */
+    private Integer cityId;
+
+    private String city;
+
+    /**
+     * 是否显示默认图片标志
+     */
+    private Integer isDefaultImage = 0;
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+        if(null!=cityId){
+            this.city = CityEnum.getId(cityId);
+        }
+    }
 }

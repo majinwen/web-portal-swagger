@@ -311,6 +311,21 @@ public class NearBySellHousesDo {
      */
     private Integer rankInLowCommunityLayout;
 
+    /**
+     * 楼盘专家
+     */
+    private String projExpertUserId;
+
+    /**
+     * 房源导入时间
+     */
+    private String importTime;
+
+    /**
+     * 是否显示默认图片标志
+     */
+    private Integer isDefaultImage = 0;
+
 
 
 }

@@ -1,7 +1,9 @@
 package com.toutiao.app.dao.newhouse.impl;
+
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import org.elasticsearch.action.search.SearchRequestBuilder;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -36,10 +38,10 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
     @Override
-    public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
         //查询详情
-        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city))
                 .setQuery(boolQueryBuilder)
                 .execute().actionGet();
         return  searchresponse;
@@ -48,12 +50,13 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
     @Override
-    public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort ) {
+    public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String city) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();
+
         if (null!=levelSort && null!=buildingSort)
         {
-            searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+            searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city))
                     .setQuery(boolQueryBuilder).addSort(levelSort).addSort(buildingSort)/*.setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
@@ -65,7 +68,7 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         }
         else
         {
-            searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+            searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city))
                     .setQuery(boolQueryBuilder)/*.setFetchSource(
                             new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                     "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
@@ -81,10 +84,10 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     }
 
     @Override
-    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize) {
+    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String city) {
         TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();
-        searchresponse= client.prepareSearch(houseDynamicIndex).setTypes(dynamicType)
+        searchresponse= client.prepareSearch(ElasticCityUtils.getNewHosueDynamicIndex(city)).setTypes(ElasticCityUtils.getNewHosueDynamicType(city))
                 .setQuery(boolQueryBuilder).addSort("create_time",SortOrder.DESC).setFetchSource(
                         new String[]{"title","time","link_url","detail","newcode","create_time","type","is_del"},null
                 )
@@ -96,10 +99,10 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     }
 
     @Override
-    public SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder boolQueryBuilder) {
+    public SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder boolQueryBuilder, String city) {
         TransportClient client = esClientTools.init();
         //查询
-        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
+        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city))
                 .setQuery(boolQueryBuilder).setSize(1)
                 .execute().actionGet();
         return  searchresponse;
@@ -107,19 +110,19 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
     @Override
-    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(newhouseIndex).setTypes(newhouseType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city));
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchresponse;
     }
 
     @Override
-    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getSearchEnginesIndex(city)).setTypes(ElasticCityUtils.getSearchEnginesType(city));
         SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
         return searchresponse;
     }

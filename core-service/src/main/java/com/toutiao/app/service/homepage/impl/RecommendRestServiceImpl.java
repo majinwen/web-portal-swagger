@@ -4,12 +4,10 @@ import com.toutiao.app.dao.homepage.RecommendEsDao;
 import com.toutiao.app.domain.homepage.RecommendTopicDo;
 import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
 import com.toutiao.app.service.homepage.RecommendRestService;
+import com.toutiao.web.common.util.StringTool;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
@@ -39,11 +37,9 @@ public class RecommendRestServiceImpl implements RecommendRestService {
     private static final int[] HAOZHAI_VS_BIESHU = {4,5};
 
     @Override
-    public RecommendTopicDomain getRecommendTopic(RecommendTopicDoQuery recommendTopicDoQuery) {
+    public RecommendTopicDomain getRecommendTopic(RecommendTopicDoQuery recommendTopicDoQuery, String city) {
         RecommendTopicDomain recommendTopicDomain = new RecommendTopicDomain();
         List<RecommendTopicDo> recommendTopicDoList = new ArrayList<>();
-//        if(recommendTopicDoQuery.getDistrictId()!=null || (recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()!=null)
-//                ||recommendTopicDoQuery.getBeginPrice()!=null||recommendTopicDoQuery.getEndPrice()!=null){
         if(recommendTopicDoQuery.getDistrictId()==null && recommendTopicDoQuery.getBeginPrice()==null && recommendTopicDoQuery.getEndPrice()==null){
             recommendTopicDomain.setData(recommendTopicDoList);
 
@@ -104,7 +100,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     bqb_plotTags.must(termQuery_isClaim);
                     bqb_plotTags.must(termQuery_isDel);
                     flag = "lower1000";
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
+                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags, city);
                     List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
                     recommendTopicDoList.addAll(list_buildTopic);
                 }else if(recommendTopicDoQuery.getEndPrice() > PRICE){//价格大于1000万，推荐豪宅，别墅
@@ -112,7 +108,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     bqb_plotTags.must(termQuery_isClaim);
                     bqb_plotTags.must(termQuery_isDel);
                     flag = "higher1000";
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
+                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags, city);
                     List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
                     recommendTopicDoList.addAll(list_buildTopic);
                 }
@@ -127,13 +123,13 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     }
                     bqb_plotTags_hzvsbs.must(termQuery_isDel);
                     bqb_plotTags_hzvsbs.must(termQuery_isClaim);
-                    SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
+                    SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs,city);
                     List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery,sp_BuildTags_hzvsbs,"higher1000");
                     recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
                     bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
                     bqb_plotTags.must(termQuery_isClaim);
                     bqb_plotTags.must(termQuery_isDel);
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
+                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags,city);
                     List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,"lower1000");
                     recommendTopicDoList.addAll(list_buildTopic);
                 }else if(recommendTopicDoQuery.getBeginPrice() > PRICE){//价格大于1000万，推荐豪宅，别墅
@@ -142,7 +138,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     bqb_plotTags.must(termQuery_isClaim);
                     bqb_plotTags.must(termQuery_isDel);
 
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
+                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags,city);
                     List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
                     recommendTopicDoList.addAll(list_buildTopic);
                 }
@@ -152,14 +148,14 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     flag = "lower1000";
                     bqb_plotTags.must(termQuery_isClaim);
                     bqb_plotTags.must(termQuery_isDel);
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
+                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags,city);
                     List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
                     recommendTopicDoList.addAll(list_buildTopic);
                 }else if(recommendTopicDoQuery.getEndPrice() >= PRICE){
                     bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
                     bqb_plotTags.must(termQuery_isClaim);
                     bqb_plotTags.must(termQuery_isDel);
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
+                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags,city);
                     List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,"lower1000");
                     recommendTopicDoList.addAll(list_buildTopic);
                     BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
@@ -170,7 +166,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
                     bqb_plotTags_hzvsbs.must(termQuery_isDel);
                     bqb_plotTags_hzvsbs.must(termQuery_isClaim);
-                    SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
+                    SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs,city);
                     List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery,sp_BuildTags_hzvsbs,"higher1000");
                     recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
 
@@ -184,28 +180,28 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                 bqb_plotTags_hzvsbs.must(termQuery_isClaim);
                 bqb_plotTags_hzvsbs.must(termQuery_isDel);
                 bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-                SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
+                SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs,city);
                 List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery,sp_BuildTags_hzvsbs,"higher1000");
                 recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
                 bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
                 bqb_plotTags.must(termQuery_isClaim);
                 bqb_plotTags.must(termQuery_isDel);
-                SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
+                SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags,city);
                 List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,"lower1000");
                 recommendTopicDoList.addAll(list_buildTopic);
 
             }
 
 
-            SearchResponse sp_isCutPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isCutPrice);
+            SearchResponse sp_isCutPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isCutPrice,city);
             List<RecommendTopicDo> list_isCutPrice= cleanEsData(recommendTopicDoQuery,sp_isCutPrice,"isCutPrice");
             recommendTopicDoList.addAll(list_isCutPrice);
 
-            SearchResponse sp_isMustRob = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isMustRob);
+            SearchResponse sp_isMustRob = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isMustRob,city);
             List<RecommendTopicDo> list_isMustRob= cleanEsData(recommendTopicDoQuery,sp_isMustRob,"isMustRob");
             recommendTopicDoList.addAll(list_isMustRob);
 
-            SearchResponse sp_isLowPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isLowPrice);
+            SearchResponse sp_isLowPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isLowPrice,city);
             List<RecommendTopicDo> list_isLowPrice= cleanEsData(recommendTopicDoQuery,sp_isLowPrice,"isLowPrice");
             recommendTopicDoList.addAll(list_isLowPrice);
 
@@ -268,7 +264,9 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                 }else{
                     recommendTopicDo.setDistrictId("");
                 }
-
+                if(StringTool.isEmpty(recommendTopicDoQuery.getDistrictId())){
+                    recommendTopicDo.setDistrictId("");
+                }
                 recommendTopicDo.setLowestPrice(lowestPrice.getValue());
                 recommendTopicDo.setHighestPrice(highestPrice.getValue());
                 recommendTopicDo.setCount((int)internalCardinality.getValue());

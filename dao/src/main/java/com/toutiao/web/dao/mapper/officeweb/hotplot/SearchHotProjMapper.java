@@ -3,6 +3,7 @@ package com.toutiao.web.dao.mapper.officeweb.hotplot;
 import com.toutiao.app.domain.hotplot.SearchHotProj;
 import com.toutiao.app.domain.hotplot.SearchHotProjDo;
 import com.toutiao.web.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,5 +26,5 @@ public interface SearchHotProjMapper extends BaseDao {
      * @param city
      * @return
      */
-    List<SearchHotProjDo> queryHotPlotsByCityId(Integer city);
+    List<SearchHotProjDo> queryHotPlotsByCityId(@Param("houseType") Integer houseType, @Param("cityId") Integer city);
 }

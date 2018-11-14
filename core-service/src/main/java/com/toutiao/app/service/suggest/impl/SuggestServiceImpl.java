@@ -51,29 +51,35 @@ public class SuggestServiceImpl implements SuggestService {
      * @return
      */
     @Override
-    public SuggestDo suggest(String keyword, String property) {
+    public SuggestDo suggest(String keyword, String property, String city) {
         SuggestDo suggestDo = new SuggestDo();
         List<SearchScopeDo> scopeDoList = new ArrayList<>();
         List<SearchEnginesDo> enginesDoList = new ArrayList<>();
 
 
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder boolQueryBuilderAD = QueryBuilders.boolQuery();
+        BoolQueryBuilder boolQueryBuilderBuild = QueryBuilders.boolQuery();
         BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
 //        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH));
-        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
+        boolQueryBuilderAD.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch("100%")));
 
         if (property!=null){
             String searchType = getSearchType(property);
             if (searchType == RENT_TYPE){
                 BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-                boolQueryBuilder.must(queryBuilder.should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")));
-                boolQueryBuilder.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
+                boolQueryBuilderAD.must(queryBuilder.should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")));
+                boolQueryBuilderAD.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
+
+                boolQueryBuilderBuild.must(queryBuilder.should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")));
+                boolQueryBuilderBuild.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
             }else {
-                boolQueryBuilder.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
+                boolQueryBuilderAD.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
+
+                boolQueryBuilderBuild.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
             }
         }
 
-        SearchResponse areaAndDistrictSuggest = suggestEsDao.getAreaAndDistrictSuggest(boolQueryBuilder);
+        SearchResponse areaAndDistrictSuggest = suggestEsDao.getAreaAndDistrictSuggest(boolQueryBuilderAD, city);
 
         SearchHit[] hits = areaAndDistrictSuggest.getHits().getHits();
         if (hits.length>0){
@@ -90,10 +96,11 @@ public class SuggestServiceImpl implements SuggestService {
         suggestDo.setApartmentNum((int) ((InternalFilter)areaAndDistrictSuggest.getAggregations().get("apartment")).getDocCount());
 
 
-        boolQueryBuilder.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_nickname").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
-        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
-        boolQueryBuilder.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
-        SearchResponse keywordSuggest = suggestEsDao.getKeywordSuggest(boolQueryBuilder);
+        boolQueryBuilderBuild.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_nickname").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
+        boolQueryBuilderBuild.must(QueryBuilders.multiMatchQuery(IS_APPROVE,"is_approve"));
+        boolQueryBuilderBuild.must(QueryBuilders.multiMatchQuery(IS_DEL,"is_del"));
+        boolQueryBuilderBuild.must(boolQueryBuilder1.should(QueryBuilders.multiMatchQuery(keyword,"search_name").minimumShouldMatch(MINIMUM_SHOULD_MATCH)));
+        SearchResponse keywordSuggest = suggestEsDao.getKeywordSuggest(boolQueryBuilderBuild, city);
         SearchHit[] keywordHits = keywordSuggest.getHits().getHits();
         if (keywordHits.length>0){
             for (SearchHit hit :keywordHits) {
@@ -105,11 +112,24 @@ public class SuggestServiceImpl implements SuggestService {
 
         suggestDo.setSearchScopeList(scopeDoList);
 
-        if (scopeDoList.size()<10 && scopeDoList.size()>0){
+//        if (scopeDoList.size()<10 && scopeDoList.size()>0){
+//            suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+//        }else if(scopeDoList.size() == 0){
+//            suggestDo.setSearchEnginesList(enginesDoList);
+//        }
+        if(scopeDoList.size()<10 && scopeDoList.size()>0){
+            if((enginesDoList.size()+scopeDoList.size())<10){
+                suggestDo.setSearchEnginesList(enginesDoList);
+            }else{
+                suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
+            }
+        }else if(scopeDoList.size()>=10){
             suggestDo.setSearchEnginesList(enginesDoList.subList(0,10-scopeDoList.size()));
-        }else if(scopeDoList.size() == 0){
+        }
+        else{
             suggestDo.setSearchEnginesList(enginesDoList);
         }
+
 
         suggestDo.setPlotNum(suggestDo.getPlotNum()+(int) ((InternalFilter)keywordSuggest.getAggregations().get("plot")).getDocCount());
         suggestDo.setEsfNum(suggestDo.getEsfNum()+(int) ((InternalFilter)keywordSuggest.getAggregations().get("esf")).getDocCount());

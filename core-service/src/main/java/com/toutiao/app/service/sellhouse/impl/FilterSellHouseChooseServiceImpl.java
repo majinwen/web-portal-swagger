@@ -189,9 +189,9 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
      * @return
      */
     @Override
-    public List<String> filterKeyWords(String keywords) {
+    public List<String> filterKeyWords(String keywords,String city) {
 
-        List<String> keyword = sellHouseKeywordEsDao.filterKeyWords(keywords);
+        List<String> keyword = sellHouseKeywordEsDao.filterKeyWords(keywords,city);
 
         return keyword;
     }
@@ -199,52 +199,53 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
     @Override
     public BoolQueryBuilder filterSellHouseChoose(SellHouseDoQuery sellHouseDoQuery) {
 
-        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
-        SearchResponse searchResponse = null;
-        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
-            bqbPlotName.must(QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
-                    .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
-                    .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
-                    .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
-            searchResponse = sellHouseEsDao.getPlotByKeyWord(bqbPlotName);
-            long total = searchResponse.getHits().getTotalHits();
-            out: if(total > 0l){
-                break out;
-            }else{
-                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-                bqb.must(QueryBuilders.multiMatchQuery(sellHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
-                searchResponse = sellHouseEsDao.getPlotByNickNameKeyWord(bqb);
-                if(searchResponse.getHits().getTotalHits()>0l){
-                    SearchHits hits = searchResponse.getHits();
-
-                    SearchHit[] searchHists = hits.getHits();
-                    outFor:for (SearchHit hit : searchHists) {
-                        hit.getSource().get("search_name");
-                        sellHouseDoQuery.setKeyword(hit.getSource().get("search_name").toString());
-                        break outFor ;
-                    }
-                }
-            }
-        }
+//        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
+//        SearchResponse searchResponse = null;
+//        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
+//            bqbPlotName.must(QueryBuilders.boolQuery()
+//                    .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
+//                    .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+//                    .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+//                    .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
+//            searchResponse = sellHouseEsDao.getPlotByKeyWord(bqbPlotName);
+//            long total = searchResponse.getHits().getTotalHits();
+//            out: if(total > 0l){
+//                break out;
+//            }else{
+//                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
+//                bqb.must(QueryBuilders.multiMatchQuery(sellHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
+//                searchResponse = sellHouseEsDao.getPlotByNickNameKeyWord(bqb);
+//                if(searchResponse.getHits().getTotalHits()>0l){
+//                    SearchHits hits = searchResponse.getHits();
+//
+//                    SearchHit[] searchHists = hits.getHits();
+//                    outFor:for (SearchHit hit : searchHists) {
+//                        hit.getSource().get("search_name");
+//                        sellHouseDoQuery.setKeyword(hit.getSource().get("search_name").toString());
+//                        break outFor ;
+//                    }
+//                }
+//            }
+//        }
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
             if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_max_word").boost(2))
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2)));
+//                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2)));
+//                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
+//                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2)));
             } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2))
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
+                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2)));
+//                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+//                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart"))
+//                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
             } else {
                 booleanQueryBuilder.must(QueryBuilders.boolQuery()
                         .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
                         .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
+                        .should(QueryBuilders.matchQuery("plotNickname",sellHouseDoQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
             }

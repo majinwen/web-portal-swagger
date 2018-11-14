@@ -32,10 +32,10 @@ public class PlotsHomesRestServiceImpl implements PlotsHomesRestService {
 
 
     @Override
-    public PlotsHousesDomain queryPlotsHomesByPlotId(Integer plotId) {
+    public PlotsHousesDomain queryPlotsHomesByPlotId(Integer plotId, String city) {
 
         PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
-        SearchResponse esfResponse = sellHouseEsDao.getEsfCountByPlotsId(plotId);
+        SearchResponse esfResponse = sellHouseEsDao.getEsfCountByPlotsId(plotId,city);
         SearchHit[] esfHits = esfResponse.getHits().getHits();
         long esf_top_size = 0;
         long rent_top_size = 0;
@@ -49,7 +49,7 @@ public class PlotsHomesRestServiceImpl implements PlotsHomesRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del","0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
         boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
-        SearchResponse rentResponse = rentEsDao.queryRentCountByPlotId(boolQueryBuilder);
+        SearchResponse rentResponse = rentEsDao.queryRentCountByPlotId(boolQueryBuilder,city);
         SearchHit[] rentHits = rentResponse.getHits().getHits();
         if(rentHits!=null){
             rent_top_size = rentResponse.getHits().totalHits;
@@ -61,7 +61,7 @@ public class PlotsHomesRestServiceImpl implements PlotsHomesRestService {
         queryBuilder.must(QueryBuilders.termQuery("release_status",1));
         queryBuilder.must(QueryBuilders.termQuery("zufang_id", plotId));
         queryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
-        SearchResponse rentPriceResponse = rentEsDao.getRentPriceByPlotId(queryBuilder);
+        SearchResponse rentPriceResponse = rentEsDao.getRentPriceByPlotId(queryBuilder,city);
         Map aggMap =rentPriceResponse.getAggregations().asMap();
         InternalMin minHouse = (InternalMin) aggMap.get("minRentPrice");
 

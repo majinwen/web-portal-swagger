@@ -2,6 +2,7 @@ package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
@@ -21,10 +22,10 @@ public class NearbySellHouseEsDaoImpl implements NearbySellHouseEsDao{
     private String projhouseType;//索引类
 
     @Override
-    public SearchResponse getNearbySellHouseByFilter(FunctionScoreQueryBuilder query, Integer pageNum,Integer pageSize) {
+    public SearchResponse getNearbySellHouseByFilter(FunctionScoreQueryBuilder query, Integer pageNum,Integer pageSize,String city) {
 
         TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
 
         SearchResponse searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)/*.setFetchSource(
                 new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName",

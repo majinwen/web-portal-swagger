@@ -884,6 +884,126 @@ public class MessagePushExample {
             addCriterion("house_id not between", value1, value2, "houseId");
             return (Criteria) this;
         }
+
+        public Criteria andSubscribeTypeIsNull() {
+            addCriterion("subscribe_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeIsNotNull() {
+            addCriterion("subscribe_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeEqualTo(Integer value) {
+            addCriterion("subscribe_type =", value, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeNotEqualTo(Integer value) {
+            addCriterion("subscribe_type <>", value, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeGreaterThan(Integer value) {
+            addCriterion("subscribe_type >", value, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("subscribe_type >=", value, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeLessThan(Integer value) {
+            addCriterion("subscribe_type <", value, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("subscribe_type <=", value, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeIn(List<Integer> values) {
+            addCriterion("subscribe_type in", values, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeNotIn(List<Integer> values) {
+            addCriterion("subscribe_type not in", values, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeBetween(Integer value1, Integer value2) {
+            addCriterion("subscribe_type between", value1, value2, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andSubscribeTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("subscribe_type not between", value1, value2, "subscribeType");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadIsNull() {
+            addCriterion("is_read is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadIsNotNull() {
+            addCriterion("is_read is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadEqualTo(Short value) {
+            addCriterion("is_read =", value, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadNotEqualTo(Short value) {
+            addCriterion("is_read <>", value, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadGreaterThan(Short value) {
+            addCriterion("is_read >", value, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadGreaterThanOrEqualTo(Short value) {
+            addCriterion("is_read >=", value, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadLessThan(Short value) {
+            addCriterion("is_read <", value, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadLessThanOrEqualTo(Short value) {
+            addCriterion("is_read <=", value, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadIn(List<Short> values) {
+            addCriterion("is_read in", values, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadNotIn(List<Short> values) {
+            addCriterion("is_read not in", values, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadBetween(Short value1, Short value2) {
+            addCriterion("is_read between", value1, value2, "isRead");
+            return (Criteria) this;
+        }
+
+        public Criteria andIsReadNotBetween(Short value1, Short value2) {
+            addCriterion("is_read not between", value1, value2, "isRead");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

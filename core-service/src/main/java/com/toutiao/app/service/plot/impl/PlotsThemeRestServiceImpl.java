@@ -9,6 +9,8 @@ import com.toutiao.app.domain.plot.PlotsThemeDomain;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -16,7 +18,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
 import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +42,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
      * 获取小区主题数据
      */
     @Override
-    public PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery) {
+    public PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery, String city) {
         List<PlotsThemeDo> plotsThemeDos = new ArrayList<>();
         //小区筛选条件
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
@@ -52,32 +53,32 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
         if (recommendBuildTagsId != null) {
             if (recommendBuildTagsId == 6 && StringTool.isNotEmpty(nearestPark)) {
                 boolQueryBuilder.must(QueryBuilders.boolQuery()
-                        .must(QueryBuilders.termsQuery("recommendBuildTagsId", new int[]{recommendBuildTagsId}))
+                        .must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId))
                         .must(QueryBuilders.termQuery("nearestPark", nearestPark)));
             } else {
-                boolQueryBuilder.must(QueryBuilders.termsQuery("recommendBuildTagsId",  new int[]{recommendBuildTagsId}));
+                boolQueryBuilder.must(QueryBuilders.termQuery("recommendBuildTagsId", recommendBuildTagsId));
             }
         }
 
         if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .gte(plotsThemeDoQuery.getBeginPrice()).lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
         }else if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()==0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .gte(plotsThemeDoQuery.getBeginPrice()), ScoreMode.None));
         }else if(plotsThemeDoQuery.getBeginPrice()==0 && plotsThemeDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("house",QueryBuilders.rangeQuery("total_price")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),QueryBuilders.rangeQuery("total_price")
                     .lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
         }
 
         //区域
         Integer[] districtIds = plotsThemeDoQuery.getDistrictIds();
-        if (districtIds != null) {
+        if (StringTool.isNotEmpty(districtIds) && districtIds[0] != 0) {
             boolQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
         }
         Integer pageNum = plotsThemeDoQuery.getPageNum();
         Integer pageSize = plotsThemeDoQuery.getPageSize();
-        SearchResponse plotsThemeList = plotsThemeEsDao.getPlotsThemeList(boolQueryBuilder, pageNum, pageSize);
+        SearchResponse plotsThemeList = plotsThemeEsDao.getPlotsThemeList(boolQueryBuilder, pageNum, pageSize, city);
 
         SearchHits hits = plotsThemeList.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -88,7 +89,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 PlotsThemeDo plotsThemeDo = JSON.parseObject(details, PlotsThemeDo.class);
 
                 //查询小区房源最大最小面积
-                SearchResponse searchResponse= plotsThemeEsDao.getHouseAreaByPlotId(plotsThemeDo.getId());
+                SearchResponse searchResponse= plotsThemeEsDao.getHouseAreaByPlotId(plotsThemeDo.getId(),city);
                 Map aggMap =searchResponse.getAggregations().asMap();
                 InternalMin minHouse = (InternalMin) aggMap.get("minHouse");
                 InternalMax maxHouse = (InternalMax) aggMap.get("maxHouse");
@@ -96,7 +97,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 plotsThemeDo.setHouseMaxArea(maxHouse.getValue());
                 plotsThemeDo.setHouseMinArea(minHouse.getValue());
                 //二手房房源数量
-                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotsThemeDo.getId());
+                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotsThemeDo.getId(), city);
 
                 if(plotsEsfRoomCountDomain.getTotalCount()!= null){
                     plotsThemeDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());

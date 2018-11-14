@@ -3,6 +3,9 @@ package com.toutiao.app.domain.rent;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import lombok.Data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -199,10 +202,23 @@ public class RentDetailsDo {
      * 更新时间
      */
     private String upStringTime;
+
     /**
      * 发版时间
      */
     private String publishTime;
+
+
+    public void setPublishTime(String publishTime) {
+        this.publishTime = publishTime;
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = format.parse(publishTime);
+            this.publishTime = format.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 发布状态
      */
@@ -250,5 +266,20 @@ public class RentDetailsDo {
      * 名片
      */
     private String agentBusinessCard;
+
+    /**
+     * 经济公司营业执照
+     */
+    private String companyCard;
+
+    /**
+     * 房源导入时间
+     */
+    private String importTime;
+
+    /**
+     * 是否显示默认图片标志
+     */
+    private Integer isDefaultImage = 0;
 
 }
