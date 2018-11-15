@@ -35,7 +35,7 @@ public interface UserbasicApi {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/getUserCache",
-            produces = "*/*",
+            produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<UserLoginResponse> getUserCache();
 
@@ -50,7 +50,7 @@ public interface UserbasicApi {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/logout",
-            produces = "*/*",
+            produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<String> logout();
@@ -81,7 +81,7 @@ public interface UserbasicApi {
     })
     @RequestMapping(value = "/userbasic/queryUserBasicByRcId",
             produces = "application/json",
-            consumes = "application/json",
+            params = "userId",
             method = RequestMethod.GET)
     ResponseEntity<UserBasicResponse> queryUserBasicByRcId(@ApiParam(value = "") @Valid @RequestParam(value = "rcId", required = false) Optional<String> rcId);
 
@@ -96,7 +96,7 @@ public interface UserbasicApi {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/updateUserAvatar",
-            produces = "*/*",
+            produces = "application/json",
             consumes = "multipart/form-data",
             method = RequestMethod.POST)
     ResponseEntity<UserBasicResponse> updateUserAvatar(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId);
@@ -112,7 +112,7 @@ public interface UserbasicApi {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/userVerifyCodeLogin",
-            produces = "*/*",
+            produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<UserLoginResponse> userVerifyCodeLogin(@ApiParam(value = "loginRequest", required = true) @Valid @RequestBody UserVerifyCodeRequest loginRequest);
