@@ -96,7 +96,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         }
 
 
-       return userCenterFavoriteCountDo;
+        return userCenterFavoriteCountDo;
 
     }
 
@@ -112,12 +112,12 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         //判断租房是否被收藏
         if (null!=type && type==1)
         {
-          int rentCount =userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(isFavoriteDo.getHouseId(),isFavoriteDo.getUserId());
-          if(rentCount>0)
-          {
-              isFavorite=true;
-              return isFavorite;
-          }
+            int rentCount =userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(isFavoriteDo.getHouseId(),isFavoriteDo.getUserId());
+            if(rentCount>0)
+            {
+                isFavorite=true;
+                return isFavorite;
+            }
         }
         if(null!=type && type==2)
         {
@@ -128,7 +128,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                 return isFavorite;
             }
         }
-     return  isFavorite;
+        return  isFavorite;
     }
 
     @Override
@@ -203,42 +203,48 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
-    public NashResult addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery) {
+    public Integer addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery) {
 
         Integer integer = userFavoriteVillageMapper.queryCountByUserIdAndHouseId(plotsAddFavoriteDoQuery);
         if (null!=integer&&integer>0){
             Integer code = PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_REPEAT.getValue();
             String desc = PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_REPEAT.getDesc();
-            return NashResult.Fail(code.toString(),desc);
+//            return NashResult.Fail(code.toString(),desc);
+            return -1;
         }
         try {
-        Integer result = userFavoriteVillageMapper.addPlotsFavorite(plotsAddFavoriteDoQuery);
+            Integer result = userFavoriteVillageMapper.addPlotsFavorite(plotsAddFavoriteDoQuery);
             if (result>0){
-                return NashResult.build("收藏成功");
+//                return NashResult.build("收藏成功");
+                return 1;
             }
         }catch (Exception e){
             logger.error("小区添加收藏接口异常,plotId:"+plotsAddFavoriteDoQuery.getBuildingId()+", BuildingId:"+plotsAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
         }
-        return NashResult.Fail("收藏失败");
+//        return NashResult.Fail("收藏失败");
+        return 0;
     }
 
     @Override
-    public NashResult addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery) {
+    public Integer addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery) {
         Integer integer = userFavoriteNewHouseMapper.queryCountByUserIdAndHouseId(newHouseAddFavoriteDoQuery);
         if (null!=integer&&integer>0){
-            Integer code = NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT.getValue();
-            String desc = NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT.getDesc();
-            return NashResult.Fail(code.toString(),desc);
+//            Integer code = NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT.getValue();
+//            String desc = NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT.getDesc();
+//            return NashResult.Fail(code.toString(),desc);
+            return -1;
         }
         try {
             Integer result = userFavoriteNewHouseMapper.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
             if (result>0){
-                return NashResult.build("收藏成功");
+//                return NashResult.build("收藏成功");
+                return 1;
             }
         }catch (Exception e){
             logger.error("新房添加收藏接口异常,newHouseId:"+newHouseAddFavoriteDoQuery.getBuildingId()+", userId:"+newHouseAddFavoriteDoQuery.getUserId()+"={}",e.getStackTrace());
         }
-        return NashResult.Fail("收藏失败");
+//        return NashResult.Fail("收藏失败");
+        return 0;
     }
 
     /**
@@ -247,35 +253,39 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      * @return
      */
     @Override
-    public NashResult cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse) {
+    public Integer cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse) {
         try {
             userFavoriteNewHouse.setIsDel((short) 1);
-          int result=userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
-          if(result>0)
-          {
-              return NashResult.build(true);
-          }
+            int result=userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
+            if(result>0)
+            {
+//              return NashResult.build(true);
+                return 1;
+            }
         }catch (Exception e)
         {
             logger.error("取消新房收藏接口异常"+userFavoriteNewHouse.getBuildingId()+"={}",e.getStackTrace());
         }
 
-        return  NashResult.Fail("收藏取消失败");
+//        return  NashResult.Fail("收藏取消失败");
+        return 0;
     }
 
     @Override
-    public NashResult cancelVillageByVillageId(PlotIsFavoriteDoQuery plotIsFavoriteDoQuery) {
-      try {
-         int result= userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
-         if (result>0)
-         {
-             return  NashResult.build(true);
-         }
-      }catch (Exception e)
-      {
-          logger.error("取消小区收藏接口异常"+plotIsFavoriteDoQuery.getBuildingId()+"={}",e.getStackTrace());
-      }
-      return NashResult.Fail("收藏取消失败");
+    public Integer cancelVillageByVillageId(PlotIsFavoriteDoQuery plotIsFavoriteDoQuery) {
+        try {
+            int result= userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
+            if (result>0)
+            {
+//             return  NashResult.build(true);
+                return 1;
+            }
+        }catch (Exception e)
+        {
+            logger.error("取消小区收藏接口异常"+plotIsFavoriteDoQuery.getBuildingId()+"={}",e.getStackTrace());
+        }
+//      return NashResult.Fail("收藏取消失败");
+        return 0;
     }
 
 
@@ -283,33 +293,36 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      * 添加二手房收藏
      */
     @Override
-    public NashResult addEsfFavorite(UserFavoriteEsHouseDoQuery userFavoriteEsHouseDoQuery) {
+    public Integer addEsfFavorite(UserFavoriteEsHouseDoQuery userFavoriteEsHouseDoQuery) {
 
         //判断重复收藏
-       Integer result =0;
-       Integer ss1=SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_ERROR.getValue();
-       Integer re=userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(userFavoriteEsHouseDoQuery.getHouseId(),userFavoriteEsHouseDoQuery.getUserId());
-       if (null!=re && re>0)
-       {
-           Integer ss= SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_REPEAT.getValue();
+        Integer result =0;
+        Integer ss1=SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_ERROR.getValue();
+        Integer re=userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(userFavoriteEsHouseDoQuery.getHouseId(),userFavoriteEsHouseDoQuery.getUserId());
+        if (null!=re && re>0)
+        {
+            Integer ss= SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_REPEAT.getValue();
 
-           return NashResult.Fail(ss.toString(),"二手房收藏添加重复");
-       }
-       try {
-           UserFavoriteEsHouse userFavoriteEsHouse = new UserFavoriteEsHouse();
-           BeanUtils.copyProperties(userFavoriteEsHouseDoQuery,userFavoriteEsHouse);
-           userFavoriteEsHouse.setCreateTime(new Date());
-           userFavoriteEsHouse.setPriceIncreaseDecline(Integer.valueOf(userFavoriteEsHouseDoQuery.getPriceIncreaseDecline()));
-           result= userFavoriteEsHouseMapper.insertSelective(userFavoriteEsHouse);
-       }catch(Exception e)
-       {
-           logger.error("二手房收藏接口异常："+userFavoriteEsHouseDoQuery.getHouseId()+"={}",e.getStackTrace());
-       }
-       if (result>0)
-       {
-           return NashResult.build("收藏收功");
-       }
-       return  NashResult.Fail(ss1.toString(),"二手房添加收藏失败");
+//           return NashResult.Fail(ss.toString(),"二手房收藏添加重复");
+            return -1;
+        }
+        try {
+            UserFavoriteEsHouse userFavoriteEsHouse = new UserFavoriteEsHouse();
+            BeanUtils.copyProperties(userFavoriteEsHouseDoQuery,userFavoriteEsHouse);
+            userFavoriteEsHouse.setCreateTime(new Date());
+            userFavoriteEsHouse.setPriceIncreaseDecline(Integer.valueOf(userFavoriteEsHouseDoQuery.getPriceIncreaseDecline()));
+            result= userFavoriteEsHouseMapper.insertSelective(userFavoriteEsHouse);
+        }catch(Exception e)
+        {
+            logger.error("二手房收藏接口异常："+userFavoriteEsHouseDoQuery.getHouseId()+"={}",e.getStackTrace());
+        }
+        if (result>0)
+        {
+//           return NashResult.build("收藏收功");
+            return 1;
+        }
+//       return  NashResult.Fail(ss1.toString(),"二手房添加收藏失败");
+        return 0;
 
 
     }
@@ -321,40 +334,43 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      * 添加出租收藏
      */
     @Override
-    public NashResult addRentFavorite(UserFavoriteRentDoQuery userFavoriteRentDoQuery) {
+    public Integer addRentFavorite(UserFavoriteRentDoQuery userFavoriteRentDoQuery) {
 
-       //判断重复收藏
+        //判断重复收藏
         Integer result =0;
         Integer ss1=RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_ERROR.getValue();
         Integer  re= userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(userFavoriteRentDoQuery.getHouseId(),userFavoriteRentDoQuery.getUserId());
         if (null!=re && re>0)
-         {
-             Integer ss= RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_REPEAT.getValue();
-             return NashResult.Fail(ss.toString(),"租房添加收藏重复");
-         }
-         try {
-             UserFavoriteRent userFavoriteRent = new UserFavoriteRent();
-             if("1".equals(userFavoriteRentDoQuery.getRentType()))
-             {
-                 userFavoriteRent.setRentTypeName("整租");
-             }
-             if ("2".equals(userFavoriteRentDoQuery.getRentType()))
-             {
-                 userFavoriteRent.setRentTypeName("合租");
-             }
-             BeanUtils.copyProperties(userFavoriteRentDoQuery,userFavoriteRent);
-             userFavoriteRent.setCreateTime(new Date());
-             result= userFavoriteRentMapper.insertSelective(userFavoriteRent);
+        {
+            Integer ss= RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_REPEAT.getValue();
+//             return NashResult.Fail(ss.toString(),"租房添加收藏重复");
+            return -1;
+        }
+        try {
+            UserFavoriteRent userFavoriteRent = new UserFavoriteRent();
+            if("1".equals(userFavoriteRentDoQuery.getRentType()))
+            {
+                userFavoriteRent.setRentTypeName("整租");
+            }
+            if ("2".equals(userFavoriteRentDoQuery.getRentType()))
+            {
+                userFavoriteRent.setRentTypeName("合租");
+            }
+            BeanUtils.copyProperties(userFavoriteRentDoQuery,userFavoriteRent);
+            userFavoriteRent.setCreateTime(new Date());
+            result= userFavoriteRentMapper.insertSelective(userFavoriteRent);
 
-         }catch (Exception e)
-         {
-             logger.error("添加出租收藏异常:"+userFavoriteRentDoQuery.getHouseId()+"={}",e.getStackTrace());
-         }
-         if (result>0)
-         {
-             return NashResult.build("收藏成功");
-         }
+        }catch (Exception e)
+        {
+            logger.error("添加出租收藏异常:"+userFavoriteRentDoQuery.getHouseId()+"={}",e.getStackTrace());
+        }
+        if (result>0)
+        {
+//             return NashResult.build("收藏成功");
+            return 1;
+        }
 
-        return  NashResult.Fail(ss1.toString(),"租房添加收藏失败");
+//        return  NashResult.Fail(ss1.toString(),"租房添加收藏失败");
+        return 0;
     }
 }

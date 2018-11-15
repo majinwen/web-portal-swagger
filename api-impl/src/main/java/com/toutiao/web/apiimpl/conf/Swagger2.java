@@ -20,7 +20,7 @@ public class Swagger2 {
                 .apiInfo(apiInfo())
                 .select()
                 //为controller包路径
-                .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl.userbasic"))
+                .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl"))
                 .paths(PathSelectors.any())
                 .build();
     }
