@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@RequestMapping("rest/favorite")
 @Slf4j
 public class FavoriteRestController implements FavoriteRestApi {
 

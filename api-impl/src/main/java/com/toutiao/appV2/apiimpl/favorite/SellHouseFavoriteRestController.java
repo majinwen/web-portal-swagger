@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/rest/favorite/esf")
 @Slf4j
 public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi {
 

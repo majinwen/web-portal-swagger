@@ -28,7 +28,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/rest/favorite/plots")
 @Slf4j
 public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
 
