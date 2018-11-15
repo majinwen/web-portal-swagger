@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.invitation;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,44 +12,26 @@ public class SuperInviteHistoryDo {
      */
     private Integer id;
 
-    /**
-     * 一级邀请码
-     */
+    @ApiModelProperty(value = "一级邀请码")
     private String firstLevelCode;
 
-    /**
-     * 二级邀请码
-     */
+    @ApiModelProperty(value = "二级邀请码")
     private String secondLevelCode;
 
-    /**
-     * 三级邀请码
-     */
+    @ApiModelProperty(value = "三级邀请码")
     private String thirdLevelCode;
 
-    /**
-     * 用户Id
-     */
     private String userId;
 
-    /**
-     * 创建时间
-     */
     private Date createTime;
 
-    /**
-     * 设备号
-     */
+    @ApiModelProperty(value = "设备号")
     private String equipmentNo;
 
-    /**
-     * 用户手机号
-     */
+    @ApiModelProperty(value = "手机号")
     private String phone;
 
-    /**
-     * 受邀人邀请码
-     */
+    @ApiModelProperty(value = "被邀人邀请码")
     private String yourCode;
 
     private Short isValid;
