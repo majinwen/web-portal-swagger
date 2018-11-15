@@ -18,8 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T03:28:53.819Z")
-
 @Api(value = "InviteHistoryApi", description = "邀请记录控制器")
 public interface InviteHistoryApi {
 

@@ -17,12 +17,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T03:28:53.819Z")
-
 @Api(value = "InvitationApi", description = "邀请码控制器")
 public interface InvitationApi {
 
-    @ApiOperation(value = "根据邀请码获取邀请码信息", nickname = "getCodeInfo", notes = "", response = GetCodeInfoListResponse
+    @ApiOperation(value = "根据邀请码获取邀请码信息", nickname = "getCodeInfo", notes = "根据邀请码获取邀请码信息", response = GetCodeInfoListResponse
             .class, tags={ "invitation-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = GetCodeInfoListResponse.class),
@@ -37,7 +35,7 @@ public interface InvitationApi {
     ResponseEntity<GetCodeInfoListResponse> getCodeInfo(GetInviteHistoryRequest getInviteHistoryRequest);
 
 
-    @ApiOperation(value = "主页点击邀请码，获取用户邀请信息以及该设备填写过的邀请记录", nickname = "getInvitation", notes = "",
+    @ApiOperation(value = "主页点击邀请码，获取用户邀请信息以及该设备填写过的邀请记录", nickname = "getInvitation", notes = "主页点击邀请码",
             response = InvitationResponse.class, tags={ "invitation-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = InvitationResponse.class),

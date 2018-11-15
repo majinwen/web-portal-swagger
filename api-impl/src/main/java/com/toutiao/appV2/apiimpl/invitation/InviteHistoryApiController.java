@@ -59,7 +59,7 @@ public class InviteHistoryApiController implements InviteHistoryApi{
                 BeanUtils.copyProperties(inviteHistoryRequest, inviteHistory);
                 InvitationCode invitationValid = invitationCodeService.getInvitationValid(inviteHistoryRequest.getInvitationCode());
                 if (invitationValid == null) {
-                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity("邀请码不存在", HttpStatus.BAD_REQUEST);
                 }
                 int i = inviteHistoryService.saveInviteHistory(inviteHistory);
                 List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
@@ -67,9 +67,9 @@ public class InviteHistoryApiController implements InviteHistoryApi{
                     invitationCodeService.updateInviteTotal(inviteHistoryRequest.getInvitationCode(), inviteHistoryByCode.size());
                 }
                 if (i > 0) {
-                    return new ResponseEntity(HttpStatus.OK);
+                    return new ResponseEntity("添加成功", HttpStatus.OK);
                 } else {
-                    return new ResponseEntity(HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity("添加失败", HttpStatus.BAD_REQUEST);
                 }
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
@@ -77,7 +77,7 @@ public class InviteHistoryApiController implements InviteHistoryApi{
             }
         }
 
-        return new ResponseEntity<Object>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Override
