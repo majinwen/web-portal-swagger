@@ -23,15 +23,13 @@ import java.util.Optional;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:40:39.438Z")
 
 @RequestMapping("/rest")
-@Api(value = "userbasic", description = "the userbasic API")
+@Api(value = "userbasic", description = "查询用户基本信息接口")
 public interface UserbasicApi {
 
     @ApiOperation(value = "获取用户缓存", nickname = "getUserCache", notes = "", response = UserLoginResponse.class, tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserLoginResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 404, message = "未找到用户")})
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/getUserCache",
@@ -42,11 +40,7 @@ public interface UserbasicApi {
 
     @ApiOperation(value = "登出", nickname = "logout", notes = "", response = String.class, tags = {"userbasic",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = String.class),
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 200, message = "OK", response = String.class), @ApiResponse(code = 404, message = "未找到用户")})
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/logout",
@@ -59,9 +53,7 @@ public interface UserbasicApi {
     @ApiOperation(value = "查询基本信息", nickname = "queryUserBasic", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 404, message = "未找到用户")})
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/queryUserBasic",
@@ -74,9 +66,8 @@ public interface UserbasicApi {
     @ApiOperation(value = "通过融云ID获取基本信息", nickname = "queryUserBasicByRcId", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 404, message = "未找到用户")
+    })
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/queryUserBasicByRcId",
@@ -88,11 +79,7 @@ public interface UserbasicApi {
 
     @ApiOperation(value = "更新用户头像", nickname = "updateUserAvatar", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),})
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/updateUserAvatar",
@@ -105,10 +92,8 @@ public interface UserbasicApi {
     @ApiOperation(value = "用户登录", nickname = "userVerifyCodeLogin", notes = "", response = UserLoginResponse.class, tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserLoginResponse.class),
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 404, message = "未找到用户")
+    })
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/userVerifyCodeLogin",

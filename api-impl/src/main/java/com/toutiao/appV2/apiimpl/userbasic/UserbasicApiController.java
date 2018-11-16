@@ -91,7 +91,7 @@ public class UserbasicApiController implements UserbasicApi {
                 clearCookieAndCache(request, response, userBasic.getPhone());
                 return new ResponseEntity<String>("退出登录成功", HttpStatus.OK);
             } else {
-                return new ResponseEntity<String>("退出登录失败", HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<String>("退出登录失败", HttpStatus.NOT_FOUND);
             }
 
         } catch (Exception e) {
@@ -104,9 +104,13 @@ public class UserbasicApiController implements UserbasicApi {
     public ResponseEntity<UserBasicResponse> queryUserBasic(@ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId) {
         try {
             UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(userId.get());
-            UserBasicResponse userBasicResponse = new UserBasicResponse();
-            BeanUtils.copyProperties(userBasicDo, userBasicResponse);
-            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+            if (StringTool.isNotBlank(userBasicDo)) {
+                UserBasicResponse userBasicResponse = new UserBasicResponse();
+                BeanUtils.copyProperties(userBasicDo, userBasicResponse);
+                return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<UserBasicResponse>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -117,9 +121,13 @@ public class UserbasicApiController implements UserbasicApi {
     public ResponseEntity<UserBasicResponse> queryUserBasicByRcId(@ApiParam(value = "") @Valid @RequestParam(value = "rcId", required = false) Optional<String> rcId) {
         try {
             UserBasicDo userBasicDo = userBasicInfoService.queryUserBasicByRcId(rcId.get());
-            UserBasicResponse userBasicResponse = new UserBasicResponse();
-            BeanUtils.copyProperties(userBasicDo, userBasicResponse);
-            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+            if (StringTool.isNotBlank(userBasicDo)) {
+                UserBasicResponse userBasicResponse = new UserBasicResponse();
+                BeanUtils.copyProperties(userBasicDo, userBasicResponse);
+                return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<UserBasicResponse>(HttpStatus.NOT_FOUND);
+            }
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -153,10 +161,15 @@ public class UserbasicApiController implements UserbasicApi {
                 BeanUtils.copyProperties(userBasicDo, userLoginResponse);
                 try {
                     setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response);
+                    return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.OK);
                 } catch (Exception e) {
+                    return new ResponseEntity<UserLoginResponse>(HttpStatus.NOT_FOUND);
                 }
+
+            } else {
+                return new ResponseEntity<UserLoginResponse>(HttpStatus.NOT_FOUND);
             }
-            return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.OK);
+
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserLoginResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
