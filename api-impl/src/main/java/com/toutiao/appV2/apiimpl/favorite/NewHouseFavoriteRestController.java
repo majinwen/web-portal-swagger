@@ -25,7 +25,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/rest/favorite/newhouse")
 @Slf4j
 public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
 
