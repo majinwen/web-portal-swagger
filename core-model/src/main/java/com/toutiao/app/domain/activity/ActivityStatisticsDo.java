@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.activity;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -12,19 +13,13 @@ import lombok.Data;
 @Data
 public class ActivityStatisticsDo {
 
-    /**
-     * 活动楼盘数量
-     */
+    @ApiModelProperty(value = "活动楼盘数量")
     private int activityBuildsAmount;
 
-    /**
-     * 累计领取数量
-     */
+    @ApiModelProperty(value = "累计领取数量")
     private int cumulativeAmount;
 
-    /**
-     * 昨天领取数量
-     */
+    @ApiModelProperty(value = "昨天领取数量")
     private int beforeCumulativeAmount;
 
 

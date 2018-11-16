@@ -8,6 +8,9 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @author zym
+ */
 @Data
 @ApiModel(description = "邀请码信息Response")
 public class InvitationResponse {

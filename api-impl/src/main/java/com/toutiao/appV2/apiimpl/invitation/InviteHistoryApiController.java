@@ -26,9 +26,9 @@ import org.springframework.validation.annotation.Validated;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T03:28:53.819Z")
-
-
+/**
+ * @author zym
+ */
 @Controller
 public class InviteHistoryApiController implements InviteHistoryApi{
 

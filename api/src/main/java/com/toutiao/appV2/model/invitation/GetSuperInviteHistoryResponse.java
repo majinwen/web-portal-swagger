@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * @author zym
+ */
 @Data
 @Builder
 public class GetSuperInviteHistoryResponse {

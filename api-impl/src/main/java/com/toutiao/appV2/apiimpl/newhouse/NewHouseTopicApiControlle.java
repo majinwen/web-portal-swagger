@@ -17,6 +17,9 @@ import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author zym
+ */
 @Controller
 public class NewHouseTopicApiControlle implements NewHouseTopicApi {
 

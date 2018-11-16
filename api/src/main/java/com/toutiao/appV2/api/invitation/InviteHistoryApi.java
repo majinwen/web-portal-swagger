@@ -18,6 +18,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * @author zym
+ */
 @Api(value = "InviteHistoryApi", description = "邀请记录控制器")
 public interface InviteHistoryApi {
 

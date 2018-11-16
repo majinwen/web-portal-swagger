@@ -5,6 +5,9 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * @author zym
+ */
 @Data
 public class SuperInviteHistoryRequest{
 

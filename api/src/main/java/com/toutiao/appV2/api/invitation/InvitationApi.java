@@ -17,6 +17,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * @author zym
+ */
 @Api(value = "InvitationApi", description = "邀请码控制器")
 public interface InvitationApi {
 

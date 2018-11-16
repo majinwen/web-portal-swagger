@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * @author zym
+ */
 @Api(value = "NewHouseLayoutApi", description = "新房户型控制层")
 public interface NewHouseLayoutApi {
     @ApiOperation(value = "获取楼盘下户型数", nickname = "getLayoutCountByNewHouseId", notes = "获取楼盘下户型数", response = NewHouseLayoutCountResponse.class,

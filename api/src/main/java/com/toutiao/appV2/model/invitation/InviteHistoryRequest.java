@@ -6,6 +6,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * @author zym
+ */
 @Data
 public class InviteHistoryRequest {
 
