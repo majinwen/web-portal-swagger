@@ -9,7 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
  * zhangjinglei 2017/9/1 下午2:33
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.toutiao.web","com.toutiao.app"})
+@ComponentScan(basePackages = {"com.toutiao.web","com.toutiao.app","com.toutiao.appV2"})
 public class WebApplicationServer {
 
     public static void main(String[] args) {

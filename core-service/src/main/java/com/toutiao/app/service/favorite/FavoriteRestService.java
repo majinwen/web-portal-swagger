@@ -36,12 +36,12 @@ public interface FavoriteRestService {
      * 取消新房收藏
      */
 
-    NashResult cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse);
+    Integer cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse);
 
     /**
      * 取消小区收藏
      */
-    NashResult cancelVillageByVillageId(PlotIsFavoriteDoQuery plotIsFavoriteDoQuery);
+    Integer cancelVillageByVillageId(PlotIsFavoriteDoQuery plotIsFavoriteDoQuery);
 
 
     /**
@@ -85,14 +85,14 @@ public interface FavoriteRestService {
      * @param plotsAddFavoriteDoQuery
      * @return
      */
-    NashResult addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery);
+    Integer addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery);
 
     /**
      * 添加新房收藏
      * @param newHouseAddFavoriteDoQuery
      * @return
      */
-    NashResult addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery);
+    Integer addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery);
 
 
 
@@ -101,11 +101,11 @@ public interface FavoriteRestService {
     /**
      * 添加二手房收藏
      */
-    NashResult addEsfFavorite(UserFavoriteEsHouseDoQuery userFavoriteEsHouseDoQuery);
+    Integer addEsfFavorite(UserFavoriteEsHouseDoQuery userFavoriteEsHouseDoQuery);
 
     /**
      * 添加出租收藏
      */
-    NashResult addRentFavorite(UserFavoriteRentDoQuery userFavoriteRent);
+    Integer addRentFavorite(UserFavoriteRentDoQuery userFavoriteRent);
 
 }

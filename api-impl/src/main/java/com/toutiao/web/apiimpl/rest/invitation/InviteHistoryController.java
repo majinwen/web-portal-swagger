@@ -1,3 +1,4 @@
+/*
 package com.toutiao.web.apiimpl.rest.invitation;
 
 import com.toutiao.app.domain.invitation.SuperInviteHistoryDo;
@@ -30,12 +31,14 @@ public class InviteHistoryController {
     @Autowired
     private InvitationCodeService invitationCodeService;
 
-    /**
+    */
+/**
      * 保存邀请记录
      *
      * @param inviteHistoryRequest
      * @return
-     */
+     *//*
+
     @RequestMapping(value = "/saveInviteHistory", method = RequestMethod.POST)
     @ResponseBody
     public NashResult saveInviteHistory(@Validated InviteHistoryRequest inviteHistoryRequest) {
@@ -57,12 +60,14 @@ public class InviteHistoryController {
         }
     }
 
-    /**
+    */
+/**
      * 获取邀请码邀请记录
      *
      * @param getInviteHistoryRequest
      * @return
-     */
+     *//*
+
     @RequestMapping(value = "/getInviteHistoryList", method = RequestMethod.GET)
     @ResponseBody
     public NashResult getInviteHistoryList(GetInviteHistoryRequest getInviteHistoryRequest) {
@@ -71,12 +76,14 @@ public class InviteHistoryController {
         return NashResult.build(inviteHistoryList);
     }
 
-    /**
+    */
+/**
      * 获取三级邀请信息
      *
      * @param superInviteHistoryRequest
      * @return
-     */
+     *//*
+
     @RequestMapping(value = "/getSuperInviteHistory", method = RequestMethod.GET)
     @ResponseBody
     public NashResult getSuperInviteHistory (SuperInviteHistoryRequest superInviteHistoryRequest) {
@@ -86,3 +93,4 @@ public class InviteHistoryController {
         return NashResult.build(superInviteHistory);
     }
 }
+*/

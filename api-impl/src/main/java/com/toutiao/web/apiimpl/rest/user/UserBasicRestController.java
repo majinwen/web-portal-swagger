@@ -38,26 +38,25 @@ public class UserBasicRestController {
      */
     @RequestMapping(value = "/updateUserAvatar", method = RequestMethod.POST, consumes = "multipart/form-data")
     @ResponseBody
-    public NashResult updateUserAvatar(@Validated UploadUserAvatarRequest uploadUserAvatarRequest,
+    public UserBasicResponse updateUserAvatar(@Validated UploadUserAvatarRequest uploadUserAvatarRequest,
                                        HttpServletRequest request, HttpServletResponse response) {
 
         UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(uploadUserAvatarRequest.getUserId(),
                 uploadUserAvatarRequest.getFile(),request,response);
         UserBasicResponse userBasicResponse = new UserBasicResponse();
         BeanUtils.copyProperties(userBasicDo,userBasicResponse);
-//        userBasicResponse.setUserNickName(userBasicResponse.getUserName().substring(0,3)+"****"+userBasicResponse.getUserName().substring(8,11));
-        return NashResult.build(userBasicResponse);
+        return userBasicResponse;
     }
 
 
     @RequestMapping(value = "/queryUserBasic", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult queryUserBasic(@Validated QueryUserBasicRequest queryUserBasicRequest) {
+    public UserBasicResponse queryUserBasic(@Validated QueryUserBasicRequest queryUserBasicRequest) {
 
         UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(queryUserBasicRequest.getUserId());
         UserBasicResponse userBasicResponse = new UserBasicResponse();
         BeanUtils.copyProperties(userBasicDo,userBasicResponse);
-        return NashResult.build(userBasicResponse);
+        return userBasicResponse;
     }
 
     /**
@@ -67,13 +66,12 @@ public class UserBasicRestController {
      */
     @RequestMapping(value = "/queryUserBasicByRcId", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult queryUserBasicByRcId(@Validated(First.class) QueryUserBasicRequest queryUserBasicRequest) {
+    public UserBasicResponse queryUserBasicByRcId(@Validated(First.class) QueryUserBasicRequest queryUserBasicRequest) {
 
         UserBasicDo userBasicDo = userBasicInfoService.queryUserBasicByRcId(queryUserBasicRequest.getRcId());
         UserBasicResponse userBasicResponse = new UserBasicResponse();
         BeanUtils.copyProperties(userBasicDo,userBasicResponse);
-//        userBasicResponse.setUserNickName(userBasicResponse.getUserName().substring(0,3)+"****"+userBasicResponse.getUserName().substring(8,11));
-        return NashResult.build(userBasicResponse);
+        return userBasicResponse;
     }
 
 
@@ -86,7 +84,7 @@ public class UserBasicRestController {
      */
     @RequestMapping(value="/logout" ,method =RequestMethod.POST)
     @ResponseBody
-    public NashResult logout(HttpServletResponse response, HttpServletRequest request) throws Exception {
+    public String logout(HttpServletResponse response, HttpServletRequest request) throws Exception {
         UserBasicDo userBasic = null;
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
@@ -95,9 +93,9 @@ public class UserBasicRestController {
         }
         if(userBasic!=null){
             clearCookieAndCache(request, response, userBasic.getPhone());
-            return NashResult.build("退出登录成功");
+            return "退出登录成功";
         }else{
-            return NashResult.Fail("退出登录失败");
+            return "退出登录失败";
         }
 
 
