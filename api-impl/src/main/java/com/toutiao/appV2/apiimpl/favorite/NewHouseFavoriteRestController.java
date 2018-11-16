@@ -17,12 +17,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @RestController
 @Slf4j
@@ -47,7 +46,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<NewHouseFavoriteListResponse> getNewHouseFavoriteByUserId(@ApiParam(value = "newHouseFavoriteListRequest", required = true) @Valid NewHouseFavoriteListRequest newHouseFavoriteListRequest) {
+    public ResponseEntity<NewHouseFavoriteListResponse> getNewHouseFavoriteByUserId(@ApiParam(value = "newHouseFavoriteListRequest", required = true) @Validated NewHouseFavoriteListRequest newHouseFavoriteListRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(newHouseFavoriteListRequest));
@@ -78,7 +77,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Valid NewHouseIsFavoriteRequest newHouseIsFavoriteRequest) {
+    public ResponseEntity<Boolean> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Validated NewHouseIsFavoriteRequest newHouseIsFavoriteRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(newHouseIsFavoriteRequest));
@@ -107,7 +106,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest) {
+    public ResponseEntity<String> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Validated @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(newHouseAddFavoriteRequest));
@@ -122,10 +121,10 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
                     return new ResponseEntity<String>("添加新房收藏成功", HttpStatus.OK);
                 } else if (flag == 0) {
                     log.info("添加新房收藏失败");
-                    return new ResponseEntity<String>("添加新房收藏失败",HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<String>("添加新房收藏失败", HttpStatus.INTERNAL_SERVER_ERROR);
                 } else {
                     log.info("添加新房收藏重复");
-                    return new ResponseEntity<String>("添加新房收藏重复",HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<String>("添加新房收藏重复", HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             } catch (Exception e) {
                 log.error("服务端异常", e);
@@ -144,7 +143,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest) {
+    public ResponseEntity<String> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Validated @RequestBody CancelFavoriteRequest cancelFavoriteRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(cancelFavoriteRequest));

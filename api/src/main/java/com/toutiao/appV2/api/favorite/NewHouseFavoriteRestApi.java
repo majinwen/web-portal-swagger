@@ -3,11 +3,11 @@ package com.toutiao.appV2.api.favorite;
 import com.toutiao.appV2.model.favorite.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.validation.Valid;
 
 /**
  * Created by wk on 2018/11/14.
@@ -24,7 +24,7 @@ public interface NewHouseFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/newhouse/getNewHouseFavoriteByUserId",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<NewHouseFavoriteListResponse> getNewHouseFavoriteByUserId(@ApiParam(value = "newHouseFavoriteListRequest", required = true) @Valid NewHouseFavoriteListRequest newHouseFavoriteListRequest);
+    ResponseEntity<NewHouseFavoriteListResponse> getNewHouseFavoriteByUserId(@ApiParam(value = "newHouseFavoriteListRequest", required = true) @Validated NewHouseFavoriteListRequest newHouseFavoriteListRequest);
 
 
     @ApiOperation(value = "添加新房收藏", nickname = "addNewHouseFavorite", notes = "添加新房收藏", tags = {"new-house-favorite-rest-controller",})
@@ -38,7 +38,7 @@ public interface NewHouseFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<String> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest);
+    ResponseEntity<String> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Validated @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest);
 
     @ApiOperation(value = "新房取消收藏", nickname = "cancelFavoriteByNewHouse", notes = "新房取消收藏", tags = {"new-house-favorite-rest-controller",})
     @ApiResponses(value = {
@@ -51,7 +51,7 @@ public interface NewHouseFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<String> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest);
+    ResponseEntity<String> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Validated @RequestBody CancelFavoriteRequest cancelFavoriteRequest);
 
 
     @ApiOperation(value = "判断新房是否被收藏", nickname = "getNewHouseIsFavorite", notes = "判断新房是否被收藏", tags = {"new-house-favorite-rest-controller",})
@@ -63,7 +63,7 @@ public interface NewHouseFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/newhouse/getNewHouseIsFavorite",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<Boolean> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Valid NewHouseIsFavoriteRequest newHouseIsFavoriteRequest);
+    ResponseEntity<Boolean> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Validated NewHouseIsFavoriteRequest newHouseIsFavoriteRequest);
 
 
 }

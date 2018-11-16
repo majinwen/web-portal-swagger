@@ -1,4 +1,4 @@
-package com.toutiao.appV2.model.request.invitation;
+package com.toutiao.appV2.model.invitation;
 
 import io.swagger.annotations.ApiParam;
 import lombok.Data;

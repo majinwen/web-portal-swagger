@@ -5,11 +5,11 @@
  */
 package com.toutiao.appV2.api.invitation;
 
-import com.toutiao.appV2.model.request.invitation.GetInviteHistoryRequest;
-import com.toutiao.appV2.model.request.invitation.InviteHistoryRequest;
-import com.toutiao.appV2.model.request.invitation.SuperInviteHistoryRequest;
-import com.toutiao.appV2.model.response.invitation.GetInviteHistoryListResponse;
-import com.toutiao.appV2.model.response.invitation.GetSuperInviteHistoryResponse;
+import com.toutiao.appV2.model.invitation.GetInviteHistoryRequest;
+import com.toutiao.appV2.model.invitation.InviteHistoryRequest;
+import com.toutiao.appV2.model.invitation.SuperInviteHistoryRequest;
+import com.toutiao.appV2.model.invitation.GetInviteHistoryListResponse;
+import com.toutiao.appV2.model.invitation.GetSuperInviteHistoryResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Api(value = "InviteHistoryApi", description = "邀请记录控制器")
 public interface InviteHistoryApi {
 
-    @ApiOperation(value = "根据邀请码获取邀请记录列表", nickname = "getInviteHistoryList", notes = "", response = GetInviteHistoryListResponse.class, tags={ "invite-history-controller", })
+    @ApiOperation(value = "根据邀请码获取邀请记录列表", nickname = "getInviteHistoryList", notes = "根据邀请码获取邀请记录列表",
+            response = GetInviteHistoryListResponse.class, tags={ "invite-history-controller", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = GetInviteHistoryListResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -35,7 +36,7 @@ public interface InviteHistoryApi {
     ResponseEntity<GetInviteHistoryListResponse> getInviteHistoryList(GetInviteHistoryRequest getInviteHistoryRequest);
 
 
-    @ApiOperation(value = "获取三级邀请记录列表", nickname = "getSuperInviteHistory", notes = "",
+    @ApiOperation(value = "获取三级邀请记录列表", nickname = "getSuperInviteHistory", notes = "获取三级邀请记录列表",
             response = GetSuperInviteHistoryResponse.class, tags={ "invite-history-controller", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = GetSuperInviteHistoryResponse.class),
@@ -50,8 +51,8 @@ public interface InviteHistoryApi {
     ResponseEntity<GetSuperInviteHistoryResponse> getSuperInviteHistory(SuperInviteHistoryRequest superInviteHistoryRequest);
 
 
-    @ApiOperation(value = "保存邀请记录", nickname = "saveInviteHistory", notes = "", response = Object.class, tags={
-            "invite-history-controller", })
+    @ApiOperation(value = "保存邀请记录", nickname = "saveInviteHistory", notes = "保存邀请记录",
+            tags={"invite-history-controller", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Object.class),
         @ApiResponse(code = 201, message = "Created"),

@@ -1,22 +1,25 @@
 package com.toutiao.appV2.model.favorite;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * NewHouseFavoriteListRequest
+ */
 @Data
+@ApiModel(value = "NewHouseFavoriteListRequest", description = "NewHouseFavoriteListRequest")
 public class NewHouseFavoriteListRequest {
-    /**
-     * 用户id
-     */
+
+    @ApiModelProperty(value = "用户id", name = "userId", required = true)
     @NotNull(message = "用户id不能为空")
     private Integer userId;
-    /**
-     * 当前页
-     */
+
+    @ApiModelProperty(value = "当前页", name = "userId")
     private Integer pageNum = 1;
-    /**
-     * 每页大小
-     */
-    private Integer size =10;
+
+    @ApiModelProperty(value = "每页大小", name = "userId")
+    private Integer size = 10;
 }

@@ -1,3 +1,4 @@
+/*
 package com.toutiao.web.apiimpl.rest.newhouse;
 
 import com.alibaba.fastjson.JSON;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+*/
 /**
  * 新房户型接口
  *
- */
+ *//*
+
 @RestController
 @RequestMapping("/rest/layout")
 public class NewHouseLayoutRestController {
@@ -33,10 +36,12 @@ public class NewHouseLayoutRestController {
 
 
 
-    /**
+    */
+/**
      * 根据新房id获取户型数量信息
      *
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/getLayoutCountByNewHouseId")
     public NashResult getLayoutCountByNewHouseId (@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
@@ -47,11 +52,13 @@ public class NewHouseLayoutRestController {
         return NashResult.build(newHouseLayoutCountResponse);
     }
 
-    /**
+    */
+/**
      * 根据新房id获取该户型下的户型列表
      * @param newHouseLayoutRequest
      * @return
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/getLayoutByNewHouseId")
     public NashResult getNewHouseLayoutByNewCode (@Validated(First.class) NewHouseLayoutRequest newHouseLayoutRequest) {
@@ -64,3 +71,4 @@ public class NewHouseLayoutRestController {
     }
 
 }
+*/

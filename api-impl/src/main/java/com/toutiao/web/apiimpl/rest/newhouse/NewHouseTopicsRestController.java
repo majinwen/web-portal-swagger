@@ -1,3 +1,4 @@
+/*
 package com.toutiao.web.apiimpl.rest.newhouse;
 
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+*/
 /**
  * 五环最美新房专题
  *
- */
+ *//*
+
 @RestController
 @RequestMapping("/rest/newhouse/topic")
 public class NewHouseTopicsRestController {
@@ -40,3 +43,4 @@ public class NewHouseTopicsRestController {
 
 
 }
+*/

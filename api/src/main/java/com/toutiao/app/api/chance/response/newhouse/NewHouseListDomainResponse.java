@@ -8,8 +8,8 @@ import java.util.List;
 @Data
 public class NewHouseListDomainResponse {
 
-
     private  List<NewHouseListDo> data;
+
     @ChangeName("totalNum")
     private long totalCount;
 

@@ -1,3 +1,4 @@
+/*
 package com.toutiao.web.apiimpl.rest.newhouse;
 
 import com.alibaba.fastjson.JSON;
@@ -32,9 +33,11 @@ public class NewHouseRestController {
     @Autowired
     private NewHouseRestService newHouseService;
 
-    /**
+    */
+/**
      * 根据newcode获取新房数据
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/getDetailByNewCode",method = RequestMethod.GET)
     public NashResult getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest)
@@ -45,9 +48,11 @@ public class NewHouseRestController {
     }
 
 
-    /**
+    */
+/**
      * 获取新房列表页
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/getNewHouseList",method =RequestMethod.GET)
     public  NashResult getNewHouseList(@Validated NewHouseListRequest newHouseListRequest)
@@ -61,9 +66,11 @@ public class NewHouseRestController {
     }
 
 
-    /**
+    */
+/**
      * 根据newcode获取新房动态
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/getNewHouseDynamic",method = RequestMethod.GET)
     public  NashResult getNewHouseDynamicByNewCode(@Validated NewHouseDynamicRequest newHouseDynamicRequest)
@@ -77,9 +84,11 @@ public class NewHouseRestController {
     }
 
 
-    /**
+    */
+/**
      * 根据newcode获取新房交通信息
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "getNewHouseTraffic",method = RequestMethod.GET)
     public  NashResult getNewHouseTraffic(@Validated NewHouseTrafficRequest newHouseTrafficRequest)
@@ -90,9 +99,11 @@ public class NewHouseRestController {
         return  NashResult.build(newHouseTrafficResponse);
     }
 
-    /**
+    */
+/**
      * 根据推荐条件获取一条新房数据
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "getOneNewHouseByRecommendCondition",method = RequestMethod.GET)
     public NashResult getOneNewHouseByRecommendCondition(UserFavoriteConditionRequest userFavoriteConditionRequest){
@@ -103,3 +114,4 @@ public class NewHouseRestController {
         return NashResult.build(newHouseDetailResponse);
     }
 }
+*/
