@@ -5,10 +5,10 @@
  */
 package com.toutiao.appV2.api.invitation;
 
-import com.toutiao.appV2.model.request.invitation.GetInviteHistoryRequest;
-import com.toutiao.appV2.model.request.invitation.InvitationRequest;
-import com.toutiao.appV2.model.response.invitation.GetCodeInfoListResponse;
-import com.toutiao.appV2.model.response.invitation.InvitationResponse;
+import com.toutiao.appV2.model.invitation.GetInviteHistoryRequest;
+import com.toutiao.appV2.model.invitation.InvitationRequest;
+import com.toutiao.appV2.model.invitation.GetCodeInfoListResponse;
+import com.toutiao.appV2.model.invitation.InvitationResponse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Api(value = "InvitationApi", description = "邀请码控制器")
 public interface InvitationApi {
 
-    @ApiOperation(value = "根据邀请码获取邀请码信息", nickname = "getCodeInfo", notes = "根据邀请码获取邀请码信息", response = GetCodeInfoListResponse
-            .class, tags={ "invitation-controller", })
+    @ApiOperation(value = "根据邀请码获取邀请码信息", nickname = "getCodeInfo", notes = "根据邀请码获取邀请码信息",
+            response = GetCodeInfoListResponse.class, tags={ "invitation-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = GetCodeInfoListResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -35,8 +35,8 @@ public interface InvitationApi {
     ResponseEntity<GetCodeInfoListResponse> getCodeInfo(GetInviteHistoryRequest getInviteHistoryRequest);
 
 
-    @ApiOperation(value = "主页点击邀请码，获取用户邀请信息以及该设备填写过的邀请记录", nickname = "getInvitation", notes = "主页点击邀请码",
-            response = InvitationResponse.class, tags={ "invitation-controller", })
+    @ApiOperation(value = "主页点击邀请码，获取用户邀请信息以及该设备填写过的邀请记录", nickname = "getInvitation",
+            notes = "主页点击邀请码", response = InvitationResponse.class, tags={ "invitation-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = InvitationResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),

@@ -1,4 +1,4 @@
-package com.toutiao.appV2.model.response.invitation;
+package com.toutiao.appV2.model.invitation;
 
 import com.toutiao.app.domain.invitation.SuperInviteHistoryDo;
 import lombok.Builder;
