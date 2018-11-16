@@ -37,13 +37,10 @@ public class NewHouseActivityApiController implements NewHouseActivityApi {
 
     private static final Logger log = LoggerFactory.getLogger(NewHouseActivityApiController.class);
 
-    private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
 
     @Autowired
     public NewHouseActivityApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
         this.request = request;
     }
 

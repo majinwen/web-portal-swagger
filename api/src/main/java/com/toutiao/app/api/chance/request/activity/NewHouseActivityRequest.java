@@ -2,7 +2,6 @@ package com.toutiao.app.api.chance.request.activity;
 
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
