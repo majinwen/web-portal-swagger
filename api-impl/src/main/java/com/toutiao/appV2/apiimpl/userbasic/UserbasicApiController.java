@@ -68,7 +68,7 @@ public class UserbasicApiController implements UserbasicApi {
                 BeanUtils.copyProperties(userBasic, userLoginResponse);
                 UserLoginResponse userLoginResponse1 = new UserLoginResponse();
                 BeanUtils.copyProperties(userLoginResponse, userLoginResponse1);
-                return new ResponseEntity<UserLoginResponse>(userLoginResponse1, HttpStatus.NOT_IMPLEMENTED);
+                return new ResponseEntity<UserLoginResponse>(userLoginResponse1, HttpStatus.OK);
             } else {
                 return new ResponseEntity<UserLoginResponse>(HttpStatus.NOT_FOUND);
             }
@@ -119,7 +119,7 @@ public class UserbasicApiController implements UserbasicApi {
             UserBasicDo userBasicDo = userBasicInfoService.queryUserBasicByRcId(rcId.get());
             UserBasicResponse userBasicResponse = new UserBasicResponse();
             BeanUtils.copyProperties(userBasicDo, userBasicResponse);
-            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -133,7 +133,7 @@ public class UserbasicApiController implements UserbasicApi {
                     file, request, response);
             UserBasicResponse userBasicResponse = new UserBasicResponse();
             BeanUtils.copyProperties(userBasicDo, userBasicResponse);
-            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -156,7 +156,7 @@ public class UserbasicApiController implements UserbasicApi {
                 } catch (Exception e) {
                 }
             }
-            return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.NOT_IMPLEMENTED);
+            return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.OK);
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserLoginResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
