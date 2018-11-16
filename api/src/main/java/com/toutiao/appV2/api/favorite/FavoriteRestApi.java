@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+
 
 /**
  * Created by wk on 2018/11/14.
@@ -25,6 +25,6 @@ public interface FavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/getFavoriteCountByUser",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<UserCenterFavoriteCountResponse> getFavoriteCountByUser(@NotNull @ApiParam(value = "userId", name = "用户ID", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId);
+    ResponseEntity<UserCenterFavoriteCountResponse> getFavoriteCountByUser(@ApiParam(value = "userId", required = true) @NotNull(message = "userId不能为空") @RequestParam(value = "userId") Integer userId);
 
 }

@@ -17,12 +17,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @RestController
 @Slf4j
@@ -50,7 +49,7 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseFavoriteListResponse> getEsfFavoriteByUserId(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Valid @RequestBody SellHouseFavoriteListRequest sellHouseFavoriteListRequest) {
+    public ResponseEntity<SellHouseFavoriteListResponse> getEsfFavoriteByUserId(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Validated SellHouseFavoriteListRequest sellHouseFavoriteListRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(sellHouseFavoriteListRequest));
@@ -81,7 +80,7 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
      * @return
      */
     @Override
-    public ResponseEntity<String> addEsfFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite) {
+    public ResponseEntity<String> addEsfFavorite(@ApiParam(value = "addFavorite", required = true) @Validated @RequestBody AddFavorite addFavorite) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(addFavorite));
@@ -97,10 +96,10 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
                     return new ResponseEntity<String>("添加二手房收藏成功", HttpStatus.OK);
                 } else if (flag == 0) {
                     log.info("添加二手房收藏成功");
-                    return new ResponseEntity<String>("添加二手房收藏失败",HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<String>("添加二手房收藏失败", HttpStatus.INTERNAL_SERVER_ERROR);
                 } else {
                     log.info("添加二手房收藏成功");
-                    return new ResponseEntity<String>("添加二手房收藏重复",HttpStatus.INTERNAL_SERVER_ERROR);
+                    return new ResponseEntity<String>("添加二手房收藏重复", HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             } catch (Exception e) {
                 log.error("服务端异常", e);
@@ -119,7 +118,7 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> deleteEsfFavoriteByEsfIdAndUserId(@ApiParam(value = "deleteEsfFavoriteRequest", required = true) @Valid @RequestBody DeleteEsfFavoriteRequest deleteEsfFavoriteRequest) {
+    public ResponseEntity<Boolean> deleteEsfFavoriteByEsfIdAndUserId(@ApiParam(value = "deleteEsfFavoriteRequest", required = true) @Validated DeleteEsfFavoriteRequest deleteEsfFavoriteRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(deleteEsfFavoriteRequest));
@@ -148,7 +147,7 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> getIsFavoriteByEsf(@ApiParam(value = "isFavoriteRequest", required = true) @Valid @RequestBody IsFavoriteRequest isFavoriteRequest) {
+    public ResponseEntity<Boolean> getIsFavoriteByEsf(@ApiParam(value = "isFavoriteRequest", required = true) @Validated IsFavoriteRequest isFavoriteRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(isFavoriteRequest));

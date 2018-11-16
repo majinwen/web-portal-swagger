@@ -17,12 +17,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 
 @RestController
 @Slf4j
@@ -50,7 +49,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<RentFavoriteListResponse> getRentFavoriteByUserId(@ApiParam(value = "rentFavoriteListRequest", required = true) @Valid @RequestBody RentFavoriteListRequest rentFavoriteListRequest) {
+    public ResponseEntity<RentFavoriteListResponse> getRentFavoriteByUserId(@ApiParam(value = "rentFavoriteListRequest", required = true) @Validated RentFavoriteListRequest rentFavoriteListRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(rentFavoriteListRequest));
@@ -81,7 +80,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite) {
+    public ResponseEntity<String> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Validated @RequestBody AddFavorite addFavorite) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(addFavorite));
@@ -118,7 +117,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Valid @RequestBody DeleteRentFavoriteRequest deleteRentFavoriteRequest) {
+    public ResponseEntity<Boolean> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Validated DeleteRentFavoriteRequest deleteRentFavoriteRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(deleteRentFavoriteRequest));
@@ -147,7 +146,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> getIsFavoriteByRent(@ApiParam(value = "isFavoriteRequest", required = true) @Valid @RequestBody IsFavoriteRequest isFavoriteRequest) {
+    public ResponseEntity<Boolean> getIsFavoriteByRent(@ApiParam(value = "isFavoriteRequest", required = true) @Validated IsFavoriteRequest isFavoriteRequest) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(isFavoriteRequest));
