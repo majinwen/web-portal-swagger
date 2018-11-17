@@ -2,7 +2,6 @@ package com.toutiao.appV2.apiimpl.Intelligence;
 
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toutiao.app.api.chance.request.homepage.UserFavoriteConditionRequest;
 import com.toutiao.app.domain.Intelligence.IntelligenceDo;
 import com.toutiao.app.domain.Intelligence.PriceRatioDo;
 import com.toutiao.app.domain.Intelligence.PriceTrendDo;
@@ -12,6 +11,7 @@ import com.toutiao.app.service.Intelligence.HomePageReportService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.appV2.api.Intelligence.FindhouseApi;
 import com.toutiao.appV2.model.Intelligence.IntelligenceResponse;
+import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio;

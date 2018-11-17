@@ -11,6 +11,7 @@ import com.toutiao.app.domain.activity.ActivityStatisticsDo;
 import com.toutiao.appV2.model.newhouse.ActivityMsgResponse;
 import com.toutiao.appV2.model.newhouse.GetNewHouseDynamicResponse;
 import com.toutiao.appV2.model.newhouse.GetNewHouseLayoutResponse;
+import com.toutiao.appV2.model.newhouse.IsAttendeActivityResponse;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author zym
  */
-@Api(value = "NewHouseApi", description = "新房控制层")
+@Api(value = "NewHouseApi", description = "新房接口Api")
 public interface NewHouseApi {
 
     //楼盘户型
@@ -133,9 +134,9 @@ public interface NewHouseApi {
 
     //新房活动
     @ApiOperation(value = "是否参加活动", nickname = "isAttendedActivity", notes = "是否参加活动",
-            response = NashResult.class, tags={ "new-house-api-controller", })
+            response = IsAttendeActivityResponse.class, tags={ "new-house-api-controller", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = NashResult.class),
+            @ApiResponse(code = 200, message = "OK", response = IsAttendeActivityResponse.class),
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
@@ -144,7 +145,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<NashResult> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
+    ResponseEntity<IsAttendeActivityResponse> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
 
 
     @ApiOperation(value = "查询活动信息", nickname = "queryActivityMsg", notes = "查询活动信息",
