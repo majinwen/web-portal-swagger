@@ -1,6 +1,6 @@
 package com.toutiao.web.service.intelligence;
 
-import java.util.Map;
+import com.toutiao.app.domain.Intelligence.PriceRatioDo;
 
 /**
  *  智能找房目标市场供需走势
@@ -16,5 +16,5 @@ public interface IntelligenceFhTdService {
      * @param totalPrice
      * @return
      */
-    Map<String,Object> queryTd(Integer totalPrice);
+    PriceRatioDo queryTd(Integer totalPrice);
 }
