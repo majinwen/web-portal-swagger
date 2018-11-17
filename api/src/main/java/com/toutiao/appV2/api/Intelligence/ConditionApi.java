@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
@@ -31,10 +32,9 @@ public interface ConditionApi {
     })
     @RequestMapping(value = "/rest/homePage/deleteRecommendCondition",
         produces = "application/json", 
-        consumes = "application/json",
+        consumes = "*/*",
         method = RequestMethod.GET)
-    ResponseEntity<Integer> deleteRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestBody Integer userId);
-
+    ResponseEntity<Integer> deleteRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
 
     @ApiOperation(value = "获取推荐条件", nickname = "getRecommendCondition", notes = "", response = UserFavoriteConditionResponse.class, tags={ "首页推荐条件", })
     @ApiResponses(value = { 
@@ -46,9 +46,9 @@ public interface ConditionApi {
     })
     @RequestMapping(value = "/rest/homePage/getRecommendCondition",
         produces = "application/json", 
-        consumes = "application/json",
+        consumes = "*/*",
         method = RequestMethod.GET)
-    ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestBody Integer userId);
+    ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
 
 
     @ApiOperation(value = "保存更新推荐条件", nickname = "saveRecommendCondition", notes = "", response = Integer.class, tags={ "首页推荐条件", })

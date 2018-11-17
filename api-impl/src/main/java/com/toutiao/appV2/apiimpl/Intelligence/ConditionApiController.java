@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -41,7 +42,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<Integer> deleteRecommendCondition(@ApiParam(value = "用户id" ,required=true )  @Valid @RequestBody Integer userId) {
+    public ResponseEntity<Integer> deleteRecommendCondition(@ApiParam(value = "用户id" ,required=true )  @Valid @RequestParam(value = "用户id" ,required=true ) Integer userId) {
                 String accept = request.getHeader("Accept");
                 if (accept != null && accept.contains("application/json")) {
                     try {
@@ -62,7 +63,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id" ,required=true )  @Valid @RequestBody Integer userId) {
+    public ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id" ,required=true )  @Valid @RequestParam(value = "用户id" ,required=true ) Integer userId) {
                 String accept = request.getHeader("Accept");
                 if (accept != null && accept.contains("application/json")) {
                     try {

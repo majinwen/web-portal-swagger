@@ -5,8 +5,8 @@
  */
 package com.toutiao.appV2.api.Intelligence;
 
-import com.toutiao.app.api.chance.request.homepage.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.Intelligence.IntelligenceResponse;
+import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
