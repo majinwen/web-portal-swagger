@@ -21,6 +21,9 @@ import org.springframework.validation.annotation.Validated;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+/**
+ * @author zym
+ */
 @Controller
 public class NewHouseLayoutApiController implements NewHouseLayoutApi {
 

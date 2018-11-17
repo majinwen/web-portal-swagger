@@ -20,8 +20,9 @@ import org.springframework.stereotype.Controller;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T03:28:53.819Z")
-
+/**
+ * @author zym
+ */
 @Controller
 public class InvitationApiController implements InvitationApi {
 
@@ -50,14 +51,14 @@ public class InvitationApiController implements InvitationApi {
                 InvitationCodeDo invitationCodeDo = invitationCodeService.getInvitation(invitationCodeDoQuery);
                 InvitationResponse invitationResponse = new InvitationResponse();
                 BeanUtils.copyProperties(invitationCodeDo, invitationResponse);
-                return new ResponseEntity<InvitationResponse>(invitationResponse, HttpStatus.OK);
+                return new ResponseEntity<>(invitationResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<InvitationResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<InvitationResponse>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Override
@@ -71,14 +72,14 @@ public class InvitationApiController implements InvitationApi {
                         .data(invitationCodeDos)
                         .totalNum(invitationCodeDos.size())
                         .build();
-                return new ResponseEntity<GetCodeInfoListResponse>(response, HttpStatus.OK);
+                return new ResponseEntity<>(response, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<GetCodeInfoListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<GetCodeInfoListResponse>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

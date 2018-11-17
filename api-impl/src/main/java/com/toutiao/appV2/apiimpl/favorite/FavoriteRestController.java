@@ -41,7 +41,7 @@ public class FavoriteRestController implements FavoriteRestApi {
      * 个人中心租房，二手房，新房，小区，收藏数量
      *
      * @param userId
-     * @return NashResult
+     * @return
      */
     @Override
     public ResponseEntity<UserCenterFavoriteCountResponse> getFavoriteCountByUser(@ApiParam(value = "userId", required = true) @NotNull(message = "userId不能为空") @RequestParam(value = "userId") Integer userId) {

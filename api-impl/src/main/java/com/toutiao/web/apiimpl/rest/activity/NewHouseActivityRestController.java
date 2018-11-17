@@ -1,3 +1,4 @@
+/*
 package com.toutiao.web.apiimpl.rest.activity;
 
 import com.github.pagehelper.PageInfo;
@@ -23,13 +24,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+*/
 /**
  * Created by IntelliJ Idea
  * Author: Jiang Weilong
  * Date:   2018-09-14
  * Time:   13:57
  * Theme:
- */
+ *//*
+
 
 @RestController
 @RequestMapping("/rest/activity/newHouse")
@@ -41,11 +44,13 @@ public class NewHouseActivityRestController {
     private UserBasicInfoService userBasicInfoService;
 
 
-    /**
+    */
+/**
      * 是否参加此活动
      * @param newHouseActivityRequest
      * @return
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/isAttendedActivity",method = RequestMethod.POST)
     public NashResult isActivity(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest) {
@@ -62,11 +67,13 @@ public class NewHouseActivityRestController {
 
 
 
-    /**
+    */
+/**
      * 提交活动表单
      * @param newHouseActivityRequest
      * @return
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/saveUserActivityMsg",method = RequestMethod.POST)
     public NashResult saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest) {
@@ -82,11 +89,13 @@ public class NewHouseActivityRestController {
     }
 
 
-    /**
+    */
+/**
      * 查询活动信息--后台使用
      * @param newHouseActivityRequest
      * @return
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/queryUserActivityMsg",method = RequestMethod.GET)
     public NashResult queryUserActivityMsg(NewHouseActivityRequest newHouseActivityRequest) {
@@ -100,11 +109,13 @@ public class NewHouseActivityRestController {
         return NashResult.build(userNewBuildingActivityDoPageInfo);
     }
 
-    /**
+    */
+/**
      * 查询用户信息
      * @param newHouseActivityRequest
      * @return
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/queryUserMsg",method = RequestMethod.GET)
     public NashResult queryUserMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest) {
@@ -119,11 +130,13 @@ public class NewHouseActivityRestController {
     }
 
 
-    /**
+    */
+/**
      * 查询活动信息--前台个人中心使用
      * @param newHouseActivityRequest
      * @return
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/queryActivityMsg",method = RequestMethod.GET)
     public NashResult queryActivityMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest) {
@@ -137,10 +150,12 @@ public class NewHouseActivityRestController {
         return NashResult.build(userNewBuildingActivityDoPageInfo);
     }
 
-    /**
+    */
+/**
      * 个人中心l累计数量
      * @return
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/queryActivityMsgCount",method = RequestMethod.GET)
     public NashResult queryActivityMsgCount() {
@@ -159,3 +174,4 @@ public class NewHouseActivityRestController {
 
 
 }
+*/

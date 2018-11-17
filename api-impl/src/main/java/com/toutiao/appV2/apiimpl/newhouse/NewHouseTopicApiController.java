@@ -17,17 +17,20 @@ import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * @author zym
+ */
 @Controller
-public class NewHouseTopicApiControlle implements NewHouseTopicApi {
+public class NewHouseTopicApiController implements NewHouseTopicApi {
 
-    private static final Logger log = LoggerFactory.getLogger(NewHouseTopicApiControlle.class);
+    private static final Logger log = LoggerFactory.getLogger(NewHouseTopicApiController.class);
 
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
     @Autowired
-    public NewHouseTopicApiControlle(ObjectMapper objectMapper, HttpServletRequest request) {
+    public NewHouseTopicApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }

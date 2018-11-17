@@ -10,9 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * @author zym
+ */
 @Api(value = "NewHouseTopicApi", description = "五环最美新房控制层")
 public interface NewHouseTopicApi {
-    @ApiOperation(value = "五环最美新房专题", nickname = "getNewHouseTopic", notes = "五环最美新房专题", response = NewHouseListDomainResponse.class, tags={ "new-house-topics-rest-controller", })
+    @ApiOperation(value = "五环最美新房专题", nickname = "getNewHouseTopic", notes = "五环最美新房专题",
+            response = NewHouseListDomainResponse.class, tags={ "new-house-topic-api-controller", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NewHouseListDomainResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

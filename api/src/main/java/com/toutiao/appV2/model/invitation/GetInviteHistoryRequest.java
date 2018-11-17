@@ -3,6 +3,9 @@ package com.toutiao.appV2.model.invitation;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
+/**
+ * @author zym
+ */
 @Data
 public class GetInviteHistoryRequest {
 

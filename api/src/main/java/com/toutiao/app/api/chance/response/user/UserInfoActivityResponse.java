@@ -1,5 +1,6 @@
 package com.toutiao.app.api.chance.response.user;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**
@@ -12,14 +13,9 @@ import lombok.Data;
 @Data
 public class UserInfoActivityResponse {
 
-    /**
-     * 用户称呼名
-     */
+    @ApiModelProperty(value = "用户称呼名")
     private String userCallName;
 
-
-    /**
-     * 用户手机号
-     */
+    @ApiModelProperty(value = "用户手机号")
     private String phone;
 }

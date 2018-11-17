@@ -26,9 +26,9 @@ import org.springframework.validation.annotation.Validated;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T03:28:53.819Z")
-
-
+/**
+ * @author zym
+ */
 @Controller
 public class InviteHistoryApiController implements InviteHistoryApi{
 
@@ -59,7 +59,7 @@ public class InviteHistoryApiController implements InviteHistoryApi{
                 BeanUtils.copyProperties(inviteHistoryRequest, inviteHistory);
                 InvitationCode invitationValid = invitationCodeService.getInvitationValid(inviteHistoryRequest.getInvitationCode());
                 if (invitationValid == null) {
-                    return new ResponseEntity("邀请码不存在", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity("邀请码不存在", HttpStatus.INTERNAL_SERVER_ERROR);
                 }
                 int i = inviteHistoryService.saveInviteHistory(inviteHistory);
                 List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
@@ -69,7 +69,7 @@ public class InviteHistoryApiController implements InviteHistoryApi{
                 if (i > 0) {
                     return new ResponseEntity("添加成功", HttpStatus.OK);
                 } else {
-                    return new ResponseEntity("添加失败", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity("添加失败", HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);

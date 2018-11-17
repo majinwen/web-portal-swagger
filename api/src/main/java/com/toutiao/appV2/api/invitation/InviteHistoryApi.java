@@ -18,11 +18,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+/**
+ * @author zym
+ */
 @Api(value = "InviteHistoryApi", description = "邀请记录控制器")
 public interface InviteHistoryApi {
 
     @ApiOperation(value = "根据邀请码获取邀请记录列表", nickname = "getInviteHistoryList", notes = "根据邀请码获取邀请记录列表",
-            response = GetInviteHistoryListResponse.class, tags={ "invite-history-controller", })
+            response = GetInviteHistoryListResponse.class, tags={ "invite-history-api-controller", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = GetInviteHistoryListResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -37,7 +40,7 @@ public interface InviteHistoryApi {
 
 
     @ApiOperation(value = "获取三级邀请记录列表", nickname = "getSuperInviteHistory", notes = "获取三级邀请记录列表",
-            response = GetSuperInviteHistoryResponse.class, tags={ "invite-history-controller", })
+            response = GetSuperInviteHistoryResponse.class, tags={ "invite-history-api-controller", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = GetSuperInviteHistoryResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -52,7 +55,7 @@ public interface InviteHistoryApi {
 
 
     @ApiOperation(value = "保存邀请记录", nickname = "saveInviteHistory", notes = "保存邀请记录",
-            tags={"invite-history-controller", })
+            tags={"invite-history-api-controller", })
     @ApiResponses(value = {
         @ApiResponse(code = 200, message = "OK", response = Object.class),
         @ApiResponse(code = 201, message = "Created"),
