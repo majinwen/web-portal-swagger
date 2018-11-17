@@ -2,9 +2,12 @@ package com.toutiao.app.service.activity;
 
 import com.github.pagehelper.PageInfo;
 import com.toutiao.app.domain.activity.ActivityStatisticsDo;
+import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
 import com.toutiao.web.common.restmodel.NashResult;
+
+import java.util.List;
 
 /**
  * Created by IntelliJ Idea
@@ -21,7 +24,7 @@ public interface NewHouseActivityRestService {
      * @param userNewBuildingActivityDoQuery
      * @return
      */
-    NashResult isAttendedActivity(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
+    List<UserNewBuildingActivity> isAttendedActivity(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
 
     /**
      * 表单提交--用户提交参与的活动楼盘信息

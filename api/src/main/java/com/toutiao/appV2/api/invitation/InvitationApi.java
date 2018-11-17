@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author zym
  */
-@Api(value = "InvitationApi", description = "邀请码控制器")
+@Api(value = "InvitationApi", description = "邀请码接口Api")
 public interface InvitationApi {
 
     @ApiOperation(value = "根据邀请码获取邀请码信息", nickname = "getCodeInfo", notes = "根据邀请码获取邀请码信息",

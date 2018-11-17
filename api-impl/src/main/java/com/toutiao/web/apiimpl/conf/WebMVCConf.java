@@ -1,6 +1,7 @@
 package com.toutiao.web.apiimpl.conf;
 
 import com.toutiao.web.apiimpl.conf.interceptor.LoginInterceptor;
+import com.toutiao.web.apiimpl.conf.interceptor.PathInterceptor;
 import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
@@ -36,6 +37,9 @@ public class WebMVCConf extends WebMvcConfigurerAdapter {
     @Autowired
     private LoginInterceptor loginInterceptor;
 
+    @Autowired
+    private PathInterceptor pathInterceptor;
+
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
         super.addArgumentResolvers(argumentResolvers);
@@ -53,7 +57,7 @@ public class WebMVCConf extends WebMvcConfigurerAdapter {
                 .excludePathPatterns("/static/**")
                 .excludePathPatterns("/swagger-ui.html/**")
                 .excludePathPatterns("/swagger-resources/**");
-
+        registry.addInterceptor(pathInterceptor).addPathPatterns("/searchapiv2/*");
     }
 
     @Override

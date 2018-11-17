@@ -1,7 +1,6 @@
 package com.toutiao.appV2.apiimpl.newhouse;
 
 import com.alibaba.fastjson.JSON;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import com.toutiao.app.api.chance.request.activity.NewHouseActivityRequest;
 import com.toutiao.app.api.chance.request.newhouse.*;
@@ -11,6 +10,7 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseTrafficResponse;
 import com.toutiao.app.api.chance.response.user.UserInfoActivityResponse;
 import com.toutiao.app.domain.activity.ActivityStatisticsDo;
+import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDoQuery;
 import com.toutiao.app.domain.newhouse.*;
@@ -24,6 +24,7 @@ import com.toutiao.appV2.api.newhouse.NewHouseApi;
 import com.toutiao.appV2.model.newhouse.ActivityMsgResponse;
 import com.toutiao.appV2.model.newhouse.GetNewHouseDynamicResponse;
 import com.toutiao.appV2.model.newhouse.GetNewHouseLayoutResponse;
+import com.toutiao.appV2.model.newhouse.IsAttendeActivityResponse;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -50,8 +51,6 @@ public class NewHouseApiController implements NewHouseApi {
 
     private static final Logger log = LoggerFactory.getLogger(NewHouseApiController.class);
 
-    private final ObjectMapper objectMapper;
-
     private final HttpServletRequest request;
 
     @Autowired
@@ -70,8 +69,7 @@ public class NewHouseApiController implements NewHouseApi {
     private UserBasicInfoService userBasicInfoService;
 
     @Autowired
-    public NewHouseApiController(ObjectMapper objectMapper, HttpServletRequest request) {
-        this.objectMapper = objectMapper;
+    public NewHouseApiController(HttpServletRequest request) {
         this.request = request;
     }
 
@@ -211,7 +209,7 @@ public class NewHouseApiController implements NewHouseApi {
     }
 
     @Override
-    public ResponseEntity<NashResult> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest
+    public ResponseEntity<IsAttendeActivityResponse> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest
                                                                  newHouseActivityRequest) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
@@ -222,8 +220,10 @@ public class NewHouseApiController implements NewHouseApi {
                 }
                 UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
                 BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
-                NashResult respose = newHouseActivityRestService.isAttendedActivity(userNewBuildingActivityDoQuery);
-                return new ResponseEntity<>(respose, HttpStatus.OK);
+                List<UserNewBuildingActivity> attendedActivitys = newHouseActivityRestService.isAttendedActivity(userNewBuildingActivityDoQuery);
+                IsAttendeActivityResponse response = IsAttendeActivityResponse.builder().data(attendedActivitys)
+                        .totalNum(attendedActivitys.size()).build();
+                return new ResponseEntity<>(response, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
