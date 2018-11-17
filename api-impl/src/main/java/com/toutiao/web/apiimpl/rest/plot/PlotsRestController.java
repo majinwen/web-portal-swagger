@@ -38,13 +38,13 @@ public class PlotsRestController {
      * @param plotDetailsRequest
      * @return
      */
-    @RequestMapping("/getPlotDetailByPlotId")
+    @RequestMapping(value = "/getPlotDetailByPlotId", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
+    public PlotDetailsResponse getPlotDetailByPlotId(@Validated PlotDetailsRequest plotDetailsRequest) {
         PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotDetailsRequest.getPlotId(),CityUtils.getCity());
         PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
         BeanUtils.copyProperties(plotDetailsDo,plotDetailsResponse);
-        return NashResult.build(plotDetailsResponse);
+        return plotDetailsResponse;
     }
 
     /**
@@ -52,14 +52,17 @@ public class PlotsRestController {
      * @param plotAroundPlotRequest
      * @return
      */
-    @RequestMapping("/getAroundPlotByLocation")
+    @RequestMapping(value ="/getAroundPlotByLocation", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotAroundByLocation(@Validated PlotAroundPlotRequest plotAroundPlotRequest){
+    public PlotDetailsFewListResponse getPlotAroundByLocation(@Validated PlotAroundPlotRequest plotAroundPlotRequest){
         List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(plotAroundPlotRequest.getLat(),
                 plotAroundPlotRequest.getLon(), plotAroundPlotRequest.getPlotId(),CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
         List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
-        return NashResult.build(plotDetailsFewResponseList);
+        PlotDetailsFewListResponse plotDetailsFewListResponse = new PlotDetailsFewListResponse();
+        plotDetailsFewListResponse.setPlotDetailsFewResponseList(plotDetailsFewResponseList);
+        plotDetailsFewListResponse.setTotalNum(plotDetailsFewResponseList.size());
+        return plotDetailsFewListResponse;
     }
 
     /**
@@ -69,12 +72,11 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getPlotListByRequirement",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
+    public PlotListResponse getPlotListByRequirement(@Validated PlotListRequest plotListRequest){
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
         PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery,CityUtils.getCity());
-        PlotListResponse plotListResponse = JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class);
-        return NashResult.build(plotListResponse);
+        return JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class);
     }
 
     /**
@@ -88,11 +90,11 @@ public class PlotsRestController {
 
     @RequestMapping(value = "/getAroundInfoByPlotId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
+    public PlotTrafficResponse getAroundInfoByPlotId(@Validated PlotAroundInfoRequest plotAroundInfoRequest) throws InvocationTargetException, IllegalAccessException {
         PlotTrafficResponse plotTrafficResponse=new PlotTrafficResponse();
         PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotAroundInfoRequest.getPlotId());
         BeanUtils.copyProperties(plotTrafficDo,plotTrafficResponse);
-        return NashResult.build(plotTrafficResponse);
+        return plotTrafficResponse;
     }
 
 
@@ -101,7 +103,7 @@ public class PlotsRestController {
      */
     @RequestMapping(value = "/getTop50List",method = RequestMethod.GET)
     @ResponseBody
-    public  NashResult getTop50List(BaseQueryRequest baseQueryRequest)
+    public  PlotTop50ListResponse getTop50List(BaseQueryRequest baseQueryRequest)
     {
         List<PlotTop50Response> plotTop50Responses=new ArrayList<>();
         PlotTop50ListDoQuery plotTop50ListDoQuery=new PlotTop50ListDoQuery();
@@ -109,7 +111,10 @@ public class PlotsRestController {
         List<PlotTop50Do> plotTop50Dos= appPlotService.getPlotTop50List(plotTop50ListDoQuery,CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotTop50Dos));
         plotTop50Responses=JSONObject.parseArray(json.toJSONString(), PlotTop50Response.class);
-        return  NashResult.build(plotTop50Responses);
+        PlotTop50ListResponse plotTop50ListResponse = new PlotTop50ListResponse();
+        plotTop50ListResponse.setPlotTop50ResponseList(plotTop50Responses);
+        plotTop50ListResponse.setTotalNum(plotTop50Responses.size());
+        return plotTop50ListResponse;
     }
 
     /**
@@ -117,13 +122,16 @@ public class PlotsRestController {
      */
     @ResponseBody
     @RequestMapping(value = "getPlotByRecommendCondition",method = RequestMethod.GET)
-    public NashResult getPlotByRecommendCondition(UserFavoriteConditionRequest userFavoriteConditionRequest){
+    public PlotDetailsFewListResponse getPlotByRecommendCondition(UserFavoriteConditionRequest userFavoriteConditionRequest){
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
         List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
-        List<PlotDetailsFewDo> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewDo.class);
-        return NashResult.build(plotDetailsFewDos);
+        List<PlotDetailsFewResponse> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
+        PlotDetailsFewListResponse plotDetailsFewListResponse = new PlotDetailsFewListResponse();
+        plotDetailsFewListResponse.setPlotDetailsFewResponseList(plotDetailsFewDos);
+        plotDetailsFewListResponse.setTotalNum(plotDetailsFewDos.size());
+        return plotDetailsFewListResponse;
     }
 
 }

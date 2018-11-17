@@ -1,83 +1,47 @@
 package com.toutiao.app.api.chance.response.homepage;
 
 import com.toutiao.web.common.assertUtils.ChangeName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
 public class HomePageNewHouseResponse {
 
-    /**
-     * 楼盘名称
-     */
-
+    @ApiModelProperty(value = "楼盘名称")
     private  String   buildingName;
 
-    /**
-     * 总价
-     */
+    @ApiModelProperty(value = "总价")
     private Double  totalPrice;
 
-    /**
-     * 区域
-     */
-
+    @ApiModelProperty(value = "区域")
     private  String districtName;
 
-    /**
-     * 最小面积
-     */
+    @ApiModelProperty(value = "最小面积")
     private  Double houseMinArea;
 
-
-    /**
-     * 最大面积
-     */
+    @ApiModelProperty(value = "最大面积")
     private  Double houseMaxArea;
 
-
-    /**
-     * 销售状态
-     */
+    @ApiModelProperty(value = "销售状态")
     private  String  saleStatusName;
 
-
-//    /**
-//     * 标签
-//     */
-//    private  String []  buildingTags;
-
-
-    /**
-     * 标题图
-     */
-
+    @ApiModelProperty(value = "标题图")
     private  String  buildingTitleImg;
 
-    /**
-     * 均价
-     */
+    @ApiModelProperty(value = "均价")
     private  Double averagePrice;
 
-    /**
-     * 类别
-     */
+    @ApiModelProperty(value = "类别")
     private  String propertyType;
 
-
-    /**
-     * 大楼id
-     */
+    @ApiModelProperty(value = "楼盘id")
     private  Integer buildingNameId;
 
-    /**
-     *  最近交房
-     */
+    @ApiModelProperty(value = "最近交房")
     private  String deliverTime;
 
-    /**
-     * 环路
-     */
     @ChangeName("ringRoad")
+    @ApiModelProperty(value = "环路")
     private  String ringRoadName;
 
 }

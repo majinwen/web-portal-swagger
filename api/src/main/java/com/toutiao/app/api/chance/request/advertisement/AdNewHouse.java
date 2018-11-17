@@ -1,5 +1,7 @@
 package com.toutiao.app.api.chance.request.advertisement;
 
+import io.swagger.annotations.ApiParam;
+import com.toutiao.web.common.assertUtils.First;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -15,7 +17,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Data
 public class AdNewHouse {
 
-//    @NotEmpty(message = "楼盘id不能为空")
+    @NotEmpty(message = "楼盘id不能为空", groups = {First.class})
+    @ApiParam(value = "楼盘id")
     private Integer [] newHouseIds;
 
 }

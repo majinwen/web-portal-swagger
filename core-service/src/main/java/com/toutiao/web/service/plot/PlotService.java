@@ -1,5 +1,6 @@
 package com.toutiao.web.service.plot;
 
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.web.dao.entity.admin.ProjHouseInfoES;
 import com.toutiao.web.dao.entity.admin.VillageEntityES;
 import com.toutiao.web.domain.query.VillageRequest;
@@ -25,5 +26,5 @@ public interface PlotService {
      * @param PlotId
      * @return
      */
-    Map queryPlotByPlotId(String PlotId);
+    PlotDetailsDo queryPlotByPlotId(String PlotId);
 }

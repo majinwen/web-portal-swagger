@@ -1,42 +1,29 @@
 package com.toutiao.app.api.chance.response.newhouse;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
 public class NewHouseTrafficResponse {
 
-    /**
-     * 公交站
-     */
+    @ApiModelProperty(value = "公交站")
     private String busStation;
 
-    /**
-     * 公交线路
-     */
+    @ApiModelProperty(value = "公交线路")
     private  Integer busLines;
 
-    /**
-     * 环线
-     */
+    @ApiModelProperty(value = "环线")
     private String ringRoadName;
 
-    /**
-     * 环线距离
-     */
+    @ApiModelProperty(value = "环线距离")
     private  Double ringRoadDistance;
 
-    /**
-     * 地铁站
-     */
+    @ApiModelProperty(value = "地铁站")
     private  String subwayStation;
 
-    /**
-     * 地铁线
-     */
+    @ApiModelProperty(value = "地铁线")
     private  String subwayLine;
 
-    /**
-     * 地铁站距离
-     */
+    @ApiModelProperty(value = "地铁站距离")
     private  Double subwayDistance;
 }

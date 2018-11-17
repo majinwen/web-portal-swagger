@@ -1,6 +1,7 @@
 package com.toutiao.app.api.chance.request.newhouse;
 
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
+import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -8,10 +9,8 @@ import javax.validation.constraints.NotNull;
 @Data
 public class NewHouseDynamicRequest extends BaseQueryRequest {
 
-    /**
-     * 大楼id
-     */
-    @NotNull(message = "缺少大楼id")
+    @NotNull(message = "楼盘id不能为空")
+    @ApiParam(value = "楼盘id", name = "newCode", required = true)
     private Integer newCode;
 
 

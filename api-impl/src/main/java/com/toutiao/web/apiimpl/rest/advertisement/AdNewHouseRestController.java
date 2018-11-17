@@ -1,3 +1,4 @@
+/*
 package com.toutiao.web.apiimpl.rest.advertisement;
 
 import com.alibaba.fastjson.JSON;
@@ -20,13 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+*/
 /**
  * Created by IntelliJ Idea
  * Author: Jiang Weilong
  * Date:   2018-11-02
  * Time:   15:12
  * Theme:
- */
+ *//*
+
 
 @RestController
 @RequestMapping("/rest/ad/newHouse")
@@ -35,9 +38,11 @@ public class AdNewHouseRestController {
     @Autowired
     private AdNewHouseRestService adNewHouseRestService;
 
-    /**
+    */
+/**
      * 新房首页--获取推荐新房列表页面广告信息
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/getAdRecommendNewHouseByIds",method = RequestMethod.GET)
     public NashResult getAdRecommendNewHouseByIds(@Validated AdNewHouse adNewHouse) {
@@ -47,11 +52,13 @@ public class AdNewHouseRestController {
         return NashResult.build(newHouseListResponses);
     }
 
-    /**
+    */
+/**
      * 新房列表广告信息
      * @param adNewHouse
      * @return
-     */
+     *//*
+
     @ResponseBody
     @RequestMapping(value = "/getAdNewHouseListByIds",method = RequestMethod.GET)
     public NashResult getAdNewHouseListByIds(@Validated AdNewHouse adNewHouse){
@@ -64,3 +71,4 @@ public class AdNewHouseRestController {
     }
 
 }
+*/

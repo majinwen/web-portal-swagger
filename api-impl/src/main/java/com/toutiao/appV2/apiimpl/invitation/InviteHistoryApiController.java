@@ -1,3 +1,4 @@
+/*
 package com.toutiao.appV2.apiimpl.invitation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -6,11 +7,11 @@ import com.toutiao.app.domain.invitation.SuperInviteHistoryDoQuery;
 import com.toutiao.app.service.invitation.InvitationCodeService;
 import com.toutiao.app.service.invitation.InviteHistoryService;
 import com.toutiao.appV2.api.invitation.InviteHistoryApi;
-import com.toutiao.appV2.model.request.invitation.GetInviteHistoryRequest;
-import com.toutiao.appV2.model.request.invitation.InviteHistoryRequest;
-import com.toutiao.appV2.model.request.invitation.SuperInviteHistoryRequest;
-import com.toutiao.appV2.model.response.invitation.GetInviteHistoryListResponse;
-import com.toutiao.appV2.model.response.invitation.GetSuperInviteHistoryResponse;
+import com.toutiao.appV2.model.invitation.GetInviteHistoryRequest;
+import com.toutiao.appV2.model.invitation.InviteHistoryRequest;
+import com.toutiao.appV2.model.invitation.SuperInviteHistoryRequest;
+import com.toutiao.appV2.model.invitation.GetInviteHistoryListResponse;
+import com.toutiao.appV2.model.invitation.GetSuperInviteHistoryResponse;
 import com.toutiao.web.dao.entity.invitation.InvitationCode;
 import com.toutiao.web.dao.entity.invitation.InviteHistory;
 import org.slf4j.Logger;
@@ -26,8 +27,10 @@ import org.springframework.validation.annotation.Validated;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T03:28:53.819Z")
-
+*/
+/**
+ * @author zym
+ *//*
 
 @Controller
 public class InviteHistoryApiController implements InviteHistoryApi{
@@ -59,7 +62,7 @@ public class InviteHistoryApiController implements InviteHistoryApi{
                 BeanUtils.copyProperties(inviteHistoryRequest, inviteHistory);
                 InvitationCode invitationValid = invitationCodeService.getInvitationValid(inviteHistoryRequest.getInvitationCode());
                 if (invitationValid == null) {
-                    return new ResponseEntity("邀请码不存在", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity("邀请码不存在", HttpStatus.INTERNAL_SERVER_ERROR);
                 }
                 int i = inviteHistoryService.saveInviteHistory(inviteHistory);
                 List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
@@ -69,7 +72,7 @@ public class InviteHistoryApiController implements InviteHistoryApi{
                 if (i > 0) {
                     return new ResponseEntity("添加成功", HttpStatus.OK);
                 } else {
-                    return new ResponseEntity("添加失败", HttpStatus.BAD_REQUEST);
+                    return new ResponseEntity("添加失败", HttpStatus.INTERNAL_SERVER_ERROR);
                 }
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
@@ -123,3 +126,4 @@ public class InviteHistoryApiController implements InviteHistoryApi{
         return new ResponseEntity<GetSuperInviteHistoryResponse>(HttpStatus.NOT_IMPLEMENTED);
     }
 }
+*/

@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,15 +33,15 @@ public class NearbyPlotsRestController {
      * @param nearbyPlotsListRequest
      * @return
      */
-    @RequestMapping("/getNearbyPlotsList")
+    @RequestMapping(value = "/getNearbyPlotsList", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getNearbyPlotsList(@Validated(First.class) NearbyPlotsListRequest nearbyPlotsListRequest) {
+    public NearbyPlotsListResponse getNearbyPlotsList(@Validated(First.class) NearbyPlotsListRequest nearbyPlotsListRequest) {
         NearbyPlotsDoQuery nearbyPlotsDoQuery = new NearbyPlotsDoQuery();
         BeanUtils.copyProperties(nearbyPlotsListRequest,nearbyPlotsDoQuery);
         PlotDetailsFewDomain plotDetailsFewDomain = nearbyPlotsRestService.queryNearbyPlotsListByUserCoordinate(nearbyPlotsDoQuery);
         NearbyPlotsListResponse newHouseLayoutCountResponse = new NearbyPlotsListResponse();
         BeanUtils.copyProperties(plotDetailsFewDomain, newHouseLayoutCountResponse);
-        return NashResult.build(newHouseLayoutCountResponse);
+        return newHouseLayoutCountResponse;
 
 
     }

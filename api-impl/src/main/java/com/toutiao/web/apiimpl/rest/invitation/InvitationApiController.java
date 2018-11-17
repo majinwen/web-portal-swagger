@@ -8,7 +8,7 @@ import com.toutiao.app.service.invitation.impl.InvitationCodeServiceImpl;
 import com.toutiao.appV2.api.invitation.InvitationApi;
 import com.toutiao.web.api.chance.request.invitation.GetInviteHistoryRequest;
 import com.toutiao.web.api.chance.request.invitation.InvitationRequest;
-import com.toutiao.appV2.model.response.invitation.GetCodeInfoListResponse;
+import com.toutiao.appV2.model.invitation.GetCodeInfoListResponse;
 import com.toutiao.web.api.chance.response.invitation.InvitationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

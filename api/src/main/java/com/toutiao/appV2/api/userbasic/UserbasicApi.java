@@ -5,6 +5,7 @@
  */
 package com.toutiao.appV2.api.userbasic;
 
+import com.toutiao.appV2.model.userbasic.LoginVerifyCodeRequest;
 import com.toutiao.appV2.model.userbasic.UserBasicResponse;
 import com.toutiao.appV2.model.userbasic.UserLoginResponse;
 import com.toutiao.appV2.model.userbasic.UserVerifyCodeRequest;
@@ -23,15 +24,14 @@ import java.util.Optional;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:40:39.438Z")
 
 @RequestMapping("/rest")
-@Api(value = "userbasic", description = "the userbasic API")
+@Api(value = "userbasic", description = "查询用户基本信息接口")
 public interface UserbasicApi {
 
-    @ApiOperation(value = "获取用户缓存", nickname = "getUserCache", notes = "", response = UserLoginResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "获取用户缓存", nickname = "getUserCache", notes = "", response = UserLoginResponse.class,
+            tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserLoginResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 404, message = "未找到用户")})
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/getUserCache",
@@ -42,11 +42,7 @@ public interface UserbasicApi {
 
     @ApiOperation(value = "登出", nickname = "logout", notes = "", response = String.class, tags = {"userbasic",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = String.class),
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 200, message = "OK", response = String.class), @ApiResponse(code = 404, message = "未找到用户")})
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/logout",
@@ -56,12 +52,11 @@ public interface UserbasicApi {
     ResponseEntity<String> logout();
 
 
-    @ApiOperation(value = "查询基本信息", nickname = "queryUserBasic", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "查询基本信息", nickname = "queryUserBasic", notes = "", response = UserBasicResponse.class,
+            tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 404, message = "未找到用户")})
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/queryUserBasic",
@@ -71,12 +66,12 @@ public interface UserbasicApi {
     ResponseEntity<UserBasicResponse> queryUserBasic(@ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId);
 
 
-    @ApiOperation(value = "通过融云ID获取基本信息", nickname = "queryUserBasicByRcId", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "通过融云ID获取基本信息", nickname = "queryUserBasicByRcId", notes = "",
+            response = UserBasicResponse.class, tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 404, message = "未找到用户")
+    })
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/queryUserBasicByRcId",
@@ -86,13 +81,10 @@ public interface UserbasicApi {
     ResponseEntity<UserBasicResponse> queryUserBasicByRcId(@ApiParam(value = "") @Valid @RequestParam(value = "rcId", required = false) Optional<String> rcId);
 
 
-    @ApiOperation(value = "更新用户头像", nickname = "updateUserAvatar", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "更新用户头像", nickname = "updateUserAvatar", notes = "", response = UserBasicResponse.class,
+            tags = {"userbasic",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),})
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/updateUserAvatar",
@@ -102,13 +94,12 @@ public interface UserbasicApi {
     ResponseEntity<UserBasicResponse> updateUserAvatar(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId);
 
 
-    @ApiOperation(value = "用户登录", nickname = "userVerifyCodeLogin", notes = "", response = UserLoginResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "用户登录", nickname = "userVerifyCodeLogin", notes = "", response = UserLoginResponse.class,
+            tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserLoginResponse.class),
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
+            @ApiResponse(code = 404, message = "未找到用户")
+    })
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/userbasic/userVerifyCodeLogin",
@@ -116,5 +107,43 @@ public interface UserbasicApi {
             consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<UserLoginResponse> userVerifyCodeLogin(@ApiParam(value = "loginRequest", required = true) @Valid @RequestBody UserVerifyCodeRequest loginRequest);
+
+    @ApiOperation(value = "生成图片验证码", nickname = "produceImageCode", notes = "", tags={ "userbasic", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/imageCode",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<Void> produceImageCode();
+
+
+    @ApiOperation(value = "登录时发送手机验证码", nickname = "sendLoginVerifyCode", notes = "", response = String.class, tags={ "userbasic", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/sendLoginVerifyCode",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.POST)
+    ResponseEntity<String> sendLoginVerifyCode(@ApiParam(value = "loginVerifyCodeRequest" ,required=true )  @Valid @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest);
+
+
+    @ApiOperation(value = "验证验证码是否正确", nickname = "validateImageCode", notes = "", tags={ "userbasic", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/getCode",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<Void> validateImageCode(@ApiParam(value = "pageCode") @Valid @RequestParam(value = "pageCode", required = false) Optional<String> pageCode);
 
 }
