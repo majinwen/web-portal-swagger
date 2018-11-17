@@ -15,10 +15,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 专题房源详情页
@@ -44,10 +47,19 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseResponse> getNearbyTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+    public ResponseEntity<SellHouseResponse> getNearbyTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -75,10 +87,19 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseResponse> getCutPriceTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+    public ResponseEntity<SellHouseResponse> getCutPriceTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -106,10 +127,19 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseResponse> getLowPriceTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+    public ResponseEntity<SellHouseResponse> getLowPriceTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -137,10 +167,19 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseResponse> getMustRobTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+    public ResponseEntity<SellHouseResponse> getMustRobTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -167,11 +206,20 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseResponse> getAreaRoomTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+    public ResponseEntity<SellHouseResponse> getAreaRoomTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
         String accept = request.getHeader("Accept");
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         if (accept != null && accept.contains("")) {
             try {
                 SellHouseResponse sellHouseResponse = new SellHouseResponse();

@@ -14,10 +14,13 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
 
 /**
  * 商圈户型房源专题页控制层
@@ -43,10 +46,20 @@ public class HouseBusinessAndRoomRestController implements HouseBusinessAndRoomR
      * @return
      */
     @Override
-    public ResponseEntity<HouseBusinessAndRoomResponse> getHouseBusinessAndRoomHouses(@ApiParam(value = "houseBusinessAndRoomRequest", required = true) @Validated HouseBusinessAndRoomRequest houseBusinessAndRoomRequest) {
+    public ResponseEntity<HouseBusinessAndRoomResponse> getHouseBusinessAndRoomHouses(@ApiParam(value = "houseBusinessAndRoomRequest", required = true) @Valid HouseBusinessAndRoomRequest houseBusinessAndRoomRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(houseBusinessAndRoomRequest));
+
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {

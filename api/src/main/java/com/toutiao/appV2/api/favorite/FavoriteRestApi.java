@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.constraints.NotNull;
 
 
 /**
  * Created by wk on 2018/11/14.
  */
-@Api(value = "FavoriteRestApi", description = " 查询收藏数量接口")
+@Api(value = "FavoriteRestApi", description = "收藏")
 public interface FavoriteRestApi {
 
     @ApiOperation(value = "个人中心租房，二手房，新房，小区，收藏数量", nickname = "getFavoriteCountByUser", notes = "个人中心租房，二手房，新房，小区，收藏数量", tags = {"favorite-rest-controller",})
@@ -25,6 +24,6 @@ public interface FavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/getFavoriteCountByUser",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<UserCenterFavoriteCountResponse> getFavoriteCountByUser(@ApiParam(value = "userId", required = true) @NotNull(message = "userId不能为空") @RequestParam(value = "userId") Integer userId);
+    ResponseEntity<UserCenterFavoriteCountResponse> getFavoriteCountByUser(@ApiParam(value = "userId", required = true) @RequestParam(value = "userId", required = false) Integer userId);
 
 }

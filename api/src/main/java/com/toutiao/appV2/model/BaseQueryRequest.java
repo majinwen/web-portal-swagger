@@ -23,13 +23,13 @@ public class BaseQueryRequest {
     @ApiModelProperty(value = "居室", name = "layoutId")
     private Integer[] layoutId;
 
-    @ApiModelProperty(value = "朝向", name = "forwardId")
+    @ApiModelProperty(value = "朝向(1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他)", name = "forwardId")
     private Integer[] forwardId;
 
     @ApiModelProperty(value = "楼龄[0-5]", name = "houseYearId")
     private String houseYearId;
 
-    @ApiModelProperty(value = "标签", name = "labelId")
+    @ApiModelProperty(value = "标签(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)", name = "labelId")
     private Integer[] labelId;
 
     @ApiModelProperty(value = "区域", name = "districtId")
@@ -47,10 +47,10 @@ public class BaseQueryRequest {
     @ApiModelProperty(value = "关键字", name = "keyword")
     private String keyword;
 
-    @ApiModelProperty(value = "页码", name = "pageNum")
+    @ApiModelProperty(value = "页码默认1", name = "pageNum")
     private Integer pageNum = 1;
 
-    @ApiModelProperty(value = "每页数量", name = "pageSize")
+    @ApiModelProperty(value = "每页数量默认10", name = "pageSize")
     private Integer pageSize = 10;
 
     @ApiModelProperty(value = "城市id", name = "cityId")

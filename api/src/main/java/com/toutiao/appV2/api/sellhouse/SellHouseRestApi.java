@@ -1,24 +1,22 @@
 package com.toutiao.appV2.api.sellhouse;
 
-import com.toutiao.app.api.chance.request.homepage.UserFavoriteConditionRequest;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.appV2.model.sellhouse.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
  * Created by wk on 2018/11/16.
  */
-@Api(value = "SellHouseRestApi", description = "二手房房源接口")
+@Api(value = "SellHouseRestApi", description = "二手房")
 public interface SellHouseRestApi {
 
     @ApiOperation(value = "消息推送二手房列表信息", nickname = "querySellHouseByHouseId", notes = "", response = MessageSellHouseDo.class, responseContainer = "List", tags = {"sell-house-rest-controller",})
@@ -30,7 +28,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/querySellHouseByHouseId",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<List<MessageSellHouseDo>> querySellHouseByHouseId(@NotNull @ApiParam(value = "houseId", required = true) @Valid @RequestParam(value = "houseId", required = true) String houseId);
+    ResponseEntity<List<MessageSellHouseDo>> querySellHouseByHouseId(@ApiParam(value = "houseId", required = true) @RequestParam(value = "houseId", required = false) String houseId);
 
     @ApiOperation(value = "二手房房源详情", nickname = "getSellHouseByHouseId", notes = "", response = SellHouseDetailsResponse.class, tags = {"sell-house-rest-controller",})
     @ApiResponses(value = {
@@ -41,7 +39,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getSellHouseByHouseId",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SellHouseDetailsResponse> getSellHouseByHouseId(@ApiParam(value = "sellHouseDerailsRequest", required = true) @Validated SellHouseDetailsRequest sellHouseDerailsRequest);
+    ResponseEntity<SellHouseDetailsResponse> getSellHouseByHouseId(@ApiParam(value = "sellHouseDerailsRequest", required = true) @Valid SellHouseDetailsRequest sellHouseDerailsRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "认领二手房房源经纪人", nickname = "getAgentBySellHouseId", notes = "", response = AgentsBySellHouseResponse.class, tags = {"sell-house-rest-controller",})
     @ApiResponses(value = {
@@ -52,7 +50,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getAgentBySellHouseId",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<AgentsBySellHouseResponse> getAgentBySellHouseId(@ApiParam(value = "agentSellHouseRequest", required = true) @Validated AgentSellHouseRequest agentSellHouseRequest);
+    ResponseEntity<AgentsBySellHouseResponse> getAgentBySellHouseId(@ApiParam(value = "agentSellHouseRequest", required = true) @Valid AgentSellHouseRequest agentSellHouseRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房房源默认列表", nickname = "getSellHouseByChoose", notes = "", response = SellHouseResponse.class, tags = {"sell-house-rest-controller",})
     @ApiResponses(value = {
@@ -63,7 +61,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getSellHouseByChoose",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SellHouseResponse> getSellHouseByChoose(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest);
+    ResponseEntity<SellHouseResponse> getSellHouseByChoose(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房房源默认列表V1", nickname = "getSellHouseByChooseV1", notes = "", response = SellHouseResponse.class, tags = {"sell-house-rest-controller",})
     @ApiResponses(value = {
@@ -74,7 +72,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getSellHouseByChooseV1",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SellHouseResponse> getSellHouseByChooseV1(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Validated UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<SellHouseResponse> getSellHouseByChooseV1(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房默认列表推荐（广告）", nickname = "getRecommendSellHouse", notes = "", response = SellHouseResponse.class, tags = {"sell-house-rest-controller",})
     @ApiResponses(value = {
@@ -87,7 +85,7 @@ public interface SellHouseRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<SellHouseResponse> getRecommendSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Validated @RequestBody SellHouseRequest sellHouseRequest);
+    ResponseEntity<SellHouseResponse> getRecommendSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房搜索结果列表", nickname = "getSellHouseList", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"sell-house-rest-controller",})
     @ApiResponses(value = {
@@ -98,7 +96,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getSellHouseList",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SellHouseSearchDomainResponse> getSellHouseList(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest);
+    ResponseEntity<SellHouseSearchDomainResponse> getSellHouseList(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "逢出必抢专题页", nickname = "getBeSureToSnatchList", notes = "", response = SellHouseBeSureToSnatchResponse.class, tags = {"sell-house-rest-controller",})
     @ApiResponses(value = {
@@ -109,7 +107,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getBeSureToSnatchList",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Validated SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest);
+    ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"sell-house-rest-controller",})
     @ApiResponses(value = {
@@ -120,7 +118,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getRecommendEsf5",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Validated RecommendEsf5Request recommendEsf5Request);
+    ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult);
 
 
 }

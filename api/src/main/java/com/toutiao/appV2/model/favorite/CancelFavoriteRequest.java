@@ -22,7 +22,6 @@ public class CancelFavoriteRequest {
     private Integer userId;
 
     @ApiModelProperty(value = "小区id", name = "villageId", required = true)
-    @NotNull(message = "缺少小区id")
     private Integer villageId;
 
 }
