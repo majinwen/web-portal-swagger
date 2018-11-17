@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:37:50.619Z")
 
-@Api(value = "SuggestRestApi", description = "SuggestRestApi")
+@Api(value = "搜索联想词", description = "搜索联想词")
 public interface SuggestRestApi {
 
     @ApiOperation(value = "搜索联想词提示", nickname = "getSuggestByKeyword", notes = "", response = SuggestResponse.class, tags={ "suggest", })

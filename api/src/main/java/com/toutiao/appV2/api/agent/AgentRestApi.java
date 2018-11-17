@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:08:16.328Z")
 
-@Api(value = "AgentRestApi", description = "获取经纪人API")
+@Api(value = "获取经纪人API", description = "获取经纪人API")
 public interface AgentRestApi {
 
     @ApiOperation(value = "获取经纪人信息", nickname = "getAgentInfoByUserId", notes = "", response = AgentResponse.class, tags={ "agent", })
