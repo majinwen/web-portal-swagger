@@ -38,10 +38,10 @@ public class NewHouseAddFavoriteRequest {
     private String houseMinArea;
 
     @ApiModelProperty(value = "是否删除", name = "isDel")
-    private Integer isDel;
+    private Short isDel;
 
     @ApiModelProperty(value = "状态", name = "status")
-    private Integer status;
+    private Short status;
 
     @ApiModelProperty(value = "总价", name = "totalPrice", required = true)
     @NotNull(message = "总价不能为空")

@@ -17,11 +17,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -46,10 +49,20 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<NewHouseFavoriteListResponse> getNewHouseFavoriteByUserId(@ApiParam(value = "newHouseFavoriteListRequest", required = true) @Validated NewHouseFavoriteListRequest newHouseFavoriteListRequest) {
+    public ResponseEntity<NewHouseFavoriteListResponse> getNewHouseFavoriteByUserId(@ApiParam(value = "newHouseFavoriteListRequest", required = true) @Valid NewHouseFavoriteListRequest newHouseFavoriteListRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(newHouseFavoriteListRequest));
+
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -77,10 +90,19 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Validated NewHouseIsFavoriteRequest newHouseIsFavoriteRequest) {
+    public ResponseEntity<Boolean> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Valid NewHouseIsFavoriteRequest newHouseIsFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(newHouseIsFavoriteRequest));
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -106,10 +128,19 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Validated @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest) {
+    public ResponseEntity<String> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(newHouseAddFavoriteRequest));
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -143,10 +174,19 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Validated @RequestBody CancelFavoriteRequest cancelFavoriteRequest) {
+    public ResponseEntity<String> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(cancelFavoriteRequest));
+        if (bindingResult.hasErrors()) {
+            List<FieldError> allErrors = bindingResult.getFieldErrors();
+            StringBuilder sb = new StringBuilder();
+            allErrors.forEach(error -> {
+                sb.append(error.getDefaultMessage() + ";");
+            });
+            log.error("参数校验错误:{}", sb);
+            throw new IllegalArgumentException(sb.toString());
+        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
