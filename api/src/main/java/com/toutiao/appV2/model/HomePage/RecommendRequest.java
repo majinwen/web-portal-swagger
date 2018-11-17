@@ -19,12 +19,15 @@ import javax.validation.constraints.*;
 
 public class RecommendRequest   {
   @JsonProperty("beginPrice")
+  @ApiModelProperty(value = "起始价格", name = "beginPrice", required = false)
   private Double beginPrice = null;
 
   @JsonProperty("endPrice")
+  @ApiModelProperty(value = "结束价格", name = "endPrice", required = false)
   private Double endPrice = null;
 
   @JsonProperty("districtId")
+  @ApiModelProperty(value = "区域id", name = "districtId", required = false)
   @Valid
   private List<Integer> districtId = null;
 

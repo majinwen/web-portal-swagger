@@ -19,32 +19,41 @@ import javax.validation.constraints.*;
 
 public class UserFavoriteConditionRequest   {
   @JsonProperty("beginPrice")
+  @ApiModelProperty(value = "起始价格", name = "beginPrice", required = false)
   private Double beginPrice = null;
 
   @JsonProperty("city")
+  @ApiModelProperty(value = "城市", name = "city", required = false)
   private String city = null;
 
   @JsonProperty("districtId")
+  @ApiModelProperty(value = "区域id", name = "districtId", required = false)
   @Valid
   private List<String> districtId = null;
 
   @JsonProperty("endPrice")
+  @ApiModelProperty(value = "结束价格", name = "endPrice", required = false)
   private Double endPrice = null;
 
   @JsonProperty("flag")
+  @ApiModelProperty(value = "标志id", name = "flag", required = false)
   private Integer flag = null;
 
   @JsonProperty("layoutId")
   @Valid
+  @ApiModelProperty(value = "户型集", name = "layoutId", required = false)
   private List<String> layoutId = null;
 
   @JsonProperty("pageNum")
-  private Integer pageNum = null;
+  @ApiModelProperty(value = "页数", name = "pageNum", required = false)
+  private Integer pageNum = 1;
 
   @JsonProperty("pageSize")
-  private Integer pageSize = null;
+  @ApiModelProperty(value = "每页数量", name = "pageSize", required = false)
+  private Integer pageSize = 10;
 
   @JsonProperty("userId")
+  @ApiModelProperty(value = "用户id", name = "userId", required = false)
   private Integer userId = null;
 
   public UserFavoriteConditionRequest beginPrice(Double beginPrice) {

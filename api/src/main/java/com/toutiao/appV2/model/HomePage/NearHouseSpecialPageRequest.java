@@ -17,21 +17,27 @@ import javax.validation.constraints.*;
 
 public class NearHouseSpecialPageRequest   {
   @JsonProperty("plotId")
+  @ApiModelProperty(value = "小区(必传)", name = "plotId", required = true)
   private Integer plotId = null;
 
   @JsonProperty("pageNum")
-  private Integer pageNum = null;
+  @ApiModelProperty(value = "页数", name = "pageNum", required = false)
+  private Integer pageNum = 1;
 
   @JsonProperty("size")
-  private Integer size = null;
+  @ApiModelProperty(value = "每页数量", name = "size", required = false)
+  private Integer size = 10;
 
   @JsonProperty("cityId")
+  @ApiModelProperty(value = "城市id(必传)", name = "cityId", required = true)
   private Integer cityId = null;
 
   @JsonProperty("lat")
+  @ApiModelProperty(value = "纬度(必传)", name = "lat", required = true)
   private Double lat = null;
 
   @JsonProperty("lon")
+  @ApiModelProperty(value = "经度(必传)", name = "lon", required = true)
   private Double lon = null;
 
   public NearHouseSpecialPageRequest plotId(Integer plotId) {

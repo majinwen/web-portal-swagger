@@ -19,64 +19,83 @@ import javax.validation.constraints.*;
 
 public class RecommendEsf5Request   {
   @JsonProperty("areaId")
+  @ApiModelProperty(value = "商圈Id(必传)", name = "areaId", required = true)
   private Integer areaId = null;
 
   @JsonProperty("beginArea")
+  @ApiModelProperty(value = "最小建筑面积(必传)", name = "beginArea", required = true)
   private Double beginArea = null;
 
   @JsonProperty("beginPrice")
+  @ApiModelProperty(value = "起始价格(必传)", name = "beginPrice", required = true)
   private Double beginPrice = null;
 
   @JsonProperty("cityId")
+  @ApiModelProperty(value = "城市id(必传)", name = "cityId", required = true)
   private Integer cityId = null;
 
   @JsonProperty("districtId")
+  @ApiModelProperty(value = "区域id", name = "districtId", required = false)
   private Integer districtId = null;
 
   @JsonProperty("districtIds")
+  @ApiModelProperty(value = "区域id集", name = "districtId", required = false)
   @Valid
   private List<Integer> districtIds = null;
 
   @JsonProperty("endArea")
+  @ApiModelProperty(value = "最大建筑面积(必传)", name = "endArea", required = true)
   private Double endArea = null;
 
   @JsonProperty("endPrice")
+  @ApiModelProperty(value = "结束价格(必传)", name = "endPrice", required = true)
   private Double endPrice = null;
 
   @JsonProperty("forwardId")
+  @ApiModelProperty(value = "朝向集", name = "forwardId", required = false)
   @Valid
   private List<Integer> forwardId = null;
 
   @JsonProperty("houseYearId")
+  @ApiModelProperty(value = "楼龄", name = "houseYearId", required = false)
   private String houseYearId = null;
 
   @JsonProperty("keyword")
+  @ApiModelProperty(value = "关键字", name = "keyword", required = false)
   private String keyword = null;
 
   @JsonProperty("labelId")
   @Valid
+  @ApiModelProperty(value = "标签集", name = "labelId", required = false)
   private List<Integer> labelId = null;
 
   @JsonProperty("layoutId")
   @Valid
+  @ApiModelProperty(value = "户型集", name = "layoutId", required = false)
   private List<Integer> layoutId = null;
 
   @JsonProperty("pageNum")
-  private Integer pageNum = null;
+  @ApiModelProperty(value = "页数", name = "pageNum", required = false)
+  private Integer pageNum = 1;
 
   @JsonProperty("pageSize")
-  private Integer pageSize = null;
+  @ApiModelProperty(value = "每页数量", name = "pageSize", required = false)
+  private Integer pageSize = 10;
 
   @JsonProperty("sort")
-  private Integer sort = null;
+  @ApiModelProperty(value = "排序", name = "sort", required = false)
+  private Integer sort = 1;
 
   @JsonProperty("sortFile")
-  private String sortFile = null;
+  @ApiModelProperty(value = "排序字段", name = "sortFile", required = false)
+  private String sortFile = "recommendHouseTopicSort";
 
   @JsonProperty("subwayLineId")
+  @ApiModelProperty(value = "地铁线id", name = "subwayLineId", required = false)
   private Integer subwayLineId = null;
 
   @JsonProperty("subwayStationId")
+  @ApiModelProperty(value = "地铁站id", name = "subwayStationId", required = false)
   private Integer subwayStationId = null;
 
   public RecommendEsf5Request areaId(Integer areaId) {

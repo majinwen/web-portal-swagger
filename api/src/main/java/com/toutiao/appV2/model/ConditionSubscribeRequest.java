@@ -20,63 +20,82 @@ import javax.validation.constraints.*;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:27:32.320Z")
-
+@ApiModel(value = "ConditionSubscribeRequest", description = "条件订阅参数")
 public class ConditionSubscribeRequest   {
     @JsonProperty("areaId")
+    @ApiModelProperty(value = "商圈Id", name = "areaId")
     private String areaId = null;
 
     @JsonProperty("areaName")
+    @ApiModelProperty(value = "商圈名称", name = "areaName")
     private String areaName = null;
 
     @JsonProperty("beginArea")
+    @ApiModelProperty(value = "最小建筑面积", name = "beginArea", required = false)
     private Double beginArea = null;
 
     @JsonProperty("beginPrice")
+    @ApiModelProperty(value = "起始价格", name = "beginPrice", required = false)
     private Integer beginPrice = null;
 
     @JsonProperty("districtId")
+    @ApiModelProperty(value = "区域id", name = "districtId", required = false)
     private String districtId = null;
 
     @JsonProperty("districtName")
+    @ApiModelProperty(value = "区域名称", name = "districtName", required = false)
     private String districtName = null;
 
     @JsonProperty("endArea")
+    @ApiModelProperty(value = "最大建筑面积", name = "endArea", required = false)
     private Double endArea = null;
 
     @JsonProperty("endPrice")
+    @ApiModelProperty(value = "结束价格", name = "endPrice", required = false)
     private Integer endPrice = null;
 
     @JsonProperty("forwardId")
+    @ApiModelProperty(value = "朝向", name = "forwardId", required = false)
     private String forwardId = null;
 
     @JsonProperty("houseYearId")
+    @ApiModelProperty(value = "楼龄[0-5]", name = "houseYearId", required = false)
     private String houseYearId = null;
 
     @JsonProperty("isCutPrice")
+    @ApiModelProperty(value = "标签-降价房", name = "isCutPrice", required = false)
     private Integer isCutPrice = null;
 
     @JsonProperty("isLowPrice")
+    @ApiModelProperty(value = "标签-抢手", name = "isLowPrice", required = false)
     private Integer isLowPrice = null;
 
     @JsonProperty("isMustRob")
+    @ApiModelProperty(value = "标签-逢出毕抢", name = "isMustRob", required = false)
     private Integer isMustRob = null;
 
     @JsonProperty("labelId")
+    @ApiModelProperty(value = "标签", name = "labelId", required = false)
     private String labelId = null;
 
     @JsonProperty("layoutId")
+    @ApiModelProperty(value = "户型", name = "layoutId", required = false)
     private String layoutId = null;
 
     @JsonProperty("subwayLineId")
+    @ApiModelProperty(value = "地铁线id", name = "subwayLineId", required = false)
     private String subwayLineId = null;
 
     @JsonProperty("subwayLineName")
+    @ApiModelProperty(value = "地铁线", name = "subwayLineName", required = false)
     private String subwayLineName = null;
 
     @JsonProperty("subwayStationId")
+    @ApiModelProperty(value = "地铁站id", name = "subwayStationId", required = false)
     private String subwayStationId = null;
 
     @JsonProperty("subwayStationName")
+    @ApiModelProperty(value = "地铁站", name = "subwayStationName", required = false)
     private String subwayStationName = null;
 
     public ConditionSubscribeRequest areaId(String areaId) {

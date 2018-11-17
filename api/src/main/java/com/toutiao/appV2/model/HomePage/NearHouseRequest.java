@@ -17,12 +17,15 @@ import javax.validation.constraints.*;
 
 public class NearHouseRequest   {
   @JsonProperty("lat")
+  @ApiModelProperty(value = "纬度(必传)", name = "lat", required = true)
   private Double lat = null;
 
   @JsonProperty("lon")
+  @ApiModelProperty(value = "经度(必传)", name = "lon", required = true)
   private Double lon = null;
 
   @JsonProperty("cityId")
+  @ApiModelProperty(value = "城市id(必传)", name = "cityId", required = true)
   private Integer cityId = null;
 
   public NearHouseRequest lat(Double lat) {

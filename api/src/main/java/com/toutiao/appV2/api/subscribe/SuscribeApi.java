@@ -30,7 +30,7 @@ import javax.validation.constraints.NotNull;
 @Api(value = "SuscribeApi", description = "查询订阅相关接口")
 public interface SuscribeApi {
 
-    @ApiOperation(value = "删除订阅信息", nickname = "deleteConditionSubscribe", notes = "", response = Integer.class, tags={ "condition-subscribe-rest-controller", })
+    @ApiOperation(value = "删除订阅信息", nickname = "deleteConditionSubscribe", notes = "", response = Integer.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Integer.class),
             @ApiResponse(code = 201, message = "Created", response = Integer.class),
@@ -44,7 +44,7 @@ public interface SuscribeApi {
     ResponseEntity<Integer> deleteConditionSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
 
 
-    @ApiOperation(value = "删除订阅信息", nickname = "deleteSubscribe", notes = "", response = Integer.class, tags={ "subscribe-rest-controller", })
+    @ApiOperation(value = "删除订阅信息", nickname = "deleteSubscribe", notes = "", response = Integer.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Integer.class),
             @ApiResponse(code = 201, message = "Created", response = Integer.class),
@@ -58,7 +58,7 @@ public interface SuscribeApi {
     ResponseEntity<Integer> deleteSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
 
 
-    @ApiOperation(value = "用户获取订阅信息列表", nickname = "listConditionSubscribe", notes = "", response = UserSubscribeList.class, tags={ "condition-subscribe-rest-controller", })
+    @ApiOperation(value = "用户获取订阅信息列表", nickname = "listConditionSubscribe", notes = "", response = UserSubscribeList.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserSubscribeList.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -71,7 +71,7 @@ public interface SuscribeApi {
     ResponseEntity<UserSubscribeList> listConditionSubscribe();
 
 
-    @ApiOperation(value = "用户获取订阅信息列表", nickname = "listIndexSubscribe", notes = "", response = UserSubscribeListDoList.class, tags={ "subscribe-rest-controller", })
+    @ApiOperation(value = "用户获取订阅信息列表", nickname = "listIndexSubscribe", notes = "", response = UserSubscribeListDoList.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserSubscribeListDoList.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -84,7 +84,7 @@ public interface SuscribeApi {
     ResponseEntity<UserSubscribeListDoList> listIndexSubscribe();
 
 
-    @ApiOperation(value = "用户获取订阅信息列表", nickname = "listSubscribe", notes = "", response = UserSubscribeListDoList.class, tags={ "subscribe-rest-controller", })
+    @ApiOperation(value = "用户获取订阅信息列表", nickname = "listSubscribe", notes = "", response = UserSubscribeListDoList.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserSubscribeListDoList.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -97,7 +97,7 @@ public interface SuscribeApi {
     ResponseEntity<UserSubscribeListDoList> listSubscribe();
 
 
-    @ApiOperation(value = "新增条件订阅", nickname = "saveConditionSubscribe", notes = "", response = UserSubscribe.class, tags={ "condition-subscribe-rest-controller", })
+    @ApiOperation(value = "新增条件订阅", nickname = "saveConditionSubscribe", notes = "", response = UserSubscribe.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
             @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
@@ -111,7 +111,7 @@ public interface SuscribeApi {
     ResponseEntity<UserSubscribe> saveConditionSubscribe(@ApiParam(value = "conditionSubscribeRequest", required = true) @Valid @RequestBody ConditionSubscribeRequest conditionSubscribeRequest);
 
 
-    @ApiOperation(value = "新增订阅信息", nickname = "saveSubscribe", notes = "", response = UserSubscribe.class, tags={ "subscribe-rest-controller", })
+    @ApiOperation(value = "新增订阅信息", nickname = "saveSubscribe", notes = "", response = UserSubscribe.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
             @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
@@ -125,7 +125,7 @@ public interface SuscribeApi {
     ResponseEntity<UserSubscribe> saveSubscribe(@ApiParam(value = "userSubscribeDetailDo", required = true) @Valid @RequestBody UserSubscribeDetailDo userSubscribeDetailDo);
 
 
-    @ApiOperation(value = "判断订阅信息是否存在", nickname = "selectByUserConditionSubscribeMap", notes = "", response = UserSubscribe.class, tags={ "condition-subscribe-rest-controller", })
+    @ApiOperation(value = "判断订阅信息是否存在", nickname = "selectByUserConditionSubscribeMap", notes = "", response = UserSubscribe.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
             @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
@@ -136,6 +136,6 @@ public interface SuscribeApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<UserSubscribe> selectByUserConditionSubscribeMap(@ApiParam(value = "conditionSubscribeRequest", required = true) @Valid @RequestBody ConditionSubscribeRequest conditionSubscribeRequest);
+    ResponseEntity<UserSubscribe> selectByUserConditionSubscribeMap(@ApiParam(value = "ConditionSubscribeRequest", required = true) @Valid ConditionSubscribeRequest conditionSubscribeRequest);
 
 }
