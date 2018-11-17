@@ -1,3 +1,4 @@
+/*
 package com.toutiao.appV2.apiimpl.newhouse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,9 +18,11 @@ import org.springframework.stereotype.Controller;
 
 import javax.servlet.http.HttpServletRequest;
 
+*/
 /**
  * @author zym
- */
+ *//*
+
 @Controller
 public class NewHouseTopicApiController implements NewHouseTopicApi {
 
@@ -58,3 +61,4 @@ public class NewHouseTopicApiController implements NewHouseTopicApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }
+*/

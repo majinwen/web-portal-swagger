@@ -1,7 +1,9 @@
 package com.toutiao.web.service.plot.impl;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -737,20 +739,18 @@ public class PlotServiceImpl implements PlotService {
     }
 
     @Override
-    public Map queryPlotByPlotId(String PlotId) {
-        try{
-            TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termQuery("id",PlotId));
-            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"photo","rc","id","avgPrice"}, null).execute().actionGet();
-            SearchHit[] hits = searchResponse.getHits().getHits();
-            if (hits.length>0){
-                Map source = hits[0].getSource();
-                return source;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+    public PlotDetailsDo queryPlotByPlotId(String PlotId) {
+        TransportClient client = esClientTools.init();
+        SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("id",PlotId));
+        SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"photo","rc","id","avgPrice"}, null).execute().actionGet();
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if (hits.length>0){
+            String sourceAsString = hits[0].getSourceAsString();
+            PlotDetailsDo plotDetailsDo = JSON.parseObject(sourceAsString, PlotDetailsDo.class);
+            Map source = hits[0].getSource();
+            return plotDetailsDo;
         }
         return null;
     }

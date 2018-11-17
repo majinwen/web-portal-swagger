@@ -1,3 +1,4 @@
+/*
 package com.toutiao.appV2.apiimpl.advertisement;
 
 import com.alibaba.fastjson.JSON;
@@ -9,8 +10,7 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.service.advertisement.AdNewHouseRestService;
 import com.toutiao.appV2.api.advertisement.AdNewHouseApi;
-import com.toutiao.appV2.apiimpl.activity.NewHouseActivityApiController;
-import com.toutiao.appV2.model.advertisement.AdRecommendNewRespose;
+import com.toutiao.appV2.model.newhouse.AdRecommendNewRespose;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.util.city.CityUtils;
 import org.slf4j.Logger;
@@ -25,15 +25,17 @@ import org.springframework.validation.annotation.Validated;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+*/
 /**
  * @author : zym
  * @date : 2018/11/16 18:52
  * @desc :
- */
+ *//*
+
 @Controller
 public class AdNewHouseApiController implements AdNewHouseApi {
 
-    private static final Logger log = LoggerFactory.getLogger(NewHouseActivityApiController.class);
+    private static final Logger log = LoggerFactory.getLogger(AdNewHouseApiController.class);
 
     private final HttpServletRequest request;
 
@@ -83,3 +85,4 @@ public class AdNewHouseApiController implements AdNewHouseApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }
+*/

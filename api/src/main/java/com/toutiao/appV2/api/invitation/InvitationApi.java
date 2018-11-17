@@ -5,10 +5,7 @@
  */
 package com.toutiao.appV2.api.invitation;
 
-import com.toutiao.appV2.model.invitation.GetInviteHistoryRequest;
-import com.toutiao.appV2.model.invitation.InvitationRequest;
-import com.toutiao.appV2.model.invitation.GetCodeInfoListResponse;
-import com.toutiao.appV2.model.invitation.InvitationResponse;
+import com.toutiao.appV2.model.invitation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -20,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author zym
  */
-@Api(value = "InvitationApi", description = "邀请码控制器")
+@Api(value = "InvitationApi", description = "邀请码接口Api")
 public interface InvitationApi {
 
     @ApiOperation(value = "根据邀请码获取邀请码信息", nickname = "getCodeInfo", notes = "根据邀请码获取邀请码信息",
@@ -51,5 +48,50 @@ public interface InvitationApi {
         method = RequestMethod.GET)
 
     ResponseEntity<InvitationResponse> getInvitation(InvitationRequest invitationRequest);
+
+    @ApiOperation(value = "根据邀请码获取邀请记录列表", nickname = "getInviteHistoryList", notes = "根据邀请码获取邀请记录列表",
+            response = GetInviteHistoryListResponse.class, tags={ "invitation-api-controller", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = GetInviteHistoryListResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/invitation/getInviteHistoryList",
+            produces = { "application/json" },
+//        consumes = { "application/json" },
+            method = RequestMethod.GET)
+
+    ResponseEntity<GetInviteHistoryListResponse> getInviteHistoryList(GetInviteHistoryRequest getInviteHistoryRequest);
+
+
+    @ApiOperation(value = "获取三级邀请记录列表", nickname = "getSuperInviteHistory", notes = "获取三级邀请记录列表",
+            response = GetSuperInviteHistoryResponse.class, tags={ "invitation-api-controller", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = GetSuperInviteHistoryResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/invitation/getSuperInviteHistory",
+            produces = { "application/json" },
+//        consumes = { "application/json" },
+            method = RequestMethod.GET)
+
+    ResponseEntity<GetSuperInviteHistoryResponse> getSuperInviteHistory(SuperInviteHistoryRequest superInviteHistoryRequest);
+
+
+    @ApiOperation(value = "保存邀请记录", nickname = "saveInviteHistory", notes = "保存邀请记录",
+            tags={"invitation-api-controller", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = Object.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/invitation/saveInviteHistory",
+            produces = { "application/json" },
+//        consumes = { "application/json" },
+            method = RequestMethod.POST)
+
+    ResponseEntity<Object> saveInviteHistory(InviteHistoryRequest inviteHistoryRequest);
 
 }

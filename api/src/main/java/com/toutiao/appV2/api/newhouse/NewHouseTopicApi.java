@@ -1,3 +1,4 @@
+/*
 package com.toutiao.appV2.api.newhouse;
 
 import com.toutiao.app.api.chance.request.newhouse.NewHouseListRequest;
@@ -10,9 +11,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+*/
 /**
  * @author zym
- */
+ *//*
+
 @Api(value = "NewHouseTopicApi", description = "五环最美新房控制层")
 public interface NewHouseTopicApi {
     @ApiOperation(value = "五环最美新房专题", nickname = "getNewHouseTopic", notes = "五环最美新房专题",
@@ -28,3 +31,4 @@ public interface NewHouseTopicApi {
             method = RequestMethod.GET)
     ResponseEntity<NewHouseListDomainResponse> getNewHouseTopic(NewHouseListRequest newHouseListRequest);
 }
+*/

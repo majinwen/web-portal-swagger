@@ -1,3 +1,4 @@
+/*
 package com.toutiao.appV2.api.newhouse;
 
 import com.toutiao.app.api.chance.request.newhouse.NewHouseLayoutRequest;
@@ -11,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+*/
 /**
  * @author zym
- */
+ *//*
+
 @Api(value = "NewHouseLayoutApi", description = "新房户型控制层")
 public interface NewHouseLayoutApi {
     @ApiOperation(value = "获取楼盘下户型数", nickname = "getLayoutCountByNewHouseId", notes = "获取楼盘下户型数",
@@ -43,3 +46,4 @@ public interface NewHouseLayoutApi {
             method = RequestMethod.GET)
     ResponseEntity<GetNewHouseLayoutResponse> getNewHouseLayoutByNewCode(NewHouseLayoutRequest newHouseLayoutRequest);
 }
+*/

@@ -4,9 +4,11 @@ import com.toutiao.web.dao.BaseDao;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface IntelligenceFhTdMapper extends BaseDao {
     int insert(IntelligenceFhTd record);
 
