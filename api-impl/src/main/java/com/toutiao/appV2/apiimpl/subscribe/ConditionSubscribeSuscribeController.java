@@ -1,17 +1,15 @@
-package com.toutiao.web.apiimpl.rest.subscribe;
+package com.toutiao.appV2.apiimpl.subscribe;
 
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.subscribe.UserConditionSubscribeDetailDo;
-
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.appV2.api.subscribe.SuscribeApi;
 import com.toutiao.appV2.model.ConditionSubscribeRequest;
 import com.toutiao.appV2.model.UserSubscribeList;
 import com.toutiao.appV2.model.UserSubscribeListDoList;
-import com.toutiao.web.apiimpl.rest.subscribe.api.RestApi;
-import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
@@ -25,13 +23,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -43,16 +40,16 @@ import java.util.Arrays;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:27:32.320Z")
 @Controller
-public class ConditionSubscribeRestController  implements RestApi {
+public class ConditionSubscribeSuscribeController implements SuscribeApi {
 
-    private static final Logger log = LoggerFactory.getLogger(ConditionSubscribeRestController.class);
+    private static final Logger log = LoggerFactory.getLogger(ConditionSubscribeSuscribeController.class);
 
     private final ObjectMapper objectMapper;
 
     private final HttpServletRequest request;
 
-    @org.springframework.beans.factory.annotation.Autowired
-    public ConditionSubscribeRestController(ObjectMapper objectMapper, HttpServletRequest request) {
+    @Autowired
+    public ConditionSubscribeSuscribeController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
