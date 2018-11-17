@@ -1,8 +1,9 @@
+/*
 package com.toutiao.appV2.api.advertisement;
 
 import com.toutiao.app.api.chance.request.advertisement.AdNewHouse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
-import com.toutiao.appV2.model.advertisement.AdRecommendNewRespose;
+import com.toutiao.appV2.model.newhouse.AdRecommendNewRespose;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -44,3 +45,4 @@ public interface AdNewHouseApi {
     ResponseEntity<AdRecommendNewRespose> getAdRecommendNewHouseByIds(@Validated AdNewHouse adNewHouse);
 
 }
+*/

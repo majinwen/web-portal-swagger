@@ -1,4 +1,4 @@
-package com.toutiao.appV2.model.advertisement;
+package com.toutiao.appV2.model.newhouse;
 
 import com.toutiao.app.api.chance.response.homepage.HomePageNewHouseResponse;
 import lombok.Builder;

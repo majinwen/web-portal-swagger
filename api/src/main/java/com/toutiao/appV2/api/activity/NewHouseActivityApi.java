@@ -1,9 +1,10 @@
+/*
 package com.toutiao.appV2.api.activity;
 
 import com.toutiao.app.api.chance.request.activity.NewHouseActivityRequest;
 import com.toutiao.app.api.chance.response.user.UserInfoActivityResponse;
 import com.toutiao.app.domain.activity.ActivityStatisticsDo;
-import com.toutiao.appV2.model.activity.ActivityMsgResponse;
+import com.toutiao.appV2.model.newhouse.ActivityMsgResponse;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -16,9 +17,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+*/
 /**
  * @author zym
- */
+ *//*
+
 @Api(value = "NewHouseActivityApi", description = "新房活动控制层")
 public interface NewHouseActivityApi {
 
@@ -30,7 +33,7 @@ public interface NewHouseActivityApi {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/activity/newHouse/isAttendedActivity",
+    @RequestMapping(value = "/rest/activity/isAttendedActivity",
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
@@ -44,7 +47,7 @@ public interface NewHouseActivityApi {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/activity/newHouse/queryActivityMsg",
+    @RequestMapping(value = "/rest/activity/queryActivityMsg",
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
@@ -59,7 +62,7 @@ public interface NewHouseActivityApi {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/activity/newHouse/queryActivityMsgCount",
+    @RequestMapping(value = "/rest/activity/queryActivityMsgCount",
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
@@ -73,7 +76,7 @@ public interface NewHouseActivityApi {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/activity/newHouse/queryUserActivityMsg",
+    @RequestMapping(value = "/rest/activity/queryUserActivityMsg",
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
@@ -87,7 +90,7 @@ public interface NewHouseActivityApi {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/activity/newHouse/queryUserMsg",
+    @RequestMapping(value = "/rest/activity/queryUserMsg",
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
@@ -102,10 +105,11 @@ public interface NewHouseActivityApi {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/activity/newHouse/saveUserActivityMsg",
+    @RequestMapping(value = "/rest/activity/saveUserActivityMsg",
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
     ResponseEntity<NashResult> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest);
 
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package com.toutiao.appV2.apiimpl.invitation;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,9 +27,11 @@ import org.springframework.validation.annotation.Validated;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+*/
 /**
  * @author zym
- */
+ *//*
+
 @Controller
 public class InviteHistoryApiController implements InviteHistoryApi{
 
@@ -123,3 +126,4 @@ public class InviteHistoryApiController implements InviteHistoryApi{
         return new ResponseEntity<GetSuperInviteHistoryResponse>(HttpStatus.NOT_IMPLEMENTED);
     }
 }
+*/

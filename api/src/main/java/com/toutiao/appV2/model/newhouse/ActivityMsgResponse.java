@@ -1,4 +1,4 @@
-package com.toutiao.appV2.model.activity;
+package com.toutiao.appV2.model.newhouse;
 
 import com.toutiao.app.domain.activity.UserNewBuildingActivityDo;
 import lombok.Builder;
