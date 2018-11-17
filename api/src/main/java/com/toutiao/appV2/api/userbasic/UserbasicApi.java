@@ -28,7 +28,7 @@ import java.util.Optional;
 public interface UserbasicApi {
 
     @ApiOperation(value = "获取用户缓存", nickname = "getUserCache", notes = "", response = UserLoginResponse.class,
-            tags = {"userbasic-api-controller",})
+            tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserLoginResponse.class),
             @ApiResponse(code = 404, message = "未找到用户")})
@@ -40,7 +40,7 @@ public interface UserbasicApi {
     ResponseEntity<UserLoginResponse> getUserCache();
 
 
-    @ApiOperation(value = "登出", nickname = "logout", notes = "", response = String.class, tags = {"userbasic-api-controller",})
+    @ApiOperation(value = "登出", nickname = "logout", notes = "", response = String.class, tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = String.class), @ApiResponse(code = 404, message = "未找到用户")})
     @ApiImplicitParams({
@@ -53,7 +53,7 @@ public interface UserbasicApi {
 
 
     @ApiOperation(value = "查询基本信息", nickname = "queryUserBasic", notes = "", response = UserBasicResponse.class,
-            tags = {"userbasic-api-controller",})
+            tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
             @ApiResponse(code = 404, message = "未找到用户")})
@@ -67,7 +67,7 @@ public interface UserbasicApi {
 
 
     @ApiOperation(value = "通过融云ID获取基本信息", nickname = "queryUserBasicByRcId", notes = "",
-            response = UserBasicResponse.class, tags = {"userbasic-api-controller",})
+            response = UserBasicResponse.class, tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
             @ApiResponse(code = 404, message = "未找到用户")
@@ -82,7 +82,7 @@ public interface UserbasicApi {
 
 
     @ApiOperation(value = "更新用户头像", nickname = "updateUserAvatar", notes = "", response = UserBasicResponse.class,
-            tags = {"userbasic-api-controller",})
+            tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),})
     @ApiImplicitParams({
@@ -95,7 +95,7 @@ public interface UserbasicApi {
 
 
     @ApiOperation(value = "用户登录", nickname = "userVerifyCodeLogin", notes = "", response = UserLoginResponse.class,
-            tags = {"userbasic-api-controller",})
+            tags = {"userbasic",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserLoginResponse.class),
             @ApiResponse(code = 404, message = "未找到用户")
@@ -108,7 +108,7 @@ public interface UserbasicApi {
             method = RequestMethod.POST)
     ResponseEntity<UserLoginResponse> userVerifyCodeLogin(@ApiParam(value = "loginRequest", required = true) @Valid @RequestBody UserVerifyCodeRequest loginRequest);
 
-    @ApiOperation(value = "produceImageCode", nickname = "produceImageCode", notes = "", tags={ "userbasic", })
+    @ApiOperation(value = "生成图片验证码", nickname = "produceImageCode", notes = "", tags={ "userbasic", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found") })
@@ -121,7 +121,7 @@ public interface UserbasicApi {
     ResponseEntity<Void> produceImageCode();
 
 
-    @ApiOperation(value = "sendLoginVerifyCode", nickname = "sendLoginVerifyCode", notes = "", response = String.class, tags={ "userbasic", })
+    @ApiOperation(value = "登录时发送手机验证码", nickname = "sendLoginVerifyCode", notes = "", response = String.class, tags={ "userbasic", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = String.class),
             @ApiResponse(code = 404, message = "Not Found") })
@@ -134,7 +134,7 @@ public interface UserbasicApi {
     ResponseEntity<String> sendLoginVerifyCode(@ApiParam(value = "loginVerifyCodeRequest" ,required=true )  @Valid @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest);
 
 
-    @ApiOperation(value = "validateImageCode", nickname = "validateImageCode", notes = "", tags={ "userbasic", })
+    @ApiOperation(value = "验证验证码是否正确", nickname = "validateImageCode", notes = "", tags={ "userbasic", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 404, message = "Not Found") })
