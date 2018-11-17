@@ -7,6 +7,7 @@ import com.toutiao.app.service.sellhouse.SellHouseDetailTopicsService;
 import com.toutiao.appV2.api.sellhouse.SellHouseDetailTopicsRestApi;
 import com.toutiao.appV2.model.sellhouse.SellHouseRequest;
 import com.toutiao.appV2.model.sellhouse.SellHouseResponse;
+import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,9 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getNearbyTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        log.info("调用方法:{}", thisMethodName);
+        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -52,6 +56,7 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
                 BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
                 SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getNearbyTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
                 BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
                 return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
@@ -71,6 +76,9 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getCutPriceTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        log.info("调用方法:{}", thisMethodName);
+        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -79,6 +87,7 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
                 BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
                 SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getCutPriceTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
                 BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
                 return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
@@ -98,6 +107,9 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getLowPriceTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        log.info("调用方法:{}", thisMethodName);
+        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -106,6 +118,7 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
                 BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
                 SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getLowPriceTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
                 BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
                 return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
@@ -118,13 +131,16 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
 
 
     /**
-     * 逢出毕抢
+     * 逢出必抢
      *
      * @param sellHouseRequest
      * @return
      */
     @Override
     public ResponseEntity<SellHouseResponse> getMustRobTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        log.info("调用方法:{}", thisMethodName);
+        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -133,6 +149,7 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
                 BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
                 SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getMustRobTopicsSellHouseDetail(sellHouseDoQuery, CityUtils.getCity());
                 BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
                 return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
@@ -151,6 +168,9 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getAreaRoomTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Validated SellHouseRequest sellHouseRequest) {
+        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        log.info("调用方法:{}", thisMethodName);
+        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -159,6 +179,7 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
                 BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
                 SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getAreaRoomTopicsSellHouseDetail(sellHouseDoQuery, CityUtils.getCity());
                 BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
                 return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);

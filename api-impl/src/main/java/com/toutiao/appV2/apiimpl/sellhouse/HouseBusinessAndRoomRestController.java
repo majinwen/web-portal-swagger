@@ -6,6 +6,7 @@ import com.toutiao.app.service.sellhouse.HouseBusinessAndRoomService;
 import com.toutiao.appV2.api.sellhouse.HouseBusinessAndRoomRestApi;
 import com.toutiao.appV2.model.sellhouse.HouseBusinessAndRoomRequest;
 import com.toutiao.appV2.model.sellhouse.HouseBusinessAndRoomResponse;
+import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +44,9 @@ public class HouseBusinessAndRoomRestController implements HouseBusinessAndRoomR
      */
     @Override
     public ResponseEntity<HouseBusinessAndRoomResponse> getHouseBusinessAndRoomHouses(@ApiParam(value = "houseBusinessAndRoomRequest", required = true) @Validated HouseBusinessAndRoomRequest houseBusinessAndRoomRequest) {
+        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        log.info("调用方法:{}", thisMethodName);
+        log.info("接收参数:{}", JSONUtil.stringfy(houseBusinessAndRoomRequest));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -53,6 +57,7 @@ public class HouseBusinessAndRoomRestController implements HouseBusinessAndRoomR
                         .getHouseBusinessAndRoomHouses(houseBusinessAndRoomDoQuery, CityUtils.getCity());
                 HouseBusinessAndRoomResponse houseBusinessAndRoomResponse = new HouseBusinessAndRoomResponse();
                 BeanUtils.copyProperties(houseBusinessAndRoomHouses, houseBusinessAndRoomResponse);
+                log.info("返回结果集:{}", JSONUtil.stringfy(houseBusinessAndRoomResponse));
                 return new ResponseEntity<HouseBusinessAndRoomResponse>(houseBusinessAndRoomResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);

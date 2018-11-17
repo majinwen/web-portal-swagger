@@ -6,6 +6,7 @@ import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.appV2.api.sellhouse.CutPriceSellHouseRestApi;
 import com.toutiao.appV2.model.sellhouse.MustBuyShellHouseRequest;
 import com.toutiao.appV2.model.sellhouse.MustBuyShellHouseResponse;
+import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +47,9 @@ public class CutPriceSellHouseRestController implements CutPriceSellHouseRestApi
      */
     @Override
     public ResponseEntity<MustBuyShellHouseResponse> getCutPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Validated MustBuyShellHouseRequest mustBuyShellHouseRequest) {
+        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+        log.info("调用方法:{}", thisMethodName);
+        log.info("接收参数:{}", JSONUtil.stringfy(mustBuyShellHouseRequest));
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -54,6 +58,7 @@ public class CutPriceSellHouseRestController implements CutPriceSellHouseRestApi
                 MustBuyShellHouseDomain cutPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, 1, CityUtils.getCity());
                 MustBuyShellHouseResponse mustBuyShellHouseResponse = new MustBuyShellHouseResponse();
                 BeanUtils.copyProperties(cutPriceShellHouses, mustBuyShellHouseResponse);
+                log.info("返回结果集:{}", JSONUtil.stringfy(mustBuyShellHouseResponse));
                 return new ResponseEntity<MustBuyShellHouseResponse>(mustBuyShellHouseResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
