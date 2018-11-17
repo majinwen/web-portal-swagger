@@ -5,6 +5,7 @@
  */
 package com.toutiao.appV2.api.userbasic;
 
+import com.toutiao.appV2.model.userbasic.LoginVerifyCodeRequest;
 import com.toutiao.appV2.model.userbasic.UserBasicResponse;
 import com.toutiao.appV2.model.userbasic.UserLoginResponse;
 import com.toutiao.appV2.model.userbasic.UserVerifyCodeRequest;
@@ -101,5 +102,43 @@ public interface UserbasicApi {
             consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<UserLoginResponse> userVerifyCodeLogin(@ApiParam(value = "loginRequest", required = true) @Valid @RequestBody UserVerifyCodeRequest loginRequest);
+
+    @ApiOperation(value = "produceImageCode", nickname = "produceImageCode", notes = "", tags={ "userbasic", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/imageCode",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<Void> produceImageCode();
+
+
+    @ApiOperation(value = "sendLoginVerifyCode", nickname = "sendLoginVerifyCode", notes = "", response = String.class, tags={ "userbasic", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = String.class),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/sendLoginVerifyCode",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.POST)
+    ResponseEntity<String> sendLoginVerifyCode(@ApiParam(value = "loginVerifyCodeRequest" ,required=true )  @Valid @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest);
+
+
+    @ApiOperation(value = "validateImageCode", nickname = "validateImageCode", notes = "", tags={ "userbasic", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/getCode",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<Void> validateImageCode(@ApiParam(value = "pageCode") @Valid @RequestParam(value = "pageCode", required = false) Optional<String> pageCode);
 
 }

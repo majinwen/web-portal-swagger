@@ -27,13 +27,13 @@ public class PlotsThemeRestController {
 
     @RequestMapping(value = "/getPlotsTheme", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getPlotsTheme(PlotsThemeRequest plotsThemeRequest) {
+    public PlotsThemeResponse getPlotsTheme(PlotsThemeRequest plotsThemeRequest) {
         PlotsThemeDoQuery plotsThemeDoQuery = new PlotsThemeDoQuery();
         BeanUtils.copyProperties(plotsThemeRequest, plotsThemeDoQuery);
         PlotsThemeDomain plotsThemeDos = plotsThemeRestService.getPlotsThemeList(plotsThemeDoQuery, CityUtils.getCity());
         PlotsThemeResponse plotsThemeResponse = new PlotsThemeResponse();
         BeanUtils.copyProperties(plotsThemeDos, plotsThemeResponse);
-        return NashResult.build(plotsThemeResponse);
+        return plotsThemeResponse;
 
     }
 }
