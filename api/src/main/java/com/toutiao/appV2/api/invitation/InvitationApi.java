@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface InvitationApi {
 
     @ApiOperation(value = "根据邀请码获取邀请码信息", nickname = "getCodeInfo", notes = "根据邀请码获取邀请码信息",
-            response = GetCodeInfoListResponse.class, tags={ "invitation-controller", })
+            response = GetCodeInfoListResponse.class, tags={ "invitation-api-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = GetCodeInfoListResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -39,7 +39,7 @@ public interface InvitationApi {
 
 
     @ApiOperation(value = "主页点击邀请码，获取用户邀请信息以及该设备填写过的邀请记录", nickname = "getInvitation",
-            notes = "主页点击邀请码", response = InvitationResponse.class, tags={ "invitation-controller", })
+            notes = "主页点击邀请码", response = InvitationResponse.class, tags={ "invitation-api-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = InvitationResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),

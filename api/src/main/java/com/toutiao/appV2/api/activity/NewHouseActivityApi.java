@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Api(value = "NewHouseActivityApi", description = "新房活动控制层")
 public interface NewHouseActivityApi {
 
-    @ApiOperation(value = "是否参加活动", nickname = "isAttendedActivity", notes = "是否参加活动", response = NashResult.class, tags={
-            "new-house-activity-rest-controller", })
+    @ApiOperation(value = "是否参加活动", nickname = "isAttendedActivity", notes = "是否参加活动",
+            response = NashResult.class, tags={ "new-house-activity-api-controller", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NashResult.class),
             @ApiResponse(code = 201, message = "Created"),
@@ -37,8 +37,8 @@ public interface NewHouseActivityApi {
     ResponseEntity<NashResult> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
 
 
-    @ApiOperation(value = "查询活动信息", nickname = "queryActivityMsg", notes = "查询活动信息", response = ActivityMsgResponse.class, tags={
-            "new-house-activity-rest-controller", })
+    @ApiOperation(value = "查询活动信息", nickname = "queryActivityMsg", notes = "查询活动信息",
+            response = ActivityMsgResponse.class, tags={ "new-house-activity-api-controller", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ActivityMsgResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -52,7 +52,8 @@ public interface NewHouseActivityApi {
                                                        newHouseActivityRequest);
 
 
-    @ApiOperation(value = "个人中心l累计数量", nickname = "queryActivityMsgCount", notes = "个人中心l累计数量", response = ActivityStatisticsDo.class, tags={ "new-house-activity-rest-controller", })
+    @ApiOperation(value = "个人中心l累计数量", nickname = "queryActivityMsgCount", notes = "个人中心l累计数量",
+            response = ActivityStatisticsDo.class, tags={ "new-house-activity-api-controller", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ActivityStatisticsDo.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -65,7 +66,8 @@ public interface NewHouseActivityApi {
     ResponseEntity<ActivityStatisticsDo> queryActivityMsgCount();
 
 
-    @ApiOperation(value = "查询活动信息", nickname = "queryUserActivityMsg", notes = "查询活动信息", response = ActivityMsgResponse.class, tags={ "new-house-activity-rest-controller", })
+    @ApiOperation(value = "查询活动信息", nickname = "queryUserActivityMsg", notes = "查询活动信息",
+            response = ActivityMsgResponse.class, tags={ "new-house-activity-api-controller", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ActivityMsgResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -78,7 +80,8 @@ public interface NewHouseActivityApi {
     ResponseEntity<ActivityMsgResponse> queryUserActivityMsg(NewHouseActivityRequest newHouseActivityRequest);
 
 
-    @ApiOperation(value = "查询用户信息", nickname = "queryUserMsg", notes = "查询用户信息", response = UserInfoActivityResponse.class, tags={ "new-house-activity-rest-controller", })
+    @ApiOperation(value = "查询用户信息", nickname = "queryUserMsg", notes = "查询用户信息",
+            response = UserInfoActivityResponse.class, tags={ "new-house-activity-api-controller", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserInfoActivityResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -91,7 +94,8 @@ public interface NewHouseActivityApi {
     ResponseEntity<UserInfoActivityResponse> queryUserMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
 
 
-    @ApiOperation(value = "提交活动表单", nickname = "saveUserActivityMsg", notes = "提交活动表单", response = NashResult.class, tags={ "new-house-activity-rest-controller", })
+    @ApiOperation(value = "提交活动表单", nickname = "saveUserActivityMsg", notes = "提交活动表单",
+            response = NashResult.class, tags={ "new-house-activity-api-controller", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NashResult.class),
             @ApiResponse(code = 201, message = "Created"),

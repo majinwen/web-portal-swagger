@@ -17,7 +17,7 @@ public interface AdNewHouseApi {
 
     @ApiOperation(value = "新房首页-获取推荐新房列表页面广告信息", nickname = "getAdNewHouseListByIds",
             notes = "新房首页-获取推荐新房列表页面广告信息", response = NewHouseListDomainResponse.class,
-            tags={ "ad-new-house-rest-controller", })
+            tags={ "ad-new-house-api-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = NewHouseListDomainResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -31,7 +31,7 @@ public interface AdNewHouseApi {
 
 
     @ApiOperation(value = "新房列表广告信息", nickname = "getAdRecommendNewHouseByIds", notes = "新房列表广告信息",
-            response = AdRecommendNewRespose.class, tags={ "ad-new-house-rest-controller", })
+            response = AdRecommendNewRespose.class, tags={ "ad-new-house-api-controller", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = AdRecommendNewRespose.class),
         @ApiResponse(code = 401, message = "Unauthorized"),

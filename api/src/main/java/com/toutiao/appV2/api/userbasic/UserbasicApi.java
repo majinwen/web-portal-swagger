@@ -26,7 +26,8 @@ import java.util.Optional;
 @Api(value = "userbasic", description = "查询用户基本信息接口")
 public interface UserbasicApi {
 
-    @ApiOperation(value = "获取用户缓存", nickname = "getUserCache", notes = "", response = UserLoginResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "获取用户缓存", nickname = "getUserCache", notes = "", response = UserLoginResponse.class,
+            tags = {"userbasic-api-controller",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserLoginResponse.class),
             @ApiResponse(code = 404, message = "未找到用户")})
@@ -38,7 +39,7 @@ public interface UserbasicApi {
     ResponseEntity<UserLoginResponse> getUserCache();
 
 
-    @ApiOperation(value = "登出", nickname = "logout", notes = "", response = String.class, tags = {"userbasic",})
+    @ApiOperation(value = "登出", nickname = "logout", notes = "", response = String.class, tags = {"userbasic-api-controller",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = String.class), @ApiResponse(code = 404, message = "未找到用户")})
     @ApiImplicitParams({
@@ -50,7 +51,8 @@ public interface UserbasicApi {
     ResponseEntity<String> logout();
 
 
-    @ApiOperation(value = "查询基本信息", nickname = "queryUserBasic", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "查询基本信息", nickname = "queryUserBasic", notes = "", response = UserBasicResponse.class,
+            tags = {"userbasic-api-controller",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
             @ApiResponse(code = 404, message = "未找到用户")})
@@ -63,7 +65,8 @@ public interface UserbasicApi {
     ResponseEntity<UserBasicResponse> queryUserBasic(@ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId);
 
 
-    @ApiOperation(value = "通过融云ID获取基本信息", nickname = "queryUserBasicByRcId", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "通过融云ID获取基本信息", nickname = "queryUserBasicByRcId", notes = "",
+            response = UserBasicResponse.class, tags = {"userbasic-api-controller",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),
             @ApiResponse(code = 404, message = "未找到用户")
@@ -77,7 +80,8 @@ public interface UserbasicApi {
     ResponseEntity<UserBasicResponse> queryUserBasicByRcId(@ApiParam(value = "") @Valid @RequestParam(value = "rcId", required = false) Optional<String> rcId);
 
 
-    @ApiOperation(value = "更新用户头像", nickname = "updateUserAvatar", notes = "", response = UserBasicResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "更新用户头像", nickname = "updateUserAvatar", notes = "", response = UserBasicResponse.class,
+            tags = {"userbasic-api-controller",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserBasicResponse.class),})
     @ApiImplicitParams({
@@ -89,7 +93,8 @@ public interface UserbasicApi {
     ResponseEntity<UserBasicResponse> updateUserAvatar(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId);
 
 
-    @ApiOperation(value = "用户登录", nickname = "userVerifyCodeLogin", notes = "", response = UserLoginResponse.class, tags = {"userbasic",})
+    @ApiOperation(value = "用户登录", nickname = "userVerifyCodeLogin", notes = "", response = UserLoginResponse.class,
+            tags = {"userbasic-api-controller",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserLoginResponse.class),
             @ApiResponse(code = 404, message = "未找到用户")
