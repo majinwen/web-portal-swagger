@@ -28,7 +28,7 @@ public interface CitypathApi {
     })
     @RequestMapping(value = "/{citypath}/findhouse/dongfangdi/cancleMyReport/{reportId}",
         produces = "application/json",
-        consumes = "application/json",
+//        consumes = "application/json",
         method = RequestMethod.GET)
     ResponseEntity<String> cancleMyReport(@ApiParam(value = "reportId", required = true) @PathVariable("reportId") String reportId);
 
@@ -43,7 +43,7 @@ public interface CitypathApi {
     })
     @RequestMapping(value = "/{citypath}/findhouse/dongfangdi/collectMyReport",
         produces = "application/json",
-        consumes = "application/json",
+        consumes = "*/*",
         method = RequestMethod.GET)
     ResponseEntity<String> collectMyReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
 
@@ -58,7 +58,7 @@ public interface CitypathApi {
     })
     @RequestMapping(value = "/{citypath}/findhouse/dongfangdi/queryMyReport",
         produces = "application/json",
-        consumes = "application/json",
+        consumes = "*/*",
         method = RequestMethod.GET)
     ResponseEntity<ReportResponse> getMyReport();
 
@@ -72,8 +72,8 @@ public interface CitypathApi {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/{citypath}/findhouse/dongfangdi",
-        produces = "application/json",
-        consumes = "application/json",
+//        produces = "application/json",
+//        consumes = "application/json",
         method = RequestMethod.GET)
     ResponseEntity<String> goToStartRobot();
 
@@ -152,7 +152,7 @@ public interface CitypathApi {
     })
     @RequestMapping(value = "/{citypath}/findhouse/dongfangdi/showMyReport/{reportId}",
         produces = "application/json",
-        consumes = "application/json",
+        consumes = "*/*",
         method = RequestMethod.GET)
     ResponseEntity<IntelligenceResponse> showUserPortrayal(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
 
@@ -183,7 +183,7 @@ public interface CitypathApi {
     })
     @RequestMapping(value = "/{citypath}/findhouse/dongfangdi/xuanzeleixing",
         produces = "application/json",
-        consumes = "application/json",
+        consumes = "*/*",
         method = RequestMethod.GET)
     ResponseEntity<String> xuanZeLeiXing(@NotNull @ApiParam(value = "userType", required = true) @Valid @RequestParam(value = "userType", required = true) String userType);
 
