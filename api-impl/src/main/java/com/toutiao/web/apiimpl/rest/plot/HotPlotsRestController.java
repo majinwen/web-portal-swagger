@@ -9,6 +9,7 @@ import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,9 +29,9 @@ public class HotPlotsRestController {
     @Autowired
     private HotPlotsRestService hotPlotsRestService;
 
-    @RequestMapping(value = "/getHotPlotByCityId")
+    @RequestMapping(value = "/getHotPlotByCityId", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getSuggestByKeyword(Integer houseType) {
+    public SearchHotProjDomain getSuggestByKeyword(Integer houseType) {
         String city = "";
         if(StringTool.isNotEmpty(CityUtils.getCity())){
             city = CityUtils.returnCityId(CityUtils.getCity()).toString();
@@ -39,7 +40,7 @@ public class HotPlotsRestController {
         HotPlotListResponse hotPlotListResponse = new HotPlotListResponse();
         BeanUtils.copyProperties(searchHotProjDomain,hotPlotListResponse);
 
-        return NashResult.build(searchHotProjDomain);
+        return searchHotProjDomain;
     }
 
 

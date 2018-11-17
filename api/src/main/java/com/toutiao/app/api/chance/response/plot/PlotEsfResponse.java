@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 @Data
-public class PlotsEsfListResponse {
+public class PlotEsfResponse {
 
     /**
      * 二手房房源id

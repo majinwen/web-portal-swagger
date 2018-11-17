@@ -2,11 +2,15 @@ package com.toutiao.appV2.apiimpl.userbasic;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
+import com.github.bingoohuang.patchca.service.Captcha;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.domain.user.UserBasicDoQuery;
+import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.appV2.api.userbasic.UserbasicApi;
+import com.toutiao.appV2.model.userbasic.LoginVerifyCodeRequest;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.util.*;
 import org.springframework.beans.BeanUtils;
@@ -26,9 +30,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.Optional;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:40:39.438Z")
@@ -50,6 +58,8 @@ public class UserbasicApiController implements UserbasicApi {
     private UserBasicInfoService userBasicInfoService;
     @Autowired
     private RedisSessionUtils redis;
+    @Autowired
+    private ShortMessageService shortMessageService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public UserbasicApiController(ObjectMapper objectMapper, HttpServletRequest request, HttpServletResponse response) {
@@ -174,6 +184,76 @@ public class UserbasicApiController implements UserbasicApi {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserLoginResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public ResponseEntity<Void> produceImageCode() {
+        String accept = request.getHeader("Accept");
+        String patchca = "";
+        // 设置页面不缓存
+        response.setHeader("Pragma", "No-cache");
+        response.setHeader("Cache-Control", "no-cache");
+        response.setDateHeader("Expires", 0);
+
+        ConfigurableCaptchaService cs = PatchcaImageUtils.getCs();
+        try {
+            Captcha captcha = cs.getCaptcha();
+            OutputStream os = response.getOutputStream();
+            //获取验证码
+            patchca = captcha.getChallenge();
+            //将验证码数据放到cookie中
+            Cookie cookie = CookieUtils.setCookie(request, response, "imageCode", patchca);
+            response.addCookie(cookie);
+            //将验证码传输到页面中
+            ImageIO.write(captcha.getImage(), "png", os);
+            os.flush();
+            os.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<Void>(HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<String> sendLoginVerifyCode(@ApiParam(value = "loginVerifyCodeRequest", required = true) @Valid @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest) {
+
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("")) {
+            try {
+                String phone = loginVerifyCodeRequest.getPhone();
+                String nashResult =shortMessageService.sendVerifyCode(phone);
+                return new ResponseEntity<String>(nashResult, HttpStatus.OK);
+            } catch (Exception e) {
+                log.error("Couldn't serialize response for content type ", e);
+                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+
+    }
+
+    @Override
+    public ResponseEntity<Void> validateImageCode(@ApiParam(value = "pageCode") @Valid @RequestParam(value = "pageCode", required = false) Optional<String> pageCode) {
+
+        String accept = request.getHeader("Accept");
+
+        String info = "";
+        try {
+            String code = CookieUtils.getCookie(request, response, "imageCode");
+            if(code.toLowerCase().equals(pageCode.get().toLowerCase())){
+                info = Constant.YES;
+            }else{
+                info = Constant.NO;
+            }
+            response.getOutputStream().print(info);
+            response.getOutputStream().close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
+
     }
 
     /**

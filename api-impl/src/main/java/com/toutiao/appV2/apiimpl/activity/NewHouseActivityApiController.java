@@ -1,3 +1,4 @@
+/*
 package com.toutiao.appV2.apiimpl.activity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,7 +12,7 @@ import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.activity.NewHouseActivityRestService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.appV2.api.activity.NewHouseActivityApi;
-import com.toutiao.appV2.model.activity.ActivityMsgResponse;
+import com.toutiao.appV2.model.newhouse.ActivityMsgResponse;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -29,9 +30,11 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletRequest;
 
+*/
 /**
  * @author zym
- */
+ *//*
+
 @Controller
 public class NewHouseActivityApiController implements NewHouseActivityApi {
 
@@ -178,3 +181,4 @@ public class NewHouseActivityApiController implements NewHouseActivityApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }
+*/

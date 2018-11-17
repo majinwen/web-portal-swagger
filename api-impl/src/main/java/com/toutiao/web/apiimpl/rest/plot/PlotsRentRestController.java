@@ -37,13 +37,13 @@ public class PlotsRentRestController {
      */
     @RequestMapping(value = "/getRentOfPlotByPlotId",method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
+    public RentDetailsListResponse getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
         RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(),
                 plotsRentRequest.getRentType(), plotsRentRequest.getPageNum(),CityUtils.getCity());
         RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
 
         BeanUtils.copyProperties(rentDetailsListDo,rentDetailsListResponse);
-        return NashResult.build(rentDetailsListResponse);
+        return rentDetailsListResponse;
     }
 
     /**
@@ -52,9 +52,8 @@ public class PlotsRentRestController {
      * @return
      */
     @RequestMapping(value = "/queryRentNumByPlotId",method = RequestMethod.GET)
-    public NashResult getRentNumByPlotId(@Validated PlotsRentRequest plotsRentRequest){
+    public RentNumListResponse getRentNumByPlotId(@Validated PlotsRentRequest plotsRentRequest){
         RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotsRentRequest.getPlotId(), CityUtils.getCity());
-        RentNumListResponse rentNumListResponse = JSON.parseObject(JSON.toJSONString(rentNumListDo), RentNumListResponse.class);
-        return NashResult.build(rentNumListResponse);
+        return JSON.parseObject(JSON.toJSONString(rentNumListDo), RentNumListResponse.class);
     }
 }

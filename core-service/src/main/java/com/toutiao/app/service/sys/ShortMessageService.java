@@ -10,7 +10,7 @@ public interface ShortMessageService {
 
 
 
-    NashResult sendVerifyCode(String phone);
+    String sendVerifyCode(String phone);
 
     /**
      * 发送优惠活动短信信息

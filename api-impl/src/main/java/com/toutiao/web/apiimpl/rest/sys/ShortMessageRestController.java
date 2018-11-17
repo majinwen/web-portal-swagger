@@ -25,10 +25,10 @@ public class ShortMessageRestController {
 
     @RequestMapping(value = "/sendLoginVerifyCode", method = RequestMethod.POST)
     @ResponseBody
-    public NashResult sendLoginVerifyCode(@Validated @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest) {
+    public String sendLoginVerifyCode(@Validated @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest) {
 
         String phone = loginVerifyCodeRequest.getPhone();
-        NashResult nashResult =shortMessageService.sendVerifyCode(phone);
+        String nashResult =shortMessageService.sendVerifyCode(phone);
         return nashResult;
     }
 

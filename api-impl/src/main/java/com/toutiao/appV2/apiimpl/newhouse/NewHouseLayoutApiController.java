@@ -1,3 +1,4 @@
+/*
 package com.toutiao.appV2.apiimpl.newhouse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,9 +22,11 @@ import org.springframework.validation.annotation.Validated;
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
+*/
 /**
  * @author zym
- */
+ *//*
+
 @Controller
 public class NewHouseLayoutApiController implements NewHouseLayoutApi {
 
@@ -82,3 +85,4 @@ public class NewHouseLayoutApiController implements NewHouseLayoutApi {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }
+*/

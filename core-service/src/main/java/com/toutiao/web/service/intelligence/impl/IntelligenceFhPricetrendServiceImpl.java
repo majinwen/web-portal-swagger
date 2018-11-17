@@ -1,23 +1,20 @@
 package com.toutiao.web.service.intelligence.impl;
 
+import com.toutiao.app.domain.Intelligence.PriceTrendDo;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhPricetrend;
-import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
 import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhPricetrendMapper;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFhPtDo;
-import com.toutiao.web.domain.intelligenceFh.IntelligenceFhPtRatio;
 import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricetrendService{
@@ -32,11 +29,10 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
      * @return
      */
     @Override
-    public Map<String,Object> queryPriceTrend(Integer totalPrice) {
-
+    public PriceTrendDo queryPriceTrend(Integer totalPrice) {
+        PriceTrendDo priceTrendDo = new PriceTrendDo();
         List<IntelligenceFhPricetrend> lists = intelligenceFhPricetrendMapper.queryPriceTrend(totalPrice);
 //        IntelligenceFhPtRatio intelligenceFhPtRatio = intelligenceFhPricetrendMapper.queryPriceTrendRatio(totalPrice);
-        Map<String,Object> result = new HashMap<>();
         Double[] price = new Double[12];
         MathContext mc = new MathContext(2, RoundingMode.HALF_DOWN);
         Double[] ratio = new Double[lists.size()-1];
@@ -64,18 +60,23 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
             Double max=list.get(0);
             Double min=list.get(0);
             for(int i=0; i<list.size();i++){
-                if(list.get(i)>max) max=list.get(i);
+                if(list.get(i)>max) {
+                    max = list.get(i);
+                }
             }
             for(int j = 0; j<list.size();j++){
-                if(list.get(j)<min)min=list.get(j);
+                if(list.get(j)<min) {
+                    min = list.get(j);
+                }
             }
 
             for(int i = 0; i<tarratio.length;i++){
                 cityAvgRatio = cityAvgRatio+tarratio[i];
             }
-
-            result.put("minTarget",min);
-            result.put("maxTarget",max);
+//            result.put("minTarget",min);
+//            result.put("maxTarget",max);
+            priceTrendDo.setMinTarget(min);
+            priceTrendDo.setMaxTarget(max);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
             for(IntelligenceFhPricetrend intelligenceFhPricetrend : lists){
                 IntelligenceFhPtDo intelligenceFhPtDo = new IntelligenceFhPtDo();
@@ -92,9 +93,13 @@ public class IntelligenceFhPricetrendServiceImpl implements IntelligenceFhPricet
 //        Double cityAvgRatio11 = intelligenceFhPtRatio.getAvgtotalprice()
 //                .divide(intelligenceFhPtRatio.getSumtotalprice(),mc).multiply(new BigDecimal(100)).doubleValue();
         cityAvgRatio = cityAvgRatio/12*100;
-        result.put("target",cityAvgRatio);
-        result.put("ptlists",intelligenceFhPtDos);
-        result.put("searchPrice",totalPrice);
-        return result;
+//        result.put("target",cityAvgRatio);
+//        result.put("ptlists",intelligenceFhPtDos);
+//        result.put("searchPrice",totalPrice);
+        priceTrendDo.setTarget(cityAvgRatio);
+        priceTrendDo.setPtlists(intelligenceFhPtDos);
+        priceTrendDo.setSearchPrice(totalPrice);
+
+        return priceTrendDo;
     }
 }
