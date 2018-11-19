@@ -19,7 +19,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
-import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
+import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
@@ -30,6 +30,7 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
@@ -120,7 +121,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             ArrayList buildinglist = new ArrayList<>();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 //排除自身
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -182,7 +183,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             ArrayList buildinglist = new ArrayList<>();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 //排除自身
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -250,7 +251,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHits hits = searchResponse.getHits();
                         SearchHit[] searchHists = hits.getHits();
                         outFor:for (SearchHit hit : searchHists) {
-                            projHouseInfoRequest.setKeyword(hit.getSource().get("search_name").toString());
+                            projHouseInfoRequest.setKeyword(hit.getSourceAsMap().get("search_name").toString());
                             break outFor ;
                         }
                     }
@@ -497,7 +498,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 List houseList = new ArrayList();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    Map<String, Object> buildings = hit.getSource();
+                    Map<String, Object> buildings = hit.getSourceAsMap();
                     buildings = replaceAgentInfo(buildings);
                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -526,7 +527,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 List houseList = new ArrayList();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    Map<String, Object> buildings = hit.getSource();
+                    Map<String, Object> buildings = hit.getSourceAsMap();
                     buildings = replaceAgentInfo(buildings);
                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -562,7 +563,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                         }
                         query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                                .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                                .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
                     }else if(searchDistrictsList!=null && searchDistrictsList.size() > 0){
                         FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchDistrictsList.size()];
                         for(int i=0 ;i<searchDistrictsList.size();i++){
@@ -572,7 +573,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                         }
                         query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                                .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                                .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
                     }else if(searchAreasList!=null && searchAreasList.size() > 0){
 
                         FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchAreasList.size()];
@@ -583,7 +584,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                         }
                         query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                                .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                                .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
                     }
 
                     searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
@@ -594,7 +595,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             SearchHits hits = searchresponse.getHits();
                             SearchHit[] searchHists = hits.getHits();
                             for (SearchHit hit : searchHists) {
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -614,7 +615,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             SearchHits hits = searchresponse.getHits();
                             SearchHit[] searchHists = hits.getHits();
                             for (SearchHit hit : searchHists) {
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -633,7 +634,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             //补充
                             SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                             AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-searchresponse.getHits().getHits().length);
-                            AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
+                            AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
                             SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
                             InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_1 = isClaimGroup_repair_1.getAggregations().get("groups_repair");
@@ -643,7 +644,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 TopHits topHits_repair_1 = bucket_repair_1.getAggregations().get("group_hits");
 
                                 for (SearchHit hit : topHits_repair_1.getHits().getHits()) {
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -665,7 +666,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             long es_from = (pageNum-1)*pageSize - oneKM_size;
                             SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                             AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int) es_from)).size(pageSize);
-                            AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
+                            AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
                             SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
                             InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_1 = isClaimGroup_repair_1.getAggregations().get("groups_repair");
@@ -674,7 +675,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                             for (SearchHit hit : topHits_repair_1.getHits().getHits()) {
 
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -705,7 +706,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //                            .setSize(pageSize)
 //                            .execute().actionGet();
                     AggregationBuilder agg_tophits = AggregationBuilders.topHits("group_hits").from((pageNum - 1) * pageSize).size(pageSize).sort("sortingScore", SortOrder.DESC);
-                    AggregationBuilder agg_group = AggregationBuilders.terms("groups").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.count(false)).subAggregation(agg_tophits);
+                    AggregationBuilder agg_group = AggregationBuilders.terms("groups").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits);
                     searchresponse = srb.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group)).execute().actionGet();
 
 
@@ -725,7 +726,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     List houseList = new ArrayList();
                     if(top_size == 10){
                         for (SearchHit hit : topHits.getHits().getHits()) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -745,7 +746,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         for (SearchHit hit : topHits.getHits().getHits()) {
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
 
                             BeanUtils.populate(instance, buildings);
@@ -763,7 +764,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                         SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                         AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
-                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair);
+                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair);
                         SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair)).execute().actionGet();
                         InternalFilter isClaimGroup_repair = searchResponse_repair.getAggregations().get("isClaimGroup_repair");
                         Terms agg_repair = isClaimGroup_repair.getAggregations().get("groups_repair");
@@ -772,7 +773,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                         for (SearchHit hit : topHits_repair.getHits().getHits()) {
 
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -799,7 +800,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         }
                         SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                         AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from)).size(pageSizes).sort("sortingScore", SortOrder.DESC);
-                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair);
+                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair);
                         SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair)).execute().actionGet();
                         InternalFilter isClaimGroup_repair = searchResponse_repair.getAggregations().get("isClaimGroup_repair");
                         Terms agg_repair = isClaimGroup_repair.getAggregations().get("groups_repair");
@@ -820,7 +821,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         if(top_size_1==10){
                             for (SearchHit hit : topHits_repair.getHits().getHits()) {
 
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -839,7 +840,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         }else if(top_size_1<10 && top_size_1>0){
                             for (SearchHit hit : topHits_repair.getHits().getHits()) {
 
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -858,7 +859,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                             SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                             AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
-                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_0);
+                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_0);
                             SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair_0)).execute().actionGet();
                             InternalFilter isClaimGroup_repair_0 = searchResponse_repair_0.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_0 = isClaimGroup_repair_0.getAggregations().get("groups_repair");
@@ -867,7 +868,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                             for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
 
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -896,7 +897,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                             SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                             AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from0)).size(pageSizes1).sort("sortingScore", SortOrder.DESC);
-                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_0);
+                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_0);
                             SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair_0)).execute().actionGet();
                             InternalFilter isClaimGroup_repair_0 = searchResponse_repair_0.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_0 = isClaimGroup_repair_0.getAggregations().get("groups_repair");
@@ -918,7 +919,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             if(top_size_2==10){
                                 for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
 
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -937,7 +938,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             }else if(top_size_2<10 && top_size_2>0){
                                 for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
 
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -956,7 +957,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                                 SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                                 AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair_0.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
-                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
+                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
                                 SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
                                 InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
                                 Terms agg_repair_1 = isClaimGroup_repair_1.getAggregations().get("groups_repair");
@@ -965,7 +966,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                                 for (SearchHit hit : topHits_repair_1.getHits().getHits()) {
 
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -995,7 +996,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                                 SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                                 AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from1)).size(pageSizes2).sort("sortingScore", SortOrder.DESC);
-                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
+                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
                                 SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
                                 InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
                                 Terms agg_repair_1 = isClaimGroup_repair_1.getAggregations().get("groups_repair");
@@ -1004,7 +1005,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                                 for (SearchHit hit : topHits_repair_1.getHits().getHits()) {
 
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1075,7 +1076,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             List houseList = new ArrayList();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 buildings = replaceAgentInfo(buildings);
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1149,7 +1150,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHits hits = searchResponse.getHits();
                         SearchHit[] searchHists = hits.getHits();
                         for (SearchHit hit : searchHists) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1167,7 +1168,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHits hits = searchResponse.getHits();
                         SearchHit[] searchHists = hits.getHits();
                         for (SearchHit hit : searchHists) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1192,7 +1193,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHits esfhits = searchresponse.getHits();
                         SearchHit[] esfsearchHists = esfhits.getHits();
                         for (SearchHit hit : esfsearchHists) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1219,7 +1220,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHits esfhits = searchresponse.getHits();
                         SearchHit[] esfsearchHists = esfhits.getHits();
                         for (SearchHit hit : esfsearchHists) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1249,7 +1250,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         List houseList = new ArrayList();
         try {
             for (SearchHit hit : args) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
@@ -1299,7 +1300,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchHit[] searchHists = hits.getHits();
             List houseList = new ArrayList();
             for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 buildings.put("housingDeposit",buildings.get("HousingDeposit"));
                 buildings = replaceAgentInfo(buildings);
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
@@ -1420,7 +1421,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(20).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit : hits) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
@@ -1540,7 +1541,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             if (hits.length>0){
                 long time = new Date().getTime();
                 long index = (time / 600000) % hits.length;
-                Map result = hits[(int) index].getSource();
+                Map result = hits[(int) index].getSourceAsMap();
                 return result;
             }
         }catch (Exception e){

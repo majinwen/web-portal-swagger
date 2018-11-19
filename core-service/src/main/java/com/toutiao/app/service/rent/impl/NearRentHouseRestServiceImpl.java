@@ -17,7 +17,8 @@ import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
-import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
+//import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
+import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -75,7 +76,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
         GaussDecayFunctionBuilder functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",json,"4km","1km" ,0.4);
 
         //获取5km内的所有出租房源(函数得分进行加法运算,查询得分和函数得分进行加法运算)
-        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor).scoreMode(FiltersFunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
+        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
 
         FunctionScoreQueryBuilder query = null;
 
@@ -107,9 +108,9 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 
             filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
 
-            query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FiltersFunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
+            query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
         }else{
-            query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder,functionBuilder).scoreMode(FiltersFunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
+            query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder,functionBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
         }
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
@@ -140,9 +141,9 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
 
                 }else{
-                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency")==null?"":hit.getSourceAsMap().get("brokerage_agency").toString());
-                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent")==null?"":hit.getSourceAsMap().get("estate_agent").toString());
-                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone")==null?"":hit.getSourceAsMap().get("phone").toString());
+                    agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency")==null?"":hit.getSourceAsMap().get("brokerage_agency").toString());
+                    agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent")==null?"":hit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone")==null?"":hit.getSourceAsMap().get("phone").toString());
                     agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto")==null?"":hit.getSourceAsMap().get("agent_headphoto").toString());
 
                 }

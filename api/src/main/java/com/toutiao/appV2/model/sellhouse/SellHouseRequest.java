@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.sellhouse;
 
 import com.toutiao.appV2.model.BaseQueryRequest;
+import com.toutiao.web.common.assertUtils.First;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -12,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class SellHouseRequest extends BaseQueryRequest {
 
     @ApiModelProperty(value = "推荐房源查询标志", name = "uid")
-    @NotNull(message = "推荐房源查询标志为空")
+    @NotNull(groups = {First.class},message = "推荐房源查询标志为空")
     private String uid;
 
     @ApiModelProperty(value = "附近1,3,5km", name = "distance")

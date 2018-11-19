@@ -243,7 +243,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
-                    Map<String, Object> source = hit.getSource();
+                    Map<String, Object> source = hit.getSourceAsMap();
                     PlotDetailsFewDo plotDetailsFewDo = PlotDetailsFewDo.class.newInstance();
                     BeanUtils.populate(plotDetailsFewDo, source);
                     plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());

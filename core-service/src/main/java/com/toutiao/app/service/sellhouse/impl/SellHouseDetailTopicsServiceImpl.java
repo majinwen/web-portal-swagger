@@ -73,17 +73,17 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
 
                 }else{
 
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
-                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
+                    List<String> tags = (List<String>) searchHit.getSourceAsMap().get("tagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
                     sellHouseDo.setClaimTagsName(tagsName);
-                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
-                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
-                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
+                    sellHouseDo.setClaimHouseId(searchHit.getSourceAsMap().get("houseId").toString());
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSourceAsMap().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSourceAsMap().get("houseTitle").toString());
 
 
                 }
@@ -134,16 +134,16 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
                 }else{
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
 
-                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
-                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
-                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSourceAsMap().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSourceAsMap().get("houseTitle").toString());
+                    sellHouseDo.setClaimHouseId(searchHit.getSourceAsMap().get("houseId").toString());
 
-                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    List<String> tags = (List<String>) searchHit.getSourceAsMap().get("tagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
                     sellHouseDo.setClaimTagsName(tagsName);
@@ -193,16 +193,16 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                 if(StringTool.isNotEmpty(sellHouseDo.getUserId()) && sellHouseDo.getIsClaim()==1){
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
                 }else{
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
 
-                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
-                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
-                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSourceAsMap().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSourceAsMap().get("houseTitle").toString());
+                    sellHouseDo.setClaimHouseId(searchHit.getSourceAsMap().get("houseId").toString());
 
-                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    List<String> tags = (List<String>) searchHit.getSourceAsMap().get("tagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
                     sellHouseDo.setClaimTagsName(tagsName);
@@ -255,16 +255,16 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
                 }else{
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                    agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
 
-                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
-                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
-                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSourceAsMap().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSourceAsMap().get("houseTitle").toString());
+                    sellHouseDo.setClaimHouseId(searchHit.getSourceAsMap().get("houseId").toString());
 
-                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    List<String> tags = (List<String>) searchHit.getSourceAsMap().get("tagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
                     sellHouseDo.setClaimTagsName(tagsName);
@@ -315,17 +315,17 @@ public class SellHouseDetailTopicsServiceImpl implements SellHouseDetailTopicsSe
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
 
                 }else{
-                    agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
-                    List<String> tags = (List<String>) searchHit.getSource().get("tagsName");
+                    agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
+                    List<String> tags = (List<String>) searchHit.getSourceAsMap().get("tagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
                     sellHouseDo.setClaimTagsName(tagsName);
-                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSource().get("housePhotoTitle").toString());
-                    sellHouseDo.setClaimHouseTitle(searchHit.getSource().get("houseTitle").toString());
-                    sellHouseDo.setClaimHouseId(searchHit.getSource().get("houseId").toString());
+                    sellHouseDo.setClaimHousePhotoTitle(searchHit.getSourceAsMap().get("housePhotoTitle").toString());
+                    sellHouseDo.setClaimHouseTitle(searchHit.getSourceAsMap().get("houseTitle").toString());
+                    sellHouseDo.setClaimHouseId(searchHit.getSourceAsMap().get("houseId").toString());
                 }
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 sellHouseDos.add(sellHouseDo);

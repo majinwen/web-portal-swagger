@@ -77,7 +77,7 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         if (searchResponseScope!=null){
             SearchHit[] hits = searchResponseScope.getHits().getHits();
             for (SearchHit hit :hits) {
-                Map<String, Object> source = hit.getSource();
+                Map<String, Object> source = hit.getSourceAsMap();
                 if ((Integer) source.get("location_num")>0){
                     list.add(source);
                 }
@@ -127,7 +127,7 @@ public class PartialMatchingServiceImpl implements PartialMatchingService {
         if(searchResponse !=null){
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit :hits) {
-                Map<String, Object> source = hit.getSource();
+                Map<String, Object> source = hit.getSourceAsMap();
 //                Map<String, HighlightField> highlightFields = hit.getHighlightFields();
 //                HighlightField village = highlightFields.get("search_name");
 //                Text[] fragments = village.fragments();

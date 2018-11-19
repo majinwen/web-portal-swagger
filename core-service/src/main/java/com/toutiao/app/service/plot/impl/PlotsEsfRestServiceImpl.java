@@ -128,9 +128,9 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
             }
 
 
-            if(hit.getSource().get("is_claim").toString().equals("1")){
-                sellHouseDo.setHousePhotoTitle(hit.getSource().get("claimHousePhotoTitle").toString());
-                sellHouseDo.setHouseId(hit.getSource().get("claimHouseId").toString());
+            if(hit.getSourceAsMap().get("is_claim").toString().equals("1")){
+                sellHouseDo.setHousePhotoTitle(hit.getSourceAsMap().get("claimHousePhotoTitle").toString());
+                sellHouseDo.setHouseId(hit.getSourceAsMap().get("claimHouseId").toString());
             }
 
             AgentBaseDo agentBaseDo = new AgentBaseDo();
@@ -141,10 +141,10 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
 
             }else{
-                agentBaseDo.setAgentName(hit.getSource().get("houseProxyName")==null?"":hit.getSourceAsMap().get("houseProxyName").toString());
-                agentBaseDo.setAgentCompany(hit.getSource().get("ofCompany")==null?"":hit.getSourceAsMap().get("ofCompany").toString());
+                agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName")==null?"":hit.getSourceAsMap().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany")==null?"":hit.getSourceAsMap().get("ofCompany").toString());
                 agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
+                agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
             }
             sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
             sellHouseDo.setAgentBaseDo(agentBaseDo);

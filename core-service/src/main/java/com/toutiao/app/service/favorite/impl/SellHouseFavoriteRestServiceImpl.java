@@ -60,12 +60,12 @@ public class SellHouseFavoriteRestServiceImpl implements SellHouseFavoriteRestSe
 
                     //判断3天内导入，且无图片，默认上显示默认图
                     String importTime = "";
-                    if (StringTool.isNotEmpty(searchHit.getSource().get("import_time"))){
-                        importTime = searchHit.getSource().get("import_time").toString();
+                    if (StringTool.isNotEmpty(searchHit.getSourceAsMap().get("import_time"))){
+                        importTime = searchHit.getSourceAsMap().get("import_time").toString();
                     }
                     String housePhotoTitle = "";
-                    if (StringTool.isNotEmpty(searchHit.getSource().get("housePhotoTitle"))){
-                        housePhotoTitle = searchHit.getSource().get("housePhotoTitle").toString();
+                    if (StringTool.isNotEmpty(searchHit.getSourceAsMap().get("housePhotoTitle"))){
+                        housePhotoTitle = searchHit.getSourceAsMap().get("housePhotoTitle").toString();
                     }
 
                     int isDefault = sellHouseService.isDefaultImage(importTime ,date, housePhotoTitle);

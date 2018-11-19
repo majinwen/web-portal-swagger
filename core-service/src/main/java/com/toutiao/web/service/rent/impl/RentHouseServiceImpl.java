@@ -105,7 +105,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchHit[] searchHists = searchResponse.getHits().getHits();
             if(searchHists.length>0){
                 for (SearchHit hit:searchHists){
-                    Map source = hit.getSource();
+                    Map source = hit.getSourceAsMap();
                     if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
                         if(!(String.valueOf(source.get("house_id"))).equals(rentHouseQuery.getHouseId())){
                             if (list.size()<3){
@@ -150,7 +150,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchResponse response = srb.setQuery(boolQueryBuilder).execute().actionGet();
             SearchHit[] searchHists = response.getHits().getHits();
             if(searchHists.length>0){
-                Map source = searchHists[0].getSource();
+                Map source = searchHists[0].getSourceAsMap();
 
                 if(StringTool.isNotEmpty(source.get("userId"))){
                     GetResponse agentBaseResponse = client.prepareGet(agentBaseIndex,agentBaseType,source.get("userId").toString()).execute().actionGet();
@@ -231,7 +231,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
-                    Map source = hit.getSource();
+                    Map source = hit.getSourceAsMap();
 //                    if (StringUtils.isNotBlank(rentHouseQuery.getHouseId())){
 //                        if(!(String.valueOf(source.get("house_id"))).equals(String.valueOf(rentHouseQuery.getHouseId()))){
 //                            if (list.size()<3){
@@ -276,7 +276,7 @@ public class RentHouseServiceImpl implements RentHouseService{
             if (hits.length>0){
                 long time = new Date().getTime();
                 long index = (time / 600000) % hits.length;
-                Map result = hits[(int) index].getSource();
+                Map result = hits[(int) index].getSourceAsMap();
                 return result;
             }
         }catch (Exception e){
@@ -407,7 +407,7 @@ public class RentHouseServiceImpl implements RentHouseService{
         SearchHits hits = searchRentResponse.getHits();
         SearchHit[] searchHit = hits.getHits();
         for (SearchHit hit:searchHit){
-            Map<String,String> nearbysubway = (Map<String, String>) hit.getSource().get("nearby_subway");
+            Map<String,String> nearbysubway = (Map<String, String>) hit.getSourceAsMap().get("nearby_subway");
             Map<String, Object> zufangMap = hit.getSourceAsMap();
             zufangMap.put("pageNum",rentHouseQuery.getPageNum());
             zufanglist.add(zufangMap);
@@ -525,7 +525,7 @@ public class RentHouseServiceImpl implements RentHouseService{
 
         List<Map<String,Object>> zufanglist = new ArrayList<>();
         for (SearchHit hit : searchHists) {
-            Map<String,String> nearbysubway = (Map<String, String>) hit.getSource().get("nearby_subway");
+            Map<String,String> nearbysubway = (Map<String, String>) hit.getSourceAsMap().get("nearby_subway");
             String nearbysubwayKey = nearbysubway.get(keys);
             Map<String,Object> zufangMap = hit.getSourceAsMap();
             zufangMap.put("nearsubway",nearbysubwayKey);

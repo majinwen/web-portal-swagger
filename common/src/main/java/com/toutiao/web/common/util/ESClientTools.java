@@ -3,9 +3,9 @@ package com.toutiao.web.common.util;
 import lombok.Data;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.elasticsearch.transport.client.PreBuiltTransportClient;
-import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
+//import org.elasticsearch.common.transport.InetSocketTransportAddress;
+//import org.elasticsearch.transport.client.PreBuiltTransportClient;
+//import org.elasticsearch.xpack.client.PreBuiltXPackTransportClient;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -39,20 +39,20 @@ public class ESClientTools {
     public TransportClient init(){
 
 
-        if(client == null){
-            if (client == null){
-                try {
-                    client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
-                            InetAddress.getByName(esServerIps), Integer.valueOf(esServerPort)));
-
-                } catch (UnknownHostException e) {
-                    e.printStackTrace();
-                    if (client != null) {
-                        client.close();
-                    }
-                }
-            }
-        }
+//        if(client == null){
+//            if (client == null){
+//                try {
+//                    client = new PreBuiltTransportClient(settings).addTransportAddress(new InetSocketTransportAddress(
+//                            InetAddress.getByName(esServerIps), Integer.valueOf(esServerPort)));
+//
+//                } catch (UnknownHostException e) {
+//                    e.printStackTrace();
+//                    if (client != null) {
+//                        client.close();
+//                    }
+//                }
+//            }
+//        }
         return client;
     }
 

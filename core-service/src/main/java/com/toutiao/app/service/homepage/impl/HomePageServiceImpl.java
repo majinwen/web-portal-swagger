@@ -309,10 +309,10 @@ public class HomePageServiceImpl implements HomePageRestService {
                         agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"), city);
 
                     }else {
-                        agent.setAgentCompany(hit.getSource().get("ofCompany").toString());
-                        agent.setAgentName(hit.getSource().get("houseProxyName").toString());
+                        agent.setAgentCompany(hit.getSourceAsMap().get("ofCompany").toString());
+                        agent.setAgentName(hit.getSourceAsMap().get("houseProxyName").toString());
                         agent.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                        agent.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
+                        agent.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone").toString());
                     }
                     homePageNearEsfDo.setAgentBaseDo(agent);
                     homePageNearEsfDo.setUnitPrice((double) Math.round((homePageNearEsfDo.getHouseTotalPrices()/homePageNearEsfDo.getBuildArea())*10000));
@@ -421,10 +421,10 @@ public class HomePageServiceImpl implements HomePageRestService {
                     agent = agentService.queryAgentInfoByUserId((String) sourceAsMap.get("userId"), city);
 
                 }else {
-                    agent.setAgentCompany(hit.getSource().get("ofCompany").toString());
-                    agent.setAgentName(hit.getSource().get("houseProxyName").toString());
+                    agent.setAgentCompany(hit.getSourceAsMap().get("ofCompany").toString());
+                    agent.setAgentName(hit.getSourceAsMap().get("houseProxyName").toString());
                     agent.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                    agent.setDisplayPhone(hit.getSource().get("houseProxyPhone").toString());
+                    agent.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone").toString());
                 }
                 homePageNearEsfDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 homePageNearEsfDo.setAgentBaseDo(agent);
@@ -503,7 +503,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             TopHits topHits =((StringTerms.Bucket) l).getAggregations().get("group_hits");
             for (SearchHit hit : topHits.getHits().getHits())
             {
-                homePageTop50Do.setDistrictName((String) hit.getSource().get("area"));
+                homePageTop50Do.setDistrictName((String) hit.getSourceAsMap().get("area"));
             }
             map.put(((StringTerms.Bucket) l).getKeyAsString(),homePageTop50Do);
 

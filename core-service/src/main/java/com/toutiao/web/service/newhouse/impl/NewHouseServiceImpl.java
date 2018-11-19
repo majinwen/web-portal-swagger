@@ -338,7 +338,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         ArrayList<Map<String,Object>> buildinglist = new ArrayList<>();
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
-            Map<String,String> fff = (Map<String, String>) hit.getSource().get("nearbysubway");
+            Map<String,String> fff = (Map<String, String>) hit.getSourceAsMap().get("nearbysubway");
             String ddd = fff.get(keys);
             Map<String,Object> buildings = hit.getSourceAsMap();
             buildings.put("nearsubway",ddd);
@@ -385,7 +385,7 @@ public class NewHouseServiceImpl implements NewHouseService{
         String locations = "";
         for (SearchHit hit : searchHists) {
             buildings = hit.getSourceAsString();
-            locations = (String) hit.getSource().get("location");
+            locations = (String) hit.getSourceAsMap().get("location");
 
         }
         Map<String, Object> maprep = new HashMap<>();

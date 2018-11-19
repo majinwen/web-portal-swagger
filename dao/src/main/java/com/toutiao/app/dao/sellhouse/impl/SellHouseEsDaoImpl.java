@@ -3,20 +3,25 @@ package com.toutiao.app.dao.sellhouse.impl;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 
 @Service
@@ -38,6 +43,8 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     private String esfFullAmountIndex;
     @Value("${tt.esfFullAmountType.type}")
     private String esfFullAmountType;
+    @Autowired
+    private RestHighLevelClient restHighLevelClient;
 
 
 
@@ -72,7 +79,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 //                .addAggregation(AggregationBuilders.terms("roomCount").field("room"));
 
         SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder)
-                .addAggregation(AggregationBuilders.terms("roomCount").field("layout").order(Terms.Order.term(true)))
+                .addAggregation(AggregationBuilders.terms("roomCount").field("layout").order(BucketOrder.count(true)))
                 .execute().actionGet();
         return searchResponse;
     }
@@ -110,19 +117,31 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     @Override
     public SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer
             pageNum, Integer pageSize, String city) {
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils
-                .getEsfHouseTpye(city));
-        SearchResponse searchresponse = null;
-        if ((null != keyword && !"".equals(keyword)) || null != distance) {
-            searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
-                    .execute().actionGet();
-        } else {
-            searchresponse = srb.setQuery(query).addSort("extraTagsCount", SortOrder.DESC).addSort("updateTimeSort",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
-                    .execute().actionGet();
+//        TransportClient client = esClientTools.init();
+//        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils
+//                .getEsfHouseTpye(city));
+//        SearchResponse searchresponse = null;
+//        if ((null != keyword && !"".equals(keyword)) || null != distance) {
+//            searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+//                    .execute().actionGet();
+//        } else {
+//            searchresponse = srb.setQuery(query).addSort("extraTagsCount", SortOrder.DESC).addSort("updateTimeSort",SortOrder.DESC).setFrom((pageNum - 1) * pageSize).setSize(pageSize)
+//                    .execute().actionGet();
+//        }
+
+//        RestHighLevelClient client = RestClientFactory.getHighLevelClient();
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort",SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse response = null;
+        try {
+            response = restHighLevelClient.search(searchRequest);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        return searchresponse;
+        return response;
     }
 
     @Override

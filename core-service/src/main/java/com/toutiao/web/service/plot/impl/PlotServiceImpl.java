@@ -87,7 +87,7 @@ public class PlotServiceImpl implements PlotService {
 
 
             for (SearchHit hit : searchHists) {
-                Map source = hit.getSource();
+                Map source = hit.getSourceAsMap();
                 Class<VillageEntity> entityClass = VillageEntity.class;
                 VillageEntity instance = entityClass.newInstance();
                 BeanUtils.populate(instance, source);
@@ -100,10 +100,10 @@ public class PlotServiceImpl implements PlotService {
                 }
 //                 获取距离值，并保留两位小数点
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-                Map<String, Object> hitMap = hit.getSource();
+                Map<String, Object> hitMap = hit.getSourceAsMap();
                 // 在创建MAPPING的时候，属性名的不可为geoDistance。
                 hitMap.put("geoDistance", geoDis.setScale(1, BigDecimal.ROUND_HALF_DOWN));
-                String distance1 = hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString();//距离
+                String distance1 = hit.getSourceAsMap().get("geoDistance") + DistanceUnit.METERS.toString();//距离
 //                System.out.println("距离你的位置为：" + hit.getSource().get("geoDistance") + DistanceUnit.METERS.toString());
             }
         } catch (Exception e) {
@@ -392,7 +392,7 @@ public class PlotServiceImpl implements PlotService {
 
             if (searchHists != null) {
                 for (SearchHit hit : searchHists) {
-                    Map source = hit.getSource();
+                    Map source = hit.getSourceAsMap();
                     Class<VillageResponse> entityClass = VillageResponse.class;
                     VillageResponse instance = entityClass.newInstance();
                     BeanUtils.populate(instance, source);
@@ -470,7 +470,7 @@ public class PlotServiceImpl implements PlotService {
                     SearchHits hits = searchResponse.getHits();
                     SearchHit[] searchHists = hits.getHits();
                     for (SearchHit hit : searchHists) {
-                        Map<String, Object> buildings = hit.getSource();
+                        Map<String, Object> buildings = hit.getSourceAsMap();
                         Class<VillageResponse> entityClass = VillageResponse.class;
                         VillageResponse instance = entityClass.newInstance();
                         BeanUtils.populate(instance, buildings);
@@ -506,7 +506,7 @@ public class PlotServiceImpl implements PlotService {
                     SearchHits hits = searchResponse.getHits();
                     SearchHit[] searchHists = hits.getHits();
                     for (SearchHit hit : searchHists) {
-                        Map<String, Object> buildings = hit.getSource();
+                        Map<String, Object> buildings = hit.getSourceAsMap();
                         Class<VillageResponse> entityClass = VillageResponse.class;
                         VillageResponse instance = entityClass.newInstance();
                         BeanUtils.populate(instance, buildings);
@@ -551,7 +551,7 @@ public class PlotServiceImpl implements PlotService {
                     SearchHits polthits = searchresponse.getHits();
                     SearchHit[] poltSearchHists = polthits.getHits();
                     for (SearchHit hit : poltSearchHists) {
-                        Map<String, Object> buildings = hit.getSource();
+                        Map<String, Object> buildings = hit.getSourceAsMap();
                         Class<VillageResponse> entityClass = VillageResponse.class;
                         VillageResponse instance = entityClass.newInstance();
                         BeanUtils.populate(instance, buildings);
@@ -600,7 +600,7 @@ public class PlotServiceImpl implements PlotService {
                     SearchHits polthits = searchresponse.getHits();
                     SearchHit[] poltSearchHists = polthits.getHits();
                     for (SearchHit hit : poltSearchHists) {
-                        Map<String, Object> buildings = hit.getSource();
+                        Map<String, Object> buildings = hit.getSourceAsMap();
                         Class<VillageResponse> entityClass = VillageResponse.class;
                         VillageResponse instance = entityClass.newInstance();
                         BeanUtils.populate(instance, buildings);
@@ -644,7 +644,7 @@ public class PlotServiceImpl implements PlotService {
         List houseList = new ArrayList();
         try {
             for (SearchHit hit : args) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 Class<VillageResponse> entityClass = VillageResponse.class;
                 VillageResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
@@ -729,7 +729,7 @@ public class PlotServiceImpl implements PlotService {
             SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setFetchSource(new String[]{"photo","rc","tradingArea","tradingAreaId","area","areaId","abbreviatedAge","sumBuilding"}, null).execute().actionGet();
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length==1){
-                Map source = hits[0].getSource();
+                Map source = hits[0].getSourceAsMap();
                 return source;
             }
         }catch (Exception e){
@@ -749,7 +749,7 @@ public class PlotServiceImpl implements PlotService {
         if (hits.length>0){
             String sourceAsString = hits[0].getSourceAsString();
             PlotDetailsDo plotDetailsDo = JSON.parseObject(sourceAsString, PlotDetailsDo.class);
-            Map source = hits[0].getSource();
+            Map source = hits[0].getSourceAsMap();
             return plotDetailsDo;
         }
         return null;

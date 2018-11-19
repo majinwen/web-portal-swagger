@@ -12,7 +12,8 @@ import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
-import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
+//import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
+import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
@@ -118,8 +119,9 @@ public class NearbyPlotsEsDaoImpl implements NearbyPlotsEsDao{
                 QueryBuilder filter = QueryBuilders.termsQuery("area",analyzeKeywordDistrictsList.get(i));
                 filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, ScoreFunctionBuilders.weightFactorFunction(searchDistrictsSize-i));
             }
+
             query =QueryBuilders.functionScoreQuery(boolQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                    .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                    .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
 
             //按照小区名称关键字搜索
         }else if(analyzeKeywordTermList!=null && analyzeKeywordTermList.size() > 0){
@@ -130,7 +132,7 @@ public class NearbyPlotsEsDaoImpl implements NearbyPlotsEsDao{
                 filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i));
             }
             query =QueryBuilders.functionScoreQuery(boolQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                    .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                    .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
 
             //按照小区商圈关键字搜索
         }else if(analyzeKeywordAreasList!=null && analyzeKeywordAreasList.size() > 0){
@@ -142,7 +144,7 @@ public class NearbyPlotsEsDaoImpl implements NearbyPlotsEsDao{
                 filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, ScoreFunctionBuilders.weightFactorFunction(searchAreasSize-i));
             }
             query =QueryBuilders.functionScoreQuery(boolQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                    .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                    .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
         }
 
         return query;
