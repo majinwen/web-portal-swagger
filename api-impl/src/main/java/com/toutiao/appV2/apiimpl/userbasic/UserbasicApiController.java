@@ -12,6 +12,7 @@ import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.appV2.api.userbasic.UserbasicApi;
 import com.toutiao.appV2.model.userbasic.LoginVerifyCodeRequest;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +83,8 @@ public class UserbasicApiController implements UserbasicApi {
             } else {
                 return new ResponseEntity<UserLoginResponse>(HttpStatus.NOT_FOUND);
             }
+        } catch (BaseException ex) {
+            throw new BaseException(ex.getCode(), ex.getMsg());
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserLoginResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -104,6 +107,8 @@ public class UserbasicApiController implements UserbasicApi {
                 return new ResponseEntity<String>("退出登录失败", HttpStatus.NOT_FOUND);
             }
 
+        } catch (BaseException ex) {
+            throw new BaseException(ex.getCode(), ex.getMsg());
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<String>("系统异常", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -121,6 +126,8 @@ public class UserbasicApiController implements UserbasicApi {
             } else {
                 return new ResponseEntity<UserBasicResponse>(HttpStatus.NOT_FOUND);
             }
+        } catch (BaseException ex) {
+            throw new BaseException(ex.getCode(), ex.getMsg());
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -138,6 +145,8 @@ public class UserbasicApiController implements UserbasicApi {
             } else {
                 return new ResponseEntity<UserBasicResponse>(HttpStatus.NOT_FOUND);
             }
+        } catch (BaseException ex) {
+            throw new BaseException(ex.getCode(), ex.getMsg());
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -152,6 +161,8 @@ public class UserbasicApiController implements UserbasicApi {
             UserBasicResponse userBasicResponse = new UserBasicResponse();
             BeanUtils.copyProperties(userBasicDo, userBasicResponse);
             return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+        } catch (BaseException ex) {
+            throw new BaseException(ex.getCode(), ex.getMsg());
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -180,6 +191,8 @@ public class UserbasicApiController implements UserbasicApi {
                 return new ResponseEntity<UserLoginResponse>(HttpStatus.NOT_FOUND);
             }
 
+        } catch (BaseException ex) {
+            throw new BaseException(ex.getCode(), ex.getMsg());
         } catch (Exception e) {
             log.error("Couldn't serialize response for content type ", e);
             return new ResponseEntity<UserLoginResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -208,6 +221,8 @@ public class UserbasicApiController implements UserbasicApi {
             ImageIO.write(captcha.getImage(), "png", os);
             os.flush();
             os.close();
+        } catch (BaseException ex) {
+            throw new BaseException(ex.getCode(), ex.getMsg());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -221,8 +236,10 @@ public class UserbasicApiController implements UserbasicApi {
         if (accept != null && accept.contains("")) {
             try {
                 String phone = loginVerifyCodeRequest.getPhone();
-                String nashResult =shortMessageService.sendVerifyCode(phone);
+                String nashResult = shortMessageService.sendVerifyCode(phone);
                 return new ResponseEntity<String>(nashResult, HttpStatus.OK);
+            } catch (BaseException ex) {
+                throw new BaseException(ex.getCode(), ex.getMsg());
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
                 return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -241,13 +258,15 @@ public class UserbasicApiController implements UserbasicApi {
         String info = "";
         try {
             String code = CookieUtils.getCookie(request, response, "imageCode");
-            if(code.toLowerCase().equals(pageCode.get().toLowerCase())){
+            if (code.toLowerCase().equals(pageCode.get().toLowerCase())) {
                 info = Constant.YES;
-            }else{
+            } else {
                 info = Constant.NO;
             }
             response.getOutputStream().print(info);
             response.getOutputStream().close();
+        } catch (BaseException ex) {
+            throw new BaseException(ex.getCode(), ex.getMsg());
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -16,10 +16,10 @@ import javax.validation.Valid;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T06:17:44.199Z")
 
-@Api(value = "rest", description = "租房附近5km")
+@Api(value = "租房", description = "租房附近5km")
 public interface NearRentHouseApi {
 
-    @ApiOperation(value = "附近5km出租房源", nickname = "getNearRentHouseByLocation", notes = "", response = RentDetailsListDo.class, tags={ "near-rent-house-rest-controller", })
+    @ApiOperation(value = "附近5km出租房源", nickname = "getNearRentHouseByLocation", notes = "", response = RentDetailsListDo.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RentDetailsListDo.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

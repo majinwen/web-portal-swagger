@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:27:32.320Z")
 
-@Api(value = "SuscribeApi", description = "查询订阅相关接口")
+@Api(value = "订阅", description = "查询订阅相关接口")
 public interface SuscribeApi {
 
     @ApiOperation(value = "删除订阅信息", nickname = "deleteConditionSubscribe", notes = "", response = Integer.class, tags={ "订阅", })

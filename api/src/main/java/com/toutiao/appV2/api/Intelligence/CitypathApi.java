@@ -15,7 +15,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T08:35:17.892Z")
 
-@Api(value = "{citypath}", description = "智能找房")
+@Api(value = "智能找房", description = "智能找房")
 public interface CitypathApi {
 
     @ApiOperation(value = "取消收藏", nickname = "cancleMyReport", notes = "", response = String.class, tags={ "懂房帝找房报告", })

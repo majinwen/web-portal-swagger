@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
 
-@Api(value = "rest", description = "推荐条件")
+@Api(value = "推荐条件", description = "推荐条件")
 @RequestMapping(value = "/rest/")
 public interface ConditionApi {
 

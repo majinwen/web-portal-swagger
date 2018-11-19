@@ -14,10 +14,10 @@ import javax.validation.Valid;
 /**
  * Created by wk on 2018/11/14.
  */
-@Api(value = "RentFavoriteRestApi", description = "查询租房接口")
+@Api(value = "收藏", description = "收藏接口")
 public interface RentFavoriteRestApi {
 
-    @ApiOperation(value = "租房收藏列表", nickname = "getRentFavoriteByUserId", notes = "租房收藏列表", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "租房收藏列表", nickname = "getRentFavoriteByUserId", notes = "租房收藏列表", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -29,7 +29,7 @@ public interface RentFavoriteRestApi {
     ResponseEntity<RentFavoriteListResponse> getRentFavoriteByUserId(@ApiParam(value = "rentFavoriteListRequest", required = true) @Valid RentFavoriteListRequest rentFavoriteListRequest, BindingResult bindingResult);
 
 
-    @ApiOperation(value = "租房添加收藏", nickname = "addRentFavorite", notes = "租房添加收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "租房添加收藏", nickname = "addRentFavorite", notes = "租房添加收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
@@ -42,7 +42,7 @@ public interface RentFavoriteRestApi {
             method = RequestMethod.POST)
     ResponseEntity<ChangeFavoriteResponse> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult);
 
-    @ApiOperation(value = "租房取消收藏", nickname = "deleteRentFavoriteByRentIdAndUserId", notes = "租房取消收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "租房取消收藏", nickname = "deleteRentFavoriteByRentIdAndUserId", notes = "租房取消收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -54,7 +54,7 @@ public interface RentFavoriteRestApi {
             method = RequestMethod.POST)
     ResponseEntity<ChangeFavoriteResponse> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Valid @RequestBody DeleteRentFavoriteRequest deleteRentFavoriteRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "判断租房是否被收藏", nickname = "getIsFavoriteByRent", notes = "判断租房是否被收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "判断租房是否被收藏", nickname = "getIsFavoriteByRent", notes = "判断租房是否被收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),

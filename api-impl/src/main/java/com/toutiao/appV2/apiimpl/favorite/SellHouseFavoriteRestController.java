@@ -10,6 +10,7 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.favorite.SellHouseFavoriteRestService;
 import com.toutiao.appV2.api.favorite.SellHouseFavoriteRestApi;
 import com.toutiao.appV2.model.favorite.*;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.JSONUtil;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -53,18 +54,18 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
      */
     @Override
     public ResponseEntity<SellHouseFavoriteListResponse> getEsfFavoriteByUserId(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Valid SellHouseFavoriteListRequest sellHouseFavoriteListRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseFavoriteListRequest));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
+//        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+//        log.info("调用方法:{}", thisMethodName);
+//        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseFavoriteListRequest));
+//        if (bindingResult.hasErrors()) {
+//            List<FieldError> allErrors = bindingResult.getFieldErrors();
+//            StringBuilder sb = new StringBuilder();
+//            allErrors.forEach(error -> {
+//                sb.append(error.getDefaultMessage() + ";");
+//            });
+//            log.error("参数校验错误:{}", sb);
+//            throw new IllegalArgumentException(sb.toString());
+//        }
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
@@ -75,6 +76,8 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
                 BeanUtils.copyProperties(sellHouseFavoriteDomain, sellHouseFavoriteListResponse);
                 log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseFavoriteListResponse));
                 return new ResponseEntity<SellHouseFavoriteListResponse>(sellHouseFavoriteListResponse, HttpStatus.OK);
+            } catch (BaseException ex) {
+                throw new BaseException(ex.getCode(), ex.getMsg());
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

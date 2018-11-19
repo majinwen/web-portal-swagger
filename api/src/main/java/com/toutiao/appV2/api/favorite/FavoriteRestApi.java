@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 /**
  * Created by wk on 2018/11/14.
  */
-@Api(value = "FavoriteRestApi", description = "收藏")
+@Api(value = "收藏", description = "收藏接口")
 public interface FavoriteRestApi {
 
-    @ApiOperation(value = "个人中心租房，二手房，新房，小区，收藏数量", nickname = "getFavoriteCountByUser", notes = "个人中心租房，二手房，新房，小区，收藏数量", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "个人中心租房，二手房，新房，小区，收藏数量", nickname = "getFavoriteCountByUser", notes = "个人中心租房，二手房，新房，小区，收藏数量", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),

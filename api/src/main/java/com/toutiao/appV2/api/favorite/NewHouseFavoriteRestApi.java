@@ -14,10 +14,10 @@ import javax.validation.Valid;
 /**
  * Created by wk on 2018/11/14.
  */
-@Api(value = "NewHouseFavoriteRestApi", description = "查询新房接口")
+@Api(value = "收藏", description = "收藏接口")
 public interface NewHouseFavoriteRestApi {
 
-    @ApiOperation(value = "新房收藏列表", nickname = "getNewHouseFavoriteByUserId", notes = "新房收藏列表", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "新房收藏列表", nickname = "getNewHouseFavoriteByUserId", notes = "新房收藏列表", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -29,7 +29,7 @@ public interface NewHouseFavoriteRestApi {
     ResponseEntity<NewHouseFavoriteListResponse> getNewHouseFavoriteByUserId(@ApiParam(value = "newHouseFavoriteListRequest", required = true) @Valid NewHouseFavoriteListRequest newHouseFavoriteListRequest, BindingResult bindingResult);
 
 
-    @ApiOperation(value = "添加新房收藏", nickname = "addNewHouseFavorite", notes = "添加新房收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "添加新房收藏", nickname = "addNewHouseFavorite", notes = "添加新房收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
@@ -42,7 +42,7 @@ public interface NewHouseFavoriteRestApi {
             method = RequestMethod.POST)
     ResponseEntity<ChangeFavoriteResponse> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "新房取消收藏", nickname = "cancelFavoriteByNewHouse", notes = "新房取消收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "新房取消收藏", nickname = "cancelFavoriteByNewHouse", notes = "新房取消收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
@@ -56,7 +56,7 @@ public interface NewHouseFavoriteRestApi {
     ResponseEntity<ChangeFavoriteResponse> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult);
 
 
-    @ApiOperation(value = "判断新房是否被收藏", nickname = "getNewHouseIsFavorite", notes = "判断新房是否被收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "判断新房是否被收藏", nickname = "getNewHouseIsFavorite", notes = "判断新房是否被收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),

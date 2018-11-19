@@ -26,7 +26,7 @@ import java.util.Optional;
 import java.util.concurrent.Callable;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T06:33:40.959Z")
 
-@Api(value = "HomePageApi", description = "查询首页接口")
+@Api(value = "首页", description = "查询首页接口")
 public interface HomePageApi {
 
 

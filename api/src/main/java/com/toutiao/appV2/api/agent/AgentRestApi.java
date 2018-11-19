@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @Api(value = "获取经纪人API", description = "获取经纪人API")
 public interface AgentRestApi {
 
-    @ApiOperation(value = "获取经纪人信息", nickname = "getAgentInfoByUserId", notes = "", response = AgentResponse.class, tags={ "agent", })
+    @ApiOperation(value = "获取经纪人信息", nickname = "getAgentInfoByUserId", notes = "", response = AgentResponse.class, tags={ "获取经纪人API", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = AgentResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),

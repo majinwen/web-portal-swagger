@@ -18,7 +18,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T02:44:29.266Z")
 
-@Api(value = "findhouse", description = "首页报告")
+@Api(value = "首页报告", description = "首页报告")
 public interface FindhouseApi {
 
     @ApiOperation(value = "获取首页报告", nickname = "getHomePageReport", notes = "", response = IntelligenceResponse.class, tags={ "首页找房报告", })

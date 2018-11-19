@@ -13,10 +13,10 @@ import javax.validation.Valid;
 /**
  * Created by wk on 2018/11/16.
  */
-@Api(value = "CutPriceSellHouseRestApi", description = "专题页获取降价房")
+@Api(value = "二手房", description = "专题页获取降价房")
 public interface CutPriceSellHouseRestApi {
 
-    @ApiOperation(value = "专题页获取降价房List", nickname = "getCutPriceShellHouse", notes = "", response = MustBuyShellHouseResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "专题页获取降价房List", nickname = "getCutPriceShellHouse", notes = "", response = MustBuyShellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = MustBuyShellHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

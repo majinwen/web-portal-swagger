@@ -13,7 +13,7 @@ import javax.validation.Valid;
 @Api(value = "搜索联想词", description = "搜索联想词")
 public interface SuggestRestApi {
 
-    @ApiOperation(value = "搜索联想词提示", nickname = "getSuggestByKeyword", notes = "", response = SuggestResponse.class, tags={ "suggest", })
+    @ApiOperation(value = "搜索联想词提示", nickname = "getSuggestByKeyword", notes = "", response = SuggestResponse.class, tags={ "搜索联想词", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = SuggestResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),

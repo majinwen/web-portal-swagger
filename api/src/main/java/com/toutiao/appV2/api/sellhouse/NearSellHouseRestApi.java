@@ -13,10 +13,10 @@ import javax.validation.Valid;
 /**
  * Created by wk on 2018/11/16.
  */
-@Api(value = "NearSellHouseRestApi", description = "二手房附近5km列表")
+@Api(value = "二手房", description = "二手房附近5km列表")
 public interface NearSellHouseRestApi {
 
-    @ApiOperation(value = "二手房附近5km列表", nickname = "getNearBySellHouses", notes = "", response = NearBySellHouseDomainResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "二手房附近5km列表", nickname = "getNearBySellHouses", notes = "", response = NearBySellHouseDomainResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NearBySellHouseDomainResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

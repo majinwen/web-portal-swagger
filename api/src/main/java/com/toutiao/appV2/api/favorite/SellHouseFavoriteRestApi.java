@@ -15,10 +15,10 @@ import javax.validation.Valid;
 /**
  * Created by wk on 2018/11/14.
  */
-@Api(value = "SellHouseFavoriteRestApi", description = "查询二手房接口")
+@Api(value = "收藏", description = "收藏接口")
 public interface SellHouseFavoriteRestApi {
 
-    @ApiOperation(value = "二手房收藏列表", nickname = "getEsfFavoriteByUserId", notes = "二手房收藏列表", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "二手房收藏列表", nickname = "getEsfFavoriteByUserId", notes = "二手房收藏列表", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -30,7 +30,7 @@ public interface SellHouseFavoriteRestApi {
     ResponseEntity<SellHouseFavoriteListResponse> getEsfFavoriteByUserId(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Valid SellHouseFavoriteListRequest sellHouseFavoriteListRequest, BindingResult bindingResult);
 
 
-    @ApiOperation(value = "二手房添加收藏", nickname = "addEsfFavorite", notes = "二手房添加收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "二手房添加收藏", nickname = "addEsfFavorite", notes = "二手房添加收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
@@ -43,7 +43,7 @@ public interface SellHouseFavoriteRestApi {
             method = RequestMethod.POST)
     ResponseEntity<ChangeFavoriteResponse> addEsfFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult);
 
-    @ApiOperation(value = "二手房取消收藏", nickname = "deleteEsfFavoriteByEsfIdAndUserId", notes = "二手房取消收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "二手房取消收藏", nickname = "deleteEsfFavoriteByEsfIdAndUserId", notes = "二手房取消收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -55,7 +55,7 @@ public interface SellHouseFavoriteRestApi {
             method = RequestMethod.POST)
     ResponseEntity<ChangeFavoriteResponse> deleteEsfFavoriteByEsfIdAndUserId(@ApiParam(value = "deleteEsfFavoriteRequest", required = true) @Valid @RequestBody DeleteEsfFavoriteRequest deleteEsfFavoriteRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "判断二手房是否被收藏", nickname = "getIsFavoriteByEsf", notes = "判断二手房是否被收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "判断二手房是否被收藏", nickname = "getIsFavoriteByEsf", notes = "判断二手房是否被收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),

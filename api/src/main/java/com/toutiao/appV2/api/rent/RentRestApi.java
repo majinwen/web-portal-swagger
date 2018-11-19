@@ -18,10 +18,10 @@ import javax.validation.Valid;
  */
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T06:17:44.199Z")
 
-@Api(value = "rest", description = "租房房源接口")
+@Api(value = "租房", description = "租房房源接口")
 public interface RentRestApi {
 
-    @ApiOperation(value = "附近5km出租房源(app的是吧，那就优先三公里的录入房源由近到远)", nickname = "getNearRentByLocation", notes = "", response = NearRentHouseResponse.class, tags={ "rent-rest-controller", })
+    @ApiOperation(value = "附近5km出租房源(app的是吧，那就优先三公里的录入房源由近到远)", nickname = "getNearRentByLocation", notes = "", response = NearRentHouseResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NearRentHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -33,7 +33,7 @@ public interface RentRestApi {
     ResponseEntity<NearRentHouseResponse> getNearRentHouseByLocationUsingGET(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
 
 
-    @ApiOperation(value = "租房推优房源", nickname = "getRecommendRent", notes = "", response = RecommendRentResponse.class, tags={ "rent-rest-controller", })
+    @ApiOperation(value = "租房推优房源", nickname = "getRecommendRent", notes = "", response = RecommendRentResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RecommendRentResponse.class),
             @ApiResponse(code = 201, message = "Created"),
@@ -47,7 +47,7 @@ public interface RentRestApi {
     ResponseEntity<RecommendRentResponse> getRecommendRent(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
-    @ApiOperation(value = "根据id获取该出租房源对应的经纪人(该接口已停用)", nickname = "getRentAgentByRentId", notes = "改接口已停用", response = RentAgentResponse.class, tags={ "rent-rest-controller", })
+    @ApiOperation(value = "根据id获取该出租房源对应的经纪人(该接口已停用)", nickname = "getRentAgentByRentId", notes = "改接口已停用", response = RentAgentResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RentAgentResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -59,7 +59,7 @@ public interface RentRestApi {
     ResponseEntity<RentAgentResponse> getRentAgentByRentId(@ApiParam(value = "rentDetailsRequest" ,required=true )  @Valid @RequestBody RentDetailsRequest rentDetailsRequest);
 
 
-    @ApiOperation(value = "查找出租房源详细信息", nickname = "getRentDetailByRentId", notes = "", response = RentDetailResponse.class, tags={ "rent-rest-controller", })
+    @ApiOperation(value = "查找出租房源详细信息", nickname = "getRentDetailByRentId", notes = "", response = RentDetailResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RentDetailResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -71,7 +71,7 @@ public interface RentRestApi {
     ResponseEntity<RentDetailResponse> getRentDetailByRentId(@ApiParam(value = "rentDetailsRequest" ,required=true )  @Valid @RequestBody RentDetailsRequest rentDetailsRequest);
 
 
-    @ApiOperation(value = "出租房源列表", nickname = "getRentHouseSearchList", notes = "", response = RentDetailFewResponseList.class, tags={ "rent-rest-controller", })
+    @ApiOperation(value = "出租房源列表", nickname = "getRentHouseSearchList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RentDetailFewResponseList.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -83,7 +83,7 @@ public interface RentRestApi {
     ResponseEntity<RentDetailFewResponseList> getRentHouseSearchList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
-    @ApiOperation(value = "租房推荐列表", nickname = "getRentList", notes = "", response = RentListResponse.class, tags={ "rent-rest-controller", })
+    @ApiOperation(value = "租房推荐列表", nickname = "getRentList", notes = "", response = RentListResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RentListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

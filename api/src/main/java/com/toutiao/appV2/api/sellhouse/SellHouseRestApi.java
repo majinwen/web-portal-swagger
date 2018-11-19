@@ -16,10 +16,10 @@ import java.util.List;
 /**
  * Created by wk on 2018/11/16.
  */
-@Api(value = "SellHouseRestApi", description = "二手房")
+@Api(value = "二手房", description = "二手房")
 public interface SellHouseRestApi {
 
-    @ApiOperation(value = "消息推送二手房列表信息", nickname = "querySellHouseByHouseId", notes = "", response = MessageSellHouseDo.class, responseContainer = "List", tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "消息推送二手房列表信息", nickname = "querySellHouseByHouseId", notes = "", response = MessageSellHouseDo.class, responseContainer = "List", tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = MessageSellHouseDo.class, responseContainer = "List"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -30,7 +30,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<List<MessageSellHouseDo>> querySellHouseByHouseId(@ApiParam(value = "houseId", required = true) @RequestParam(value = "houseId", required = false) String houseId);
 
-    @ApiOperation(value = "二手房房源详情", nickname = "getSellHouseByHouseId", notes = "", response = SellHouseDetailsResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "二手房房源详情", nickname = "getSellHouseByHouseId", notes = "", response = SellHouseDetailsResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseDetailsResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -41,7 +41,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SellHouseDetailsResponse> getSellHouseByHouseId(@ApiParam(value = "sellHouseDerailsRequest", required = true) @Valid SellHouseDetailsRequest sellHouseDerailsRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "认领二手房房源经纪人", nickname = "getAgentBySellHouseId", notes = "", response = AgentsBySellHouseResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "认领二手房房源经纪人", nickname = "getAgentBySellHouseId", notes = "", response = AgentsBySellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = AgentsBySellHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -52,7 +52,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<AgentsBySellHouseResponse> getAgentBySellHouseId(@ApiParam(value = "agentSellHouseRequest", required = true) @Valid AgentSellHouseRequest agentSellHouseRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "二手房房源默认列表", nickname = "getSellHouseByChoose", notes = "", response = SellHouseResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "二手房房源默认列表", nickname = "getSellHouseByChoose", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -63,7 +63,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SellHouseResponse> getSellHouseByChoose(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "二手房房源默认列表V1", nickname = "getSellHouseByChooseV1", notes = "", response = SellHouseResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "二手房房源默认列表V1", nickname = "getSellHouseByChooseV1", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -74,7 +74,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SellHouseResponse> getSellHouseByChooseV1(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "二手房默认列表推荐（广告）", nickname = "getRecommendSellHouse", notes = "", response = SellHouseResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "二手房默认列表推荐（广告）", nickname = "getRecommendSellHouse", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseResponse.class),
             @ApiResponse(code = 201, message = "Created"),
@@ -87,7 +87,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.POST)
     ResponseEntity<SellHouseResponse> getRecommendSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "二手房搜索结果列表", nickname = "getSellHouseList", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "二手房搜索结果列表", nickname = "getSellHouseList", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseSearchDomainResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -98,7 +98,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SellHouseSearchDomainResponse> getSellHouseList(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "逢出必抢专题页", nickname = "getBeSureToSnatchList", notes = "", response = SellHouseBeSureToSnatchResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "逢出必抢专题页", nickname = "getBeSureToSnatchList", notes = "", response = SellHouseBeSureToSnatchResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseBeSureToSnatchResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -109,7 +109,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"sell-house-rest-controller",})
+    @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseSearchDomainResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

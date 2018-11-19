@@ -22,7 +22,7 @@ import javax.validation.constraints.*;
 @Api(value = "房源对比接口", description = "房源对比接口")
 public interface ComparedRestApi {
 
-    @ApiOperation(value = "登录用户删除房源对比信息", nickname = "deleteCompared", notes = "", response = HouseCompared.class, tags = {"compared",})
+    @ApiOperation(value = "登录用户删除房源对比信息", nickname = "deleteCompared", notes = "", response = HouseCompared.class, tags = {"房源对比接口",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = HouseCompared.class),
             @ApiResponse(code = 201, message = "Created"),
@@ -36,7 +36,7 @@ public interface ComparedRestApi {
     ResponseEntity<HouseCompared> deleteCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 
-    @ApiOperation(value = "未登录用户删除房源对比信息", nickname = "deleteTempCompared", notes = "", response = String.class, tags = {"compared",})
+    @ApiOperation(value = "未登录用户删除房源对比信息", nickname = "deleteTempCompared", notes = "", response = String.class, tags = {"房源对比接口",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = String.class),
             @ApiResponse(code = 201, message = "Created"),
@@ -50,7 +50,7 @@ public interface ComparedRestApi {
     ResponseEntity<String> deleteTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 
-    @ApiOperation(value = "比对列表", nickname = "getComparedList", notes = "", response = SellHouseFavoriteListResponse.class, tags = {"compared",})
+    @ApiOperation(value = "比对列表", nickname = "getComparedList", notes = "", response = SellHouseFavoriteListResponse.class, tags = {"房源对比接口",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseFavoriteListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -63,7 +63,7 @@ public interface ComparedRestApi {
     ResponseEntity<SellHouseFavoriteListResponse> getComparedList(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Valid  SellHouseFavoriteListRequest sellHouseFavoriteListRequest);
 
 
-    @ApiOperation(value = "用户获取房源对比信息列表", nickname = "listCompared", notes = "", response = HouseComparedListDoListResponse.class, tags = {"compared",})
+    @ApiOperation(value = "用户获取房源对比信息列表", nickname = "listCompared", notes = "", response = HouseComparedListDoListResponse.class, tags = {"房源对比接口",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = HouseComparedListDoListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -76,7 +76,7 @@ public interface ComparedRestApi {
     ResponseEntity<HouseComparedListDoListResponse> listCompared();
 
 
-    @ApiOperation(value = "房源对比页", nickname = "listComparedDetail", notes = "", response = HouseComparedDetailDoListResponse.class, tags = {"compared",})
+    @ApiOperation(value = "房源对比页", nickname = "listComparedDetail", notes = "", response = HouseComparedDetailDoListResponse.class, tags = {"房源对比接口",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = HouseComparedDetailDoListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -89,7 +89,7 @@ public interface ComparedRestApi {
     ResponseEntity<HouseComparedDetailDoListResponse> listComparedDetail(@NotNull @ApiParam(value = "ids", required = true) @Valid @RequestParam(value = "ids", required = true) String ids);
 
 
-    @ApiOperation(value = "未登录用户获取房源对比信息列表", nickname = "listTempCompared", notes = "", response = HouseComparedListDoListResponse.class, tags = {"compared",})
+    @ApiOperation(value = "未登录用户获取房源对比信息列表", nickname = "listTempCompared", notes = "", response = HouseComparedListDoListResponse.class, tags = {"房源对比接口",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = HouseComparedListDoListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -102,7 +102,7 @@ public interface ComparedRestApi {
     ResponseEntity<HouseComparedListDoListResponse> listTempCompared();
 
 
-    @ApiOperation(value = "登录用户新增房源对比信息", nickname = "saveCompared", notes = "", response = HouseCompared.class, tags = {"compared",})
+    @ApiOperation(value = "登录用户新增房源对比信息", nickname = "saveCompared", notes = "", response = HouseCompared.class, tags = {"房源对比接口",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = HouseCompared.class),
             @ApiResponse(code = 201, message = "Created"),
@@ -116,7 +116,7 @@ public interface ComparedRestApi {
     ResponseEntity<HouseCompared> saveCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 
-    @ApiOperation(value = "未登录用户新增房源对比信息", nickname = "saveTempCompared", notes = "", response = String.class, tags = {"compared",})
+    @ApiOperation(value = "未登录用户新增房源对比信息", nickname = "saveTempCompared", notes = "", response = String.class, tags = {"房源对比接口",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = String.class),
             @ApiResponse(code = 201, message = "Created"),

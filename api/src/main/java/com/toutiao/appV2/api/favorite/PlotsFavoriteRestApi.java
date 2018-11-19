@@ -15,10 +15,10 @@ import javax.validation.Valid;
 /**
  * Created by wk on 2018/11/14.
  */
-@Api(value = "PlotsFavoriteRestApi", description = "查询小区接口")
+@Api(value = "收藏", description = "收藏接口")
 public interface PlotsFavoriteRestApi {
 
-    @ApiOperation(value = "小区收藏列表", nickname = "getPlotFavoriteByUserId", notes = "小区收藏列表", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "小区收藏列表", nickname = "getPlotFavoriteByUserId", notes = "小区收藏列表", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
 
@@ -30,7 +30,7 @@ public interface PlotsFavoriteRestApi {
             method = RequestMethod.GET)
     ResponseEntity<PlotFavoriteListResponse> getPlotFavoriteByUserId(@ApiParam(value = "plotsFavoriteListRequest", required = true) @Valid PlotsFavoriteListRequest plotsFavoriteListRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "判断小区是否被收藏", nickname = "getPlotIsFavoriteByPlotIdAndUserId", notes = "判断小区是否被收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "判断小区是否被收藏", nickname = "getPlotIsFavoriteByPlotIdAndUserId", notes = "判断小区是否被收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -41,7 +41,7 @@ public interface PlotsFavoriteRestApi {
             method = RequestMethod.GET)
     ResponseEntity<QueryFavoriteResponse> getPlotIsFavoriteByPlotIdAndUserId(@ApiParam(value = "plotIsFavoriteRequest", required = true) @Valid PlotIsFavoriteRequest plotIsFavoriteRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "添加小区收藏", nickname = "addPlotsFavorite", notes = "添加小区收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "添加小区收藏", nickname = "addPlotsFavorite", notes = "添加小区收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
@@ -54,7 +54,7 @@ public interface PlotsFavoriteRestApi {
             method = RequestMethod.POST)
     ResponseEntity<ChangeFavoriteResponse> addPlotsFavorite(@ApiParam(value = "plotsAddFavoriteRequest", required = true) @Valid @RequestBody PlotsAddFavoriteRequest plotsAddFavoriteRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "小区取消收藏", nickname = "cancelFavoriteByVillage", notes = "小区取消收藏", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "小区取消收藏", nickname = "cancelFavoriteByVillage", notes = "小区取消收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
@@ -68,7 +68,7 @@ public interface PlotsFavoriteRestApi {
     ResponseEntity<ChangeFavoriteResponse> cancelFavoriteByVillage(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult);
 
 
-    @ApiOperation(value = "列表页小区收藏数量", nickname = "getPlotFavoriteCountByPlotId", notes = "列表页小区收藏数量", tags = {"favorite-rest-controller",})
+    @ApiOperation(value = "列表页小区收藏数量", nickname = "getPlotFavoriteCountByPlotId", notes = "列表页小区收藏数量", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),

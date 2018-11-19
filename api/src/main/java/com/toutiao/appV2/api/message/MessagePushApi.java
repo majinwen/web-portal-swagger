@@ -18,10 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:45:59.146Z")
 
-@Api(value = "rest", description = "消息推送列表接口")
+@Api(value = "消息推送", description = "消息推送列表接口")
 public interface MessagePushApi {
 
-    @ApiOperation(value = "首页消息列表", nickname = "getHomeMessage", notes = "首页消息列表", response = HomeMessageResponse.class, tags={ "message-push-controller", })
+    @ApiOperation(value = "首页消息列表", nickname = "getHomeMessage", notes = "首页消息列表", response = HomeMessageResponse.class, tags={ "消息推送", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = HomeMessageResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -34,7 +34,7 @@ public interface MessagePushApi {
                                                        HttpServletResponse response);
 
 
-    @ApiOperation(value = "房源类和专题类消息列表", nickname = "getHouseTypeMessage", notes = "房源类和专题类消息列表", response = MessagePushDomain.class, tags={ "message-push-controller", })
+    @ApiOperation(value = "房源类和专题类消息列表", nickname = "getHouseTypeMessage", notes = "房源类和专题类消息列表", response = MessagePushDomain.class, tags={ "消息推送", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = MessagePushDomain.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 /**
  * @author zym
  */
-@Api(value = "InvitationApi", description = "邀请码接口Api")
+@Api(value = "邀请码", description = "邀请码接口Api")
 public interface InvitationApi {
 
     @ApiOperation(value = "根据邀请码获取邀请码信息", nickname = "getCodeInfo", notes = "根据邀请码获取邀请码信息",
-            response = GetCodeInfoListResponse.class, tags={ "invitation-api-controller", })
+            response = GetCodeInfoListResponse.class, tags={ "邀请码", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = GetCodeInfoListResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -36,7 +36,7 @@ public interface InvitationApi {
 
 
     @ApiOperation(value = "主页点击邀请码，获取用户邀请信息以及该设备填写过的邀请记录", nickname = "getInvitation",
-            notes = "主页点击邀请码", response = InvitationResponse.class, tags={ "invitation-api-controller", })
+            notes = "主页点击邀请码", response = InvitationResponse.class, tags={ "邀请码", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = InvitationResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -50,7 +50,7 @@ public interface InvitationApi {
     ResponseEntity<InvitationResponse> getInvitation(InvitationRequest invitationRequest);
 
     @ApiOperation(value = "根据邀请码获取邀请记录列表", nickname = "getInviteHistoryList", notes = "根据邀请码获取邀请记录列表",
-            response = GetInviteHistoryListResponse.class, tags={ "invitation-api-controller", })
+            response = GetInviteHistoryListResponse.class, tags={ "邀请码", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = GetInviteHistoryListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -65,7 +65,7 @@ public interface InvitationApi {
 
 
     @ApiOperation(value = "获取三级邀请记录列表", nickname = "getSuperInviteHistory", notes = "获取三级邀请记录列表",
-            response = GetSuperInviteHistoryResponse.class, tags={ "invitation-api-controller", })
+            response = GetSuperInviteHistoryResponse.class, tags={ "邀请码", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = GetSuperInviteHistoryResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -80,7 +80,7 @@ public interface InvitationApi {
 
 
     @ApiOperation(value = "保存邀请记录", nickname = "saveInviteHistory", notes = "保存邀请记录",
-            tags={"invitation-api-controller", })
+            tags={"邀请码", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = Object.class),
             @ApiResponse(code = 201, message = "Created"),
