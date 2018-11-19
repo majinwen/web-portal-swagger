@@ -40,7 +40,7 @@ public interface RentFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<String> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult);
+    ResponseEntity<ChangeFavoriteResponse> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult);
 
     @ApiOperation(value = "租房取消收藏", nickname = "deleteRentFavoriteByRentIdAndUserId", notes = "租房取消收藏", tags = {"favorite-rest-controller",})
     @ApiResponses(value = {
@@ -52,7 +52,7 @@ public interface RentFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<Boolean> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Valid @RequestBody DeleteRentFavoriteRequest deleteRentFavoriteRequest, BindingResult bindingResult);
+    ResponseEntity<ChangeFavoriteResponse> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Valid @RequestBody DeleteRentFavoriteRequest deleteRentFavoriteRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "判断租房是否被收藏", nickname = "getIsFavoriteByRent", notes = "判断租房是否被收藏", tags = {"favorite-rest-controller",})
     @ApiResponses(value = {
@@ -63,7 +63,7 @@ public interface RentFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/rent/getIsFavoriteByRent",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<Boolean> getIsFavoriteByRent(@ApiParam(value = "isFavoriteRequest", required = true) @Valid IsFavoriteRequest isFavoriteRequest, BindingResult bindingResult);
+    ResponseEntity<QueryFavoriteResponse> getIsFavoriteByRent(@ApiParam(value = "isFavoriteRequest", required = true) @Valid IsFavoriteRequest isFavoriteRequest, BindingResult bindingResult);
 
 
 }
