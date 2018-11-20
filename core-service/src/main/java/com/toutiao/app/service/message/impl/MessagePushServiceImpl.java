@@ -213,10 +213,11 @@ public class MessagePushServiceImpl implements MessagePushService {
      *
      * @param messagePushQuery
      * @param userId
+     * @param request
      * @return
      */
     @Override
-    public MessagePushDomain getThemeTypeMessage(MessagePushDoQuery messagePushQuery, String userId) {
+    public MessagePushDomain getThemeTypeMessage(MessagePushDoQuery messagePushQuery, String userId, HttpServletRequest request) {
         MessagePushExample example = new MessagePushExample();
         example.setOrderByClause("id DESC");
         MessagePushExample.Criteria criteria = example.createCriteria();
@@ -244,11 +245,11 @@ public class MessagePushServiceImpl implements MessagePushService {
         //配置专题展示数量
         if (messagePushDos.size() > 10) {
             List<MessagePushDo> message = messagePushDos.subList(0, 10);
-            dealThemeDetailUrl(message);
+            dealThemeDetailUrl(message, request);
             messagePushDomain.setData(message);
             lastMessageId = message.get(message.size() - 1).getId();
         } else {
-            dealThemeDetailUrl(messagePushDos);
+            dealThemeDetailUrl(messagePushDos, request);
             messagePushDomain.setData(messagePushDos);
             lastMessageId = messagePushDos.get(messagePushDos.size() - 1).getId();
         }
@@ -267,19 +268,21 @@ public class MessagePushServiceImpl implements MessagePushService {
      * 处理专题列表Url
      *
      * @param messagePushDos
+     * @param request
      */
-    private void dealThemeDetailUrl(List<MessagePushDo> messagePushDos) {
+    private void dealThemeDetailUrl(List<MessagePushDo> messagePushDos, HttpServletRequest request) {
         for (MessagePushDo messagePushDo : messagePushDos) {
             String city = CITYID2ABBREVIATION.get(messagePushDo.getCityId());
             if (StringTool.isNotEmpty(city)) {
                 String themeDetailUrl = null;
                 Integer subscribeType = messagePushDo.getSubscribeType();
+                String hostUrl = getHostOfUrl(request);
                 if (subscribeType == 1) {
-                    themeDetailUrl = appName + String.format("/#/%s/topics/reduction", city);
+                    themeDetailUrl = hostUrl + String.format("/#/%s/topics/reduction", city);
                 } else if (subscribeType == 2) {
-                    themeDetailUrl = appName + String.format("/#/%s/topics/low", city);
+                    themeDetailUrl = hostUrl + String.format("/#/%s/topics/low", city);
                 } else if (subscribeType == 3) {
-                    themeDetailUrl = appName + String.format("/#/%s/topics/mustbuy", city);
+                    themeDetailUrl = hostUrl + String.format("/#/%s/topics/mustbuy", city);
                 }
                 JSONObject messageTheme = messagePushDo.getMessageTheme();
                 String districtIdArr = messageTheme.get("districtId").toString().replace("\"", "").replace("[", "")
