@@ -14,8 +14,10 @@ import java.util.Objects;
 
 public class ComparedRequest {
     @JsonProperty("houseId")
+    @ApiModelProperty(value = "房源id")
     private String houseId = null;
 
+    @ApiModelProperty(value = "id")
     @JsonProperty("id")
     private Integer id = null;
 
@@ -29,7 +31,6 @@ public class ComparedRequest {
      *
      * @return houseId
      **/
-    @ApiModelProperty(value = "")
 
 
     public String getHouseId() {
@@ -50,7 +51,6 @@ public class ComparedRequest {
      *
      * @return id
      **/
-    @ApiModelProperty(value = "")
 
 
     public Integer getId() {

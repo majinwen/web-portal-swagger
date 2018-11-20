@@ -17,6 +17,7 @@ import javax.validation.constraints.*;
 
 public class AgentRequest   {
   @JsonProperty("userId")
+  @ApiModelProperty(value = "经纪人id")
   private String userId = null;
 
   public AgentRequest userId(String userId) {
@@ -28,7 +29,7 @@ public class AgentRequest   {
    * 经纪人id
    * @return userId
   **/
-  @ApiModelProperty(value = "经纪人id")
+
 
 
   public String getUserId() {

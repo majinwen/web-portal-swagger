@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.search.SearchConditionMapper">
+    <resultMap id="SearchConditionMap" type="com.toutiao.web.dao.entity.search.SearchCondition">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id, city_id, type, content
+    </sql>
+    <select id="selectSearchConditionByCityIdAndType" resultMap="SearchConditionMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from search_condition
+        where city_id = #{cityId,jdbcType=INTEGER}
+        and type = #{type,jdbcType=INTEGER}
+    </select>
+</mapper>

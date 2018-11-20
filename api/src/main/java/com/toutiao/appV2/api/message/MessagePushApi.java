@@ -46,4 +46,16 @@ public interface MessagePushApi {
     ResponseEntity<MessagePushDomain> getHouseTypeMessage(@Validated MessagePushRequest messagePushRequest, HttpServletRequest
             request, HttpServletResponse response);
 
+    @ApiOperation(value = "获取专题消息列表", nickname = "getThemeTypeMessage", notes = "获取专题消息列表", response =
+            MessagePushDomain.class, tags={ "message-push-controller", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = MessagePushDomain.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/messagePush/getThemeTypeMessage",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MessagePushDomain> getThemeTypeMessage(@Validated MessagePushRequest messagePushRequest, HttpServletRequest
+            request, HttpServletResponse response);
 }
