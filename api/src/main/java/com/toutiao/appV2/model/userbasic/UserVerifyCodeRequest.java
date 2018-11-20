@@ -16,7 +16,7 @@ public class UserVerifyCodeRequest   {
   private String backUrl = null;
 
   @JsonProperty("identityType")
-  private Integer identityType = null;
+  private short identityType = 0;
 
   @JsonProperty("imageCode")
   private String imageCode = null;
@@ -50,7 +50,7 @@ public class UserVerifyCodeRequest   {
     this.backUrl = backUrl;
   }
 
-  public UserVerifyCodeRequest identityType(Integer identityType) {
+  public UserVerifyCodeRequest identityType(short identityType) {
     this.identityType = identityType;
     return this;
   }
@@ -62,11 +62,11 @@ public class UserVerifyCodeRequest   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getIdentityType() {
+  public short getIdentityType() {
     return identityType;
   }
 
-  public void setIdentityType(Integer identityType) {
+  public void setIdentityType(short identityType) {
     this.identityType = identityType;
   }
 

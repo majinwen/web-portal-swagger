@@ -18,7 +18,7 @@ import javax.validation.Valid;
 @Api(value = "搜索联想词", description = "搜索联想词")
 public interface SuggestRestApi {
 
-    @ApiOperation(value = "搜索联想词提示", nickname = "getSuggestByKeyword", notes = "", response = SuggestResponse.class, tags = {"suggest",})
+    @ApiOperation(value = "搜索联想词提示", nickname = "getSuggestByKeyword", notes = "", response = SuggestResponse.class, tags = {"搜索联想词",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SuggestResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -29,7 +29,7 @@ public interface SuggestRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SuggestResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest);
 
-    @ApiOperation(value = "获取经纪人信息", nickname = "getAgentInfoByUserId", notes = "", response = AgentResponse.class, tags = {"suggest",})
+    @ApiOperation(value = "获取经纪人信息", nickname = "getAgentInfoByUserId", notes = "", response = AgentResponse.class, tags = {"搜索联想词",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = AgentResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -40,7 +40,7 @@ public interface SuggestRestApi {
             method = RequestMethod.GET)
     ResponseEntity<AgentResponse> getAgentInfoByUserId(@ApiParam(value = "agentRequest", required = true) @Valid AgentRequest agentRequest);
 
-    @ApiOperation(value = "根据城市代码获取查询条件", nickname = "selectSearchContentByCityIdAndType", notes = "", response = SearchConditionResponse.class, tags = {"suggest",})
+    @ApiOperation(value = "根据城市代码获取查询条件", nickname = "selectSearchContentByCityIdAndType", notes = "", response = SearchConditionResponse.class, tags = {"搜索联想词",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SuggestResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),

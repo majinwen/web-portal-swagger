@@ -47,7 +47,7 @@ public interface MessagePushApi {
             request, HttpServletResponse response);
 
     @ApiOperation(value = "获取专题消息列表", nickname = "getThemeTypeMessage", notes = "获取专题消息列表", response =
-            MessagePushDomain.class, tags={ "message-push-controller", })
+            MessagePushDomain.class, tags={ "消息推送", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = MessagePushDomain.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
