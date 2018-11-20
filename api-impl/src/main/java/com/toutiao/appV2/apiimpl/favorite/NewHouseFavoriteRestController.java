@@ -90,7 +90,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Valid NewHouseIsFavoriteRequest newHouseIsFavoriteRequest, BindingResult bindingResult) {
+    public ResponseEntity<QueryFavoriteResponse> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Valid NewHouseIsFavoriteRequest newHouseIsFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(newHouseIsFavoriteRequest));
@@ -109,8 +109,10 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
                 NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
                 BeanUtils.copyProperties(newHouseIsFavoriteRequest, newHouseIsFavoriteDoQuery);
                 Boolean newHouseIsFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
-                log.info("返回结果:{}", newHouseIsFavorite);
-                return new ResponseEntity<Boolean>(newHouseIsFavorite, HttpStatus.OK);
+                QueryFavoriteResponse queryFavoriteResponse = new QueryFavoriteResponse();
+                queryFavoriteResponse.setFlag(newHouseIsFavorite);
+                log.info("返回结果:{}", queryFavoriteResponse);
+                return new ResponseEntity<>(queryFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -128,7 +130,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest, BindingResult bindingResult) {
+    public ResponseEntity<ChangeFavoriteResponse> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(newHouseAddFavoriteRequest));
@@ -147,16 +149,22 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
                 NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
                 BeanUtils.copyProperties(newHouseAddFavoriteRequest, newHouseAddFavoriteDoQuery);
                 Integer flag = favoriteRestService.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
+                ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
                 if (flag == 1) {
                     log.info("添加新房收藏成功");
-                    return new ResponseEntity<String>("添加新房收藏成功", HttpStatus.OK);
+                    changeFavoriteResponse.setFlag(Boolean.TRUE);
+                    changeFavoriteResponse.setMsg("添加新房收藏成功");
+
                 } else if (flag == 0) {
                     log.info("添加新房收藏失败");
-                    return new ResponseEntity<String>("添加新房收藏失败", HttpStatus.INTERNAL_SERVER_ERROR);
+                    changeFavoriteResponse.setFlag(Boolean.FALSE);
+                    changeFavoriteResponse.setMsg("添加新房收藏失败");
                 } else {
                     log.info("添加新房收藏重复");
-                    return new ResponseEntity<String>("添加新房收藏重复", HttpStatus.INTERNAL_SERVER_ERROR);
+                    changeFavoriteResponse.setFlag(Boolean.FALSE);
+                    changeFavoriteResponse.setMsg("添加新房收藏重复");
                 }
+                return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -174,7 +182,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult) {
+    public ResponseEntity<ChangeFavoriteResponse> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(cancelFavoriteRequest));
@@ -193,20 +201,24 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
                 UserFavoriteNewHouse userFavoriteNewHouse = new UserFavoriteNewHouse();
                 BeanUtils.copyProperties(cancelFavoriteRequest, userFavoriteNewHouse);
                 Integer flag = favoriteRestService.cancelNewHouseByNewCode(userFavoriteNewHouse);
+                ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
                 if (flag == 1) {
                     log.info("新房取消收藏成功");
-                    return new ResponseEntity<String>("新房取消收藏成功", HttpStatus.OK);
+                    changeFavoriteResponse.setFlag(Boolean.TRUE);
+                    changeFavoriteResponse.setMsg("新房取消收藏成功");
                 } else {
                     log.info("新房取消收藏失败");
-                    return new ResponseEntity<String>("新房取消收藏失败", HttpStatus.INTERNAL_SERVER_ERROR);
+                    changeFavoriteResponse.setFlag(Boolean.FALSE);
+                    changeFavoriteResponse.setMsg("新房取消收藏失败");
                 }
+                return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
-                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 }

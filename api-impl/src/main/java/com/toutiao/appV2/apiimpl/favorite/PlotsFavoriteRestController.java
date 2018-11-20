@@ -88,7 +88,7 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> getPlotIsFavoriteByPlotIdAndUserId(@ApiParam(value = "plotIsFavoriteRequest", required = true) @Valid PlotIsFavoriteRequest plotIsFavoriteRequest, BindingResult bindingResult) {
+    public ResponseEntity<QueryFavoriteResponse> getPlotIsFavoriteByPlotIdAndUserId(@ApiParam(value = "plotIsFavoriteRequest", required = true) @Valid PlotIsFavoriteRequest plotIsFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(plotIsFavoriteRequest));
@@ -107,8 +107,10 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
                 PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
                 BeanUtils.copyProperties(plotIsFavoriteRequest, plotIsFavoriteDoQuery);
                 Boolean plotIsFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDoQuery);
-                log.info("返回结果:{}", plotIsFavorite);
-                return new ResponseEntity<>(plotIsFavorite, HttpStatus.OK);
+                QueryFavoriteResponse queryFavoriteResponse = new QueryFavoriteResponse();
+                queryFavoriteResponse.setFlag(plotIsFavorite);
+                log.info("返回结果:{}", queryFavoriteResponse);
+                return new ResponseEntity<>(queryFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -126,7 +128,7 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> addPlotsFavorite(@ApiParam(value = "plotsAddFavoriteRequest", required = true) @Valid @RequestBody PlotsAddFavoriteRequest plotsAddFavoriteRequest, BindingResult bindingResult) {
+    public ResponseEntity<ChangeFavoriteResponse> addPlotsFavorite(@ApiParam(value = "plotsAddFavoriteRequest", required = true) @Valid @RequestBody PlotsAddFavoriteRequest plotsAddFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(plotsAddFavoriteRequest));
@@ -145,16 +147,21 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
                 PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
                 BeanUtils.copyProperties(plotsAddFavoriteRequest, plotsAddFavoriteDoQuery);
                 Integer flag = favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);
+                ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
                 if (flag == 1) {
                     log.info("添加小区收藏成功");
-                    return new ResponseEntity<String>("添加小区收藏成功", HttpStatus.OK);
+                    changeFavoriteResponse.setFlag(Boolean.TRUE);
+                    changeFavoriteResponse.setMsg("添加小区收藏成功");
                 } else if (flag == 0) {
                     log.info("添加小区收藏失败");
-                    return new ResponseEntity<String>("添加小区收藏失败", HttpStatus.INTERNAL_SERVER_ERROR);
+                    changeFavoriteResponse.setFlag(Boolean.FALSE);
+                    changeFavoriteResponse.setMsg("添加小区收藏失败");
                 } else {
                     log.info("添加小区收藏重复");
-                    return new ResponseEntity<String>("添加小区收藏重复", HttpStatus.INTERNAL_SERVER_ERROR);
+                    changeFavoriteResponse.setFlag(Boolean.FALSE);
+                    changeFavoriteResponse.setMsg("添加小区收藏重复");
                 }
+                return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -172,7 +179,7 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> cancelFavoriteByVillage(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult) {
+    public ResponseEntity<ChangeFavoriteResponse> cancelFavoriteByVillage(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(cancelFavoriteRequest));
@@ -191,13 +198,17 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
                 PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
                 BeanUtils.copyProperties(cancelFavoriteRequest, plotIsFavoriteDoQuery);
                 Integer flag = favoriteRestService.cancelVillageByVillageId(plotIsFavoriteDoQuery);
+                ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
                 if (flag == 1) {
                     log.info("小区取消收藏成功");
-                    return new ResponseEntity<>("小区取消收藏成功", HttpStatus.OK);
+                    changeFavoriteResponse.setFlag(Boolean.TRUE);
+                    changeFavoriteResponse.setMsg("小区取消收藏成功");
                 } else {
                     log.info("小区取消收藏失败");
-                    return new ResponseEntity<>("小区取消收藏失败", HttpStatus.INTERNAL_SERVER_ERROR);
+                    changeFavoriteResponse.setFlag(Boolean.FALSE);
+                    changeFavoriteResponse.setMsg("小区取消收藏失败");
                 }
+                return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -214,7 +225,7 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Integer> getPlotFavoriteCountByPlotId(@ApiParam(value = "buildingId", required = true) @RequestParam(value = "buildingId", required = false) Integer buildingId) {
+    public ResponseEntity<CountFavoriteResponse> getPlotFavoriteCountByPlotId(@ApiParam(value = "buildingId", required = true) @RequestParam(value = "buildingId", required = false) Integer buildingId) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(buildingId));
@@ -223,8 +234,10 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
         if (accept != null && accept.contains("")) {
             try {
                 Integer plotFavoriteCountByPlotId = favoriteRestService.getPlotFavoriteCountByPlotId(buildingId);
-                log.info("返回结果:{}", plotFavoriteCountByPlotId);
-                return new ResponseEntity<>(plotFavoriteCountByPlotId, HttpStatus.OK);
+                CountFavoriteResponse countFavoriteResponse = new CountFavoriteResponse();
+                countFavoriteResponse.setCount(plotFavoriteCountByPlotId);
+                log.info("返回结果:{}", countFavoriteResponse);
+                return new ResponseEntity<>(countFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

@@ -171,4 +171,29 @@ public class MessagePushController implements MessagePushApi {
 
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
+
+    @Override
+    public ResponseEntity<MessagePushDomain> getThemeTypeMessage(@ApiParam(value = "messagePushRequest")@Validated MessagePushRequest messagePushRequest, HttpServletRequest
+            req, HttpServletResponse response) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("")) {
+            try {
+                String userId = getUserIdByCookie(req, response);
+                if (StringTool.isEmpty(userId)) {
+                    return new ResponseEntity("用户未登录", HttpStatus.BAD_REQUEST);
+                }
+                MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
+                BeanUtils.copyProperties(messagePushRequest, messagePushQuery);
+                MessagePushDomain message = messagePushService.getThemeTypeMessage(messagePushQuery, userId, request);
+                return new ResponseEntity<>(message, HttpStatus.OK);
+            } catch (Exception e) {
+                log.error("服务端错误", e);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
+
 }

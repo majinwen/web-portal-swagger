@@ -92,7 +92,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<String> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult) {
+    public ResponseEntity<ChangeFavoriteResponse> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(addFavorite));
@@ -111,16 +111,21 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
                 UserFavoriteRentDoQuery userFavoriteRent = new UserFavoriteRentDoQuery();
                 BeanUtils.copyProperties(addFavorite, userFavoriteRent);
                 Integer flag = favoriteRestService.addRentFavorite(userFavoriteRent);
+                ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
                 if (flag == 1) {
                     log.info("添加租房收藏成功");
-                    return new ResponseEntity<String>("添加租房收藏成功", HttpStatus.OK);
+                    changeFavoriteResponse.setFlag(Boolean.TRUE);
+                    changeFavoriteResponse.setMsg("添加租房收藏成功");
                 } else if (flag == 0) {
                     log.info("添加租房收藏失败");
-                    return new ResponseEntity<String>("添加租房收藏失败", HttpStatus.INTERNAL_SERVER_ERROR);
+                    changeFavoriteResponse.setFlag(Boolean.FALSE);
+                    changeFavoriteResponse.setMsg("添加租房收藏失败");
                 } else {
                     log.info("添加租房收藏重复");
-                    return new ResponseEntity<String>("添加租房收藏重复", HttpStatus.INTERNAL_SERVER_ERROR);
+                    changeFavoriteResponse.setFlag(Boolean.FALSE);
+                    changeFavoriteResponse.setMsg("添加租房收藏重复");
                 }
+                return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -138,7 +143,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Valid @RequestBody DeleteRentFavoriteRequest deleteRentFavoriteRequest, BindingResult bindingResult) {
+    public ResponseEntity<ChangeFavoriteResponse> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Valid @RequestBody DeleteRentFavoriteRequest deleteRentFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(deleteRentFavoriteRequest));
@@ -156,9 +161,16 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
             try {
                 DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
                 BeanUtils.copyProperties(deleteRentFavoriteRequest, deleteRentFavoriteDoQuery);
-                Boolean aBoolean = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
-                log.info("返回结果:{}", aBoolean);
-                return new ResponseEntity<>(aBoolean, HttpStatus.OK);
+                Boolean flag = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
+                ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
+                changeFavoriteResponse.setFlag(flag);
+                if (flag) {
+                    changeFavoriteResponse.setMsg("租房取消收藏成功");
+                } else {
+                    changeFavoriteResponse.setMsg("租房取消收藏失败");
+                }
+                log.info("返回结果:{}", changeFavoriteResponse);
+                return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -176,7 +188,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<Boolean> getIsFavoriteByRent(@ApiParam(value = "isFavoriteRequest", required = true) @Valid IsFavoriteRequest isFavoriteRequest, BindingResult bindingResult) {
+    public ResponseEntity<QueryFavoriteResponse> getIsFavoriteByRent(@ApiParam(value = "isFavoriteRequest", required = true) @Valid IsFavoriteRequest isFavoriteRequest, BindingResult bindingResult) {
         String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
         log.info("调用方法:{}", thisMethodName);
         log.info("接收参数:{}", JSONUtil.stringfy(isFavoriteRequest));
@@ -185,9 +197,11 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
             try {
                 IsFavoriteDo isFavoriteDo = new IsFavoriteDo();
                 BeanUtils.copyProperties(isFavoriteRequest, isFavoriteDo);
-                boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_RENT, isFavoriteDo);
-                log.info("返回结果:{}", isFavorite);
-                return new ResponseEntity<>(isFavorite, HttpStatus.OK);
+                Boolean flag = favoriteRestService.getIsFavorite(FAVORITE_RENT, isFavoriteDo);
+                QueryFavoriteResponse queryFavoriteResponse = new QueryFavoriteResponse();
+                queryFavoriteResponse.setFlag(flag);
+                log.info("返回结果:{}", queryFavoriteResponse);
+                return new ResponseEntity<>(queryFavoriteResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("服务端异常", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

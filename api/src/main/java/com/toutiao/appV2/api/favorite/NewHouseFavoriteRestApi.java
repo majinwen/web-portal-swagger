@@ -40,7 +40,7 @@ public interface NewHouseFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<String> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest, BindingResult bindingResult);
+    ResponseEntity<ChangeFavoriteResponse> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "新房取消收藏", nickname = "cancelFavoriteByNewHouse", notes = "新房取消收藏", tags = {"favorite-rest-controller",})
     @ApiResponses(value = {
@@ -53,7 +53,7 @@ public interface NewHouseFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<String> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult);
+    ResponseEntity<ChangeFavoriteResponse> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult);
 
 
     @ApiOperation(value = "判断新房是否被收藏", nickname = "getNewHouseIsFavorite", notes = "判断新房是否被收藏", tags = {"favorite-rest-controller",})
@@ -65,7 +65,7 @@ public interface NewHouseFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/newhouse/getNewHouseIsFavorite",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<Boolean> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Valid NewHouseIsFavoriteRequest newHouseIsFavoriteRequest, BindingResult bindingResult);
+    ResponseEntity<QueryFavoriteResponse> getNewHouseIsFavorite(@ApiParam(value = "newHouseIsFavoriteRequest", required = true) @Valid NewHouseIsFavoriteRequest newHouseIsFavoriteRequest, BindingResult bindingResult);
 
 
 }

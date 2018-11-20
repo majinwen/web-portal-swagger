@@ -20,9 +20,10 @@ public interface MessagePushService {
      *
      * @param messagePushQuery
      * @param userId
+     * @param request
      * @return
      */
-    MessagePushDomain getThemeTypeMessage(MessagePushDoQuery messagePushQuery, String userId);
+    MessagePushDomain getThemeTypeMessage(MessagePushDoQuery messagePushQuery, String userId, HttpServletRequest request);
 
     /**
      * 首页消息列表
