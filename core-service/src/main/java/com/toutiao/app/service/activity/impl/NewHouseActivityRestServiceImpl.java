@@ -2,7 +2,6 @@ package com.toutiao.app.service.activity.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.toutiao.app.dao.activity.ActivityEsDao;
 import com.toutiao.app.domain.activity.*;
 import com.toutiao.app.domain.user.UserBasicDo;
@@ -11,7 +10,6 @@ import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
-import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
