@@ -7,6 +7,7 @@ package com.toutiao.appV2.api.Intelligence;
 
 import com.toutiao.appV2.model.Intelligence.IntelligenceResponse;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
+import com.toutiao.appV2.model.StringDataResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -48,6 +49,6 @@ public interface FindhouseApi {
         produces = "application/json",
         consumes = "application/json",
         method = RequestMethod.POST)
-    ResponseEntity<Integer> saveHomePageReport(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<StringDataResponse> saveHomePageReport(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 }

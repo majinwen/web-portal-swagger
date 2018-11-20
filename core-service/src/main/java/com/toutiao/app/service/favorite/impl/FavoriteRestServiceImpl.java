@@ -259,7 +259,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
             int result=userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
             if(result>0)
             {
-//              return NashResult.build(true);
                 return 1;
             }
         }catch (Exception e)
@@ -267,7 +266,6 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
             logger.error("取消新房收藏接口异常"+userFavoriteNewHouse.getBuildingId()+"={}",e.getStackTrace());
         }
 
-//        return  NashResult.Fail("收藏取消失败");
         return 0;
     }
 

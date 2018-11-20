@@ -9,6 +9,7 @@ import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.appV2.api.Intelligence.CitypathApi;
 import com.toutiao.appV2.model.Intelligence.*;
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.domain.query.IntelligenceQuery;
@@ -70,134 +71,94 @@ public class CitypathApiController implements CitypathApi {
     private PlotService plotService;
 
     @Override
-    public ResponseEntity<String> cancleMyReport(@ApiParam(value = "reportId",required=true) @PathVariable("reportId") String reportId) {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-                        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-                        UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
-                        UserBasicDo userBasic = null;
-                        if(null != userLoginResponse){
-                            userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-                        }
-                        int count = intelligenceFhResService.deleteMyReport(reportId);
-                        if(count != 0){
-                            return new ResponseEntity<String>(HttpStatus.OK);
-                        }else{
-                            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-                        }
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
+    public ResponseEntity<StringDataResponse> cancleMyReport(@ApiParam(value = "reportId", required = true) @PathVariable("reportId") String reportId) {
 
-                return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+        UserBasicDo userBasic = null;
+        if (null != userLoginResponse) {
+            userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+        }
+        int count = intelligenceFhResService.deleteMyReport(reportId);
+        StringDataResponse stringDataResponse = new StringDataResponse();
+        stringDataResponse.setData("取消收藏成功");
+        return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<String> collectMyReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId) {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-                        if (StringTool.isNotBlank(reportId)) {
-                            String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-                            UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
-                            UserBasicDo userBasic = null;
-                            if(null != userLoginResponse){
-                                userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-                            }
-                            if (StringTool.isBlank(userBasic)) {
-                                //前台判断状态 然后跳转到登陆页面
-                                return new ResponseEntity<String>("no-login", HttpStatus.INTERNAL_SERVER_ERROR);
-                            }else {
-                                //更改当前报告的状态
-                                int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, userBasic.getPhone());
-                                if (result != 0) {
-                                    //收藏成功
-                                    return new ResponseEntity<String>(HttpStatus.OK);
-                                }else{
-                                    return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-                                }
-                            }
-                        }else {
-                            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-                        }
+    public ResponseEntity<StringDataResponse> collectMyReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId) {
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+        UserBasicDo userBasic = null;
+        if (null != userLoginResponse) {
+            userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+        }
 
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
+        //更改当前报告的状态
+        int result = intelligenceFhResService.updateMyReportCollectStatus(reportId, userBasic.getPhone());
+        StringDataResponse stringDataResponse = new StringDataResponse();
+        stringDataResponse.setData("更新收藏成功");
+        return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
 
-                return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Override
     public ResponseEntity<ReportResponse> getMyReport() {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-                        ReportResponse reportResponse = new ReportResponse();
-                        reportResponse.setBackUrl(request.getRequestURI());
-                        //从cookie中获取用户手机号码
-                        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-                        UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
-                        UserBasicDo userBasic = null;
-                        List userReport = new ArrayList<>();
-                        if(null != userLoginResponse){
-                            userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-                            //查询用户是否有报告数据
-                            userReport = intelligenceFhResService.queryUserReport(userBasic.getPhone());
-                        }
-                        if (StringTool.isNotBlank(userReport)&&userReport.size()>0) {
-                            reportResponse.setUserReport(userReport);
-                        }
-                        return new ResponseEntity<ReportResponse>(reportResponse, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<ReportResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
-
-                return new ResponseEntity<ReportResponse>(HttpStatus.NOT_IMPLEMENTED);
+        ReportResponse reportResponse = new ReportResponse();
+        reportResponse.setBackUrl(request.getRequestURI());
+        //从cookie中获取用户手机号码
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+        UserBasicDo userBasic = null;
+        List userReport = new ArrayList<>();
+        if (null != userLoginResponse) {
+            userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            //查询用户是否有报告数据
+            userReport = intelligenceFhResService.queryUserReport(userBasic.getPhone());
+        }
+        if (StringTool.isNotBlank(userReport) && userReport.size() > 0) {
+            reportResponse.setUserReport(userReport);
+        }
+        return new ResponseEntity<ReportResponse>(reportResponse, HttpStatus.OK);
     }
 
+//    @Override
+//    public ResponseEntity<StringDataResponse> goToStartRobot() {
+//        String accept = request.getHeader("Accept");
+//        if (accept != null && accept.contains("application/json")) {
+//            try {
+//                return new ResponseEntity<String>("app/intelligent-find", HttpStatus.OK);
+//            } catch (Exception e) {
+//                log.error("Couldn't serialize response for content type application/json", e);
+//                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//
+//        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+//    }
+
     @Override
-    public ResponseEntity<String> goToStartRobot() {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-                        return new ResponseEntity<String>("app/intelligent-find", HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
+    public ResponseEntity<IntelligenceFh> queryPlotCountByDistrict
+            (@ApiParam(value = "intelligenceRequest", required = true) @Valid @RequestBody IntelligenceRequest
+                     intelligenceRequest) {
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("application/json")) {
+            try {
+                IntelligenceQuery intelligenceQuery = new IntelligenceQuery();
+                BeanUtils.copyProperties(intelligenceRequest, intelligenceQuery);
+                //通过页面传递过来的区域等信息赛选小区数量
+                com.toutiao.web.domain.intelligenceFh.IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
+                IntelligenceFh intelligenceFh1 = new IntelligenceFh();
+                BeanUtils.copyProperties(intelligenceFh, intelligenceFh1);
+                //报告生成页
+                return new ResponseEntity<IntelligenceFh>(intelligenceFh1, HttpStatus.OK);
+            } catch (Exception e) {
+                log.error("Couldn't serialize response for content type application/json", e);
+                return new ResponseEntity<IntelligenceFh>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
 
-                return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    @Override
-    public ResponseEntity<IntelligenceFh> queryPlotCountByDistrict(@ApiParam(value = "intelligenceRequest" ,required=true )  @Valid @RequestBody IntelligenceRequest intelligenceRequest) {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-                        IntelligenceQuery intelligenceQuery = new IntelligenceQuery();
-                        BeanUtils.copyProperties(intelligenceRequest,intelligenceQuery);
-                        //通过页面传递过来的区域等信息赛选小区数量
-                        com.toutiao.web.domain.intelligenceFh.IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryPlotCountByDistrict(intelligenceQuery);
-                        IntelligenceFh intelligenceFh1 = new IntelligenceFh();
-                        BeanUtils.copyProperties(intelligenceFh,intelligenceFh1);
-                        //报告生成页
-                        return new ResponseEntity<IntelligenceFh>(intelligenceFh1, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<IntelligenceFh>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
-
-                return new ResponseEntity<IntelligenceFh>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<IntelligenceFh>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 //    @Override
@@ -243,144 +204,117 @@ public class CitypathApiController implements CitypathApi {
 //    }
 
     @Override
-    public ResponseEntity<IntelligenceFh> queryUserChoice(@ApiParam(value = "intelligenceRequest" ,required=true )  @Valid @RequestBody IntelligenceRequest intelligenceRequest) {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-                        IntelligenceQuery intelligenceQuery = new IntelligenceQuery();
-                        BeanUtils.copyProperties(intelligenceRequest,intelligenceQuery);
-                        com.toutiao.web.domain.intelligenceFh.IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserChoice(intelligenceQuery);
-                        if(StringTool.isNotBlank(intelligenceFh)){
-                            if(5>intelligenceFh.getPlotCount()){//intelligenceFh.getPlotCount()-5<5
-                                intelligenceFh.setPlotCount(0);
-                            }
-                        }
-                        IntelligenceFh intelligenceFh1 = new IntelligenceFh();
-                        BeanUtils.copyProperties(intelligenceFh,intelligenceFh1);
-                        return new ResponseEntity<IntelligenceFh>(intelligenceFh1, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<IntelligenceFh>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
-
-                return new ResponseEntity<IntelligenceFh>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<IntelligenceFh> queryUserChoice
+            (@ApiParam(value = "intelligenceRequest", required = true) @Valid @RequestBody IntelligenceRequest
+                     intelligenceRequest) {
+        IntelligenceQuery intelligenceQuery = new IntelligenceQuery();
+        BeanUtils.copyProperties(intelligenceRequest, intelligenceQuery);
+        com.toutiao.web.domain.intelligenceFh.IntelligenceFh intelligenceFh = intelligenceFindHouseService.queryUserChoice(intelligenceQuery);
+        if (StringTool.isNotBlank(intelligenceFh)) {
+            if (5 > intelligenceFh.getPlotCount()) {
+                intelligenceFh.setPlotCount(0);
+            }
+        }
+        IntelligenceFh intelligenceFh1 = new IntelligenceFh();
+        BeanUtils.copyProperties(intelligenceFh, intelligenceFh1);
+        return new ResponseEntity<IntelligenceFh>(intelligenceFh1, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<IntelligenceResponse> showUserPortrayal(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId) {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-                        IntelligenceDo intelligenceDo = new IntelligenceDo();
-                        com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio intelligenceFhTdRatio = new com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio();
-                        com.toutiao.app.domain.Intelligence.PriceTrendDo fhpt = new com.toutiao.app.domain.Intelligence.PriceTrendDo();
-                        com.toutiao.app.domain.Intelligence.PriceRatioDo fhtp = new com.toutiao.app.domain.Intelligence.PriceRatioDo();
-                        fhtp.setRatio(intelligenceFhTdRatio);
-                        IntelligenceResponse intelligenceResponse = new IntelligenceResponse();
-                        if(StringTool.isNotBlank(reportId)){
+    public ResponseEntity<IntelligenceResponse> showUserPortrayal
+            (@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String
+                     reportId) {
+        IntelligenceDo intelligenceDo = new IntelligenceDo();
+        com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio intelligenceFhTdRatio = new com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio();
+        com.toutiao.app.domain.Intelligence.PriceTrendDo fhpt = new com.toutiao.app.domain.Intelligence.PriceTrendDo();
+        com.toutiao.app.domain.Intelligence.PriceRatioDo fhtp = new com.toutiao.app.domain.Intelligence.PriceRatioDo();
+        fhtp.setRatio(intelligenceFhTdRatio);
+        IntelligenceResponse intelligenceResponse = new IntelligenceResponse();
+        if (StringTool.isNotBlank(reportId)) {
+            com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
 
-//                            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
-                            com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
+            if (StringTool.isNotBlank(intelligenceFhRes)) {
 
-                            if (StringTool.isNotBlank(intelligenceFhRes)) {
+                List list = JSONObject.parseArray(((PGobject) intelligenceFhRes.getFhResult()).getValue());
+                for (int i = 0; i < list.size(); i++) {
+                    if (StringTool.isNotEmpty(((JSONObject) list.get(i)).get("newcode"))) {
+                        String plotId = ((JSONObject) list.get(i)).get("newcode").toString();
 
-                                List list = JSONObject.parseArray(((PGobject) intelligenceFhRes.getFhResult()).getValue());
-                                for (int i = 0; i < list.size(); i++) {
-                                    if (StringTool.isNotEmpty(((JSONObject) list.get(i)).get("newcode"))) {
-                                        String plotId = ((JSONObject) list.get(i)).get("newcode").toString();
+                        PlotDetailsDo plotDetailsDo = plotService.queryPlotByPlotId(plotId);
+                        ((JSONObject) list.get(i)).put("esfPrice", plotDetailsDo.getAvgPrice());
+                        ((JSONObject) list.get(i)).put("plotImage", plotDetailsDo.getPhoto().toString().replaceAll("[\\[\\]]", ""));
 
-                                        PlotDetailsDo plotDetailsDo = plotService.queryPlotByPlotId(plotId);
-                                        ((JSONObject) list.get(i)).put("esfPrice", plotDetailsDo.getAvgPrice());
-                                        ((JSONObject) list.get(i)).put("plotImage", plotDetailsDo.getPhoto().toString().replaceAll("[\\[\\]]", ""));
-
-                                    }
-                                }
-                                intelligenceFhRes.setFhResult(JSONObject.toJSONString(list));
-                                String datajson = list.toString();
-//                                fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-                                fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-//                                fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-                                fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-                                intelligenceDo.setDatajson(datajson);
-                                intelligenceDo.setTotalPrice(intelligenceFhRes.getTotalPrice());
-                                if(StringTool.isNotEmpty(intelligenceFhRes.getLayoutArray())){
-                                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
-                                }else{
-                                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
-                                }
-
-                                if(StringTool.isNotEmpty(intelligenceFhRes.getDistrictArray())){
-                                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
-                                }else{
-                                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
-                                }
-
-                                intelligenceDo.setCollectStatus(intelligenceFhRes.getCollectStatus());
-                                intelligenceDo.setBackUrl(request.getRequestURI());
-                            }
-                        }
-                        intelligenceDo.setFhpt(fhpt);
-                        intelligenceDo.setFhtp(fhtp);
-                        BeanUtils.copyProperties(intelligenceDo,intelligenceResponse);
-                        return new ResponseEntity<IntelligenceResponse>(intelligenceResponse, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<IntelligenceResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
                     }
                 }
+                intelligenceFhRes.setFhResult(JSONObject.toJSONString(list));
+                String datajson = list.toString();
+                fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+                fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+                intelligenceDo.setDatajson(datajson);
+                intelligenceDo.setTotalPrice(intelligenceFhRes.getTotalPrice());
+                if (StringTool.isNotEmpty(intelligenceFhRes.getLayoutArray())) {
+                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
+                } else {
+                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
+                }
 
-                return new ResponseEntity<IntelligenceResponse>(HttpStatus.NOT_IMPLEMENTED);
+                if (StringTool.isNotEmpty(intelligenceFhRes.getDistrictArray())) {
+                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
+                } else {
+                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
+                }
+
+                intelligenceDo.setCollectStatus(intelligenceFhRes.getCollectStatus());
+                intelligenceDo.setBackUrl(request.getRequestURI());
+            }
+        }
+        intelligenceDo.setFhpt(fhpt);
+        intelligenceDo.setFhtp(fhtp);
+        BeanUtils.copyProperties(intelligenceDo, intelligenceResponse);
+        return new ResponseEntity<IntelligenceResponse>(intelligenceResponse, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<IntelligenceFhRes> showUserPortrayal(@ApiParam(value = "intelligenceRequest" ,required=true )  @Valid @RequestBody IntelligenceRequest intelligenceRequest) {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-                        String userPhone = null;
-                        IntelligenceQuery intelligenceQuery = new IntelligenceQuery();
-                        BeanUtils.copyProperties(intelligenceRequest,intelligenceQuery);
-                        com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes intelligenceFhRes = new com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes();
-                        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-                        UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
+    public ResponseEntity<IntelligenceFhRes> showUserPortrayal
+            (@ApiParam(value = "intelligenceRequest", required = true) @Valid @RequestBody IntelligenceRequest
+                     intelligenceRequest) {
+        String userPhone = null;
+        IntelligenceQuery intelligenceQuery = new IntelligenceQuery();
+        BeanUtils.copyProperties(intelligenceRequest, intelligenceQuery);
+        com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes intelligenceFhRes = new com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes();
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
 
-                        if(null != userLoginResponse){
-                            UserBasicDo userBasic  =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-                            userPhone = userBasic.getPhone();
-                        }
-                        //调用生成报告页展示数据接口
-                        //通过相关数据获取报告生成都数据 保存到相应的数据表中
-
-                        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis()));
-                        intelligenceQuery.setCreateTime(date);
-                        intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery,userPhone);
-                        IntelligenceFhRes intelligenceFhRes1 = new IntelligenceFhRes();
-                        BeanUtils.copyProperties(intelligenceFhRes,intelligenceFhRes1);
-                        return new ResponseEntity<IntelligenceFhRes>(intelligenceFhRes1, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<IntelligenceFhRes>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
-
-                return new ResponseEntity<IntelligenceFhRes>(HttpStatus.NOT_IMPLEMENTED);
+        if (null != userLoginResponse) {
+            UserBasicDo userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            userPhone = userBasic.getPhone();
+        }
+        //调用生成报告页展示数据接口
+        //通过相关数据获取报告生成都数据 保存到相应的数据表中
+        String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA).format(new Date(System.currentTimeMillis()));
+        intelligenceQuery.setCreateTime(date);
+        intelligenceFhRes = intelligenceFindHouseService.intelligenceFindHouseServiceByType(intelligenceQuery, userPhone);
+        IntelligenceFhRes intelligenceFhRes1 = new IntelligenceFhRes();
+        BeanUtils.copyProperties(intelligenceFhRes, intelligenceFhRes1);
+        return new ResponseEntity<IntelligenceFhRes>(intelligenceFhRes1, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<String> xuanZeLeiXing(@NotNull @ApiParam(value = "userType", required = true) @Valid @RequestParam(value = "userType", required = true) String userType) {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("application/json")) {
-                    try {
-
-                        return new ResponseEntity<String>(userType, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type application/json", e);
-                        return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
-
-                return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
-    }
+//    @Override
+//    public ResponseEntity<StringDataResponse> xuanZeLeiXing
+//            (@NotNull @ApiParam(value = "userType", required = true) @Valid @RequestParam(value = "userType", required = true) String
+//                     userType) {
+//        String accept = request.getHeader("Accept");
+//        if (accept != null && accept.contains("application/json")) {
+//            try {
+//
+//                return new ResponseEntity<String>(userType, HttpStatus.OK);
+//            } catch (Exception e) {
+//                log.error("Couldn't serialize response for content type application/json", e);
+//                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//
+//        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+//    }
 
 }

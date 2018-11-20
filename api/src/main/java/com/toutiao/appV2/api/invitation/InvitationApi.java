@@ -5,6 +5,7 @@
  */
 package com.toutiao.appV2.api.invitation;
 
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.invitation.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -92,6 +93,6 @@ public interface InvitationApi {
 //        consumes = { "application/json" },
             method = RequestMethod.POST)
 
-    ResponseEntity<Object> saveInviteHistory(InviteHistoryRequest inviteHistoryRequest);
+    ResponseEntity<StringDataResponse> saveInviteHistory(InviteHistoryRequest inviteHistoryRequest);
 
 }

@@ -10,6 +10,8 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.favorite.RentFavoriteRestService;
 import com.toutiao.appV2.api.favorite.RentFavoriteRestApi;
 import com.toutiao.appV2.model.favorite.*;
+import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.JSONUtil;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
@@ -29,15 +31,14 @@ import java.util.List;
 @RestController
 @Slf4j
 public class RentFavoriteRestController implements RentFavoriteRestApi {
-
-    private final HttpServletRequest request;
-
     @Autowired
     private FavoriteRestService favoriteRestService;
     @Autowired
     private RentFavoriteRestService rentFavoriteRestService;
     //租房标识
     private final Integer FAVORITE_RENT = 1;
+
+    private final HttpServletRequest request;
 
     @Autowired
     public RentFavoriteRestController(HttpServletRequest request) {
@@ -53,35 +54,14 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      */
     @Override
     public ResponseEntity<RentFavoriteListResponse> getRentFavoriteByUserId(@ApiParam(value = "rentFavoriteListRequest", required = true) @Valid RentFavoriteListRequest rentFavoriteListRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(rentFavoriteListRequest));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                RentFavoriteListDoQuery rentFavoriteListDoQuery = new RentFavoriteListDoQuery();
-                BeanUtils.copyProperties(rentFavoriteListRequest, rentFavoriteListDoQuery);
-                RentFavoriteDomain rentFavoriteDomain = rentFavoriteRestService.queryRentFavoriteListByUserId(rentFavoriteListDoQuery);
-                RentFavoriteListResponse rentFavoriteListResponse = new RentFavoriteListResponse();
-                BeanUtils.copyProperties(rentFavoriteDomain, rentFavoriteListResponse);
-                log.info("返回结果集:{}", JSONUtil.stringfy(rentFavoriteListResponse));
-                return new ResponseEntity<>(rentFavoriteListResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        RentFavoriteListDoQuery rentFavoriteListDoQuery = new RentFavoriteListDoQuery();
+        BeanUtils.copyProperties(rentFavoriteListRequest, rentFavoriteListDoQuery);
+        RentFavoriteDomain rentFavoriteDomain = rentFavoriteRestService.queryRentFavoriteListByUserId(rentFavoriteListDoQuery);
+        RentFavoriteListResponse rentFavoriteListResponse = new RentFavoriteListResponse();
+        BeanUtils.copyProperties(rentFavoriteDomain, rentFavoriteListResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(rentFavoriteListResponse));
+        return new ResponseEntity<>(rentFavoriteListResponse, HttpStatus.OK);
     }
 
 
@@ -93,46 +73,21 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      */
     @Override
     public ResponseEntity<ChangeFavoriteResponse> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(addFavorite));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
+        UserFavoriteRentDoQuery userFavoriteRent = new UserFavoriteRentDoQuery();
+        BeanUtils.copyProperties(addFavorite, userFavoriteRent);
+        Integer flag = favoriteRestService.addRentFavorite(userFavoriteRent);
+        ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
+        if (flag == 1) {
+            log.info("添加租房收藏成功");
+            changeFavoriteResponse.setMsg("添加租房收藏成功");
+            return new ResponseEntity<ChangeFavoriteResponse>(changeFavoriteResponse,HttpStatus.OK);
+        } else if (flag == 0) {
+            log.info("添加租房收藏失败");
+            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_ERROR);
+        } else {
+            log.info("添加租房收藏重复");
+            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_REPEAT);
         }
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserFavoriteRentDoQuery userFavoriteRent = new UserFavoriteRentDoQuery();
-                BeanUtils.copyProperties(addFavorite, userFavoriteRent);
-                Integer flag = favoriteRestService.addRentFavorite(userFavoriteRent);
-                ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
-                if (flag == 1) {
-                    log.info("添加租房收藏成功");
-                    changeFavoriteResponse.setFlag(Boolean.TRUE);
-                    changeFavoriteResponse.setMsg("添加租房收藏成功");
-                } else if (flag == 0) {
-                    log.info("添加租房收藏失败");
-                    changeFavoriteResponse.setFlag(Boolean.FALSE);
-                    changeFavoriteResponse.setMsg("添加租房收藏失败");
-                } else {
-                    log.info("添加租房收藏重复");
-                    changeFavoriteResponse.setFlag(Boolean.FALSE);
-                    changeFavoriteResponse.setMsg("添加租房收藏重复");
-                }
-                return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
 
@@ -144,40 +99,18 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      */
     @Override
     public ResponseEntity<ChangeFavoriteResponse> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Valid @RequestBody DeleteRentFavoriteRequest deleteRentFavoriteRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(deleteRentFavoriteRequest));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
-                BeanUtils.copyProperties(deleteRentFavoriteRequest, deleteRentFavoriteDoQuery);
-                Boolean flag = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
-                ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
-                changeFavoriteResponse.setFlag(flag);
-                if (flag) {
-                    changeFavoriteResponse.setMsg("租房取消收藏成功");
-                } else {
-                    changeFavoriteResponse.setMsg("租房取消收藏失败");
-                }
-                log.info("返回结果:{}", changeFavoriteResponse);
-                return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
+        BeanUtils.copyProperties(deleteRentFavoriteRequest, deleteRentFavoriteDoQuery);
+        Boolean flag = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
+        ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
+        if (flag) {
+            changeFavoriteResponse.setMsg("租房取消收藏成功");
+        } else {
+            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_FAVORITE_DELETE_ERROR);
+        }
+        log.info("返回结果:{}", changeFavoriteResponse);
+        return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
     }
 
 
@@ -189,26 +122,13 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      */
     @Override
     public ResponseEntity<QueryFavoriteResponse> getIsFavoriteByRent(@ApiParam(value = "isFavoriteRequest", required = true) @Valid IsFavoriteRequest isFavoriteRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(isFavoriteRequest));
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                IsFavoriteDo isFavoriteDo = new IsFavoriteDo();
-                BeanUtils.copyProperties(isFavoriteRequest, isFavoriteDo);
-                Boolean flag = favoriteRestService.getIsFavorite(FAVORITE_RENT, isFavoriteDo);
-                QueryFavoriteResponse queryFavoriteResponse = new QueryFavoriteResponse();
-                queryFavoriteResponse.setFlag(flag);
-                log.info("返回结果:{}", queryFavoriteResponse);
-                return new ResponseEntity<>(queryFavoriteResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        IsFavoriteDo isFavoriteDo = new IsFavoriteDo();
+        BeanUtils.copyProperties(isFavoriteRequest, isFavoriteDo);
+        Boolean flag = favoriteRestService.getIsFavorite(FAVORITE_RENT, isFavoriteDo);
+        QueryFavoriteResponse queryFavoriteResponse = new QueryFavoriteResponse();
+        queryFavoriteResponse.setFlag(flag);
+        log.info("返回结果:{}", queryFavoriteResponse);
+        return new ResponseEntity<>(queryFavoriteResponse, HttpStatus.OK);
     }
 
 

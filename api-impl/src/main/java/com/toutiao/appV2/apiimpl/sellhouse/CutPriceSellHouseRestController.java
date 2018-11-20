@@ -50,34 +50,12 @@ public class CutPriceSellHouseRestController implements CutPriceSellHouseRestApi
      */
     @Override
     public ResponseEntity<MustBuyShellHouseResponse> getCutPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Valid MustBuyShellHouseRequest mustBuyShellHouseRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(mustBuyShellHouseRequest));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
-                BeanUtils.copyProperties(mustBuyShellHouseRequest, mustBuyShellHouseDoQuery);
-                MustBuyShellHouseDomain cutPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, 1, CityUtils.getCity());
-                MustBuyShellHouseResponse mustBuyShellHouseResponse = new MustBuyShellHouseResponse();
-                BeanUtils.copyProperties(cutPriceShellHouses, mustBuyShellHouseResponse);
-                log.info("返回结果集:{}", JSONUtil.stringfy(mustBuyShellHouseResponse));
-                return new ResponseEntity<MustBuyShellHouseResponse>(mustBuyShellHouseResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<MustBuyShellHouseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<MustBuyShellHouseResponse>(HttpStatus.NOT_IMPLEMENTED);
+        MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();
+        BeanUtils.copyProperties(mustBuyShellHouseRequest, mustBuyShellHouseDoQuery);
+        MustBuyShellHouseDomain cutPriceShellHouses = mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, 1, CityUtils.getCity());
+        MustBuyShellHouseResponse mustBuyShellHouseResponse = new MustBuyShellHouseResponse();
+        BeanUtils.copyProperties(cutPriceShellHouses, mustBuyShellHouseResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(mustBuyShellHouseResponse));
+        return new ResponseEntity<MustBuyShellHouseResponse>(mustBuyShellHouseResponse, HttpStatus.OK);
     }
 }

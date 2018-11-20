@@ -8,6 +8,7 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseTrafficResponse;
 import com.toutiao.app.api.chance.response.user.UserInfoActivityResponse;
 import com.toutiao.app.domain.activity.ActivityStatisticsDo;
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.newhouse.ActivityMsgResponse;
 import com.toutiao.appV2.model.newhouse.GetNewHouseDynamicResponse;
 import com.toutiao.appV2.model.newhouse.GetNewHouseLayoutResponse;
@@ -205,7 +206,7 @@ public interface NewHouseApi {
 
 
     @ApiOperation(value = "提交活动表单", nickname = "saveUserActivityMsg", notes = "提交活动表单",
-            response = NashResult.class, tags={ "新房", })
+            response = StringDataResponse.class, tags={ "新房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NashResult.class),
             @ApiResponse(code = 201, message = "Created"),
@@ -216,5 +217,5 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<NashResult> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest);
+    ResponseEntity<StringDataResponse> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest);
 }

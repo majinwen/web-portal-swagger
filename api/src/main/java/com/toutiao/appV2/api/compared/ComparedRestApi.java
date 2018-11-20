@@ -3,6 +3,7 @@ package com.toutiao.appV2.api.compared;
 
 import com.toutiao.appV2.model.compared.ComparedRequest;
 import com.toutiao.appV2.model.compared.HouseComparedDetailDoListResponse;
+import com.toutiao.appV2.model.compared.HouseComparedIdResponse;
 import com.toutiao.appV2.model.compared.HouseComparedListDoListResponse;
 import com.toutiao.appV2.model.favorite.SellHouseFavoriteListRequest;
 import com.toutiao.appV2.model.favorite.SellHouseFavoriteListResponse;
@@ -47,7 +48,7 @@ public interface ComparedRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<String> deleteTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
+    ResponseEntity<HouseComparedIdResponse> deleteTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 
     @ApiOperation(value = "比对列表", nickname = "getComparedList", notes = "", response = SellHouseFavoriteListResponse.class, tags = {"房源对比接口",})
@@ -127,6 +128,6 @@ public interface ComparedRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    ResponseEntity<String> saveTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
+    ResponseEntity<HouseComparedIdResponse> saveTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 }

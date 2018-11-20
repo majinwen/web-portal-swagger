@@ -8,6 +8,7 @@ import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.appV2.api.subscribe.SuscribeApi;
 import com.toutiao.appV2.model.ConditionSubscribeRequest;
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.UserSubscribeList;
 import com.toutiao.appV2.model.UserSubscribeListDoList;
 import com.toutiao.web.common.util.StringTool;
@@ -55,39 +56,25 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
     }
 
     @Autowired
-      private SubscribeService subscribeService;
+    private SubscribeService subscribeService;
 
-    public ResponseEntity<UserSubscribe> saveConditionSubscribe(@ApiParam(value = "conditionSubscribeRequest" ,required=true )  @Valid @RequestBody ConditionSubscribeRequest conditionSubscribeRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                //获取用户信息
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
-                BeanUtils.copyProperties(conditionSubscribeRequest, userConditionSubscribeDetailDo);
-                UserSubscribe userSubscribe = new UserSubscribe();
-                userSubscribe.setCreateTime(DateTime.now().toDate());
-                userSubscribe.setUpdateTime(DateTime.now().toDate());
-                userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
-                userSubscribe.setSubscribeType(1);
-                userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
-                userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userConditionSubscribeDetailDo, SerializerFeature.WriteMapNullValue,
-                        SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
-                try {
-                    subscribeService.insertSelective(userSubscribe);
-                    return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
-                } catch (Exception e) {
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<UserSubscribe>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<UserSubscribe>(HttpStatus.NOT_IMPLEMENTED);
+    @Override
+    public ResponseEntity<UserSubscribe> saveConditionSubscribe(@ApiParam(value = "conditionSubscribeRequest", required = true) @Valid @RequestBody ConditionSubscribeRequest conditionSubscribeRequest) {
+        //获取用户信息
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
+        BeanUtils.copyProperties(conditionSubscribeRequest, userConditionSubscribeDetailDo);
+        UserSubscribe userSubscribe = new UserSubscribe();
+        userSubscribe.setCreateTime(DateTime.now().toDate());
+        userSubscribe.setUpdateTime(DateTime.now().toDate());
+        userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
+        userSubscribe.setSubscribeType(1);
+        userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userConditionSubscribeDetailDo, SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
+        subscribeService.insertSelective(userSubscribe);
+        return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
     }
-
 
 
     /**
@@ -96,30 +83,12 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      * @param id
      * @return
      */
-
-    public ResponseEntity<Integer> deleteConditionSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                int i = 0;
-                try {
-                    i=subscribeService.deleteByPrimaryKey(id);
-                }catch (Exception e){
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-
-                if (i > 0) {
-                    return new ResponseEntity<Integer>(0, HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<Integer>(HttpStatus.NOT_IMPLEMENTED);
+    @Override
+    public ResponseEntity<StringDataResponse> deleteConditionSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id) {
+        subscribeService.deleteByPrimaryKey(id);
+        StringDataResponse stringDataResponse = new StringDataResponse();
+        stringDataResponse.setData("删除条件订阅成功");
+        return new ResponseEntity<>(stringDataResponse, HttpStatus.OK);
     }
 
 
@@ -128,23 +97,13 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      *
      * @return
      */
-
+    @Override
     public ResponseEntity<UserSubscribeList> listConditionSubscribe() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserSubscribeList userSubscribeList = new UserSubscribeList();
-                    userSubscribeList.setUserSubscribeData(subscribeService.getMyConditionSubscribeInfo(Integer.parseInt(userBasic.getUserId())));
-                    userSubscribeList.setTotal(userSubscribeList.getUserSubscribeData().size());
-                    return new ResponseEntity<UserSubscribeList>(userSubscribeList, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<UserSubscribeList>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<UserSubscribeList>(HttpStatus.NOT_IMPLEMENTED);
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserSubscribeList userSubscribeList = new UserSubscribeList();
+        userSubscribeList.setUserSubscribeData(subscribeService.getMyConditionSubscribeInfo(Integer.parseInt(userBasic.getUserId())));
+        userSubscribeList.setTotal(userSubscribeList.getUserSubscribeData().size());
+        return new ResponseEntity<UserSubscribeList>(userSubscribeList, HttpStatus.OK);
     }
 
 
@@ -153,23 +112,14 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      *
      * @return
      */
-    public ResponseEntity<UserSubscribe> selectByUserConditionSubscribeMap(@ApiParam(value = "conditionSubscribeRequest" ,required=true )  @Valid @RequestBody ConditionSubscribeRequest conditionSubscribeRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
-                BeanUtils.copyProperties(conditionSubscribeRequest, userConditionSubscribeDetailDo);
-                UserSubscribe userSubscribe = subscribeService.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo,
-                        Integer.parseInt(userBasic.getUserId()), CityUtils.getCity());
-                return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<UserSubscribe>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<UserSubscribe>(HttpStatus.NOT_IMPLEMENTED);
+    @Override
+    public ResponseEntity<UserSubscribe> selectByUserConditionSubscribeMap(@ApiParam(value = "conditionSubscribeRequest", required = true) @Valid @RequestBody ConditionSubscribeRequest conditionSubscribeRequest) {
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
+        BeanUtils.copyProperties(conditionSubscribeRequest, userConditionSubscribeDetailDo);
+        UserSubscribe userSubscribe = subscribeService.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo,
+                Integer.parseInt(userBasic.getUserId()), CityUtils.getCity());
+        return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
     }
 
     /**
@@ -178,28 +128,19 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      * @param userSubscribeDetailDo
      * @return
      */
-    public ResponseEntity<UserSubscribe> saveSubscribe(@ApiParam(value = "userSubscribeDetailDo" ,required=true )  @Valid @RequestBody UserSubscribeDetailDo userSubscribeDetailDo) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                //对区域id排序
-                userSubscribeDetailDo.setDistrictId(idsSort(userSubscribeDetailDo.getDistrictId()));
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserSubscribe userSubscribe = new UserSubscribe();
-                userSubscribe.setCreateTime(DateTime.now().toDate());
-                userSubscribe.setUpdateTime(DateTime.now().toDate());
-                userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
-                userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
-                userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
-                subscribeService.insertSelective(userSubscribe);
-                return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<UserSubscribe>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<UserSubscribe>(HttpStatus.NOT_IMPLEMENTED);
+    @Override
+    public ResponseEntity<UserSubscribe> saveSubscribe(@ApiParam(value = "userSubscribeDetailDo", required = true) @Valid @RequestBody UserSubscribeDetailDo userSubscribeDetailDo) {
+        //对区域id排序
+        userSubscribeDetailDo.setDistrictId(idsSort(userSubscribeDetailDo.getDistrictId()));
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserSubscribe userSubscribe = new UserSubscribe();
+        userSubscribe.setCreateTime(DateTime.now().toDate());
+        userSubscribe.setUpdateTime(DateTime.now().toDate());
+        userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
+        userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
+        subscribeService.insertSelective(userSubscribe);
+        return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
     }
 
     /**
@@ -208,23 +149,13 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      * @param id
      * @return
      */
-    public ResponseEntity<Integer> deleteSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                int i = subscribeService.deleteByPrimaryKey(id);
-                if (i > 0) {
-                    return new ResponseEntity<Integer>(0, HttpStatus.OK);
-                } else {
-                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+    @Override
+    public ResponseEntity<StringDataResponse> deleteSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id) {
 
-        return new ResponseEntity<Integer>(HttpStatus.NOT_IMPLEMENTED);
+        int i = subscribeService.deleteByPrimaryKey(id);
+        StringDataResponse stringDataResponse = new StringDataResponse();
+        stringDataResponse.setData("删除订阅成功");
+        return new ResponseEntity<>(stringDataResponse, HttpStatus.OK);
     }
 
 
@@ -233,21 +164,12 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      *
      * @return
      */
+    @Override
     public ResponseEntity<UserSubscribeListDoList> listSubscribe() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserSubscribeListDoList userSubscribeListDoList =new UserSubscribeListDoList();
-                userSubscribeListDoList.setUserSubscribeListDoData(subscribeService.getMySubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity()));
-                return new ResponseEntity<UserSubscribeListDoList>(userSubscribeListDoList, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<UserSubscribeListDoList>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<UserSubscribeListDoList>(HttpStatus.NOT_IMPLEMENTED);
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserSubscribeListDoList userSubscribeListDoList = new UserSubscribeListDoList();
+        userSubscribeListDoList.setUserSubscribeListDoData(subscribeService.getMySubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity()));
+        return new ResponseEntity<UserSubscribeListDoList>(userSubscribeListDoList, HttpStatus.OK);
     }
 
 
@@ -256,21 +178,12 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      *
      * @return
      */
+    @Override
     public ResponseEntity<UserSubscribeListDoList> listIndexSubscribe() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserSubscribeListDoList userSubscribeListDoList =new UserSubscribeListDoList();
-                userSubscribeListDoList.setUserSubscribeListDoData(subscribeService.getIndexSubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity()));
-                return new ResponseEntity<UserSubscribeListDoList>(userSubscribeListDoList, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<UserSubscribeListDoList>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<UserSubscribeListDoList>(HttpStatus.NOT_IMPLEMENTED);
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserSubscribeListDoList userSubscribeListDoList = new UserSubscribeListDoList();
+        userSubscribeListDoList.setUserSubscribeListDoData(subscribeService.getIndexSubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity()));
+        return new ResponseEntity<UserSubscribeListDoList>(userSubscribeListDoList, HttpStatus.OK);
     }
 
     /**
@@ -292,7 +205,6 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         Arrays.sort(integers);
         return StringTool.IntegerArrayToString(integers);
     }
-
 
 
 }

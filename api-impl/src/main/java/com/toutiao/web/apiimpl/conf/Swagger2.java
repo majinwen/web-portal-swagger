@@ -21,7 +21,6 @@ public class Swagger2 {
                 .apiInfo(apiInfo())
                 .select()
                 //为controller包路径
-//                .apis(RequestHandlerSelectors.basePackage("com.toutiao.web.apiimpl.rest.Intelligence"))
                 .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl"))
                 .paths(PathSelectors.any())
                 .build();
@@ -31,9 +30,9 @@ public class Swagger2 {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 //页面标题
-                .title("Spring Boot使用 Swagger2 构建RestFul API")
+                .title("懂房帝APP接口文档")
                 //创建人
-                .contact(new Contact("懂房帝", "http://localhost:8085/swagger-ui.html", "123456@dongfangdi.com"))
+                .contact(new Contact("懂房帝", "http://app.dev.bidewu.com/searchapiv2/swagger-ui.html", "123456@dongfangdi.com"))
                 //版本号
                 .version("v1")
                 //描述

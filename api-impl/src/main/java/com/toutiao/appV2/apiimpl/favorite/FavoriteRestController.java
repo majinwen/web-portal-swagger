@@ -42,28 +42,11 @@ public class FavoriteRestController implements FavoriteRestApi {
      */
     @Override
     public ResponseEntity<UserCenterFavoriteCountResponse> getFavoriteCountByUser(@ApiParam(value = "userId", required = true) @RequestParam(value = "userId", required = false) Integer userId) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", userId);
-        // 校验参数
-        Assert.notNull(userId, "userId不能为空");
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserCenterFavoriteCountResponse userCenterFavoriteCountResponse = new UserCenterFavoriteCountResponse();
-                UserCenterFavoriteCountDo userCenterFavoriteCountDo = favoriteRestService.getFavoriteCountByUser(userId);
-                BeanUtils.copyProperties(userCenterFavoriteCountDo, userCenterFavoriteCountResponse);
-                log.info("返回结果集:{}", JSONUtil.stringfy(userCenterFavoriteCountResponse));
-                return new ResponseEntity<>(userCenterFavoriteCountResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        UserCenterFavoriteCountResponse userCenterFavoriteCountResponse = new UserCenterFavoriteCountResponse();
+        UserCenterFavoriteCountDo userCenterFavoriteCountDo = favoriteRestService.getFavoriteCountByUser(userId);
+        BeanUtils.copyProperties(userCenterFavoriteCountDo, userCenterFavoriteCountResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(userCenterFavoriteCountResponse));
+        return new ResponseEntity<>(userCenterFavoriteCountResponse, HttpStatus.OK);
     }
-
-
 }
 

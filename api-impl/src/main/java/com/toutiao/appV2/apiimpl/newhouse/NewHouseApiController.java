@@ -21,6 +21,7 @@ import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.newhouse.NewHouseTopicsRestService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.appV2.api.newhouse.NewHouseApi;
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.newhouse.ActivityMsgResponse;
 import com.toutiao.appV2.model.newhouse.GetNewHouseDynamicResponse;
 import com.toutiao.appV2.model.newhouse.GetNewHouseLayoutResponse;
@@ -75,266 +76,156 @@ public class NewHouseApiController implements NewHouseApi {
 
     @Override
     public ResponseEntity<NewHouseLayoutCountResponse> getLayoutCountByNewHouseId(@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                Integer newHouseId = newHouseLayoutRequest.getNewCode();
-                NewHouseLayoutCountResponse newHouseLayoutCountResponse = new NewHouseLayoutCountResponse();
-                NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId, CityUtils.getCity());
-                BeanUtils.copyProperties(newHouseLayoutCountDomain, newHouseLayoutCountResponse);
-                return new ResponseEntity<>(newHouseLayoutCountResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        Integer newHouseId = newHouseLayoutRequest.getNewCode();
+        NewHouseLayoutCountResponse newHouseLayoutCountResponse = new NewHouseLayoutCountResponse();
+        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseId, CityUtils.getCity());
+        BeanUtils.copyProperties(newHouseLayoutCountDomain, newHouseLayoutCountResponse);
+        return new ResponseEntity<>(newHouseLayoutCountResponse, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<GetNewHouseLayoutResponse> getNewHouseLayoutByNewCode(@Validated NewHouseLayoutRequest newHouseLayoutRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                Integer newHouseId = newHouseLayoutRequest.getNewCode();
-                Integer room = newHouseLayoutRequest.getRoom();
-                List<NewHouseLayoutDo> newHouseLayoutDoList = newHouseLayoutService.getNewHouseLayoutList(newHouseId,
-                        room, CityUtils.getCity());
-                GetNewHouseLayoutResponse response = GetNewHouseLayoutResponse.builder().data(newHouseLayoutDoList)
-                        .totalNum(newHouseLayoutDoList.size()).build();
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        Integer newHouseId = newHouseLayoutRequest.getNewCode();
+        Integer room = newHouseLayoutRequest.getRoom();
+        List<NewHouseLayoutDo> newHouseLayoutDoList = newHouseLayoutService.getNewHouseLayoutList(newHouseId,
+                room, CityUtils.getCity());
+        GetNewHouseLayoutResponse response = GetNewHouseLayoutResponse.builder().data(newHouseLayoutDoList)
+                .totalNum(newHouseLayoutDoList.size()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<NewHouseListDomainResponse> getNewHouseTopic(NewHouseListRequest newHouseListRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
-                NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
-                BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
-                NewHouseListDomain newHouseListDomain = newHouseTopicsRestService.getNewHouseTopic(newHouseDoQuery);
-                BeanUtils.copyProperties(newHouseListDomain, newHouseListDomainResponse);
-                return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
+        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
+        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
+        NewHouseListDomain newHouseListDomain = newHouseTopicsRestService.getNewHouseTopic(newHouseDoQuery);
+        BeanUtils.copyProperties(newHouseListDomain, newHouseListDomainResponse);
+        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<NewHouseDetailResponse> getNewHouseDetailByNewCode(@Validated NewHouseDetailsRequest newHouseDetailsRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                NewHouseDetailDo newHouseDetailDo = newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode(), CityUtils.getCity());
-                NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
-                return new ResponseEntity<>(newHouseDetailResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        NewHouseDetailDo newHouseDetailDo = newHouseService.getNewHouseBuildByNewCode(newHouseDetailsRequest.getNewCode(), CityUtils.getCity());
+        NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
+        return new ResponseEntity<>(newHouseDetailResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<GetNewHouseDynamicResponse> getNewHouseDynamicByNewCode(@Validated NewHouseDynamicRequest newHouseDynamicRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
-                BeanUtils.copyProperties(newHouseDynamicRequest, newHouseDynamicDoQuery);
-                List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery, CityUtils.getCity());
-                GetNewHouseDynamicResponse response = GetNewHouseDynamicResponse.builder()
-                        .data(newHouseDynamicDoList).totalNum(newHouseDynamicDoList.size()).build();
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
+        BeanUtils.copyProperties(newHouseDynamicRequest, newHouseDynamicDoQuery);
+        List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery, CityUtils.getCity());
+        GetNewHouseDynamicResponse response = GetNewHouseDynamicResponse.builder()
+                .data(newHouseDynamicDoList).totalNum(newHouseDynamicDoList.size()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<NewHouseListDomainResponse> getNewHouseList(NewHouseListRequest newHouseListRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
-                NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
-                BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
-                NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
-                BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
-                return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
+        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
+        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
+        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
+        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<NewHouseTrafficResponse> getNewHouseTraffic(NewHouseTrafficRequest newHouseTrafficRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                NewHouseTrafficResponse newHouseTrafficResponse = new NewHouseTrafficResponse();
-                NewHouseTrafficDo newHouseTrafficDo = newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode(), CityUtils.getCity());
-                BeanUtils.copyProperties(newHouseTrafficDo, newHouseTrafficResponse);
-                return new ResponseEntity<>(newHouseTrafficResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        NewHouseTrafficResponse newHouseTrafficResponse = new NewHouseTrafficResponse();
+        NewHouseTrafficDo newHouseTrafficDo = newHouseService.getNewHouseTrafficByNewCode(newHouseTrafficRequest.getNewCode(), CityUtils.getCity());
+        BeanUtils.copyProperties(newHouseTrafficDo, newHouseTrafficResponse);
+        return new ResponseEntity<>(newHouseTrafficResponse, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<IsAttendeActivityResponse> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest
-                                                                 newHouseActivityRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
+                                                                                newHouseActivityRequest) {
 
-                if (StringTool.isBlank(newHouseActivityRequest.getCityId())) {
-                    newHouseActivityRequest.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
-                }
-                UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
-                BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
-                List<UserNewBuildingActivity> attendedActivitys = newHouseActivityRestService.isAttendedActivity(userNewBuildingActivityDoQuery);
-                IsAttendeActivityResponse response = IsAttendeActivityResponse.builder().data(attendedActivitys)
-                        .totalNum(attendedActivitys.size()).build();
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        if (StringTool.isBlank(newHouseActivityRequest.getCityId())) {
+            newHouseActivityRequest.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         }
+        UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
+        BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
+        List<UserNewBuildingActivity> attendedActivitys = newHouseActivityRestService.isAttendedActivity(userNewBuildingActivityDoQuery);
+        IsAttendeActivityResponse response = IsAttendeActivityResponse.builder().data(attendedActivitys)
+                .totalNum(attendedActivitys.size()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Override
     public ResponseEntity<ActivityMsgResponse> queryActivityMsg(@Validated(Second.class) NewHouseActivityRequest
                                                                         newHouseActivityRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
-                BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
 
-                PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
-                ActivityMsgResponse response = ActivityMsgResponse.builder()
-                        .data(userNewBuildingActivityDoPageInfo.getList())
-                        .totalNum(userNewBuildingActivityDoPageInfo.getSize()).build();
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+        UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
+        BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
+        ActivityMsgResponse response = ActivityMsgResponse.builder()
+                .data(userNewBuildingActivityDoPageInfo.getList())
+                .totalNum(userNewBuildingActivityDoPageInfo.getSize()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<ActivityStatisticsDo> queryActivityMsgCount() {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                ActivityStatisticsDo activityCount = newHouseActivityRestService.getActivityCount();
-                return new ResponseEntity<>(activityCount, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        ActivityStatisticsDo activityCount = newHouseActivityRestService.getActivityCount();
+        return new ResponseEntity<>(activityCount, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<ActivityMsgResponse> queryUserActivityMsg(NewHouseActivityRequest newHouseActivityRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
-                BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
-                PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listUserActivityMsg(userNewBuildingActivityDoQuery);
-                ActivityMsgResponse response = ActivityMsgResponse.builder()
-                        .data(userNewBuildingActivityDoPageInfo.getList())
-                        .totalNum(userNewBuildingActivityDoPageInfo.getSize()).build();
-                return new ResponseEntity<>(response, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
+        BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
+        PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listUserActivityMsg(userNewBuildingActivityDoQuery);
+        ActivityMsgResponse response = ActivityMsgResponse.builder()
+                .data(userNewBuildingActivityDoPageInfo.getList())
+                .totalNum(userNewBuildingActivityDoPageInfo.getSize()).build();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+
     }
 
     @Override
     public ResponseEntity<UserInfoActivityResponse> queryUserMsg(@Validated(Second.class) NewHouseActivityRequest
                                                                          newHouseActivityRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(newHouseActivityRequest.getUserId().toString());
-                if (StringUtil.isNullString(userBasicDo.getUserCallName())) {
-                    userBasicDo.setUserCallName("");
-                }
-                UserInfoActivityResponse userInfoActivityResponse = new UserInfoActivityResponse();
-                BeanUtils.copyProperties(userBasicDo, userInfoActivityResponse);
-                return new ResponseEntity<>(userInfoActivityResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(newHouseActivityRequest.getUserId().toString());
+        if (StringUtil.isNullString(userBasicDo.getUserCallName())) {
+            userBasicDo.setUserCallName("");
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        UserInfoActivityResponse userInfoActivityResponse = new UserInfoActivityResponse();
+        BeanUtils.copyProperties(userBasicDo, userInfoActivityResponse);
+        return new ResponseEntity<>(userInfoActivityResponse, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<NashResult> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest
-                                                                  newHouseActivityRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                if (StringTool.isBlank(newHouseActivityRequest.getCityId())) {
-                    newHouseActivityRequest.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
-                }
-
-                UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
-                BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
-                NashResult respose = newHouseActivityRestService.saveUserActivityMsg(userNewBuildingActivityDoQuery);
-                return new ResponseEntity<>(respose, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    public ResponseEntity<StringDataResponse> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest
+                                                                          newHouseActivityRequest) {
+        if (StringTool.isBlank(newHouseActivityRequest.getCityId())) {
+            newHouseActivityRequest.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
+        BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
+        String respose = newHouseActivityRestService.saveUserActivityMsg(userNewBuildingActivityDoQuery);
+        StringDataResponse stringDataResponse = new StringDataResponse();
+        stringDataResponse.setData("保存成功");
+        return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
     }
 }

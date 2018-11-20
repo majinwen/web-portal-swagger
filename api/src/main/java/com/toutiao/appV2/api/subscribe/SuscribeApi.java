@@ -12,6 +12,7 @@ package com.toutiao.appV2.api.subscribe;
 
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.appV2.model.ConditionSubscribeRequest;
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.UserSubscribeList;
 import com.toutiao.appV2.model.UserSubscribeListDoList;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
@@ -41,7 +42,7 @@ public interface SuscribeApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<Integer> deleteConditionSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
+    ResponseEntity<StringDataResponse> deleteConditionSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
 
 
     @ApiOperation(value = "删除订阅信息", nickname = "deleteSubscribe", notes = "", response = Integer.class, tags={ "订阅", })
@@ -55,7 +56,7 @@ public interface SuscribeApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<Integer> deleteSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
+    ResponseEntity<StringDataResponse> deleteSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
 
 
     @ApiOperation(value = "用户获取订阅信息列表", nickname = "listConditionSubscribe", notes = "", response = UserSubscribeList.class, tags={ "订阅", })

@@ -5,6 +5,7 @@
  */
 package com.toutiao.appV2.api.userbasic;
 
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.userbasic.LoginVerifyCodeRequest;
 import com.toutiao.appV2.model.userbasic.UserBasicResponse;
 import com.toutiao.appV2.model.userbasic.UserLoginResponse;
@@ -49,7 +50,7 @@ public interface UserbasicApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
-    ResponseEntity<String> logout();
+    ResponseEntity<StringDataResponse> logout() throws Exception;
 
 
     @ApiOperation(value = "查询基本信息", nickname = "queryUserBasic", notes = "", response = UserBasicResponse.class,

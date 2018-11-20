@@ -48,35 +48,13 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getNearbyTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                SellHouseResponse sellHouseResponse = new SellHouseResponse();
-                SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-                BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-                SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getNearbyTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
-                BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
-                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
-                return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<SellHouseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<SellHouseResponse>(HttpStatus.NOT_IMPLEMENTED);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getNearbyTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
+        return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
     }
 
 
@@ -88,35 +66,13 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getCutPriceTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                SellHouseResponse sellHouseResponse = new SellHouseResponse();
-                SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-                BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-                SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getCutPriceTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
-                BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
-                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
-                return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<SellHouseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<SellHouseResponse>(HttpStatus.NOT_IMPLEMENTED);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getCutPriceTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
+        return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
     }
 
 
@@ -128,35 +84,13 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getLowPriceTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                SellHouseResponse sellHouseResponse = new SellHouseResponse();
-                SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-                BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-                SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getLowPriceTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
-                BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
-                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
-                return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<SellHouseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<SellHouseResponse>(HttpStatus.NOT_IMPLEMENTED);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getLowPriceTopicsSellHouse(sellHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
+        return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
     }
 
 
@@ -168,35 +102,13 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getMustRobTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                SellHouseResponse sellHouseResponse = new SellHouseResponse();
-                SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-                BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-                SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getMustRobTopicsSellHouseDetail(sellHouseDoQuery, CityUtils.getCity());
-                BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
-                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
-                return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<SellHouseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<SellHouseResponse>(HttpStatus.NOT_IMPLEMENTED);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getMustRobTopicsSellHouseDetail(sellHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
+        return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
     }
 
     /**
@@ -207,35 +119,13 @@ public class SellHouseDetailTopicsRestController implements SellHouseDetailTopic
      */
     @Override
     public ResponseEntity<SellHouseResponse> getAreaRoomTopicsSellHouseDetail(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(sellHouseRequest));
-        String accept = request.getHeader("Accept");
-        if (bindingResult.hasErrors()) {
-            List<FieldError> allErrors = bindingResult.getFieldErrors();
-            StringBuilder sb = new StringBuilder();
-            allErrors.forEach(error -> {
-                sb.append(error.getDefaultMessage() + ";");
-            });
-            log.error("参数校验错误:{}", sb);
-            throw new IllegalArgumentException(sb.toString());
-        }
-        if (accept != null && accept.contains("")) {
-            try {
-                SellHouseResponse sellHouseResponse = new SellHouseResponse();
-                SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-                BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-                SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getAreaRoomTopicsSellHouseDetail(sellHouseDoQuery, CityUtils.getCity());
-                BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
-                log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
-                return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<SellHouseResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<SellHouseResponse>(HttpStatus.NOT_IMPLEMENTED);
+        SellHouseResponse sellHouseResponse = new SellHouseResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseDomain sellHouseDomain = sellHouseDetailTopicsService.getAreaRoomTopicsSellHouseDetail(sellHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseDomain, sellHouseResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
+        return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
     }
 
 }

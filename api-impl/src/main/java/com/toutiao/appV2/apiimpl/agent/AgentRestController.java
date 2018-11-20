@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:08:16.328Z")
 
 @RestController
@@ -35,20 +36,11 @@ public class AgentRestController implements AgentRestApi {
     }
 
     @Override
-    public ResponseEntity<AgentResponse> getAgentInfoByUserId(@ApiParam(value = "agentRequest" ,required=true )  @Valid  AgentRequest agentRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                AgentResponse agentResponse = new AgentResponse();
-                AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(agentRequest.getUserId(), CityUtils.getCity());
-                BeanUtils.copyProperties(agentBaseDo,agentResponse);
-                return new ResponseEntity<AgentResponse>(agentResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<AgentResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-        return new ResponseEntity<AgentResponse>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<AgentResponse> getAgentInfoByUserId(@ApiParam(value = "agentRequest", required = true) @Valid AgentRequest agentRequest) {
+        AgentResponse agentResponse = new AgentResponse();
+        AgentBaseDo agentBaseDo = agentService.queryAgentInfoByUserId(agentRequest.getUserId(), CityUtils.getCity());
+        BeanUtils.copyProperties(agentBaseDo, agentResponse);
+        return new ResponseEntity<AgentResponse>(agentResponse, HttpStatus.OK);
     }
 
 }

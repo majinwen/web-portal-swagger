@@ -8,6 +8,7 @@ package com.toutiao.appV2.api.Intelligence;
 
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionResponse;
+import com.toutiao.appV2.model.StringDataResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,7 +35,7 @@ public interface ConditionApi {
         produces = "application/json", 
         consumes = "*/*",
         method = RequestMethod.GET)
-    ResponseEntity<Integer> deleteRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
+    ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
 
     @ApiOperation(value = "获取推荐条件", nickname = "getRecommendCondition", notes = "", response = UserFavoriteConditionResponse.class, tags={ "首页推荐条件", })
     @ApiResponses(value = { 
@@ -64,6 +65,6 @@ public interface ConditionApi {
         produces = "application/json", 
         consumes = "application/json",
         method = RequestMethod.POST)
-    ResponseEntity<Integer> saveRecommendCondition(@ApiParam(value = "推荐条件", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<StringDataResponse> saveRecommendCondition(@ApiParam(value = "推荐条件", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 }

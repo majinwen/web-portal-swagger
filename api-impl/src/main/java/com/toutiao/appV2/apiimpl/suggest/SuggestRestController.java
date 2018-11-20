@@ -36,21 +36,12 @@ public class SuggestRestController implements SuggestRestApi {
     @Autowired
     private SuggestService suggestService;
 
+    @Override
     public ResponseEntity<SuggestResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                SuggestResponse suggestResponse = new SuggestResponse();
-                SuggestDo suggest = suggestService.suggest(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
-                BeanUtils.copyProperties(suggest, suggestResponse);
-                return new ResponseEntity<SuggestResponse>(suggestResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<SuggestResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<SuggestResponse>(HttpStatus.NOT_IMPLEMENTED);
+        SuggestResponse suggestResponse = new SuggestResponse();
+        SuggestDo suggest = suggestService.suggest(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
+        BeanUtils.copyProperties(suggest, suggestResponse);
+        return new ResponseEntity<SuggestResponse>(suggestResponse, HttpStatus.OK);
     }
 
 }

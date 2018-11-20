@@ -19,7 +19,7 @@ public class UserBasicDoQuery {
     /**
      * 登录方式
      */
-    private Short identityType;
+    private Integer identityType;
 
     /**
      * 图形验证码

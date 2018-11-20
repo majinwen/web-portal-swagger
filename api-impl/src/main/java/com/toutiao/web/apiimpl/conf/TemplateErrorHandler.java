@@ -1,6 +1,6 @@
 package com.toutiao.web.apiimpl.conf;
 
-//import com.toutiao.web.apiimpl.conf.interceptor.GlobalExceptionHandler;
+import com.toutiao.web.apiimpl.conf.interceptor.GlobalExceptionHandler;
 import freemarker.core.Environment;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;

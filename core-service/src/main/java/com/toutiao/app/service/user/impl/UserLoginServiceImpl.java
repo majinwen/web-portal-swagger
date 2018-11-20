@@ -59,7 +59,6 @@ public class UserLoginServiceImpl implements UserLoginService {
 
 
         //获取redis缓存中的手机号验证码码判断是否有效
-//        tempVerifyCode = redis.getValue(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER +"_"+ userBasicDo.getUserPhone());
         UserBasicDo ubd = new UserBasicDo();
         UserBasic userBasic = new UserBasic();
 

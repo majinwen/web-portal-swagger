@@ -51,21 +51,11 @@ public class NearRentHouseRestController implements NearRentHouseApi {
 
     @Override
     public ResponseEntity<RentDetailsListDo> getNearRentHouseByLocation(@Validated NearHouseListRequest nearHouseListRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                NearHouseListDoQuery nearHouseListDoQuery = new NearHouseListDoQuery();
-                RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
-                BeanUtils.copyProperties(nearHouseListRequest,nearHouseListDoQuery);
-                RentDetailsListDo rentDetailsListDo = nearRentHouseRestService.queryNearHouseByLocation(nearHouseListDoQuery, CityUtils.getCity());
-                BeanUtils.copyProperties(rentDetailsListDo,rentDetailsListResponse);
-                return new ResponseEntity<>(rentDetailsListDo, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        NearHouseListDoQuery nearHouseListDoQuery = new NearHouseListDoQuery();
+        RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
+        BeanUtils.copyProperties(nearHouseListRequest, nearHouseListDoQuery);
+        RentDetailsListDo rentDetailsListDo = nearRentHouseRestService.queryNearHouseByLocation(nearHouseListDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(rentDetailsListDo, rentDetailsListResponse);
+        return new ResponseEntity<>(rentDetailsListDo, HttpStatus.OK);
     }
 }

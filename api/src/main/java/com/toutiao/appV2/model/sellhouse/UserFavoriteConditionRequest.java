@@ -13,7 +13,6 @@ public class UserFavoriteConditionRequest {
      * 用户id
      */
     @ApiModelProperty(value = "用户id", name = "userId")
-    @NotNull(message = "用户id不能为空")
     private Integer userId;
     /**
      * 区域id

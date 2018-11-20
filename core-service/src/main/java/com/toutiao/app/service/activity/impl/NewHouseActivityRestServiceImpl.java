@@ -2,12 +2,15 @@ package com.toutiao.app.service.activity.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
 import com.toutiao.app.dao.activity.ActivityEsDao;
 import com.toutiao.app.domain.activity.*;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.activity.NewHouseActivityRestService;
 import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.app.service.user.UserBasicInfoService;
+import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
@@ -65,18 +68,19 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
 
 
         String userPhone = userBasicDo.getPhone();
-        List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone,buildingId,activityId);
+        List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone, buildingId, activityId);
         return userNewBuildingActivityList;
 
     }
 
     /**
      * 表单提交--用户提交参与的活动楼盘信息
+     *
      * @param userNewBuildingActivityDoQuery
      * @return
      */
     @Override
-    public NashResult saveUserActivityMsg(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery) {
+    public String saveUserActivityMsg(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery) {
 
 
         Integer userId = userNewBuildingActivityDoQuery.getUserId();
@@ -84,50 +88,44 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
         Integer buildingId = userNewBuildingActivityDoQuery.getBuildingId();
         Integer activityId = userNewBuildingActivityDoQuery.getActivityId();
         String userPhone = userNewBuildingActivityDoQuery.getUserPhone();
-//        UserNewBuildingActivity userNewBuildingActivity = userNewBuildingActivityMapper.selectActivityByUser(userId,userPhone,buildingId,activityId);
-        List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone,buildingId,activityId);
-        if(null != userNewBuildingActivityList && userNewBuildingActivityList.size() > 0){
-            return NashResult.Fail("1","已参与此活动！");
-        }else{
+        List<UserNewBuildingActivity> userNewBuildingActivityList = userNewBuildingActivityMapper.selectActivityByUser(userPhone, buildingId, activityId);
+        if (null != userNewBuildingActivityList && userNewBuildingActivityList.size() > 0) {
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_ACTIVITY_ALREADY_TOOK);
+        } else {
             UserNewBuildingActivity activity = new UserNewBuildingActivity();
-            BeanUtils.copyProperties(userNewBuildingActivityDoQuery,activity);
+            BeanUtils.copyProperties(userNewBuildingActivityDoQuery, activity);
             activity.setCityId(userNewBuildingActivityDoQuery.getCityId());
             activity.setCreateTime(new Date());
             activity.setActivityBuildingId(buildingId);
             activity.setActivityBuildingName(userNewBuildingActivityDoQuery.getBuildingName());
             try {
                 Integer saveResult = userNewBuildingActivityMapper.insertSelective(activity);
-                if(saveResult > 0 && StringTool.isNotBlank(userId)){
+                if (saveResult > 0 && StringTool.isNotBlank(userId)) {
                     //不论称呼是否一样都更新一下
                     UserBasic userBasic = new UserBasic();
                     userBasic.setUserId(userId.toString());
                     userBasic.setUserCallName(activity.getUserCallName());
                     Integer updateResult = userBasicMapper.updateByPrimaryKeySelective(userBasic);
-                    if(updateResult > 0){
-
-                        shortMessageService.sendSmsByActivity(userPhone,activity);
-
-                        return NashResult.build("保存成功");
-                    }else{
-                        logger.error("更新用户称呼失败，userId："+userId+"={}");
-                        return NashResult.Fail("2","保存失败");
+                    if (updateResult > 0) {
+                        shortMessageService.sendSmsByActivity(userPhone, activity);
+                        return "保存成功";
+                    } else {
+                        logger.error("更新用户称呼失败，userId：" + userId + "={}");
+                        throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_ACTIVITY_UPDATE_NICKNAME_ERROR);
                     }
-
-                }else if(saveResult > 0 && StringTool.isBlank(userId)){
-
-                    //shortMessageService.sendSmsByActivity(userPhone,activity);
-                    shortMessageService.sendSmsByActivity(userPhone,activity);
-                    return NashResult.build("保存成功");
-                }else{
-                    logger.error("保存用户活动信息失败，userId："+userId+"={}");
-                    return NashResult.Fail("2","保存失败");
+                } else if (saveResult > 0 && StringTool.isBlank(userId)) {
+                    shortMessageService.sendSmsByActivity(userPhone, activity);
+                    return "保存成功";
+                } else {
+                    logger.error("保存用户活动信息失败，userId：" + userId + "={}");
+                    throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_ACTIVITY_FORM_ADD_ERROR);
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-                logger.error("新房提交活动表单,buildingId:"+userNewBuildingActivityDoQuery.getBuildingId()+
-                        ", 用户id:"+userNewBuildingActivityDoQuery.getUserId()+"={}",e.getStackTrace());
+                logger.error("新房提交活动表单,buildingId:" + userNewBuildingActivityDoQuery.getBuildingId() +
+                        ", 用户id:" + userNewBuildingActivityDoQuery.getUserId() + "={}", e.getStackTrace());
             }
-            return NashResult.Fail("2","保存失败");
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_ACTIVITY_FORM_ADD_ERROR);
         }
 
     }
@@ -135,6 +133,7 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
 
     /**
      * 查询用户参与新房活动信息--后台使用
+     *
      * @param userNewBuildingActivityDoQuery
      * @return
      */
@@ -152,6 +151,7 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
 
     /**
      * 查询用户参与新房活动信息--前台个人中心使用
+     *
      * @param userNewBuildingActivityDoQuery
      * @return
      */
@@ -166,7 +166,6 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
     }
 
     /**
-     *
      * @return
      */
     @Override
@@ -181,7 +180,7 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
         SearchResponse searchResponse = activityEsDao.getActivityCount(boolQueryBuilder);
         SearchHit[] hits = searchResponse.getHits().getHits();
         int activityCount = 0;
-        if (hits.length>0){
+        if (hits.length > 0) {
             activityCount = (int) searchResponse.getHits().totalHits;
         }
         activityStatisticsDo.setActivityBuildsAmount(activityCount);
@@ -190,29 +189,29 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
         ActivityStatistics activityStatistics = activityStatisticsMapper.selectActivityCount();
         ActivityStatistics statistics = new ActivityStatistics();
         boolean isToday = false;
-        if(null==activityStatistics){
+        if (null == activityStatistics) {
 
             statistics.setActivityGrandTotal(0);
             statistics.setStatisticalDate(new Date());
             statistics.setYesterdayActivityTotal(0);
             activityStatisticsMapper.insertSelective(statistics);
-        }else{
+        } else {
             isToday = DateUtil.isToday(activityStatistics.getStatisticalDate());
         }
-        int cumulativeNo =0;
+        int cumulativeNo = 0;
         int randomNo = 0;
-        if(!isToday){
-            if(null==activityStatistics){
+        if (!isToday) {
+            if (null == activityStatistics) {
                 cumulativeNo = userNewBuildingActivityMapper.selectActivityCount();
-            }else{
+            } else {
                 Random random = new Random();
-                randomNo = random.nextInt(780)%(780-130+1) + 130;
-                cumulativeNo = activityStatistics.getActivityGrandTotal()+randomNo;
+                randomNo = random.nextInt(780) % (780 - 130 + 1) + 130;
+                cumulativeNo = activityStatistics.getActivityGrandTotal() + randomNo;
             }
-            activityStatisticsMapper.updateActivityStatistics(cumulativeNo,randomNo);
+            activityStatisticsMapper.updateActivityStatistics(cumulativeNo, randomNo);
             activityStatisticsDo.setCumulativeAmount(cumulativeNo);
             activityStatisticsDo.setBeforeCumulativeAmount(randomNo);
-        }else{
+        } else {
             ActivityStatistics selectActivityCount = activityStatisticsMapper.selectActivityCount();
 //            activityStatisticsMapper.updateActivityGrandTotal(cumulativeNo+selectActivityCount.getYesterdayActivityTotal());
 
@@ -228,7 +227,7 @@ public class NewHouseActivityRestServiceImpl implements NewHouseActivityRestServ
 
         String dsss = "17746543687";
 
-        String ddd = dsss.replace(".",",");
+        String ddd = dsss.replace(".", ",");
         System.out.println(ddd);
 
     }

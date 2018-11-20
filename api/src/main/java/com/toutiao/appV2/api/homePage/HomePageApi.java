@@ -7,6 +7,7 @@ import com.toutiao.appV2.model.HomePage.*;
 import com.toutiao.appV2.model.HomePage.HomePageEsfCountResponse;
 import com.toutiao.appV2.model.HomePage.HomePageNearEsfListResponse;
 import com.toutiao.appV2.model.HomePage.HomePageNewCountResponse;
+import com.toutiao.appV2.model.StringDataResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 
@@ -146,7 +147,7 @@ public interface HomePageApi {
             produces = { "application/json" },
             //consumes = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<String> getTradeQuotations();
+    ResponseEntity<StringDataResponse> getTradeQuotations();
 
 
     @ApiOperation(value = "首页搜索接口", nickname = "homePageEsfSearch", notes = "", response = SellHouseSearchDomainResponse.class, tags={ "首页", })

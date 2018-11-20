@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.Callable;
@@ -49,7 +50,7 @@ public interface PlotApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<PlotTrafficResponse> getAroundInfoByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId);
+    ResponseEntity<PlotTrafficResponse> getAroundInfoByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId) throws InvocationTargetException, IllegalAccessException;
 
 
     @ApiOperation(value = "根据小区id，户型查询房源列表", nickname = "getEsfByPlotsIdAndRoom", notes = "", response = PlotEsfListResponse.class, tags = {"小区",})

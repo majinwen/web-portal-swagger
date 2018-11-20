@@ -13,6 +13,8 @@ public enum UserInterfaceErrorCodeEnum implements IntBaseType {
     SAVE_COOKIE_ERROR("存储用户信息失败",30002),
     UPDATE_USER_AVATAR_ERROR("更新用户头像失败",30003),
     QUERY_USER_BASIC_ERROR("用户不存在",30004),
+    INVITATION_CODE_NOT_EXITS("邀请码不存在",30006),
+    INVITATION_CODE_ADD_ERROR("邀请记录添加失败",30007),
     USER_NO_LOGIN("用户未登陆",30005);
 
 

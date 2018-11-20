@@ -7,6 +7,7 @@ package com.toutiao.appV2.api.Intelligence;
 
 
 import com.toutiao.appV2.model.Intelligence.*;
+import com.toutiao.appV2.model.StringDataResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +31,7 @@ public interface CitypathApi {
         produces = "application/json",
 //        consumes = "application/json",
         method = RequestMethod.GET)
-    ResponseEntity<String> cancleMyReport(@ApiParam(value = "reportId", required = true) @PathVariable("reportId") String reportId);
+    ResponseEntity<StringDataResponse> cancleMyReport(@ApiParam(value = "reportId", required = true) @PathVariable("reportId") String reportId);
 
 
     @ApiOperation(value = "收藏报告", nickname = "collectMyReport", notes = "", response = String.class, tags={ "懂房帝找房报告", })
@@ -45,7 +46,7 @@ public interface CitypathApi {
         produces = "application/json",
         consumes = "*/*",
         method = RequestMethod.GET)
-    ResponseEntity<String> collectMyReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
+    ResponseEntity<StringDataResponse> collectMyReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
 
 
     @ApiOperation(value = "查看我的报告", nickname = "getMyReport", notes = "", response = ReportResponse.class, tags={ "懂房帝找房报告", })
@@ -63,19 +64,19 @@ public interface CitypathApi {
     ResponseEntity<ReportResponse> getMyReport();
 
 
-    @ApiOperation(value = "跳转功能，跳转到选择类型页面", nickname = "goToStartRobot", notes = "", response = String.class, tags={ "懂房帝找房报告", })
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = String.class),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @ApiImplicitParams({
-    })
-    @RequestMapping(value = "/{citypath}/findhouse/dongfangdi",
-//        produces = "application/json",
-//        consumes = "application/json",
-        method = RequestMethod.GET)
-    ResponseEntity<String> goToStartRobot();
+//    @ApiOperation(value = "跳转功能，跳转到选择类型页面", nickname = "goToStartRobot", notes = "", response = String.class, tags={ "懂房帝找房报告", })
+//    @ApiResponses(value = {
+//        @ApiResponse(code = 200, message = "OK", response = String.class),
+//        @ApiResponse(code = 401, message = "Unauthorized"),
+//        @ApiResponse(code = 403, message = "Forbidden"),
+//        @ApiResponse(code = 404, message = "Not Found") })
+//    @ApiImplicitParams({
+//    })
+//    @RequestMapping(value = "/{citypath}/findhouse/dongfangdi",
+////        produces = "application/json",
+////        consumes = "application/json",
+//        method = RequestMethod.GET)
+//    ResponseEntity<StringDataResponse> goToStartRobot();
 
 
     @ApiOperation(value = "区域筛选小区数量", nickname = "queryPlotCountByDistrict", notes = "", response = IntelligenceFh.class, tags={ "懂房帝找房报告", })
@@ -173,18 +174,18 @@ public interface CitypathApi {
     ResponseEntity<IntelligenceFhRes> showUserPortrayal(@ApiParam(value = "intelligenceRequest", required = true) @Valid @RequestBody IntelligenceRequest intelligenceRequest);
 
 
-    @ApiOperation(value = "判断选择的类型，进行跳转", nickname = "xuanZeLeiXing", notes = "", response = String.class, tags={ "懂房帝找房报告", })
-    @ApiResponses(value = {
-        @ApiResponse(code = 200, message = "OK", response = String.class),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @ApiImplicitParams({
-    })
-    @RequestMapping(value = "/{citypath}/findhouse/dongfangdi/xuanzeleixing",
-        produces = "application/json",
-        consumes = "*/*",
-        method = RequestMethod.GET)
-    ResponseEntity<String> xuanZeLeiXing(@NotNull @ApiParam(value = "userType", required = true) @Valid @RequestParam(value = "userType", required = true) String userType);
+//    @ApiOperation(value = "判断选择的类型，进行跳转", nickname = "xuanZeLeiXing", notes = "", response = String.class, tags={ "懂房帝找房报告", })
+//    @ApiResponses(value = {
+//        @ApiResponse(code = 200, message = "OK", response = String.class),
+//        @ApiResponse(code = 401, message = "Unauthorized"),
+//        @ApiResponse(code = 403, message = "Forbidden"),
+//        @ApiResponse(code = 404, message = "Not Found") })
+//    @ApiImplicitParams({
+//    })
+//    @RequestMapping(value = "/{citypath}/findhouse/dongfangdi/xuanzeleixing",
+//        produces = "application/json",
+//        consumes = "*/*",
+//        method = RequestMethod.GET)
+//    ResponseEntity<StringDataResponse> xuanZeLeiXing(@NotNull @ApiParam(value = "userType", required = true) @Valid @RequestParam(value = "userType", required = true) String userType);
 
 }

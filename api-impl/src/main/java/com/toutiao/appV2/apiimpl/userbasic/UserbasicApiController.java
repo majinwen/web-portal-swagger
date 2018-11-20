@@ -10,6 +10,7 @@ import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.appV2.api.userbasic.UserbasicApi;
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.userbasic.LoginVerifyCodeRequest;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -71,131 +72,85 @@ public class UserbasicApiController implements UserbasicApi {
 
     @Override
     public ResponseEntity<UserLoginResponse> getUserCache() {
-        try {
-            String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-            com.toutiao.app.api.chance.response.user.UserLoginResponse userLoginResponse = JSONObject.parseObject(user, com.toutiao.app.api.chance.response.user.UserLoginResponse.class);
-            if (null != userLoginResponse) {
-                UserBasicDo userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-                BeanUtils.copyProperties(userBasic, userLoginResponse);
-                UserLoginResponse userLoginResponse1 = new UserLoginResponse();
-                BeanUtils.copyProperties(userLoginResponse, userLoginResponse1);
-                return new ResponseEntity<UserLoginResponse>(userLoginResponse1, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<UserLoginResponse>(HttpStatus.NOT_FOUND);
-            }
-        } catch (BaseException ex) {
-            throw new BaseException(ex.getCode(), ex.getMsg());
-        } catch (Exception e) {
-            log.error("Couldn't serialize response for content type ", e);
-            return new ResponseEntity<UserLoginResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        com.toutiao.app.api.chance.response.user.UserLoginResponse userLoginResponse = JSONObject.parseObject(user, com.toutiao.app.api.chance.response.user.UserLoginResponse.class);
+        if (null != userLoginResponse) {
+            UserBasicDo userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            BeanUtils.copyProperties(userBasic, userLoginResponse);
+            UserLoginResponse userLoginResponse1 = new UserLoginResponse();
+            BeanUtils.copyProperties(userLoginResponse, userLoginResponse1);
+            return new ResponseEntity<UserLoginResponse>(userLoginResponse1, HttpStatus.OK);
+        } else {
+            throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
         }
     }
 
     @Override
-    public ResponseEntity<String> logout() {
-        try {
-            UserBasicDo userBasic = null;
-            String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-            UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
-            if (null != userLoginResponse) {
-                userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-            }
-            if (null != userBasic) {
-                clearCookieAndCache(request, response, userBasic.getPhone());
-                return new ResponseEntity<String>("退出登录成功", HttpStatus.OK);
-            } else {
-                return new ResponseEntity<String>("退出登录失败", HttpStatus.NOT_FOUND);
-            }
-
-        } catch (BaseException ex) {
-            throw new BaseException(ex.getCode(), ex.getMsg());
-        } catch (Exception e) {
-            log.error("Couldn't serialize response for content type ", e);
-            return new ResponseEntity<String>("系统异常", HttpStatus.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<StringDataResponse> logout() throws Exception {
+        UserBasicDo userBasic = null;
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+        if (null != userLoginResponse) {
+            userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
         }
+        clearCookieAndCache(request, response, userBasic.getPhone());
+        StringDataResponse stringDataResponse = new StringDataResponse();
+        stringDataResponse.setData("退出登录成功");
+        return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<UserBasicResponse> queryUserBasic(@ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId) {
-        try {
-            UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(userId.get());
-            if (StringTool.isNotBlank(userBasicDo)) {
-                UserBasicResponse userBasicResponse = new UserBasicResponse();
-                BeanUtils.copyProperties(userBasicDo, userBasicResponse);
-                return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<UserBasicResponse>(HttpStatus.NOT_FOUND);
-            }
-        } catch (BaseException ex) {
-            throw new BaseException(ex.getCode(), ex.getMsg());
-        } catch (Exception e) {
-            log.error("Couldn't serialize response for content type ", e);
-            return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(userId.get());
+        if (StringTool.isNotBlank(userBasicDo)) {
+            UserBasicResponse userBasicResponse = new UserBasicResponse();
+            BeanUtils.copyProperties(userBasicDo, userBasicResponse);
+            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+        } else {
+            throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
         }
     }
 
     @Override
     public ResponseEntity<UserBasicResponse> queryUserBasicByRcId(@ApiParam(value = "") @Valid @RequestParam(value = "rcId", required = false) Optional<String> rcId) {
-        try {
-            UserBasicDo userBasicDo = userBasicInfoService.queryUserBasicByRcId(rcId.get());
-            if (StringTool.isNotBlank(userBasicDo)) {
-                UserBasicResponse userBasicResponse = new UserBasicResponse();
-                BeanUtils.copyProperties(userBasicDo, userBasicResponse);
-                return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<UserBasicResponse>(HttpStatus.NOT_FOUND);
-            }
-        } catch (BaseException ex) {
-            throw new BaseException(ex.getCode(), ex.getMsg());
-        } catch (Exception e) {
-            log.error("Couldn't serialize response for content type ", e);
-            return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        UserBasicDo userBasicDo = userBasicInfoService.queryUserBasicByRcId(rcId.get());
+        if (StringTool.isNotBlank(userBasicDo)) {
+            UserBasicResponse userBasicResponse = new UserBasicResponse();
+            BeanUtils.copyProperties(userBasicDo, userBasicResponse);
+            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+        } else {
+            throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
         }
     }
 
     @Override
     public ResponseEntity<UserBasicResponse> updateUserAvatar(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId) {
-        try {
-            UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(userId.get(),
-                    file, request, response);
-            UserBasicResponse userBasicResponse = new UserBasicResponse();
-            BeanUtils.copyProperties(userBasicDo, userBasicResponse);
-            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
-        } catch (BaseException ex) {
-            throw new BaseException(ex.getCode(), ex.getMsg());
-        } catch (Exception e) {
-            log.error("Couldn't serialize response for content type ", e);
-            return new ResponseEntity<UserBasicResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
+        UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(userId.get(),
+                file, request, response);
+        UserBasicResponse userBasicResponse = new UserBasicResponse();
+        BeanUtils.copyProperties(userBasicDo, userBasicResponse);
+        return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<UserLoginResponse> userVerifyCodeLogin(@ApiParam(value = "loginRequest", required = true) @Valid @RequestBody UserVerifyCodeRequest loginRequest) {
+        UserBasicDoQuery userBasicDoQuery = new UserBasicDoQuery();
+        UserLoginResponse userLoginResponse = new UserLoginResponse();
+        BeanUtils.copyProperties(loginRequest, userBasicDoQuery);
+        UserBasicDo userBasicDo = userLoginService.checkUserVerifyCodeLogin(userBasicDoQuery, request, response);
 
-        try {
-            UserBasicDoQuery userBasicDoQuery = new UserBasicDoQuery();
-            UserLoginResponse userLoginResponse = new UserLoginResponse();
-            BeanUtils.copyProperties(loginRequest, userBasicDoQuery);
-            UserBasicDo userBasicDo = userLoginService.checkUserVerifyCodeLogin(userBasicDoQuery, request, response);
-
-            if (StringTool.isNotBlank(userBasicDo)) {
-                BeanUtils.copyProperties(userBasicDo, userLoginResponse);
-                try {
-                    setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response);
-                    return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.OK);
-                } catch (Exception e) {
-                    return new ResponseEntity<UserLoginResponse>(HttpStatus.NOT_FOUND);
-                }
-
-            } else {
-                return new ResponseEntity<UserLoginResponse>(HttpStatus.NOT_FOUND);
+        if (StringTool.isNotBlank(userBasicDo)) {
+            BeanUtils.copyProperties(userBasicDo, userLoginResponse);
+            try {
+                setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response);
+                return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.OK);
+            } catch (Exception e) {
+                throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
             }
 
-        } catch (BaseException ex) {
-            throw new BaseException(ex.getCode(), ex.getMsg());
-        } catch (Exception e) {
-            log.error("Couldn't serialize response for content type ", e);
-            return new ResponseEntity<UserLoginResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } else {
+            throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
         }
     }
 

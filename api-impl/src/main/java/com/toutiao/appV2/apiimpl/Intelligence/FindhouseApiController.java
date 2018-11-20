@@ -12,6 +12,7 @@ import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.appV2.api.Intelligence.FindhouseApi;
 import com.toutiao.appV2.model.Intelligence.IntelligenceResponse;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
+import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio;
@@ -35,6 +36,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T02:44:29.266Z")
 
 @Controller
@@ -67,88 +69,68 @@ public class FindhouseApiController implements FindhouseApi {
 
     @Override
     public ResponseEntity<IntelligenceResponse> getHomePageReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId) {
+        IntelligenceDo intelligenceDo = new IntelligenceDo();
+        IntelligenceFhTdRatio intelligenceFhTdRatio = new IntelligenceFhTdRatio();
+        PriceTrendDo fhpt = new PriceTrendDo();
+        PriceRatioDo fhtp = new PriceRatioDo();
+        fhtp.setRatio(intelligenceFhTdRatio);
+        IntelligenceResponse intelligenceResponse = new IntelligenceResponse();
+        if (StringTool.isNotBlank(reportId)) {
 
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("")) {
-                    try {
-                        IntelligenceDo intelligenceDo = new IntelligenceDo();
-                        IntelligenceFhTdRatio intelligenceFhTdRatio = new IntelligenceFhTdRatio();
-                        PriceTrendDo fhpt = new PriceTrendDo();
-                        PriceRatioDo fhtp = new PriceRatioDo();
-                        fhtp.setRatio(intelligenceFhTdRatio);
-                        IntelligenceResponse intelligenceResponse = new IntelligenceResponse();
-                        if(StringTool.isNotBlank(reportId)){
+            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
 
-                            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
+            if (StringTool.isNotBlank(intelligenceFhRes)) {
 
-                            if (StringTool.isNotBlank(intelligenceFhRes)) {
+                List list = JSONObject.parseArray(((PGobject) intelligenceFhRes.getFhResult()).getValue());
+                for (int i = 0; i < list.size(); i++) {
+                    if (StringTool.isNotEmpty(((JSONObject) list.get(i)).get("newcode"))) {
+                        String plotId = ((JSONObject) list.get(i)).get("newcode").toString();
 
-                                List list = JSONObject.parseArray(((PGobject) intelligenceFhRes.getFhResult()).getValue());
-                                for (int i = 0; i < list.size(); i++) {
-                                    if (StringTool.isNotEmpty(((JSONObject) list.get(i)).get("newcode"))) {
-                                        String plotId = ((JSONObject) list.get(i)).get("newcode").toString();
+                        PlotDetailsDo plotDetailsDo = plotService.queryPlotByPlotId(plotId);
+                        ((JSONObject) list.get(i)).put("esfPrice", plotDetailsDo.getAvgPrice());
+                        ((JSONObject) list.get(i)).put("plotImage", plotDetailsDo.getPhoto().toString().replaceAll("[\\[\\]]", ""));
 
-                                        PlotDetailsDo plotDetailsDo = plotService.queryPlotByPlotId(plotId);
-                                        ((JSONObject) list.get(i)).put("esfPrice", plotDetailsDo.getAvgPrice());
-                                        ((JSONObject) list.get(i)).put("plotImage", plotDetailsDo.getPhoto().toString().replaceAll("[\\[\\]]", ""));
-
-                                    }
-                                }
-
-                                intelligenceFhRes.setFhResult(JSONObject.toJSONString(list));
-
-
-                                String datajson = list.toString();
-                                fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-                                fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
-                                intelligenceDo.setDatajson(datajson);
-                                intelligenceDo.setTotalPrice(intelligenceFhRes.getTotalPrice());
-                                if(StringTool.isNotEmpty(intelligenceFhRes.getLayoutArray())){
-                                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
-                                }else{
-                                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
-                                }
-
-                                if(StringTool.isNotEmpty(intelligenceFhRes.getDistrictArray())){
-                                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
-                                }else{
-                                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
-                                }
-
-                                intelligenceDo.setCollectStatus(intelligenceFhRes.getCollectStatus());
-                                intelligenceDo.setBackUrl(request.getRequestURI());
-                            }
-                        }
-                        intelligenceDo.setFhpt(fhpt);
-                        intelligenceDo.setFhtp(fhtp);
-                        BeanUtils.copyProperties(intelligenceDo,intelligenceResponse);
-                        return new ResponseEntity<IntelligenceResponse>(intelligenceResponse, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type ", e);
-                        return new ResponseEntity<IntelligenceResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
                     }
                 }
 
-                return new ResponseEntity<IntelligenceResponse>(HttpStatus.NOT_IMPLEMENTED);
+                intelligenceFhRes.setFhResult(JSONObject.toJSONString(list));
+
+
+                String datajson = list.toString();
+                fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+                fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+                intelligenceDo.setDatajson(datajson);
+                intelligenceDo.setTotalPrice(intelligenceFhRes.getTotalPrice());
+                if (StringTool.isNotEmpty(intelligenceFhRes.getLayoutArray())) {
+                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
+                } else {
+                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
+                }
+
+                if (StringTool.isNotEmpty(intelligenceFhRes.getDistrictArray())) {
+                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
+                } else {
+                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
+                }
+
+                intelligenceDo.setCollectStatus(intelligenceFhRes.getCollectStatus());
+                intelligenceDo.setBackUrl(request.getRequestURI());
+            }
+        }
+        intelligenceDo.setFhpt(fhpt);
+        intelligenceDo.setFhtp(fhtp);
+        BeanUtils.copyProperties(intelligenceDo, intelligenceResponse);
+        return new ResponseEntity<IntelligenceResponse>(intelligenceResponse, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<Integer> saveHomePageReport(@ApiParam(value = "userFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
-
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("")) {
-                    try {
-                        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
-                        BeanUtils.copyProperties(userFavoriteConditionRequest,userFavoriteConditionDoQuery);
-                        Integer result = homePageReportService.saveHomePageReport(request, userFavoriteConditionDoQuery);
-                        return new ResponseEntity<Integer>(result, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type ", e);
-                        return new ResponseEntity<Integer>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
-
-                return new ResponseEntity<Integer>(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<StringDataResponse> saveHomePageReport(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+        Integer result = homePageReportService.saveHomePageReport(request, userFavoriteConditionDoQuery);
+        StringDataResponse stringDataResponse = new StringDataResponse();
+        stringDataResponse.setData("保存首页找房报告成功");
+        return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
     }
 
 }

@@ -8,10 +8,13 @@ import com.toutiao.app.service.compared.ComparedService;
 import com.toutiao.appV2.api.compared.ComparedRestApi;
 import com.toutiao.appV2.model.compared.ComparedRequest;
 import com.toutiao.appV2.model.compared.HouseComparedDetailDoListResponse;
+import com.toutiao.appV2.model.compared.HouseComparedIdResponse;
 import com.toutiao.appV2.model.compared.HouseComparedListDoListResponse;
 import com.toutiao.appV2.model.favorite.SellHouseFavoriteListRequest;
 import com.toutiao.appV2.model.favorite.SellHouseFavoriteListResponse;
 import com.toutiao.web.common.constant.city.CityConstant;
+import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.common.util.StringUtil;
@@ -62,35 +65,21 @@ public class ComparedRestController implements ComparedRestApi {
     private Integer maxComparedCount = 5;
 
     @Override
-    public ResponseEntity<HouseCompared> deleteCompared(@ApiParam(value = "comparedRequest" ,required=true )  @Valid @RequestBody ComparedRequest comparedRequest) {
-        String thisMethodName = Thread.currentThread().getStackTrace()[1].getMethodName();
-        log.info("调用方法:{}", thisMethodName);
-        log.info("接收参数:{}", JSONUtil.stringfy(comparedRequest));
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                HouseCompared houseCompared = comparedService.selectByPrimaryKey(comparedRequest.getId());
-                houseCompared.setIsDel((short) 1);
-                int i = comparedService.updateByPrimaryKeySelective(houseCompared);
-                if (i > 0) {
-                    log.info("删除房源成功");
-                    return new ResponseEntity<HouseCompared>(houseCompared, HttpStatus.OK);
-                } else {
-                    log.info("删除房源失败");
-                    return new ResponseEntity<HouseCompared>(houseCompared, HttpStatus.INTERNAL_SERVER_ERROR);
-                }
-
-            } catch (Exception e) {
-                log.error("服务端异常", e);
-                return new ResponseEntity<HouseCompared>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+    public ResponseEntity<HouseCompared> deleteCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest) {
+        HouseCompared houseCompared = comparedService.selectByPrimaryKey(comparedRequest.getId());
+        houseCompared.setIsDel((short) 1);
+        int i = comparedService.updateByPrimaryKeySelective(houseCompared);
+        if (i > 0) {
+            log.info("删除对比房源成功");
+            return new ResponseEntity<HouseCompared>(houseCompared, HttpStatus.OK);
+        } else {
+            log.info("删除对比房源失败");
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_COMPARED_DELETE_ERROR);
         }
-
-        return new ResponseEntity<HouseCompared>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Override
-    public ResponseEntity<String> deleteTempCompared(@ApiParam(value = "comparedRequest" ,required=true )  @Valid @RequestBody ComparedRequest comparedRequest) {
+    public ResponseEntity<HouseComparedIdResponse> deleteTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest) {
         String cookieHouseCompared = getCookieHouseCompared();
         String currHouseId = CookieUtils.getCookie(request, response, cookieHouseCompared);
         if (StringUtil.isNotNullString(currHouseId)) {
@@ -99,198 +88,146 @@ public class ComparedRestController implements ComparedRestApi {
             currHouseIdList = StringUtil.removeAll(currHouseIdList, comparedRequest.getHouseId());
             currHouseId = StringUtil.join(currHouseIdList, "_");
             CookieUtils.setCookie(request, response, cookieHouseCompared, currHouseId);
-            return new ResponseEntity<String>(currHouseId,HttpStatus.OK);
+            HouseComparedIdResponse houseComparedIdResponse = new HouseComparedIdResponse();
+            houseComparedIdResponse.setHouseIds(currHouseId);
+            return new ResponseEntity<HouseComparedIdResponse>(houseComparedIdResponse, HttpStatus.OK);
         } else {
             currHouseId = "";
             CookieUtils.setCookie(request, response, cookieHouseCompared, currHouseId);
-            return new ResponseEntity<String>(currHouseId,HttpStatus.NOT_IMPLEMENTED);
+            HouseComparedIdResponse houseComparedIdResponse = new HouseComparedIdResponse();
+            houseComparedIdResponse.setHouseIds(currHouseId);
+            return new ResponseEntity<HouseComparedIdResponse>(houseComparedIdResponse, HttpStatus.OK);
         }
     }
 
-    public ResponseEntity<SellHouseFavoriteListResponse> getComparedList(@ApiParam(value = "sellHouseFavoriteListRequest" ,required=true )  @Valid SellHouseFavoriteListRequest sellHouseFavoriteListRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery = new SellHouseFavoriteListDoQuery();
-                BeanUtils.copyProperties(sellHouseFavoriteListRequest,sellHouseFavoriteListDoQuery);
-                SellHouseFavoriteDomain sellHouseFavoriteDomain = comparedService.queryComparedList(sellHouseFavoriteListDoQuery);
-                SellHouseFavoriteListResponse sellHouseFavoriteListResponse = new SellHouseFavoriteListResponse();
-                BeanUtils.copyProperties(sellHouseFavoriteDomain,sellHouseFavoriteListResponse);
-                return new  ResponseEntity<SellHouseFavoriteListResponse>(sellHouseFavoriteListResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<SellHouseFavoriteListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<SellHouseFavoriteListResponse>(HttpStatus.NOT_IMPLEMENTED);
+    @Override
+    public ResponseEntity<SellHouseFavoriteListResponse> getComparedList(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Valid SellHouseFavoriteListRequest sellHouseFavoriteListRequest) {
+        SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery = new SellHouseFavoriteListDoQuery();
+        BeanUtils.copyProperties(sellHouseFavoriteListRequest, sellHouseFavoriteListDoQuery);
+        SellHouseFavoriteDomain sellHouseFavoriteDomain = comparedService.queryComparedList(sellHouseFavoriteListDoQuery);
+        SellHouseFavoriteListResponse sellHouseFavoriteListResponse = new SellHouseFavoriteListResponse();
+        BeanUtils.copyProperties(sellHouseFavoriteDomain, sellHouseFavoriteListResponse);
+        return new ResponseEntity<SellHouseFavoriteListResponse>(sellHouseFavoriteListResponse, HttpStatus.OK);
     }
 
+    @Override
     public ResponseEntity<HouseComparedListDoListResponse> listCompared() {
-        String accept = request.getHeader("Accept");
         HouseComparedListDoListResponse houseComparedListDoListResponse = new HouseComparedListDoListResponse();
-        if (accept != null && accept.contains("")) {
-            try {
-                UserBasic userBasic = UserBasic.getCurrent();
-                String city = CityUtils.getCity();
-                List<HouseCompared> houseComparedList = comparedService.selectByUserId(Integer.parseInt(userBasic.getUserId()),
-                        CityUtils.returnCityId(city));
-                List<HouseComparedListDo> houseComparedListDoList = comparedService.selectComparedByHouseCompareds(houseComparedList, city);
+        UserBasic userBasic = UserBasic.getCurrent();
+        String city = CityUtils.getCity();
+        List<HouseCompared> houseComparedList = comparedService.selectByUserId(Integer.parseInt(userBasic.getUserId()),
+                CityUtils.returnCityId(city));
+        List<HouseComparedListDo> houseComparedListDoList = comparedService.selectComparedByHouseCompareds(houseComparedList, city);
+        houseComparedListDoListResponse.setData(houseComparedListDoList);
+        houseComparedListDoListResponse.setTotalNum(houseComparedListDoList.size());
+        return new ResponseEntity<HouseComparedListDoListResponse>(houseComparedListDoListResponse, HttpStatus.OK);
 
-                houseComparedListDoListResponse.setData(houseComparedListDoList);
-                houseComparedListDoListResponse.setTotalNum(houseComparedListDoList.size());
-                return new ResponseEntity<HouseComparedListDoListResponse>(houseComparedListDoListResponse,HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<HouseComparedListDoListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<HouseComparedListDoListResponse>(HttpStatus.NOT_IMPLEMENTED);
     }
 
+    @Override
     public ResponseEntity<HouseComparedDetailDoListResponse> listComparedDetail(@NotNull @ApiParam(value = "ids", required = true) @Valid @RequestParam(value = "ids", required = true) String ids) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-
-                List<HouseComparedDetailDo> houseComparedDetailDoList = new ArrayList<>();
-                HouseComparedDetailDoListResponse houseComparedDetailDoListResponse = new HouseComparedDetailDoListResponse();
-                if (StringUtil.isNotNullString(ids)) {
-                    String[] currHouseIdArray = ids.split(",");
-                    List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
-                    if (currHouseIdList.size() > maxComparedCount) {
-                        currHouseIdList = currHouseIdList.subList(0, 5);
-                    }
-                    houseComparedDetailDoList = comparedService.selectComparedDetailByHouseIds(currHouseIdList, CityUtils.getCity());
-                    houseComparedDetailDoListResponse.setData(houseComparedDetailDoList);
-                    houseComparedDetailDoListResponse.setTotalNum(houseComparedDetailDoList.size());
-                }
-
-                return new ResponseEntity<HouseComparedDetailDoListResponse>(houseComparedDetailDoListResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<HouseComparedDetailDoListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+        List<HouseComparedDetailDo> houseComparedDetailDoList = new ArrayList<>();
+        HouseComparedDetailDoListResponse houseComparedDetailDoListResponse = new HouseComparedDetailDoListResponse();
+        if (StringUtil.isNotNullString(ids)) {
+            String[] currHouseIdArray = ids.split(",");
+            List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
+            if (currHouseIdList.size() > maxComparedCount) {
+                currHouseIdList = currHouseIdList.subList(0, 5);
             }
+            houseComparedDetailDoList = comparedService.selectComparedDetailByHouseIds(currHouseIdList, CityUtils.getCity());
+            houseComparedDetailDoListResponse.setData(houseComparedDetailDoList);
+            houseComparedDetailDoListResponse.setTotalNum(houseComparedDetailDoList.size());
         }
-
-        return new ResponseEntity<HouseComparedDetailDoListResponse>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<HouseComparedDetailDoListResponse>(houseComparedDetailDoListResponse, HttpStatus.OK);
     }
 
+    @Override
     public ResponseEntity<HouseComparedListDoListResponse> listTempCompared() {
-        String accept = request.getHeader("Accept");
         HouseComparedListDoListResponse houseComparedListDoListResponse = new HouseComparedListDoListResponse();
-        if (accept != null && accept.contains("")) {
-            try {
-                String cookieHouseCompared = getCookieHouseCompared();
-                String city = CityUtils.getCity();
-                String currHouseId = CookieUtils.getCookie(request, response, cookieHouseCompared);
-                List<HouseComparedListDo> houseComparedListDoList = new ArrayList<>();
-
-                if (StringUtil.isNotNullString(currHouseId)) {
-                    String[] currHouseIdArray = currHouseId.split("_");
-                    List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
-                    houseComparedListDoList = comparedService.selectTempComparedByIds(currHouseIdList, city);
-
-                    houseComparedListDoListResponse.setData(houseComparedListDoList);
-                    houseComparedListDoListResponse.setTotalNum(houseComparedListDoList.size());
-                    return new ResponseEntity<HouseComparedListDoListResponse>(houseComparedListDoListResponse,HttpStatus.OK);
-                } else {
-                    currHouseId = "";
-                }
-
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<HouseComparedListDoListResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        String cookieHouseCompared = getCookieHouseCompared();
+        String city = CityUtils.getCity();
+        String currHouseId = CookieUtils.getCookie(request, response, cookieHouseCompared);
+        List<HouseComparedListDo> houseComparedListDoList = new ArrayList<>();
+        if (StringUtil.isNotNullString(currHouseId)) {
+            String[] currHouseIdArray = currHouseId.split("_");
+            List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
+            houseComparedListDoList = comparedService.selectTempComparedByIds(currHouseIdList, city);
+            houseComparedListDoListResponse.setData(houseComparedListDoList);
+            houseComparedListDoListResponse.setTotalNum(houseComparedListDoList.size());
+            return new ResponseEntity<HouseComparedListDoListResponse>(houseComparedListDoListResponse, HttpStatus.OK);
+        } else {
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_COMPARED_NOT_FOUND);
         }
 
-        return new ResponseEntity<HouseComparedListDoListResponse>(houseComparedListDoListResponse,HttpStatus.NOT_IMPLEMENTED);
     }
 
-    public ResponseEntity<HouseCompared> saveCompared(@ApiParam(value = "comparedRequest" ,required=true )  @Valid @RequestBody ComparedRequest comparedRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserBasic userBasic = UserBasic.getCurrent();
-                HouseCompared houseCompared = new HouseCompared();
-                houseCompared.setCreateTime(DateTime.now().toDate());
-                houseCompared.setHouseId(comparedRequest.getHouseId());
-                houseCompared.setHouseStatus((short) 0);
-                houseCompared.setIsDel((short) 0);
-                houseCompared.setUserId(Integer.parseInt(userBasic.getUserId()));
-                houseCompared.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
-                if (StringUtil.isNotNullString(houseCompared.getHouseId()) && houseCompared.getUserId() != null) {
-                    HouseCompared currHouseCompared = comparedService.selectByUserIdAndHouseId(houseCompared.getUserId(), houseCompared.getHouseId(), houseCompared.getCityId());
-                    // 未加入过对比
-                    if (currHouseCompared == null) {
-                        comparedService.insertSelective(houseCompared);
+    @Override
+    public ResponseEntity<HouseCompared> saveCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest) {
+        UserBasic userBasic = UserBasic.getCurrent();
+        HouseCompared houseCompared = new HouseCompared();
+        houseCompared.setCreateTime(DateTime.now().toDate());
+        houseCompared.setHouseId(comparedRequest.getHouseId());
+        houseCompared.setHouseStatus((short) 0);
+        houseCompared.setIsDel((short) 0);
+        houseCompared.setUserId(Integer.parseInt(userBasic.getUserId()));
+        houseCompared.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        if (StringUtil.isNotNullString(houseCompared.getHouseId()) && houseCompared.getUserId() != null) {
+            HouseCompared currHouseCompared = comparedService.selectByUserIdAndHouseId(houseCompared.getUserId(), houseCompared.getHouseId(), houseCompared.getCityId());
+            // 未加入过对比
+            if (currHouseCompared == null) {
+                comparedService.insertSelective(houseCompared);
+                log.info("添加房源对比列表成功");
+                return new ResponseEntity<HouseCompared>(houseCompared, HttpStatus.OK);
+            } else {
+                // 已加入过对比，状态为已删除
+                if (currHouseCompared.getIsDel() == 1) {
+                    currHouseCompared.setIsDel((short) 0);
+                    currHouseCompared.setCreateTime(DateTime.now().toDate());
+                    comparedService.updateByPrimaryKeySelective(currHouseCompared);
 
-                        log.info("添加房源对比列表成功");
-                        return new ResponseEntity<HouseCompared>(houseCompared,HttpStatus.OK);
-                    } else {
-                        // 已加入过对比，状态为已删除
-                        if (currHouseCompared.getIsDel() == 1) {
-                            currHouseCompared.setIsDel((short) 0);
-                            currHouseCompared.setCreateTime(DateTime.now().toDate());
-                            comparedService.updateByPrimaryKeySelective(currHouseCompared);
-
-                            log.info("添加房源对比列表成功");
-                            return new ResponseEntity<HouseCompared>(currHouseCompared,HttpStatus.OK);
-                        }
-                        // 已加入过对比，状态为未删除
-                        else {
-                            currHouseCompared.setCreateTime(DateTime.now().toDate());
-                            comparedService.updateByPrimaryKeySelective(currHouseCompared);
-
-                            log.info("该房源已加入对比列表");
-                            return new ResponseEntity<HouseCompared>(HttpStatus.NO_CONTENT);
-                        }
-                    }
+                    log.info("添加房源对比列表成功");
+                    return new ResponseEntity<HouseCompared>(currHouseCompared, HttpStatus.OK);
                 }
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<HouseCompared>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
+                // 已加入过对比，状态为未删除
+                else {
+                    currHouseCompared.setCreateTime(DateTime.now().toDate());
+                    comparedService.updateByPrimaryKeySelective(currHouseCompared);
 
-        return new ResponseEntity<HouseCompared>(HttpStatus.NOT_IMPLEMENTED);
+                    log.info("该房源已加入对比列表");
+                    return new ResponseEntity<HouseCompared>(currHouseCompared, HttpStatus.OK);
+                }
+            }
+        } else {
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_COMPARED_ADD_ERROR);
+        }
     }
 
-    public ResponseEntity<String> saveTempCompared(@ApiParam(value = "comparedRequest" ,required=true )  @Valid @RequestBody ComparedRequest comparedRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                String cookieHouseCompared = getCookieHouseCompared();
-
-                String currHouseId = CookieUtils.getCookie(request, response, cookieHouseCompared);
-                if (StringUtil.isNotNullString(currHouseId)) {
-                    String[] currHouseIdArray = currHouseId.split("_");
-                    List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
-                    if (!currHouseIdList.contains(comparedRequest.getHouseId())) {
-                        currHouseId = comparedRequest.getHouseId() + "_" + currHouseId;
-                    } else {
-                        List<String> newCurrHouseIdList = new ArrayList<>();
-                        newCurrHouseIdList.add(comparedRequest.getHouseId());
-                        for (String houseId : currHouseIdList) {
-                            if (!Objects.equals(houseId, comparedRequest.getHouseId())) {
-                                newCurrHouseIdList.add(houseId);
-                            }
-                        }
-                        currHouseId = StringUtils.collectionToDelimitedString(newCurrHouseIdList, "_");
+    @Override
+    public ResponseEntity<HouseComparedIdResponse> saveTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest) {
+        String cookieHouseCompared = getCookieHouseCompared();
+        String currHouseId = CookieUtils.getCookie(request, response, cookieHouseCompared);
+        if (StringUtil.isNotNullString(currHouseId)) {
+            String[] currHouseIdArray = currHouseId.split("_");
+            List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
+            if (!currHouseIdList.contains(comparedRequest.getHouseId())) {
+                currHouseId = comparedRequest.getHouseId() + "_" + currHouseId;
+            } else {
+                List<String> newCurrHouseIdList = new ArrayList<>();
+                newCurrHouseIdList.add(comparedRequest.getHouseId());
+                for (String houseId : currHouseIdList) {
+                    if (!Objects.equals(houseId, comparedRequest.getHouseId())) {
+                        newCurrHouseIdList.add(houseId);
                     }
-                } else {
-                    currHouseId = comparedRequest.getHouseId();
                 }
-                CookieUtils.setCookie(request, response, cookieHouseCompared, currHouseId);
-                return new ResponseEntity<String>(currHouseId, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+                currHouseId = StringUtils.collectionToDelimitedString(newCurrHouseIdList, "_");
             }
+        } else {
+            currHouseId = comparedRequest.getHouseId();
         }
-
-        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+        CookieUtils.setCookie(request, response, cookieHouseCompared, currHouseId);
+        HouseComparedIdResponse houseComparedIdResponse = new HouseComparedIdResponse();
+        houseComparedIdResponse.setHouseIds(currHouseId);
+        return new ResponseEntity<HouseComparedIdResponse>(houseComparedIdResponse, HttpStatus.OK);
     }
 
     /**
@@ -302,9 +239,11 @@ public class ComparedRestController implements ComparedRestApi {
         String city = CityUtils.getCity();
         String cookieHouseCompared = "";
         if (CityConstant.ABBREVIATION_BEIJING.equals(city)) {
-            cookieHouseCompared = CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED; //默认北京
+            //默认北京
+            cookieHouseCompared = CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED;
         } else {
-            cookieHouseCompared = CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED + "_" + city; //分站
+            //分站
+            cookieHouseCompared = CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED + "_" + city;
         }
         return cookieHouseCompared;
     }

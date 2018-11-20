@@ -50,121 +50,66 @@ public class RentRestController implements RentRestApi {
 
     @Override
     public ResponseEntity<NearRentHouseResponse> getNearRentHouseByLocationUsingGET(@Validated NearHouseListRequest nearHouseListRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                NearHouseDo nearHouseDo = new NearHouseDo();
-                BeanUtils.copyProperties(nearHouseListRequest,nearHouseDo);
-                List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
-                JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
-                List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
-                NearRentHouseResponse nearRentHouseResponse = new NearRentHouseResponse();
-                nearRentHouseResponse.setData(rentDetailFewResponses);
-                nearRentHouseResponse.setTotalNum(rentDetailFewResponses.size());
-                return new ResponseEntity<>(nearRentHouseResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        NearHouseDo nearHouseDo = new NearHouseDo();
+        BeanUtils.copyProperties(nearHouseListRequest, nearHouseDo);
+        List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
+        JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
+        List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
+        NearRentHouseResponse nearRentHouseResponse = new NearRentHouseResponse();
+        nearRentHouseResponse.setData(rentDetailFewResponses);
+        nearRentHouseResponse.setTotalNum(rentDetailFewResponses.size());
+        return new ResponseEntity<>(nearRentHouseResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<RecommendRentResponse> getRecommendRent(@Validated RentHouseRequest rentHouseRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
-                BeanUtils.copyProperties(rentHouseRequest,rentHouseDoQuery);
-                RentDetailsFewDo rentDetailsFewDo = appRentRestService.queryRecommendRent(rentHouseDoQuery,CityUtils.getCity());
-                RecommendRentResponse recommendRentResponse = new RecommendRentResponse();
-                BeanUtils.copyProperties(rentDetailsFewDo,recommendRentResponse);
-                return new ResponseEntity<>(recommendRentResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+        RentDetailsFewDo rentDetailsFewDo = appRentRestService.queryRecommendRent(rentHouseDoQuery, CityUtils.getCity());
+        RecommendRentResponse recommendRentResponse = new RecommendRentResponse();
+        BeanUtils.copyProperties(rentDetailsFewDo, recommendRentResponse);
+        return new ResponseEntity<>(recommendRentResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<RentAgentResponse> getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
-                RentAgentResponse rentAgentResponse = new RentAgentResponse();
-                BeanUtils.copyProperties(rentAgentDo,rentAgentResponse);
-                return new ResponseEntity<>(rentAgentResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
+        RentAgentResponse rentAgentResponse = new RentAgentResponse();
+        BeanUtils.copyProperties(rentAgentDo, rentAgentResponse);
+        return new ResponseEntity<>(rentAgentResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<RentDetailResponse> getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
-                RentDetailResponse rentDetailResponse = new RentDetailResponse();
-                BeanUtils.copyProperties(rentDetailsDo,rentDetailResponse);
-                return new ResponseEntity<>(rentDetailResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
+        RentDetailResponse rentDetailResponse = new RentDetailResponse();
+        BeanUtils.copyProperties(rentDetailsDo, rentDetailResponse);
+        return new ResponseEntity<>(rentDetailResponse, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchList(@Validated RentHouseRequest rentHouseRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
-                BeanUtils.copyProperties(rentHouseRequest,rentHouseDoQuery);
-                RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery,CityUtils.getCity());
-                RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
-                BeanUtils.copyProperties(rentDetailsListDo,rentDetailFewResponseList);
-                return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
 
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+        return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<RentListResponse> getRentList(@Validated RentHouseRequest rentHouseRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
-                BeanUtils.copyProperties(rentHouseRequest,rentHouseDoQuery);
-                RentDetailsListDo rentDetailsListDo = appRentRestService.getRentList(rentHouseDoQuery,CityUtils.getCity());
-                JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsListDo);
-                RentListResponse rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject),RentListResponse.class);
-                return new ResponseEntity<>(rentListResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentList(rentHouseDoQuery, CityUtils.getCity());
+        JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsListDo);
+        RentListResponse rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject), RentListResponse.class);
+        return new ResponseEntity<>(rentListResponse, HttpStatus.OK);
     }
 
 }

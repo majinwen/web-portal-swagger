@@ -31,7 +31,7 @@ public interface NewHouseActivityRestService {
      * @param userNewBuildingActivityDoQuery
      * @return
      */
-    NashResult saveUserActivityMsg(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
+    String saveUserActivityMsg(UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery);
 
     /**
      * 查询用户参与新房活动信息--后台使用

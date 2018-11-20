@@ -9,10 +9,6 @@ import lombok.Data;
 @Data
 public class ChangeFavoriteResponse {
 
-    @ApiModelProperty(value = "收藏结果", name = "flag")
-    private Boolean flag;
-
-    @ApiModelProperty(value = "收藏信息", name = "msg")
     private String msg;
 
 }
