@@ -120,14 +120,14 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
      * @return
      */
     @Override
-    public NewHouseLayoutPriceDo getNewHouseLayoutPriceByNewHouseId(Integer newHouseId) {
+    public NewHouseLayoutPriceDo getNewHouseLayoutPriceByNewHouseId(Integer newHouseId, String city) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         NewHouseLayoutPriceDo newHouseLayoutPriceDo = new NewHouseLayoutPriceDo();
 //        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
         boolQueryBuilder.must(QueryBuilders.termQuery("building_id",newHouseId));
 
-        SearchResponse searchResponse=newHouseLayoutEsDao.getLayoutPriceByNewHouseId(boolQueryBuilder);
+        SearchResponse searchResponse=newHouseLayoutEsDao.getLayoutPriceByNewHouseId(boolQueryBuilder,city);
 
         InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
         newHouseLayoutPriceDo.setHouseMinPrice(lowestPrice.getValue());

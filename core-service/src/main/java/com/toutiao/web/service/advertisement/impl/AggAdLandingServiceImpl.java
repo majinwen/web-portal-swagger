@@ -14,7 +14,10 @@ import com.toutiao.web.domain.advertisement.*;
 import com.toutiao.web.service.advertisement.AggAdLandingService;
 import org.apache.commons.collections.map.HashedMap;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
@@ -29,6 +32,7 @@ import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -36,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -44,7 +49,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class AggAdLandingServiceImpl implements AggAdLandingService{
 
     @Autowired
-    private ESClientTools esClientTools;
+    private RestHighLevelClient restHighLevelClient;
     @Value("${tt.claim.esfhouse.index}")
     private String recommendEsfIndex;//推荐二手房房源索引
     @Value("${tt.claim.esfhouse.type}")
@@ -103,8 +108,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     @Override
     public Map<String, Object> getAdLanding(AggAdLandingDo aggAdLandingDo) {
 
-        TransportClient client = esClientTools.init();
-//        SearchResponse searchresponse = new SearchResponse();
+//        TransportClient client = esClientTools.init();
+        SearchResponse searchresponse = new SearchResponse();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();
         QueryBuilder queryBuilder = null;
 
@@ -164,14 +169,28 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             pageNum = aggAdLandingDo.getPn();
         }
 
-        SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
-                .setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
+//        SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+//                .setQuery(booleanQueryBuilder).addSort("houseLevel", SortOrder.DESC).addSort("houseScore", SortOrder.DESC)
+//                .setFetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
+//                                "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic"},
+//                        null)
+//                .setFrom((pageNum-1)*aggAdLandingDo.getPs())
+//                .setSize(aggAdLandingDo.getPs())
+//                .execute().actionGet();
+
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).sort("houseLevel", SortOrder.DESC).sort("houseScore", SortOrder.DESC)
+                .fetchSource(new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
                                 "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic"},
-                        null)
-                .setFrom((pageNum-1)*aggAdLandingDo.getPs())
-                .setSize(aggAdLandingDo.getPs())
-                .execute().actionGet();
+                        null).from((pageNum-1)*aggAdLandingDo.getPs()).size(aggAdLandingDo.getPs());
+        searchRequest.source(searchSourceBuilder);
+
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         SearchHits hits = searchresponse.getHits();
         List<Map<String,Object>> resultlist = new ArrayList<>();
@@ -1257,13 +1276,13 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
                 "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
                 "adSort","isClaim","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId"};
-        TransportClient client = esClientTools.init();
+        //TransportClient client = esClientTools.init();
         Date date = DateUtil.lastDate(new Date());
         String cpcDate = DateUtil.format(date);
 
         List<CpcSellHouse> cpcSellHouseList = cpcSellHouseMapper.selectByLastDate(cpcDate);
         QueryBuilder queryBuilder;
-        SearchResponse searchResponse;
+        SearchResponse searchResponse = null;
         String[] houseId = new String[10];
         if(null !=cpcSellHouseList && cpcSellHouseList.size() > 0){
             for(int i = 0; i< cpcSellHouseList.size(); i++){
@@ -1279,9 +1298,20 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 }
             }
         }
-        queryBuilder = QueryBuilders.idsQuery(projhouseType).addIds(houseId);
-        searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(queryBuilder).setFetchSource(returnField,null).execute().actionGet();
+//        queryBuilder = QueryBuilders.idsQuery(projhouseType).addIds(houseId);
+//        searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+//                .setQuery(queryBuilder).setFetchSource(returnField,null).execute().actionGet();
+
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.idsQuery(projhouseType).addIds(houseId)).fetchSource(returnField,null);
+        searchRequest.source(searchSourceBuilder);
+
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         SearchHit[] searchHists = searchResponse.getHits().getHits();
 
@@ -1312,9 +1342,20 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             }
 
 
-            queryBuilder = QueryBuilders.idsQuery(projhouseType).addIds(houseId_repair);
-            searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                    .setQuery(queryBuilder).setFetchSource(returnField,null).execute().actionGet();
+//            queryBuilder = QueryBuilders.idsQuery(projhouseType).addIds(houseId_repair);
+//            searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+//                    .setQuery(queryBuilder).setFetchSource(returnField,null).execute().actionGet();
+
+
+
+            searchSourceBuilder.query(QueryBuilders.idsQuery(projhouseType).addIds(projhouseType)).fetchSource(returnField,null);
+            searchRequest.source(searchSourceBuilder);
+
+            try {
+                searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             SearchHit[] searchHits = searchResponse.getHits().getHits();
             String details = "";
@@ -1430,13 +1471,17 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
                 "adSort","claimHouseId","claimHouseTitle","claimHousePhotoTitle","claimTagsName"};
 
-        TransportClient client = esClientTools.init();
-        SearchResponse searchResponse = client.prepareSearch(recommendEsfIndex).setTypes(recommendEsfType)
-                .setQuery(booleanQueryBuilder).addSort("adSort",SortOrder.ASC).setSize(pageSize)
-                .setFetchSource(returnField,null)
-                .execute().actionGet();
+        SearchRequest searchRequest = new SearchRequest(recommendEsfIndex).types(recommendEsfType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).sort("adSort",SortOrder.ASC).size(pageSize).fetchSource(returnField,null);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
 
-
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return searchResponse;
     }
 
@@ -1450,13 +1495,16 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
                 "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name","house_title_img"};
 
-        TransportClient client = esClientTools.init();
-        SearchResponse searchResponse = client.prepareSearch(recommendRentIndex).setTypes(recommendRentType)
-                .setQuery(booleanQueryBuilder).addSort("adSort",SortOrder.ASC).setSize(pageSize)
-                .setFetchSource(returnField,null)
-                .execute().actionGet();
-
-
+        SearchRequest searchRequest = new SearchRequest(recommendRentIndex).types(recommendRentType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).sort("adSort",SortOrder.ASC).size(pageSize).fetchSource(returnField,null);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return searchResponse;
     }
 
@@ -1470,17 +1518,22 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
     public SearchResponse getInputRentHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
         String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
                 "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name","house_title_img"};
-        TransportClient client = esClientTools.init();
 
         //随机取返回的数据
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
-        SearchResponse searchResponse = client.prepareSearch(recommendRentIndex).setTypes(recommendRentType)
-                .setQuery(booleanQueryBuilder).addSort(scrip).setFrom((pageNum-1)*pageSize).setSize(pageSize)
-                .setFetchSource(returnField,null)
-                .execute().actionGet();
-
+        SearchRequest searchRequest = new SearchRequest(recommendRentIndex).types(recommendRentType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).sort(scrip).from((pageNum-1)*pageSize).size(pageSize)
+                .fetchSource(returnField,null);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return searchResponse;
     }
@@ -1493,18 +1546,24 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
      * @return
      */
     public SearchResponse getImportRentHouseAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
-        TransportClient client = esClientTools.init();
+        SearchResponse searchResponse = null;
         String[] returnField = new String[]{"area_name", "house_area", "room","forward", "room", "district_name", "area_name",
                 "rent_type_name","rent_house_tags_name","rent_house_price","nearest_subway","adSort","house_id","rent_sign","zufang_name","house_title_img"};
         //随机取返回的数据
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
-        SearchResponse searchResponse = client.prepareSearch(recommendRentIndex).setTypes(recommendRentType)
-                .setQuery(booleanQueryBuilder).addSort(scrip).setFrom((pageNum-1)*pageSize).setSize(pageSize)
-                .setFetchSource(returnField,null)
-                .execute().actionGet();
+        SearchRequest searchRequest = new SearchRequest(recommendRentIndex).types(recommendRentType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).sort(scrip).from((pageNum-1)*pageSize).size(pageSize)
+                .fetchSource(returnField,null);
+        searchRequest.source(searchSourceBuilder);
 
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return searchResponse;
     }
@@ -1514,36 +1573,47 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
                 "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
                 "adSort","claimHouseId","claimHouseTitle","claimHousePhotoTitle","claimTagsName"};
 
-        TransportClient client = esClientTools.init();
-
+        SearchResponse searchResponse = null;
         //随机取返回的数据
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
-        SearchResponse searchResponse = client.prepareSearch(recommendEsfIndex).setTypes(recommendEsfType)
-                .setQuery(booleanQueryBuilder).addSort(scrip).setFrom((pageNum-1)*pageSize).setSize(pageSize)
-                .setFetchSource(returnField,null)
-                .execute().actionGet();
+        SearchRequest searchRequest = new SearchRequest(recommendEsfIndex).types(recommendEsfType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).sort(scrip).from((pageNum-1)*pageSize).size(pageSize)
+                .fetchSource(returnField,null);
+        searchRequest.source(searchSourceBuilder);
 
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return searchResponse;
     }
 
     public SearchResponse getUnClaimSellHouseDetailsAdLanding(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize) {
-        TransportClient client = esClientTools.init();
+
         String[] returnField = new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall", "buildArea",
                 "plotName","forwardName","houseTitle","tagsName","housePlotLocation","houseBusinessName","area","houseBusinessName","traffic",
                 "adSort","isClaim","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId"};
 
+        SearchResponse searchResponse = null;
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
-        SearchResponse searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder).addSort(scrip).setFrom((pageNum-1)*pageSize).setSize(pageSize)
-                .setFetchSource(returnField,null)
-                .execute().actionGet();
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).sort(scrip).from((pageNum-1)*pageSize).size(pageSize)
+                .fetchSource(returnField,null);
+        searchRequest.source(searchSourceBuilder);
 
-
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return searchResponse;
     }
 
@@ -1553,8 +1623,8 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
 
 
         Map<String ,Object> advertisement =new HashedMap();
-        TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = new SearchResponse();
+
+        SearchResponse searchresponse = null;
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
         BoolQueryBuilder booleanQueryBuilder2 = QueryBuilders.boolQuery();
@@ -1583,13 +1653,21 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
         Script script = new Script("Math.random()");
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
-        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder).setQuery(booleanQueryBuilder.must(termQuery("of_company", "我爱我家")))
-                .addSort(scrip).setFetchSource(
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).query(booleanQueryBuilder.must(termQuery("of_company", "我爱我家")))
+                .sort(scrip)
+                .fetchSource(
                         new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company","traffic"},
-                        null)
-                .execute().actionGet();
+                        null
+                );
+        searchRequest.source(searchSourceBuilder);
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         SearchHits hits = searchresponse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -1599,13 +1677,29 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             buildinglist.add(buildings);
         }
 
-        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder1).setQuery(booleanQueryBuilder1.must(termQuery("of_company", "中原地产")))
-                .addSort(scrip).setFetchSource(
+//        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+//                .setQuery(booleanQueryBuilder1).setQuery(booleanQueryBuilder1.must(termQuery("of_company", "中原地产")))
+//                .addSort(scrip).setFetchSource(
+//                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+//                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company","traffic"},
+//                        null)
+//                .execute().actionGet();
+
+//        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).query(booleanQueryBuilder.must(termQuery("of_company", "中原地产")))
+                .sort(scrip)
+                .fetchSource(
                         new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company","traffic"},
-                        null)
-                .execute().actionGet();
+                        null
+                );
+        searchRequest.source(searchSourceBuilder);
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         SearchHits hit1 = searchresponse.getHits();
         SearchHit[] searchHist1 = hit1.getHits();
@@ -1615,14 +1709,26 @@ public class AggAdLandingServiceImpl implements AggAdLandingService{
             buildinglist.add(buildings);
         }
 
-        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder2).setQuery(booleanQueryBuilder2.must(termQuery("of_company", "麦田房产")))
-                .addSort(scrip).setFetchSource(
+//        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
+//                .setQuery(booleanQueryBuilder2).setQuery(booleanQueryBuilder2.must(termQuery("of_company", "麦田房产")))
+//                .addSort(scrip).setFetchSource(
+//                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
+//                                "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company","traffic"},
+//                        null)
+//                .execute().actionGet();
+        searchSourceBuilder.query(booleanQueryBuilder).query(booleanQueryBuilder.must(termQuery("of_company", "麦田房产")))
+                .sort(scrip)
+                .fetchSource(
                         new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen",
                                 "tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId","of_company","traffic"},
-                        null)
-                .execute().actionGet();
+                        null);
 
+        searchRequest.source(searchSourceBuilder);
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         SearchHits hit2 = searchresponse.getHits();
         SearchHit[] searchHist2 = hit2.getHits();
 

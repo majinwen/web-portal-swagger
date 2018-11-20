@@ -240,28 +240,28 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
 
-    /**
-     * 认领二手房房源经纪人
-     * @param houseId
-     * @return
-     */
-    @Override
-    public AgentsBySellHouseDo getAgentByHouseId(Integer houseId){
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",houseId));
-        SearchResponse searchResponse = agentHouseEsDao.getAgentHouseByHouseId(boolQueryBuilder);
-        SearchHit[] hits = searchResponse.getHits().getHits();
-        if (hits.length>0){
-            long time = System.currentTimeMillis();
-            long index = (time / 600000) % hits.length;
-            String details = hits[(int) index].getSourceAsString();
-            AgentsBySellHouseDo agentsBySellHouseDo = JSON.parseObject(details,AgentsBySellHouseDo.class);
-            return agentsBySellHouseDo;
-        }else{
-            return null;
-        }
-    }
+//    /**
+//     * 认领二手房房源经纪人
+//     * @param houseId
+//     * @return
+//     */
+//    @Override
+//    public AgentsBySellHouseDo getAgentByHouseId(Integer houseId){
+//
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//        boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",houseId));
+//        SearchResponse searchResponse = agentHouseEsDao.getAgentHouseByHouseId(boolQueryBuilder);
+//        SearchHit[] hits = searchResponse.getHits().getHits();
+//        if (hits.length>0){
+//            long time = System.currentTimeMillis();
+//            long index = (time / 600000) % hits.length;
+//            String details = hits[(int) index].getSourceAsString();
+//            AgentsBySellHouseDo agentsBySellHouseDo = JSON.parseObject(details,AgentsBySellHouseDo.class);
+//            return agentsBySellHouseDo;
+//        }else{
+//            return null;
+//        }
+//    }
 
     /**
      * 二手房，房源列表

@@ -15,9 +15,6 @@ public interface PlotService {
 
     List findNearByVillageByConditions(VillageRequest villageRequest);
 
-    void saveParent(VillageEntityES village);
-
-    void saveChild(ProjHouseInfoES projHouseInfoes);
 
     Map queryPlotByRentId(String rentPlotId);
 

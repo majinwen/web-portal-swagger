@@ -110,68 +110,68 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     }
 
-    /**
-     * 获取首页主题房
-     *
-     * @param homeThemeHouseDoQuery
-     * @return
-     */
-    @Override
-    public HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery) {
-        //构建筛选器
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-
-        //价格
-        if (homeThemeHouseDoQuery.getBeginPrice() == 0 && homeThemeHouseDoQuery.getEndPrice() != 0) {
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(homeThemeHouseDoQuery.getEndPrice()));
-        } else if (homeThemeHouseDoQuery.getBeginPrice() != 0 && homeThemeHouseDoQuery.getEndPrice() == 0) {
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(homeThemeHouseDoQuery.getBeginPrice()));
-        } else if (homeThemeHouseDoQuery.getBeginPrice() != 0 && homeThemeHouseDoQuery.getEndPrice() != 0) {
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(homeThemeHouseDoQuery.getBeginPrice())
-                    .lte(homeThemeHouseDoQuery.getEndPrice()));
-        }
-
-        //面积
-        if (homeThemeHouseDoQuery.getBeginArea() == 0 && homeThemeHouseDoQuery.getEndArea() != 0) {
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lte(homeThemeHouseDoQuery.getEndArea()));
-        } else if (homeThemeHouseDoQuery.getBeginArea() != 0 && homeThemeHouseDoQuery.getEndArea() == 0) {
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gt(homeThemeHouseDoQuery.getBeginArea()));
-        } else if (homeThemeHouseDoQuery.getBeginArea() != 0 && homeThemeHouseDoQuery.getEndArea() != 0) {
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gt(homeThemeHouseDoQuery.getBeginArea())
-                    .lte(homeThemeHouseDoQuery.getEndArea()));
-        }
-
-        //几居
-        if (null != homeThemeHouseDoQuery.getLayoutId() && homeThemeHouseDoQuery.getLayoutId().length > 0) {
-            boolQueryBuilder.must(QueryBuilders.termsQuery("room",homeThemeHouseDoQuery.getLayoutId()));
-        }
-
-        //是否有地铁
-        if (null != homeThemeHouseDoQuery.getHasSubway() && homeThemeHouseDoQuery.getHasSubway() > 0) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("has_subway", homeThemeHouseDoQuery.getHasSubway()));
-        }
-
-        //isRecommend大于0，推荐房源
-        boolQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
-
-        SearchResponse homeThemeHouse = homePageEsDao.getHomeThemeHouse(boolQueryBuilder, (homeThemeHouseDoQuery.getPageNum() - 1) * homeThemeHouseDoQuery.getPageSize(), homeThemeHouseDoQuery.getPageSize());
-        SearchHit[] hits = homeThemeHouse.getHits().getHits();
-        HomeThemeHouseListDo homeThemeHouseListDo = new HomeThemeHouseListDo();
-
-        if (hits.length > 0) {
-            List<HomeThemeHouseDo> list = new ArrayList<>();
-            for (SearchHit hit : hits) {
-                String sourceAsString = hit.getSourceAsString();
-                HomeThemeHouseDo homeThemeHouseDo = JSON.parseObject(sourceAsString, HomeThemeHouseDo.class);
-                list.add(homeThemeHouseDo);
-            }
-            homeThemeHouseListDo.setData(list);
-            homeThemeHouseListDo.setTotalNum((int) homeThemeHouse.getHits().getTotalHits());
-        }
-        return homeThemeHouseListDo;
-    }
+//    /**
+//     * 获取首页主题房
+//     *
+//     * @param homeThemeHouseDoQuery
+//     * @return
+//     */
+//    @Override
+//    public HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery) {
+//        //构建筛选器
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//
+//
+//        //价格
+//        if (homeThemeHouseDoQuery.getBeginPrice() == 0 && homeThemeHouseDoQuery.getEndPrice() != 0) {
+//            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(homeThemeHouseDoQuery.getEndPrice()));
+//        } else if (homeThemeHouseDoQuery.getBeginPrice() != 0 && homeThemeHouseDoQuery.getEndPrice() == 0) {
+//            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(homeThemeHouseDoQuery.getBeginPrice()));
+//        } else if (homeThemeHouseDoQuery.getBeginPrice() != 0 && homeThemeHouseDoQuery.getEndPrice() != 0) {
+//            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(homeThemeHouseDoQuery.getBeginPrice())
+//                    .lte(homeThemeHouseDoQuery.getEndPrice()));
+//        }
+//
+//        //面积
+//        if (homeThemeHouseDoQuery.getBeginArea() == 0 && homeThemeHouseDoQuery.getEndArea() != 0) {
+//            boolQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lte(homeThemeHouseDoQuery.getEndArea()));
+//        } else if (homeThemeHouseDoQuery.getBeginArea() != 0 && homeThemeHouseDoQuery.getEndArea() == 0) {
+//            boolQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gt(homeThemeHouseDoQuery.getBeginArea()));
+//        } else if (homeThemeHouseDoQuery.getBeginArea() != 0 && homeThemeHouseDoQuery.getEndArea() != 0) {
+//            boolQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gt(homeThemeHouseDoQuery.getBeginArea())
+//                    .lte(homeThemeHouseDoQuery.getEndArea()));
+//        }
+//
+//        //几居
+//        if (null != homeThemeHouseDoQuery.getLayoutId() && homeThemeHouseDoQuery.getLayoutId().length > 0) {
+//            boolQueryBuilder.must(QueryBuilders.termsQuery("room",homeThemeHouseDoQuery.getLayoutId()));
+//        }
+//
+//        //是否有地铁
+//        if (null != homeThemeHouseDoQuery.getHasSubway() && homeThemeHouseDoQuery.getHasSubway() > 0) {
+//            boolQueryBuilder.must(QueryBuilders.termQuery("has_subway", homeThemeHouseDoQuery.getHasSubway()));
+//        }
+//
+//        //isRecommend大于0，推荐房源
+//        boolQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));
+//        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+//
+//        SearchResponse homeThemeHouse = homePageEsDao.getHomeThemeHouse(boolQueryBuilder, (homeThemeHouseDoQuery.getPageNum() - 1) * homeThemeHouseDoQuery.getPageSize(), homeThemeHouseDoQuery.getPageSize());
+//        SearchHit[] hits = homeThemeHouse.getHits().getHits();
+//        HomeThemeHouseListDo homeThemeHouseListDo = new HomeThemeHouseListDo();
+//
+//        if (hits.length > 0) {
+//            List<HomeThemeHouseDo> list = new ArrayList<>();
+//            for (SearchHit hit : hits) {
+//                String sourceAsString = hit.getSourceAsString();
+//                HomeThemeHouseDo homeThemeHouseDo = JSON.parseObject(sourceAsString, HomeThemeHouseDo.class);
+//                list.add(homeThemeHouseDo);
+//            }
+//            homeThemeHouseListDo.setData(list);
+//            homeThemeHouseListDo.setTotalNum((int) homeThemeHouse.getHits().getTotalHits());
+//        }
+//        return homeThemeHouseListDo;
+//    }
 
     /**
      * 首页根据坐标获取周边小区

@@ -223,31 +223,31 @@ public class RentRestRestServiceImpl implements RentRestService {
         return rentNumListDo;
     }
 
-    /**
-     * 根据出租房源的id查询相关的经纪人
-     * @param rentId
-     * @return
-     */
-    @Override
-    public RentAgentDo queryRentAgentByRentId(String rentId) {
-        try {
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",rentId));
-            SearchResponse searchResponse = agentHouseEsDao.getAgentRentByRentId(boolQueryBuilder);
-            SearchHit[] hits = searchResponse.getHits().getHits();
-            if (hits.length>0){
-                long time = System.currentTimeMillis();
-                long index = (time / 600000) % hits.length;
-                String sourceAsString = hits[(int) index].getSourceAsString();
-                RentAgentDo rentAgentDo = JSON.parseObject(sourceAsString, RentAgentDo.class);
-                return rentAgentDo;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-
-    }
+//    /**
+//     * 根据出租房源的id查询相关的经纪人
+//     * @param rentId
+//     * @return
+//     */
+//    @Override
+//    public RentAgentDo queryRentAgentByRentId(String rentId) {
+//        try {
+//            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//            boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",rentId));
+//            SearchResponse searchResponse = agentHouseEsDao.getAgentRentByRentId(boolQueryBuilder);
+//            SearchHit[] hits = searchResponse.getHits().getHits();
+//            if (hits.length>0){
+//                long time = System.currentTimeMillis();
+//                long index = (time / 600000) % hits.length;
+//                String sourceAsString = hits[(int) index].getSourceAsString();
+//                RentAgentDo rentAgentDo = JSON.parseObject(sourceAsString, RentAgentDo.class);
+//                return rentAgentDo;
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return null;
+//
+//    }
     /**
      * 附近5km内出租房源(规则:app的是吧，那就优先三公里的录入房源由近到远)
      * @param nearHouseDo

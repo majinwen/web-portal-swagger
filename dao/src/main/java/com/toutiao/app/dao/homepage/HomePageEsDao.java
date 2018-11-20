@@ -15,7 +15,7 @@ public interface HomePageEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getHomeThemeHouse(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
+   // SearchResponse getHomeThemeHouse(BoolQueryBuilder boolQueryBuilder, Integer from, Integer size);
 
     /**
      * 首页获取不买亏二手房8条

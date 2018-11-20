@@ -1,32 +1,31 @@
 package com.toutiao.app.dao.plot.impl;
 
 import com.toutiao.app.dao.plot.NearbyPlotsEsDao;
-import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
-import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
-import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
-//import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
-import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +39,7 @@ public class NearbyPlotsEsDaoImpl implements NearbyPlotsEsDao{
     @Value("${plot.child.type}")
     private String childType;
     @Autowired
-    private ESClientTools esClientTools;
+    private RestHighLevelClient restHighLevelClient;
 
 
 
@@ -57,17 +56,24 @@ public class NearbyPlotsEsDaoImpl implements NearbyPlotsEsDao{
     public SearchResponse queryNearbyPlotsListByUserCoordinate(GeoDistanceQueryBuilder geoDistanceQueryBuilder, GeoDistanceSortBuilder sort,
                                                                BoolQueryBuilder boolQueryBuilder, String keyword, Integer pageNum, Integer pageSize) {
 
-        TransportClient client = esClientTools.init();
-        SearchResponse searchResponse;
 
+        SearchResponse searchResponse = null;
+        SearchRequest searchRequest = new SearchRequest(index).types(parentType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         if(StringUtil.isNotNullString(keyword)){
-            SearchRequestBuilder srb = client.prepareSearch(index).setTypes(parentType);
             FunctionScoreQueryBuilder query = getSearchKeywords(keyword,boolQueryBuilder);
-            searchResponse = srb.setQuery(query).setPostFilter(geoDistanceQueryBuilder).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+            searchSourceBuilder.query(query).postFilter(geoDistanceQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize);
+
         }else{
-            searchResponse = client.prepareSearch(index).setTypes(parentType).addSort("level", SortOrder.ASC)
-                    .addSort("plotScore", SortOrder.DESC).setPostFilter(geoDistanceQueryBuilder)
-                    .setQuery(boolQueryBuilder).addSort(sort).setFrom((pageNum-1)*pageSize).setSize(pageSize).execute().actionGet();
+            searchSourceBuilder.query(boolQueryBuilder).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC)
+                    .postFilter(geoDistanceQueryBuilder).sort(sort).from((pageNum-1)*pageSize).size(pageSize);
+        }
+        searchRequest.source(searchSourceBuilder);
+
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return searchResponse;
@@ -88,28 +94,52 @@ public class NearbyPlotsEsDaoImpl implements NearbyPlotsEsDao{
         List<String> analyzeKeywordTermList = new ArrayList<>();
 
         if(StringUtil.isNotNullString(DistrictMap.getDistricts(keyword))){
-            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(esClientTools.init(), AnalyzeAction.INSTANCE,index,keyword);
-            ikRequest.setTokenizer("ik_smart");
-            List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
-            ikTokenList.forEach(ikToken -> { analyzeKeywordDistrictsList.add(ikToken.getTerm()); });
+            AnalyzeRequest request = new AnalyzeRequest();
+            request.text(keyword);
+            request.analyzer("ik_smart");
+            AnalyzeResponse response = null;
+            try {
+                response = restHighLevelClient.indices().analyze(request, RequestOptions.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+            tokens.forEach(ikToken -> { analyzeKeywordDistrictsList.add(ikToken.getTerm()); });
+
+
         }else if(StringUtil.isNotNullString(AreaMap.getAreas(keyword))){
-            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(esClientTools.init(), AnalyzeAction.INSTANCE,index,keyword);
-            ikRequest.setTokenizer("ik_smart");
-            List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
-            ikTokenList.forEach(ikToken -> { analyzeKeywordAreasList.add(ikToken.getTerm()); });
+            AnalyzeRequest request = new AnalyzeRequest();
+            request.text(keyword);
+            request.analyzer("ik_smart");
+            AnalyzeResponse response = null;
+            try {
+                response = restHighLevelClient.indices().analyze(request, RequestOptions.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+            tokens.forEach(ikToken -> { analyzeKeywordAreasList.add(ikToken.getTerm()); });
         }else {
-            AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(esClientTools.init(), AnalyzeAction.INSTANCE,index,keyword);
-            ikRequest.setTokenizer("ik_max_word");
-            List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
+            AnalyzeRequest request = new AnalyzeRequest();
+            request.text(keyword);
+            request.analyzer("ik_max_word");
+            AnalyzeResponse response = null;
+            try {
+                response = restHighLevelClient.indices().analyze(request, RequestOptions.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
             if(keyword.length()>1){
-                ikTokenList.forEach(ikToken -> {
+                tokens.forEach(ikToken -> {
                     if(ikToken.getTerm().length()>1){
                         analyzeKeywordTermList.add(ikToken.getTerm());
                     }
                 });
             } else {
-                ikTokenList.forEach(ikToken -> { analyzeKeywordTermList.add(ikToken.getTerm()); });
+                tokens.forEach(ikToken -> { analyzeKeywordTermList.add(ikToken.getTerm()); });
             }
+
         }
         //按照小区区域关键字搜索
         if(analyzeKeywordDistrictsList!=null && analyzeKeywordDistrictsList.size() > 0){

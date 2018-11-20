@@ -192,30 +192,30 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             return plotTrafficDo;
     }
 
-    /**
-     * 小区收藏列表
-     * @param list
-     * @return
-     */
-    @Override
-    public PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum , Integer size) {
-        PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
-        List<UserFavoritePlotDo> list1 = new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termsQuery("id",list));
-        SearchResponse searchResponse = plotEsDao.queryPlotListByPlotIdList(boolQueryBuilder, (pageNum-1)*size, size);
-        SearchHit[] hits = searchResponse.getHits().getHits();
-        if (hits.length>0){
-            for (SearchHit hit:hits){
-                String sourceAsString = hit.getSourceAsString();
-                UserFavoritePlotDo userFavoritePlotDo = JSON.parseObject(sourceAsString, UserFavoritePlotDo.class);
-                list1.add(userFavoritePlotDo);
-            }
-            plotFavoriteListDo.setData(list1);
-            plotFavoriteListDo.setTotalNum(searchResponse.getHits().getTotalHits());
-        }
-        return plotFavoriteListDo;
-    }
+//    /**
+//     * 小区收藏列表
+//     * @param list
+//     * @return
+//     */
+//    @Override
+//    public PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum , Integer size) {
+//        PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
+//        List<UserFavoritePlotDo> list1 = new ArrayList<>();
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//        boolQueryBuilder.must(QueryBuilders.termsQuery("id",list));
+//        SearchResponse searchResponse = plotEsDao.queryPlotListByPlotIdList(boolQueryBuilder, (pageNum-1)*size, size);
+//        SearchHit[] hits = searchResponse.getHits().getHits();
+//        if (hits.length>0){
+//            for (SearchHit hit:hits){
+//                String sourceAsString = hit.getSourceAsString();
+//                UserFavoritePlotDo userFavoritePlotDo = JSON.parseObject(sourceAsString, UserFavoritePlotDo.class);
+//                list1.add(userFavoritePlotDo);
+//            }
+//            plotFavoriteListDo.setData(list1);
+//            plotFavoriteListDo.setTotalNum(searchResponse.getHits().getTotalHits());
+//        }
+//        return plotFavoriteListDo;
+//    }
 
 
     /**

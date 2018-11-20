@@ -336,7 +336,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     newHouseListDos.setDynamicTotal(dynamicTotal);
 
                     //获取新房户型价格范围
-                    NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId());
+                    NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId(),city);
                     newHouseListDos.setHouseMinPrice(newHouseLayoutPriceDo.getHouseMinPrice());
                     newHouseListDos.setHouseMaxPrice(newHouseLayoutPriceDo.getHouseMaxPrice());
                     //新房动态
