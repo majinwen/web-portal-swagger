@@ -36,8 +36,6 @@ public class NearbyPlotsEsDaoImpl implements NearbyPlotsEsDao{
     private String index ;
     @Value("${plot.parent.type}")
     private String parentType;
-    @Value("${plot.child.type}")
-    private String childType;
     @Autowired
     private RestHighLevelClient restHighLevelClient;
 

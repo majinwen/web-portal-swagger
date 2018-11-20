@@ -11,7 +11,6 @@ import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,12 +21,6 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
 
     @Autowired
     private RestHighLevelClient restHighLevelClient;
-    @Value("${tt.newhouse.index}")
-    private String newHouseIndex;//索引名称
-    @Value("${tt.newhouse.type}")
-    private String newHouseType;//索引类型
-    @Value("${tt.newlayout.type}")
-    private String layoutType;//子类索引类型
 
     /**
      * 根据新房id获取该id下所有的户型以及数量
@@ -37,7 +30,7 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
     @Override
     public SearchResponse getLayoutCountByNewHouseId(BoolQueryBuilder booleanQueryBuilder, String city) {
 
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseChildType(city));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(booleanQueryBuilder).aggregation(AggregationBuilders.terms("roomCount").field("room").order(BucketOrder.count(true)));
         searchRequest.source(searchSourceBuilder);
@@ -64,7 +57,7 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
 //                .setQuery(booleanQueryBuilder).setSize(1000)
 //                .execute().actionGet();
 
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseChildType(city));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(booleanQueryBuilder).size(1000);
         searchRequest.source(searchSourceBuilder);
@@ -86,7 +79,7 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
     public SearchResponse getLayoutPriceByNewHouseId(BoolQueryBuilder booleanQueryBuilder, String city) {
 
 
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseChildType(city));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(booleanQueryBuilder).size(0)
                 .aggregation(AggregationBuilders.min("minPrice").field("total_price"))

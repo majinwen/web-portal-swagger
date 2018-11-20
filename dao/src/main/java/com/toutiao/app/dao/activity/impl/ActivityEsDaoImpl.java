@@ -23,9 +23,9 @@ import java.io.IOException;
 @Service
 public class ActivityEsDaoImpl implements ActivityEsDao{
 
-    @Value("${tt.newhouse.index}")
+    @Value("${bdw.newhouse.index}")
     private String newhouseIndex;//索引名称
-    @Value("${tt.newhouse.type}")
+    @Value("${bdw.newhouse.parent.type}")
     private String newhouseType;//索引类型
 
     @Autowired

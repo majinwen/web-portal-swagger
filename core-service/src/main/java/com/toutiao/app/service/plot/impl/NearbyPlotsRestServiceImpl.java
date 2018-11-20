@@ -51,8 +51,8 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
 
     private static final Logger logger = LoggerFactory.getLogger(NearbyPlotsRestServiceImpl.class);
 
-    @Value("${plot.child.type}")
-    private String childType;
+//    @Value("${plot.child.type}")
+//    private String childType;
     @Autowired
     private NearbyPlotsEsDao nearbyPlotsEsDao;
     @Autowired
@@ -209,14 +209,14 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
         }
         //房源面积大小
         if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("sellhouse", QueryBuilders.rangeQuery("houseArea")
                     .gte(nearbyPlotsDoQuery.getBeginArea()).lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
 
         }else if(nearbyPlotsDoQuery.getBeginArea()==0 && nearbyPlotsDoQuery.getEndArea()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("sellhouse", QueryBuilders.rangeQuery("houseArea")
                     .lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
         }else if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()==0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("sellhouse", QueryBuilders.rangeQuery("houseArea")
                     .gte(nearbyPlotsDoQuery.getBeginArea()), ScoreMode.None));
         }
 

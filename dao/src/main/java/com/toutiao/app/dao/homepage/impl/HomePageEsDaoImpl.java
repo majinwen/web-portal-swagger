@@ -20,22 +20,11 @@ import java.io.IOException;
 
 @Service
 public class HomePageEsDaoImpl implements HomePageEsDao {
-    @Value("${plot.index}")//小区索引名称
-    private String plotIndex ;
-    @Value("${plot.parent.type}")//小区索引类
-    private String parentType;
-    @Value("${plot.child.type}")//小区二手房索引类
-    private String childType;
-    @Value("${tt.projhouse.index}")
+
+    @Value("${bdw.esf.index}")
     private String projhouseIndex;//索引名称
-    @Value("${tt.projhouse.type}")
+    @Value("${bdw.esf.type}")
     private String projhouseType;//索引类
-    @Value("${tt.claim.esfhouse.index}")
-    private String recommendEsfIndex;//推荐二手房房源索引
-    @Value("${tt.claim.esfhouse.type}")
-    private String recommendEsfType;//推荐二手房房源索引类型
-    @Value("${plot.index}")
-    private String index ;
 
 
 

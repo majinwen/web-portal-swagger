@@ -28,10 +28,6 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
 
     @Autowired
     private RestHighLevelClient restHighLevelClient;
-    @Value("${tt.projhouse.index}")
-    private String esfIndex;//二手房索引名称
-    @Value("${tt.projhouse.type}")
-    private String esfType;//二手房索引类
 
     @Override
     public SearchResponse getRecommendByRecommendBuildTags(RecommendTopicDoQuery recommendTopicDoQuery, BoolQueryBuilder boolQueryBuilder, String city) {

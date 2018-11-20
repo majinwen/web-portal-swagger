@@ -571,7 +571,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 //        TransportClient client = esClientTools.init();
         BoolQueryBuilder detailsBuilder = boolQuery();
 //        BoolQueryBuilder booleanQueryBuilder1 = QueryBuilders.boolQuery();
-        detailsBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        detailsBuilder.must(JoinQueryBuilders.hasParentQuery("buildings",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
         if(tags > 0){
             detailsBuilder.must(QueryBuilders.termQuery("room",tags));
         }
@@ -609,7 +609,7 @@ public class NewHouseServiceImpl implements NewHouseService{
 
 //        TransportClient client = esClientTools.init();
         BoolQueryBuilder sizeBuilder = QueryBuilders.boolQuery();
-        sizeBuilder.must(JoinQueryBuilders.hasParentQuery(newhouseType,QueryBuilders.termQuery("building_name_id",buildingId) ,false));
+        sizeBuilder.must(JoinQueryBuilders.hasParentQuery("buildings",QueryBuilders.termQuery("building_name_id",buildingId) ,false));
 
 //        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(layoutType).setQuery(sizeBuilder)
 //                .addAggregation(AggregationBuilders.terms("roomCount").field("room"))

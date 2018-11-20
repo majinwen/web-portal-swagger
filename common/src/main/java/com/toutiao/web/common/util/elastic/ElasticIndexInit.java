@@ -3,6 +3,8 @@ package com.toutiao.web.common.util.elastic;
 import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.constant.elastic.ESIndexConstant;
 import lombok.Data;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -22,78 +24,78 @@ import java.util.Map;
 @Data
 public class ElasticIndexInit implements CommandLineRunner {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ElasticIndexInit.class);
 
     public final static String CITY_BJ = "bj";
-
     //新房
-    @Value("${tt.newhouse.index}")
+    @Value("${bdw.newhouse.index}")
     private String newHouseIndex;
-    @Value("${tt.newhouse.type}")
+    @Value("${bdw.newhouse.parent.type}")
     private String newHouseType_t1;
-    @Value("${tt.newlayout.type}")
-    private String newHouseType_t2;
+//    @Value("${bdw.newhouse.child.type}")
+//    private String newHouseType_t2;
 
     //新楼盘动态
-    @Value("${tt.dynamic.index}")
+    @Value("${bdw.dynamic.index}")
     private String dynamicIndex;
-    @Value("${tt.dynamic.type}")
+    @Value("${bdw.dynamic.type}")
     private String dynamicType;
 
     //小区
-    @Value("${plot.index}")
+    @Value("${bdw.villages.index}")
     private String plotIndex;
-    @Value("${plot.parent.type}")
+    @Value("${bdw.villages.parent.type}")
     private String plotType_t1;
-    @Value("${plot.child.type}")
-    private String plotType_t2;
+//    @Value("${bdw.villages.child.type}")
+//    private String plotType_t2;
 
     //二手房
-    @Value("${tt.projhouse.index}")
+    @Value("${bdw.esf.index}")
     private String esfIndex;
-    @Value("${tt.projhouse.type}")
+    @Value("${bdw.esf.type}")
     private String esfType;
 
     //租房
-    @Value("${tt.zufang.rent.index}")
+    @Value("${bdw.zufang.rent.index}")
     private String rentIndex;
-    @Value("${tt.zufang.rent.type}")
+    @Value("${bdw.zufang.rent.type}")
     private String rentType;
 
 
     //二手房认领(cpc广告投放)
-    @Value("${tt.claim.esfhouse.index}")
+    @Value("${bdw.claim.esfhouse.index}")
     private String claimEsfIndex;
-    @Value("${tt.claim.esfhouse.type}")
+    @Value("${bdw.claim.esfhouse.type}")
     private String claimEsfType;
 
     //租房认领(cpc广告投放)
-    @Value("${tt.claim.renthouse.index}")
+    @Value("${bdw.claim.renthouse.index}")
     private String claimRentIndex;
-    @Value("${tt.claim.renthouse.type}")
+    @Value("${bdw.claim.renthouse.type}")
     private String claimRentType;
 
     //经纪人信息
-    @Value("${tt.agent.index}")
+    @Value("${bdw.agent.index}")
     private String agentIndex;
-    @Value("${tt.agent.type}")
+    @Value("${bdw.agent.type}")
     private String agentType;
 
     //关键字推荐
-    @Value("${tt.search.engines}")
+    @Value("${bdw.search.engines}")
     private String enginesIndex;
-    @Value("${tt.search.engines.type}")
+    @Value("${bdw.search.engines.type}")
     private String enginesType;
 
     //商圈推荐
-    @Value("${tt.search.scope}")
+    @Value("${bdw.search.scope}")
     private String scopeIndex;
-    @Value("${tt.search.scope.type}")
+    @Value("${bdw.search.scope.type}")
     private String scopeType;
 
     //商圈户型均价
-    @Value("${tt.areaRoom.index}")
+    @Value("${bdw.areaRoom.index}")
     private String areaRoomIndex;
-    @Value("${tt.areaRoom.type}")
+    @Value("${bdw.areaRoom.type}")
     private String areaRoomType;
     //城市
     @Value("${city.bidewu.substation}")
@@ -112,23 +114,22 @@ public class ElasticIndexInit implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
 
-        System.out.println("初始化ElasticSearch城市分站索引！＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋");
-
+//        System.out.println("初始化ElasticSearch城市分站索引！＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋");
+        LOGGER.info("初始化ElasticSearch城市分站索引！＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋＋");
 
         String[] city = cityIds.split("\\.");
         int cityCount = city.length;
         for(int i=0; i < cityCount; i++){
             Map<String ,String> esMap = new HashMap<>();
             if(!CITY_BJ.equals(city[i]) && !"".equals(city[i])){
-                plotType_t1 = "plot";
                 esMap.put(ESIndexConstant.NEW_HOUSE_INDEX,newHouseIndex+"_"+city[i]);
                 esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1+"_"+city[i]);
-                esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T2,newHouseType_t2+"_"+city[i]);
+//                esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T2,newHouseType_t2+"_"+city[i]);
                 esMap.put(ESIndexConstant.DYNAMIC_INDEX,dynamicIndex+"_"+city[i]);
                 esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType+"_"+city[i]);
                 esMap.put(ESIndexConstant.PLOT_INDEX,plotIndex+"_"+city[i]);
                 esMap.put(ESIndexConstant.PLOT_TYPE_T1,plotType_t1+"_"+city[i]);
-                esMap.put(ESIndexConstant.PLOT_TYPE_T2,plotType_t2+"_"+city[i]);
+//                esMap.put(ESIndexConstant.PLOT_TYPE_T2,plotType_t2+"_"+city[i]);
                 esMap.put(ESIndexConstant.ESF_INDEX,esfIndex+"_"+city[i]);
                 esMap.put(ESIndexConstant.ESF_TYPE,esfType+"_"+city[i]);
                 esMap.put(ESIndexConstant.RENT_INDEX,rentIndex+"_"+city[i]);
@@ -148,15 +149,15 @@ public class ElasticIndexInit implements CommandLineRunner {
 
                 esIndexMaps.put(city[i],esMap);
             }else{
-                plotType_t1 = "polt";
+
                 esMap.put(ESIndexConstant.NEW_HOUSE_INDEX,newHouseIndex);
                 esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1);
-                esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T2,newHouseType_t2);
+//                esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T2,newHouseType_t2);
                 esMap.put(ESIndexConstant.DYNAMIC_INDEX,dynamicIndex);
                 esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType);
                 esMap.put(ESIndexConstant.PLOT_INDEX,plotIndex);
                 esMap.put(ESIndexConstant.PLOT_TYPE_T1,plotType_t1);
-                esMap.put(ESIndexConstant.PLOT_TYPE_T2,plotType_t2);
+//                esMap.put(ESIndexConstant.PLOT_TYPE_T2,plotType_t2);
                 esMap.put(ESIndexConstant.ESF_INDEX,esfIndex);
                 esMap.put(ESIndexConstant.ESF_TYPE,esfType);
                 esMap.put(ESIndexConstant.RENT_INDEX,rentIndex);

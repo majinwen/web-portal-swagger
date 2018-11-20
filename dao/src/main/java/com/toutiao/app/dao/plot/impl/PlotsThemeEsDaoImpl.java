@@ -50,7 +50,7 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
 
         SearchResponse searchResponse = null;
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotChildType(city));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(0)
                 .aggregation(AggregationBuilders.max("maxHouse").field("sellHouseArea"))
