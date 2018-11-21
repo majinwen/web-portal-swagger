@@ -2,6 +2,7 @@ package com.toutiao.app.dao.plot.impl;
 
 import com.toutiao.app.dao.plot.NearbyPlotsEsDao;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
@@ -52,11 +53,12 @@ public class NearbyPlotsEsDaoImpl implements NearbyPlotsEsDao{
      */
     @Override
     public SearchResponse queryNearbyPlotsListByUserCoordinate(GeoDistanceQueryBuilder geoDistanceQueryBuilder, GeoDistanceSortBuilder sort,
-                                                               BoolQueryBuilder boolQueryBuilder, String keyword, Integer pageNum, Integer pageSize) {
+                                                               BoolQueryBuilder boolQueryBuilder, String keyword, Integer pageNum, Integer pageSize,
+                                                               String city) {
 
 
         SearchResponse searchResponse = null;
-        SearchRequest searchRequest = new SearchRequest(index).types(parentType);
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         if(StringUtil.isNotNullString(keyword)){
             FunctionScoreQueryBuilder query = getSearchKeywords(keyword,boolQueryBuilder);
