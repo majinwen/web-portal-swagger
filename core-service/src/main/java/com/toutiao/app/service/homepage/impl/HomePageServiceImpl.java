@@ -26,7 +26,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -497,15 +497,16 @@ public class HomePageServiceImpl implements HomePageRestService {
         Terms count = top50.getAggregations().get("count");
         List list= count.getBuckets();
         for (Object l:list)
-        {    HomePageTop50Do homePageTop50Do=new HomePageTop50Do();
-            homePageTop50Do.setDistrictId(((StringTerms.Bucket) l).getKeyAsNumber().intValue());
-            homePageTop50Do.setCount( Math.toIntExact((((StringTerms.Bucket) l)).getDocCount()));
-            TopHits topHits =((StringTerms.Bucket) l).getAggregations().get("group_hits");
+        {
+            HomePageTop50Do homePageTop50Do=new HomePageTop50Do();
+            homePageTop50Do.setDistrictId(((ParsedStringTerms.ParsedBucket) l).getKeyAsNumber().intValue());
+            homePageTop50Do.setCount( Math.toIntExact((((ParsedStringTerms.ParsedBucket) l)).getDocCount()));
+            TopHits topHits =((ParsedStringTerms.ParsedBucket) l).getAggregations().get("group_hits");
             for (SearchHit hit : topHits.getHits().getHits())
             {
                 homePageTop50Do.setDistrictName((String) hit.getSourceAsMap().get("area"));
             }
-            map.put(((StringTerms.Bucket) l).getKeyAsString(),homePageTop50Do);
+            map.put(((ParsedStringTerms.ParsedBucket) l).getKeyAsString(),homePageTop50Do);
 
         }
 //        homePageTop50Dos.add(map);
