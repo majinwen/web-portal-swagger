@@ -59,7 +59,6 @@ public interface ComparedRestApi {
             @ApiResponse(code = 404, message = "Not Found")})
     @RequestMapping(value = "/rest/compared/getComparedList",
             produces = {"application/json"},
-//            consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<SellHouseFavoriteListResponse> getComparedList(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Valid  SellHouseFavoriteListRequest sellHouseFavoriteListRequest);
 
@@ -72,7 +71,6 @@ public interface ComparedRestApi {
             @ApiResponse(code = 404, message = "Not Found")})
     @RequestMapping(value = "/rest/compared/listCompared",
             produces = {"application/json"},
-//            consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<HouseComparedListDoListResponse> listCompared();
 
@@ -85,7 +83,6 @@ public interface ComparedRestApi {
             @ApiResponse(code = 404, message = "Not Found")})
     @RequestMapping(value = "/rest/compared/listComparedDetail",
             produces = {"application/json"},
-//            consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<HouseComparedDetailDoListResponse> listComparedDetail(@NotNull @ApiParam(value = "ids", required = true) @Valid @RequestParam(value = "ids", required = true) String ids);
 
@@ -98,7 +95,6 @@ public interface ComparedRestApi {
             @ApiResponse(code = 404, message = "Not Found")})
     @RequestMapping(value = "/rest/compared/listTempCompared",
             produces = {"application/json"},
-//            consumes = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<HouseComparedListDoListResponse> listTempCompared();
 

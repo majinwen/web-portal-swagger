@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.plot;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import io.swagger.annotations.ApiModelProperty;
 import org.springframework.validation.annotation.Validated;
 
@@ -46,6 +47,7 @@ public class PlotDetailsFewDo   {
 
   @JsonProperty("labelId")
   @Valid
+  @ChangeName("tagsId")
   private List<String> labelId = null;
 
   @JsonProperty("location")
