@@ -1,26 +1,28 @@
 package com.toutiao.web.service.advertisement.impl;
 
-import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.service.advertisement.AdvertisementLandingService;
 import org.apache.commons.collections.map.HashedMap;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
@@ -28,7 +30,7 @@ public class AdvertisementLandingServiceImpl implements AdvertisementLandingServ
 
 
     @Autowired
-    private ESClientTools esClientTools;
+    private RestHighLevelClient restHighLevelClient;
     @Value("${tt.projhouse.index}")
     private String projhouseIndex;//索引名称
     @Value("${tt.projhouse.type}")
@@ -41,7 +43,7 @@ public class AdvertisementLandingServiceImpl implements AdvertisementLandingServ
     @Override
     public Map<String, Object> advertisementCpc_3() {
         Map<String ,Object> advertisement =new HashedMap();
-        TransportClient client = esClientTools.init();
+//        TransportClient client = esClientTools.init();
         SearchResponse searchresponse = new SearchResponse();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
@@ -65,12 +67,19 @@ public class AdvertisementLandingServiceImpl implements AdvertisementLandingServ
 
         ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
 
-        searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                .setQuery(booleanQueryBuilder)
-                .addSort(scrip).setFetchSource(
-                        new String[]{"houseId","houseTitle","buildArea","forwardName","room","hall","plotName","toilet","kitchen","traffic","tagsName","tags","houseTotalPrices","housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId"},
-                        null).setSize(7)
-                .execute().actionGet();
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).sort(scrip)
+                .fetchSource(new String[]{"houseId","houseTitle","buildArea","forwardName","room",
+                        "hall","plotName","toilet","kitchen","traffic","tagsName","tags","houseTotalPrices",
+                        "housePhotoTitle","area","areaId","houseBusinessName","houseBusinessNameId"},null).size(7);
+
+        searchRequest.source(searchSourceBuilder);
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         SearchHits hits = searchresponse.getHits();
         SearchHit[] searchHists = hits.getHits();

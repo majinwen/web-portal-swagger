@@ -250,7 +250,7 @@ public class SaveToESMQ implements CommandLineRunner {
 //                                //城市编号
 //                                villageEntity.setCityId((String) projectInfo.get("cityId"));
 
-                                plotService.saveParent(villageEntityES);
+//                                plotService.saveParent(villageEntityES);
                             }
                         }
 

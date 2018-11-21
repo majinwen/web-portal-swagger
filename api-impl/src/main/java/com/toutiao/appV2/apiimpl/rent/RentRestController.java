@@ -73,14 +73,23 @@ public class RentRestController implements RentRestApi {
         return new ResponseEntity<>(recommendRentResponse, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<RentAgentResponse> getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
-
-        RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
-        RentAgentResponse rentAgentResponse = new RentAgentResponse();
-        BeanUtils.copyProperties(rentAgentDo, rentAgentResponse);
-        return new ResponseEntity<>(rentAgentResponse, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<RentAgentResponse> getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
+//        String accept = request.getHeader("Accept");
+//        if (accept != null && accept.contains("")) {
+//            try {
+//                RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
+//                RentAgentResponse rentAgentResponse = new RentAgentResponse();
+//                BeanUtils.copyProperties(rentAgentDo,rentAgentResponse);
+//                return new ResponseEntity<>(rentAgentResponse, HttpStatus.OK);
+//            } catch (Exception e) {
+//                log.error("服务端错误", e);
+//                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//            }
+//        }
+//
+//        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+//    }
 
     @Override
     public ResponseEntity<RentDetailResponse> getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest) {

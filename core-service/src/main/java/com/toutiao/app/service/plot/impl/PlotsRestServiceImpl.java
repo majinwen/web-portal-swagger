@@ -192,30 +192,30 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             return plotTrafficDo;
     }
 
-    /**
-     * 小区收藏列表
-     * @param list
-     * @return
-     */
-    @Override
-    public PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum , Integer size) {
-        PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
-        List<UserFavoritePlotDo> list1 = new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termsQuery("id",list));
-        SearchResponse searchResponse = plotEsDao.queryPlotListByPlotIdList(boolQueryBuilder, (pageNum-1)*size, size);
-        SearchHit[] hits = searchResponse.getHits().getHits();
-        if (hits.length>0){
-            for (SearchHit hit:hits){
-                String sourceAsString = hit.getSourceAsString();
-                UserFavoritePlotDo userFavoritePlotDo = JSON.parseObject(sourceAsString, UserFavoritePlotDo.class);
-                list1.add(userFavoritePlotDo);
-            }
-            plotFavoriteListDo.setData(list1);
-            plotFavoriteListDo.setTotalNum(searchResponse.getHits().getTotalHits());
-        }
-        return plotFavoriteListDo;
-    }
+//    /**
+//     * 小区收藏列表
+//     * @param list
+//     * @return
+//     */
+//    @Override
+//    public PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum , Integer size) {
+//        PlotFavoriteListDo plotFavoriteListDo = new PlotFavoriteListDo();
+//        List<UserFavoritePlotDo> list1 = new ArrayList<>();
+//        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//        boolQueryBuilder.must(QueryBuilders.termsQuery("id",list));
+//        SearchResponse searchResponse = plotEsDao.queryPlotListByPlotIdList(boolQueryBuilder, (pageNum-1)*size, size);
+//        SearchHit[] hits = searchResponse.getHits().getHits();
+//        if (hits.length>0){
+//            for (SearchHit hit:hits){
+//                String sourceAsString = hit.getSourceAsString();
+//                UserFavoritePlotDo userFavoritePlotDo = JSON.parseObject(sourceAsString, UserFavoritePlotDo.class);
+//                list1.add(userFavoritePlotDo);
+//            }
+//            plotFavoriteListDo.setData(list1);
+//            plotFavoriteListDo.setTotalNum(searchResponse.getHits().getTotalHits());
+//        }
+//        return plotFavoriteListDo;
+//    }
 
 
     /**
@@ -243,7 +243,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             SearchHit[] hits = searchResponse.getHits().getHits();
             if (hits.length>0){
                 for (SearchHit hit:hits){
-                    Map<String, Object> source = hit.getSource();
+                    Map<String, Object> source = hit.getSourceAsMap();
                     PlotDetailsFewDo plotDetailsFewDo = PlotDetailsFewDo.class.newInstance();
                     BeanUtils.populate(plotDetailsFewDo, source);
                     plotDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
@@ -337,15 +337,15 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
         //房源面积大小
         if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city), QueryBuilders.rangeQuery("sellHouseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME, QueryBuilders.rangeQuery("sellHouseArea")
                     .gte(plotListDoQuery.getBeginArea()).lte(plotListDoQuery.getEndArea()), ScoreMode.None));
 
         }else if(plotListDoQuery.getBeginArea()!=0 && plotListDoQuery.getEndArea()==0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city), QueryBuilders.rangeQuery("sellHouseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME, QueryBuilders.rangeQuery("sellHouseArea")
                     .gte(plotListDoQuery.getBeginArea()), ScoreMode.None));
         }else if(plotListDoQuery.getBeginArea()==0 && plotListDoQuery.getEndArea()!=0){
 
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city), QueryBuilders.rangeQuery("sellHouseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME, QueryBuilders.rangeQuery("sellHouseArea")
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));
         }
 
@@ -595,7 +595,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             bqb.must(QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9));
         }
 
-        booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getPlotChildType(city),bqb,ScoreMode.None));
+        booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME,bqb,ScoreMode.None));
         //二手房个数
         booleanQueryBuilder.must(QueryBuilders.rangeQuery("house_count").gt(0));
 

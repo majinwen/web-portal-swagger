@@ -41,16 +41,16 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SellHouseDetailsResponse> getSellHouseByHouseId(@ApiParam(value = "sellHouseDerailsRequest", required = true) @Valid SellHouseDetailsRequest sellHouseDerailsRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "认领二手房房源经纪人", nickname = "getAgentBySellHouseId", notes = "", response = AgentsBySellHouseResponse.class, tags = {"二手房",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = AgentsBySellHouseResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
-    @RequestMapping(value = "/rest/esf/getAgentBySellHouseId",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
-    ResponseEntity<AgentsBySellHouseResponse> getAgentBySellHouseId(@ApiParam(value = "agentSellHouseRequest", required = true) @Valid AgentSellHouseRequest agentSellHouseRequest, BindingResult bindingResult);
+//    @ApiOperation(value = "认领二手房房源经纪人", nickname = "getAgentBySellHouseId", notes = "", response = AgentsBySellHouseResponse.class, tags = {"sell-house-rest-controller",})
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "OK", response = AgentsBySellHouseResponse.class),
+//            @ApiResponse(code = 401, message = "Unauthorized"),
+//            @ApiResponse(code = 403, message = "Forbidden"),
+//            @ApiResponse(code = 404, message = "Not Found")})
+//    @RequestMapping(value = "/rest/esf/getAgentBySellHouseId",
+//            produces = {"application/json"},
+//            method = RequestMethod.GET)
+//    ResponseEntity<AgentsBySellHouseResponse> getAgentBySellHouseId(@ApiParam(value = "agentSellHouseRequest", required = true) @Valid AgentSellHouseRequest agentSellHouseRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房房源默认列表V1", nickname = "getSellHouseByChooseV1", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
