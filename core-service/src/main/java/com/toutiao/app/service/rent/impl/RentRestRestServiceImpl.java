@@ -31,6 +31,7 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -205,8 +206,8 @@ public class RentRestRestServiceImpl implements RentRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status",1));
         boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         SearchResponse searchResponse = rentEsDao.queryRentNumByPlotId(boolQueryBuilder,city);
-        long zhengzu = ((InternalFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
-        long hezu = ((InternalFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();
+        long zhengzu = ((ParsedFilter) searchResponse.getAggregations().get("ZHENGZU")).getDocCount();
+        long hezu = ((ParsedFilter) searchResponse.getAggregations().get("HEZU")).getDocCount();
         rentNumDo.setNum((int) zhengzu);
         rentNumDo.setRentSign(1);
         rentNumDo.setRentSignName("整租");

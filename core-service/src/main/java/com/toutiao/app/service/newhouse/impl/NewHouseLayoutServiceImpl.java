@@ -15,9 +15,12 @@ import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
+import org.elasticsearch.search.aggregations.metrics.max.ParsedMax;
 import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
+import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +63,7 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
         SearchResponse searchresponse = newHouseLayoutEsDao.getLayoutCountByNewHouseId(sizeBuilder,city);
 
         Map aggMap =searchresponse.getAggregations().asMap();
-        LongTerms gradeTerms = (LongTerms) aggMap.get("roomCount");
+        ParsedLongTerms gradeTerms = (ParsedLongTerms) aggMap.get("roomCount");
 
         Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
         while(roomBucketIt.hasNext()) {
@@ -129,9 +132,9 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
 
         SearchResponse searchResponse=newHouseLayoutEsDao.getLayoutPriceByNewHouseId(boolQueryBuilder,city);
 
-        InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
+        ParsedMin lowestPrice = searchResponse.getAggregations().get("minPrice");
         newHouseLayoutPriceDo.setHouseMinPrice(lowestPrice.getValue());
-        InternalMax highestPrice = searchResponse.getAggregations().get("maxPrice");
+        ParsedMax highestPrice = searchResponse.getAggregations().get("maxPrice");
         newHouseLayoutPriceDo.setHouseMaxPrice(highestPrice.getValue());
         return newHouseLayoutPriceDo;
     }

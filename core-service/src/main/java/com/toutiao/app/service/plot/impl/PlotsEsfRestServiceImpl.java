@@ -21,6 +21,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId,city);
         Map aggMap =searchResponse.getAggregations().asMap();
-        StringTerms gradeTerms = (StringTerms) aggMap.get("roomCount");
+        ParsedStringTerms gradeTerms = (ParsedStringTerms) aggMap.get("roomCount");
 
         if(gradeTerms.getBuckets().size() == 0){
             throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_ESF_NOT_FOUND,"小区没有出售房源信息");

@@ -121,61 +121,58 @@ public class ElasticIndexInit implements CommandLineRunner {
         int cityCount = city.length;
         for(int i=0; i < cityCount; i++){
             Map<String ,String> esMap = new HashMap<>();
-            if(!CITY_BJ.equals(city[i]) && !"".equals(city[i])){
+            if(!"".equals(city[i]) && city.length>0){
                 esMap.put(ESIndexConstant.NEW_HOUSE_INDEX,newHouseIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1+"_"+city[i]);
+
 //                esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T2,newHouseType_t2+"_"+city[i]);
                 esMap.put(ESIndexConstant.DYNAMIC_INDEX,dynamicIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType+"_"+city[i]);
+
                 esMap.put(ESIndexConstant.PLOT_INDEX,plotIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.PLOT_TYPE_T1,plotType_t1+"_"+city[i]);
+
 //                esMap.put(ESIndexConstant.PLOT_TYPE_T2,plotType_t2+"_"+city[i]);
                 esMap.put(ESIndexConstant.ESF_INDEX,esfIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.ESF_TYPE,esfType+"_"+city[i]);
+
                 esMap.put(ESIndexConstant.RENT_INDEX,rentIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.RENT_TYPE,rentType+"_"+city[i]);
+
                 esMap.put(ESIndexConstant.CLAIM_ESF_INDEX,claimEsfIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.CLAIM_ESF_TYPE,claimEsfType+"_"+city[i]);
+
                 esMap.put(ESIndexConstant.CLAIM_RENT_INDEX,claimRentIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.CLAIM_RENT_TYPE,claimRentType+"_"+city[i]);
+
                 esMap.put(ESIndexConstant.AGENT_INDEX,agentIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.AGENT_TYPE,agentType+"_"+city[i]);
+
                 esMap.put(ESIndexConstant.ENGINES_INDEX,enginesIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType+"_"+city[i]);
+
                 esMap.put(ESIndexConstant.SCOPE_INDEX,scopeIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType+"_"+city[i]);
+
                 esMap.put(ESIndexConstant.AREA_ROOM_INDEX,areaRoomIndex+"_"+city[i]);
-                esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType+"_"+city[i]);
+
+
+                if(CITY_BJ.equals(city[i])){
+                    esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1);
+                    esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType);
+                    esMap.put(ESIndexConstant.PLOT_TYPE_T1,plotType_t1);
+                    esMap.put(ESIndexConstant.ESF_TYPE,esfType);
+                    esMap.put(ESIndexConstant.RENT_TYPE,rentType);
+                    esMap.put(ESIndexConstant.CLAIM_ESF_TYPE,claimEsfType);
+                    esMap.put(ESIndexConstant.CLAIM_RENT_TYPE,claimRentType);
+                    esMap.put(ESIndexConstant.AGENT_TYPE,agentType);
+                    esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType);
+                    esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType);
+                }else{
+                    esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1+"_"+city[i]);
+                    esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.PLOT_TYPE_T1,plotType_t1+"_"+city[i]);
+                    esMap.put(ESIndexConstant.ESF_TYPE,esfType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.RENT_TYPE,rentType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.CLAIM_ESF_TYPE,claimEsfType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.CLAIM_RENT_TYPE,claimRentType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.AGENT_TYPE,agentType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType+"_"+city[i]);
+                }
 
                 esIndexMaps.put(city[i],esMap);
-            }else{
-
-                esMap.put(ESIndexConstant.NEW_HOUSE_INDEX,newHouseIndex);
-                esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1);
-//                esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T2,newHouseType_t2);
-                esMap.put(ESIndexConstant.DYNAMIC_INDEX,dynamicIndex);
-                esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType);
-                esMap.put(ESIndexConstant.PLOT_INDEX,plotIndex);
-                esMap.put(ESIndexConstant.PLOT_TYPE_T1,plotType_t1);
-//                esMap.put(ESIndexConstant.PLOT_TYPE_T2,plotType_t2);
-                esMap.put(ESIndexConstant.ESF_INDEX,esfIndex);
-                esMap.put(ESIndexConstant.ESF_TYPE,esfType);
-                esMap.put(ESIndexConstant.RENT_INDEX,rentIndex);
-                esMap.put(ESIndexConstant.RENT_TYPE,rentType);
-                esMap.put(ESIndexConstant.CLAIM_ESF_INDEX,claimEsfIndex);
-                esMap.put(ESIndexConstant.CLAIM_ESF_TYPE,claimEsfType);
-                esMap.put(ESIndexConstant.CLAIM_RENT_INDEX,claimRentIndex);
-                esMap.put(ESIndexConstant.CLAIM_RENT_TYPE,claimRentType);
-                esMap.put(ESIndexConstant.AGENT_INDEX,agentIndex);
-                esMap.put(ESIndexConstant.AGENT_TYPE,agentType);
-                esMap.put(ESIndexConstant.ENGINES_INDEX,enginesIndex);
-                esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType);
-                esMap.put(ESIndexConstant.SCOPE_INDEX,scopeIndex);
-                esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType);
-                esMap.put(ESIndexConstant.AREA_ROOM_INDEX,areaRoomIndex);
-                esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType);
-
-                esIndexMaps.put(CITY_BJ,esMap);
             }
         }
         //添加公共elastic索引
