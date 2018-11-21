@@ -35,7 +35,8 @@ public class ConverterConf {
         fastJsonConfig.getSerializeConfig().put(Date.class,new DateSerializer());
         //5:自定义返回key
         NameRespFilter nameRespFilter = new NameRespFilter();
-        fastJsonConfig.setSerializeFilters(nameRespFilter);
+        ValueRespFilter valueRespFilter = new ValueRespFilter();
+        fastJsonConfig.setSerializeFilters(nameRespFilter,valueRespFilter);
         //3处理中文乱码问题
         List<MediaType> fastMediaTypes = new ArrayList<>();
         fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
