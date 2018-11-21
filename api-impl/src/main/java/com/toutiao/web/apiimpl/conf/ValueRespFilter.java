@@ -2,6 +2,7 @@ package com.toutiao.web.apiimpl.conf;
 
 import com.alibaba.fastjson.serializer.ValueFilter;
 
+
 /**
  * @ClassName ValueRespFilter
  * @Author jiangweilong
@@ -17,12 +18,16 @@ public class ValueRespFilter implements ValueFilter {
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }
-            if (param instanceof Number) {
-                return 0;
-            } else if (param instanceof String) {
+//            if (param instanceof Number) {
+//                return 0;
+//            } else if (param instanceof String) {
+//                return "";
+//            } else if (param instanceof Boolean) {
+//                return false;
+//            }
+
+            if(param.equals("java.util.Map")){
                 return "";
-            } else if (param instanceof Boolean) {
-                return false;
             }
         }
 
