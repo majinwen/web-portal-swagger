@@ -47,12 +47,12 @@ public interface PlotsRestService {
      */
     PlotTrafficDo queryPlotDataInfo(Integer plotId) throws InvocationTargetException, IllegalAccessException;
 
-    /**
-     * 小区收藏列表
-     * @param list
-     * @return
-     */
-    PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum, Integer size);
+//    /**
+//     * 小区收藏列表
+//     * @param list
+//     * @return
+//     */
+//    PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum, Integer size);
 
     /**
      * 小区top50查询

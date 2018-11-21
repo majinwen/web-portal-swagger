@@ -1,59 +1,57 @@
 package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.MustBuySellHouseEsDao;
-import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class MustBuySellHouseEsDaoImpl implements MustBuySellHouseEsDao {
+
     @Autowired
-    private ESClientTools esClientTools;
-
-    /**
-     * 索引名称
-     */
-    @Value("${tt.projhouse.index}")
-    private String projhouseIndex;
-
-    /**
-     * 索引类
-     */
-    @Value("${tt.projhouse.type}")
-    private String projhouseType;
+    private RestHighLevelClient restHighLevelClient;
 
     /***
      * 查询降价房列表
      */
     @Override
     public SearchResponse getMustBuySellHouse(BoolQueryBuilder query, Integer sort, Integer pageNum, Integer pageSize, Integer topicType, String city) {
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
         if (sort == 0) {
-            srb.addSort("updateTimeSort", SortOrder.DESC);
+            searchSourceBuilder.sort("updateTimeSort", SortOrder.DESC);
         } else if (sort == 1) {
-            srb.addSort("houseTotalPrices", SortOrder.ASC);
+            searchSourceBuilder.sort("houseTotalPrices", SortOrder.ASC);
         } else if (sort == 2) {
-            srb.addSort("houseTotalPrices", SortOrder.DESC);
+            searchSourceBuilder.sort("houseTotalPrices", SortOrder.DESC);
         } else if (topicType == 1 && sort == 3) {
-            srb.addSort("priceFloat", SortOrder.ASC);
+            searchSourceBuilder.sort("priceFloat", SortOrder.ASC);
         } else if (topicType == 1 && sort == 4) {
-            srb.addSort("priceFloat", SortOrder.DESC);
+            searchSourceBuilder.sort("priceFloat", SortOrder.DESC);
         } else if (topicType == 2 && sort == 3) {
-            srb.addSort("buildArea", SortOrder.ASC);
+            searchSourceBuilder.sort("buildArea", SortOrder.ASC);
         } else if (topicType == 2 && sort == 4) {
-            srb.addSort("buildArea", SortOrder.DESC);
+            searchSourceBuilder.sort("buildArea", SortOrder.DESC);
         }
-        SearchResponse searchResponse = new SearchResponse();
-        searchResponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
-        System.out.println(srb);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return searchResponse;
     }
 }

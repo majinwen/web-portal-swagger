@@ -1,41 +1,38 @@
 package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
-import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class NearbySellHouseEsDaoImpl implements NearbySellHouseEsDao{
 
+
     @Autowired
-    private ESClientTools esClientTools;
-    @Value("${tt.projhouse.index}")
-    private String projhouseIndex;//索引名称
-    @Value("${tt.projhouse.type}")
-    private String projhouseType;//索引类
+    private RestHighLevelClient restHighLevelClient;
 
     @Override
     public SearchResponse getNearbySellHouseByFilter(FunctionScoreQueryBuilder query, Integer pageNum,Integer pageSize,String city) {
 
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getEsfHouseIndex(city)).setTypes(ElasticCityUtils.getEsfHouseTpye(city));
-
-        SearchResponse searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize)/*.setFetchSource(
-                new String[] { "houseId","houseTitle","housePhoto","houseTotalPrices","houseUnitCost","area","houseBusinessName",
-                        "housePlotLocation","tagsName","plotName_accurate","traffic","forwardName","room","hall","buildArea","toilet",
-                        "year","forwardName","is_claim","year","claimHouseTitle","claimHousePhotoTitle","claimTags","claimTagsName","claimHouseId",
-                        "parkRadio","houseUnitCost","newcode","subwayLineId","subwayDistince","subwayStationId","housePhotoTitle","userId","price_increase_decline",
-                "claim_time","import_time"} ,null
-        )*/.execute().actionGet();
-
-
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return searchresponse;
     }
 }

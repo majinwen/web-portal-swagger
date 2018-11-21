@@ -72,22 +72,22 @@ public class HouseBusinessAndRoomServiceImpl implements HouseBusinessAndRoomServ
                 if (houseBusinessAndRoomDo.getIsClaim() == 1 && StringTool.isNotEmpty(houseBusinessAndRoomDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getUserId().toString(),city);
                     //认领状态取认领数据
-                    houseBusinessAndRoomDo.setHouseId(searchHit.getSource().get("claimHouseId").toString());
-                    houseBusinessAndRoomDo.setHouseTitle(searchHit.getSource().get("claimHouseTitle").toString());
-                    List<String> tags = (List<String>) searchHit.getSource().get("claimTagsName");
+                    houseBusinessAndRoomDo.setHouseId(searchHit.getSourceAsMap().get("claimHouseId").toString());
+                    houseBusinessAndRoomDo.setHouseTitle(searchHit.getSourceAsMap().get("claimHouseTitle").toString());
+                    List<String> tags = (List<String>) searchHit.getSourceAsMap().get("claimTagsName");
                     String[] tagsName = new String[tags.size()];
                     tags.toArray(tagsName);
-                    houseBusinessAndRoomDo.setHousePhotoTitle(searchHit.getSource().get("claimHousePhotoTitle").toString());
+                    houseBusinessAndRoomDo.setHousePhotoTitle(searchHit.getSourceAsMap().get("claimHousePhotoTitle").toString());
                     houseBusinessAndRoomDo.setTagsName(tagsName);
 
                 }else if(houseBusinessAndRoomDo.getIsClaim() == 0){
                     if(StringUtil.isNotNullString(houseBusinessAndRoomDo.getProjExpertUserId())){
                         agentBaseDo = agentService.queryAgentInfoByUserId(houseBusinessAndRoomDo.getProjExpertUserId(),city);
                     }else{
-                        agentBaseDo.setAgentCompany(searchHit.getSource().get("ofCompany")==null?"":searchHit.getSource().get("ofCompany").toString());
-                        agentBaseDo.setAgentName(searchHit.getSource().get("houseProxyName")==null?"":searchHit.getSource().get("houseProxyName").toString());
-                        agentBaseDo.setHeadPhoto(searchHit.getSource().get("houseProxyPhoto")==null?"":searchHit.getSource().get("houseProxyPhoto").toString());
-                        agentBaseDo.setDisplayPhone(searchHit.getSource().get("houseProxyPhone")==null?"":searchHit.getSource().get("houseProxyPhone").toString());
+                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                     }
                 }
 

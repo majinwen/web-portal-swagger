@@ -32,8 +32,8 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
     @Autowired
     private SellHouseKeywordEsDao sellHouseKeywordEsDao;
-    @Autowired
-    private SellHouseEsDao sellHouseEsDao;
+//    @Autowired
+//    private SellHouseEsDao sellHouseEsDao;
 
     /**
      * 过滤二手房查询条件

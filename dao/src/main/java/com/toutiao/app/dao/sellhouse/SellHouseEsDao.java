@@ -66,13 +66,13 @@ public interface SellHouseEsDao {
 
 
 
-    /**
-     * 获取二手房列表
-     * @param idsQueryBuilder 房源ID列表
-     * @return
-     */
-    SearchResponse getHouseByIds(IdsQueryBuilder idsQueryBuilder);
-
+//    /**
+//     * 获取二手房列表
+//     * @param idsQueryBuilder 房源ID列表
+//     * @return
+//     */
+//    SearchResponse getHouseByIds(IdsQueryBuilder idsQueryBuilder);
+//
     /**
      * 获取对比二手房列表
      * @param idsQueryBuilder
@@ -80,19 +80,19 @@ public interface SellHouseEsDao {
      */
     SearchResponse getComparedHouseByIds(IdsQueryBuilder idsQueryBuilder, String city);
 
-    /**
-     * 根据关键字查询小区
-     * @param booleanQueryBuilder
-     * @return
-     */
-    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
-
-    /**
-     * 根据小区别名关键字查询小区
-     * @param booleanQueryBuilder
-     * @return
-     */
-    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
+//    /**
+//     * 根据关键字查询小区
+//     * @param booleanQueryBuilder
+//     * @return
+//     */
+//    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
+//
+//    /**
+//     * 根据小区别名关键字查询小区
+//     * @param booleanQueryBuilder
+//     * @return
+//     */
+//    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
 
 
 

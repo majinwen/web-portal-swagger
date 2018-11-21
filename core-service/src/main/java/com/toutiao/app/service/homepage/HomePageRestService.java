@@ -25,7 +25,7 @@ public interface HomePageRestService {
     /**
      * 获取首页主题房
      */
-    HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery);
+//    HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery);
 
     /**
      * 首页附近小区

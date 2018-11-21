@@ -1,6 +1,5 @@
 package com.toutiao.web.service.projhouse.impl;
 
-import com.toutiao.web.common.util.ESClientTools;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
@@ -11,15 +10,20 @@ import com.toutiao.web.service.projhouse.ProjHouseInfoService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeAction;
+import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequest;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeRequestBuilder;
 import org.elasticsearch.action.admin.indices.analyze.AnalyzeResponse;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
-import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
+import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
@@ -30,9 +34,11 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.AggregationBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.BucketOrder;
 import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.tophits.TopHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.ScriptSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -43,6 +49,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -58,7 +65,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     private Logger logger = LoggerFactory.getLogger(ProjHouseInfoServiceImpl.class);
 
     @Autowired
-    private ESClientTools esClientTools;
+    private RestHighLevelClient restHighLevelClient;
     @Value("${tt.projhouse.index}")
     private String projhouseIndex;//索引名称
     @Value("${tt.projhouse.type}")
@@ -93,18 +100,17 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
         Map<String, Object> result = null;
         try {
-            TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+            SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
             boolQueryBuilder.must(termQuery("is_claim",1));
             boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.KILOMETERS));
-            srb.setQuery(boolQueryBuilder).setFetchSource(
+            searchSourceBuilder.query(boolQueryBuilder).fetchSource(
                     new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall",
                             "buildArea", "plotName","forwardName","houseTitle","tagsName","claimHouseId","claimHousePhotoTitle",
-                    "claimHouseTitle","claimTagsName"}, null)
-                    .execute().actionGet();
+                    "claimHouseTitle","claimTagsName"}, null);
 
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
@@ -112,15 +118,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
             sort.unit(DistanceUnit.KILOMETERS);
             sort.geoDistance(GeoDistance.ARC);
-            srb.addSort("sortingScore",SortOrder.DESC).addSort(scrip).addSort(sort);
-            SearchResponse searchResponse = srb.setSize(5).execute().actionGet();
+            searchSourceBuilder.sort("sortingScore",SortOrder.DESC).sort(scrip).sort(sort).size(5);
+            searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
 
             ArrayList buildinglist = new ArrayList<>();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 //排除自身
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -155,18 +162,18 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
         Map<String, Object> result = null;
         try {
-            TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+
+            SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
             //从该坐标查询距离为distance      housePlotLocation
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.mustNot(termQuery("newcode",newhouse));
             boolQueryBuilder.must(termQuery("is_claim",0));
             boolQueryBuilder.must(QueryBuilders.geoDistanceQuery("housePlotLocation").point(lat, lon).distance(distance, DistanceUnit.KILOMETERS));
-            srb.setQuery(boolQueryBuilder).setFetchSource(
+            searchSourceBuilder.query(boolQueryBuilder).fetchSource(
                     new String[]{"houseTotalPrices", "houseId", "housePhoto","housePhotoTitle", "room", "hall",
                             "buildArea", "plotName","forwardName","houseTitle","tagsName","claimHouseId","claimHousePhotoTitle",
-                            "claimHouseTitle","claimTagsName"}, null)
-                    .execute().actionGet();
+                            "claimHouseTitle","claimTagsName"}, null);
 
             // 获取距离多少公里 这个才是获取点与点之间的距离的
             GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", lat, lon);
@@ -174,15 +181,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
             sort.unit(DistanceUnit.KILOMETERS);
             sort.geoDistance(GeoDistance.ARC);
-            srb.addSort("sortingScore",SortOrder.DESC).addSort(scrip).addSort(sort);
-            SearchResponse searchResponse = srb.setSize(querySize).execute().actionGet();
+            searchSourceBuilder.sort("sortingScore",SortOrder.DESC).sort(scrip).sort(sort).size(querySize);
+            searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             SearchHits hits = searchResponse.getHits();
             String[] house = new String[(int) hits.getTotalHits()];
 
             ArrayList buildinglist = new ArrayList<>();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 //排除自身
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -219,9 +227,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     @Override
     public List queryProjHouseInfo(ProjHouseInfoQuery projHouseInfoRequest) {
         try {
-            TransportClient client = esClientTools.init();
 
-            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+            SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+            SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+            SearchSourceBuilder ssb = new SearchSourceBuilder();
             SearchResponse searchresponse = null;
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();//声明符合查询方法
             String key = null;
@@ -238,19 +247,28 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()).operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()).operator(Operator.AND))
                         .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
-                searchResponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType).setQuery(bqbPlotName).execute().actionGet();
+                searchSourceBuilder.query(bqbPlotName);
+                searchRequest.source(searchSourceBuilder);
+
+                searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
                 long total = searchResponse.getHits().getTotalHits();
                 out: if(total > 0l){
                     break out;
                 }else{
                     BoolQueryBuilder bqb = QueryBuilders.boolQuery();
                     bqb.must(QueryBuilders.multiMatchQuery(projHouseInfoRequest.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
-                    searchResponse = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType).setQuery(bqb).execute().actionGet();
+
+                    SearchRequest searchRequest1 = new SearchRequest(searchEnginesIndex).types(searchEnginesType);
+                    SearchSourceBuilder searchSourceBuilder1 = new SearchSourceBuilder();
+                    searchSourceBuilder1.query(bqb);
+                    searchRequest1.source(searchSourceBuilder1);
+
+                    searchResponse = restHighLevelClient.search(searchRequest1,RequestOptions.DEFAULT);
                     if(searchResponse.getHits().getTotalHits()>0l){
                         SearchHits hits = searchResponse.getHits();
                         SearchHit[] searchHists = hits.getHits();
                         outFor:for (SearchHit hit : searchHists) {
-                            projHouseInfoRequest.setKeyword(hit.getSource().get("search_name").toString());
+                            projHouseInfoRequest.setKeyword(hit.getSourceAsMap().get("search_name").toString());
                             break outFor ;
                         }
                     }
@@ -264,10 +282,18 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()).analyzer("ik_smart").boost(2))
                             .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()).analyzer("ik_smart"))
                             .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword()).analyzer("ik_smart")));
-                    AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,projhouseIndex,projHouseInfoRequest.getKeyword());
-                    ikRequest.setTokenizer("ik_smart");
-                    List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
-                    ikTokenList.forEach(ikToken -> { searchDistrictsList.add(ikToken.getTerm()); });
+//
+                    AnalyzeRequest request = new AnalyzeRequest();
+                    request.analyzer("ik_smart");
+                    request.text(projHouseInfoRequest.getKeyword());
+                    AnalyzeResponse response = null;
+                    try {
+                        response = restHighLevelClient.indices().analyze(request, RequestOptions.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+                    tokens.forEach(ikToken -> { searchDistrictsList.add(ikToken.getTerm()); });
 
                 } else if (StringUtil.isNotNullString(AreaMap.getAreas(projHouseInfoRequest.getKeyword()))) {
                     booleanQueryBuilder.must(QueryBuilders.boolQuery()
@@ -275,10 +301,18 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             .should(QueryBuilders.matchQuery("area", projHouseInfoRequest.getKeyword()).analyzer("ik_smart"))
                             .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()).analyzer("ik_max_word").boost(2))
                             .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword()).analyzer("ik_smart").boost(2)));
-                    AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,projhouseIndex,projHouseInfoRequest.getKeyword());
-                    ikRequest.setTokenizer("ik_max_word");
-                    List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
-                    ikTokenList.forEach(ikToken -> { searchAreasList.add(ikToken.getTerm()); });
+//
+                    AnalyzeRequest request = new AnalyzeRequest();
+                    request.analyzer("ik_max_word");
+                    request.text(projHouseInfoRequest.getKeyword());
+                    AnalyzeResponse response = null;
+                    try {
+                        response = restHighLevelClient.indices().analyze(request, RequestOptions.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
+                    tokens.forEach(ikToken -> { searchAreasList.add(ikToken.getTerm()); });
                 } else {
                     booleanQueryBuilder.must(QueryBuilders.boolQuery()
                             .should(QueryBuilders.matchQuery("plotName_accurate", projHouseInfoRequest.getKeyword()).boost(2))
@@ -286,19 +320,26 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             .should(QueryBuilders.matchQuery("houseBusinessName", projHouseInfoRequest.getKeyword()))
                             .should(QueryBuilders.matchQuery("plotName", projHouseInfoRequest.getKeyword())));
 
-                    AnalyzeRequestBuilder ikRequest = new AnalyzeRequestBuilder(client, AnalyzeAction.INSTANCE,projhouseIndex,projHouseInfoRequest.getKeyword());
-                    ikRequest.setTokenizer("ik_max_word");
-                    List<AnalyzeResponse.AnalyzeToken> ikTokenList = ikRequest.execute().actionGet().getTokens();
+
+                    AnalyzeRequest request = new AnalyzeRequest();
+                    request.analyzer("ik_max_word");
+                    request.text(projHouseInfoRequest.getKeyword());
+                    AnalyzeResponse response = null;
+                    try {
+                        response = restHighLevelClient.indices().analyze(request, RequestOptions.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    List<AnalyzeResponse.AnalyzeToken> tokens = response.getTokens();
                     if(projHouseInfoRequest.getKeyword().length()>1){
-                        ikTokenList.forEach(ikToken -> {
-                            if(ikToken.getTerm().length()>1){
+                        tokens.forEach(ikToken -> {
+                            if(ikToken.getTerm().length() > 1){
                                 searchTermList.add(ikToken.getTerm());
                             }
                         });
-                    } else {
-                        ikTokenList.forEach(ikToken -> { searchTermList.add(ikToken.getTerm()); });
+                    }else {
+                        tokens.forEach(ikToken -> { searchTermList.add(ikToken.getTerm()); });
                     }
-
 
                 }
             }
@@ -459,7 +500,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
             if (StringUtils.isNotBlank(projHouseInfoRequest.getNear())){
                 if(projHouseInfoRequest.getLat()!=0 && projHouseInfoRequest.getLon()!=0){
                     GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(projHouseInfoRequest.getNear(), DistanceUnit.KILOMETERS);
-                    srb.setPostFilter(location1);
+                    ssb.postFilter(location1);
                     GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
 //                    sort.unit(DistanceUnit.KILOMETERS);
 //                    sort.order(SortOrder.ASC);
@@ -489,15 +530,14 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //            }
 
             if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 1) {
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.DESC)
-                        .setFrom((pageNum - 1) * pageSize)
-                        .setSize(pageSize)
-                        .execute().actionGet();
+                ssb.query(booleanQueryBuilder).sort("houseTotalPrices", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+                searchRequest.source(ssb);
+                searchresponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
                 SearchHits hits = searchresponse.getHits();
                 List houseList = new ArrayList();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    Map<String, Object> buildings = hit.getSource();
+                    Map<String, Object> buildings = hit.getSourceAsMap();
                     buildings = replaceAgentInfo(buildings);
                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -518,15 +558,18 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 }
 
             } else if (projHouseInfoRequest.getSort() != null && projHouseInfoRequest.getSort() == 2) {
-                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
-                        .setFrom((pageNum - 1) * pageSize)
-                        .setSize(pageSize)
-                        .execute().actionGet();
+//                searchresponse = srb.setQuery(booleanQueryBuilder).addSort("houseTotalPrices", SortOrder.ASC)
+//                        .setFrom((pageNum - 1) * pageSize)
+//                        .setSize(pageSize)
+//                        .execute().actionGet();
+                ssb.query(booleanQueryBuilder).sort("houseTotalPrices", SortOrder.ASC).from((pageNum - 1) * pageSize).size(pageSize);
+                searchRequest.source(ssb);
+                searchresponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
                 SearchHits hits = searchresponse.getHits();
                 List houseList = new ArrayList();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    Map<String, Object> buildings = hit.getSource();
+                    Map<String, Object> buildings = hit.getSourceAsMap();
                     buildings = replaceAgentInfo(buildings);
                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -562,7 +605,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                         }
                         query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                                .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                                .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
                     }else if(searchDistrictsList!=null && searchDistrictsList.size() > 0){
                         FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchDistrictsList.size()];
                         for(int i=0 ;i<searchDistrictsList.size();i++){
@@ -572,7 +615,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                         }
                         query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                                .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                                .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
                     }else if(searchAreasList!=null && searchAreasList.size() > 0){
 
                         FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchAreasList.size()];
@@ -583,10 +626,11 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                         }
                         query =QueryBuilders.functionScoreQuery(booleanQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                                .scoreMode(FiltersFunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+                                .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
                     }
-
-                    searchresponse = srb.setQuery(query).setFrom((pageNum - 1) * pageSize).setSize(pageSize).execute().actionGet();
+                    ssb.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+                    searchRequest.source(ssb);
+                    searchresponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
                     if(searchresponse!=null){
                         long oneKM_size = searchresponse.getHits().getTotalHits();
                         long top_size = searchresponse.getHits().getHits().length;
@@ -594,7 +638,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             SearchHits hits = searchresponse.getHits();
                             SearchHit[] searchHists = hits.getHits();
                             for (SearchHit hit : searchHists) {
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -614,7 +658,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             SearchHits hits = searchresponse.getHits();
                             SearchHit[] searchHists = hits.getHits();
                             for (SearchHit hit : searchHists) {
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -631,10 +675,18 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 houseList.add(instance);
                             }
                             //补充
-                            SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                            SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                            SearchRequest searchRequest1 = new SearchRequest(projhouseIndex).types(projhouseType);
+                            SearchSourceBuilder srb_claim_repair_1 = new SearchSourceBuilder();
                             AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-searchresponse.getHits().getHits().length);
-                            AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
-                            SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
+                            AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
+
+                            srb_claim_repair_1.size(0).query(booleanQueryBuilder)
+                                    .aggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0))
+                                            .subAggregation(agg_group_repair_1));
+                            searchRequest1.source(srb_claim_repair_1);
+                            SearchResponse searchResponse_repair_1 = restHighLevelClient.search(searchRequest1,RequestOptions.DEFAULT);
+//
                             InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_1 = isClaimGroup_repair_1.getAggregations().get("groups_repair");
                             Terms.Bucket bucket_repair_1 = agg_repair_1.getBucketByKey("0");
@@ -643,7 +695,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 TopHits topHits_repair_1 = bucket_repair_1.getAggregations().get("group_hits");
 
                                 for (SearchHit hit : topHits_repair_1.getHits().getHits()) {
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -663,10 +715,19 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                         }else if(top_size == 0){
                             long es_from = (pageNum-1)*pageSize - oneKM_size;
-                            SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                            SearchRequest searchRequest1 = new SearchRequest(projhouseIndex).types(projhouseType);
+                            SearchSourceBuilder srb_claim_repair_1 = new SearchSourceBuilder();
+//                            SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
                             AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int) es_from)).size(pageSize);
-                            AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
-                            SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
+                            AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
+
+                            srb_claim_repair_1.size(0).query(booleanQueryBuilder).aggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0))
+                                    .subAggregation(agg_group_repair_1));
+                            searchRequest1.source(srb_claim_repair_1);
+//                            SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder)
+//                                            .addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0))
+//                                                    .subAggregation(agg_group_repair_1)).execute().actionGet();
+                            SearchResponse searchResponse_repair_1 = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
                             InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_1 = isClaimGroup_repair_1.getAggregations().get("groups_repair");
                             Terms.Bucket bucket_repair_1 = agg_repair_1.getBucketByKey("0");
@@ -674,7 +735,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                             for (SearchHit hit : topHits_repair_1.getHits().getHits()) {
 
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -705,10 +766,15 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //                            .setSize(pageSize)
 //                            .execute().actionGet();
                     AggregationBuilder agg_tophits = AggregationBuilders.topHits("group_hits").from((pageNum - 1) * pageSize).size(pageSize).sort("sortingScore", SortOrder.DESC);
-                    AggregationBuilder agg_group = AggregationBuilders.terms("groups").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.count(false)).subAggregation(agg_tophits);
-                    searchresponse = srb.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group)).execute().actionGet();
+                    AggregationBuilder agg_group = AggregationBuilders.terms("groups").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits);
+                    ssb.size(0).query(booleanQueryBuilder).aggregation(AggregationBuilders.filter("isClaimGroup",QueryBuilders.termQuery("is_claim",1))
+                            .subAggregation(agg_group));
 
-
+//                    searchresponse = srb.setSize(0).setQuery(booleanQueryBuilder)
+//                            .addAggregation(AggregationBuilders.filter("isClaimGroup",QueryBuilders.termQuery("is_claim",1))
+//                                    .subAggregation(agg_group)).execute().actionGet();
+                    searchRequest.source(ssb);
+                    searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
                     InternalFilter isClaimGroup = searchresponse.getAggregations().get("isClaimGroup");
 
                     Terms agg = isClaimGroup.getAggregations().get("groups");
@@ -725,7 +791,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     List houseList = new ArrayList();
                     if(top_size == 10){
                         for (SearchHit hit : topHits.getHits().getHits()) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -745,7 +811,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         for (SearchHit hit : topHits.getHits().getHits()) {
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
 
                             BeanUtils.populate(instance, buildings);
@@ -760,11 +826,20 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             instance.setPageNum(projHouseInfoRequest.getPageNum());
                             houseList.add(instance);
                         }
-
-                        SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                        SearchSourceBuilder srb_claim_repair = new SearchSourceBuilder();
                         AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
-                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair);
-                        SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair)).execute().actionGet();
+                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair);
+                        srb_claim_repair.size(0).query(booleanQueryBuilder).aggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1))
+                                .subAggregation(agg_group_repair));
+                        searchRequest.source(srb_claim_repair);
+                        SearchResponse searchResponse_repair = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+
+//                        SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                        AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+//                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair);
+//                        SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder)
+//                                .addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1))
+//                                        .subAggregation(agg_group_repair)).execute().actionGet();
                         InternalFilter isClaimGroup_repair = searchResponse_repair.getAggregations().get("isClaimGroup_repair");
                         Terms agg_repair = isClaimGroup_repair.getAggregations().get("groups_repair");
                         Terms.Bucket bucket_repair = agg_repair.getBucketByKey("1");
@@ -772,7 +847,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                         for (SearchHit hit : topHits_repair.getHits().getHits()) {
 
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -797,10 +872,23 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         }else {
                             pageSizes = pageSize-topHits.getHits().getHits().length;
                         }
-                        SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                        SearchRequestBuilder srb_claim_repair = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                        AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from)).size(pageSizes).sort("sortingScore", SortOrder.DESC);
+//                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair);
+//                        SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder)
+//                                .addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1))
+//                                        .subAggregation(agg_group_repair)).execute().actionGet();
+
+                        SearchSourceBuilder srb_claim_repair = new SearchSourceBuilder();
                         AggregationBuilder agg_tophits_repair = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from)).size(pageSizes).sort("sortingScore", SortOrder.DESC);
-                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair);
-                        SearchResponse searchResponse_repair = srb_claim_repair.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair)).execute().actionGet();
+                        AggregationBuilder agg_group_repair = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair);
+
+                        srb_claim_repair.size(0).query(booleanQueryBuilder).aggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1))
+                                .subAggregation(agg_group_repair));
+
+                        searchRequest.source(srb_claim_repair);
+                        SearchResponse searchResponse_repair = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+
                         InternalFilter isClaimGroup_repair = searchResponse_repair.getAggregations().get("isClaimGroup_repair");
                         Terms agg_repair = isClaimGroup_repair.getAggregations().get("groups_repair");
 
@@ -820,7 +908,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         if(top_size_1==10){
                             for (SearchHit hit : topHits_repair.getHits().getHits()) {
 
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -839,7 +927,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         }else if(top_size_1<10 && top_size_1>0){
                             for (SearchHit hit : topHits_repair.getHits().getHits()) {
 
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -856,10 +944,20 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 houseList.add(instance);
                             }
 
-                            SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                            //SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                            AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+//                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_0);
+//                            SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder)
+//                                    .addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1))
+//                                            .subAggregation(agg_group_repair_0)).execute().actionGet();
+
+                            SearchSourceBuilder srb_claim_repair_0 = new SearchSourceBuilder();
                             AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
-                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_0);
-                            SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair_0)).execute().actionGet();
+                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_0);
+                            srb_claim_repair_0.size(0).query(booleanQueryBuilder).aggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1))
+                                    .subAggregation(agg_group_repair_0));
+                            searchRequest.source(srb_claim_repair_0);
+                            SearchResponse searchResponse_repair_0 = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
                             InternalFilter isClaimGroup_repair_0 = searchResponse_repair_0.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_0 = isClaimGroup_repair_0.getAggregations().get("groups_repair");
                             Terms.Bucket bucket_repair_0 = agg_repair_0.getBucketByKey("0");
@@ -867,7 +965,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                             for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
 
-                                Map<String, Object> buildings = hit.getSource();
+                                Map<String, Object> buildings = hit.getSourceAsMap();
                                 buildings = replaceAgentInfo(buildings);
                                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -894,10 +992,23 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                 pageSizes1 = pageSize-topHits_repair.getHits().getHits().length;
                             }
 
-                            SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                            SearchRequestBuilder srb_claim_repair_0 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                            AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from0)).size(pageSizes1).sort("sortingScore", SortOrder.DESC);
+//                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_0);
+//                            SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder)
+//                                    .addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1))
+//                                            .subAggregation(agg_group_repair_0)).execute().actionGet();
+
+                            SearchSourceBuilder srb_claim_repair_0 = new SearchSourceBuilder();
                             AggregationBuilder agg_tophits_repair_0 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from0)).size(pageSizes1).sort("sortingScore", SortOrder.DESC);
-                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_0);
-                            SearchResponse searchResponse_repair_0 = srb_claim_repair_0.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1)).subAggregation(agg_group_repair_0)).execute().actionGet();
+                            AggregationBuilder agg_group_repair_0 = AggregationBuilders.terms("groups_repair").field("isRecommend").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_0);
+
+                            srb_claim_repair_0.size(0).query(booleanQueryBuilder).aggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",1))
+                                    .subAggregation(agg_group_repair_0));
+                            searchRequest.source(srb_claim_repair_0);
+                            SearchResponse searchResponse_repair_0 = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+
                             InternalFilter isClaimGroup_repair_0 = searchResponse_repair_0.getAggregations().get("isClaimGroup_repair");
                             Terms agg_repair_0 = isClaimGroup_repair_0.getAggregations().get("groups_repair");
                             Terms.Bucket bucket_repair_0 = agg_repair_0.getBucketByKey("0");
@@ -918,7 +1029,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             if(top_size_2==10){
                                 for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
 
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -937,7 +1048,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                             }else if(top_size_2<10 && top_size_2>0){
                                 for (SearchHit hit : topHits_repair_0.getHits().getHits()) {
 
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -954,10 +1065,25 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                     houseList.add(instance);
                                 }
 
-                                SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+                                //SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                                AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair_0.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
+//                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
+//                                SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder)
+//                                        .addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0))
+//                                                .subAggregation(agg_group_repair_1)).execute().actionGet();
+
+                                SearchSourceBuilder srb_claim_repair_1 = new SearchSourceBuilder();
                                 AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from((0) * pageSize).size(pageSize-topHits_repair_0.getHits().getHits().length).sort("sortingScore", SortOrder.DESC);
-                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
-                                SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
+                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
+
+                                srb_claim_repair_1.size(0).query(booleanQueryBuilder).aggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0))
+                                        .subAggregation(agg_group_repair_1));
+                                searchRequest.source(srb_claim_repair_1);
+                                SearchResponse searchResponse_repair_1 = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+
+
+
                                 InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
                                 Terms agg_repair_1 = isClaimGroup_repair_1.getAggregations().get("groups_repair");
                                 Terms.Bucket bucket_repair_1 = agg_repair_1.getBucketByKey("0");
@@ -965,7 +1091,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                                 for (SearchHit hit : topHits_repair_1.getHits().getHits()) {
 
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -993,10 +1119,25 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                                     pageSizes2 = pageSize-topHits_repair_0.getHits().getHits().length;
                                 }
 
-                                SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                                SearchRequestBuilder srb_claim_repair_1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+//                                AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from1)).size(pageSizes2).sort("sortingScore", SortOrder.DESC);
+//                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
+//                                SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder)
+//                                        .addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0))
+//                                                .subAggregation(agg_group_repair_1)).execute().actionGet();
+
+
+                                SearchSourceBuilder srb_claim_repair_1 = new SearchSourceBuilder();
                                 AggregationBuilder agg_tophits_repair_1 = AggregationBuilders.topHits("group_hits").from(Integer.valueOf((int)es_from1)).size(pageSizes2).sort("sortingScore", SortOrder.DESC);
-                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(Terms.Order.count(false)).order(Terms.Order.term(false)).subAggregation(agg_tophits_repair_1);
-                                SearchResponse searchResponse_repair_1 = srb_claim_repair_1.setSize(0).setQuery(booleanQueryBuilder).addAggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0)).subAggregation(agg_group_repair_1)).execute().actionGet();
+                                AggregationBuilder agg_group_repair_1 = AggregationBuilders.terms("groups_repair").field("is_parent_claim").order(BucketOrder.count(false)).order(BucketOrder.count(false)).subAggregation(agg_tophits_repair_1);
+
+                                srb_claim_repair_1.size(0).query(booleanQueryBuilder).aggregation(AggregationBuilders.filter("isClaimGroup_repair",QueryBuilders.termQuery("is_claim",0))
+                                        .subAggregation(agg_group_repair_1));
+                                searchRequest.source(srb_claim_repair_1);
+                                SearchResponse searchResponse_repair_1 = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+
+
+
                                 InternalFilter isClaimGroup_repair_1 = searchResponse_repair_1.getAggregations().get("isClaimGroup_repair");
                                 Terms agg_repair_1 = isClaimGroup_repair_1.getAggregations().get("groups_repair");
                                 Terms.Bucket bucket_repair_1 = agg_repair_1.getBucketByKey("0");
@@ -1004,7 +1145,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
                                 for (SearchHit hit : topHits_repair_1.getHits().getHits()) {
 
-                                    Map<String, Object> buildings = hit.getSource();
+                                    Map<String, Object> buildings = hit.getSourceAsMap();
                                     buildings = replaceAgentInfo(buildings);
                                     Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                                     ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1049,7 +1190,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
     @Override
     public List queryProjHouseInfoByVillageId(ProjHouseInfoQuery projHouseInfoQuery) {
-        TransportClient client = esClientTools.init();
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         int pageNum = 1;
         int pageSize = 10;
@@ -1066,16 +1208,19 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 
             }
             SearchResponse searchresponse = null;
-            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
-            searchresponse = srb.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC)
-                    .setFrom((pageNum - 1) * pageSize)
-                    .setSize(pageSize)
-                    .execute().actionGet();
+//            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+////            searchresponse = srb.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC)
+////                    .setFrom((pageNum - 1) * pageSize)
+////                    .setSize(pageSize)
+////                    .execute().actionGet();
+            searchSourceBuilder.query(booleanQueryBuilder).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            searchRequest.source(searchSourceBuilder);
+            searchresponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             SearchHits hits = searchresponse.getHits();
             List houseList = new ArrayList();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 buildings = replaceAgentInfo(buildings);
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1102,8 +1247,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     @Override
     public List queryNearByProjHouseInfo(ProjHouseInfoQuery projHouseInfoRequest) {
         List houseList = new ArrayList();
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         try {
-            TransportClient client = esClientTools.init();
+
             int pageNum = 1;
             int pageSize = 10;
             if (projHouseInfoRequest.getPageNum() != null && projHouseInfoRequest.getPageNum() > 1) {
@@ -1113,7 +1260,6 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 pageSize = projHouseInfoRequest.getPageSize();
             }
 
-            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
 
             //随机取返回的数据
 //            if (StringUtils.isBlank(projHouseInfoRequest.getKeyword())&&projHouseInfoRequest.getSort()!=1&&projHouseInfoRequest.getSort()!=2){
@@ -1131,7 +1277,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //            }else{
                 //从该坐标查询距离为distance
                 GeoDistanceQueryBuilder location1 = QueryBuilders.geoDistanceQuery("housePlotLocation").point(projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon()).distance(distance, DistanceUnit.KILOMETERS);
-                srb.setPostFilter(location1).setFrom((pageNum-1) * pageSize).setSize(pageSize);
+                searchSourceBuilder.postFilter(location1).from((pageNum-1) * pageSize).size(pageSize);
                 // 获取距离多少公里 这个才是获取点与点之间的距离的
                 GeoDistanceSortBuilder sort = SortBuilders.geoDistanceSort("housePlotLocation", projHouseInfoRequest.getLat(), projHouseInfoRequest.getLon());
                 sort.unit(DistanceUnit.KILOMETERS);
@@ -1140,7 +1286,8 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
 //                srb.addSort(sort);
                 BoolQueryBuilder booleanQuery = QueryBuilders.boolQuery();
                 booleanQuery.must(QueryBuilders.termsQuery("isDel", "0"));
-                SearchResponse searchResponse = srb.setQuery(booleanQuery).addSort("sortingScore", SortOrder.DESC).execute().actionGet();
+                searchRequest.source(searchSourceBuilder.query(booleanQuery).sort("sortingScore", SortOrder.DESC));
+                SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
                 long oneKM_size = searchResponse.getHits().getTotalHits();
 
                 if(searchResponse != null){
@@ -1149,7 +1296,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHits hits = searchResponse.getHits();
                         SearchHit[] searchHists = hits.getHits();
                         for (SearchHit hit : searchHists) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1167,7 +1314,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         SearchHits hits = searchResponse.getHits();
                         SearchHit[] searchHists = hits.getHits();
                         for (SearchHit hit : searchHists) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1183,16 +1330,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         }
                         SearchResponse searchresponse = null;
                         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                        SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+
+                        SearchSourceBuilder srb1 = new SearchSourceBuilder();
                         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-                        searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC)
-                                .setFrom((0) * pageSize)
-                                .setSize(pageSize-hits.getHits().length)
-                                .execute().actionGet();
+                        srb1.query(booleanQuery).sort("sortingScore", SortOrder.DESC).from((0) * pageSize).size(pageSize-hits.getHits().length);
+                        searchRequest.source(srb1);
+                        searchresponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
                         SearchHits esfhits = searchresponse.getHits();
                         SearchHit[] esfsearchHists = esfhits.getHits();
                         for (SearchHit hit : esfsearchHists) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1210,16 +1357,16 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                         long es_from = (pageNum-1)*pageSize - oneKM_size;
                         SearchResponse searchresponse = null;
                         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                        SearchRequestBuilder srb1 = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+
+                        SearchSourceBuilder srb1 = new SearchSourceBuilder();
                         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-                        searchresponse = srb1.setQuery(booleanQueryBuilder).addSort("sortingScore", SortOrder.DESC)
-                                .setFrom(Integer.valueOf((int) es_from))
-                                .setSize(pageSize)
-                                .execute().actionGet();
+                        srb1.query(booleanQueryBuilder).sort("sortingScore", SortOrder.DESC).from(Integer.valueOf((int) es_from)).size(pageSize);
+                        searchRequest.source(srb1);
+                        searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
                         SearchHits esfhits = searchresponse.getHits();
                         SearchHit[] esfsearchHists = esfhits.getHits();
                         for (SearchHit hit : esfsearchHists) {
-                            Map<String, Object> buildings = hit.getSource();
+                            Map<String, Object> buildings = hit.getSourceAsMap();
                             buildings = replaceAgentInfo(buildings);
                             Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                             ProjHouseInfoResponse instance = entityClass.newInstance();
@@ -1249,7 +1396,7 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         List houseList = new ArrayList();
         try {
             for (SearchHit hit : args) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
@@ -1279,8 +1426,10 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
     public Map<String, Object> queryByHouseId(String houseId) {
 
         Map<String, Object> result = null;
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         try {
-            TransportClient client = esClientTools.init();
+
             //声明符合查询方法
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
@@ -1291,15 +1440,19 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
 
             }
-            SearchResponse searchresponse = client.prepareSearch(projhouseIndex).setTypes(projhouseType)
-                    .setQuery(booleanQueryBuilder)
-                    .setSize(10)
-                    .execute().actionGet();
+            searchSourceBuilder.query(booleanQueryBuilder).size(10);
+            searchRequest.source(searchSourceBuilder);
+            SearchResponse searchresponse = null;
+            try {
+                searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             SearchHits hits = searchresponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             List houseList = new ArrayList();
             for (SearchHit hit : searchHists) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 buildings.put("housingDeposit",buildings.get("HousingDeposit"));
                 buildings = replaceAgentInfo(buildings);
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
@@ -1313,7 +1466,14 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
                     instance.setHouseDesc(houseDesc.replaceAll("(\\n|\\r\\n|\\r(\\n)+|\\r(\\n)+(\\s)*\\r(\\n)+)+", "<br>"));
                 }
                 if(null!=instance.getUserId() && !"".equals(instance.getUserId())){
-                    GetResponse agentBaseResponse = client.prepareGet(agentBaseIndex,agentBaseType,instance.getUserId().toString()).execute().actionGet();
+                    GetRequest getRequest = new GetRequest(agentBaseIndex,agentBaseType,instance.getUserId().toString());
+                    GetResponse agentBaseResponse = null;
+                    try {
+                        agentBaseResponse = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     Map<String, Object> agentBaseMap = agentBaseResponse.getSourceAsMap();
                     if(null!=agentBaseMap){
                         //经济人id
@@ -1410,17 +1570,21 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         Random random = new Random();
         List list = new ArrayList();
         List result = new ArrayList();
+        SearchRequest searchRequest = new SearchRequest(projhouseIndex).types(projhouseType);
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         try{
-            TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(projhouseIndex).setTypes(projhouseType);
+
+
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.mustNot(QueryBuilders.termQuery("housePhotoTitle", ""));
             boolQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-            srb.addSort("sortingScore", SortOrder.DESC);
-            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).setSize(20).execute().actionGet();
+//            srb.addSort("sortingScore", SortOrder.DESC);
+            searchSourceBuilder.sort("sortingScore", SortOrder.DESC).query(boolQueryBuilder).size(20);
+            searchRequest.source(searchSourceBuilder);
+            SearchResponse searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
             SearchHit[] hits = searchResponse.getHits().getHits();
             for (SearchHit hit : hits) {
-                Map<String, Object> buildings = hit.getSource();
+                Map<String, Object> buildings = hit.getSourceAsMap();
                 Class<ProjHouseInfoResponse> entityClass = ProjHouseInfoResponse.class;
                 ProjHouseInfoResponse instance = entityClass.newInstance();
                 BeanUtils.populate(instance, buildings);
@@ -1523,31 +1687,31 @@ public class ProjHouseInfoServiceImpl implements ProjHouseInfoService {
         client.index(indexRequest).actionGet();
     }*/
 
-    /**
-     * 根据房源的id查询该房源所有的经纪人(每10min改变一次agent)
-     * @param houseId
-     * @return
-     */
-    @Override
-    public Map queryAgentByHouseId(Integer houseId) {
-        try{
-            TransportClient client = esClientTools.init();
-            SearchRequestBuilder srb = client.prepareSearch(agentIndex).setTypes(agentType);
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",houseId));
-            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
-            SearchHit[] hits = searchResponse.getHits().getHits();
-            if (hits.length>0){
-                long time = new Date().getTime();
-                long index = (time / 600000) % hits.length;
-                Map result = hits[(int) index].getSource();
-                return result;
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    /**
+//     * 根据房源的id查询该房源所有的经纪人(每10min改变一次agent)
+//     * @param houseId
+//     * @return
+//     */
+//    @Override
+//    public Map queryAgentByHouseId(Integer houseId) {
+//        try{
+//            TransportClient client = esClientTools.init();
+//            SearchRequestBuilder srb = client.prepareSearch(agentIndex).setTypes(agentType);
+//            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+//            boolQueryBuilder.must(QueryBuilders.termQuery("corp_house_id",houseId));
+//            SearchResponse searchResponse = srb.setQuery(boolQueryBuilder).execute().actionGet();
+//            SearchHit[] hits = searchResponse.getHits().getHits();
+//            if (hits.length>0){
+//                long time = new Date().getTime();
+//                long index = (time / 600000) % hits.length;
+//                Map result = hits[(int) index].getSourceAsMap();
+//                return result;
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     /**
      * 替换经纪人信息

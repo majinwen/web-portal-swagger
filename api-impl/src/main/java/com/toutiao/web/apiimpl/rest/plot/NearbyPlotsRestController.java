@@ -9,6 +9,7 @@ import com.toutiao.app.domain.plot.PlotDetailsFewDomain;
 import com.toutiao.app.service.plot.NearbyPlotsRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -38,7 +39,7 @@ public class NearbyPlotsRestController {
     public NearbyPlotsListResponse getNearbyPlotsList(@Validated(First.class) NearbyPlotsListRequest nearbyPlotsListRequest) {
         NearbyPlotsDoQuery nearbyPlotsDoQuery = new NearbyPlotsDoQuery();
         BeanUtils.copyProperties(nearbyPlotsListRequest,nearbyPlotsDoQuery);
-        PlotDetailsFewDomain plotDetailsFewDomain = nearbyPlotsRestService.queryNearbyPlotsListByUserCoordinate(nearbyPlotsDoQuery);
+        PlotDetailsFewDomain plotDetailsFewDomain = nearbyPlotsRestService.queryNearbyPlotsListByUserCoordinate(nearbyPlotsDoQuery, CityUtils.getCity());
         NearbyPlotsListResponse newHouseLayoutCountResponse = new NearbyPlotsListResponse();
         BeanUtils.copyProperties(plotDetailsFewDomain, newHouseLayoutCountResponse);
         return newHouseLayoutCountResponse;

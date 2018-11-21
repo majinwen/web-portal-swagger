@@ -82,20 +82,20 @@ public class SellHouseRestController implements SellHouseRestApi {
     }
 
 
-    /**
-     * 认领二手房房源经纪人
-     *
-     * @param agentSellHouseRequest
-     * @return
-     */
-    @Override
-    public ResponseEntity<AgentsBySellHouseResponse> getAgentBySellHouseId(@ApiParam(value = "agentSellHouseRequest", required = true) @Valid AgentSellHouseRequest agentSellHouseRequest, BindingResult bindingResult) {
-        AgentsBySellHouseResponse agentsBySellHouseResponse = new AgentsBySellHouseResponse();
-        AgentsBySellHouseDo agentsBySellHouseDo = sellHouseService.getAgentByHouseId(agentSellHouseRequest.getHouseId());
-        BeanUtils.copyProperties(agentsBySellHouseDo, agentsBySellHouseResponse);
-        log.info("返回结果集:{}", JSONUtil.stringfy(agentsBySellHouseResponse));
-        return new ResponseEntity<AgentsBySellHouseResponse>(agentsBySellHouseResponse, HttpStatus.OK);
-    }
+//    /**
+//     * 认领二手房房源经纪人
+//     *
+//     * @param agentSellHouseRequest
+//     * @return
+//     */
+//    @Override
+//    public ResponseEntity<AgentsBySellHouseResponse> getAgentBySellHouseId(@ApiParam(value = "agentSellHouseRequest", required = true) @Valid AgentSellHouseRequest agentSellHouseRequest, BindingResult bindingResult) {
+//        AgentsBySellHouseResponse agentsBySellHouseResponse = new AgentsBySellHouseResponse();
+//        AgentsBySellHouseDo agentsBySellHouseDo = sellHouseService.getAgentByHouseId(agentSellHouseRequest.getHouseId());
+//        BeanUtils.copyProperties(agentsBySellHouseDo, agentsBySellHouseResponse);
+//        log.info("返回结果集:{}", JSONUtil.stringfy(agentsBySellHouseResponse));
+//        return new ResponseEntity<AgentsBySellHouseResponse>(agentsBySellHouseResponse, HttpStatus.OK);
+//    }
 
     /**
      * 二手房房源默认列表
