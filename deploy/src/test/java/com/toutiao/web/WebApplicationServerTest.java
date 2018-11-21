@@ -11,12 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @desc :
  */
 @RunWith(SpringRunner.class)
-@SpringBootTest(
-        classes = WebApplicationServer.class,
-        webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        properties = {
-                "spring.cloud.config.enabled: false"
-        })
+@SpringBootTest
 public class WebApplicationServerTest {
     /**
      * Context loaders.
