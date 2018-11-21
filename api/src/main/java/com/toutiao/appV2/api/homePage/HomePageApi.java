@@ -52,7 +52,6 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homepage/count/getEsf",
             produces = { "application/json" },
-            //consumes = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<HomePageEsfCountResponse> getEsf();
 
@@ -106,7 +105,6 @@ public interface HomePageApi {
     })
     @RequestMapping(value = "/rest/homePage/getHomePageNewHouse",
             produces = { "application/json" },
-           // consumes = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<HomePageNewHouseResponseList> getHomePageNewHouse();
 
@@ -119,7 +117,6 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homepage/count/getNew",
             produces = { "application/json" },
-            //consumes = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<HomePageNewCountResponse> getNew();
 
@@ -132,7 +129,6 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homePage/getTradeQuotations",
             produces = { "application/json" },
-            //consumes = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<StringDataResponse> getTradeQuotations();
 
@@ -158,7 +154,6 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homePage/homePageNearEsf",
             produces = { "application/json" },
-            //consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<HomePageNearEsfListResponse> homePageNearEsf(@ApiParam(value = "NearHouseRequest" ,required=true )  @Valid NearHouseRequest nearHouseRequest);
 
@@ -171,7 +166,6 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homePage/homePageNearPlot",
             produces = { "application/json" },
-            //consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<HomePageNearPlotListResponse> homePageNearPlot(@ApiParam(value = "NearHouseRequest" ,required=true )  @Valid @RequestBody NearHouseRequest nearHouseRequest);
 
@@ -184,7 +178,6 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homePage/plotSpecialPage",
             produces = { "application/json" },
-            //consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<HomePageNearPlotResponse> plotSpecialPage(@ApiParam(value = "NearHouseSpecialPageRequest" ,required=true )  @Valid @RequestBody NearHouseSpecialPageRequest nearHouseSpecialPageRequest);
 
@@ -197,7 +190,6 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homePage/recommendTopic/queryRecommendTopic",
             produces = { "application/json" },
-           // consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest" ,required=true )  @Valid @RequestBody RecommendRequest recommendRequest);
 
@@ -210,7 +202,6 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homePage/top50",
             produces = { "application/json" },
-            //consumes = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<HomePageTop50DoMap> top50();
 

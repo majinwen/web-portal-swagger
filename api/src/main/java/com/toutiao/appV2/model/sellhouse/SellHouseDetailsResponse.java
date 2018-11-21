@@ -54,43 +54,43 @@ public class SellHouseDetailsResponse {
      * 区域名称
      */
     @ApiModelProperty(value = "区域名称", name = "area")
-    @ChangeName("districtName")
+    //@ChangeName("districtName")
     private String area;
     /**
      * 区域id
      */
     @ApiModelProperty(value = "区域id", name = "areaId")
-    @ChangeName("districtId")
+    //@ChangeName("districtId")
     private Integer areaId;
     /**
      * 商圈id
      */
     @ApiModelProperty(value = "商圈id", name = "houseBusinessNameId")
-    @ChangeName("areaId")
+    //@ChangeName("areaId")
     private Integer houseBusinessNameId;
     /**
      * 商圈名称
      */
     @ApiModelProperty(value = "商圈名称", name = "houseBusinessName")
-    @ChangeName("areaName")
+    //@ChangeName("areaName")
     private String houseBusinessName;
     /**
      * 楼盘ID(楼盘/小区)
      */
     @ApiModelProperty(value = "楼盘ID(楼盘/小区)", name = "newcode")
-    @ChangeName("buildingId")
+    //@ChangeName("buildingId")
     private Integer newcode;
     /**
      * 小区名称
      */
     @ApiModelProperty(value = "小区名称", name = "plotName")
-    @ChangeName("buildingName")
+    //@ChangeName("buildingName")
     private String plotName;
     /**
      * 小区图片
      */
     @ApiModelProperty(value = "小区图片", name = "plotPhoto")
-    @ChangeName("buildingImages")
+    //@ChangeName("buildingImages")
     private String plotPhoto;
     /**
      * 地铁站id
@@ -116,13 +116,13 @@ public class SellHouseDetailsResponse {
      * 建成年代
      */
     @ApiModelProperty(value = "建成年代", name = "year")
-    @ChangeName("buildYears")
+    //@ChangeName("buildYears")
     private String year;
     /**
      * 房源信息来源（0-未知来源，1-编辑录入，2-我爱我家导入，3-中原地产导入）
      */
     @ApiModelProperty(value = "房源信息来源（0-未知来源，1-编辑录入，2-我爱我家导入，3-中原地产导入）", name = "source")
-    @ChangeName("houseSourceId")
+    //@ChangeName("houseSourceId")
     private Integer source;
     /**
      * 产权性质(1:已购公房,2:商品房,3:空置房,4:使用权房,5:央产,6:经济适用房)（权属）
@@ -144,31 +144,31 @@ public class SellHouseDetailsResponse {
      * 电梯(有 无)
      */
     @ApiModelProperty(value = "电梯(有 无)", name = "elevator")
-    @ChangeName("hasElevatorId")
+    //@ChangeName("hasElevatorId")
     private Integer elevator;
     /**
      * 电梯
      */
     @ApiModelProperty(value = "电梯", name = "elevatorName")
-    @ChangeName("hasElevator")
+    //@ChangeName("hasElevator")
     private String elevatorName;
     /**
      *供暖
      */
     @ApiModelProperty(value = "供暖", name = "houseHeating")
-    @ChangeName("heatingModeId")
+    //@ChangeName("heatingModeId")
     private Integer houseHeating;
     /**
      *供暖
      */
     @ApiModelProperty(value = "供暖", name = "heatingMode")
-    @ChangeName("heatingMode")
+    //@ChangeName("heatingMode")
     private String houseHeatingName;
     /**
      * 交通状况（最近地铁信息）
      */
     @ApiModelProperty(value = "交通状况（最近地铁信息）", name = "traffic")
-    @ChangeName("nearBySubwayDesc")
+    //@ChangeName("nearBySubwayDesc")
     private String traffic;
     /**
      * 建筑类别：1：板楼，2：塔楼，3：板塔结合，4：砖楼5：其他
@@ -189,7 +189,7 @@ public class SellHouseDetailsResponse {
      * 房源小区地理坐标
      */
     @ApiModelProperty(value = "房源小区地理坐标", name = "housePlotLocation")
-    @ChangeName("location")
+    //@ChangeName("location")
     private String housePlotLocation;
     /**
      * 二手房房源标题图
@@ -200,13 +200,13 @@ public class SellHouseDetailsResponse {
      * 标签(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
     @ApiModelProperty(value = "标签(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)", name = "tags")
-    @ChangeName("tagsId")
+    //@ChangeName("tagsId")
     private Integer[] tags;
     /**
      * 标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
     @ApiModelProperty(value = "标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)", name = "tagsName")
-    @ChangeName("tags")
+    //@ChangeName("tags")
     private String[] tagsName;
     /**
      * 总的楼层数
@@ -217,7 +217,7 @@ public class SellHouseDetailsResponse {
      * 房源所在层数(地下室填负数)
      */
     @ApiModelProperty(value = "房源所在层数(地下室填负数)", name = "floorNo")
-    @ChangeName("floor")
+    //@ChangeName("floor")
     private Integer floorNo;
     /**
      * 房源照片
@@ -233,7 +233,7 @@ public class SellHouseDetailsResponse {
      * 状态(0-未发布/1-已发布)
      */
     @ApiModelProperty(value = "状态(0-未发布/1-已发布)", name = "status")
-    @ChangeName("releaseStatus")
+    //@ChangeName("releaseStatus")
     private Short status;
     /**
      * 房源描述
@@ -244,7 +244,7 @@ public class SellHouseDetailsResponse {
      * 发布公司
      */
     @ApiModelProperty(value = "发布公司", name = "ofCompany")
-    @ChangeName("agentCompany")
+    //@ChangeName("agentCompany")
     private String ofCompany;
     /**
      * 房源分级，0-默认，1-最好，2-次之，3-再次
@@ -255,19 +255,19 @@ public class SellHouseDetailsResponse {
      * 房源所在层（高层/低层/中层）
      */
     @ApiModelProperty(value = "房源所在层（高层/低层/中层）", name = "floor")
-    @ChangeName("floorName")
+    //@ChangeName("floorName")
     private String floor;
     /**
      * 朝向(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
      */
     @ApiModelProperty(value = "朝向(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)", name = "forward")
-    @ChangeName("forwardId")
+    //@ChangeName("forwardId")
     private Integer forward;
     /**
      * 朝向名称(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
      */
     @ApiModelProperty(value = "朝向名称(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)", name = "forwardName")
-    @ChangeName("forward")
+    //@ChangeName("forward")
     private String forwardName;
     /**
      * 房屋类型：普通住宅、经济适用房、公寓、安置房、四合院等（物业类型）
@@ -325,34 +325,34 @@ public class SellHouseDetailsResponse {
      * 车位配比
      */
     @ApiModelProperty(value = "车位配比", name = "parkRadio")
-    @ChangeName("parkRatio")
+    //@ChangeName("parkRatio")
     private String parkRadio;
     /**
      * 经纪人姓名
      */
     @ApiModelProperty(value = "经纪人姓名", name = "houseProxyName")
-    @ChangeName("agentName")
+    //@ChangeName("agentName")
     private String houseProxyName;
     /**
      * 经纪人电话
      */
     @ApiModelProperty(value = "经纪人电话", name = "houseProxyPhone")
-    @ChangeName("displayPhone")
+    //@ChangeName("displayPhone")
     private String houseProxyPhone;
     /**
      * 经纪人头像
      */
     @ApiModelProperty(value = "经纪人头像", name = "houseProxyPhoto")
-    @ChangeName("headPhoto")
+    //@ChangeName("headPhoto")
     private String houseProxyPhoto;
     /**
      * 均价
      */
     @ApiModelProperty(value = "均价", name = "houseUnitCost")
-    @ChangeName("avgPrice")
+    //@ChangeName("avgPrice")
     private Double houseUnitCost;
 
-    @ChangeName("agent")
+    //@ChangeName("agent")
     private AgentBaseDo agentBaseDo;
 
     /**

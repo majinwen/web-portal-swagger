@@ -16,11 +16,9 @@ public class NewHouseListDo  {
     @ApiModelProperty(value = "最大面积")
     private  Double houseMaxArea;
 
-    @ChangeName("buildingName")
     @ApiModelProperty(value = "楼盘名称")
     private String buildingName;
 
-    @ChangeName("buildingId")
     @ApiModelProperty(value = "楼盘id")
     private  Integer buildingNameId;
 
@@ -30,21 +28,18 @@ public class NewHouseListDo  {
     @ApiModelProperty(value = "区域id")
     private Integer districtId;
 
-    @ChangeName("nearBySubway")
     @ApiModelProperty(value = "地铁信息")
     private  String roundStation;
 
     @ApiModelProperty(value = "最近交房")
     private  String deliverTime;
 
-    @ChangeName("parkRatio")
     @ApiModelProperty(value = "车位配比")
     private String parkRadio;
 
     @ApiModelProperty(value = "均价")
     private Double averagePrice;
 
-    @ChangeName("saleStatus")
     @ApiModelProperty(value = "销售状态")
     private  String  saleStatusName;
 
@@ -57,11 +52,9 @@ public class NewHouseListDo  {
     @ApiModelProperty(value = "户型类型")
     private String roomType;
 
-    @ChangeName("favoriteCount")
     @ApiModelProperty(value = "新房收藏数量")
     private Integer newHouseFavorite;
 
-    @ChangeName("totalPrice")
     @ApiModelProperty(value = "总价")
     private Double  totalPrice;
 
@@ -77,7 +70,6 @@ public class NewHouseListDo  {
     @ApiModelProperty(value = "房源与地铁站的距离")
     private String subwayDistanceInfo;
 
-    @ChangeName("tags")
     @ApiModelProperty(value = "楼盘标签")
     private  String [] buildingTags;
 
@@ -114,14 +106,12 @@ public class NewHouseListDo  {
     @ApiModelProperty(value = "楼盘动态")
     private List<NewHouseDynamicDo> newHouseDynamic;
 
-    @ChangeName("houseAddress")
     @ApiModelProperty(value = "地址")
     private  String buildingAddress;
 
     @ApiModelProperty(value = "新房动态数量")
     private Long dynamicTotal;
 
-    @ChangeName("salePhone")
     @ApiModelProperty(value = "安全电话")
 
     private String saletelphone;

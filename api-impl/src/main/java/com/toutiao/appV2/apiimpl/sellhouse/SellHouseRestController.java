@@ -98,7 +98,7 @@ public class SellHouseRestController implements SellHouseRestApi {
 //    }
 
     /**
-     * 二手房房源默认列表V1
+     * 二手房房源默认列表
      *
      * @param userFavoriteConditionRequest
      * @return

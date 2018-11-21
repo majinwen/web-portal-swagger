@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 public class RentDetailsFewDo   {
   @JsonProperty("agentBaseDo")
-  @ChangeName("agent")
+  //@ChangeName("agent")
   private AgentBaseDo agentBaseDo = null;
 
   @JsonProperty("areaName")
@@ -65,7 +65,7 @@ public class RentDetailsFewDo   {
 
   @JsonProperty("houseTitleImg")
   @ApiModelProperty("房源标题图")
-  @ChangeName("housePhotoTitle")
+  //@ChangeName("housePhotoTitle")
   private String houseTitleImg = null;
 
   @JsonProperty("isDefaultImage")
@@ -75,12 +75,12 @@ public class RentDetailsFewDo   {
   @JsonProperty("nearbySubway")
   @Valid
   @ApiModelProperty("地铁信息")
-  @ChangeName("nearbyStationsDistance")
+  //@ChangeName("nearbyStationsDistance")
   private Map<String, String> nearbySubway = null;
 
   @JsonProperty("nearestSubway")
   @ApiModelProperty("最近的地铁")
-  @ChangeName("nearBySubway")
+  //@ChangeName("nearBySubway")
   private String nearestSubway = null;
 
   @JsonProperty("parkRatio")
@@ -89,13 +89,13 @@ public class RentDetailsFewDo   {
 
   @JsonProperty("rentHousePrice")
   @ApiModelProperty("租金(元/月)")
-  @ChangeName("rentPrice")
+  //@ChangeName("rentPrice")
   private Double rentHousePrice = null;
 
   @JsonProperty("rentHouseTagsName")
   @Valid
   @ApiModelProperty("出租房源标签名称")
-  @ChangeName("tags")
+  //@ChangeName("tags")
   private List<String> rentHouseTagsName = null;
 
   @JsonProperty("rentHouseType")
@@ -132,12 +132,12 @@ public class RentDetailsFewDo   {
 
   @JsonProperty("zufangId")
   @ApiModelProperty("小区Id")
-  @ChangeName("buildingId")
+  //@ChangeName("buildingId")
   private Integer zufangId = null;
 
   @JsonProperty("zufangName")
   @ApiModelProperty("小区名称")
-  @ChangeName("buildingName")
+  //@ChangeName("buildingName")
   private String zufangName = null;
 
   public RentDetailsFewDo agentBaseDo(AgentBaseDo agentBaseDo) {

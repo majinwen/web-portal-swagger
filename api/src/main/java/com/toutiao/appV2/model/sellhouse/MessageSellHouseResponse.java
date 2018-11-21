@@ -13,11 +13,11 @@ import java.util.List;
 @ApiModel(value = "MessageSellHouseResponse", description = "MessageSellHouseResponse")
 public class MessageSellHouseResponse {
 
-    @ChangeName("data")
+    //@ChangeName("data")
     @ApiModelProperty(value = "二手房列表", name = "sellHouseList")
     private List<MessageSellHouseDo> sellHouseList;
 
-    @ChangeName("totalNum")
+    //@ChangeName("totalNum")
     @ApiModelProperty(value = "总条数", name = "total")
     private Integer total;
 

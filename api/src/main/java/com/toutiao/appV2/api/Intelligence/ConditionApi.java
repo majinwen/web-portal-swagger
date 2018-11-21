@@ -32,8 +32,7 @@ public interface ConditionApi {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/rest/homePage/deleteRecommendCondition",
-        produces = "application/json", 
-        consumes = "*/*",
+        produces = "application/json",
         method = RequestMethod.GET)
     ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
 
@@ -46,8 +45,7 @@ public interface ConditionApi {
     @ApiImplicitParams({
     })
     @RequestMapping(value = "/rest/homePage/getRecommendCondition",
-        produces = "application/json", 
-        consumes = "*/*",
+        produces = "application/json",
         method = RequestMethod.GET)
     ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
 
