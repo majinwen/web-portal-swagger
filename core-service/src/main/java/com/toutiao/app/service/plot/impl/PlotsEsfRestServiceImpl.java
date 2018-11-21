@@ -6,7 +6,6 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
-import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
@@ -20,14 +19,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -162,10 +158,10 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId,city);
         Map aggMap =searchResponse.getAggregations().asMap();
-        StringTerms gradeTerms = (StringTerms) aggMap.get("roomCount");
+        ParsedStringTerms roomCount = (ParsedStringTerms) aggMap.get("roomCount");
 
 
-        Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
+        Iterator roomBucketIt = roomCount.getBuckets().iterator();
         while(roomBucketIt.hasNext()) {
             PlotsEsfRoomCountDo plotsEsfRoomCountDo = new PlotsEsfRoomCountDo();
             Terms.Bucket roomBucket = (Terms.Bucket) roomBucketIt.next();

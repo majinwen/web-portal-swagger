@@ -224,7 +224,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
         public List<RecommendTopicDo> cleanEsData(RecommendTopicDoQuery recommendTopicDoQuery,SearchResponse searchResponse, String flag){
         List<RecommendTopicDo> recommendTopicDoList = new ArrayList<>();
 
-        Terms areaIdBucket = searchResponse.getAggregations().get("areaId");
+        Terms areaIdBucket = searchResponse.getAggregations().get("areaIds");
         if(null != areaIdBucket){
             if(areaIdBucket.getBuckets().size()>0){
                 int size = areaIdBucket.getBuckets().size();
