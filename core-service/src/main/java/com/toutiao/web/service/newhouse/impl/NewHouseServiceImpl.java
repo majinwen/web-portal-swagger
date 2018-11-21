@@ -1,21 +1,15 @@
 package com.toutiao.web.service.newhouse.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.dao.entity.esobject.NewHouseBuildings;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.domain.query.NewHouseQuery;
 import com.toutiao.web.service.newhouse.NewHouseService;
 import org.apache.lucene.search.join.ScoreMode;
-import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.unit.DistanceUnit;
-import org.elasticsearch.index.VersionType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;

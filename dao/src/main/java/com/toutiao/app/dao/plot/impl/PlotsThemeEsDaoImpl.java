@@ -10,6 +10,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +31,7 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
         SearchResponse searchResponse = null;
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize);
+        searchSourceBuilder.query(boolQueryBuilder).sort("house_count", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
         searchRequest.source(searchSourceBuilder);
 
         try {
