@@ -40,6 +40,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -76,6 +77,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
     /**
      * 根据newcode获取新房详细信息
+     *
      * @param newCode
      * @return
      */
@@ -83,51 +85,50 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     public NewHouseDetailDo getNewHouseBuildByNewCode(Integer newCode, String city) {
         NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newCode));
-        SearchResponse buildResponse =newHouseEsDao.getNewHouseBulid(boolQueryBuilder, city);
+        boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id", newCode));
+        SearchResponse buildResponse = newHouseEsDao.getNewHouseBulid(boolQueryBuilder, city);
         SearchHit[] searchHists = buildResponse.getHits().getHits();
         String details = "";
         for (SearchHit searchHit : searchHists) {
             details = searchHit.getSourceAsString();
         }
-        if (StringUtils.isNotEmpty(details))
-        {
+        if (StringUtils.isNotEmpty(details)) {
             UserBasic userBasic = UserBasic.getCurrent();
-            if(StringTool.isNotEmpty(userBasic)){
+            if (StringTool.isNotEmpty(userBasic)) {
                 NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
                 newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
                 newHouseIsFavoriteDoQuery.setBuildingId(newHouseDetailDo.getBuildingNameId());
                 Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
                 newHouseDetailDo.setIsFavorite(isFavorite);
             }
-            newHouseDetailDo = JSON.parseObject(details,NewHouseDetailDo.class);
+            newHouseDetailDo = JSON.parseObject(details, NewHouseDetailDo.class);
 
-            String [] img = newHouseDetailDo.getBuildingImgs().get(0).split(",");
+            String[] img = newHouseDetailDo.getBuildingImgs().get(0).split(",");
             newHouseDetailDo.setBuildingImg(img);
         }
-        if ("0".equals(newHouseDetailDo.getHeatingType())){
+        if ("0".equals(newHouseDetailDo.getHeatingType())) {
             newHouseDetailDo.setHeatingType("未知");
         }
-        if ("1".equals(newHouseDetailDo.getHeatingType())){
+        if ("1".equals(newHouseDetailDo.getHeatingType())) {
             newHouseDetailDo.setHeatingType("集中供暖");
         }
-        if ("2".equals(newHouseDetailDo.getHeatingType())){
+        if ("2".equals(newHouseDetailDo.getHeatingType())) {
             newHouseDetailDo.setHeatingType("自供暖");
         }
 
-        return  newHouseDetailDo;
+        return newHouseDetailDo;
 
     }
 
 
     @Override
     public NewHouseListDomain getNewHouseList(NewHouseDoQuery newHouseDoQuery, String city) {
-        NewHouseListDomain newHouseListVo=new NewHouseListDomain();
-        List<NewHouseListDo> newHouseListDoList= new ArrayList<>();
+        NewHouseListDomain newHouseListVo = new NewHouseListDomain();
+        List<NewHouseListDo> newHouseListDoList = new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
         QueryBuilder queryBuilder = null;
-        FieldSortBuilder levelSort=null;
-        FieldSortBuilder buildingSort=null;
+        FieldSortBuilder levelSort = null;
+        FieldSortBuilder buildingSort = null;
 
 
 //        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
@@ -156,9 +157,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //        }
 
 
-
-        if(StringUtil.isNotNullString(newHouseDoQuery.getKeyword())){
-            if(StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseDoQuery.getKeyword()))){
+        if (StringUtil.isNotNullString(newHouseDoQuery.getKeyword())) {
+            if (StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseDoQuery.getKeyword()))) {
                 queryBuilder = QueryBuilders.disMaxQuery()
 //                        .add(QueryBuilders.matchQuery("building_name", newHouseDoQuery.getKeyword()).analyzer("ik_smart"))
 //                        .add(QueryBuilders.matchQuery("area_name", newHouseDoQuery.getKeyword()).analyzer("ik_smart"))
@@ -166,18 +166,16 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             } else {
                 queryBuilder = QueryBuilders.disMaxQuery()
                         .add(QueryBuilders.matchQuery("building_name", newHouseDoQuery.getKeyword()).analyzer("ik_max_word").operator(Operator.AND))
-                        .add(QueryBuilders.matchQuery("building_nickname",newHouseDoQuery.getKeyword()).fuzziness("AUTO").analyzer("ik_smart").operator(Operator.AND))
+                        .add(QueryBuilders.matchQuery("building_nickname", newHouseDoQuery.getKeyword()).fuzziness("AUTO").analyzer("ik_smart").operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("building_name_accurate", newHouseDoQuery.getKeyword()).boost(2).operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("area_name", newHouseDoQuery.getKeyword()).operator(Operator.AND))
                         .add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getKeyword()).operator(Operator.AND)).tieBreaker(0.3f);
             }
 
             booleanQueryBuilder.must(queryBuilder);
-        }
-        else
-        {
-            levelSort=SortBuilders.fieldSort("build_level").order(SortOrder.ASC);
-            buildingSort=SortBuilders.fieldSort("building_sort").order(SortOrder.DESC);
+        } else {
+            levelSort = SortBuilders.fieldSort("build_level").order(SortOrder.ASC);
+            buildingSort = SortBuilders.fieldSort("building_sort").order(SortOrder.DESC);
         }
 
         //城市
@@ -185,8 +183,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //            booleanQueryBuilder.must(termQuery("city_id",newHouseDoQuery.getCityId()));
 //        }
         //区域
-        if(newHouseDoQuery.getDistrictId()!=null && newHouseDoQuery.getDistrictId() !=0){
-            booleanQueryBuilder.must(termQuery("district_id",newHouseDoQuery.getDistrictId()));
+        if (newHouseDoQuery.getDistrictId() != null && newHouseDoQuery.getDistrictId() != 0) {
+            booleanQueryBuilder.must(termQuery("district_id", newHouseDoQuery.getDistrictId()));
         }
         //商圈
 //        if(newHouseDoQuery.getAreaId()!=null && newHouseDoQuery.getAreaId()!=0){
@@ -194,28 +192,27 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //        }
         //地铁线id
         String keys = "";
-        if(newHouseDoQuery.getSubwayLineId() !=null && newHouseDoQuery.getSubwayLineId()!=0){
+        if (newHouseDoQuery.getSubwayLineId() != null && newHouseDoQuery.getSubwayLineId() != 0) {
             booleanQueryBuilder.must(termsQuery("subway_line_id", new int[]{newHouseDoQuery.getSubwayLineId()}));
             keys = newHouseDoQuery.getSubwayLineId().toString();
         }
         //地铁站id
-        if(newHouseDoQuery.getSubwayStationId()!=null && newHouseDoQuery.getSubwayStationId()!=0){
+        if (newHouseDoQuery.getSubwayStationId() != null && newHouseDoQuery.getSubwayStationId() != 0) {
             booleanQueryBuilder.must(termsQuery("subway_station_id", new int[]{newHouseDoQuery.getSubwayStationId()}));
-            keys = keys+"$"+newHouseDoQuery.getSubwayStationId().toString();
+            keys = keys + "$" + newHouseDoQuery.getSubwayStationId().toString();
         }
         //总价
-        if(newHouseDoQuery.getBeginPrice()!=0  && newHouseDoQuery.getEndPrice()!=0){
+        if (newHouseDoQuery.getBeginPrice() != 0 && newHouseDoQuery.getEndPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
-        }else if (newHouseDoQuery.getBeginPrice()==0 && newHouseDoQuery.getEndPrice()!=0)
-        {        newHouseDoQuery.setBeginPrice(0.0);
+        } else if (newHouseDoQuery.getBeginPrice() == 0 && newHouseDoQuery.getEndPrice() != 0) {
+            newHouseDoQuery.setBeginPrice(0.0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
-        }else if (newHouseDoQuery.getEndPrice()==0 &&  newHouseDoQuery.getBeginPrice()!=0)
-        {
+        } else if (newHouseDoQuery.getEndPrice() == 0 && newHouseDoQuery.getBeginPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
         }
 
         //标签
-        if(null!=newHouseDoQuery.getLabelId() && newHouseDoQuery.getLabelId().length!=0){
+        if (null != newHouseDoQuery.getLabelId() && newHouseDoQuery.getLabelId().length != 0) {
 
 
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -223,10 +220,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
           /*  boolean has_subway = Arrays.asList(longs).contains(1);*/
 
-            for(int i=0;i<longs.length;i++){
-                if(longs[i].equals(1)){
+            for (int i = 0; i < longs.length; i++) {
+                if (longs[i].equals(1)) {
                     boolQueryBuilder.must(QueryBuilders.termQuery("has_subway", longs[i]));
-                }else {
+                } else {
                     boolQueryBuilder.must(QueryBuilders.termQuery("building_tags_id", longs[i]));
                 }
             }
@@ -252,97 +249,99 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
 
         //户型
-        if(newHouseDoQuery.getLayoutId()!=null && newHouseDoQuery.getLayoutId().length!=0 ){
+        if (newHouseDoQuery.getLayoutId() != null && newHouseDoQuery.getLayoutId().length != 0) {
 
-            Integer[] longs =  newHouseDoQuery.getLayoutId();
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.termsQuery("room",longs), ScoreMode.None));
+            Integer[] longs = newHouseDoQuery.getLayoutId();
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.termsQuery("room", longs), ScoreMode.None));
 
         }
 
         //面积
-        if(newHouseDoQuery.getBeginArea()!=0 &&  newHouseDoQuery.getEndArea()!=0)
-        {
+        if (newHouseDoQuery.getBeginArea() != 0 && newHouseDoQuery.getEndArea() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
-        }else if(newHouseDoQuery.getBeginArea()==0 && newHouseDoQuery.getEndArea()!=0)
-        {
+        } else if (newHouseDoQuery.getBeginArea() == 0 && newHouseDoQuery.getEndArea() != 0) {
 
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
 
-        }else if (newHouseDoQuery.getEndArea()==0 && newHouseDoQuery.getBeginArea()!=0)
-        {
+        } else if (newHouseDoQuery.getEndArea() == 0 && newHouseDoQuery.getBeginArea() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getBeginArea())));
         }
 
         //销售状态
-        if(StringTool.isNotEmpty(newHouseDoQuery.getSaleStatusId()) && newHouseDoQuery.getSaleStatusId().length>0){
-            Integer[] longs =  newHouseDoQuery.getSaleStatusId();
+        if (StringTool.isNotEmpty(newHouseDoQuery.getSaleStatusId()) && newHouseDoQuery.getSaleStatusId().length > 0) {
+            Integer[] longs = newHouseDoQuery.getSaleStatusId();
             booleanQueryBuilder.must(termsQuery("sale_status_id", longs));
-        }else{
-            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0,1,5,6}));
+        } else {
+            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0, 1, 5, 6}));
         }
         //5环内
-        if(StringTool.isNotEmpty(newHouseDoQuery.getRingRoad())){
+        if (StringTool.isNotEmpty(newHouseDoQuery.getRingRoad())) {
             booleanQueryBuilder.must(rangeQuery("ringRoad").lte(newHouseDoQuery.getRingRoad()));
         }
 
         //房源已发布
-        booleanQueryBuilder.must(termQuery("is_approve",IS_APPROVE ));
+        booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
-        booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1,2}));
+        booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
 
-            SearchResponse searchResponse=newHouseEsDao.getNewHouseList(booleanQueryBuilder,newHouseDoQuery.getPageNum(),newHouseDoQuery.getPageSize(),levelSort,buildingSort,city);
-            SearchHits hits = searchResponse.getHits();
-            SearchHit[] searchHists = hits.getHits();
-            if(searchHists.length > 0){
-                for (SearchHit searchHit : searchHists) {
-                    String details = "";
-                    details=searchHit.getSourceAsString();
-                    NewHouseListDo newHouseListDos=JSON.parseObject(details,NewHouseListDo.class);
-                    if (""!=keys&&null!=newHouseListDos.getNearbysubway()){
-                        newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
-                    }
-                    try{
-                        //获取新房下户型的数量
-                        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(),city);
-                        if(null!=newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0){
-                            List<String> roomsType = new ArrayList<>();
-                            for(int i=0; i< newHouseLayoutCountDomain.getRooms().size(); i++){
-                                roomsType.add(newHouseLayoutCountDomain.getRooms().get(i).getRoom().toString());
-                            }
-                            String rooms = String.join(",", roomsType);
-                            newHouseListDos.setRoomType(rooms);
-                        }else{
-                            newHouseListDos.setRoomType("");
+        SearchResponse searchResponse = newHouseEsDao.getNewHouseList(booleanQueryBuilder, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize(), levelSort, buildingSort, city);
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String details = "";
+                details = searchHit.getSourceAsString();
+                NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
+                if ("" != keys && null != newHouseListDos.getNearbysubway()) {
+                    newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
+                }
+                try {
+                    //获取新房下户型的数量
+                    NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(), city);
+                    if (null != newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0) {
+                        List<String> roomsType = new ArrayList<>();
+                        for (int i = 0; i < newHouseLayoutCountDomain.getRooms().size(); i++) {
+                            roomsType.add(newHouseLayoutCountDomain.getRooms().get(i).getRoom().toString());
                         }
-
-                    }catch (Exception e){
-                        logger.error("获取新房户型信息异常信息={}",e.getStackTrace());
+                        String rooms = String.join(",", roomsType);
+                        newHouseListDos.setRoomType(rooms);
+                    } else {
+                        newHouseListDos.setRoomType("");
                     }
-                    //新房动态
-                    BoolQueryBuilder queryBuilderDynamic = boolQuery();//声明符合查询方法
-                    queryBuilderDynamic.must(QueryBuilders.termQuery("newcode",newHouseListDos.getBuildingNameId()));
-                    SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(queryBuilderDynamic,1,10, city);
-                    long dynamicTotal = dynamicResponse.getHits().totalHits;//动态总数
-                    newHouseListDos.setDynamicTotal(dynamicTotal);
 
-                    //获取新房户型价格范围
-                    NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId(),city);
-                    newHouseListDos.setHouseMinPrice(newHouseLayoutPriceDo.getHouseMinPrice());
-                    newHouseListDos.setHouseMaxPrice(newHouseLayoutPriceDo.getHouseMaxPrice());
-                    //新房动态
-                    NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
-                    newHouseDynamicDoQuery.setNewCode(newHouseListDos.getBuildingNameId());
-                    newHouseDynamicDoQuery.setPageSize(1);
-                    List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery,city);
-                    newHouseListDos.setNewHouseDynamic(newHouseDynamicDoList);
-                    newHouseListDos.setBuildingFeature("");
+                } catch (Exception e) {
+                    logger.error("获取新房户型信息异常信息={}", e.getStackTrace());
+                }
+
+                //新房图片处理
+                if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http://")) {
+                    newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-dongfangdi1200x900");
+                }
+
+                //新房动态
+                BoolQueryBuilder queryBuilderDynamic = boolQuery();//声明符合查询方法
+                queryBuilderDynamic.must(QueryBuilders.termQuery("newcode", newHouseListDos.getBuildingNameId()));
+                SearchResponse dynamicResponse = newHouseEsDao.getDynamicByNewCode(queryBuilderDynamic, 1, 10, city);
+                long dynamicTotal = dynamicResponse.getHits().totalHits;//动态总数
+                newHouseListDos.setDynamicTotal(dynamicTotal);
+
+                //获取新房户型价格范围
+                NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId(), city);
+                newHouseListDos.setHouseMinPrice(newHouseLayoutPriceDo.getHouseMinPrice());
+                newHouseListDos.setHouseMaxPrice(newHouseLayoutPriceDo.getHouseMaxPrice());
+                //新房动态
+                NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
+                newHouseDynamicDoQuery.setNewCode(newHouseListDos.getBuildingNameId());
+                newHouseDynamicDoQuery.setPageSize(1);
+                List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery, city);
+                newHouseListDos.setNewHouseDynamic(newHouseDynamicDoList);
+                newHouseListDos.setBuildingFeature("");
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
 //                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
-                    newHouseListDoList.add(newHouseListDos);
-                }
-
+                newHouseListDoList.add(newHouseListDos);
+            }
 
 
 //                booleanQueryBuilder.must(QueryBuilders.termQuery("newcode",newHouseDynamicDoQuery.getNewCode()));
@@ -362,79 +361,70 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                }
 
 
+            newHouseListVo.setData(newHouseListDoList);
+            newHouseListVo.setTotalCount(hits.getTotalHits());
+        } else {
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND, "新房楼盘列表为空");
+        }
 
 
-
-                newHouseListVo.setData(newHouseListDoList);
-                newHouseListVo.setTotalCount(hits.getTotalHits());
-            }else{
-                throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND,"新房楼盘列表为空");
-            }
-
-
-
-        return newHouseListVo ;
+        return newHouseListVo;
     }
 
     @Override
     public List<NewHouseDynamicDo> getNewHouseDynamicByNewCode(NewHouseDynamicDoQuery newHouseDynamicDoQuery, String city) {
-        List<NewHouseDynamicDo> newHouseDynamicDoList=new ArrayList<>();
+        List<NewHouseDynamicDo> newHouseDynamicDoList = new ArrayList<>();
         BoolQueryBuilder booleanQueryBuilder = boolQuery();//声明符合查询方法
-        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode",newHouseDynamicDoQuery.getNewCode()));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", newHouseDynamicDoQuery.getNewCode()));
         try {
-            SearchResponse  dynamicResponse =newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder,newHouseDynamicDoQuery.getPageNum(),newHouseDynamicDoQuery.getPageSize(), city);
+            SearchResponse dynamicResponse = newHouseEsDao.getDynamicByNewCode(booleanQueryBuilder, newHouseDynamicDoQuery.getPageNum(), newHouseDynamicDoQuery.getPageSize(), city);
             SearchHits hits = dynamicResponse.getHits();
             SearchHit[] searchHists = hits.getHits();
             for (SearchHit searchHit : searchHists) {
                 String details = "";
-                details=searchHit.getSourceAsString();
-                NewHouseDynamicDo newHouseDynamic=JSON.parseObject(details,NewHouseDynamicDo.class);
+                details = searchHit.getSourceAsString();
+                NewHouseDynamicDo newHouseDynamic = JSON.parseObject(details, NewHouseDynamicDo.class);
                 newHouseDynamicDoList.add(newHouseDynamic);
             }
-        }catch (Exception e)
-        {
-            logger.error("获取新房动态信息异常信息"+newHouseDynamicDoQuery.getNewCode().toString()+"={}",e.getStackTrace());
+        } catch (Exception e) {
+            logger.error("获取新房动态信息异常信息" + newHouseDynamicDoQuery.getNewCode().toString() + "={}", e.getStackTrace());
         }
 
-        return  newHouseDynamicDoList;
+        return newHouseDynamicDoList;
     }
 
     @Override
     public NewHouseTrafficDo getNewHouseTrafficByNewCode(Integer newCode, String city) {
         MapInfo mapInfo = new MapInfo();
-        NewHouseTrafficDo newHouseTrafficDo=new NewHouseTrafficDo();
-        mapInfo =  mapService.getMapInfo(newCode);
-        if (mapInfo==null)
-        {
-            throw  new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_TRAFFIC_NOT_FOUND);
+        NewHouseTrafficDo newHouseTrafficDo = new NewHouseTrafficDo();
+        mapInfo = mapService.getMapInfo(newCode);
+        if (mapInfo == null) {
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_TRAFFIC_NOT_FOUND);
         }
         //获取新房交通配套
-        JSONObject datainfo= JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
-        JSONObject businfo= (JSONObject) datainfo.get("gongjiao");
-        if (businfo.size()>0)
-        {
+        JSONObject datainfo = JSON.parseObject(((PGobject) mapInfo.getDataInfo()).getValue());
+        JSONObject businfo = (JSONObject) datainfo.get("gongjiao");
+        if (businfo.size() > 0) {
             newHouseTrafficDo.setBusStation(businfo.get("name").toString());
             newHouseTrafficDo.setBusLines(Integer.valueOf(businfo.get("lines").toString()));
         }
 
         //获取地铁和环线位置
-        NewHouseDetailDo newHouseDetailDo=newHouseService.getNewHouseBuildByNewCode(newCode, city);
-        if (null!=newHouseDetailDo.getRoundstation() &&!"".equals(newHouseDetailDo.getRoundstation()))
-        {  String []  trafficInfo=newHouseDetailDo.getRoundstation().split("\\$");
+        NewHouseDetailDo newHouseDetailDo = newHouseService.getNewHouseBuildByNewCode(newCode, city);
+        if (null != newHouseDetailDo.getRoundstation() && !"".equals(newHouseDetailDo.getRoundstation())) {
+            String[] trafficInfo = newHouseDetailDo.getRoundstation().split("\\$");
             newHouseTrafficDo.setSubwayStation(trafficInfo[1]);
             newHouseTrafficDo.setSubwayLine(trafficInfo[0]);
             newHouseTrafficDo.setSubwayDistance(Double.valueOf(trafficInfo[2]));
         }
-        if(null!=newHouseDetailDo.getRingRoadName() && !"".equals(newHouseDetailDo.getRingRoadName()))
-        {
+        if (null != newHouseDetailDo.getRingRoadName() && !"".equals(newHouseDetailDo.getRingRoadName())) {
             newHouseTrafficDo.setRingRoadName(newHouseDetailDo.getRingRoadName());
         }
-        if(null!=newHouseDetailDo.getRingRoadDistance())
-        {
+        if (null != newHouseDetailDo.getRingRoadDistance()) {
             newHouseTrafficDo.setRingRoadDistance(Double.valueOf(newHouseDetailDo.getRingRoadDistance().toString()));
         }
 
-        return  newHouseTrafficDo;
+        return newHouseTrafficDo;
     }
 
     @Override
@@ -444,29 +434,29 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         //组装条件
         //区域
-        if (null!=userFavoriteConditionDoQuery.getDistrictId()&&userFavoriteConditionDoQuery.getDistrictId().length>0){
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("district_id",userFavoriteConditionDoQuery.getDistrictId()));
+        if (null != userFavoriteConditionDoQuery.getDistrictId() && userFavoriteConditionDoQuery.getDistrictId().length > 0) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("district_id", userFavoriteConditionDoQuery.getDistrictId()));
         }
         //户型
-        if (null!=userFavoriteConditionDoQuery.getLayoutId()&&userFavoriteConditionDoQuery.getLayoutId().length>0){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME,QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
+        if (null != userFavoriteConditionDoQuery.getLayoutId() && userFavoriteConditionDoQuery.getLayoutId().length > 0) {
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.termsQuery("room", userFavoriteConditionDoQuery.getLayoutId()), ScoreMode.None));
         }
         //价格
-        if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME,QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
-        }else if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME,QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
+        if (null != userFavoriteConditionDoQuery.getBeginPrice() && null != userFavoriteConditionDoQuery.getEndPrice()) {
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice() * 0.9).lte(userFavoriteConditionDoQuery.getEndPrice() * 1.1), ScoreMode.None));
+        } else if (null != userFavoriteConditionDoQuery.getBeginPrice() && null == userFavoriteConditionDoQuery.getEndPrice()) {
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice() * 0.9), ScoreMode.None));
         }
 
         //查询
         SearchResponse oneNewHouseByRecommendCondition = newHouseEsDao.getOneNewHouseByRecommendCondition(booleanQueryBuilder, city);
         SearchHit[] hits = oneNewHouseByRecommendCondition.getHits().getHits();
         NewHouseDetailDo newHouseDetailDo = new NewHouseDetailDo();
-        if (hits.length>0){
+        if (hits.length > 0) {
             String sourceAsString = hits[0].getSourceAsString();
-            newHouseDetailDo = JSON.parseObject(sourceAsString,NewHouseDetailDo.class);
-        }else {
-            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND,"新房楼盘列表为空");
+            newHouseDetailDo = JSON.parseObject(sourceAsString, NewHouseDetailDo.class);
+        } else {
+            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND, "新房楼盘列表为空");
         }
         return newHouseDetailDo;
     }

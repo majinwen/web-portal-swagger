@@ -15,13 +15,13 @@ public class RentDetailFewResponse {
     /**
      * 小区Id
      */
-    @ChangeName("buildingId")
+//    @ChangeName("buildingId")
     @ApiModelProperty("小区Id")
     private Integer zufangId;
     /**
      * 小区名称
      */
-    @ChangeName("buildingName")
+//    @ChangeName("buildingName")
     @ApiModelProperty("小区名称")
     private String zufangName;
     /**
@@ -62,13 +62,13 @@ public class RentDetailFewResponse {
     /**
      * 出租房源标签名称
      */
-    @ChangeName("tags")
+//    @ChangeName("tags")
     @ApiModelProperty("出租房源标签名称")
     private String[] rentHouseTagsName;
     /**
      * 租金(元/月)
      */
-    @ChangeName("rentPrice")
+//    @ChangeName("rentPrice")
     @ApiModelProperty("租金(元/月)")
     private Double rentHousePrice;
     /**
@@ -80,7 +80,7 @@ public class RentDetailFewResponse {
      * 房源标题图
      */
     @ApiModelProperty("房源标题图")
-    @ChangeName("housePhotoTitle")
+//    @ChangeName("housePhotoTitle")
     private String houseTitleImg;
 
     /**

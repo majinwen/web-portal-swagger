@@ -862,6 +862,12 @@ public class SellHouseServiceImpl implements SellHouseService{
                     sellHousesSearchDo.setTagsName(claimSellHouseDo.getClaimTagsName());
                     sellHousesSearchDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
+                String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
+                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http://")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
+
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(),city);
