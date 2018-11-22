@@ -56,5 +56,5 @@ public interface NewHouseService {
      * 同步新房数据
      * @param newHouseBuildings
      */
-    void saveBuildingParent(NewHouseBuildings newHouseBuildings);
+//    void saveBuildingParent(NewHouseBuildings newHouseBuildings);
 }

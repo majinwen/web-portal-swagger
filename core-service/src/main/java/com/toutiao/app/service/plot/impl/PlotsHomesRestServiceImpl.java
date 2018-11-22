@@ -9,6 +9,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
+import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,7 +64,7 @@ public class PlotsHomesRestServiceImpl implements PlotsHomesRestService {
         queryBuilder.must(QueryBuilders.termQuery("rentHouseType","3"));
         SearchResponse rentPriceResponse = rentEsDao.getRentPriceByPlotId(queryBuilder,city);
         Map aggMap =rentPriceResponse.getAggregations().asMap();
-        InternalMin minHouse = (InternalMin) aggMap.get("minRentPrice");
+        ParsedMin minHouse = (ParsedMin) aggMap.get("minRentPrice");
 
         plotsHousesDomain.setStartPrice(minHouse.getValue());
 

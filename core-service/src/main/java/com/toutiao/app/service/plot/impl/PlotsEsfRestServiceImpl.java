@@ -6,7 +6,6 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDo;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
-import com.toutiao.app.domain.sellhouse.SellHouseDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
@@ -20,13 +19,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.StringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
@@ -63,7 +60,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId,city);
         Map aggMap =searchResponse.getAggregations().asMap();
-        StringTerms gradeTerms = (StringTerms) aggMap.get("roomCount");
+        ParsedStringTerms gradeTerms = (ParsedStringTerms) aggMap.get("roomCount");
 
         if(gradeTerms.getBuckets().size() == 0){
             throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_ESF_NOT_FOUND,"小区没有出售房源信息");
@@ -128,9 +125,9 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
             }
 
 
-            if(hit.getSource().get("is_claim").toString().equals("1")){
-                sellHouseDo.setHousePhotoTitle(hit.getSource().get("claimHousePhotoTitle").toString());
-                sellHouseDo.setHouseId(hit.getSource().get("claimHouseId").toString());
+            if(hit.getSourceAsMap().get("is_claim").toString().equals("1")){
+                sellHouseDo.setHousePhotoTitle(hit.getSourceAsMap().get("claimHousePhotoTitle").toString());
+                sellHouseDo.setHouseId(hit.getSourceAsMap().get("claimHouseId").toString());
             }
 
             AgentBaseDo agentBaseDo = new AgentBaseDo();
@@ -141,10 +138,10 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
 
             }else{
-                agentBaseDo.setAgentName(hit.getSource().get("houseProxyName")==null?"":hit.getSourceAsMap().get("houseProxyName").toString());
-                agentBaseDo.setAgentCompany(hit.getSource().get("ofCompany")==null?"":hit.getSourceAsMap().get("ofCompany").toString());
+                agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName")==null?"":hit.getSourceAsMap().get("houseProxyName").toString());
+                agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany")==null?"":hit.getSourceAsMap().get("ofCompany").toString());
                 agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                agentBaseDo.setDisplayPhone(hit.getSource().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
+                agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
             }
             sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
             sellHouseDo.setAgentBaseDo(agentBaseDo);
@@ -161,10 +158,10 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
 
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseCountByPlotsId(plotsId,city);
         Map aggMap =searchResponse.getAggregations().asMap();
-        StringTerms gradeTerms = (StringTerms) aggMap.get("roomCount");
+        ParsedStringTerms roomCount = (ParsedStringTerms) aggMap.get("roomCount");
 
 
-        Iterator roomBucketIt = gradeTerms.getBuckets().iterator();
+        Iterator roomBucketIt = roomCount.getBuckets().iterator();
         while(roomBucketIt.hasNext()) {
             PlotsEsfRoomCountDo plotsEsfRoomCountDo = new PlotsEsfRoomCountDo();
             Terms.Bucket roomBucket = (Terms.Bucket) roomBucketIt.next();

@@ -47,16 +47,16 @@ public interface RentRestApi {
     ResponseEntity<RecommendRentResponse> getRecommendRent(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
-    @ApiOperation(value = "根据id获取该出租房源对应的经纪人(该接口已停用)", nickname = "getRentAgentByRentId", notes = "改接口已停用", response = RentAgentResponse.class, tags={ "租房", })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = RentAgentResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/rent/getRentAgentByRentId",
-            produces = { "application/json" },
-            method = RequestMethod.GET)
-    ResponseEntity<RentAgentResponse> getRentAgentByRentId(@ApiParam(value = "rentDetailsRequest" ,required=true )  @Valid @RequestBody RentDetailsRequest rentDetailsRequest);
+//    @ApiOperation(value = "根据id获取该出租房源对应的经纪人(该接口已停用)", nickname = "getRentAgentByRentId", notes = "改接口已停用", response = RentAgentResponse.class, tags={ "rent-rest-controller", })
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "OK", response = RentAgentResponse.class),
+//            @ApiResponse(code = 401, message = "Unauthorized"),
+//            @ApiResponse(code = 403, message = "Forbidden"),
+//            @ApiResponse(code = 404, message = "Not Found") })
+//    @RequestMapping(value = "/rest/rent/getRentAgentByRentId",
+//            produces = { "application/json" },
+//            method = RequestMethod.GET)
+//    ResponseEntity<RentAgentResponse> getRentAgentByRentId(@ApiParam(value = "rentDetailsRequest" ,required=true )  @Valid @RequestBody RentDetailsRequest rentDetailsRequest);
 
 
     @ApiOperation(value = "查找出租房源详细信息", nickname = "getRentDetailByRentId", notes = "", response = RentDetailResponse.class, tags={ "租房", })

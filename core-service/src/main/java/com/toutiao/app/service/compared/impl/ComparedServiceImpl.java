@@ -133,7 +133,7 @@ public class ComparedServiceImpl implements ComparedService {
         SearchHit[] searchHists = hits.getHits();
         for (SearchHit hit : searchHists) {
             String details = hit.getSourceAsString();
-            Object import_time = hit.getSource().get("import_time");
+            Object import_time = hit.getSourceAsMap().get("import_time");
             HouseComparedListDo houseComparedListDo = JSON.parseObject(details, HouseComparedListDo.class);
 
             int times = sellHouseService.isDefaultImage((String)import_time,date,houseComparedListDo.getHousePhotoTitle());
@@ -201,7 +201,7 @@ public class ComparedServiceImpl implements ComparedService {
             houseComparedDetailDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
             houseComparedDetailDo.setHouseId(hit.getId());
             houseComparedDetailDoDict.put(hit.getId(), houseComparedDetailDo);
-            Object import_time = hit.getSource().get("import_time");
+            Object import_time = hit.getSourceAsMap().get("import_time");
             int times = sellHouseService.isDefaultImage((String)import_time,date,houseComparedDetailDo.getHousePhotoTitle());
             if(times==1){
                 houseComparedDetailDo.setIsDefaultImage(1);

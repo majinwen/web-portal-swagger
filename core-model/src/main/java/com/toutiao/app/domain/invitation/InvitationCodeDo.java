@@ -2,11 +2,13 @@ package com.toutiao.app.domain.invitation;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.Date;
 import java.util.List;
 
 @Data
+@Accessors(chain = true)
 public class InvitationCodeDo {
     private Integer id;
 

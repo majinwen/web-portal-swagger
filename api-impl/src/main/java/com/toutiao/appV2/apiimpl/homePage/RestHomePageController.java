@@ -4,8 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import com.toutiao.app.api.chance.response.homepage.*;
+import com.toutiao.app.api.chance.response.homepage.HomePageNearPlotListResponse;
+import com.toutiao.app.api.chance.response.homepage.HomePageNearPlotResponse;
+import com.toutiao.app.api.chance.response.homepage.HomePageNewHouseResponse;
 import com.toutiao.app.domain.homepage.*;
 import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
@@ -13,7 +14,6 @@ import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.sellhouse.RecommendEsf5DoQuery;
-import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.homepage.HomePageCountService;
 import com.toutiao.app.service.homepage.HomePageRestService;
@@ -21,15 +21,12 @@ import com.toutiao.app.service.homepage.RecommendRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
-import com.toutiao.appV2.model.HomePage.*;
-import com.toutiao.appV2.model.HomePage.HomePageEsfCountResponse;
-import com.toutiao.appV2.model.HomePage.HomePageNearEsfListResponse;
-import com.toutiao.appV2.model.HomePage.HomePageNewCountResponse;
 import com.toutiao.appV2.api.homePage.HomePageApi;
+import com.toutiao.appV2.model.HomePage.*;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.web.common.util.RedisSessionUtils;
 import com.toutiao.web.common.util.city.CityUtils;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -41,10 +38,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T06:33:40.959Z")
 
@@ -83,18 +80,18 @@ public class RestHomePageController implements HomePageApi {
         this.request = request;
     }
 
-    @Override
-    public ResponseEntity<HomeSureToSnatchList> beSureToSnatch(@ApiParam(value = "BaseQueryRequest", required = true) @Valid @RequestBody BaseQueryRequest baseQueryRequest) {
-        HomeSureToSnatchDoQuery homeSureToSnatchDoQuery = new HomeSureToSnatchDoQuery();
-        BeanUtils.copyProperties(baseQueryRequest, homeSureToSnatchDoQuery);
-        List<HomeSureToSnatchDo> homeSureToSnatchDos = homePageRestService.getHomeBeSureToSnatch(homeSureToSnatchDoQuery);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homeSureToSnatchDos));
-        List<HomeSureToSnatchResponse> newHouseListResponses = JSONObject.parseArray(json.toJSONString(), HomeSureToSnatchResponse.class);
-        HomeSureToSnatchList homeSureToSnatchList = new HomeSureToSnatchList();
-        homeSureToSnatchList.setHomeSureToSnatchResponses(newHouseListResponses);
-        homeSureToSnatchList.setTotal(newHouseListResponses.size());
-        return new ResponseEntity<HomeSureToSnatchList>(homeSureToSnatchList, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<HomeSureToSnatchList> beSureToSnatch(@ApiParam(value = "BaseQueryRequest", required = true) @Valid @RequestBody BaseQueryRequest baseQueryRequest) {
+//        HomeSureToSnatchDoQuery homeSureToSnatchDoQuery = new HomeSureToSnatchDoQuery();
+//        BeanUtils.copyProperties(baseQueryRequest, homeSureToSnatchDoQuery);
+//        List<HomeSureToSnatchDo> homeSureToSnatchDos = homePageRestService.getHomeBeSureToSnatch(homeSureToSnatchDoQuery);
+//        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homeSureToSnatchDos));
+//        List<HomeSureToSnatchResponse> newHouseListResponses = JSONObject.parseArray(json.toJSONString(), HomeSureToSnatchResponse.class);
+//        HomeSureToSnatchList homeSureToSnatchList = new HomeSureToSnatchList();
+//        homeSureToSnatchList.setHomeSureToSnatchResponses(newHouseListResponses);
+//        homeSureToSnatchList.setTotal(newHouseListResponses.size());
+//        return new ResponseEntity<HomeSureToSnatchList>(homeSureToSnatchList, HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<HomePageNearEsfListResponse> esfSpecialPage(@ApiParam(value = "NearHouseSpecialPageRequest", required = true) @Valid @RequestBody NearHouseSpecialPageRequest nearHouseSpecialPageRequest) {
@@ -114,39 +111,39 @@ public class RestHomePageController implements HomePageApi {
         return new ResponseEntity<HomePageEsfCountResponse>(response, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<HomePageMustBuyList> getHomePageCutPrice() {
-        List<HomePageMustBuyDo> homePageCutPriceDos = homePageRestService.getHomePageMustBuy(1);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageCutPriceDos));
-        List<HomePageMustBuyResponse> newHouseListResponses = JSONObject.parseArray(json.toJSONString(), HomePageMustBuyResponse.class);
-        HomePageMustBuyList homePageMustBuyList = new HomePageMustBuyList();
-        homePageMustBuyList.setHomePageMustBuyResponses(newHouseListResponses);
-        homePageMustBuyList.setTotal(newHouseListResponses.size());
-        return new ResponseEntity<HomePageMustBuyList>(homePageMustBuyList, HttpStatus.OK);
+//    @Override
+//    public ResponseEntity<HomePageMustBuyList> getHomePageCutPrice() {
+//        List<HomePageMustBuyDo> homePageCutPriceDos = homePageRestService.getHomePageMustBuy(1);
+//        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageCutPriceDos));
+//        List<HomePageMustBuyResponse> newHouseListResponses = JSONObject.parseArray(json.toJSONString(), HomePageMustBuyResponse.class);
+//        HomePageMustBuyList homePageMustBuyList = new HomePageMustBuyList();
+//        homePageMustBuyList.setHomePageMustBuyResponses(newHouseListResponses);
+//        homePageMustBuyList.setTotal(newHouseListResponses.size());
+//        return new ResponseEntity<HomePageMustBuyList>(homePageMustBuyList, HttpStatus.OK);
+//
+//    }
 
-    }
+//    @Override
+//    public ResponseEntity<HomePageEsfResponseList> getHomePageEsf() {
+//        List<HomePageEsfDo> homePageEsfDos = homePageRestService.getHomePageEsf();
+//        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageEsfDos));
+//        List<HomePageEsfResponse> homePageEsfResponseList = JSONObject.parseArray(json.toJSONString(), HomePageEsfResponse.class);
+//        HomePageEsfResponseList homePageEsfResponseList1 = new HomePageEsfResponseList();
+//        homePageEsfResponseList1.setHomePageEsfResponse(homePageEsfResponseList);
+//        homePageEsfResponseList1.setTotal(homePageEsfResponseList.size());
+//        return new ResponseEntity<HomePageEsfResponseList>(homePageEsfResponseList1, HttpStatus.OK);
+//    }
 
-    @Override
-    public ResponseEntity<HomePageEsfResponseList> getHomePageEsf() {
-        List<HomePageEsfDo> homePageEsfDos = homePageRestService.getHomePageEsf();
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageEsfDos));
-        List<HomePageEsfResponse> homePageEsfResponseList = JSONObject.parseArray(json.toJSONString(), HomePageEsfResponse.class);
-        HomePageEsfResponseList homePageEsfResponseList1 = new HomePageEsfResponseList();
-        homePageEsfResponseList1.setHomePageEsfResponse(homePageEsfResponseList);
-        homePageEsfResponseList1.setTotal(homePageEsfResponseList.size());
-        return new ResponseEntity<HomePageEsfResponseList>(homePageEsfResponseList1, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<HomePageMustBuyList> getHomePageLowerPrice() {
-        List<HomePageMustBuyDo> homePageLowerPriceDos = homePageRestService.getHomePageMustBuy(2);
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageLowerPriceDos));
-        List<HomePageMustBuyResponse> newHouseListResponses = JSONObject.parseArray(json.toJSONString(), HomePageMustBuyResponse.class);
-        HomePageMustBuyList homePageMustBuyList = new HomePageMustBuyList();
-        homePageMustBuyList.setHomePageMustBuyResponses(newHouseListResponses);
-        homePageMustBuyList.setTotal(newHouseListResponses.size());
-        return new ResponseEntity<HomePageMustBuyList>(homePageMustBuyList, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<HomePageMustBuyList> getHomePageLowerPrice() {
+//        List<HomePageMustBuyDo> homePageLowerPriceDos = homePageRestService.getHomePageMustBuy(2);
+//        JSONArray json = JSONArray.parseArray(JSON.toJSONString(homePageLowerPriceDos));
+//        List<HomePageMustBuyResponse> newHouseListResponses = JSONObject.parseArray(json.toJSONString(), HomePageMustBuyResponse.class);
+//        HomePageMustBuyList homePageMustBuyList = new HomePageMustBuyList();
+//        homePageMustBuyList.setHomePageMustBuyResponses(newHouseListResponses);
+//        homePageMustBuyList.setTotal(newHouseListResponses.size());
+//        return new ResponseEntity<HomePageMustBuyList>(homePageMustBuyList, HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<HomePageNewHouseResponseList> getHomePageNewHouse() {
@@ -180,15 +177,15 @@ public class RestHomePageController implements HomePageApi {
         return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<SellHouseSearchDomainResponse> homePageEsfSearch(@ApiParam(value = "BaseQueryRequest", required = true) @Valid @RequestBody BaseQueryRequest baseQueryRequest) {
-        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
-        BeanUtils.copyProperties(baseQueryRequest, sellHouseDoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
-        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<SellHouseSearchDomainResponse> homePageEsfSearch(@ApiParam(value = "BaseQueryRequest", required = true) @Valid @RequestBody BaseQueryRequest baseQueryRequest) {
+//        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+//        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+//        BeanUtils.copyProperties(baseQueryRequest, sellHouseDoQuery);
+//        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+//        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+//        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<HomePageNearEsfListResponse> homePageNearEsf(@ApiParam(value = "NearHouseRequest", required = true) @Valid @RequestBody NearHouseRequest nearHouseRequest) {

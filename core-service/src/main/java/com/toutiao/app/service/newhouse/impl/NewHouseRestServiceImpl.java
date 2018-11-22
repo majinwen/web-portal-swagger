@@ -255,7 +255,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if(newHouseDoQuery.getLayoutId()!=null && newHouseDoQuery.getLayoutId().length!=0 ){
 
             Integer[] longs =  newHouseDoQuery.getLayoutId();
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city), QueryBuilders.termsQuery("room",longs), ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.termsQuery("room",longs), ScoreMode.None));
 
         }
 
@@ -327,7 +327,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     newHouseListDos.setDynamicTotal(dynamicTotal);
 
                     //获取新房户型价格范围
-                    NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId());
+                    NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId(),city);
                     newHouseListDos.setHouseMinPrice(newHouseLayoutPriceDo.getHouseMinPrice());
                     newHouseListDos.setHouseMaxPrice(newHouseLayoutPriceDo.getHouseMaxPrice());
                     //新房动态
@@ -449,13 +449,13 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         }
         //户型
         if (null!=userFavoriteConditionDoQuery.getLayoutId()&&userFavoriteConditionDoQuery.getLayoutId().length>0){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME,QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()),ScoreMode.None));
         }
         //价格
         if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME,QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9).lte(userFavoriteConditionDoQuery.getEndPrice()*1.1),ScoreMode.None));
         }else if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
-            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.getNewHouseChildType(city),QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME,QueryBuilders.rangeQuery("total_price").gt(userFavoriteConditionDoQuery.getBeginPrice()*0.9),ScoreMode.None));
         }
 
         //查询

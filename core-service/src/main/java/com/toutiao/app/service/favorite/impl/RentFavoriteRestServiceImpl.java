@@ -54,12 +54,12 @@ public class RentFavoriteRestServiceImpl implements RentFavoriteRestService {
 
                     //判断3天内导入，且无图片，默认上显示默认图
                     String importTime = "";
-                    if (StringTool.isNotEmpty(searchHit.getSource().get("create_time"))){
-                        importTime = searchHit.getSource().get("create_time").toString();
+                    if (StringTool.isNotEmpty(searchHit.getSourceAsMap().get("create_time"))){
+                        importTime = searchHit.getSourceAsMap().get("create_time").toString();
                     }
                     String housePhotoTitle = "";
-                    if (StringTool.isNotEmpty(searchHit.getSource().get("house_title_img"))){
-                        housePhotoTitle = searchHit.getSource().get("house_title_img").toString();
+                    if (StringTool.isNotEmpty(searchHit.getSourceAsMap().get("house_title_img"))){
+                        housePhotoTitle = searchHit.getSourceAsMap().get("house_title_img").toString();
                     }
 
                     int isDefault = rentRestService.isDefaultImage(importTime ,date, housePhotoTitle);

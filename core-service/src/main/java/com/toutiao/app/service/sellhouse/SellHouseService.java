@@ -33,12 +33,12 @@ public interface SellHouseService {
      */
     List<MessageSellHouseDo> querySellHouseByHouseIdNew(String[] houseId, String city);
 
-    /**
-     * 认领二手房房源经纪人
-     * @param houseId
-     * @return
-     */
-    AgentsBySellHouseDo getAgentByHouseId(Integer houseId);
+//    /**
+//     * 认领二手房房源经纪人
+//     * @param houseId
+//     * @return
+//     */
+//    AgentsBySellHouseDo getAgentByHouseId(Integer houseId);
 
     /**
      * 条件查询二手房房源

@@ -117,7 +117,7 @@ public class PlotApiController implements PlotApi {
         nearbyPlotsDoQuery.setPageSize(pageSize.get());
         nearbyPlotsDoQuery.setSubwayLineId(subwayLineId.get());
         nearbyPlotsDoQuery.setSubwayStationId(subwayStationId.get());
-        PlotDetailsFewDomain plotDetailsFewDomain = nearbyPlotsRestService.queryNearbyPlotsListByUserCoordinate(nearbyPlotsDoQuery);
+        PlotDetailsFewDomain plotDetailsFewDomain = nearbyPlotsRestService.queryNearbyPlotsListByUserCoordinate(nearbyPlotsDoQuery, CityUtils.getCity());
         NearbyPlotsListResponse newHouseLayoutCountResponse = new NearbyPlotsListResponse();
         BeanUtils.copyProperties(plotDetailsFewDomain, newHouseLayoutCountResponse);
 

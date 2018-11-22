@@ -12,6 +12,6 @@ public interface NearbyPlotsRestService {
      * @param nearbyPlotsDoQuery
      * @return
      */
-    PlotDetailsFewDomain queryNearbyPlotsListByUserCoordinate(NearbyPlotsDoQuery nearbyPlotsDoQuery);
+    PlotDetailsFewDomain queryNearbyPlotsListByUserCoordinate(NearbyPlotsDoQuery nearbyPlotsDoQuery, String city);
 
 }

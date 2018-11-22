@@ -29,5 +29,5 @@ public interface NewHouseLayoutService {
      * @param newHouseId
      * @return
      */
-    NewHouseLayoutPriceDo getNewHouseLayoutPriceByNewHouseId(Integer newHouseId);
+    NewHouseLayoutPriceDo getNewHouseLayoutPriceByNewHouseId(Integer newHouseId, String city);
 }

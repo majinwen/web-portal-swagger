@@ -12,7 +12,11 @@ import com.toutiao.web.common.util.*;
 import com.toutiao.web.common.util.jwt.JsonWebTokenUtil;
 import com.toutiao.web.domain.payment.*;
 import com.toutiao.web.service.payment.PaymentService;
+import org.elasticsearch.action.get.GetRequest;
 import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.client.transport.TransportClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +26,7 @@ import org.springframework.cglib.beans.BeanMap;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +41,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private UserBasicInfoService userBasicInfoService;
     @Autowired
-    private ESClientTools esClientTools;
+    private RestHighLevelClient restHighLevelClient;
     @Value("${tt.newhouse.index}")
     private String newHouseIndex;//索引名称
     @Value("${tt.newhouse.type}")
@@ -106,8 +111,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public String saveCommodityOrder(CommodityOrderQuery commodityOrderQuery, PayUserDo payUserDo) {
 
-        //获取用户信息
-        TransportClient client = esClientTools.init();
+
 
         UserBasicDo userBasic =userBasicInfoService.queryUserBasic(payUserDo.getUserId().toString());
 
@@ -118,7 +122,13 @@ public class PaymentServiceImpl implements PaymentService {
 
         //组合参数
         Map<String, Object> paramsMap = new HashMap<>();
-        GetResponse agentBaseResponse = client.prepareGet(newHouseIndex,newHouseType,commodityOrderQuery.getBuildingId().toString()).execute().actionGet();
+        GetRequest getRequest = new GetRequest(newHouseIndex,newHouseType,commodityOrderQuery.getBuildingId().toString());
+        GetResponse agentBaseResponse = null;
+        try {
+            agentBaseResponse = restHighLevelClient.get(getRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         CommentDo commentDo = new CommentDo();
         commentDo.setBuildingId(commodityOrderQuery.getBuildingId());
         commentDo.setBuildingName(agentBaseResponse.getSourceAsMap().get("building_name")==null?"":agentBaseResponse.getSourceAsMap().get("building_name").toString());

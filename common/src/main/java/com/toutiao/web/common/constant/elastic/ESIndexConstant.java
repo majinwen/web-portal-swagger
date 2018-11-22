@@ -11,12 +11,12 @@ public class ESIndexConstant {
 
     public static final String NEW_HOUSE_INDEX = "newHouseIndex";
     public static final String NEW_HOUSE_TYPE_T1 = "newHouseType_t1";
-    public static final String NEW_HOUSE_TYPE_T2 = "newHouseType_t2";
+//    public static final String NEW_HOUSE_TYPE_T2 = "newHouseType_t2";
     public static final String DYNAMIC_INDEX = "dynamicIndex";
     public static final String DYNAMIC_TYPE = "dynamicType";
     public static final String PLOT_INDEX = "plotIndex";
     public static final String PLOT_TYPE_T1 = "plotType_t1";
-    public static final String PLOT_TYPE_T2 = "plotType_t2";
+//    public static final String PLOT_TYPE_T2 = "plotType_t2";
     public static final String ESF_INDEX = "esfIndex";
     public static final String ESF_TYPE = "esfType";
     public static final String RENT_INDEX = "rentIndex";
