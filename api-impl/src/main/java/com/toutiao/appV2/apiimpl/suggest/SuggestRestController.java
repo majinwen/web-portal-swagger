@@ -1,8 +1,10 @@
 package com.toutiao.appV2.apiimpl.suggest;
 
+import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toutiao.app.api.chance.response.suggest.SuggestResultResponse;
 import com.toutiao.app.domain.agent.AgentBaseDo;
-import com.toutiao.app.domain.suggest.SuggestDo;
+import com.toutiao.app.domain.suggest.SuggestResultDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.search.SearchConditionService;
 import com.toutiao.app.service.subscribe.CityService;
@@ -16,7 +18,6 @@ import com.toutiao.appV2.model.subscribe.CityAllInfoMap;
 import com.toutiao.appV2.model.subscribe.CityConditionDoList;
 import com.toutiao.appV2.model.subscribe.WapCityList;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
-import com.toutiao.appV2.model.suggest.SuggestResponse;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.search.SearchCondition;
 import com.toutiao.web.dao.entity.subscribe.City;
@@ -63,21 +64,21 @@ public class SuggestRestController implements SuggestRestApi {
     @Autowired
     private SearchConditionService searchConditionService;
 
-    public ResponseEntity<SuggestResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest) {
+    @Override
+    public ResponseEntity<SuggestResultResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest) {
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
-                SuggestResponse suggestResponse = new SuggestResponse();
-                SuggestDo suggest = suggestService.suggest(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
-                BeanUtils.copyProperties(suggest, suggestResponse);
-                return new ResponseEntity<SuggestResponse>(suggestResponse, HttpStatus.OK);
+                SuggestResultDo suggestResultDo = suggestService.suggest_v2(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
+                SuggestResultResponse suggestResultResponse = JSON.parseObject(JSON.toJSONString(suggestResultDo), SuggestResultResponse.class);
+                return new ResponseEntity<SuggestResultResponse>( suggestResultResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<SuggestResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<SuggestResultResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<SuggestResponse>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<SuggestResultResponse>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Override

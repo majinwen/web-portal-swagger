@@ -1,5 +1,7 @@
 package com.toutiao.appV2.api.suggest;
 
+import com.toutiao.app.api.chance.response.suggest.SuggestListResponse;
+import com.toutiao.app.api.chance.response.suggest.SuggestResultResponse;
 import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
@@ -24,14 +26,14 @@ public interface SuggestRestApi {
 
     @ApiOperation(value = "搜索联想词提示", nickname = "getSuggestByKeyword", notes = "", response = SuggestResponse.class, tags = {"其他",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SuggestResponse.class),
+            @ApiResponse(code = 200, message = "OK", response = SuggestListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found")})
     @RequestMapping(value = "/rest/suggest/getSuggestByKeyword",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SuggestResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest);
+    ResponseEntity<SuggestResultResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest);
 
     @ApiOperation(value = "获取经纪人信息", nickname = "getAgentInfoByUserId", notes = "", response = AgentResponse.class, tags = {"其他",})
     @ApiResponses(value = {
