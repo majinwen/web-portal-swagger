@@ -15,6 +15,7 @@ import com.toutiao.appV2.model.ConditionSubscribeRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.UserSubscribeList;
 import com.toutiao.appV2.model.UserSubscribeListDoList;
+import com.toutiao.appV2.model.subscribe.WapCityList;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Map;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:27:32.320Z")
 
@@ -138,5 +140,36 @@ public interface SuscribeApi {
             consumes = { "application/json" },
             method = RequestMethod.POST)
     ResponseEntity<UserSubscribe> selectByUserConditionSubscribeMap(@ApiParam(value = "ConditionSubscribeRequest", required = true) @Valid ConditionSubscribeRequest conditionSubscribeRequest);
+
+
+    @ApiOperation(value = "查询城市所有信息", nickname = "getCityAllInfo", notes = "", response = UserSubscribe.class, tags={ "订阅", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
+            @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/subscribe/getCityAllInfo",
+            produces = { "application/json" },
+            //consumes = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<Map<String, Object>> getCityAllInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
+                                                       @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
+
+
+
+
+    @ApiOperation(value = "查询城市信息", nickname = "getWapCity", notes = "", response = UserSubscribe.class, tags={ "订阅", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
+            @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/subscribe/getWapCity",
+            produces = { "application/json" },
+            //consumes = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<WapCityList> getWapCity();
 
 }
