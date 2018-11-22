@@ -364,6 +364,13 @@
         WHERE city_id = #{cityId}
     </select>
 
+    <select id="getCityConditionByIdAndType" resultType="com.toutiao.web.dao.entity.subscribe.CityConditionDo">
+        SELECT city_id AS cityId, type, condition
+        FROM city_condition_info
+        WHERE city_id = #{cityId}
+        AND type = #{type}
+    </select>
+
     <select id="getParkInfo" resultType="com.toutiao.web.dao.entity.subscribe.ParkInfo">
         SELECT city_id AS cityId, park_info AS parkInfo
         FROM city_park_info

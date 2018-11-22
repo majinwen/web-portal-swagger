@@ -12,6 +12,8 @@ import com.toutiao.appV2.model.ConditionSubscribeRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.UserSubscribeList;
 import com.toutiao.appV2.model.UserSubscribeListDoList;
+import com.toutiao.appV2.model.subscribe.CityAllInfoMap;
+import com.toutiao.appV2.model.subscribe.CityConditionDoList;
 import com.toutiao.appV2.model.subscribe.WapCityList;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -131,7 +133,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
     }
 
     @Override
-    public ResponseEntity<Map<String, Object>> getCityAllInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+    public ResponseEntity<CityAllInfoMap> getCityAllInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
         if (cityId == 0 && Objects.equals(cityDomain, "")) {
             return  new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -143,8 +145,10 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
                 cityId = city.getCityId();
             }
         }
+        CityAllInfoMap cityAllInfoMap =new CityAllInfoMap();
         Map<String, Object> res = cityService.getCityAllInfo(cityId);
-        return new ResponseEntity<Map<String, Object>>(res, HttpStatus.OK);
+        cityAllInfoMap.setCityAllInfos(res);
+        return new ResponseEntity<CityAllInfoMap>(cityAllInfoMap, HttpStatus.OK);
     }
 
     @Override
@@ -152,6 +156,13 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         WapCityList wapCityList =new WapCityList();
         wapCityList.setWapCityList(cityService.selectWapCity());
         return new ResponseEntity<WapCityList>(wapCityList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CityConditionDoList> getCityconditionByIdAndType(@ApiParam(value = "cityId", required = true) @Valid @RequestParam(value = "cityId", required = true) Integer cityId, @ApiParam(value = "type", required = true) @Valid @RequestParam(value = "type", required = true) String type) {
+        CityConditionDoList cityConditionDoList =new CityConditionDoList();
+        cityConditionDoList.setCityConditionDos(cityService.getCityConditionByIdAndType(cityId,type));
+        return new ResponseEntity<CityConditionDoList>(cityConditionDoList, HttpStatus.OK);
     }
 
     /**
