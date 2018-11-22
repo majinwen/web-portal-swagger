@@ -389,7 +389,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 if (hits.length > 0) {
                     for (SearchHit hit : hits) {
-                        commonMethod(hit, key, plotDetailsFewDoList, city);
+                        commonMethod(hit, key, plotDetailsFewDoList, city,null);
                     }
                 } else {
                     throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND, "小区楼盘列表为空");
@@ -408,20 +408,20 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 SearchHits hits = searchResponse.getHits();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    commonMethod(hit, key, plotDetailsFewDoList, city);
+                    commonMethod(hit, key, plotDetailsFewDoList, city,plotListDoQuery.getDistance());
                 }
             } else if (reslocationinfo < 10 && reslocationinfo > 0) {
                 SearchHits hits = searchResponse.getHits();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    commonMethod(hit, key, plotDetailsFewDoList, city);
+                    commonMethod(hit, key, plotDetailsFewDoList, city ,plotListDoQuery.getDistance());
                 }
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
                 SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder, plotListDoQuery.getPageSize() - reslocationinfo, plotListDoQuery.getKeyword(), city);
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit : hits1) {
-                    commonMethod(hit, key, plotDetailsFewDoList, city);
+                    commonMethod(hit, key, plotDetailsFewDoList, city ,plotListDoQuery.getDistance());
                 }
             } else if (reslocationinfo == 0) {
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
@@ -433,7 +433,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city);
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit : hits1) {
-                    commonMethod(hit, key, plotDetailsFewDoList, city);
+                    commonMethod(hit, key, plotDetailsFewDoList, city,plotListDoQuery.getDistance());
                 }
             }
         }
@@ -450,13 +450,16 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @param key
      * @return
      */
-    public void commonMethod(SearchHit hit, String key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city) {
+    public void commonMethod(SearchHit hit, String key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance) {
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
-        BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
-        String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
-        plotDetailsFewDo.setNearbyDistance(distance);
+        if(StringTool.isNotEmpty(distance)){
+            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
+            String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+            plotDetailsFewDo.setNearbyDistance(distances);
+        }
+
 
         if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()&&""!=key){
             plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));

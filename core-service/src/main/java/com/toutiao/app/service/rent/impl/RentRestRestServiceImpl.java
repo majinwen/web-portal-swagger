@@ -467,10 +467,11 @@ public class RentRestRestServiceImpl implements RentRestService {
 //        map.put("lat",rentHouseDoQuery.getLat());
 //        map.put("lon",rentHouseDoQuery.getLon());
 //        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
-        double[] location =new double[]{rentHouseDoQuery.getLon(),rentHouseDoQuery.getLat()};
+
         GaussDecayFunctionBuilder functionBuilder = null;
         GeoDistanceSortBuilder sort = null;
         if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance())){
+            double[] location =new double[]{rentHouseDoQuery.getLon(),rentHouseDoQuery.getLat()};
             //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
             functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",location,"4km","1km" ,0.4);
             //根据坐标计算距离
@@ -540,10 +541,11 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-
-                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-                String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
-                rentDetailsFewDo.setNearbyDistance(distance);
+                if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance())){
+                    BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                    rentDetailsFewDo.setNearbyDistance(distance);
+                }
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = rentDetailsFewDo.getCreateTime();

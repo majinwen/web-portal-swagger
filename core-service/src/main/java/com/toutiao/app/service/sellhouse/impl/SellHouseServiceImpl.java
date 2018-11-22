@@ -781,12 +781,13 @@ public class SellHouseServiceImpl implements SellHouseService{
 //        map.put("lon",sellHouseDoQuery.getLon());
 //        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
 
-        double[] location =new double[]{sellHouseDoQuery.getLon(),sellHouseDoQuery.getLat()};
+
         //设置高斯函数
         GaussDecayFunctionBuilder functionBuilder = null;
         FunctionScoreQueryBuilder queryKmBuilder = null;
         GeoDistanceSortBuilder sort = null;
         if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+            double[] location =new double[]{sellHouseDoQuery.getLon(),sellHouseDoQuery.getLat()};
             functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",location,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
             //获取5km内所有的二手房
 
@@ -858,9 +859,12 @@ public class SellHouseServiceImpl implements SellHouseService{
                 String details = "";
                 details=searchHit.getSourceAsString();
                 sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
-                BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
-                String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
-                sellHousesSearchDo.setNearbyDistance(distance);
+                if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+                    BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
+                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                    sellHousesSearchDo.setNearbyDistance(distance);
+                }
+
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHousesSearchDo.getImportTime();
                 int isDefault = isDefaultImage(importTime ,date, sellHousesSearchDo.getHousePhotoTitle());
