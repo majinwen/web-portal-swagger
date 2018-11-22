@@ -14,9 +14,11 @@ import java.util.Objects;
 
 public class PlotsEsfRoomCountDo   {
   @JsonProperty("count")
+  @ApiModelProperty("房源户型数量")
   private Long count = null;
 
   @JsonProperty("room")
+  @ApiModelProperty("户型")
   private Object room = null;
 
   public PlotsEsfRoomCountDo count(Long count) {

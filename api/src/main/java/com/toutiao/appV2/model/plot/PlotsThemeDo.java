@@ -17,95 +17,123 @@ import java.util.Objects;
 
 public class PlotsThemeDo   {
   @JsonProperty("abbreviatedAge")
+  @ApiModelProperty("建成年代")
   private String abbreviatedAge = null;
 
   @JsonProperty("address")
+  @ApiModelProperty("地址")
   private String address = null;
 
   @JsonProperty("age")
+  @ApiModelProperty("楼龄")
   private Integer age = null;
 
   @JsonProperty("area")
+  @ApiModelProperty("区域")
   private String area = null;
 
   @JsonProperty("areaId")
+  @ApiModelProperty("区域编号")
   private String areaId = null;
 
   @JsonProperty("avgPrice")
+  @ApiModelProperty("均价")
   private Double avgPrice = null;
 
   @JsonProperty("buildingAreaSize")
+  @ApiModelProperty("均价")
   private Double buildingAreaSize = null;
 
   @JsonProperty("developers")
+  @ApiModelProperty("开发商")
   private String developers = null;
 
   @JsonProperty("houseCount")
+  @ApiModelProperty("在售房源套数")
   private Integer houseCount = null;
 
   @JsonProperty("houseMaxArea")
+  @ApiModelProperty("最大面积")
   private Double houseMaxArea = null;
 
   @JsonProperty("houseMinArea")
+  @ApiModelProperty("最小面积")
   private Double houseMinArea = null;
 
   @JsonProperty("id")
   private Integer id = null;
 
   @JsonProperty("isTop")
+  @ApiModelProperty("是否top50小区")
   private Integer isTop = null;
 
   @JsonProperty("location")
+  @ApiModelProperty("坐标")
   private String location = null;
 
   @JsonProperty("lowestPrice")
+  @ApiModelProperty("最低价")
   private Double lowestPrice = null;
 
   @JsonProperty("metroStation")
   @Valid
+  @ApiModelProperty("地铁站")
   private List<String> metroStation = null;
 
   @JsonProperty("metroStationId")
   @Valid
+  @ApiModelProperty("地铁站编号")
   private List<String> metroStationId = null;
 
   @JsonProperty("metroWithPlotsDistance")
+  @ApiModelProperty("地铁站与小区的距离")
   private Object metroWithPlotsDistance = null;
 
   @JsonProperty("nearestPark")
+  @ApiModelProperty("距离最近的大型公园")
   private String nearestPark = null;
 
   @JsonProperty("nearestParkDistance")
+  @ApiModelProperty("距最近公园的距离")
   private Double nearestParkDistance = null;
 
   @JsonProperty("photo")
   @Valid
+  @ApiModelProperty("小区照片")
   private List<String> photo = null;
 
   @JsonProperty("rankAvgInBizcircle")
+  @ApiModelProperty("在商圈中排名")
   private Integer rankAvgInBizcircle = null;
 
   @JsonProperty("rc")
+  @ApiModelProperty("小区名称")
   private String rc = null;
 
   @JsonProperty("recommendBuildTagsId")
   @Valid
+  @ApiModelProperty("小区推荐标签Id")
   private List<Integer> recommendBuildTagsId = null;
 
   @JsonProperty("recommendBuildTagsName")
   @Valid
+  @ApiModelProperty("小区推荐标签名称")
   private List<String> recommendBuildTagsName = null;
 
   @JsonProperty("sumPrice")
+  @ApiModelProperty("总价")
   private Double sumPrice = null;
 
   @JsonProperty("tradingArea")
+  @ApiModelProperty("商圈")
   private String tradingArea = null;
 
   @JsonProperty("tradingAreaId")
+  @ApiModelProperty("商圈编号")
   private String tradingAreaId = null;
 
   @JsonProperty("trafficInformation")
+  @ApiModelProperty("近地铁描述")
   private String trafficInformation = null;
 
   public PlotsThemeDo abbreviatedAge(String abbreviatedAge) {

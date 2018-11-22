@@ -17,34 +17,43 @@ import java.util.Objects;
 
 public class PlotTop50Response   {
   @JsonProperty("area")
+  @ApiModelProperty("区域")
   private String area = null;
 
   @JsonProperty("avgPrice")
+  @ApiModelProperty("均价")
   private Double avgPrice = null;
 
   @JsonProperty("houseCount")
+  @ApiModelProperty("待售二手房数量")
   private Integer houseCount = null;
 
   @JsonProperty("id")
   private Integer id = null;
 
   @JsonProperty("lowestPrice")
+  @ApiModelProperty("最低价")
   private Double lowestPrice = null;
 
   @JsonProperty("photo")
   @Valid
+  @ApiModelProperty("小区照片")
   private List<String> photo = null;
 
   @JsonProperty("rankAvgInBizcircle")
+  @ApiModelProperty("在商圈种排名")
   private Integer rankAvgInBizcircle = null;
 
   @JsonProperty("rc")
+  @ApiModelProperty("小区名称")
   private String rc = null;
 
   @JsonProperty("tradingArea")
+  @ApiModelProperty("商圈")
   private String tradingArea = null;
 
   @JsonProperty("trafficInformation")
+  @ApiModelProperty("近地铁描述")
   private String trafficInformation = null;
 
   public PlotTop50Response area(String area) {
