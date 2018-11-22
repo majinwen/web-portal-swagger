@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.subscribe.SubwayLineDao">
+    <resultMap id="SubwayResultMap" type="com.toutiao.web.dao.entity.subscribe.SubwayLineData">
+        <result column="subwayid" property="subwayid" jdbcType="INTEGER"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <collection property="children" ofType="com.toutiao.web.dao.entity.subscribe.SubwayStationData">
+            <result column="stationid" property="stationid" jdbcType="INTEGER"/>
+            <result column="station_name" property="station_name" jdbcType="VARCHAR"/>
+        </collection>
+
+    </resultMap>
+
+    <select id="getSubwayLineInfoByCityId" resultMap="SubwayResultMap">
+        SELECT
+        sl.line_id AS subwayid,
+        subway_name AS name,
+        city_id,
+        ss.station_id AS stationId,
+        ss.station_name
+        FROM
+        subway_line AS sl LEFT JOIN subway_station AS ss ON sl.line_id = ss.line_id
+        WHERE
+        city_id = #{cityId}
+        ORDER BY sl.line_id,ss.station_id
+    </select>
+</mapper>

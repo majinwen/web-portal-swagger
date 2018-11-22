@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.subscribe.CityDao">
+    <resultMap id="BaseResultMap" type="com.toutiao.web.dao.entity.subscribe.City">
+        <id column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+        <result column="belong" property="belong" jdbcType="VARCHAR"/>
+        <result column="sorting" property="sorting" jdbcType="INTEGER"/>
+        <result column="city_pinyin" property="cityPinyin" jdbcType="VARCHAR"/>
+        <result column="city_pinyin_initials" property="cityPinyinInitials" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="CityInfoMap" type="com.toutiao.web.dao.entity.subscribe.CityInfoData">
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="ad_info" property="adInfo" jdbcType="VARCHAR"/>
+        <result column="district_info" property="districtInfo" jdbcType="VARCHAR"/>
+        <result column="park_info" property="parkInfo" jdbcType="VARCHAR"/>
+        <collection property="cityConditionDataList" ofType="com.toutiao.web.dao.entity.subscribe.CityConditionData">
+            <result column="type" property="type" jdbcType="VARCHAR"/>
+            <result column="condition" property="condition" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="CircleDataMap" type="com.toutiao.web.dao.entity.subscribe.AreaInfoData">
+        <result column="district_id" property="districtId" jdbcType="INTEGER"/>
+        <result column="district_name" property="name" jdbcType="VARCHAR"/>
+        <collection property="children" ofType="com.toutiao.web.dao.entity.subscribe.CircleData">
+            <result column="area_id" property="circle" jdbcType="INTEGER"/>
+            <result column="area_name" property="name" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <resultMap id="WapCityMap" type="com.toutiao.web.dao.entity.subscribe.WapCity">
+        <result column="city_pinyin_initials" property="cityPinyinInitials" jdbcType="VARCHAR"/>
+        <result column="city_json" property="cityJson" jdbcType="OTHER" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.JSONTypeHandler"/>
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        <if test="fields == null">
+            city_id, city_name, belong, sorting, city_pinyin, city_pinyin_initials
+        </if>
+        <if test="fields != null">
+            ${fields}
+        </if>
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.toutiao.web.dao.entity.subscribe.CityQuery">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        'true' as QUERYID,
+        <include refid="Base_Column_List"/>
+        from cities
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        city_id,city_name,belong,sorting,city_pinyin,city_pinyin_initials
+        from cities
+        where city_id = #{cityId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from cities
+        where city_id = #{cityId,jdbcType=INTEGER}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.toutiao.web.dao.entity.subscribe.CityQuery">
+        delete from cities
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.toutiao.web.dao.entity.subscribe.City">
+        insert into cities (city_id, city_name, belong,
+        sorting, city_pinyin, city_pinyin_initials
+        )
+        values (#{cityId,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR}, #{belong,jdbcType=VARCHAR},
+        #{sorting,jdbcType=INTEGER}, #{cityPinyin,jdbcType=VARCHAR}, #{cityPinyinInitials,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.subscribe.City">
+        insert into cities
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cityId != null">
+                city_id,
+            </if>
+            <if test="cityName != null">
+                city_name,
+            </if>
+            <if test="belong != null">
+                belong,
+            </if>
+            <if test="sorting != null">
+                sorting,
+            </if>
+            <if test="cityPinyin != null">
+                city_pinyin,
+            </if>
+            <if test="cityPinyinInitials != null">
+                city_pinyin_initials,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cityId != null">
+                #{cityId,jdbcType=INTEGER},
+            </if>
+            <if test="cityName != null">
+                #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="belong != null">
+                #{belong,jdbcType=VARCHAR},
+            </if>
+            <if test="sorting != null">
+                #{sorting,jdbcType=INTEGER},
+            </if>
+            <if test="cityPinyin != null">
+                #{cityPinyin,jdbcType=VARCHAR},
+            </if>
+            <if test="cityPinyinInitials != null">
+                #{cityPinyinInitials,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.toutiao.web.dao.entity.subscribe.CityQuery"
+            resultType="java.lang.Integer">
+        select count(*) from cities
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update cities
+        <set>
+            <if test="record.cityId != null">
+                city_id = #{record.cityId,jdbcType=INTEGER},
+            </if>
+            <if test="record.cityName != null">
+                city_name = #{record.cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="record.belong != null">
+                belong = #{record.belong,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sorting != null">
+                sorting = #{record.sorting,jdbcType=INTEGER},
+            </if>
+            <if test="record.cityPinyin != null">
+                city_pinyin = #{record.cityPinyin,jdbcType=VARCHAR},
+            </if>
+            <if test="record.cityPinyinInitials != null">
+                city_pinyin_initials = #{record.cityPinyinInitials,jdbcType=VARCHAR},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update cities
+        set city_id = #{record.cityId,jdbcType=INTEGER},
+        city_name = #{record.cityName,jdbcType=VARCHAR},
+        belong = #{record.belong,jdbcType=VARCHAR},
+        sorting = #{record.sorting,jdbcType=INTEGER},
+        city_pinyin = #{record.cityPinyin,jdbcType=VARCHAR},
+        city_pinyin_initials = #{record.cityPinyinInitials,jdbcType=VARCHAR}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.web.dao.entity.subscribe.City">
+        update cities
+        <set>
+            <if test="cityName != null">
+                city_name = #{cityName,jdbcType=VARCHAR},
+            </if>
+            <if test="belong != null">
+                belong = #{belong,jdbcType=VARCHAR},
+            </if>
+            <if test="sorting != null">
+                sorting = #{sorting,jdbcType=INTEGER},
+            </if>
+            <if test="cityPinyin != null">
+                city_pinyin = #{cityPinyin,jdbcType=VARCHAR},
+            </if>
+            <if test="cityPinyinInitials != null">
+                city_pinyin_initials = #{cityPinyinInitials,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where city_id = #{cityId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.toutiao.web.dao.entity.subscribe.City">
+        update cities
+        set city_name = #{cityName,jdbcType=VARCHAR},
+        belong = #{belong,jdbcType=VARCHAR},
+        sorting = #{sorting,jdbcType=INTEGER},
+        city_pinyin = #{cityPinyin,jdbcType=VARCHAR},
+        city_pinyin_initials = #{cityPinyinInitials,jdbcType=VARCHAR}
+        where city_id = #{cityId,jdbcType=INTEGER}
+    </update>
+    <!--String selectCityName(Integer cityId);-->
+    <select id="selectCityName" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT  city_name  from cities where city_id=#{cityId}
+    </select>
+    <!--List<District> selectDistrictListByCityId(String cityId);-->
+    <select id="selectDistrictListByCityId" resultType="com.toutiao.web.dao.entity.subscribe.District">
+        SELECT
+        d.district_id as districtId , d.district_name as districtName, d.city_id as cityId
+        FROM district d
+        WHERE 1=1
+        <if test="cityId != null">
+            AND d.city_id = #{cityId}
+        </if>
+        ORDER BY d.district_id
+    </select>
+    <select id="selectConfigListByDisIdHouType" resultType="com.toutiao.web.dao.entity.subscribe.DistrictAreaConfig">
+        SELECT
+        district_id as districtId , area_id as areaId, house_type as houseType
+        FROM district_area_config
+        WHERE 1=1
+        <if test="districtId != null">
+            AND district_id = #{districtId}
+        </if>
+        <if test="houseType != null">
+            AND house_type = #{houseType}
+        </if>
+    </select>
+    <!-- Area selectAreaByAreaId(Integer areaId);-->
+    <select id="selectAreaByAreaId" resultType="com.toutiao.web.dao.entity.subscribe.Area">
+        select
+        area_id as areaId, area_name as areaName , city_id as cityId
+        from area
+        where area_id = #{areaId,jdbcType=INTEGER}
+    </select>
+
+    <select id="getCities" resultType="com.toutiao.web.dao.entity.subscribe.CityInfo">
+        SELECT
+        city_id AS key, city_name AS label, city_domain AS cityDomain, is_show AS isShow
+        FROM cities where 1 = 1
+        <if test="isShow != null">
+            and is_show = #{isShow}
+        </if>
+        ORDER BY city_id
+    </select>
+
+    <select id="getCityDistrictInfos" resultType="com.toutiao.web.dao.entity.subscribe.CityDistrctInfo"
+            parameterType="java.lang.Integer">
+        SELECT
+        city_id AS cityId, district_info AS districtInfo
+        FROM city_district_info
+        WHERE 1 = 1
+        <if test="cityId != null">
+            AND city_id = #{cityId}
+        </if>
+        ORDER BY city_id
+    </select>
+
+    <select id="getCityAdInfo" parameterType="java.lang.Integer" resultType="com.toutiao.web.dao.entity.subscribe.CityAdInfo">
+        SELECT city_id AS cityId, ad_info AS adInfo
+        FROM city_ad_info
+        WHERE 1 = 1
+        <if test="cityId != null">
+            AND city_id = #{cityId}
+        </if>
+        ORDER BY city_id
+    </select>
+
+    <select id="getCityInfos" resultMap="CityInfoMap">
+        SELECT
+        city_ad_info.city_id,
+        city_ad_info.ad_info,
+        city_condition_info."type",
+        city_condition_info."condition",
+        city_district_info.district_info,
+        city_park_info.park_info
+        FROM
+        city_ad_info
+        LEFT JOIN city_condition_info ON city_ad_info.city_id = city_condition_info.city_id
+        LEFT JOIN city_district_info ON city_ad_info.city_id = city_district_info.city_id
+        LEFT JOIN city_park_info ON city_ad_info.city_id = city_park_info.city_id
+        WHERE
+        city_ad_info.city_id = #{cityId}
+    </select>
+
+    <select id="getCityCircleData" resultMap="CircleDataMap">
+        SELECT
+        district.district_id,
+        district.district_name,
+        district_area_config.area_id,
+        area.area_name
+        FROM
+        district
+        LEFT JOIN district_area_config ON district.district_id = district_area_config.district_id
+        LEFT JOIN area ON area.area_id = district_area_config.area_id
+        WHERE
+        district.city_id = #{cityId}
+    </select>
+
+    <select id="getCityCondition" resultType="com.toutiao.web.dao.entity.subscribe.CityConditionDo">
+        SELECT city_id AS cityId, type, condition
+        FROM city_condition_info
+        WHERE city_id = #{cityId}
+    </select>
+
+    <select id="getParkInfo" resultType="com.toutiao.web.dao.entity.subscribe.ParkInfo">
+        SELECT city_id AS cityId, park_info AS parkInfo
+        FROM city_park_info
+        WHERE city_id = #{cityId}
+    </select>
+
+    <select id="selectCityByDomain" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        *
+        from cities where city_domain=#{cityDomain} limit 1
+    </select>
+
+    <select id="selectWapCity" resultMap="WapCityMap" >
+        select a.city_pinyin_initials,json_agg(b) as city_json from
+        (SELECT city_pinyin_initials FROM cities where is_show = 1 group by city_pinyin_initials) a left join
+        (select city_id,city_name,city_pinyin_initials,is_hot,city_domain FROM cities where is_show=1) b on a.city_pinyin_initials=b.city_pinyin_initials
+        group by a.city_pinyin_initials
+    </select>
+
+</mapper>
