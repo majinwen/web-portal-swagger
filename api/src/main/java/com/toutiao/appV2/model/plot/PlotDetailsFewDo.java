@@ -147,6 +147,10 @@ public class PlotDetailsFewDo   {
   @JsonProperty("titlePhoto")
   private String titlePhoto;
 
+  @ApiModelProperty("附近距离XX千米")
+  @JsonProperty("nearbyDistance")
+  private String nearbyDistance;
+
   public PlotDetailsFewDo abbreviatedAge(String abbreviatedAge) {
     this.abbreviatedAge = abbreviatedAge;
     return this;
