@@ -18,144 +18,190 @@ public class PlotEsfResponse   {
   private AgentBaseDo agentBaseDo = null;
 
   @JsonProperty("area")
+  @ApiModelProperty("区域名称")
   private String area = null;
 
   @JsonProperty("areaId")
+  @ApiModelProperty("区域编号")
   private Integer areaId = null;
 
-  @JsonProperty("avgAbsoluteWithBizcircle")
+  @JsonProperty("与商圈平均单价的绝对值差")
+  @ApiModelProperty("区域编号")
   private Double avgAbsoluteWithBizcircle = null;
 
   @JsonProperty("avgAbsoluteWithCommunity")
+  @ApiModelProperty("与小区平均单价的绝对值差")
   private Double avgAbsoluteWithCommunity = null;
 
   @JsonProperty("avgAbsoluteWithDistrict")
+  @ApiModelProperty("与区县平均单价的绝对值差")
   private Double avgAbsoluteWithDistrict = null;
 
   @JsonProperty("avgDealCycle")
+  @ApiModelProperty("平均成交天数")
   private Integer avgDealCycle = null;
 
   @JsonProperty("avgRelativeWithBizcircle")
+  @ApiModelProperty("与商圈平均单价的相对值(百分比)")
   private Double avgRelativeWithBizcircle = null;
 
   @JsonProperty("avgRelativeWithCommunity")
+  @ApiModelProperty("与小区平均单价的相对值(百分比)")
   private Double avgRelativeWithCommunity = null;
 
   @JsonProperty("avgRelativeWithDistrict")
+  @ApiModelProperty("与区县平均单价的相对值(百分比)")
   private Double avgRelativeWithDistrict = null;
 
   @JsonProperty("buildArea")
+  @ApiModelProperty("建筑面积")
   private Double buildArea = null;
 
   @JsonProperty("forwardName")
+  @ApiModelProperty("朝向")
   private String forwardName = null;
 
   @JsonProperty("hall")
+  @ApiModelProperty("厅")
   private Integer hall = null;
 
   @JsonProperty("houseBusinessName")
+  @ApiModelProperty("商圈名称")
   private String houseBusinessName = null;
 
   @JsonProperty("houseBusinessNameId")
+  @ApiModelProperty("商圈id")
   private String houseBusinessNameId = null;
 
   @JsonProperty("houseId")
+  @ApiModelProperty("二手房房源id")
   private String houseId = null;
 
   @JsonProperty("housePhotoTitle")
+  @ApiModelProperty("标题图")
   private String housePhotoTitle = null;
 
   @JsonProperty("houseTitle")
+  @ApiModelProperty("房源标题")
   private String houseTitle = null;
 
   @JsonProperty("houseTotalPrices")
+  @ApiModelProperty("房源总价")
   private Double houseTotalPrices = null;
 
   @JsonProperty("houseUnitCost")
+  @ApiModelProperty("单价")
   private Double houseUnitCost = null;
 
   @JsonProperty("importTime")
+  @ApiModelProperty("房源导入时间")
   private String importTime = null;
 
   @JsonProperty("isCommunityTopHouse")
+  @ApiModelProperty("是否是top50小区房源(0-否，1-是)")
   private Integer isCommunityTopHouse = null;
 
   @JsonProperty("isCutPrice")
+  @ApiModelProperty("是否降价房(0-否，1-降价房，2-涨价房)")
   private Integer isCutPrice = null;
 
   @JsonProperty("isDealLayout")
+  @ApiModelProperty("是否成交户型(0-否，1-是)")
   private Integer isDealLayout = null;
 
   @JsonProperty("isDefaultImage")
+  @ApiModelProperty("是否显示默认图片标志")
   private Integer isDefaultImage = null;
 
   @JsonProperty("isLowPrice")
+  @ApiModelProperty("是否价格洼地(0-否，1-是)")
   private Integer isLowPrice = null;
 
   @JsonProperty("isLowest")
+  @ApiModelProperty("是否同户型小区均价最低(0-否，1-是)")
   private Integer isLowest = null;
 
   @JsonProperty("isMainLayout")
+  @ApiModelProperty("是否主力户型(0-否，1-是)")
   private Integer isMainLayout = null;
 
   @JsonProperty("isMustRob")
+  @ApiModelProperty("是否逢出必抢房(0-否，1-是)")
   private Integer isMustRob = null;
 
   @JsonProperty("isNew")
+  @ApiModelProperty("是否新导入房源(0-否，1-是)")
   private Integer isNew = null;
 
   @JsonProperty("nearPark")
+  @ApiModelProperty("近公园")
   private String nearPark = null;
 
-  @JsonProperty("newCode")
+  @JsonProperty("楼盘ID(楼盘/小区)")
+  @ApiModelProperty("近公园")
   private Integer newCode = null;
 
   @JsonProperty("plotName")
+  @ApiModelProperty("小区名称")
   private String plotName = null;
 
   @JsonProperty("priceFloat")
+  @ApiModelProperty("浮动价格")
   private Double priceFloat = null;
 
   @JsonProperty("rankInLowCommunityLayout")
+  @ApiModelProperty("同小区同户型范围内做低价排名")
   private Integer rankInLowCommunityLayout = null;
 
   @JsonProperty("rankLowInBizcircleLayout")
+  @ApiModelProperty("在同商圈同户型范围内做低价排名")
   private Integer rankLowInBizcircleLayout = null;
 
   @JsonProperty("recommendBuildTagsId")
   @Valid
+  @ApiModelProperty("推荐标签id")
   private List<Object> recommendBuildTagsId = null;
 
   @JsonProperty("recommendBuildTagsName")
   @Valid
+  @ApiModelProperty("推荐标签名称")
   private List<Object> recommendBuildTagsName = null;
 
   @JsonProperty("room")
+  @ApiModelProperty("室")
   private Integer room = null;
 
   @JsonProperty("tagsName")
   @Valid
+  @ApiModelProperty("标签名称")
   private List<String> tagsName = null;
 
   @JsonProperty("totalAbsoluteWithBizcircle")
+  @ApiModelProperty("与商圈平均总价的绝对值差")
   private Double totalAbsoluteWithBizcircle = null;
 
   @JsonProperty("totalAbsoluteWithCommunity")
+  @ApiModelProperty("与小区平均总价的绝对值差")
   private Double totalAbsoluteWithCommunity = null;
 
   @JsonProperty("totalAbsoluteWithDistrict")
+  @ApiModelProperty("与区县平均总价的绝对值差")
   private Double totalAbsoluteWithDistrict = null;
 
   @JsonProperty("totalRelativeWithBizcircle")
+  @ApiModelProperty("与商圈平均总价的相对值(百分比)")
   private Double totalRelativeWithBizcircle = null;
 
   @JsonProperty("totalRelativeWithCommunity")
+  @ApiModelProperty("与小区平均总价的相对值(百分比)")
   private Double totalRelativeWithCommunity = null;
 
   @JsonProperty("totalRelativeWithDistrict")
+  @ApiModelProperty("与区县平均总价的相对值(百分比)")
   private Double totalRelativeWithDistrict = null;
 
   @JsonProperty("typeCounts")
+  @ApiModelProperty("各个类型数量")
   @Valid
   private Map<String, Map<String, Integer>> typeCounts = null;
 

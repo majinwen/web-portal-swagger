@@ -13,13 +13,13 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:42:20.134Z")
 
 public class RentNumResponse   {
-  @JsonProperty("num")
+  @ApiModelProperty("个数")
   private Integer num = null;
 
-  @JsonProperty("rentSign")
+  @ApiModelProperty("出租房源标志(普租/公寓)")
   private Integer rentSign = null;
 
-  @JsonProperty("rentSignName")
+  @ApiModelProperty("出租房源标志名称(出租/公寓)")
   private String rentSignName = null;
 
   public RentNumResponse num(Integer num) {

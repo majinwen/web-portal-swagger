@@ -302,18 +302,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     if (""!=keys&&null!=newHouseListDos.getNearbysubway()){
                         newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
                     }
-//                newHouseListDos.setNearbysubway(null);
                     try{
                         //获取新房下户型的数量
                         NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(),city);
-//                        if (null!=newHouseLayoutCountDomain.getTotalCount())
-//                        {
-//                            newHouseListDos.setRoomTotalCount(newHouseLayoutCountDomain.getTotalCount());
-//                        }
-//                        else
-//                        {
-//                            newHouseListDos.setRoomTotalCount(0);
-//                        }
                         if(null!=newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0){
                             List<String> roomsType = new ArrayList<>();
                             for(int i=0; i< newHouseLayoutCountDomain.getRooms().size(); i++){
@@ -345,6 +336,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     newHouseDynamicDoQuery.setPageSize(1);
                     List<NewHouseDynamicDo> newHouseDynamicDoList = newHouseService.getNewHouseDynamicByNewCode(newHouseDynamicDoQuery,city);
                     newHouseListDos.setNewHouseDynamic(newHouseDynamicDoList);
+                    newHouseListDos.setBuildingFeature("");
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
 //                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);

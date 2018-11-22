@@ -14,15 +14,19 @@ import java.util.Objects;
 
 public class PlotsHousesDomain   {
   @JsonProperty("avgPrice")
+  @ApiModelProperty("小区均价")
   private Double avgPrice = null;
 
   @JsonProperty("rentCount")
+  @ApiModelProperty("出租房总量")
   private Long rentCount = null;
 
   @JsonProperty("sellHouseCount")
+  @ApiModelProperty("二手房总量")
   private Long sellHouseCount = null;
 
   @JsonProperty("startPrice")
+  @ApiModelProperty("租房最低价")
   private Double startPrice = null;
 
   public PlotsHousesDomain avgPrice(Double avgPrice) {

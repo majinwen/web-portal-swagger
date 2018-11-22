@@ -17,79 +17,101 @@ import java.util.Objects;
 
 public class PlotDetailsFewResponse   {
   @JsonProperty("abbreviatedAge")
+  @ApiModelProperty("建成年代")
   private String abbreviatedAge = null;
 
   @JsonProperty("address")
+  @ApiModelProperty("地址")
   private String address = null;
 
   @JsonProperty("alias")
+  @ApiModelProperty("别名")
   private String alias = null;
 
   @JsonProperty("area")
+  @ApiModelProperty("区域")
   private String area = null;
 
   @JsonProperty("areaId")
+  @ApiModelProperty("区域编号")
   private String areaId = null;
 
   @JsonProperty("avgPrice")
+  @ApiModelProperty("区域编号")
   private Integer avgPrice = null;
 
   @JsonProperty("carPositionRatio")
+  @ApiModelProperty("车位配比")
   private String carPositionRatio = null;
 
   @JsonProperty("id")
   private Integer id = null;
 
   @JsonProperty("key")
+  @ApiModelProperty("获取地铁站与小区的距离")
   private String key = null;
 
   @JsonProperty("label")
   @Valid
+  @ApiModelProperty("标签")
   private List<String> label = null;
 
   @JsonProperty("labelId")
   @Valid
+  @ApiModelProperty("标签编号")
   private List<String> labelId = null;
 
   @JsonProperty("location")
+  @ApiModelProperty("坐标")
   private String location = null;
 
   @JsonProperty("metroStation")
   @Valid
+  @ApiModelProperty("地铁站")
   private List<String> metroStation = null;
 
   @JsonProperty("metroStationId")
   @Valid
+  @ApiModelProperty("地铁站编号")
   private List<String> metroStationId = null;
 
   @JsonProperty("metroWithPlotsDistance")
+  @ApiModelProperty("地铁站与小区的距离")
   private Object metroWithPlotsDistance = null;
 
   @JsonProperty("photo")
   @Valid
+  @ApiModelProperty("小区照片")
   private List<String> photo = null;
 
   @JsonProperty("rc")
+  @ApiModelProperty("小区名称/楼盘名称")
   private String rc = null;
 
   @JsonProperty("subwayLine")
   @Valid
+  @ApiModelProperty("地铁线路")
   private List<String> subwayLine = null;
 
   @JsonProperty("subwayLineId")
   @Valid
+  @ApiModelProperty("地铁线路编号")
   private List<String> subwayLineId = null;
 
   @JsonProperty("sumPrice")
+  @ApiModelProperty("总价")
   private Integer sumPrice = null;
 
   @JsonProperty("tradingArea")
+  @ApiModelProperty("商圈")
   private String tradingArea = null;
 
   @JsonProperty("tradingAreaId")
+  @ApiModelProperty("商圈编号")
   private String tradingAreaId = null;
 
   @JsonProperty("trafficInformation")
+  @ApiModelProperty("交通信息")
   private String trafficInformation = null;
 
   public PlotDetailsFewResponse abbreviatedAge(String abbreviatedAge) {
