@@ -159,5 +159,8 @@ public class RentDetailsFewDo {
     @ApiModelProperty("是否显示默认图片标志")
     private Integer isDefaultImage = 0;
 
+    @ApiModelProperty("附近距离xxkm")
+    private String nearbyDistance;
+
 
 }

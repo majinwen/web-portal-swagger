@@ -28,6 +28,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -45,6 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -357,7 +359,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             //排序
             sort = SortBuilders.geoDistanceSort("location", plotListDoQuery.getLat(), plotListDoQuery.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
-            sort.point(plotListDoQuery.getLat(), plotListDoQuery.getLon());
+            sort.geoDistance(GeoDistance.ARC);
+            //sort.point(plotListDoQuery.getLat(), plotListDoQuery.getLon());
 
         }
 
@@ -454,6 +457,10 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
+        BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
+        String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+        plotDetailsFewDo.setNearbyDistance(distance);
+
         if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()&&""!=key){
             plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
         }

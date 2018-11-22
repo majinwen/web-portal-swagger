@@ -97,4 +97,7 @@ public class RentDetailFewResponse {
     @ApiModelProperty("房源描述")
     private String houseDesc;
 
+    @ApiModelProperty("附近距离xxkm")
+    private String nearbyDistance;
+
 }
