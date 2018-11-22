@@ -94,4 +94,9 @@ public class CityServiceImpl implements CityService {
     public List<WapCity> selectWapCity() {
         return cityDao.selectWapCity();
     }
+
+    @Override
+    public List<CityConditionDo> getCityConditionByIdAndType(Integer cityId, String type) {
+        return cityDao.getCityConditionByIdAndType(cityId,type);
+    }
 }

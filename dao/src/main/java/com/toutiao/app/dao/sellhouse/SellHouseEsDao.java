@@ -6,6 +6,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 
 
 public interface SellHouseEsDao {
@@ -43,6 +44,9 @@ public interface SellHouseEsDao {
      * @param city
      * @return
      */
+    SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer
+            pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort);
+
     SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer
             pageNum, Integer pageSize, String city);
 

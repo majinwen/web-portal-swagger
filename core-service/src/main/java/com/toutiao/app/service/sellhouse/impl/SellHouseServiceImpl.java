@@ -29,22 +29,24 @@ import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.*;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -774,16 +776,23 @@ public class SellHouseServiceImpl implements SellHouseService{
         FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim")
                 .modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11).missing(0);
 
-        Map<String,Double> map = new HashMap<>();
-        map.put("lat",sellHouseDoQuery.getLat());
-        map.put("lon",sellHouseDoQuery.getLon());
-        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+//        Map<String,Double> map = new HashMap<>();
+//        map.put("lat",sellHouseDoQuery.getLat());
+//        map.put("lon",sellHouseDoQuery.getLon());
+//        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+
+        double[] location =new double[]{sellHouseDoQuery.getLon(),sellHouseDoQuery.getLat()};
         //设置高斯函数
         GaussDecayFunctionBuilder functionBuilder = null;
         FunctionScoreQueryBuilder queryKmBuilder = null;
+        GeoDistanceSortBuilder sort = null;
         if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",json,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
+            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",location,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
             //获取5km内所有的二手房
+
+            sort = SortBuilders.geoDistanceSort("housePlotLocation", sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon());
+            sort.unit(DistanceUnit.KILOMETERS);
+            sort.geoDistance(GeoDistance.ARC);
 
         }
         queryKmBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
@@ -823,6 +832,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
                 query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+
             }else{
                 query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
@@ -839,7 +849,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         List<SellHousesSearchDo> sellHousesSearchDos =new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query, sellHouseDoQuery.getDistance(),
-                sellHouseDoQuery.getKeyword(), sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city);
+                sellHouseDoQuery.getKeyword(), sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city, sort);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if(searchHists.length > 0){
@@ -848,6 +858,9 @@ public class SellHouseServiceImpl implements SellHouseService{
                 String details = "";
                 details=searchHit.getSourceAsString();
                 sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
+                BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
+                String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                sellHousesSearchDo.setNearbyDistance(distance);
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHousesSearchDo.getImportTime();
                 int isDefault = isDefaultImage(importTime ,date, sellHousesSearchDo.getHousePhotoTitle());

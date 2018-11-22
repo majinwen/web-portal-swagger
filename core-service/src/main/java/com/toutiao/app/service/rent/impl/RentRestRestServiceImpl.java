@@ -23,6 +23,7 @@ import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
@@ -38,6 +39,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -461,14 +463,22 @@ public class RentRestRestServiceImpl implements RentRestService {
                 .modifier(FieldValueFactorFunction.Modifier.RECIPROCAL).missing(10);
 
         //坐标
-        Map<String, Double> map = new HashMap<>();
-        map.put("lat", rentHouseDoQuery.getLat());
-        map.put("lon", rentHouseDoQuery.getLon());
-        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+//        Map<String,Double> map = new HashMap<>();
+//        map.put("lat",rentHouseDoQuery.getLat());
+//        map.put("lon",rentHouseDoQuery.getLon());
+//        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+        double[] location =new double[]{rentHouseDoQuery.getLon(),rentHouseDoQuery.getLat()};
         GaussDecayFunctionBuilder functionBuilder = null;
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+        GeoDistanceSortBuilder sort = null;
+        if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance())){
             //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location", json, "4km", "1km", 0.4);
+            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",location,"4km","1km" ,0.4);
+            //根据坐标计算距离
+            sort = SortBuilders.geoDistanceSort("location", rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon());
+            sort.unit(DistanceUnit.KILOMETERS);
+            sort.geoDistance(GeoDistance.ARC);
+
+
         }
         //获取5km内的所有出租房源(函数得分进行加法运算,查询得分和函数得分进行乘法运算)
         FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
@@ -523,13 +533,17 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(), rentHouseDoQuery.getKeyword(), rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city);
+        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length > 0) {
             List<String> imgs = new ArrayList<>();
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+
+                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                rentDetailsFewDo.setNearbyDistance(distance);
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = rentDetailsFewDo.getCreateTime();

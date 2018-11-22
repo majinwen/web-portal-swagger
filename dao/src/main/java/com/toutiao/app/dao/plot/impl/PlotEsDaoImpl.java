@@ -90,7 +90,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(boolQueryBuilder).sort(levelSort).sort(plotScoreSort).from(from).size(size);
+        searchSourceBuilder.query(boolQueryBuilder).sort(levelSort).sort(plotScoreSort).sort(sort).from(from).size(size);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {

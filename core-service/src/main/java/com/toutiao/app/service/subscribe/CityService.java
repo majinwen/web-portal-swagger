@@ -1,6 +1,7 @@
 package com.toutiao.app.service.subscribe;
 
 import com.toutiao.web.dao.entity.subscribe.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -16,5 +17,7 @@ public interface CityService {
     City selectCityByDomain(String cityDomain);
 
     List<WapCity> selectWapCity();
+
+    List<CityConditionDo>getCityConditionByIdAndType(Integer cityId, String type);
 
 }

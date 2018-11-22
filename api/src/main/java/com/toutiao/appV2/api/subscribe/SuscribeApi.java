@@ -15,6 +15,8 @@ import com.toutiao.appV2.model.ConditionSubscribeRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.UserSubscribeList;
 import com.toutiao.appV2.model.UserSubscribeListDoList;
+import com.toutiao.appV2.model.subscribe.CityAllInfoMap;
+import com.toutiao.appV2.model.subscribe.CityConditionDoList;
 import com.toutiao.appV2.model.subscribe.WapCityList;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import io.swagger.annotations.*;
@@ -142,10 +144,10 @@ public interface SuscribeApi {
     ResponseEntity<UserSubscribe> selectByUserConditionSubscribeMap(@ApiParam(value = "ConditionSubscribeRequest", required = true) @Valid ConditionSubscribeRequest conditionSubscribeRequest);
 
 
-    @ApiOperation(value = "查询城市所有信息", nickname = "getCityAllInfo", notes = "", response = UserSubscribe.class, tags={ "订阅", })
+    @ApiOperation(value = "查询城市所有信息", nickname = "getCityAllInfo", notes = "", response = CityAllInfoMap.class, tags={ "订阅", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
-            @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
+            @ApiResponse(code = 200, message = "OK", response = CityAllInfoMap.class),
+            @ApiResponse(code = 201, message = "Created", response = CityAllInfoMap.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
@@ -153,16 +155,16 @@ public interface SuscribeApi {
             produces = { "application/json" },
             //consumes = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<Map<String, Object>> getCityAllInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
-                                                       @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
+    ResponseEntity<CityAllInfoMap> getCityAllInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
+                                                  @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
 
 
 
-    @ApiOperation(value = "查询城市信息", nickname = "getWapCity", notes = "", response = UserSubscribe.class, tags={ "订阅", })
+    @ApiOperation(value = "查询城市信息", nickname = "getWapCity", notes = "", response = WapCityList.class, tags={ "订阅", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
-            @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
+            @ApiResponse(code = 200, message = "OK", response = WapCityList.class),
+            @ApiResponse(code = 201, message = "Created", response = WapCityList.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
@@ -171,5 +173,21 @@ public interface SuscribeApi {
             //consumes = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<WapCityList> getWapCity();
+
+
+    @ApiOperation(value = "根据城市id和type查询citycondition", nickname = "getCityconditionByIdAndType", notes = "", response = CityConditionDoList.class, tags={ "订阅", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CityConditionDoList.class),
+            @ApiResponse(code = 201, message = "Created", response = CityConditionDoList.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/subscribe/getCityconditionByIdAndType",
+            produces = { "application/json" },
+            //consumes = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<CityConditionDoList> getCityconditionByIdAndType(@ApiParam(value = "cityId", required = true) @Valid @RequestParam(value = "cityId",required = true) Integer cityId,
+                                                                    @ApiParam(value = "type", required = true) @Valid @RequestParam(value = "type",required = true) String type);
+
 
 }

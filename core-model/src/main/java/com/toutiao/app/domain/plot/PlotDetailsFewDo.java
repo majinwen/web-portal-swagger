@@ -149,4 +149,9 @@ public class PlotDetailsFewDo {
      * 标题图
      */
     private String titlePhoto;
+
+    /**
+     * 附近距离
+     */
+    private String nearbyDistance;
 }

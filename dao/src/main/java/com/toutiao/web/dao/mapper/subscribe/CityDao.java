@@ -63,4 +63,6 @@ public interface CityDao {
     List<ParkInfo> getParkInfo(@Param("cityId") Integer cityId);
 
     List<WapCity> selectWapCity();
+
+    List<CityConditionDo> getCityConditionByIdAndType(@Param("cityId") Integer cityId,@Param("type") String type);
 }
