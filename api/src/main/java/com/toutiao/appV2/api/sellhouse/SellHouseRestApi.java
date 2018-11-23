@@ -84,7 +84,7 @@ public interface SellHouseRestApi {
             @ApiResponse(code = 404, message = "Not Found")})
     @RequestMapping(value = "/rest/esf/getSellHouseList",
             produces = {"application/json"},
-            method = RequestMethod.GET)
+            method = {RequestMethod.GET,RequestMethod.POST})
     ResponseEntity<SellHouseSearchDomainResponse> getSellHouseList(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "逢出必抢专题页", nickname = "getBeSureToSnatchList", notes = "", response = SellHouseBeSureToSnatchResponse.class, tags = {"二手房",})

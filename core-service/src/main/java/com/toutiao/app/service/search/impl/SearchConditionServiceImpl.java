@@ -16,8 +16,8 @@ public class SearchConditionServiceImpl implements SearchConditionService {
         this.searchConditionMapper = searchConditionMapper;
     }
 
-    @Override
-    public SearchCondition selectSearchConditionByCityIdAndType(Integer cityId, Integer type) {
-        return searchConditionMapper.selectSearchConditionByCityIdAndType(cityId,type);
-    }
+//    @Override
+//    public SearchCondition selectSearchConditionByCityIdAndType(Integer cityId, Integer type) {
+//        return searchConditionMapper.selectSearchConditionByCityIdAndType(cityId,type);
+//    }
 }

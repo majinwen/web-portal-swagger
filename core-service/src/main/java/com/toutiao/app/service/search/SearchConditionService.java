@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Param;
 
 public interface SearchConditionService {
 
-    SearchCondition selectSearchConditionByCityIdAndType(@Param("cityId") Integer cityId, @Param("type") Integer type);
+//    SearchCondition selectSearchConditionByCityIdAndType(@Param("cityId") Integer cityId, @Param("type") Integer type);
 
 }

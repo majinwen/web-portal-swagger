@@ -115,7 +115,7 @@ public interface NewHouseApi {
     @RequestMapping(value = "/rest/newhouse/getNewHouseList",
             produces = { "application/json" },
 //            consumes = { "application/json" },
-            method = RequestMethod.GET)
+            method = {RequestMethod.GET,RequestMethod.POST})
     ResponseEntity<NewHouseListDomainResponse> getNewHouseList(NewHouseListRequest newHouseListRequest);
 
 

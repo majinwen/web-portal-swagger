@@ -2,7 +2,7 @@ package com.toutiao.appV2.model.sellhouse;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.HouseLable;
-import com.toutiao.app.domain.sellhouse.SellHouseSubject;
+import com.toutiao.app.domain.sellhouse.HouseSubject;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -390,5 +390,5 @@ public class SellHousesSearchDo {
     private List<HouseLable> houseLableList;
 
     @ApiModelProperty(value = "专题列表", name = "sellHouseSubjectList")
-    private List<SellHouseSubject> sellHouseSubjectList;
+    private List<HouseSubject> sellHouseSubjectList;
 }

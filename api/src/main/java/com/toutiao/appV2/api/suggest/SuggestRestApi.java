@@ -1,5 +1,8 @@
 package com.toutiao.appV2.api.suggest;
 
+import com.toutiao.app.api.chance.response.suggest.SuggestListResponse;
+import com.toutiao.app.api.chance.response.suggest.SuggestResultResponse;
+import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
@@ -45,16 +48,16 @@ public interface SuggestRestApi {
             method = RequestMethod.GET)
     ResponseEntity<AgentResponse> getAgentInfoByUserId(@ApiParam(value = "agentRequest", required = true) @Valid AgentRequest agentRequest);
 
-    @ApiOperation(value = "根据城市代码获取查询条件", nickname = "selectSearchContentByCityIdAndType", notes = "", response = SearchConditionResponse.class, tags = {"其他",})
+    @ApiOperation(value = "根据城市代码获取查询条件", nickname = "selectSearchConditionByCityIdAndType", notes = "", response = HouseSubjectListResponse.class, tags = {"其他",})
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SuggestResponse.class),
+            @ApiResponse(code = 200, message = "OK", response = HouseSubjectListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found")})
-    @RequestMapping(value = "/rest/suggest/selectSearchContentByCityIdAndType",
+    @RequestMapping(value = "/rest/suggest/selectSearchConditionByCityIdAndType",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SearchConditionResponse> selectSearchConditionByCityIdAndType(@ApiParam(value = "searchConditionRequest", required = true) @Valid SearchConditionRequest searchConditionRequest);
+    ResponseEntity<HouseSubjectListResponse> selectSearchConditionByCityIdAndType(@ApiParam(value = "searchConditionRequest", required = true) @Valid SearchConditionRequest searchConditionRequest);
 
     @ApiOperation(value = "查询城市所有信息", nickname = "getCityAllInfo", notes = "", response = CityAllInfoMap.class, tags={ "其他", })
     @ApiResponses(value = {

@@ -6,6 +6,7 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.suggest.SearchEnginesDo;
 import com.toutiao.app.domain.suggest.SearchScopeDo;
 import com.toutiao.app.domain.suggest.SuggestListDo;
+import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.app.domain.suggest.SuggestResultDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.search.SearchConditionService;
@@ -149,22 +150,9 @@ public class SuggestRestController implements SuggestRestApi {
     }
 
     @Override
-    public ResponseEntity<SearchConditionResponse> selectSearchConditionByCityIdAndType(SearchConditionRequest searchConditionRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                SearchConditionResponse SearchConditionResponse = new SearchConditionResponse();
-                int cityId = searchConditionRequest.getCityId();
-                int type = searchConditionRequest.getType();
-                SearchCondition searchCondition = searchConditionService.selectSearchConditionByCityIdAndType(cityId, type);
-                BeanUtils.copyProperties(searchCondition, SearchConditionResponse);
-                return new ResponseEntity<SearchConditionResponse>(SearchConditionResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-        return new ResponseEntity(HttpStatus.NOT_IMPLEMENTED);
+    public ResponseEntity<HouseSubjectListResponse> selectSearchConditionByCityIdAndType(SearchConditionRequest searchConditionRequest) {
+        HouseSubjectListResponse houseSubjectListResponse = new HouseSubjectListResponse();
+        return new ResponseEntity<HouseSubjectListResponse>(houseSubjectListResponse, HttpStatus.OK);
     }
 
     @Override
