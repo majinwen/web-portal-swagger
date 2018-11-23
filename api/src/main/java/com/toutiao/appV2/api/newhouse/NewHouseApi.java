@@ -218,4 +218,17 @@ public interface NewHouseApi {
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
     ResponseEntity<StringDataResponse> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest);
+
+    @ApiOperation(value = "猜你喜欢:获取新房列表页", nickname = "getGuessList", notes = "获取新房列表页",
+            response = NewHouseListDomainResponse.class, tags={ "新房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = NewHouseListDomainResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/newhouse/getGuessList",
+            produces = { "application/json" },
+//            consumes = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<NewHouseListDomainResponse> getGuessList(NewHouseListRequest newHouseListRequest);
 }

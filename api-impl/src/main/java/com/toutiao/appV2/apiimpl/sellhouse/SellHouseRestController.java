@@ -182,4 +182,21 @@ public class SellHouseRestController implements SellHouseRestApi {
         return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
     }
 
+    /**
+     * 猜你喜欢:二手房列表
+     *
+     * @param sellHouseRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getGuessList(SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
+        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+    }
+
 }

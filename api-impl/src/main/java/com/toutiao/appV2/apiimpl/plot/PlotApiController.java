@@ -293,4 +293,75 @@ public class PlotApiController implements PlotApi {
         return new ResponseEntity<PlotTop50ListResponse>(plotTop50ListResponse, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<PlotListResponse> getGuessList(Optional<List<Integer>> layoutId, Optional<List<Integer>> forwardId, Optional<List<Integer>> labelId, Optional<Double> beginPrice, Optional<Double> endPrice, Optional<Double> beginArea, Optional<Double> endArea, Optional<String> houseYearId, Optional<Integer> districtId, Optional<Integer> areaId, Optional<Integer> subwayLineId, Optional<Integer> subwayStationId, Optional<String> keyword, Optional<Integer> pageNum, Optional<Integer> pageSize, Optional<Integer> cityId, Optional<Double> lat, Optional<Double> lon, Optional<Integer> isTop, Optional<Double> distance) {
+        PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
+        if (!isTop.equals(Optional.empty())) {
+            plotListDoQuery.setIsTop(isTop.get());
+        }
+        if (!distance.equals(Optional.empty())) {
+            plotListDoQuery.setDistance(distance.get());
+        }
+        if (!lat.equals(Optional.empty())) {
+            plotListDoQuery.setLat(lat.get());
+        }
+        if (!lon.equals(Optional.empty())) {
+            plotListDoQuery.setLon(lon.get());
+        }
+        if (!areaId.equals(Optional.empty())) {
+            plotListDoQuery.setAreaId(areaId.get());
+        }
+        if (!beginArea.equals(Optional.empty())) {
+            plotListDoQuery.setBeginArea(beginArea.get());
+        }
+        if (!beginPrice.equals(Optional.empty())) {
+            plotListDoQuery.setBeginPrice(beginPrice.get());
+        }
+        if (!cityId.equals(Optional.empty())) {
+            plotListDoQuery.setCityId(cityId.get());
+        }
+        if (!districtId.equals(Optional.empty())) {
+            plotListDoQuery.setDistrictId(districtId.get());
+        }
+        if (!endArea.equals(Optional.empty())) {
+            plotListDoQuery.setEndArea(endArea.get());
+        }
+        if (!endPrice.equals(Optional.empty())) {
+            plotListDoQuery.setEndPrice(endPrice.get());
+        }
+        if (!forwardId.equals(Optional.empty())) {
+            plotListDoQuery.setForwardId((Integer[]) forwardId.get().toArray());
+        }
+        if (!houseYearId.equals(Optional.empty())) {
+            plotListDoQuery.setHouseYearId(houseYearId.get());
+        }
+        if (!keyword.equals(Optional.empty())) {
+            plotListDoQuery.setKeyword(keyword.get());
+        }
+        if (!labelId.equals(Optional.empty())) {
+            plotListDoQuery.setLabelId((Integer[]) labelId.get().toArray());
+        }
+        if (!layoutId.equals(Optional.empty())) {
+            plotListDoQuery.setLayoutId((Integer[]) layoutId.get().toArray());
+        }
+        if (!pageNum.equals(Optional.empty())) {
+            plotListDoQuery.setPageNum(pageNum.get());
+        }
+        if (!pageSize.equals(Optional.empty())) {
+            plotListDoQuery.setPageSize(pageSize.get());
+        }
+        if (!subwayLineId.equals(Optional.empty())) {
+            plotListDoQuery.setSubwayLineId(subwayLineId.get());
+        }
+        if (!subwayStationId.equals(Optional.empty())) {
+            plotListDoQuery.setSubwayStationId(subwayStationId.get());
+        }
+
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
+        return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
+
+    }
+
+
+
 }

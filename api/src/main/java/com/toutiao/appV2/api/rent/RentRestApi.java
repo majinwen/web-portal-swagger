@@ -77,4 +77,15 @@ public interface RentRestApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<RentListResponse> getRentList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
+
+    @ApiOperation(value = "猜你喜欢:出租房源列表", nickname = "getGuessList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = RentDetailFewResponseList.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/rent/getGuessList",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<RentDetailFewResponseList> getGuessList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 }
