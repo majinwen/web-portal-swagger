@@ -4,11 +4,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class SellHouseSubject {
+public class HouseSubject {
 
-    @ApiModelProperty(value = "专题说明", name = "text")
+    @ApiModelProperty(value = "名称", name = "text")
     private String text;
 
-    @ApiModelProperty(value = "专题链接", name = "url")
+    @ApiModelProperty(value = "链接", name = "url")
     private String url;
 }

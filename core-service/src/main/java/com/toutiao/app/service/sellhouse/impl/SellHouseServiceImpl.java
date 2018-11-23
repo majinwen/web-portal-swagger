@@ -920,20 +920,20 @@ public class SellHouseServiceImpl implements SellHouseService{
                 houseLableList.add(houseLable2);
                 sellHousesSearchDo.setHouseLableList(houseLableList);
                 //设置房源专题
-                List<SellHouseSubject> sellHouseSubjectList = new ArrayList<>();
-                SellHouseSubject sellHouseSubject = new SellHouseSubject();
+                List<HouseSubject> houseSubjectList = new ArrayList<>();
+                HouseSubject sellHouseSubject = new HouseSubject();
                 sellHouseSubject.setText("长宁大豪宅社区主力户型");
                 sellHouseSubject.setUrl("http://www.baidu.com");
-                sellHouseSubjectList.add(sellHouseSubject);
-                SellHouseSubject sellHouseSubject1 = new SellHouseSubject();
-                sellHouseSubject1.setText("总价低于商圈同户型29.53万");
-                sellHouseSubject1.setUrl("http://www.baidu.com");
-                sellHouseSubjectList.add(sellHouseSubject1);
-                SellHouseSubject sellHouseSubject2 = new SellHouseSubject();
+                houseSubjectList.add(sellHouseSubject);
+                HouseSubject houseSubject1 = new HouseSubject();
+                houseSubject1.setText("总价低于商圈同户型29.53万");
+                houseSubject1.setUrl("http://www.baidu.com");
+                houseSubjectList.add(houseSubject1);
+                HouseSubject sellHouseSubject2 = new HouseSubject();
                 sellHouseSubject2.setText("降5万");
                 sellHouseSubject2.setUrl("http://www.baidu.com");
-                sellHouseSubjectList.add(sellHouseSubject2);
-                sellHousesSearchDo.setSellHouseSubjectList(sellHouseSubjectList);
+                houseSubjectList.add(sellHouseSubject2);
+                sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
