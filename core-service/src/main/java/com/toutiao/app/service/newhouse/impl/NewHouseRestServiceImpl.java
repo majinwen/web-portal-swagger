@@ -197,8 +197,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = newHouseDoQuery.getSubwayLineId().toString();
         }
         //地铁站id
-        if (newHouseDoQuery.getSubwayStationId() != null && newHouseDoQuery.getSubwayStationId() != 0) {
-            booleanQueryBuilder.must(termsQuery("subway_station_id", new int[]{newHouseDoQuery.getSubwayStationId()}));
+        if (newHouseDoQuery.getSubwayStationId() != null) {
+            booleanQueryBuilder.must(termsQuery("subway_station_id", newHouseDoQuery.getSubwayStationId()));
             keys = keys + "$" + newHouseDoQuery.getSubwayStationId().toString();
         }
         //总价

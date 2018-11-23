@@ -663,7 +663,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
         //商圈
         if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId())) {
-            boolQueryBuilder.must(termQuery("area_id", rentHouseDoQuery.getAreaId()));
+            boolQueryBuilder.must(termsQuery("area_id", rentHouseDoQuery.getAreaId()));
         }
         //地铁线id
         if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId())) {
