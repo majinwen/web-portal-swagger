@@ -383,8 +383,8 @@ public class SellHousesSearchDo {
     @ApiModelProperty(value = "公司图标", name = "companyIcon")
     private String companyIcon;
 
-    @ApiModelProperty(value = "标签列表", name = "sellHouseLableList")
-    private List<SellHouseLable> sellHouseLableList;
+    @ApiModelProperty(value = "标签列表", name = "houseLableList")
+    private List<HouseLable> houseLableList;
 
     @ApiModelProperty(value = "专题列表", name = "sellHouseSubjectList")
     private List<SellHouseSubject> sellHouseSubjectList;
