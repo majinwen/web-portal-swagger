@@ -63,7 +63,7 @@ public interface RentRestApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/rent/getRentHouseSearchList",
             produces = { "application/json" },
-            method = RequestMethod.GET)
+            method = {RequestMethod.GET,RequestMethod.POST})
     ResponseEntity<RentDetailFewResponseList> getRentHouseSearchList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
