@@ -1,10 +1,13 @@
 package com.toutiao.appV2.model.rent;
 
+import java.util.Map;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
+
+import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 
@@ -14,485 +17,143 @@ import javax.validation.Valid;
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T07:33:42.688Z")
 
+@Data
 public class RentDetailFewResponse   {
-  @JsonProperty("areaName")
-  private String areaName = null;
-
-  @JsonProperty("districtName")
-  private String districtName = null;
-
-  @JsonProperty("forward")
-  private String forward = null;
-
-  @JsonProperty("hall")
-  private Integer hall = null;
-
-  @JsonProperty("houseArea")
-  private Double houseArea = null;
-
-  @JsonProperty("houseDesc")
-  private String houseDesc = null;
-
-  @JsonProperty("houseId")
-  private String houseId = null;
-
-  @JsonProperty("housePhoto")
-  @Valid
-  private List<String> housePhoto = null;
-
-  @JsonProperty("houseTitleImg")
-  private String houseTitleImg = null;
-
-  @JsonProperty("rentHousePrice")
-  private Double rentHousePrice = null;
-
-  @JsonProperty("rentHouseTagsName")
-  @Valid
-  private List<String> rentHouseTagsName = null;
-
-  @JsonProperty("rentType")
-  private Integer rentType = null;
-
-  @JsonProperty("rentTypeName")
-  private String rentTypeName = null;
-
-  @JsonProperty("room")
-  private String room = null;
-
-  @JsonProperty("totalNum")
-  private Integer totalNum = null;
-
-  @JsonProperty("zufangId")
-  private Integer zufangId = null;
-
-  @JsonProperty("zufangName")
-  private String zufangName = null;
-
-  public RentDetailFewResponse areaName(String areaName) {
-    this.areaName = areaName;
-    return this;
-  }
-
   /**
-   * Get areaName
-   * @return areaName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getAreaName() {
-    return areaName;
-  }
-
-  public void setAreaName(String areaName) {
-    this.areaName = areaName;
-  }
-
-  public RentDetailFewResponse districtName(String districtName) {
-    this.districtName = districtName;
-    return this;
-  }
-
-  /**
-   * Get districtName
-   * @return districtName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getDistrictName() {
-    return districtName;
-  }
-
-  public void setDistrictName(String districtName) {
-    this.districtName = districtName;
-  }
-
-  public RentDetailFewResponse forward(String forward) {
-    this.forward = forward;
-    return this;
-  }
-
-  /**
-   * Get forward
-   * @return forward
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getForward() {
-    return forward;
-  }
-
-  public void setForward(String forward) {
-    this.forward = forward;
-  }
-
-  public RentDetailFewResponse hall(Integer hall) {
-    this.hall = hall;
-    return this;
-  }
-
-  /**
-   * Get hall
-   * @return hall
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getHall() {
-    return hall;
-  }
-
-  public void setHall(Integer hall) {
-    this.hall = hall;
-  }
-
-  public RentDetailFewResponse houseArea(Double houseArea) {
-    this.houseArea = houseArea;
-    return this;
-  }
-
-  /**
-   * Get houseArea
-   * @return houseArea
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Double getHouseArea() {
-    return houseArea;
-  }
-
-  public void setHouseArea(Double houseArea) {
-    this.houseArea = houseArea;
-  }
-
-  public RentDetailFewResponse houseDesc(String houseDesc) {
-    this.houseDesc = houseDesc;
-    return this;
-  }
-
-  /**
-   * Get houseDesc
-   * @return houseDesc
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getHouseDesc() {
-    return houseDesc;
-  }
-
-  public void setHouseDesc(String houseDesc) {
-    this.houseDesc = houseDesc;
-  }
-
-  public RentDetailFewResponse houseId(String houseId) {
-    this.houseId = houseId;
-    return this;
-  }
-
-  /**
-   * Get houseId
-   * @return houseId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getHouseId() {
-    return houseId;
-  }
-
-  public void setHouseId(String houseId) {
-    this.houseId = houseId;
-  }
-
-  public RentDetailFewResponse housePhoto(List<String> housePhoto) {
-    this.housePhoto = housePhoto;
-    return this;
-  }
-
-  public RentDetailFewResponse addHousePhotoItem(String housePhotoItem) {
-    if (this.housePhoto == null) {
-      this.housePhoto = new ArrayList<String>();
-    }
-    this.housePhoto.add(housePhotoItem);
-    return this;
-  }
-
-  /**
-   * Get housePhoto
-   * @return housePhoto
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public List<String> getHousePhoto() {
-    return housePhoto;
-  }
-
-  public void setHousePhoto(List<String> housePhoto) {
-    this.housePhoto = housePhoto;
-  }
-
-  public RentDetailFewResponse houseTitleImg(String houseTitleImg) {
-    this.houseTitleImg = houseTitleImg;
-    return this;
-  }
-
-  /**
-   * Get houseTitleImg
-   * @return houseTitleImg
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getHouseTitleImg() {
-    return houseTitleImg;
-  }
-
-  public void setHouseTitleImg(String houseTitleImg) {
-    this.houseTitleImg = houseTitleImg;
-  }
-
-  public RentDetailFewResponse rentHousePrice(Double rentHousePrice) {
-    this.rentHousePrice = rentHousePrice;
-    return this;
-  }
-
-  /**
-   * Get rentHousePrice
-   * @return rentHousePrice
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Double getRentHousePrice() {
-    return rentHousePrice;
-  }
-
-  public void setRentHousePrice(Double rentHousePrice) {
-    this.rentHousePrice = rentHousePrice;
-  }
-
-  public RentDetailFewResponse rentHouseTagsName(List<String> rentHouseTagsName) {
-    this.rentHouseTagsName = rentHouseTagsName;
-    return this;
-  }
-
-  public RentDetailFewResponse addRentHouseTagsNameItem(String rentHouseTagsNameItem) {
-    if (this.rentHouseTagsName == null) {
-      this.rentHouseTagsName = new ArrayList<String>();
-    }
-    this.rentHouseTagsName.add(rentHouseTagsNameItem);
-    return this;
-  }
-
-  /**
-   * Get rentHouseTagsName
-   * @return rentHouseTagsName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public List<String> getRentHouseTagsName() {
-    return rentHouseTagsName;
-  }
-
-  public void setRentHouseTagsName(List<String> rentHouseTagsName) {
-    this.rentHouseTagsName = rentHouseTagsName;
-  }
-
-  public RentDetailFewResponse rentType(Integer rentType) {
-    this.rentType = rentType;
-    return this;
-  }
-
-  /**
-   * Get rentType
-   * @return rentType
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getRentType() {
-    return rentType;
-  }
-
-  public void setRentType(Integer rentType) {
-    this.rentType = rentType;
-  }
-
-  public RentDetailFewResponse rentTypeName(String rentTypeName) {
-    this.rentTypeName = rentTypeName;
-    return this;
-  }
-
-  /**
-   * Get rentTypeName
-   * @return rentTypeName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getRentTypeName() {
-    return rentTypeName;
-  }
-
-  public void setRentTypeName(String rentTypeName) {
-    this.rentTypeName = rentTypeName;
-  }
-
-  public RentDetailFewResponse room(String room) {
-    this.room = room;
-    return this;
-  }
-
-  /**
-   * Get room
-   * @return room
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getRoom() {
-    return room;
-  }
-
-  public void setRoom(String room) {
-    this.room = room;
-  }
-
-  public RentDetailFewResponse totalNum(Integer totalNum) {
-    this.totalNum = totalNum;
-    return this;
-  }
-
-  /**
-   * Get totalNum
-   * @return totalNum
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getTotalNum() {
-    return totalNum;
-  }
-
-  public void setTotalNum(Integer totalNum) {
-    this.totalNum = totalNum;
-  }
-
-  public RentDetailFewResponse zufangId(Integer zufangId) {
-    this.zufangId = zufangId;
-    return this;
-  }
-
-  /**
-   * Get zufangId
-   * @return zufangId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getZufangId() {
-    return zufangId;
-  }
-
-  public void setZufangId(Integer zufangId) {
-    this.zufangId = zufangId;
-  }
-
-  public RentDetailFewResponse zufangName(String zufangName) {
-    this.zufangName = zufangName;
-    return this;
-  }
-
-  /**
-   * Get zufangName
-   * @return zufangName
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public String getZufangName() {
-    return zufangName;
-  }
-
-  public void setZufangName(String zufangName) {
-    this.zufangName = zufangName;
-  }
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    RentDetailFewResponse rentDetailFewResponse = (RentDetailFewResponse) o;
-    return Objects.equals(this.areaName, rentDetailFewResponse.areaName) &&
-        Objects.equals(this.districtName, rentDetailFewResponse.districtName) &&
-        Objects.equals(this.forward, rentDetailFewResponse.forward) &&
-        Objects.equals(this.hall, rentDetailFewResponse.hall) &&
-        Objects.equals(this.houseArea, rentDetailFewResponse.houseArea) &&
-        Objects.equals(this.houseDesc, rentDetailFewResponse.houseDesc) &&
-        Objects.equals(this.houseId, rentDetailFewResponse.houseId) &&
-        Objects.equals(this.housePhoto, rentDetailFewResponse.housePhoto) &&
-        Objects.equals(this.houseTitleImg, rentDetailFewResponse.houseTitleImg) &&
-        Objects.equals(this.rentHousePrice, rentDetailFewResponse.rentHousePrice) &&
-        Objects.equals(this.rentHouseTagsName, rentDetailFewResponse.rentHouseTagsName) &&
-        Objects.equals(this.rentType, rentDetailFewResponse.rentType) &&
-        Objects.equals(this.rentTypeName, rentDetailFewResponse.rentTypeName) &&
-        Objects.equals(this.room, rentDetailFewResponse.room) &&
-        Objects.equals(this.totalNum, rentDetailFewResponse.totalNum) &&
-        Objects.equals(this.zufangId, rentDetailFewResponse.zufangId) &&
-        Objects.equals(this.zufangName, rentDetailFewResponse.zufangName);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(areaName, districtName, forward, hall, houseArea, houseDesc, houseId, housePhoto, houseTitleImg, rentHousePrice, rentHouseTagsName, rentType, rentTypeName, room, totalNum, zufangId, zufangName);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class RentDetailFewResponse {\n");
-    
-    sb.append("    areaName: ").append(toIndentedString(areaName)).append("\n");
-    sb.append("    districtName: ").append(toIndentedString(districtName)).append("\n");
-    sb.append("    forward: ").append(toIndentedString(forward)).append("\n");
-    sb.append("    hall: ").append(toIndentedString(hall)).append("\n");
-    sb.append("    houseArea: ").append(toIndentedString(houseArea)).append("\n");
-    sb.append("    houseDesc: ").append(toIndentedString(houseDesc)).append("\n");
-    sb.append("    houseId: ").append(toIndentedString(houseId)).append("\n");
-    sb.append("    housePhoto: ").append(toIndentedString(housePhoto)).append("\n");
-    sb.append("    houseTitleImg: ").append(toIndentedString(houseTitleImg)).append("\n");
-    sb.append("    rentHousePrice: ").append(toIndentedString(rentHousePrice)).append("\n");
-    sb.append("    rentHouseTagsName: ").append(toIndentedString(rentHouseTagsName)).append("\n");
-    sb.append("    rentType: ").append(toIndentedString(rentType)).append("\n");
-    sb.append("    rentTypeName: ").append(toIndentedString(rentTypeName)).append("\n");
-    sb.append("    room: ").append(toIndentedString(room)).append("\n");
-    sb.append("    totalNum: ").append(toIndentedString(totalNum)).append("\n");
-    sb.append("    zufangId: ").append(toIndentedString(zufangId)).append("\n");
-    sb.append("    zufangName: ").append(toIndentedString(zufangName)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
+   * 出租房源Id
    */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
+  @ApiModelProperty("出租房源Id")
+  private String houseId;
+  /**
+   * 小区Id
+   */
+  @ApiModelProperty("小区Id")
+  private Integer zufangId;
+  /**
+   * 小区名称
+   */
+  @ApiModelProperty("小区名称")
+  private String zufangName;
+  /**
+   * 房源面积
+   */
+  @ApiModelProperty("房源面积")
+  private Double houseArea;
+  /**
+   * 几室
+   */
+  @ApiModelProperty("几室")
+  private String room;
+  /**
+   * 几厅
+   */
+  @ApiModelProperty("几厅")
+  private Integer hall;
+  /**
+   * 朝向ID（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）
+   */
+  @ApiModelProperty("朝向ID（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）")
+  private String forward;
+  /**
+   * 商圈名称
+   */
+  @ApiModelProperty("商圈名称")
+  private String areaName;
+  /**
+   * 区域名称
+   */
+  @ApiModelProperty("区域名称")
+  private String districtName;
+  /**
+   * 租赁方式名称
+   */
+  @ApiModelProperty("租赁方式名称")
+  private String rentTypeName;
+  /**
+   * 出租房源标签名称
+   */
+  @ApiModelProperty("出租房源标签名称")
+  private String[] rentHouseTagsName;
+  /**
+   * 租金(元/月)
+   */
+  @ApiModelProperty("租金(元/月)")
+  private Double rentHousePrice;
+  /**
+   * 总数
+   */
+  @ApiModelProperty("总数")
+  private Integer totalNum;
+  /**
+   * 房源标题图
+   */
+  @ApiModelProperty("房源标题图")
+  private String houseTitleImg;
+  /**
+   * 录入/导入房源标题
+   */
+  @ApiModelProperty("录入/导入房源标题")
+  private String houseTitle;
+  /**
+   * 房源来源类型(录入/导入)
+   */
+  @ApiModelProperty("房源来源类型(录入/导入)")
+  private Integer rentHouseType;
+  /**
+   * 租房推优查询uid
+   */
+  @ApiModelProperty("租房推优查询uid")
+  private String uid;
+
+  private AgentBaseDo agentBaseDo;
+
+  private Integer userId;
+  /**
+   * 最近的地铁
+   */
+  @ApiModelProperty("最近的地铁")
+  private String nearestSubway;
+  /**
+   * 车位配比
+   */
+  @ApiModelProperty("车位配比")
+  private String parkRatio;
+  /**
+   * 出租类型
+   */
+  @ApiModelProperty("出租类型(1整租2合租)")
+  private  Integer rentType;
+  /**
+   * 地铁信息
+   */
+  private Map<String,String> nearbySubway;
+  /**
+   * 地铁到房子间的距离
+   */
+  @ApiModelProperty("地铁到房子间的距离")
+  private  String subwayDistanceInfo;
+  /**
+   * 房源图片
+   */
+  @ApiModelProperty("房源图片")
+  private String[] housePhoto;
+  /**
+   * 房源描述
+   */
+  @ApiModelProperty("房源描述")
+  private String houseDesc;
+  /**
+   * 入库时间
+   */
+  @ApiModelProperty("入库时间")
+  private String createTime;
+  /**
+   * 是否显示默认图片标志
+   */
+  @ApiModelProperty("是否显示默认图片标志")
+  private Integer isDefaultImage = 0;
+
+  @ApiModelProperty("附近距离xxkm")
+  private String nearbyDistance;
 }
 

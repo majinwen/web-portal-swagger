@@ -111,8 +111,7 @@ public class RentHouseRequest   {
   private Integer subwayStationId = null;
 
   @JsonProperty("uid")
-  @NotEmpty(groups = {First.class},message = "缺少查询uid")
-  @ApiParam(value = "租房推优查询uid", required = true)
+  @ApiParam(value = "租房推优查询uid")
   private String uid = null;
 
   public RentHouseRequest areaId(Integer areaId) {

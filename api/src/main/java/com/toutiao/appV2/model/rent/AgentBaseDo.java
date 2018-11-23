@@ -17,21 +17,27 @@ import javax.validation.constraints.*;
 
 public class AgentBaseDo   {
   @JsonProperty("agentBusinessCard")
+  @ApiModelProperty("经纪人信息卡")
   private String agentBusinessCard = null;
 
   @JsonProperty("agentCompany")
+  @ApiModelProperty("经纪人所属公司")
   private String agentCompany = null;
 
   @JsonProperty("agentName")
+  @ApiModelProperty("经纪人姓名")
   private String agentName = null;
 
   @JsonProperty("displayPhone")
+  @ApiModelProperty("经纪人电话")
   private String displayPhone = null;
 
   @JsonProperty("headPhoto")
+  @ApiModelProperty("经纪人头像")
   private String headPhoto = null;
 
   @JsonProperty("rcToken")
+  @ApiModelProperty("融云ID")
   private String rcToken = null;
 
   @JsonProperty("userId")

@@ -168,69 +168,29 @@ public class PlotApiController implements PlotApi {
     }
 
     @Override
-    public ResponseEntity<PlotListResponse> getPlotListByRequirement(@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<Integer>> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) Optional<List<Integer>> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) Optional<List<Integer>> labelId, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Optional<Double> beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Optional<Double> endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) Optional<String> houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Optional<Integer> districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) Optional<Integer> areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Optional<Integer> subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) Optional<Integer> subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) Optional<String> keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Optional<Integer> pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Optional<Integer> cityId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Optional<Double> lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Optional<Double> lon, @ApiParam(value = "") @Valid @RequestParam(value = "isTop", required = false) Optional<Integer> isTop, @ApiParam(value = "") @Valid @RequestParam(value = "distance", required = false) Optional<Double> distance) {
+    public ResponseEntity<PlotListResponse> getPlotListByRequirement(@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) List<Integer> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) List<Integer> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) List<Integer> labelId, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Double beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Double endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Double beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Double endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) String houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Integer districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) Integer areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Integer subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) Integer subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) String keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Integer cityId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Double lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Double lon, @ApiParam(value = "") @Valid @RequestParam(value = "isTop", required = false) Integer isTop, @ApiParam(value = "") @Valid @RequestParam(value = "distance", required = false) Double distance) {
 
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
-        if (!isTop.equals(Optional.empty())) {
-            plotListDoQuery.setIsTop(isTop.get());
-        }
-        if (!distance.equals(Optional.empty())) {
-            plotListDoQuery.setDistance(distance.get());
-        }
-        if (!lat.equals(Optional.empty())) {
-            plotListDoQuery.setLat(lat.get());
-        }
-        if (!lon.equals(Optional.empty())) {
-            plotListDoQuery.setLon(lon.get());
-        }
-        if (!areaId.equals(Optional.empty())) {
-            plotListDoQuery.setAreaId(areaId.get());
-        }
-        if (!beginArea.equals(Optional.empty())) {
-            plotListDoQuery.setBeginArea(beginArea.get());
-        }
-        if (!beginPrice.equals(Optional.empty())) {
-            plotListDoQuery.setBeginPrice(beginPrice.get());
-        }
-        if (!cityId.equals(Optional.empty())) {
-            plotListDoQuery.setCityId(cityId.get());
-        }
-        if (!districtId.equals(Optional.empty())) {
-            plotListDoQuery.setDistrictId(districtId.get());
-        }
-        if (!endArea.equals(Optional.empty())) {
-            plotListDoQuery.setEndArea(endArea.get());
-        }
-        if (!endPrice.equals(Optional.empty())) {
-            plotListDoQuery.setEndPrice(endPrice.get());
-        }
-        if (!forwardId.equals(Optional.empty())) {
-            plotListDoQuery.setForwardId((Integer[]) forwardId.get().toArray());
-        }
-        if (!houseYearId.equals(Optional.empty())) {
-            plotListDoQuery.setHouseYearId(houseYearId.get());
-        }
-        if (!keyword.equals(Optional.empty())) {
-            plotListDoQuery.setKeyword(keyword.get());
-        }
-        if (!labelId.equals(Optional.empty())) {
-            plotListDoQuery.setLabelId((Integer[]) labelId.get().toArray());
-        }
-        if (!layoutId.equals(Optional.empty())) {
-            plotListDoQuery.setLayoutId((Integer[]) layoutId.get().toArray());
-        }
-        if (!pageNum.equals(Optional.empty())) {
-            plotListDoQuery.setPageNum(pageNum.get());
-        }
-        if (!pageSize.equals(Optional.empty())) {
-            plotListDoQuery.setPageSize(pageSize.get());
-        }
-        if (!subwayLineId.equals(Optional.empty())) {
-            plotListDoQuery.setSubwayLineId(subwayLineId.get());
-        }
-        if (!subwayStationId.equals(Optional.empty())) {
-            plotListDoQuery.setSubwayStationId(subwayStationId.get());
-        }
+        plotListDoQuery.setIsTop(isTop);
+        plotListDoQuery.setDistance(distance);
+        plotListDoQuery.setLat(lat);
+        plotListDoQuery.setLon(lon);
+        plotListDoQuery.setAreaId(areaId);
+        plotListDoQuery.setBeginArea(beginArea);
+        plotListDoQuery.setBeginPrice(beginPrice);
+        plotListDoQuery.setCityId(cityId);
+        plotListDoQuery.setDistrictId(districtId);
+        plotListDoQuery.setEndArea(endArea);
+        plotListDoQuery.setEndPrice(endPrice);
+        plotListDoQuery.setForwardId((Integer[]) forwardId.toArray());
+        plotListDoQuery.setHouseYearId(houseYearId);
+        plotListDoQuery.setKeyword(keyword);
+        plotListDoQuery.setLabelId((Integer[]) labelId.toArray());
+        plotListDoQuery.setLayoutId((Integer[]) layoutId.toArray());
+        plotListDoQuery.setPageNum(pageNum);
+        plotListDoQuery.setPageSize(pageSize);
+        plotListDoQuery.setSubwayLineId(subwayLineId);
+        plotListDoQuery.setSubwayStationId(subwayStationId);
 
         PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
         return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
@@ -305,12 +265,12 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<SearchHotProjDomain> getHotPlotByCityId
-            (@ApiParam(value = "houseType") @Valid @RequestParam(value = "houseType", required = false) Optional<Integer> houseType) {
+            (@ApiParam(value = "houseType") @Valid @RequestParam(value = "houseType", required = true) Integer houseType) {
         String city = "";
         if (StringTool.isNotEmpty(CityUtils.getCity())) {
             city = CityUtils.returnCityId(CityUtils.getCity()).toString();
         }
-        com.toutiao.app.domain.hotplot.SearchHotProjDomain hotPlotsByCityId = hotPlotsRestService.getHotPlotsByCityId(houseType.get(), city);
+        com.toutiao.app.domain.hotplot.SearchHotProjDomain hotPlotsByCityId = hotPlotsRestService.getHotPlotsByCityId(houseType, city);
         SearchHotProjDomain searchHotProjDomain = new SearchHotProjDomain();
         BeanUtils.copyProperties(hotPlotsByCityId, searchHotProjDomain);
         return new ResponseEntity<SearchHotProjDomain>(searchHotProjDomain, HttpStatus.OK);
@@ -318,12 +278,12 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<PlotTop50ListResponse> getTop50List
-            (@ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Optional<Integer> districtId, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Optional<Integer> pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize) {
+            (@ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Integer districtId, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
 
         PlotTop50ListDoQuery plotTop50ListDoQuery = new PlotTop50ListDoQuery();
-        plotTop50ListDoQuery.setDistrictId(districtId.get());
-        plotTop50ListDoQuery.setPageNum(pageNum.get());
-        plotTop50ListDoQuery.setPageSize(pageSize.get());
+        plotTop50ListDoQuery.setDistrictId(districtId);
+        plotTop50ListDoQuery.setPageNum(pageNum);
+        plotTop50ListDoQuery.setPageSize(pageSize);
         List<PlotTop50Do> plotTop50Dos = appPlotService.getPlotTop50List(plotTop50ListDoQuery, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotTop50Dos));
         PlotTop50ListResponse plotTop50ListResponse = new PlotTop50ListResponse();
