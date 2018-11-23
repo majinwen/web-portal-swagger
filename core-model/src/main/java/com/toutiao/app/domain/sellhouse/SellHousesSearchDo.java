@@ -395,4 +395,13 @@ public class SellHousesSearchDo {
 
     @ApiModelProperty(value = "附近距离xxkm", name = "nearbyDistance")
     private String nearbyDistance;
+
+    @ApiModelProperty(value = "公司图标", name = "companyIcon")
+    private String companyIcon;
+
+    @ApiModelProperty(value = "标签列表", name = "sellHouseLableList")
+    private List<SellHouseLable> sellHouseLableList;
+
+    @ApiModelProperty(value = "专题列表", name = "sellHouseSubjectList")
+    private List<SellHouseSubject> sellHouseSubjectList;
 }

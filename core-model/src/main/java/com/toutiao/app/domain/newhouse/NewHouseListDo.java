@@ -121,5 +121,8 @@ public class NewHouseListDo  {
     @ApiModelProperty(value = "优惠活动")
     private List<ActivityInfoDo> activityInfo;
 
+    @ApiModelProperty(value = "标签列表")
+    private List<String> labelList;
+
 
 }
