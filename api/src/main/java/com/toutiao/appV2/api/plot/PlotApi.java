@@ -46,7 +46,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotTrafficResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getAroundInfoByPlotId",
+    @RequestMapping(value = "/rest/plot/getAroundInfoByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotTrafficResponse> getAroundInfoByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId) throws InvocationTargetException, IllegalAccessException;
@@ -57,7 +57,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotEsfListResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getEsfByPlotsIdAndRoom",
+    @RequestMapping(value = "/rest/plot/getEsfByPlotsIdAndRoom",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotEsfListResponse> getEsfByPlotsIdAndRoom(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId, @ApiParam(value = "") @Valid @RequestParam(value = "room", required = false) Optional<Integer> room, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum, @ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Optional<Integer> pageSize);
@@ -68,7 +68,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = NearbyPlotsListResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getNearbyPlotsList",
+    @RequestMapping(value = "/rest/plot/getNearbyPlotsList",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<NearbyPlotsListResponse> getNearbyPlotsList(@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<Integer>> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) Optional<List<Integer>> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) Optional<List<Integer>> labelId, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Optional<Double> beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Optional<Double> endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) Optional<String> houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Optional<Integer> districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) Optional<Integer> areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Optional<Integer> subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) Optional<Integer> subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) Optional<String> keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Optional<Integer> pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Optional<Integer> cityId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Optional<Double> lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Optional<Double> lon, @ApiParam(value = "") @Valid @RequestParam(value = "distance", required = false) Optional<String> distance);
@@ -79,7 +79,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotDetailsFewListResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getAroundPlotByLocation",
+    @RequestMapping(value = "/rest/plot/getAroundPlotByLocation",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotDetailsFewListResponse> getPlotAroundByLocation(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Optional<Double> lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Optional<Double> lon);
@@ -90,7 +90,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotDetailsFewListResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getPlotByRecommendCondition",
+    @RequestMapping(value = "/rest/plot/getPlotByRecommendCondition",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotDetailsFewListResponse> getPlotByRecommendCondition(@ApiParam(value = "") @Valid @RequestParam(value = "districtId", required = false) Optional<List<String>> districtId, @ApiParam(value = "") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<String>> layoutId, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<Integer> userId, @ApiParam(value = "") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "") @Valid @RequestParam(value = "city", required = false) Optional<String> city, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum, @ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Optional<Integer> pageSize, @ApiParam(value = "") @Valid @RequestParam(value = "flag", required = false) Optional<Integer> flag);
@@ -101,7 +101,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotDetailsResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getPlotDetailByPlotId",
+    @RequestMapping(value = "/rest/plot/getPlotDetailByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotDetailsResponse> getPlotDetailByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId);
@@ -112,7 +112,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotListResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getPlotListByRequirement",
+    @RequestMapping(value = "/rest/plot/getPlotListByRequirement",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotListResponse> getPlotListByRequirement(@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<Integer>> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) Optional<List<Integer>> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) Optional<List<Integer>> labelId, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Optional<Double> beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Optional<Double> endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) Optional<String> houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Optional<Integer> districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) Optional<Integer> areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Optional<Integer> subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) Optional<Integer> subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) Optional<String> keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Optional<Integer> pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Optional<Integer> cityId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Optional<Double> lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Optional<Double> lon, @ApiParam(value = "") @Valid @RequestParam(value = "isTop", required = false) Optional<Integer> isTop, @ApiParam(value = "") @Valid @RequestParam(value = "distance", required = false) Optional<Double> distance);
@@ -123,7 +123,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotsEsfRoomCountResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getPlotsEsfList",
+    @RequestMapping(value = "/rest/plot/getPlotsEsfList",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotsEsfRoomCountResponse> getPlotsEsfList(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId);
@@ -134,7 +134,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotsThemeResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getPlotsTheme",
+    @RequestMapping(value = "/rest/plot/getPlotsTheme",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<Integer>> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) Optional<List<Integer>> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) Optional<List<Integer>> labelId, @ApiParam(value = "") @Valid @RequestParam(value = "districtIds", required = false) Optional<List<Integer>> districtIds, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Optional<Double> beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Optional<Double> endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) Optional<String> houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Optional<Integer> districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) Optional<Integer> areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Optional<Integer> subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) Optional<Integer> subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) Optional<String> keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Optional<Integer> pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Optional<Integer> cityId, @ApiParam(value = "") @Valid @RequestParam(value = "nearestPark", required = false) Optional<String> nearestPark, @ApiParam(value = "") @Valid @RequestParam(value = "recommendBuildTagsId", required = false) Optional<Integer> recommendBuildTagsId);
@@ -145,7 +145,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = RentDetailsListResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getRentOfPlotByPlotId",
+    @RequestMapping(value = "/rest/plot/getRentOfPlotByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<RentDetailsListResponse> getRentListByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId, @ApiParam(value = "") @Valid @RequestParam(value = "rentType", required = false) Optional<Integer> rentType, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum);
@@ -156,7 +156,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = RentNumListResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/queryRentNumByPlotId",
+    @RequestMapping(value = "/rest/plot/queryRentNumByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<RentNumListResponse> getRentNumByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId);
@@ -167,7 +167,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = SearchHotProjDomain.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getHotPlotByCityId",
+    @RequestMapping(value = "/rest/plot/getHotPlotByCityId",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<SearchHotProjDomain> getHotPlotByCityId(@ApiParam(value = "houseType") @Valid @RequestParam(value = "houseType", required = false) Optional<Integer> houseType);
@@ -178,7 +178,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = PlotTop50ListResponse.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/plot/getTop50List",
+    @RequestMapping(value = "/rest/plot/getTop50List",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotTop50ListResponse> getTop50List(@ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Optional<Integer> districtId, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Optional<Integer> pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize);
