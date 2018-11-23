@@ -84,8 +84,19 @@ public interface SellHouseRestApi {
             @ApiResponse(code = 404, message = "Not Found")})
     @RequestMapping(value = "/rest/esf/getSellHouseList",
             produces = {"application/json"},
-            method = {RequestMethod.GET,RequestMethod.POST})
-    ResponseEntity<SellHouseSearchDomainResponse> getSellHouseList(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
+            method = {RequestMethod.GET})
+    ResponseEntity<SellHouseSearchDomainResponse> getSellHouseListGet(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
+
+    @ApiOperation(value = "二手房搜索结果列表", nickname = "getSellHouseList", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SellHouseSearchDomainResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/esf/getSellHouseList",
+            produces = {"application/json"},
+            method = {RequestMethod.POST})
+    ResponseEntity<SellHouseSearchDomainResponse> getSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "逢出必抢专题页", nickname = "getBeSureToSnatchList", notes = "", response = SellHouseBeSureToSnatchResponse.class, tags = {"二手房",})
     @ApiResponses(value = {

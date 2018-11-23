@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
@@ -168,48 +169,20 @@ public class PlotApiController implements PlotApi {
     }
 
     @Override
-    public ResponseEntity<PlotListResponse> getPlotListByRequirement(@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) List<Integer> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) List<Integer> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) List<Integer> labelId, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Double beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Double endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Double beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Double endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) String houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Integer districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) Integer areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Integer subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) Integer subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) String keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Integer cityId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Double lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Double lon, @ApiParam(value = "") @Valid @RequestParam(value = "isTop", required = false) Integer isTop, @ApiParam(value = "") @Valid @RequestParam(value = "distance", required = false) Double distance) {
+    public ResponseEntity<PlotListResponse> getPlotListByRequirementGet(@ApiParam(value = "plotListRequest") @Valid PlotListRequest plotListRequest) {
 
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
-        plotListDoQuery.setIsTop(isTop);
-        plotListDoQuery.setDistance(distance);
-        if (lat != null) {
-            plotListDoQuery.setLat(lat);
-        }
-        if (lon != null) {
-            plotListDoQuery.setLon(lon);
-        }
-        plotListDoQuery.setAreaId(areaId);
-        if (beginArea != null) {
-            plotListDoQuery.setBeginArea(beginArea);
-        }
-        if (beginPrice != null) {
-            plotListDoQuery.setBeginPrice(beginPrice);
-        }
-        plotListDoQuery.setCityId(cityId);
-        plotListDoQuery.setDistrictId(districtId);
-        if (endArea != null) {
-            plotListDoQuery.setEndArea(endArea);
-        }
-        if (endPrice != null) {
-            plotListDoQuery.setEndPrice(endPrice);
-        }
-        if (forwardId != null) {
-            plotListDoQuery.setForwardId((Integer[]) forwardId.toArray());
-        }
-        plotListDoQuery.setHouseYearId(houseYearId);
-        plotListDoQuery.setKeyword(keyword);
-        if (labelId != null) {
-            plotListDoQuery.setLabelId((Integer[]) labelId.toArray());
-        }
-        if (layoutId != null) {
-            plotListDoQuery.setLayoutId((Integer[]) layoutId.toArray());
-        }
-        plotListDoQuery.setPageNum(pageNum);
-        plotListDoQuery.setPageSize(pageSize);
-        plotListDoQuery.setSubwayLineId(subwayLineId);
-        plotListDoQuery.setSubwayStationId(subwayStationId);
+        BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
+        PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
+        return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
 
+    }
+
+    @Override
+    public ResponseEntity<PlotListResponse> getPlotListByRequirementPost(@ApiParam(value = "plotListRequest") @Valid @RequestBody PlotListRequest plotListRequest) {
+
+        PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
+        BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
         PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
         return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
 
