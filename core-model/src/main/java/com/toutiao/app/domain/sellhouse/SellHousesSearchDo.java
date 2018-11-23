@@ -1,7 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
-import com.toutiao.web.common.assertUtils.ChangeName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -49,7 +48,6 @@ public class SellHousesSearchDo {
      * 标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)
      */
     @ApiModelProperty(value = "标签名称(1:近地铁 4:随时看 8:满二年 16:满五年 32:近公园)", name = "tagsName")
-    @ChangeName("tags")
     private String[] tagsName;
 
     /**
@@ -68,7 +66,6 @@ public class SellHousesSearchDo {
      * 朝向名称(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)
      */
     @ApiModelProperty(value = "朝向名称(1:东,2:西,3:南,4:北,5:东南,6:西南,7:东北,8:西北,9:东西,10:南北)", name = "forwardName")
-    @ChangeName("forward")
     private String forwardName;
 
     /**
@@ -76,14 +73,12 @@ public class SellHousesSearchDo {
      * 车位配比
      */
     @ApiModelProperty(value = "车位配比", name = "parkRadio")
-    @ChangeName("parkRatio")
     private String parkRadio;
 
     /**
      * 建成年代
      */
     @ApiModelProperty(value = "建成年代", name = "year")
-    @ChangeName("buildYears")
     private String year;
 
     /**
@@ -96,14 +91,12 @@ public class SellHousesSearchDo {
      * 地铁最近
      */
     @ApiModelProperty(value = "地铁最近", name = "traffic")
-    @ChangeName("nearBySubwayDesc")
     private  String traffic;
 
     /**
      * 楼盘名称
      */
     @ApiModelProperty(value = "楼盘名称", name = "plotNameAccurate")
-    @ChangeName("buildingName")
     private  String plotNameAccurate;
 
     /**
@@ -121,33 +114,28 @@ public class SellHousesSearchDo {
      * 地铁到房源的距离
      */
     @ApiModelProperty(value = "地铁到房源的距离", name = "subwayDistince")
-    @ChangeName("nearbyStationsDistance")
     private Map subwayDistince;
 
     /**
      * 区域
      */
     @ApiModelProperty(value = "区域", name = "area")
-    @ChangeName("districtName")
     private  String area;
     /**
      * 区域id
      */
     @ApiModelProperty(value = "区域id", name = "areaId")
-    @ChangeName("districtId")
     private  String areaId;
 
     /**
      * 商圈id
      */
     @ApiModelProperty(value = "商圈id", name = "houseBusinessNameId")
-    @ChangeName("areaId")
     private String houseBusinessNameId;
     /**
      * 商圈
      */
     @ApiModelProperty(value = "商圈", name = "houseBusinessName")
-    @ChangeName("areaName")
     private  String houseBusinessName;
 
 
@@ -161,10 +149,8 @@ public class SellHousesSearchDo {
      * 小区id
      */
     @ApiModelProperty(value = "小区id", name = "newcode")
-    @ChangeName("buildingId")
     private Integer newcode;
 
-    @ChangeName("agent")
     private AgentBaseDo agentBaseDo;
 
     /**
@@ -189,8 +175,6 @@ public class SellHousesSearchDo {
     private  String  subwayDistanceInfo;
 
     private String housePhotoTitle;
-
-//    private Integer newImport;
 
     private Integer housePhotoTitleTags = -1;
 
