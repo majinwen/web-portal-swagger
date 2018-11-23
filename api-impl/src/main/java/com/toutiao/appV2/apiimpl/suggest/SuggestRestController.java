@@ -2,8 +2,10 @@ package com.toutiao.appV2.apiimpl.suggest;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toutiao.app.api.chance.response.suggest.SuggestResultResponse;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.suggest.SearchEnginesDo;
+import com.toutiao.app.domain.suggest.SearchScopeDo;
+import com.toutiao.app.domain.suggest.SuggestListDo;
 import com.toutiao.app.domain.suggest.SuggestResultDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.search.SearchConditionService;
@@ -17,7 +19,9 @@ import com.toutiao.appV2.model.search.SearchConditionResponse;
 import com.toutiao.appV2.model.subscribe.CityAllInfoMap;
 import com.toutiao.appV2.model.subscribe.CityConditionDoList;
 import com.toutiao.appV2.model.subscribe.WapCityList;
+import com.toutiao.appV2.model.suggest.SearchEnginesResponse;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
+import com.toutiao.appV2.model.suggest.SuggestResultResponse;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.search.SearchCondition;
 import com.toutiao.web.dao.entity.subscribe.City;
@@ -34,6 +38,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -70,8 +76,52 @@ public class SuggestRestController implements SuggestRestApi {
         if (accept != null && accept.contains("")) {
             try {
                 SuggestResultDo suggestResultDo = suggestService.suggest_v2(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
-                SuggestResultResponse suggestResultResponse = JSON.parseObject(JSON.toJSONString(suggestResultDo), SuggestResultResponse.class);
-                return new ResponseEntity<SuggestResultResponse>( suggestResultResponse, HttpStatus.OK);
+                SuggestResultResponse suggestResultResponse = new SuggestResultResponse();
+                List<SearchEnginesResponse> searchEnginesResponseList = new ArrayList<>();
+                if (suggestResultDo.getSuggestResultList().size() > 0) {
+                    for (SuggestListDo suggestListDo : suggestResultDo.getSuggestResultList()) {
+                        //搜索结果无商圈信息
+                        SearchScopeDo searchScope = suggestListDo.getSearchScope();
+                        if (searchScope == null) {
+                            if (suggestListDo.getSearchEnginesList().size() > 0) {
+                                for (SearchEnginesDo searchEnginesDo : suggestListDo.getSearchEnginesList()) {
+                                    SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
+                                    BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
+                                    searchEnginesResponse.setIsArea(0);
+                                    searchEnginesResponseList.add(searchEnginesResponse);
+                                }
+                            }
+                        } else {
+
+                            SearchEnginesResponse searchScopeResponse = new SearchEnginesResponse();
+                            searchScopeResponse.setSearchName(searchScope.getSearchName());
+                            searchScopeResponse.setAreaId(searchScope.getSearchId());
+                            searchScopeResponse.setCityId(searchScope.getCityId());
+                            searchScopeResponse.setIsArea(searchScope.getLocationTypeSings());
+                            searchScopeResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
+                            searchEnginesResponseList.add(searchScopeResponse);
+                            Integer listSize = suggestListDo.getSearchEnginesList().size();
+                            if (listSize > 0) {
+                                if (listSize > 2) {
+                                    listSize = listSize - 1;
+                                }
+                                for (int i=0;i<listSize;i++)
+                                {
+                                    SearchEnginesDo searchEnginesDo = suggestListDo.getSearchEnginesList().get(i);
+                                    SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
+                                    BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
+                                    searchEnginesResponse.setIsArea(0);
+                                    searchEnginesResponseList.add(searchEnginesResponse);
+                                }
+                            }
+                        }
+                    }
+
+                }
+                suggestResultResponse.setSearchEnginesList(searchEnginesResponseList);
+                suggestResultResponse.setTotalCount(searchEnginesResponseList.size());
+                //SuggestResultResponse suggestResultResponse = JSON.parseObject(JSON.toJSONString(suggestResultDo), SuggestResultResponse.class);
+                return new ResponseEntity<SuggestResultResponse>(suggestResultResponse, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
                 return new ResponseEntity<SuggestResultResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
