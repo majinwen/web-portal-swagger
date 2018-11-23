@@ -1,4 +1,4 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
@@ -11,7 +11,7 @@ import lombok.Data;
  **/
 
 @Data
-public class RentMapFindHouseDoQuery  extends QueryDo {
+public class RentMapSearchDoQuery  extends QueryDo {
 
     /**
      * 组类型：区域district，商圈bizcircle，社区community

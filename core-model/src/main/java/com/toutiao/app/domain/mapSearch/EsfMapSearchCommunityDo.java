@@ -1,4 +1,4 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import lombok.Data;
  **/
 
 @Data
-public class EsfMapFindHouseCommunityDo {
+public class EsfMapSearchCommunityDo {
 
     /**
      * 社区名称

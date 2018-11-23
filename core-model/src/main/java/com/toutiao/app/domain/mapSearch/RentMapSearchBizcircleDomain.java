@@ -1,4 +1,4 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import lombok.Data;
 
@@ -12,7 +12,7 @@ import java.util.List;
  **/
 
 @Data
-public class RentMapFindHouseDistrictDomain {
+public class RentMapSearchBizcircleDomain {
 
     /**
      * 当前可视界面描述
@@ -22,5 +22,5 @@ public class RentMapFindHouseDistrictDomain {
     /**
      * 返回结果
      */
-    private List<RentMapFindHouseDistrictDo> data;
+    private List<RentMapSearchBizcircleDo> data;
 }

@@ -1,24 +1,25 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import lombok.Data;
 
 /**
- * @ClassName RentMapFindHouseCommunityDo
+ * @ClassName RentMapFindHouseDistrictDo
  * @Author jiangweilong
- * @Date 2018/11/23 1:22 PM
+ * @Date 2018/11/23 12:45 PM
  * @Description:
  **/
 
 @Data
-public class RentMapFindHouseCommunityDo {
+public class RentMapSearchDistrictDo {
+
 
     /**
-     * 社区名称
+     * 区域名称
      */
     private String name;
 
     /**
-     * 社区ID
+     * 区域ID
      */
     private Integer id;
 

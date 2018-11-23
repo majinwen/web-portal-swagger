@@ -1,16 +1,16 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import lombok.Data;
 
 /**
- * @ClassName RentMapFindHouseBizcircleDo
+ * @ClassName EsfMapFindHouseBizcircleDo
  * @Author jiangweilong
- * @Date 2018/11/23 1:12 PM
+ * @Date 2018/11/22 5:03 PM
  * @Description:
  **/
 
 @Data
-public class RentMapFindHouseBizcircleDo {
+public class EsfMapSearchBizcircleDo {
 
     /**
      * 商圈名称
@@ -36,9 +36,4 @@ public class RentMapFindHouseBizcircleDo {
      * 描述
      */
     private String desc;
-
-    /**
-     * 房源数量
-     */
-    private Integer count;
 }

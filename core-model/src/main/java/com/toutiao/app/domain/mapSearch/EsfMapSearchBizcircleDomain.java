@@ -1,18 +1,18 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import lombok.Data;
 
 import java.util.List;
 
 /**
- * @ClassName EsfMapFindHouseCommunityDomain
+ * @ClassName EsfMapFindHouseBizcircleDomain
  * @Author jiangweilong
- * @Date 2018/11/22 9:34 PM
+ * @Date 2018/11/22 9:25 PM
  * @Description:
  **/
 
 @Data
-public class EsfMapFindHouseCommunityDomain {
+public class EsfMapSearchBizcircleDomain {
 
     /**
      * 当前可视界面描述
@@ -22,5 +22,5 @@ public class EsfMapFindHouseCommunityDomain {
     /**
      * 返回数据
      */
-    private List<EsfMapFindHouseCommunityDo> data;
+    private List<EsfMapSearchBizcircleDo> data;
 }

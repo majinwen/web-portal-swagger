@@ -1,20 +1,20 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 /**
- * @ClassName NewHouseMapFindHouseDoQuery
+ * @ClassName esfMapFindHouseDo
  * @Author jiangweilong
- * @Date 2018/11/22 9:37 PM
+ * @Date 2018/11/22 2:11 PM
  * @Description:
  **/
 
 @Data
-public class NewHouseMapFindHouseDoQuery extends QueryDo {
+public class EsfMapSearchDoQuery extends QueryDo {
 
     /**
-     * 组类型：区域district，社区community
+     * 组类型：区域district，商圈bizcircle，社区community
      */
     private String groupType;
 
@@ -39,8 +39,25 @@ public class NewHouseMapFindHouseDoQuery extends QueryDo {
     private Double minLatitude;
 
     /**
-     * 销售状态
+     * 附近 1000 2000 3000
      */
-    private  Integer[] saleStatusId;
+    private Integer distance;
+
+    /**
+     * 定位坐标 纬度
+     */
+    private Double lat;
+    /**
+     * 定位坐标 经度
+     */
+    private Double lon;
+
+
+
+
+
+
+
+
 
 }

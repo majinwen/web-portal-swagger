@@ -1,26 +1,24 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import lombok.Data;
 
 /**
- * @ClassName NewHouseMapFindHouseDistrictDo
+ * @ClassName RentMapFindHouseCommunityDo
  * @Author jiangweilong
- * @Date 2018/11/22 9:55 PM
+ * @Date 2018/11/23 1:22 PM
  * @Description:
  **/
 
-
 @Data
-public class NewHouseMapFindHouseDistrictDo {
-
+public class RentMapSearchCommunityDo {
 
     /**
-     * 区域名称
+     * 社区名称
      */
     private String name;
 
     /**
-     * 区域ID
+     * 社区ID
      */
     private Integer id;
 
@@ -35,8 +33,12 @@ public class NewHouseMapFindHouseDistrictDo {
     private Double longitude;
 
     /**
-     * 楼盘数量
+     * 描述
      */
-    private String count;
+    private String desc;
 
+    /**
+     * 房源数量
+     */
+    private Integer count;
 }

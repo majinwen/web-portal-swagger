@@ -1,4 +1,4 @@
-package com.toutiao.app.domain.mapfindhouse;
+package com.toutiao.app.domain.mapSearch;
 
 import lombok.Data;
 
@@ -12,12 +12,12 @@ import java.util.List;
  **/
 
 @Data
-public class NewHouseMapFindHouseBuildDomain {
+public class NewHouseMapSearchBuildDomain {
 
 
     /**
      * 返回结果
      */
-    private List<NewHouseMapFindHouseBuildDo> buildDoList;
+    private List<NewHouseMapSearchBuildDo> buildDoList;
 
 }
