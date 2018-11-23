@@ -14,7 +14,7 @@ import lombok.Data;
 public class NewHouseMapFindHouseDoQuery extends QueryDo {
 
     /**
-     * 组类型：区域district，商圈bizcircle，社区community
+     * 组类型：区域district，社区community
      */
     private String groupType;
 
