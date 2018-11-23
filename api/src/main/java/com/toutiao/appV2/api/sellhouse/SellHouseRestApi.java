@@ -109,5 +109,16 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult);
 
+    @ApiOperation(value = "猜你喜欢:二手房列表", nickname = "getGuessList", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SellHouseSearchDomainResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/esf/getGuessList",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<SellHouseSearchDomainResponse> getGuessList(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
+
 
 }

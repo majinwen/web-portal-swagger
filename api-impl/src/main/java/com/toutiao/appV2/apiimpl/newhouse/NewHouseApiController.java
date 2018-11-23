@@ -228,4 +228,14 @@ public class NewHouseApiController implements NewHouseApi {
         stringDataResponse.setData("保存成功");
         return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<NewHouseListDomainResponse> getGuessList(NewHouseListRequest newHouseListRequest) {
+        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
+        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
+        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
+        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
+        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
+    }
 }
