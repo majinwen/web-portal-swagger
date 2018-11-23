@@ -21,6 +21,7 @@ import com.toutiao.appV2.model.suggest.SuggestRequest;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.search.SearchCondition;
 import com.toutiao.web.dao.entity.subscribe.City;
+import com.toutiao.web.dao.entity.subscribe.WapCity;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -137,7 +139,9 @@ public class SuggestRestController implements SuggestRestApi {
     @Override
     public ResponseEntity<WapCityList> getWapCity() {
         WapCityList wapCityList = new WapCityList();
-        wapCityList.setWapCityList(cityService.selectWapCity());
+        List<WapCity> wapCities = cityService.selectWapCity();
+        wapCityList.setWapCityList(wapCities);
+        wapCityList.setTotal(wapCities.size());
         return new ResponseEntity<WapCityList>(wapCityList, HttpStatus.OK);
     }
 
