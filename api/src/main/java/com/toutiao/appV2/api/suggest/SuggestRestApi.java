@@ -1,12 +1,9 @@
 package com.toutiao.appV2.api.suggest;
 
-import com.toutiao.app.api.chance.response.suggest.SuggestListResponse;
-import com.toutiao.app.api.chance.response.suggest.SuggestResultResponse;
 import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
-import com.toutiao.appV2.model.search.SearchConditionResponse;
 import com.toutiao.appV2.model.subscribe.CityAllInfoMap;
 import com.toutiao.appV2.model.subscribe.CityConditionDoList;
 import com.toutiao.appV2.model.subscribe.WapCityList;
