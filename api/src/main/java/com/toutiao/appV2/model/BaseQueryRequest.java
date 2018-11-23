@@ -36,13 +36,13 @@ public class BaseQueryRequest {
     private Integer districtId;
 
     @ApiModelProperty(value = "商圈id", name = "areaId")
-    private Integer areaId;
+    private Integer[] areaId;
 
     @ApiModelProperty(value = "地铁线Id", name = "subwayLineId")
     private Integer subwayLineId;
 
     @ApiModelProperty(value = "地铁站id", name = "subwayStationId")
-    private Integer subwayStationId;
+    private Integer[] subwayStationId;
 
     @ApiModelProperty(value = "关键字", name = "keyword")
     private String keyword;

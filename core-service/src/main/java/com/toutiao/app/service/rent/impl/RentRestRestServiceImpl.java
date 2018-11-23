@@ -671,7 +671,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
         //地铁站id
         if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId())) {
-            boolQueryBuilder.must(termsQuery("subway_station_id", new int[]{rentHouseDoQuery.getSubwayStationId()}));
+            boolQueryBuilder.must(termsQuery("subway_station_id", rentHouseDoQuery.getSubwayStationId()));
         }
         //租金
         if (rentHouseDoQuery.getBeginPrice() != 0 && rentHouseDoQuery.getEndPrice() != 0) {

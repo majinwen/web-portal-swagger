@@ -20,7 +20,7 @@ import org.springframework.validation.annotation.Validated;
 public class RentHouseRequest   {
   @JsonProperty("areaId")
   @ApiParam("商圈id")
-  private Integer areaId = null;
+  private Integer[] areaId = null;
 
   @JsonProperty("beginArea")
   @ApiParam("起始面积")
@@ -108,13 +108,13 @@ public class RentHouseRequest   {
 
   @JsonProperty("subwayStationId")
   @ApiParam("地铁站id")
-  private Integer subwayStationId = null;
+  private Integer[] subwayStationId = null;
 
   @JsonProperty("uid")
   @ApiParam(value = "租房推优查询uid")
   private String uid = null;
 
-  public RentHouseRequest areaId(Integer areaId) {
+  public RentHouseRequest areaId(Integer[] areaId) {
     this.areaId = areaId;
     return this;
   }
@@ -126,11 +126,11 @@ public class RentHouseRequest   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getAreaId() {
+  public Integer[] getAreaId() {
     return areaId;
   }
 
-  public void setAreaId(Integer areaId) {
+  public void setAreaId(Integer[] areaId) {
     this.areaId = areaId;
   }
 
@@ -578,7 +578,7 @@ public class RentHouseRequest   {
     this.subwayLineId = subwayLineId;
   }
 
-  public RentHouseRequest subwayStationId(Integer subwayStationId) {
+  public RentHouseRequest subwayStationId(Integer[] subwayStationId) {
     this.subwayStationId = subwayStationId;
     return this;
   }
@@ -590,11 +590,11 @@ public class RentHouseRequest   {
   @ApiModelProperty(value = "")
 
 
-  public Integer getSubwayStationId() {
+  public Integer[] getSubwayStationId() {
     return subwayStationId;
   }
 
-  public void setSubwayStationId(Integer subwayStationId) {
+  public void setSubwayStationId(Integer[] subwayStationId) {
     this.subwayStationId = subwayStationId;
   }
 
