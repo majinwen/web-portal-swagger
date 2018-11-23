@@ -1,4 +1,4 @@
-package com.toutiao.app.api.chance.request.newhouse;
+package com.toutiao.appV2.model.newhouse;
 
 
 import com.toutiao.web.common.assertUtils.First;

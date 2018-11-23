@@ -28,6 +28,7 @@ import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
@@ -908,14 +909,31 @@ public class SellHouseServiceImpl implements SellHouseService{
                 {
                     keys+=sellHouseDoQuery.getSubwayLineId().toString();
                 }
-                if (null!=sellHouseDoQuery.getSubwayStationId())
-                {
-                    keys+= "$"+sellHouseDoQuery.getSubwayStationId();
+//                if (null!=sellHouseDoQuery.getSubwayStationId())
+//                {
+//                    keys+= "$"+sellHouseDoQuery.getSubwayStationId();
+//                }
+//                if (!"".equals(keys) && null!=sellHousesSearchDo.getSubwayDistince())
+//                {
+//                    sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
+//                }
+                if (null!=sellHouseDoQuery.getSubwayStationId()){
+                    Map<Integer,String> map = new HashMap<>();
+                    List<Integer> sortDistance = new ArrayList<>();
+                    for(int i=0; i<sellHouseDoQuery.getSubwayStationId().length; i++){
+                        String stationKey = keys+"$"+sellHouseDoQuery.getSubwayStationId()[i];
+                        if(StringTool.isNotEmpty(sellHousesSearchDo.getSubwayDistince().get(stationKey))){
+                            String stationValue = sellHousesSearchDo.getSubwayDistince().get(stationKey).toString();
+                            String[] stationValueSplit = stationValue.split("\\$");
+                            Integer distance = Integer.valueOf(stationValueSplit[2]);
+                            sortDistance.add(distance);
+                            map.put(distance,stationKey);
+                        }
+                    }
+                    Integer minDistance = Collections.min(sortDistance);
+                    sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(map.get(minDistance)).toString());
                 }
-                if (!"".equals(keys) && null!=sellHousesSearchDo.getSubwayDistince())
-                {
-                    sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
-                }
+
 
             }
             sellHouseSearchDomain.setData(sellHousesSearchDos);

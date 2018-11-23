@@ -1,4 +1,4 @@
-package com.toutiao.app.api.chance.request.newhouse;
+package com.toutiao.appV2.model.newhouse;
 
 import lombok.Data;
 

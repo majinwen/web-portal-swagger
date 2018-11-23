@@ -37,10 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -199,7 +196,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         //地铁站id
         if (newHouseDoQuery.getSubwayStationId() != null) {
             booleanQueryBuilder.must(termsQuery("subway_station_id", newHouseDoQuery.getSubwayStationId()));
-            keys = keys + "$" + newHouseDoQuery.getSubwayStationId().toString();
         }
         //总价
         if (newHouseDoQuery.getBeginPrice() != 0 && newHouseDoQuery.getEndPrice() != 0) {
@@ -293,9 +289,25 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 String details = "";
                 details = searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
-                if ("" != keys && null != newHouseListDos.getNearbysubway()) {
-                    newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
+                if (null != newHouseDoQuery.getSubwayStationId()) {
+                    Map<Integer,String> map = new HashMap<>();
+                    List<Integer> sortDistance = new ArrayList<>();
+                    for (int i=0; i<newHouseDoQuery.getSubwayStationId().length; i++) {
+                        String stationKey = keys+"$"+newHouseDoQuery.getSubwayStationId()[i];
+                        if (StringTool.isNotEmpty(newHouseListDos.getNearbysubway().get(stationKey))) {
+                            String stationValue = newHouseListDos.getNearbysubway().get(stationKey).toString();
+                            String[] stationValueSplit = stationValue.split("\\$");
+                            Integer distance = Integer.valueOf(stationValueSplit[2]);
+                            sortDistance.add(distance);
+                            map.put(distance,stationKey);
+                        }
+                    }
+                    Integer minDistance = Collections.min(sortDistance);
+                    newHouseListDos.setSubwayDistanceInfo(newHouseListDos.getNearbysubway().get(map.get(minDistance)).toString());
                 }
+//                if ("" != keys && null != newHouseListDos.getNearbysubway()) {
+//                    newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
+//                }
                 try {
                     //获取新房下户型的数量
                     NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(), city);
