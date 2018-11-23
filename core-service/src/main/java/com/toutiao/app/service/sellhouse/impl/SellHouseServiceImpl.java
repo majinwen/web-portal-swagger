@@ -901,6 +901,40 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
+
+                //设置房源公司图标
+                sellHousesSearchDo.setCompanyIcon("http://wap-qn.bidewu.com/wap/5i5j.png");
+                //设置房源标签
+                List<HouseLable> houseLableList= new ArrayList<>();
+                HouseLable houseLable = new HouseLable();
+                houseLable.setText("捡漏");
+                houseLable.setIcon("http://wap-qn.bidewu.com/wap/jl.png");
+                houseLableList.add(houseLable);
+                HouseLable houseLable1 = new HouseLable();
+                houseLable1.setText("降价");
+                houseLable1.setIcon("http://wap-qn.bidewu.com/wap/jj.png");
+                houseLableList.add(houseLable1);
+                HouseLable houseLable2 = new HouseLable();
+                houseLable2.setText("抢手");
+                houseLable2.setIcon("http://wap-qn.bidewu.com/wap/qs.png");
+                houseLableList.add(houseLable2);
+                sellHousesSearchDo.setHouseLableList(houseLableList);
+                //设置房源专题
+                List<SellHouseSubject> sellHouseSubjectList = new ArrayList<>();
+                SellHouseSubject sellHouseSubject = new SellHouseSubject();
+                sellHouseSubject.setText("长宁大豪宅社区主力户型");
+                sellHouseSubject.setUrl("http://www.baidu.com");
+                sellHouseSubjectList.add(sellHouseSubject);
+                SellHouseSubject sellHouseSubject1 = new SellHouseSubject();
+                sellHouseSubject1.setText("总价低于商圈同户型29.53万");
+                sellHouseSubject1.setUrl("http://www.baidu.com");
+                sellHouseSubjectList.add(sellHouseSubject1);
+                SellHouseSubject sellHouseSubject2 = new SellHouseSubject();
+                sellHouseSubject2.setText("降5万");
+                sellHouseSubject2.setUrl("http://www.baidu.com");
+                sellHouseSubjectList.add(sellHouseSubject2);
+                sellHousesSearchDo.setSellHouseSubjectList(sellHouseSubjectList);
+
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
                 String keys="";

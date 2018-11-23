@@ -155,5 +155,8 @@ public class RentDetailFewResponse   {
 
   @ApiModelProperty("附近距离xxkm")
   private String nearbyDistance;
+
+  @ApiModelProperty(value = "公司图标", name = "companyIcon")
+  private String companyIcon;
 }
 

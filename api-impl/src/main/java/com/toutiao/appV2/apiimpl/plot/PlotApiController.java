@@ -173,20 +173,38 @@ public class PlotApiController implements PlotApi {
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         plotListDoQuery.setIsTop(isTop);
         plotListDoQuery.setDistance(distance);
-        plotListDoQuery.setLat(lat);
-        plotListDoQuery.setLon(lon);
+        if (lat != null) {
+            plotListDoQuery.setLat(lat);
+        }
+        if (lon != null) {
+            plotListDoQuery.setLon(lon);
+        }
         plotListDoQuery.setAreaId(areaId);
-        plotListDoQuery.setBeginArea(beginArea);
-        plotListDoQuery.setBeginPrice(beginPrice);
+        if (beginArea != null) {
+            plotListDoQuery.setBeginArea(beginArea);
+        }
+        if (beginPrice != null) {
+            plotListDoQuery.setBeginPrice(beginPrice);
+        }
         plotListDoQuery.setCityId(cityId);
         plotListDoQuery.setDistrictId(districtId);
-        plotListDoQuery.setEndArea(endArea);
-        plotListDoQuery.setEndPrice(endPrice);
-        plotListDoQuery.setForwardId((Integer[]) forwardId.toArray());
+        if (endArea != null) {
+            plotListDoQuery.setEndArea(endArea);
+        }
+        if (endPrice != null) {
+            plotListDoQuery.setEndPrice(endPrice);
+        }
+        if (forwardId != null) {
+            plotListDoQuery.setForwardId((Integer[]) forwardId.toArray());
+        }
         plotListDoQuery.setHouseYearId(houseYearId);
         plotListDoQuery.setKeyword(keyword);
-        plotListDoQuery.setLabelId((Integer[]) labelId.toArray());
-        plotListDoQuery.setLayoutId((Integer[]) layoutId.toArray());
+        if (labelId != null) {
+            plotListDoQuery.setLabelId((Integer[]) labelId.toArray());
+        }
+        if (layoutId != null) {
+            plotListDoQuery.setLayoutId((Integer[]) layoutId.toArray());
+        }
         plotListDoQuery.setPageNum(pageNum);
         plotListDoQuery.setPageSize(pageSize);
         plotListDoQuery.setSubwayLineId(subwayLineId);
@@ -361,7 +379,6 @@ public class PlotApiController implements PlotApi {
         return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
 
     }
-
 
 
 }
