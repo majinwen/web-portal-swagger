@@ -3,22 +3,22 @@ package com.toutiao.app.domain.mapfindhouse;
 import lombok.Data;
 
 /**
- * @ClassName EsfMapFindHouseBizcircleDo
+ * @ClassName RentMapFindHouseCommunityDo
  * @Author jiangweilong
- * @Date 2018/11/22 5:03 PM
+ * @Date 2018/11/23 1:22 PM
  * @Description:
  **/
 
 @Data
-public class EsfMapFindHouseBizcircleDo {
+public class RentMapFindHouseCommunityDo {
 
     /**
-     * 商圈名称
+     * 社区名称
      */
     private String name;
 
     /**
-     * 商圈ID
+     * 社区ID
      */
     private Integer id;
 
@@ -36,4 +36,9 @@ public class EsfMapFindHouseBizcircleDo {
      * 描述
      */
     private String desc;
+
+    /**
+     * 房源数量
+     */
+    private Integer count;
 }

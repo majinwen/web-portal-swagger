@@ -5,15 +5,14 @@ import lombok.Data;
 import java.util.List;
 
 /**
- * @ClassName EsfMapFindHouseDistrictDomain
+ * @ClassName RentMapFindHouseDistrictDoQuery
  * @Author jiangweilong
- * @Date 2018/11/22 4:38 PM
+ * @Date 2018/11/23 12:48 PM
  * @Description:
  **/
 
 @Data
-public class EsfMapFindHouseDistrictDomain {
-
+public class RentMapFindHouseDistrictDomain {
 
     /**
      * 当前可视界面描述
@@ -21,7 +20,7 @@ public class EsfMapFindHouseDistrictDomain {
     private String hit;
 
     /**
-     * 返回数据
+     * 返回结果
      */
-    private List<EsfMapFindHouseDistrictDo> data;
+    private List<RentMapFindHouseDistrictDo> data;
 }
