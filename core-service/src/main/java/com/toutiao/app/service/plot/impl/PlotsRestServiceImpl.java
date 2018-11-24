@@ -291,7 +291,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
         //商圈id
         if (StringTool.isNotEmpty(plotListDoQuery.getAreaId())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("tradingAreaId", plotListDoQuery.getAreaId()));
+            boolQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId", plotListDoQuery.getAreaId()));
         }
         //地铁线id
         if (StringTool.isNotEmpty(plotListDoQuery.getSubwayLineId())) {
@@ -299,9 +299,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             key = String.valueOf(plotListDoQuery.getSubwayLineId());
         }
         //地铁站id
+        List<String> keyList = new ArrayList<>();
         if (StringTool.isNotEmpty(plotListDoQuery.getSubwayStationId())) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("metroStationId", plotListDoQuery.getSubwayStationId()));
-            key = key + "$" + plotListDoQuery.getSubwayStationId();
+            boolQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", plotListDoQuery.getSubwayStationId()));
+            for (int i=0; i<plotListDoQuery.getSubwayStationId().length; i++) {
+                String stationKey = key +"$"+plotListDoQuery.getSubwayStationId();
+                keyList.add(stationKey);
+            }
+//            key = key + "$" + plotListDoQuery.getSubwayStationId();
         }
         //均价
         if (plotListDoQuery.getBeginPrice() != 0 && plotListDoQuery.getEndPrice() != 0) {
@@ -389,7 +394,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 if (hits.length > 0) {
                     for (SearchHit hit : hits) {
-                        commonMethod(hit, key, plotDetailsFewDoList, city,null);
+                        commonMethod(hit, keyList, plotDetailsFewDoList, city,null);
                     }
                 } else {
                     throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND, "小区楼盘列表为空");
@@ -408,20 +413,20 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 SearchHits hits = searchResponse.getHits();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    commonMethod(hit, key, plotDetailsFewDoList, city,plotListDoQuery.getDistance());
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city,plotListDoQuery.getDistance());
                 }
             } else if (reslocationinfo < 10 && reslocationinfo > 0) {
                 SearchHits hits = searchResponse.getHits();
                 SearchHit[] searchHists = hits.getHits();
                 for (SearchHit hit : searchHists) {
-                    commonMethod(hit, key, plotDetailsFewDoList, city ,plotListDoQuery.getDistance());
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city ,plotListDoQuery.getDistance());
                 }
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
                 SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder, plotListDoQuery.getPageSize() - reslocationinfo, plotListDoQuery.getKeyword(), city);
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit : hits1) {
-                    commonMethod(hit, key, plotDetailsFewDoList, city ,plotListDoQuery.getDistance());
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city ,plotListDoQuery.getDistance());
                 }
             } else if (reslocationinfo == 0) {
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
@@ -433,7 +438,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city);
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit : hits1) {
-                    commonMethod(hit, key, plotDetailsFewDoList, city,plotListDoQuery.getDistance());
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city,plotListDoQuery.getDistance());
                 }
             }
         }
@@ -450,7 +455,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @param key
      * @return
      */
-    public void commonMethod(SearchHit hit, String key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance) {
+    public void commonMethod(SearchHit hit, List<String> key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance) {
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
@@ -460,9 +465,22 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             plotDetailsFewDo.setNearbyDistance(distances);
         }
 
-
-        if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()&&""!=key){
-            plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
+        if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()){
+            Map<Integer,String> map = new HashMap<>();
+            List<Integer> sortDistance = new ArrayList<>();
+            for (int i=0; i<key.size(); i++) {
+                String stationKey = key.get(i);
+                if (StringTool.isNotEmpty(plotDetailsFewDo.getMetroWithPlotsDistance().get(stationKey))) {
+                    String stationValue = plotDetailsFewDo.getMetroWithPlotsDistance().get(stationKey).toString();
+                    String[] stationValueSplit = stationValue.split("\\$");
+                    Integer stationDis = Integer.valueOf(stationValueSplit[2]);
+                    sortDistance.add(stationDis);
+                    map.put(stationDis,stationKey);
+                }
+            }
+            Integer minDistance = Collections.min(sortDistance);
+            plotDetailsFewDo.setSubwayDistanceInfo(plotDetailsFewDo.getMetroWithPlotsDistance().get(map.get(minDistance)).toString());
+//            plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
         }
         plotDetailsFewDo.setMetroWithPlotsDistance(null);
         //二手房总数
