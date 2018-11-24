@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -100,7 +101,17 @@ public class RentRestController implements RentRestApi {
     }
 
     @Override
-    public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchList(@Validated RentHouseRequest rentHouseRequest) {
+    public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListGet(@Validated RentHouseRequest rentHouseRequest) {
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+        return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListPost(@Validated @RequestBody RentHouseRequest rentHouseRequest) {
         RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
         BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
         RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());

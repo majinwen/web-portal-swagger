@@ -470,10 +470,10 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         GaussDecayFunctionBuilder functionBuilder = null;
         GeoDistanceSortBuilder sort = null;
-        if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance())){
-            double[] location =new double[]{rentHouseDoQuery.getLon(),rentHouseDoQuery.getLat()};
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+            double[] location = new double[]{rentHouseDoQuery.getLon(), rentHouseDoQuery.getLat()};
             //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",location,"4km","1km" ,0.4);
+            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location", location, "4km", "1km", 0.4);
             //根据坐标计算距离
             sort = SortBuilders.geoDistanceSort("location", rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
@@ -534,16 +534,16 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort);
+        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(), rentHouseDoQuery.getKeyword(), rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length > 0) {
             List<String> imgs = new ArrayList<>();
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-                if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance())){
+                if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
                     BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                     rentDetailsFewDo.setNearbyDistance(distance);
                 }
 
@@ -605,6 +605,8 @@ public class RentRestRestServiceImpl implements RentRestService {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 rentDetailsFewDo.setHouseTitleImg(titlePhoto);
+                //设置公司图标
+                rentDetailsFewDo.setCompanyIcon("http://wap-qn.bidewu.com/wap/5i5j.png");
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 rentDetailsFewDos.add(rentDetailsFewDo);
 

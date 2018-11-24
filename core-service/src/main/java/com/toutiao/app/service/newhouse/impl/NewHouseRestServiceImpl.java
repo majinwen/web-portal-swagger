@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery;
 import com.toutiao.app.domain.newhouse.*;
+import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
@@ -330,6 +331,22 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http://")) {
                     newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-dongfangdi1200x900");
                 }
+
+                //新房标签
+                List<HouseLable> houseLableList= new ArrayList<>();
+                HouseLable houseLable = new HouseLable();
+                houseLable.setText("在售");
+                houseLable.setIcon("http://wap-qn.bidewu.com/wap/zs.png");
+                houseLableList.add(houseLable);
+                HouseLable houseLable1 = new HouseLable();
+                houseLable1.setText("折扣");
+                houseLable1.setIcon("http://wap-qn.bidewu.com/wap/zk.png");
+                houseLableList.add(houseLable1);
+                HouseLable houseLable2 = new HouseLable();
+                houseLable2.setText("别墅");
+                houseLable2.setIcon("http://wap-qn.bidewu.com/wap/bs.png");
+                houseLableList.add(houseLable2);
+                newHouseListDos.setHouseLabelList(houseLableList);
 
                 //新房动态
                 BoolQueryBuilder queryBuilderDynamic = boolQuery();//声明符合查询方法

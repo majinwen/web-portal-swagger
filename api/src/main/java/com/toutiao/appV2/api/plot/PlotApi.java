@@ -5,37 +5,19 @@
  */
 package com.toutiao.appV2.api.plot;
 
-import com.toutiao.appV2.model.plot.NearbyPlotsListResponse;
-import com.toutiao.appV2.model.plot.PlotDetailsFewListResponse;
-import com.toutiao.appV2.model.plot.PlotDetailsResponse;
-import com.toutiao.appV2.model.plot.PlotEsfListResponse;
-import com.toutiao.appV2.model.plot.PlotListResponse;
-import com.toutiao.appV2.model.plot.PlotTop50ListResponse;
-import com.toutiao.appV2.model.plot.PlotTrafficResponse;
-import com.toutiao.appV2.model.plot.PlotsEsfRoomCountResponse;
-import com.toutiao.appV2.model.plot.PlotsThemeResponse;
-import com.toutiao.appV2.model.plot.RentDetailsListResponse;
-import com.toutiao.appV2.model.plot.RentNumListResponse;
-import com.toutiao.appV2.model.plot.SearchHotProjDomain;
+import com.toutiao.appV2.model.plot.*;
 import io.swagger.annotations.*;
 import io.swagger.models.auth.In;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.Callable;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:42:20.134Z")
 
@@ -117,6 +99,18 @@ public interface PlotApi {
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<PlotListResponse> getPlotListByRequirement(@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) List<Integer> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) List<Integer> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) List<Integer> labelId, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Double beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Double endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Double beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Double endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) String houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Integer districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) List<Integer> areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Integer subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) List<Integer> subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) String keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Integer cityId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Double lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Double lon, @ApiParam(value = "") @Valid @RequestParam(value = "isTop", required = false) Integer isTop, @ApiParam(value = "") @Valid @RequestParam(value = "distance", required = false) Double distance);
+            method = {RequestMethod.GET})
+    ResponseEntity<PlotListResponse> getPlotListByRequirementGet(PlotListRequest plotListRequest);
+
+    @ApiOperation(value = "根据条件获取小区列表", nickname = "getPlotListByRequirement", notes = "", response = PlotListResponse.class, tags = {"小区",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = PlotListResponse.class)})
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/plot/getPlotListByRequirement",
+            produces = "application/json",
+            method = {RequestMethod.POST})
+    ResponseEntity<PlotListResponse> getPlotListByRequirementPost(@RequestBody PlotListRequest plotListRequest);
 
 
     @ApiOperation(value = "根据小区id获取小区下房源数量", nickname = "getPlotsEsfList", notes = "", response = PlotsEsfRoomCountResponse.class, tags = {"小区",})

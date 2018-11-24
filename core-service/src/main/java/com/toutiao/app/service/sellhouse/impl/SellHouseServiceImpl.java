@@ -902,6 +902,40 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
+
+                //设置房源公司图标
+                sellHousesSearchDo.setCompanyIcon("http://wap-qn.bidewu.com/wap/5i5j.png");
+                //设置房源标签
+                List<HouseLable> houseLableList= new ArrayList<>();
+                HouseLable houseLable = new HouseLable();
+                houseLable.setText("捡漏");
+                houseLable.setIcon("http://wap-qn.bidewu.com/wap/jl.png");
+                houseLableList.add(houseLable);
+                HouseLable houseLable1 = new HouseLable();
+                houseLable1.setText("降价");
+                houseLable1.setIcon("http://wap-qn.bidewu.com/wap/jj.png");
+                houseLableList.add(houseLable1);
+                HouseLable houseLable2 = new HouseLable();
+                houseLable2.setText("抢手");
+                houseLable2.setIcon("http://wap-qn.bidewu.com/wap/qs.png");
+                houseLableList.add(houseLable2);
+                sellHousesSearchDo.setHouseLableList(houseLableList);
+                //设置房源专题
+                List<HouseSubject> houseSubjectList = new ArrayList<>();
+                HouseSubject sellHouseSubject = new HouseSubject();
+                sellHouseSubject.setText("长宁大豪宅社区主力户型");
+                sellHouseSubject.setUrl("http://www.baidu.com");
+                houseSubjectList.add(sellHouseSubject);
+                HouseSubject houseSubject1 = new HouseSubject();
+                houseSubject1.setText("总价低于商圈同户型29.53万");
+                houseSubject1.setUrl("http://www.baidu.com");
+                houseSubjectList.add(houseSubject1);
+                HouseSubject sellHouseSubject2 = new HouseSubject();
+                sellHouseSubject2.setText("降5万");
+                sellHouseSubject2.setUrl("http://www.baidu.com");
+                houseSubjectList.add(sellHouseSubject2);
+                sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
+
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
                 String keys="";

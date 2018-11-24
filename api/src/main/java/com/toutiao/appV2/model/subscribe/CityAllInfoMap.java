@@ -1,5 +1,6 @@
 package com.toutiao.appV2.model.subscribe;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Map;
@@ -10,5 +11,6 @@ import java.util.Map;
 @Data
 public class CityAllInfoMap {
     Integer total;
+    @ApiModelProperty("searchConditionData搜索条件（new新房，rent租房，community小区，second二手房），pidsList广告位ID（homeSearchPop搜索引导页广告位），circleDataList区域信息，subwayDataList地铁线信息")
     Map<String, Object> CityAllInfos;
 }
