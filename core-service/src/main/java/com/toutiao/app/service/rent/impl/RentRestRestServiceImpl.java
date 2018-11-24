@@ -596,11 +596,28 @@ public class RentRestRestServiceImpl implements RentRestService {
                 if (null != rentHouseDoQuery.getSubwayLineId()) {
                     keys += rentHouseDoQuery.getSubwayLineId().toString();
                 }
+//                if (null != rentHouseDoQuery.getSubwayStationId()) {
+//                    keys += "$" + rentHouseDoQuery.getSubwayStationId();
+//                }
+//                if (!"".equals(keys) && null != rentDetailsFewDo.getNearbySubway()) {
+//                    rentDetails
+// ewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
+//                }
                 if (null != rentHouseDoQuery.getSubwayStationId()) {
-                    keys += "$" + rentHouseDoQuery.getSubwayStationId();
-                }
-                if (!"".equals(keys) && null != rentDetailsFewDo.getNearbySubway()) {
-                    rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
+                    Map<Integer,String> map = new HashMap<>();
+                    List<Integer> sortDistance = new ArrayList<>();
+                    for (int i=0; i<rentHouseDoQuery.getSubwayStationId().length; i++) {
+                        String stationKey = keys+"$"+rentHouseDoQuery.getSubwayStationId()[i];
+                        if (StringTool.isNotEmpty(rentDetailsFewDo.getNearbySubway().get(stationKey))) {
+                            String stationValue = rentDetailsFewDo.getNearbySubway().get(stationKey);
+                            String[] stationValueSplit = stationValue.split("\\$");
+                            Integer distance = Integer.valueOf(stationValueSplit[2]);
+                            sortDistance.add(distance);
+                            map.put(distance,stationKey);
+                        }
+                    }
+                    Integer minDistance = Collections.min(sortDistance);
+                    rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(map.get(minDistance)));
                 }
                 //设置标题图
                 String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
@@ -710,7 +727,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
         //商圈
         if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId())) {
-            boolQueryBuilder.must(termQuery("area_id", rentHouseDoQuery.getAreaId()));
+            boolQueryBuilder.must(termsQuery("area_id", rentHouseDoQuery.getAreaId()));
         }
         //地铁线id
         if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId())) {
@@ -718,7 +735,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
         //地铁站id
         if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId())) {
-            boolQueryBuilder.must(termsQuery("subway_station_id", new int[]{rentHouseDoQuery.getSubwayStationId()}));
+            boolQueryBuilder.must(termsQuery("subway_station_id", rentHouseDoQuery.getSubwayStationId()));
         }
         //租金
         if (rentHouseDoQuery.getBeginPrice() != 0 && rentHouseDoQuery.getEndPrice() != 0) {

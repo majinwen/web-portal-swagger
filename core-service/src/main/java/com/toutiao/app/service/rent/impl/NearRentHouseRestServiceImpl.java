@@ -218,7 +218,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
         }
         //地铁站id
         if (StringTool.isNotEmpty(nearHouseListDoQuery.getSubwayStationId())){
-            boolQueryBuilder.must(termsQuery("subway_station_id", new int[]{nearHouseListDoQuery.getSubwayStationId()}));
+            boolQueryBuilder.must(termsQuery("subway_station_id", nearHouseListDoQuery.getSubwayStationId()));
         }
         //租金
         if (nearHouseListDoQuery.getBeginPrice()!=0 &&nearHouseListDoQuery.getEndPrice()!=0){

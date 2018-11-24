@@ -22,7 +22,7 @@ public class RentHouseRequest   {
   @JsonProperty("areaId")
   @ApiParam("商圈id")
   @ApiModelProperty("商圈id")
-  private Integer areaId = null;
+  private Integer[] areaId = null;
 
   @JsonProperty("beginArea")
   @ApiParam("起始面积")
@@ -132,7 +132,7 @@ public class RentHouseRequest   {
   @JsonProperty("subwayStationId")
   @ApiParam("地铁站id")
   @ApiModelProperty("地铁站id")
-  private Integer subwayStationId = null;
+  private Integer[] subwayStationId = null;
 
   @JsonProperty("uid")
   @NotEmpty(groups = {First.class},message = "缺少查询uid")

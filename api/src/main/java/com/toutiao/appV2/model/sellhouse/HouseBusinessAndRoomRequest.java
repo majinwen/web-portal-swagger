@@ -16,7 +16,7 @@ public class HouseBusinessAndRoomRequest extends BaseQueryRequest {
 
     @ApiModelProperty(value = "商圈Id", name = "areaId")
     @NotNull(message = "缺少商圈Id")
-    private Integer areaId;
+    private Integer[] areaId;
 
     @ApiModelProperty(value = "商圈名称", name = "areaName")
     @NotNull(message = "缺少商圈名称")

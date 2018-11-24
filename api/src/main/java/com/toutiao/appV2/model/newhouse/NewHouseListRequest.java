@@ -1,6 +1,6 @@
-package com.toutiao.app.api.chance.request.newhouse;
+package com.toutiao.appV2.model.newhouse;
 
-import com.toutiao.app.api.chance.request.BaseQueryRequest;
+import com.toutiao.appV2.model.BaseQueryRequest;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 

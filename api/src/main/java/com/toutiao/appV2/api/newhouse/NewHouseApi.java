@@ -1,7 +1,6 @@
 package com.toutiao.appV2.api.newhouse;
 
 import com.toutiao.app.api.chance.request.activity.NewHouseActivityRequest;
-import com.toutiao.app.api.chance.request.newhouse.*;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutCountResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
@@ -9,10 +8,7 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseTrafficResponse;
 import com.toutiao.app.api.chance.response.user.UserInfoActivityResponse;
 import com.toutiao.app.domain.activity.ActivityStatisticsDo;
 import com.toutiao.appV2.model.StringDataResponse;
-import com.toutiao.appV2.model.newhouse.ActivityMsgResponse;
-import com.toutiao.appV2.model.newhouse.GetNewHouseDynamicResponse;
-import com.toutiao.appV2.model.newhouse.GetNewHouseLayoutResponse;
-import com.toutiao.appV2.model.newhouse.IsAttendeActivityResponse;
+import com.toutiao.appV2.model.newhouse.*;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
