@@ -303,7 +303,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         if (StringTool.isNotEmpty(plotListDoQuery.getSubwayStationId())) {
             boolQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", plotListDoQuery.getSubwayStationId()));
             for (int i=0; i<plotListDoQuery.getSubwayStationId().length; i++) {
-                String stationKey = key +"$"+plotListDoQuery.getSubwayStationId();
+                String stationKey = key +"$"+plotListDoQuery.getSubwayStationId()[i];
                 keyList.add(stationKey);
             }
 //            key = key + "$" + plotListDoQuery.getSubwayStationId();
@@ -465,7 +465,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             plotDetailsFewDo.setNearbyDistance(distances);
         }
 
-        if (null!=plotDetailsFewDo.getMetroWithPlotsDistance()){
+        if (null!=plotDetailsFewDo.getMetroWithPlotsDistance() && key.size()>0){
             Map<Integer,String> map = new HashMap<>();
             List<Integer> sortDistance = new ArrayList<>();
             for (int i=0; i<key.size(); i++) {
