@@ -15,7 +15,7 @@ public class SearchConditionRequest {
     /**
      * 类型
      */
-    @ApiModelProperty(value = "类型")
+    @ApiModelProperty(value = "类型(0首页 1新房 2二手房 3租房 4小区)")
     private Integer type;
 
 }
