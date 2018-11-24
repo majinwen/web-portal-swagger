@@ -2,10 +2,11 @@ package com.toutiao.app.api.chance.request.rent;
 
 import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import com.toutiao.web.common.assertUtils.First;
+import com.toutiao.web.common.assertUtils.Second;
 import lombok.Data;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 
 @Data
@@ -26,11 +27,12 @@ public class RentHouseRequest extends BaseQueryRequest {
     /**
      * 维度
      */
-
+    @NotEmpty(groups = {Second.class},message = "缺少维度")
     private Double lat;
     /**
      * 经度
      */
+    @NotEmpty(groups = {Second.class},message = "缺少经度")
     private Double lon;
 
     /**
@@ -45,5 +47,18 @@ public class RentHouseRequest extends BaseQueryRequest {
     private String elo;//整租户型
 
     private String jlo;//合租户型
+
+    /**
+     * 时间
+     */
+    @NotEmpty(groups = {Second.class},message = "缺少时间")
+    private Date time;
+
+    /**
+     * 交通类型(0:不行,1:骑车,2:公交,3:驾车)
+     */
+    @NotEmpty(groups = {Second.class},message = "缺少交通类型")
+    private String trafficType;
+
 
 }

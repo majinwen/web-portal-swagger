@@ -3,6 +3,7 @@ package com.toutiao.appV2.model.rent;
 import java.util.Map;
 import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
@@ -158,5 +159,9 @@ public class RentDetailFewResponse   {
 
   @ApiModelProperty(value = "公司图标", name = "companyIcon")
   private String companyIcon;
+
+  @ApiModelProperty("time")
+  private String time;
+
 }
 

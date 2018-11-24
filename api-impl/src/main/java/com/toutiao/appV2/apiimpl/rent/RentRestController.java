@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.toutiao.app.api.chance.response.rent.*;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.appV2.api.rent.RentRestApi;
 import com.toutiao.appV2.model.rent.*;
+import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.util.city.CityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+//import com.toutiao.app.api.chance.response.rent.*;
 
 /**
  * Created by CuiShihao on 2018/11/16
@@ -128,6 +130,26 @@ public class RentRestController implements RentRestApi {
         JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsListDo);
         RentListResponse rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject), RentListResponse.class);
         return new ResponseEntity<>(rentListResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@Validated(Second.class) @RequestBody RentHouseRequest rentHouseRequest) {
+                String accept = request.getHeader("Accept");
+                if (accept != null && accept.contains("")) {
+                    try {
+                        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+                        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+                        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+                        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+                        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+                        return new ResponseEntity<RentDetailFewResponseList>(rentDetailFewResponseList, HttpStatus.OK);
+                    } catch (Exception e) {
+                        log.error("Couldn't serialize response for content type ", e);
+                        return new ResponseEntity<RentDetailFewResponseList>(HttpStatus.INTERNAL_SERVER_ERROR);
+                    }
+                }
+
+                return new ResponseEntity<RentDetailFewResponseList>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     @Override

@@ -64,7 +64,7 @@ public class SuggestEsDaoImpl implements SuggestEsDao{
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getSearchEnginesIndex(city)).types(ElasticCityUtils.getSearchEnginesType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(booleanQueryBuilder).size(12)
+        searchSourceBuilder.query(booleanQueryBuilder).size(12)/*.sort("search_score", SortOrder.DESC)*/
                 .aggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
                 .aggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
                 .aggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)))
