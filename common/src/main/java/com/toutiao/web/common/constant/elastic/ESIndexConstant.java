@@ -35,6 +35,8 @@ public class ESIndexConstant {
     public static final String AREA_ROOM_TYPE = "areaRoomType";
     public static final String ESF_FULL_AMOUNT_INDEX = "esfFullAmountIndex";
     public static final String ESF_FULL_AMOUNT_TYPE = "esfFullAmountType";
+    public static final String DISTRICT_BIZCIRCLE_AVERAGE_PRICE_INDEX="dbAvgPriceIndex";
+    public static final String DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE="dbAvgPriceType";
 
 
 }

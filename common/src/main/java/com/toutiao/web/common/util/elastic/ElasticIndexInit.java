@@ -97,6 +97,15 @@ public class ElasticIndexInit implements CommandLineRunner {
     private String areaRoomIndex;
     @Value("${bdw.areaRoom.type}")
     private String areaRoomType;
+
+    //区域商圈均价
+    @Value("${bdw.dbavgprice.index}")
+    private String dbAvgPriceIndex;
+    @Value("${bdw.dbavgprice.type}")
+    private String dbAvgPriceType;
+
+
+
     //城市
     @Value("${city.bidewu.substation}")
     private String cityIds;
@@ -146,6 +155,8 @@ public class ElasticIndexInit implements CommandLineRunner {
 
                 esMap.put(ESIndexConstant.AREA_ROOM_INDEX,areaRoomIndex+"_"+city[i]);
 
+                esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_INDEX,dbAvgPriceIndex+"_"+city[i]);
+
 
                 if(CITY_BJ.equals(city[i])){
                     esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1);
@@ -158,6 +169,8 @@ public class ElasticIndexInit implements CommandLineRunner {
                     esMap.put(ESIndexConstant.AGENT_TYPE,agentType);
                     esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType);
                     esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType);
+                    esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType);
+                    esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,dbAvgPriceType);
                 }else{
                     esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1+"_"+city[i]);
                     esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType+"_"+city[i]);
@@ -170,6 +183,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                     esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType+"_"+city[i]);
                     esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType+"_"+city[i]);
                     esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,dbAvgPriceType+"_"+city[i]);
                 }
 
                 esIndexMaps.put(city[i],esMap);
