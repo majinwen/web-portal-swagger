@@ -19,6 +19,7 @@ public class Swagger2 {
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
+                .host("http://app.dev.bidewu.com/searchapiv2")
                 .select()
                 //为controller包路径
                 .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl"))
