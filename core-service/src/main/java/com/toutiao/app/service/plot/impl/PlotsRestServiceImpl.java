@@ -506,7 +506,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //小区标题图处理
         if (plotDetailsFewDo.getPhoto().length > 0) {
             String titlePhoto = plotDetailsFewDo.getPhoto()[0];
-            if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http://")) {
+            if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
                 titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
             }
             plotDetailsFewDo.setTitlePhoto(titlePhoto);
