@@ -7,9 +7,6 @@ import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.springframework.context.annotation.Configuration;
 
-import java.awt.*;
-import java.util.Map;
-
 @Configuration
 public interface RentEsDao {
 
@@ -85,6 +82,16 @@ public interface RentEsDao {
      * @return
      */
     SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder sort);
+    /**
+     * 获取搜索列表
+     * @param query
+     * @param distance
+     * @param keyword
+     * @param from
+     * @param size
+     * @return
+     */
+    SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder sort);
 
     /**
      * 获取小区出租房源均价最低

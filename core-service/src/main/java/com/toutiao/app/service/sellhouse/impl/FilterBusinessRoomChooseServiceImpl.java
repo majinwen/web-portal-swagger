@@ -16,9 +16,9 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
     public BoolQueryBuilder filterBusinessRoomChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //商圈
-        Integer areaId = houseBusinessAndRoomDoQuery.getAreaId();
+        Integer[] areaId = houseBusinessAndRoomDoQuery.getAreaId();
         if (areaId != null) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", areaId));
+            boolQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId", areaId));
         }
 
         //厅
@@ -39,9 +39,9 @@ public class FilterBusinessRoomChooseServiceImpl implements FilterBusinessRoomCh
     public BoolQueryBuilder filterBusinessRoomAveragePriceChoose(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //商圈Id
-        Integer houseBusinessId = houseBusinessAndRoomDoQuery.getAreaId();
+        Integer[] houseBusinessId = houseBusinessAndRoomDoQuery.getAreaId();
         if (houseBusinessId != null){
-            boolQueryBuilder.must(QueryBuilders.termQuery("area_id", houseBusinessId));
+            boolQueryBuilder.must(QueryBuilders.termsQuery("area_id", houseBusinessId));
         }
 
         //厅

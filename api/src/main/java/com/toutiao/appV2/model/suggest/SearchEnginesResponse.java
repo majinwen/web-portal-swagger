@@ -32,7 +32,7 @@ public class SearchEnginesResponse {
      * 房源别名
      */
     @ApiModelProperty("房源别名")
-    private List searchNickname;
+    private String searchNickname;
     /**
      * 排序名称
      */
@@ -77,6 +77,6 @@ public class SearchEnginesResponse {
     /**
      * 城市id
      */
-    @ApiModelProperty("是否区域跳转")
+    @ApiModelProperty("是否区域跳转(0-房源，1-区县，2-商圈)")
     private Integer isArea;
 }

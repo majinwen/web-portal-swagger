@@ -1,8 +1,11 @@
 package com.toutiao.appV2.apiimpl.suggest;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.sellhouse.HouseSubject;
 import com.toutiao.app.domain.suggest.SearchEnginesDo;
 import com.toutiao.app.domain.suggest.SearchScopeDo;
 import com.toutiao.app.domain.suggest.SuggestListDo;
@@ -17,15 +20,15 @@ import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
 import com.toutiao.appV2.model.search.SearchConditionResponse;
-import com.toutiao.appV2.model.subscribe.CityAllInfoMap;
-import com.toutiao.appV2.model.subscribe.CityConditionDoList;
-import com.toutiao.appV2.model.subscribe.WapCityList;
+import com.toutiao.appV2.model.subscribe.*;
 import com.toutiao.appV2.model.suggest.SearchEnginesResponse;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
 import com.toutiao.appV2.model.suggest.SuggestResultResponse;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.search.SearchCondition;
 import com.toutiao.web.dao.entity.subscribe.City;
+import com.toutiao.web.dao.entity.subscribe.CityParkInfo;
+import com.toutiao.web.dao.entity.subscribe.SubwayLineData;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -93,7 +96,6 @@ public class SuggestRestController implements SuggestRestApi {
                                 }
                             }
                         } else {
-
                             SearchEnginesResponse searchScopeResponse = new SearchEnginesResponse();
                             searchScopeResponse.setSearchName(searchScope.getSearchName());
                             searchScopeResponse.setAreaId(searchScope.getSearchId());
@@ -106,12 +108,23 @@ public class SuggestRestController implements SuggestRestApi {
                                 if (listSize > 2) {
                                     listSize = listSize - 1;
                                 }
-                                for (int i=0;i<listSize;i++)
-                                {
+                                for (int i = 0; i < listSize; i++) {
                                     SearchEnginesDo searchEnginesDo = suggestListDo.getSearchEnginesList().get(i);
                                     SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
                                     BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
                                     searchEnginesResponse.setIsArea(0);
+                                    searchEnginesResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
+                                    List searchNickname = searchEnginesDo.getSearchNickname();
+                                    String nickname = "";
+                                    if (searchNickname != null && searchNickname.size() > 0) {
+                                        for (int j = 0; j < searchNickname.size(); j++) {
+                                            nickname += searchNickname.get(j).toString() + "·";
+                                        }
+                                    }
+                                    if (nickname.endsWith("·")) {
+                                        nickname = nickname.substring(0, nickname.length() - 1);
+                                    }
+                                    searchEnginesResponse.setSearchNickname(nickname);
                                     searchEnginesResponseList.add(searchEnginesResponse);
                                 }
                             }
@@ -152,6 +165,82 @@ public class SuggestRestController implements SuggestRestApi {
     @Override
     public ResponseEntity<HouseSubjectListResponse> selectSearchConditionByCityIdAndType(SearchConditionRequest searchConditionRequest) {
         HouseSubjectListResponse houseSubjectListResponse = new HouseSubjectListResponse();
+        List<HouseSubject> houseSubjectList = new ArrayList<>();
+        if (searchConditionRequest.getType() == 1) {
+            HouseSubject houseSubject = new HouseSubject();
+            houseSubject.setText("低密度");
+            houseSubject.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject);
+            HouseSubject houseSubject1 = new HouseSubject();
+            houseSubject1.setText("近地铁");
+            houseSubject1.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject1);
+            HouseSubject houseSubject2 = new HouseSubject();
+            houseSubject2.setText("500强房企");
+            houseSubject2.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject2);
+        } else if (searchConditionRequest.getType() == 3) {
+            HouseSubject houseSubject = new HouseSubject();
+            houseSubject.setText("地铁房");
+            houseSubject.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject);
+            HouseSubject houseSubject1 = new HouseSubject();
+            houseSubject1.setText("独立阳台");
+            houseSubject1.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject1);
+            HouseSubject houseSubject2 = new HouseSubject();
+            houseSubject2.setText("独立卫生间");
+            houseSubject2.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject2);
+        } else if (searchConditionRequest.getType() == 4) {
+            HouseSubject houseSubject = new HouseSubject();
+            houseSubject.setText("近地铁");
+            houseSubject.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject);
+            HouseSubject houseSubject1 = new HouseSubject();
+            houseSubject1.setText("top50社区");
+            houseSubject1.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject1);
+            HouseSubject houseSubject2 = new HouseSubject();
+            houseSubject2.setText("首次置业");
+            houseSubject2.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject2);
+            HouseSubject houseSubject3 = new HouseSubject();
+            houseSubject3.setText("换房升级");
+            houseSubject3.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject3);
+            HouseSubject houseSubject4 = new HouseSubject();
+            houseSubject4.setText("豪宅社区");
+            houseSubject4.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject4);
+            HouseSubject houseSubject5 = new HouseSubject();
+            houseSubject5.setText("别墅社区");
+            houseSubject5.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject5);
+            HouseSubject houseSubject6 = new HouseSubject();
+            houseSubject6.setText("公园社区");
+            houseSubject6.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject6);
+        } else {
+            HouseSubject houseSubject = new HouseSubject();
+            houseSubject.setText("地铁房");
+            houseSubject.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject);
+            HouseSubject houseSubject1 = new HouseSubject();
+            houseSubject1.setText("降价房");
+            houseSubject1.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject1);
+            HouseSubject houseSubject2 = new HouseSubject();
+            houseSubject2.setText("捡漏房");
+            houseSubject2.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject2);
+            HouseSubject houseSubject3 = new HouseSubject();
+            houseSubject3.setText("抢手房");
+            houseSubject3.setUrl("http://app.bidewu.com/");
+            houseSubjectList.add(houseSubject3);
+        }
+        houseSubjectListResponse.setHouseSubjectList(houseSubjectList);
+        houseSubjectListResponse.setTotalCount(houseSubjectList.size());
         return new ResponseEntity<HouseSubjectListResponse>(houseSubjectListResponse, HttpStatus.OK);
     }
 
@@ -171,6 +260,113 @@ public class SuggestRestController implements SuggestRestApi {
         cityAllInfoMap.setCityAllInfos(res);
         return new ResponseEntity<CityAllInfoMap>(cityAllInfoMap, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<CityConditionInfoMap> getCityConditionInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityConditionInfoMap cityConditionInfoMap = new CityConditionInfoMap();
+        Map<String,Object>   res = cityService.getCityConditionInfo(cityId);
+        cityConditionInfoMap.setCityConditionInfos(res);
+        return new ResponseEntity<CityConditionInfoMap>(cityConditionInfoMap, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CityCircleInfoMap> getCityCircleInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityCircleInfoMap cityCircleInfoMap = new CityCircleInfoMap();
+        Map<String,Object>   res = cityService.getCityCircleInfo(cityId);
+        cityCircleInfoMap.setCityCircleInfos(res);
+        return new ResponseEntity<CityCircleInfoMap>(cityCircleInfoMap, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CityDiscrictInfoMap> getCityDistrictInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityDiscrictInfoMap cityDiscrictInfoMap = new CityDiscrictInfoMap();
+        Map<String,Object>   res = cityService.getCityDistrictInfo(cityId);
+        cityDiscrictInfoMap.setCityDiscrictInfos(res);
+        return new ResponseEntity<CityDiscrictInfoMap>(cityDiscrictInfoMap, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<CityParkInfoMap> getCityParkInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityParkInfoMap cityParkInfoMap = new CityParkInfoMap();
+        Map<String,Object>  res = cityService.getCityParkInfo(cityId);
+        cityParkInfoMap.setCityParkInfos(res);
+        return new ResponseEntity<CityParkInfoMap>(cityParkInfoMap, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<CitySubwayInfoMap> getCitySubwaysInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CitySubwayInfoMap citySubwayInfoMap = new CitySubwayInfoMap();
+        List<SubwayLineData> res = cityService.getCitySubwayInfo(cityId);
+        citySubwayInfoMap.setCitySubwayInfos(res);
+        return new ResponseEntity<CitySubwayInfoMap>(citySubwayInfoMap, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<CityPidsInfoMap> getCityPidsInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityPidsInfoMap cityPidsInfoMap = new CityPidsInfoMap();
+        Map<String,Object>  res = cityService.getCityPidsInfo(cityId);
+        cityPidsInfoMap.setCityPidsInfos(res);
+        return new ResponseEntity<CityPidsInfoMap>(cityPidsInfoMap, HttpStatus.OK);
+    }
+
+
 
     @Override
     public ResponseEntity<WapCityList> getWapCity() {

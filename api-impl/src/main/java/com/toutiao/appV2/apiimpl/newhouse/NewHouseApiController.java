@@ -3,7 +3,6 @@ package com.toutiao.appV2.apiimpl.newhouse;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageInfo;
 import com.toutiao.app.api.chance.request.activity.NewHouseActivityRequest;
-import com.toutiao.app.api.chance.request.newhouse.*;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseLayoutCountResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
@@ -22,10 +21,7 @@ import com.toutiao.app.service.newhouse.NewHouseTopicsRestService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.appV2.api.newhouse.NewHouseApi;
 import com.toutiao.appV2.model.StringDataResponse;
-import com.toutiao.appV2.model.newhouse.ActivityMsgResponse;
-import com.toutiao.appV2.model.newhouse.GetNewHouseDynamicResponse;
-import com.toutiao.appV2.model.newhouse.GetNewHouseLayoutResponse;
-import com.toutiao.appV2.model.newhouse.IsAttendeActivityResponse;
+import com.toutiao.appV2.model.newhouse.*;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -131,26 +127,32 @@ public class NewHouseApiController implements NewHouseApi {
 
     @Override
     public ResponseEntity<NewHouseListDomainResponse> getNewHouseListGet(NewHouseListRequest newHouseListRequest) {
-
-        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
-        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
-        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
-        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
-        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
+        return getNewHouseListDomainResponseResponseEntity(newHouseListRequest);
 
     }
 
     @Override
     public ResponseEntity<NewHouseListDomainResponse> getNewHouseListPost(@RequestBody NewHouseListRequest newHouseListRequest) {
 
+        return getNewHouseListDomainResponseResponseEntity(newHouseListRequest);
+
+    }
+
+    private ResponseEntity<NewHouseListDomainResponse> getNewHouseListDomainResponseResponseEntity(@RequestBody NewHouseListRequest newHouseListRequest) {
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
         BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
         NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+        if (newHouseListVo.getData().size() > 0) {
+            newHouseListDomainResponse.setIsGuess(0);
+        } else {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            newHouseDoQuery = new NewHouseDoQuery();
+            newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+            newHouseListDomainResponse.setIsGuess(1);
+        }
         BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
         return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
-
     }
 
     @Override
@@ -244,11 +246,6 @@ public class NewHouseApiController implements NewHouseApi {
 
     @Override
     public ResponseEntity<NewHouseListDomainResponse> getGuessList(NewHouseListRequest newHouseListRequest) {
-        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
-        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
-        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
-        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
-        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
+        return getNewHouseListDomainResponseResponseEntity(newHouseListRequest);
     }
 }

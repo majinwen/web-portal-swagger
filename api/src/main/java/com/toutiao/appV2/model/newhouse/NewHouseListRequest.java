@@ -1,6 +1,7 @@
-package com.toutiao.app.api.chance.request.newhouse;
+package com.toutiao.appV2.model.newhouse;
 
-import com.toutiao.app.api.chance.request.BaseQueryRequest;
+import com.toutiao.appV2.model.BaseQueryRequest;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
@@ -17,5 +18,7 @@ public class NewHouseListRequest extends BaseQueryRequest {
     @ApiParam(value = "楼盘特色")
     private String buildingFeature;
 
-
+    @JsonProperty("sort")
+    @ApiParam("排序")
+    private String sort;
 }

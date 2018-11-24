@@ -194,6 +194,25 @@ public class RentEsDaoImpl implements RentEsDao {
 
     }
 
+    @Override
+    public SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize, String city,GeoDistanceSortBuilder sort) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        if((null!=keyword && !"".equals(keyword)) || null!=distance){
+            searchSourceBuilder.query(query).sort(sort).from((pageNum - 1) * pageSize).size(pageSize);
+        }else{
+            searchSourceBuilder.query(query).sort(sort).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+        }
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
+
     /**
      * 获取小区出租房源均价最低
      * @param boolQueryBuilder

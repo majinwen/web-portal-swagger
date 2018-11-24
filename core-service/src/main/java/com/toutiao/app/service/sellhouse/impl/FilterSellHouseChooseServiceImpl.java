@@ -71,7 +71,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", nearBySellHouseQueryDo.getAreaId()));
         }
         //商圈id
-        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId()) && nearBySellHouseQueryDo.getAreaId()!=0) {
+        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHouseQueryDo.getAreaId()));
 
         }
@@ -266,7 +266,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
         //商圈id
         if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", sellHouseDoQuery.getAreaId()));
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId", sellHouseDoQuery.getAreaId()));
 
         }
         //区域id
@@ -282,7 +282,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         }
         //地铁站id
         if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayStationId", sellHouseDoQuery.getSubwayStationId()));
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", sellHouseDoQuery.getSubwayStationId()));
         }
 
         if(null!=sellHouseDoQuery.getBeginPrice() && null!=sellHouseDoQuery.getEndPrice()){

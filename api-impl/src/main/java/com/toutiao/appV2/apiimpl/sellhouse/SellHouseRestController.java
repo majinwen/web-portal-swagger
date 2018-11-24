@@ -137,14 +137,28 @@ public class SellHouseRestController implements SellHouseRestApi {
      */
     @Override
     public ResponseEntity<SellHouseSearchDomainResponse> getSellHouseListGet(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+        return getSellHouseSearchDomainResponseResponseEntity(sellHouseRequest);
+
+    }
+
+    private ResponseEntity<SellHouseSearchDomainResponse> getSellHouseSearchDomainResponseResponseEntity(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest) {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
         SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+        if(sellHouseSearchDomain.getData().size()>0) {
+            sellHouseSearchDomainResponse.setIsGuess(0);
+        }
+        else
+        {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            sellHouseDoQuery = new SellHouseDoQuery();
+            sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+            sellHouseSearchDomainResponse.setIsGuess(1);
+        }
         BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
         return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
-
     }
 
     /**
@@ -155,13 +169,7 @@ public class SellHouseRestController implements SellHouseRestApi {
      */
     @Override
     public ResponseEntity<SellHouseSearchDomainResponse> getSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
-        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
-        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
-        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+        return getSellHouseSearchDomainResponseResponseEntity(sellHouseRequest);
 
     }
 

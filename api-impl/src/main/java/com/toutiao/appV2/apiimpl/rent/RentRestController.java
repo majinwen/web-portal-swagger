@@ -4,13 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.toutiao.app.api.chance.response.rent.*;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.appV2.api.rent.RentRestApi;
 import com.toutiao.appV2.model.rent.*;
+import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.util.city.CityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
+//import com.toutiao.app.api.chance.response.rent.*;
 
 /**
  * Created by CuiShihao on 2018/11/16
@@ -103,9 +105,18 @@ public class RentRestController implements RentRestApi {
     @Override
     public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListGet(@Validated RentHouseRequest rentHouseRequest) {
         RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
         BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
         RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
-        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        if (rentDetailsListDo.getRentDetailsList().size() > 0) {
+            rentDetailFewResponseList.setIsGuess(0);
+        } else {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            rentHouseDoQuery = new RentHouseDoQuery();
+            rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+            rentDetailFewResponseList.setIsGuess(1);
+        }
+
         BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
         return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
     }
@@ -116,6 +127,14 @@ public class RentRestController implements RentRestApi {
         BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
         RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
         RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        if (rentDetailsListDo.getRentDetailsList().size() > 0) {
+            rentDetailFewResponseList.setIsGuess(0);
+        } else {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            rentHouseDoQuery = new RentHouseDoQuery();
+            rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+            rentDetailFewResponseList.setIsGuess(1);
+        }
         BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
         return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
     }
@@ -128,6 +147,16 @@ public class RentRestController implements RentRestApi {
         JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsListDo);
         RentListResponse rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject), RentListResponse.class);
         return new ResponseEntity<>(rentListResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@Validated(Second.class) @RequestBody RentHouseRequest rentHouseRequest) {
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getCommuteRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+        return new ResponseEntity<RentDetailFewResponseList>(rentDetailFewResponseList, HttpStatus.OK);
     }
 
     @Override
