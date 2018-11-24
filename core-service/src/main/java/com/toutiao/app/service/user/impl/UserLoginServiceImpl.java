@@ -162,7 +162,7 @@ public class UserLoginServiceImpl implements UserLoginService {
             throw new BaseException(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_ERROR, "短信验证码错误！");
         }
 
-
+        ubd.setAvatar(headPicPath + "/" + ubd.getAvatar());
         return ubd;
     }
 
