@@ -348,7 +348,9 @@ public class SuggestServiceImpl implements SuggestService {
         }
 
         if (totalSize < 12 && rentList.size() > 3) {
-            rentList = rentList.subList(0, 15 - totalSize);
+            if (null != rentList && rentList.size() >= 15 - totalSize) {
+                rentList = rentList.subList(0, 15 - totalSize);
+            }
             totalSize = totalSize + rentList.size() - 3;
             if (totalSize == 12) {
                 newhouse.setSearchEnginesList(newHouseList);
@@ -386,7 +388,9 @@ public class SuggestServiceImpl implements SuggestService {
         }
 
         if (totalSize < 12 && plotList.size() > 3) {
-            plotList = plotList.subList(0, 15 - totalSize);
+            if (null != plotList && plotList.size() >= 15 - totalSize) {
+                plotList = plotList.subList(0, 15 - totalSize);
+            }
 
             newhouse.setSearchEnginesList(newHouseList);
             newhouse.setHouseType(0);

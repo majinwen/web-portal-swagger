@@ -111,9 +111,10 @@ public class SuggestRestController implements SuggestRestApi {
                                     SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
                                     BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
                                     searchEnginesResponse.setIsArea(0);
+                                    searchEnginesResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
                                     List searchNickname = searchEnginesDo.getSearchNickname();
                                     String nickname = "";
-                                    if (searchNickname.size() > 0) {
+                                    if (searchNickname != null && searchNickname.size() > 0) {
                                         for (int j = 0; j < searchNickname.size(); j++) {
                                             nickname += searchNickname.get(j).toString() + "·";
                                         }
@@ -240,6 +241,7 @@ public class SuggestRestController implements SuggestRestApi {
             houseSubjectList.add(houseSubject3);
         }
         houseSubjectListResponse.setHouseSubjectList(houseSubjectList);
+        houseSubjectListResponse.setTotalCount(houseSubjectList.size());
         return new ResponseEntity<HouseSubjectListResponse>(houseSubjectListResponse, HttpStatus.OK);
     }
 
