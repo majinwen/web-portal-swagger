@@ -164,7 +164,7 @@ public class SuggestRestController implements SuggestRestApi {
     public ResponseEntity<HouseSubjectListResponse> selectSearchConditionByCityIdAndType(SearchConditionRequest searchConditionRequest) {
         HouseSubjectListResponse houseSubjectListResponse = new HouseSubjectListResponse();
         List<HouseSubject> houseSubjectList = new ArrayList<>();
-        if(searchConditionRequest.getType() == 1) {
+        if (searchConditionRequest.getType() == 1) {
             HouseSubject houseSubject = new HouseSubject();
             houseSubject.setText("低密度");
             houseSubject.setUrl("http://app.bidewu.com/");
@@ -177,8 +177,7 @@ public class SuggestRestController implements SuggestRestApi {
             houseSubject2.setText("500强房企");
             houseSubject2.setUrl("http://app.bidewu.com/");
             houseSubjectList.add(houseSubject2);
-        }
-        else if(searchConditionRequest.getType() == 3) {
+        } else if (searchConditionRequest.getType() == 3) {
             HouseSubject houseSubject = new HouseSubject();
             houseSubject.setText("地铁房");
             houseSubject.setUrl("http://app.bidewu.com/");
@@ -191,8 +190,7 @@ public class SuggestRestController implements SuggestRestApi {
             houseSubject2.setText("独立卫生间");
             houseSubject2.setUrl("http://app.bidewu.com/");
             houseSubjectList.add(houseSubject2);
-        }
-        else if(searchConditionRequest.getType() == 4) {
+        } else if (searchConditionRequest.getType() == 4) {
             HouseSubject houseSubject = new HouseSubject();
             houseSubject.setText("近地铁");
             houseSubject.setUrl("http://app.bidewu.com/");
@@ -221,8 +219,7 @@ public class SuggestRestController implements SuggestRestApi {
             houseSubject6.setText("公园社区");
             houseSubject6.setUrl("http://app.bidewu.com/");
             houseSubjectList.add(houseSubject6);
-        }
-        if(searchConditionRequest.getType() == 0) {
+        } else {
             HouseSubject houseSubject = new HouseSubject();
             houseSubject.setText("地铁房");
             houseSubject.setUrl("http://app.bidewu.com/");
