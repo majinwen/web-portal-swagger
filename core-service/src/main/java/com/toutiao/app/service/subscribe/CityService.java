@@ -1,5 +1,7 @@
 package com.toutiao.app.service.subscribe;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.web.dao.entity.subscribe.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,6 +15,16 @@ import java.util.Map;
 public interface CityService {
 
     Map<String, Object> getCityAllInfo(Integer cityId);
+    Map<String, Object> getCityDistrictInfo(Integer cityId);
+    Map<String, Object> getCityParkInfo(Integer cityId);
+
+    Map<String, Object> getCityPidsInfo(Integer cityId);
+
+    List<SubwayLineData> getCitySubwayInfo(Integer cityId);
+
+    Map<String, Object> getCityConditionInfo(Integer cityId);
+
+    Map<String, Object> getCityCircleInfo(Integer cityId);
 
     City selectCityByDomain(String cityDomain);
 
