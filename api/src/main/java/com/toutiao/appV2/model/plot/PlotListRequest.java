@@ -93,4 +93,7 @@ public class PlotListRequest {
     @ApiParam("地铁站id")
     private Integer subwayStationId;
 
+    @JsonProperty("sort")
+    @ApiParam("排序")
+    private String sort;
 }

@@ -152,5 +152,9 @@ public class RentHouseRequest   {
   @NotEmpty(groups = {Second.class},message = "缺少交通类型")
   private String trafficType;
 
+  @JsonProperty("sort")
+  @ApiParam("排序")
+  private String sort;
+
 }
 
