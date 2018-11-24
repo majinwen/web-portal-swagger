@@ -3,22 +3,23 @@ package com.toutiao.app.domain.mapSearch;
 import lombok.Data;
 
 /**
- * @ClassName RentMapFindHouseBizcircleDo
+ * @ClassName RentMapFindHouseDistrictDo
  * @Author jiangweilong
- * @Date 2018/11/23 1:12 PM
+ * @Date 2018/11/23 12:45 PM
  * @Description:
  **/
 
 @Data
-public class RentMapSearchBizcircleDo {
+public class RentMapSearchDo {
+
 
     /**
-     * 商圈名称
+     * 区域名称
      */
     private String name;
 
     /**
-     * 商圈ID
+     * 区域ID
      */
     private Integer id;
 
@@ -41,4 +42,9 @@ public class RentMapSearchBizcircleDo {
      * 房源数量
      */
     private Integer count;
+
+    /**
+     * 价格
+     */
+    private Double price;
 }

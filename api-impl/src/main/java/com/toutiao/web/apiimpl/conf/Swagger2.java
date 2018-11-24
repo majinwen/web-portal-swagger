@@ -21,7 +21,7 @@ public class Swagger2 {
                 .apiInfo(apiInfo())
                 .select()
                 //为controller包路径
-                .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl.mapSearc"))
+                .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl.mapSearch"))
                 .paths(PathSelectors.any())
                 .build();
     }
