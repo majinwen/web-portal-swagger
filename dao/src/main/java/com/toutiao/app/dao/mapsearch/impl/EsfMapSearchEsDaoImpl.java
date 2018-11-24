@@ -25,6 +25,9 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        //searchSourceBuilder.query(boolQueryBuilder).size(0).aggregation(AggregationBuilders.terms(""))
+
 //
 //        searchSourceBuilder.query(boolQueryBuilder).aggregation()
 
