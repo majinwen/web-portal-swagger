@@ -1,8 +1,11 @@
 package com.toutiao.appV2.api.rent;
 
+//import com.toutiao.app.api.chance.response.rent.*;
 import com.toutiao.appV2.model.rent.*;
+import com.toutiao.web.common.assertUtils.Second;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -88,6 +91,21 @@ public interface RentRestApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<RentListResponse> getRentList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
+
+    @ApiOperation(value = "租房通勤找房", nickname = "getCommuteRentList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = RentDetailFewResponseList.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/rent/getRentHouseCommuteSearchList",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.POST)
+    ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@ApiParam(value = "rentHouseRequest" ,required=true ) @Validated(Second.class) @Valid() @RequestBody RentHouseRequest rentHouseRequest);
+
 
     @ApiOperation(value = "猜你喜欢:出租房源列表", nickname = "getGuessList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
     @ApiResponses(value = {

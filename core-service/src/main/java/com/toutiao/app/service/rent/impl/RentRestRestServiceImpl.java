@@ -1,7 +1,6 @@
 package com.toutiao.app.service.rent.impl;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
@@ -31,7 +30,6 @@ import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
 import org.elasticsearch.search.aggregations.bucket.filter.ParsedFilter;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -469,18 +467,21 @@ public class RentRestRestServiceImpl implements RentRestService {
 //        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
 
         GaussDecayFunctionBuilder functionBuilder = null;
-        GeoDistanceSortBuilder sort = null;
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
-            double[] location = new double[]{rentHouseDoQuery.getLon(), rentHouseDoQuery.getLat()};
+        if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance())){
+            double[] location =new double[]{rentHouseDoQuery.getLon(),rentHouseDoQuery.getLat()};
             //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location", location, "4km", "1km", 0.4);
-            //根据坐标计算距离
+            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",location,"4km","1km" ,0.4);
+
+        }
+
+        //根据坐标计算距离
+        GeoDistanceSortBuilder sort = null;
+        if(StringTool.isNotEmpty(rentHouseDoQuery.getLat())&&StringTool.isNotEmpty(rentHouseDoQuery.getLon())){
             sort = SortBuilders.geoDistanceSort("location", rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
             sort.geoDistance(GeoDistance.ARC);
-
-
         }
+
         //获取5km内的所有出租房源(函数得分进行加法运算,查询得分和函数得分进行乘法运算)
         FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
 
@@ -534,17 +535,36 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(), rentHouseDoQuery.getKeyword(), rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort);
+        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length > 0) {
             List<String> imgs = new ArrayList<>();
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
+                Double location = 0.0;
+                if(null!=hit.getSortValues()&&hit.getSortValues().length>0){
+                    location = (Double) hit.getSortValues()[0];
+                }
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-                if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+                if(StringTool.isNotEmpty(location)&&location>0){
                     BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                    String distance = geoDis.setScale(2, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
                     rentDetailsFewDo.setNearbyDistance(distance);
+                    String time = "";
+                    String trafficType = rentHouseDoQuery.getTrafficType();
+                    if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"0".equals(trafficType)){
+                        time = String.valueOf(Math.ceil(location * 1000 / 1.2 / 60)).replace("0","").replace(".","");
+                    }
+                    if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"1".equals(trafficType)){
+                        time = String.valueOf(Math.ceil(location * 1000 / 3 / 60)).replace("0","").replace(".","");
+                    }
+                    if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"2".equals(trafficType)){
+                        time = String.valueOf(Math.ceil(location * 1000 / 680)).replace("0","").replace(".","");
+                    }
+                    if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"3".equals(trafficType)){
+                        time = String.valueOf(Math.ceil(location * 1000 /1000)).replace("0","").replace(".","");
+                    }
+                    rentDetailsFewDo.setTime(time);
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
@@ -647,13 +667,38 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
 
         //附近
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())&&rentHouseDoQuery.getDistance()>0) {
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
                     .point(rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon())
                     .distance(rentHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
             boolQueryBuilder.must(location);
         }
 
+        //通勤找房
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getLat())&&StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&StringTool.isNotEmpty(rentHouseDoQuery.getTime())){
+            String time = rentHouseDoQuery.getTime();
+            String trafficType = rentHouseDoQuery.getTrafficType();
+            Double distance = 0.0;
+            if(StringTool.isNotEmpty(trafficType)&&"0".equals(trafficType)){
+                distance = Integer.valueOf(time) * 60 * 1.2 / 1000;
+            }
+            if(StringTool.isNotEmpty(trafficType)&&"1".equals(trafficType)){
+                distance = Integer.valueOf(time) * 60 * 3.0 / 1000;
+            }
+            if(StringTool.isNotEmpty(trafficType)&&"2".equals(trafficType)){
+                distance = Integer.valueOf(time) * 60 * 680.0 / 1000;
+            }
+            if(StringTool.isNotEmpty(trafficType)&&"3".equals(trafficType)){
+                distance = Integer.valueOf(time) * 60 * 1000.0 / 1000;
+            }
+
+            if (distance>0){
+                GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
+                        .point(rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon())
+                        .distance(distance, DistanceUnit.KILOMETERS);
+                boolQueryBuilder.must(location);
+            }
+        }
 
         //城市
         if (StringTool.isNotEmpty(rentHouseDoQuery.getCityId())) {

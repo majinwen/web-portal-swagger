@@ -1,6 +1,5 @@
 package com.toutiao.appV2.model.rent;
 
-
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

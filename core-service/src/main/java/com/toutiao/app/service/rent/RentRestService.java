@@ -1,6 +1,5 @@
 package com.toutiao.app.service.rent;
 
-import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.rent.*;
 
 import java.util.Date;
@@ -71,6 +70,8 @@ public interface RentRestService {
      * @return
      */
     int isDefaultImage(String importTime, Date today, String image);
+
+
 
 
 }

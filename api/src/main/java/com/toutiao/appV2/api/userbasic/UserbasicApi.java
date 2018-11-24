@@ -6,10 +6,7 @@
 package com.toutiao.appV2.api.userbasic;
 
 import com.toutiao.appV2.model.StringDataResponse;
-import com.toutiao.appV2.model.userbasic.LoginVerifyCodeRequest;
-import com.toutiao.appV2.model.userbasic.UserBasicResponse;
-import com.toutiao.appV2.model.userbasic.UserLoginResponse;
-import com.toutiao.appV2.model.userbasic.UserVerifyCodeRequest;
+import com.toutiao.appV2.model.userbasic.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -122,9 +119,9 @@ public interface UserbasicApi {
     ResponseEntity<Void> produceImageCode();
 
 
-    @ApiOperation(value = "登录时发送手机验证码", nickname = "sendLoginVerifyCode", notes = "", response = String.class, tags={ "用户基本信息", })
+    @ApiOperation(value = "登录时发送手机验证码", nickname = "sendLoginVerifyCode", notes = "", response = LoginVerifyCodeResponse.class, tags={ "用户基本信息", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = String.class),
+            @ApiResponse(code = 200, message = "OK", response = LoginVerifyCodeResponse.class),
             @ApiResponse(code = 404, message = "Not Found") })
     @ApiImplicitParams({
     })
@@ -132,7 +129,7 @@ public interface UserbasicApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
-    ResponseEntity<String> sendLoginVerifyCode(@ApiParam(value = "loginVerifyCodeRequest" ,required=true )  @Valid @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest);
+    ResponseEntity<LoginVerifyCodeResponse> sendLoginVerifyCode(@ApiParam(value = "loginVerifyCodeRequest" ,required=true )  @Valid @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest);
 
 
     @ApiOperation(value = "验证验证码是否正确", nickname = "validateImageCode", notes = "", tags={ "用户基本信息", })

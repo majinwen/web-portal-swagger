@@ -5,6 +5,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.web.common.constant.syserror.ShortMessageInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
 import org.slf4j.Logger;
@@ -12,6 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import static com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum.ILLEGAL_PHONE;
+import static com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum.USER_LOGIN_EXCEPTION;
+import static com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum.VERIFY_TOO_FAST;
 
 /**
  * 短信验证码接口服务
@@ -60,12 +65,15 @@ public class ShortMessageServiceImpl implements ShortMessageService {
                 return phoneCount;
             } else if ("isv.BUSINESS_LIMIT_CONTROL".equals(sendResult)) {
                 //超出短信发送限制
-                return "短信验证码发送过于频繁或已超出限制";
+                throw new BaseException(VERIFY_TOO_FAST,"短信验证码发送过于频繁或已超出限制");
+//                return "短信验证码发送过于频繁或已超出限制";
             } else if ("isv.MOBILE_NUMBER_ILLEGAL".equals(sendResult)) {
                 //超出短信发送限制
-                return "非法手机号";
+                throw new BaseException(ILLEGAL_PHONE,"非法手机号");
+//                return "非法手机号";
             } else {//其它返回码
-                return sendResult;
+                throw new BaseException(USER_LOGIN_EXCEPTION,sendResult);
+//                return sendResult;
             }
         } catch (ClientException e) {
             logger.error("短信发送失败，请检查短信平台相关配置");

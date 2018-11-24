@@ -4,7 +4,6 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.List;
 import java.util.Map;
 
 @Data
@@ -148,6 +147,11 @@ public class RentDetailsFewDo {
 
     @ApiModelProperty(value = "公司图标", name = "companyIcon")
     private String companyIcon;
+
+    @ApiModelProperty("时间(单位:min)")
+    private String time;
+
+
 
 
 }

@@ -1,6 +1,8 @@
 package com.toutiao.appV2.apiimpl.suggest;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.HouseSubject;
@@ -18,15 +20,15 @@ import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
 import com.toutiao.appV2.model.search.SearchConditionResponse;
-import com.toutiao.appV2.model.subscribe.CityAllInfoMap;
-import com.toutiao.appV2.model.subscribe.CityConditionDoList;
-import com.toutiao.appV2.model.subscribe.WapCityList;
+import com.toutiao.appV2.model.subscribe.*;
 import com.toutiao.appV2.model.suggest.SearchEnginesResponse;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
 import com.toutiao.appV2.model.suggest.SuggestResultResponse;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.search.SearchCondition;
 import com.toutiao.web.dao.entity.subscribe.City;
+import com.toutiao.web.dao.entity.subscribe.CityParkInfo;
+import com.toutiao.web.dao.entity.subscribe.SubwayLineData;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -258,6 +260,113 @@ public class SuggestRestController implements SuggestRestApi {
         cityAllInfoMap.setCityAllInfos(res);
         return new ResponseEntity<CityAllInfoMap>(cityAllInfoMap, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<CityConditionInfoMap> getCityConditionInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityConditionInfoMap cityConditionInfoMap = new CityConditionInfoMap();
+        Map<String,Object>   res = cityService.getCityConditionInfo(cityId);
+        cityConditionInfoMap.setCityConditionInfos(res);
+        return new ResponseEntity<CityConditionInfoMap>(cityConditionInfoMap, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CityCircleInfoMap> getCityCircleInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityCircleInfoMap cityCircleInfoMap = new CityCircleInfoMap();
+        Map<String,Object>   res = cityService.getCityCircleInfo(cityId);
+        cityCircleInfoMap.setCityCircleInfos(res);
+        return new ResponseEntity<CityCircleInfoMap>(cityCircleInfoMap, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CityDiscrictInfoMap> getCityDistrictInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityDiscrictInfoMap cityDiscrictInfoMap = new CityDiscrictInfoMap();
+        Map<String,Object>   res = cityService.getCityDistrictInfo(cityId);
+        cityDiscrictInfoMap.setCityDiscrictInfos(res);
+        return new ResponseEntity<CityDiscrictInfoMap>(cityDiscrictInfoMap, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<CityParkInfoMap> getCityParkInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityParkInfoMap cityParkInfoMap = new CityParkInfoMap();
+        Map<String,Object>  res = cityService.getCityParkInfo(cityId);
+        cityParkInfoMap.setCityParkInfos(res);
+        return new ResponseEntity<CityParkInfoMap>(cityParkInfoMap, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<CitySubwayInfoMap> getCitySubwaysInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CitySubwayInfoMap citySubwayInfoMap = new CitySubwayInfoMap();
+        List<SubwayLineData> res = cityService.getCitySubwayInfo(cityId);
+        citySubwayInfoMap.setCitySubwayInfos(res);
+        return new ResponseEntity<CitySubwayInfoMap>(citySubwayInfoMap, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<CityPidsInfoMap> getCityPidsInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId", required = false, defaultValue = "0") Integer cityId, @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain", required = false, defaultValue = "") String cityDomain) {
+        if (cityId == 0 && Objects.equals(cityDomain, "")) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        if (cityId == 0) {
+            City city = cityService.selectCityByDomain(cityDomain);
+            if (city != null) {
+                cityId = city.getCityId();
+            }
+        }
+        CityPidsInfoMap cityPidsInfoMap = new CityPidsInfoMap();
+        Map<String,Object>  res = cityService.getCityPidsInfo(cityId);
+        cityPidsInfoMap.setCityPidsInfos(res);
+        return new ResponseEntity<CityPidsInfoMap>(cityPidsInfoMap, HttpStatus.OK);
+    }
+
+
 
     @Override
     public ResponseEntity<WapCityList> getWapCity() {
