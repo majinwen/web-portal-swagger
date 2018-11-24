@@ -153,7 +153,7 @@ public class RentRestController implements RentRestApi {
     public ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@Validated(Second.class) @RequestBody RentHouseRequest rentHouseRequest) {
         RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
         BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
-        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getCommuteRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
         RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
         BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
         return new ResponseEntity<RentDetailFewResponseList>(rentDetailFewResponseList, HttpStatus.OK);
