@@ -146,10 +146,11 @@ public class RentHouseRequest   {
   @NotEmpty(groups = {Second.class},message = "缺少时间")
   private String time;
 
-  @ApiParam(value = "交通类型(0:不行,1:骑车,2:公交,3:驾车)")
+  @ApiParam(value = "交通类型(0:步行,1:骑车,2:公交,3:驾车)")
   @ApiModelProperty(value = "交通类型(0:不行,1:骑车,2:公交,3:驾车)")
   @JsonProperty("trafficType")
   @NotEmpty(groups = {Second.class},message = "缺少交通类型")
   private String trafficType;
+
 }
 

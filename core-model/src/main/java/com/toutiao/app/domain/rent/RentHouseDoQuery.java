@@ -53,7 +53,7 @@ public class RentHouseDoQuery extends QueryDo{
     private String time;
 
     /**
-     * 交通类型(0:不行,1:骑车,2:公交,3:驾车)
+     * 交通类型(0:步行,1:骑车,2:公交,3:驾车)
      */
     private String trafficType;
 }

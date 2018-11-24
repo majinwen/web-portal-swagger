@@ -134,22 +134,12 @@ public class RentRestController implements RentRestApi {
 
     @Override
     public ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@Validated(Second.class) @RequestBody RentHouseRequest rentHouseRequest) {
-                String accept = request.getHeader("Accept");
-                if (accept != null && accept.contains("")) {
-                    try {
-                        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
-                        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
-                        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
-                        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
-                        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
-                        return new ResponseEntity<RentDetailFewResponseList>(rentDetailFewResponseList, HttpStatus.OK);
-                    } catch (Exception e) {
-                        log.error("Couldn't serialize response for content type ", e);
-                        return new ResponseEntity<RentDetailFewResponseList>(HttpStatus.INTERNAL_SERVER_ERROR);
-                    }
-                }
-
-                return new ResponseEntity<RentDetailFewResponseList>(HttpStatus.NOT_IMPLEMENTED);
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+        return new ResponseEntity<RentDetailFewResponseList>(rentDetailFewResponseList, HttpStatus.OK);
     }
 
     @Override
