@@ -1,17 +1,12 @@
 package com.toutiao.appV2.model.mapSearch;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
-import javax.validation.constraints.*;
 
 /**
  * EsfMapSearchRequest
@@ -22,7 +17,7 @@ import javax.validation.constraints.*;
 public class EsfMapSearchRequest   {
   @JsonProperty("areaId")
   @ApiModelProperty(value = "商圈")
-  private Integer areaId = null;
+  private Integer[] areaId = null;
 
   @JsonProperty("beginArea")
   @ApiModelProperty(value = "商圈")
@@ -95,7 +90,7 @@ public class EsfMapSearchRequest   {
   private Integer subwayLineId = null;
 
   @JsonProperty("subwayStationId")
-  private Integer subwayStationId = null;
+  private Integer[] subwayStationId = null;
 
 }
 
