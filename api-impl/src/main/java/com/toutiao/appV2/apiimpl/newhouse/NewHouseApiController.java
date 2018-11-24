@@ -127,26 +127,32 @@ public class NewHouseApiController implements NewHouseApi {
 
     @Override
     public ResponseEntity<NewHouseListDomainResponse> getNewHouseListGet(NewHouseListRequest newHouseListRequest) {
-
-        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
-        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
-        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
-        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
-        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
+        return getNewHouseListDomainResponseResponseEntity(newHouseListRequest);
 
     }
 
     @Override
     public ResponseEntity<NewHouseListDomainResponse> getNewHouseListPost(@RequestBody NewHouseListRequest newHouseListRequest) {
 
+        return getNewHouseListDomainResponseResponseEntity(newHouseListRequest);
+
+    }
+
+    private ResponseEntity<NewHouseListDomainResponse> getNewHouseListDomainResponseResponseEntity(@RequestBody NewHouseListRequest newHouseListRequest) {
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
         BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
         NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+        if (newHouseListVo.getData().size() > 0) {
+            newHouseListDomainResponse.setIsGuess(0);
+        } else {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            newHouseDoQuery = new NewHouseDoQuery();
+            newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+            newHouseListDomainResponse.setIsGuess(1);
+        }
         BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
         return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
-
     }
 
     @Override
@@ -240,11 +246,6 @@ public class NewHouseApiController implements NewHouseApi {
 
     @Override
     public ResponseEntity<NewHouseListDomainResponse> getGuessList(NewHouseListRequest newHouseListRequest) {
-        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
-        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
-        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
-        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
-        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
+        return getNewHouseListDomainResponseResponseEntity(newHouseListRequest);
     }
 }

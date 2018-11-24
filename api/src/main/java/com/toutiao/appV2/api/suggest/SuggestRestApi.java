@@ -4,12 +4,11 @@ import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
-import com.toutiao.appV2.model.subscribe.CityAllInfoMap;
-import com.toutiao.appV2.model.subscribe.CityConditionDoList;
-import com.toutiao.appV2.model.subscribe.WapCityList;
+import com.toutiao.appV2.model.subscribe.*;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
 import com.toutiao.appV2.model.suggest.SuggestResponse;
 import com.toutiao.appV2.model.suggest.SuggestResultResponse;
+import com.toutiao.web.dao.entity.subscribe.CityParkInfo;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,6 +68,89 @@ public interface SuggestRestApi {
     ResponseEntity<CityAllInfoMap> getCityAllInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
                                                   @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
+
+    @ApiOperation(value = "查询城市所有区域信息", nickname = "getCityDistrictInfo", notes = "", response = CityDiscrictInfoMap.class, tags={ "其他", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CityDiscrictInfoMap.class),
+            @ApiResponse(code = 201, message = "Created", response = CityDiscrictInfoMap.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/getCityDistrictInfo",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<CityDiscrictInfoMap> getCityDistrictInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
+                                                            @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
+
+
+    @ApiOperation(value = "查询搜索条件信息", nickname = "getCityConditionInfo", notes = "", response = CityConditionInfoMap.class, tags={ "其他", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CityConditionInfoMap.class),
+            @ApiResponse(code = 201, message = "Created", response = CityConditionInfoMap.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/getCityConditionInfo",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<CityConditionInfoMap> getCityConditionInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
+                                                    @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
+
+
+    @ApiOperation(value = "查询城市商圈信息", nickname = "getCityCircleInfo", notes = "", response = CityCircleInfoMap.class, tags={ "其他", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CityCircleInfoMap.class),
+            @ApiResponse(code = 201, message = "Created", response = CityCircleInfoMap.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/getCityCircleInfo",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<CityCircleInfoMap> getCityCircleInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
+                                                    @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
+
+
+
+    @ApiOperation(value = "查询城市所有公园信息", nickname = "getCityParkInfo", notes = "", response = CityParkInfoMap.class, tags={ "其他", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CityParkInfoMap.class),
+            @ApiResponse(code = 201, message = "Created", response = CityParkInfoMap.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/getCityParkInfo",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<CityParkInfoMap> getCityParkInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
+                                                    @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
+
+    @ApiOperation(value = "查询城市所有广告位信息", nickname = "getCityPidsInfo", notes = "", response = CityPidsInfoMap.class, tags={ "其他", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CityPidsInfoMap.class),
+            @ApiResponse(code = 201, message = "Created", response = CityPidsInfoMap.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/getCityPidsInfo",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<CityPidsInfoMap> getCityPidsInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
+                                                    @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
+
+
+    @ApiOperation(value = "查询城市所有地铁信息", nickname = "getCitySubwaysInfo", notes = "", response = CitySubwayInfoMap.class, tags={ "其他", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CitySubwayInfoMap.class),
+            @ApiResponse(code = 201, message = "Created", response = CitySubwayInfoMap.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/getCitySubwaysInfo",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<CitySubwayInfoMap> getCitySubwaysInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
+                                                    @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
 
 

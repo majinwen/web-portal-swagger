@@ -25,5 +25,8 @@ public class RentDetailFewResponseList   {
 
   @JsonProperty("totalCount")
   private Integer totalCount = null;
+
+  @ApiModelProperty(value = "是否为猜你喜欢的数据", name = "isGuess")
+  private Integer isGuess;
 }
 
