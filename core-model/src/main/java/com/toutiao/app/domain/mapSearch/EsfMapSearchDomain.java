@@ -12,7 +12,7 @@ import java.util.List;
  **/
 
 @Data
-public class EsfMapSearchCommunityDomain {
+public class EsfMapSearchDomain {
 
     /**
      * 当前可视界面描述
@@ -22,5 +22,5 @@ public class EsfMapSearchCommunityDomain {
     /**
      * 返回数据
      */
-    private List<EsfMapSearchCommunityDo> data;
+    private List<EsfMapSearchDo> data;
 }

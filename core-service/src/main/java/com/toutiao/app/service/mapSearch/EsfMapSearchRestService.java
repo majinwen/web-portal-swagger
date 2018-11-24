@@ -1,6 +1,7 @@
 package com.toutiao.app.service.mapSearch;
 
 import com.toutiao.app.domain.mapSearch.EsfMapSearchDoQuery;
+import com.toutiao.app.domain.mapSearch.EsfMapSearchDomain;
 
 /**
  * @ClassName EsfMapSearchRestService
@@ -15,5 +16,5 @@ public interface EsfMapSearchRestService {
      * @param esfMapSearchDoQuery
      * @return
      */
-    Object esfMapSearch(EsfMapSearchDoQuery esfMapSearchDoQuery, String city);
+    EsfMapSearchDomain esfMapSearch(EsfMapSearchDoQuery esfMapSearchDoQuery, String city);
 }

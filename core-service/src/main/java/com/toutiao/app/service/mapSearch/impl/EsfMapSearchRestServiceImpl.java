@@ -13,9 +13,7 @@ import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.ParsedDoubleTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,25 +48,20 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
      * @return
      */
     @Override
-    public Object esfMapSearch(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
+    public EsfMapSearchDomain esfMapSearch(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
 
         //判断当前地图查询级别
-
-
+        EsfMapSearchDomain esfMapSearchDomain = new EsfMapSearchDomain();
         Integer groupTypeId = MapGroupUtil.returnMapGrouId(esfMapSearchDoQuery.getGroupType());
         //groupTypeId 1：区县，2：商圈，3：社区
-        Object object = new Object();
+
         if (groupTypeId.equals(MapGroupConstant.COMMUNITY_CODE)) {
 
-            object = esfMapSearchByCommunity(esfMapSearchDoQuery, city);
+            esfMapSearchDomain = esfMapSearchByCommunity(esfMapSearchDoQuery, city);
 
         }
 
-
-
-
-
-        return object;
+        return esfMapSearchDomain;
     }
 
 
@@ -77,11 +70,11 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
      * @param esfMapSearchDoQuery
      * @return
      */
-    public EsfMapSearchCommunityDomain esfMapSearchByCommunity(EsfMapSearchDoQuery esfMapSearchDoQuery, String city){
+    public EsfMapSearchDomain esfMapSearchByCommunity(EsfMapSearchDoQuery esfMapSearchDoQuery, String city){
 
-        EsfMapSearchCommunityDomain esfMapSearchCommunityDomain = new EsfMapSearchCommunityDomain();
+        EsfMapSearchDomain esfMapSearchCommunityDomain = new EsfMapSearchDomain();
         NumberFormat nf = NumberFormat.getNumberInstance();
-        List<EsfMapSearchCommunityDo> data = new ArrayList<>();
+        List<EsfMapSearchDo> data = new ArrayList<>();
         nf.setMaximumFractionDigits(1);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -106,7 +99,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         Terms houseCount = searchResponse.getAggregations().get("houseCount");
         List buckets= houseCount.getBuckets();
         for (Object bucket : buckets){
-            EsfMapSearchCommunityDo esfMapSearchCommunityDo = new EsfMapSearchCommunityDo();
+            EsfMapSearchDo esfMapSearchCommunityDo = new EsfMapSearchDo();
             esfMapSearchCommunityDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//社区id
             esfMapSearchCommunityDo.setCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
