@@ -41,4 +41,9 @@ public class EsfMapSearchCommunityDo {
      * 房源数量
      */
     private Integer count;
+
+    /**
+     * 均价
+     */
+    private Double price;
 }

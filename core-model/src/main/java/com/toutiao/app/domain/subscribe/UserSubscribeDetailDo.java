@@ -24,10 +24,10 @@ public class UserSubscribeDetailDo {
      * 开始价格
      */
     @ApiModelProperty(value = "开始价格", name = "beginPrice")
-    private Integer beginPrice;
+    private Double beginPrice;
     /**
      * 结束价格
      */
     @ApiModelProperty(value = "结束价格", name = "endPrice")
-    private Integer endPrice;
+    private Double endPrice;
 }
