@@ -15,7 +15,7 @@ public class PlotListRequest {
 
     @JsonProperty("areaId")
     @ApiParam("商圈id")
-    private Integer areaId;
+    private Integer[] areaId;
 
     @JsonProperty("beginArea")
     @ApiParam("起始面积")
@@ -91,7 +91,7 @@ public class PlotListRequest {
 
     @JsonProperty("subwayStationId")
     @ApiParam("地铁站id")
-    private Integer subwayStationId;
+    private Integer[] subwayStationId;
 
     @JsonProperty("sort")
     @ApiParam("排序")

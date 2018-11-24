@@ -63,6 +63,13 @@ public interface RentRestService {
     RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city);
 
     /**
+     * 租房搜索结果
+     * @param rentHouseDoQuery
+     * @return
+     */
+    RentDetailsListDo getCommuteRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city);
+
+    /**
      * 租房判断是否上传默认图
      * @param importTime
      * @param today

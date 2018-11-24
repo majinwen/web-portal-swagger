@@ -82,6 +82,7 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
         }else{
             throw new BaseException(RestfulInterfaceErrorCodeEnum.IMAGE_SIZE_BEYOND_LIMIT,"图片大小超出限制");
         }
+        userBasicDo.setAvatar(headPicPath + "/" + userBasicDo.getAvatar());
         return userBasicDo;
     }
 

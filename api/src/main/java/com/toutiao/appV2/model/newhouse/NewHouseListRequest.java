@@ -1,7 +1,7 @@
-package com.toutiao.app.api.chance.request.newhouse;
+package com.toutiao.appV2.model.newhouse;
 
+import com.toutiao.appV2.model.BaseQueryRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.toutiao.app.api.chance.request.BaseQueryRequest;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
