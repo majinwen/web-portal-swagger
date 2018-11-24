@@ -14,24 +14,31 @@ import java.util.Objects;
 
 public class PlotTrafficResponse   {
   @JsonProperty("busLines")
+  @ApiModelProperty("公交线路")
   private Integer busLines = null;
 
   @JsonProperty("busStation")
+  @ApiModelProperty("公交站")
   private String busStation = null;
 
   @JsonProperty("ringRoadDistance")
+  @ApiModelProperty("环线距离")
   private Double ringRoadDistance = null;
 
   @JsonProperty("ringRoadName")
+  @ApiModelProperty("环线")
   private String ringRoadName = null;
 
   @JsonProperty("subwayDistance")
+  @ApiModelProperty("地铁站距离")
   private Double subwayDistance = null;
 
   @JsonProperty("subwayLine")
+  @ApiModelProperty("地铁线")
   private String subwayLine = null;
 
   @JsonProperty("subwayStation")
+  @ApiModelProperty("地铁站")
   private String subwayStation = null;
 
   public PlotTrafficResponse busLines(Integer busLines) {

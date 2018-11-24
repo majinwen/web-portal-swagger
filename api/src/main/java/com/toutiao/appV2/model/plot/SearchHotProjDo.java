@@ -15,22 +15,22 @@ import java.util.Objects;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:42:20.134Z")
 
 public class SearchHotProjDo   {
-  @JsonProperty("cityId")
+  @ApiModelProperty("城市id")
   private Integer cityId = null;
 
-  @JsonProperty("houseType")
+  @ApiModelProperty("小区类型  1表示新房  2表示二手房  3表示租房")
   private Integer houseType = null;
 
-  @JsonProperty("id")
+  @ApiModelProperty("id")
   private Integer id = null;
 
-  @JsonProperty("newcode")
+  @ApiModelProperty("小区id")
   private Integer newcode = null;
 
-  @JsonProperty("projname")
+  @ApiModelProperty("小区名称")
   private String projname = null;
 
-  @JsonProperty("time")
+  @ApiModelProperty("时间")
   private Date time = null;
 
   public SearchHotProjDo cityId(Integer cityId) {

@@ -92,11 +92,16 @@ public class UserbasicApiController implements UserbasicApi {
         UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
         if (null != userLoginResponse) {
             userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            clearCookieAndCache(request, response, userBasic.getPhone());
+            StringDataResponse stringDataResponse = new StringDataResponse();
+            stringDataResponse.setData("退出登录成功");
+            return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
         }
-        clearCookieAndCache(request, response, userBasic.getPhone());
-        StringDataResponse stringDataResponse = new StringDataResponse();
-        stringDataResponse.setData("退出登录成功");
-        return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
+        else
+        {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN);
+        }
+
     }
 
     @Override

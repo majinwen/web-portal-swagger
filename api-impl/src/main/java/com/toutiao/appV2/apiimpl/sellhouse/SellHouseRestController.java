@@ -136,7 +136,25 @@ public class SellHouseRestController implements SellHouseRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseSearchDomainResponse> getSellHouseList(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+    public ResponseEntity<SellHouseSearchDomainResponse> getSellHouseListGet(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
+        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+
+    }
+
+    /**
+     * 二手房搜索结果列表
+     *
+     * @param sellHouseRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
@@ -177,6 +195,23 @@ public class SellHouseRestController implements SellHouseRestApi {
         RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
         BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
         SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
+        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+    }
+
+    /**
+     * 猜你喜欢:二手房列表
+     *
+     * @param sellHouseRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getGuessList(SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
         return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);

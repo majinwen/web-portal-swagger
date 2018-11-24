@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.newhouse;
 
+import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -120,6 +121,9 @@ public class NewHouseListDo  {
 
     @ApiModelProperty(value = "优惠活动")
     private List<ActivityInfoDo> activityInfo;
+
+    @ApiModelProperty(value = "标签列表")
+    private List<HouseLable> houseLabelList;
 
 
 }

@@ -174,12 +174,12 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize, String city) {
+    public SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize, String city,GeoDistanceSortBuilder sort) {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         if((null!=keyword && !"".equals(keyword)) || null!=distance){
-            searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+            searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(sort);
         }else{
             searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
         }

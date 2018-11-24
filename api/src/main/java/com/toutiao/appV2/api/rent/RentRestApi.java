@@ -1,10 +1,6 @@
 package com.toutiao.appV2.api.rent;
 
-import com.toutiao.app.api.chance.response.rent.*;
-import com.toutiao.appV2.model.rent.NearRentHouseResponse;
-import com.toutiao.appV2.model.rent.NearHouseListRequest;
-import com.toutiao.appV2.model.rent.RentDetailsRequest;
-import com.toutiao.appV2.model.rent.RentHouseRequest;
+import com.toutiao.appV2.model.rent.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,19 +40,7 @@ public interface RentRestApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<RecommendRentResponse> getRecommendRent(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
-
-
-//    @ApiOperation(value = "根据id获取该出租房源对应的经纪人(该接口已停用)", nickname = "getRentAgentByRentId", notes = "改接口已停用", response = RentAgentResponse.class, tags={ "rent-rest-controller", })
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "OK", response = RentAgentResponse.class),
-//            @ApiResponse(code = 401, message = "Unauthorized"),
-//            @ApiResponse(code = 403, message = "Forbidden"),
-//            @ApiResponse(code = 404, message = "Not Found") })
-//    @RequestMapping(value = "/rest/rent/getRentAgentByRentId",
-//            produces = { "application/json" },
-//            method = RequestMethod.GET)
-//    ResponseEntity<RentAgentResponse> getRentAgentByRentId(@ApiParam(value = "rentDetailsRequest" ,required=true )  @Valid @RequestBody RentDetailsRequest rentDetailsRequest);
+    ResponseEntity<com.toutiao.appV2.model.rent.RecommendRentResponse> getRecommendRent(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
     @ApiOperation(value = "查找出租房源详细信息", nickname = "getRentDetailByRentId", notes = "", response = RentDetailResponse.class, tags={ "租房", })
@@ -79,8 +63,19 @@ public interface RentRestApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/rent/getRentHouseSearchList",
             produces = { "application/json" },
-            method = RequestMethod.GET)
-    ResponseEntity<RentDetailFewResponseList> getRentHouseSearchList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
+            method = {RequestMethod.GET})
+    ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListGet(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid RentHouseRequest rentHouseRequest);
+
+    @ApiOperation(value = "出租房源列表", nickname = "getRentHouseSearchList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = RentDetailFewResponseList.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/rent/getRentHouseSearchList",
+            produces = { "application/json" },
+            method = {RequestMethod.POST})
+    ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListPost(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
     @ApiOperation(value = "租房推荐列表", nickname = "getRentList", notes = "", response = RentListResponse.class, tags={ "租房", })
@@ -93,4 +88,15 @@ public interface RentRestApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<RentListResponse> getRentList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
+
+    @ApiOperation(value = "猜你喜欢:出租房源列表", nickname = "getGuessList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = RentDetailFewResponseList.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/rent/getGuessList",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<RentDetailFewResponseList> getGuessList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 }

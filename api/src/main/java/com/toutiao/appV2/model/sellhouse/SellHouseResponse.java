@@ -13,8 +13,8 @@ import java.util.List;
 public class SellHouseResponse {
 
     //@ChangeName("data")
-    @ApiModelProperty(value = "二手房列表", name = "sellHouseList")
-    private List<SellHouseDo> sellHouseList;
+    @ApiModelProperty(value = "二手房列表", name = "data")
+    private List<SellHouseDo> data;
 
     //@ChangeName("totalNum")
     @ApiModelProperty(value = "总条数", name = "total")

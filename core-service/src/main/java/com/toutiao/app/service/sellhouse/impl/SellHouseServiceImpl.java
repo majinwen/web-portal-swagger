@@ -29,22 +29,24 @@ import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
+import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.functionscore.*;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.sort.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 @Service
@@ -774,16 +776,24 @@ public class SellHouseServiceImpl implements SellHouseService{
         FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim")
                 .modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11).missing(0);
 
-        Map<String,Double> map = new HashMap<>();
-        map.put("lat",sellHouseDoQuery.getLat());
-        map.put("lon",sellHouseDoQuery.getLon());
-        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+//        Map<String,Double> map = new HashMap<>();
+//        map.put("lat",sellHouseDoQuery.getLat());
+//        map.put("lon",sellHouseDoQuery.getLon());
+//        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+
+
         //设置高斯函数
         GaussDecayFunctionBuilder functionBuilder = null;
         FunctionScoreQueryBuilder queryKmBuilder = null;
+        GeoDistanceSortBuilder sort = null;
         if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",json,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
+            double[] location =new double[]{sellHouseDoQuery.getLon(),sellHouseDoQuery.getLat()};
+            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",location,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
             //获取5km内所有的二手房
+
+            sort = SortBuilders.geoDistanceSort("housePlotLocation", sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon());
+            sort.unit(DistanceUnit.KILOMETERS);
+            sort.geoDistance(GeoDistance.ARC);
 
         }
         queryKmBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
@@ -823,6 +833,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
                 query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
+
             }else{
                 query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
@@ -839,7 +850,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         List<SellHousesSearchDo> sellHousesSearchDos =new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query, sellHouseDoQuery.getDistance(),
-                sellHouseDoQuery.getKeyword(), sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city);
+                sellHouseDoQuery.getKeyword(), sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city, sort);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if(searchHists.length > 0){
@@ -848,6 +859,12 @@ public class SellHouseServiceImpl implements SellHouseService{
                 String details = "";
                 details=searchHit.getSourceAsString();
                 sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
+                if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+                    BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
+                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                    sellHousesSearchDo.setNearbyDistance(distance);
+                }
+
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHousesSearchDo.getImportTime();
                 int isDefault = isDefaultImage(importTime ,date, sellHousesSearchDo.getHousePhotoTitle());
@@ -862,6 +879,12 @@ public class SellHouseServiceImpl implements SellHouseService{
                     sellHousesSearchDo.setTagsName(claimSellHouseDo.getClaimTagsName());
                     sellHousesSearchDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
+                String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
+                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http://")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
+
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(),city);
@@ -878,6 +901,40 @@ public class SellHouseServiceImpl implements SellHouseService{
                 }
                 sellHousesSearchDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
+
+                //设置房源公司图标
+                sellHousesSearchDo.setCompanyIcon("http://wap-qn.bidewu.com/wap/5i5j.png");
+                //设置房源标签
+                List<HouseLable> houseLableList= new ArrayList<>();
+                HouseLable houseLable = new HouseLable();
+                houseLable.setText("捡漏");
+                houseLable.setIcon("http://wap-qn.bidewu.com/wap/jl.png");
+                houseLableList.add(houseLable);
+                HouseLable houseLable1 = new HouseLable();
+                houseLable1.setText("降价");
+                houseLable1.setIcon("http://wap-qn.bidewu.com/wap/jj.png");
+                houseLableList.add(houseLable1);
+                HouseLable houseLable2 = new HouseLable();
+                houseLable2.setText("抢手");
+                houseLable2.setIcon("http://wap-qn.bidewu.com/wap/qs.png");
+                houseLableList.add(houseLable2);
+                sellHousesSearchDo.setHouseLableList(houseLableList);
+                //设置房源专题
+                List<HouseSubject> houseSubjectList = new ArrayList<>();
+                HouseSubject sellHouseSubject = new HouseSubject();
+                sellHouseSubject.setText("长宁大豪宅社区主力户型");
+                sellHouseSubject.setUrl("http://www.baidu.com");
+                houseSubjectList.add(sellHouseSubject);
+                HouseSubject houseSubject1 = new HouseSubject();
+                houseSubject1.setText("总价低于商圈同户型29.53万");
+                houseSubject1.setUrl("http://www.baidu.com");
+                houseSubjectList.add(houseSubject1);
+                HouseSubject sellHouseSubject2 = new HouseSubject();
+                sellHouseSubject2.setText("降5万");
+                sellHouseSubject2.setUrl("http://www.baidu.com");
+                houseSubjectList.add(sellHouseSubject2);
+                sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
+
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
                 String keys="";

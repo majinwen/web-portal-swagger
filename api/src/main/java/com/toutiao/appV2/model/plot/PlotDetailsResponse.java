@@ -17,101 +17,132 @@ import java.util.Objects;
 
 public class PlotDetailsResponse   {
   @JsonProperty("abbreviatedAge")
+  @ApiModelProperty("建成年代")
   private String abbreviatedAge = null;
 
   @JsonProperty("airQuality")
+  @ApiModelProperty("空气质量")
   private String airQuality = null;
 
   @JsonProperty("area")
+  @ApiModelProperty("区域名称")
   private String area = null;
 
   @JsonProperty("areaSize")
+  @ApiModelProperty("占地面积")
   private Double areaSize = null;
 
   @JsonProperty("avgGreening")
+  @ApiModelProperty("绿化率")
   private Double avgGreening = null;
 
   @JsonProperty("avgPrice")
+  @ApiModelProperty("均价")
   private Double avgPrice = null;
 
   @JsonProperty("buildingAreaSize")
+  @ApiModelProperty("建筑面积")
   private Double buildingAreaSize = null;
 
   @JsonProperty("buildingStructure")
+  @ApiModelProperty("建筑类型结构")
   private String buildingStructure = null;
 
   @JsonProperty("carPositionRatio")
+  @ApiModelProperty("车位配比")
   private String carPositionRatio = null;
 
   @JsonProperty("dimension")
+  @ApiModelProperty("容积率")
   private Double dimension = null;
 
   @JsonProperty("electricFee")
+  @ApiModelProperty("电费")
   private Double electricFee = null;
 
   @JsonProperty("electricSupply")
+  @ApiModelProperty("供电")
   private String electricSupply = null;
 
   @JsonProperty("elevator")
+  @ApiModelProperty("电梯配备类型")
   private String elevator = null;
 
   @JsonProperty("hasElevator")
+  @ApiModelProperty("电梯配备中文")
   private String hasElevator = null;
 
   @JsonProperty("heatingMode")
+  @ApiModelProperty("供暖方式")
   private String heatingMode = null;
 
   @JsonProperty("id")
   private Integer id = null;
 
   @JsonProperty("label")
+  @ApiModelProperty("标签")
   @Valid
   private List<String> label = null;
 
   @JsonProperty("location")
+  @ApiModelProperty("位置")
   private String location = null;
 
   @JsonProperty("parkingRate")
+  @ApiModelProperty("停车费")
   private String parkingRate = null;
 
   @JsonProperty("photos")
   @Valid
+  @ApiModelProperty("小区照片")
   private List<String> photos = null;
 
   @JsonProperty("plotsHousesDomain")
+  @ApiModelProperty("二手房，租房信息")
   private PlotsHousesDomain plotsHousesDomain = null;
 
   @JsonProperty("property")
+  @ApiModelProperty("物业公司")
   private String property = null;
 
   @JsonProperty("propertyFee")
+  @ApiModelProperty("物业费")
   private String propertyFee = null;
 
   @JsonProperty("propertyType")
+  @ApiModelProperty("物业类型")
   private String propertyType = null;
 
   @JsonProperty("propertyTypeName")
+  @ApiModelProperty("物业类型名称")
   private String propertyTypeName = null;
 
   @JsonProperty("rc")
+  @ApiModelProperty("小区名称/楼盘名称")
   private String rc = null;
 
   @JsonProperty("ringRoadName")
+  @ApiModelProperty("详情环线")
   private String ringRoadName = null;
 
   @JsonProperty("sumBuilding")
+  @ApiModelProperty("总栋数")
   private String sumBuilding = null;
 
   @JsonProperty("sumHousehold")
+  @ApiModelProperty("总户数")
   private String sumHousehold = null;
 
   @JsonProperty("tradingArea")
+  @ApiModelProperty("商圈")
   private String tradingArea = null;
 
   @JsonProperty("waterFee")
+  @ApiModelProperty("水费")
   private Double waterFee = null;
 
   @JsonProperty("waterSupply")
+  @ApiModelProperty("供水")
   private String waterSupply = null;
 
   public PlotDetailsResponse abbreviatedAge(String abbreviatedAge) {

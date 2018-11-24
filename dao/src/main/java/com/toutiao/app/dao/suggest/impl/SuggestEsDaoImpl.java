@@ -37,11 +37,11 @@ public class SuggestEsDaoImpl implements SuggestEsDao{
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getSearchScopeIndex(city)).types(ElasticCityUtils.getSearchScopeType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(booleanQueryBuilder)
-                .aggregation(AggregationBuilders.filter("plot", QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
+                /*.aggregation(AggregationBuilders.filter("plot", QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
                 .aggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
                 .aggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)))
                 .aggregation(AggregationBuilders.filter("rent",QueryBuilders.termQuery("search_type_sings", RENT_TYPE)))
-                .aggregation(AggregationBuilders.filter("apartment",QueryBuilders.termQuery("search_type_sings", APARTMENT_TYPE)));
+                .aggregation(AggregationBuilders.filter("apartment",QueryBuilders.termQuery("search_type_sings", APARTMENT_TYPE)))*/;
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = null;
@@ -64,7 +64,7 @@ public class SuggestEsDaoImpl implements SuggestEsDao{
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getSearchEnginesIndex(city)).types(ElasticCityUtils.getSearchEnginesType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(booleanQueryBuilder)
+        searchSourceBuilder.query(booleanQueryBuilder).size(12)
                 .aggregation(AggregationBuilders.filter("plot",QueryBuilders.termQuery("search_type_sings", PLOT_TYPE)))
                 .aggregation(AggregationBuilders.filter("esf",QueryBuilders.termQuery("search_type_sings", ESF_TYPE)))
                 .aggregation(AggregationBuilders.filter("newHouse",QueryBuilders.termQuery("search_type_sings", NEW_HOUSE_TYPE)))

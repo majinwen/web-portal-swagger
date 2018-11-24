@@ -1,6 +1,6 @@
 package com.toutiao.appV2.model.sellhouse;
 
-import com.toutiao.app.domain.sellhouse.SellHousesSearchDo;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

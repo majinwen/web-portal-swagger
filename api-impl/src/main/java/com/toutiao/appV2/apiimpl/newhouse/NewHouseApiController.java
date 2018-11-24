@@ -40,6 +40,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -129,7 +130,19 @@ public class NewHouseApiController implements NewHouseApi {
     }
 
     @Override
-    public ResponseEntity<NewHouseListDomainResponse> getNewHouseList(NewHouseListRequest newHouseListRequest) {
+    public ResponseEntity<NewHouseListDomainResponse> getNewHouseListGet(NewHouseListRequest newHouseListRequest) {
+
+        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
+        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
+        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
+        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
+        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
+
+    }
+
+    @Override
+    public ResponseEntity<NewHouseListDomainResponse> getNewHouseListPost(@RequestBody NewHouseListRequest newHouseListRequest) {
 
         NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
         NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
@@ -227,5 +240,15 @@ public class NewHouseApiController implements NewHouseApi {
         StringDataResponse stringDataResponse = new StringDataResponse();
         stringDataResponse.setData("保存成功");
         return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<NewHouseListDomainResponse> getGuessList(NewHouseListRequest newHouseListRequest) {
+        NewHouseListDomainResponse newHouseListDomainResponse = new NewHouseListDomainResponse();
+        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
+        BeanUtils.copyProperties(newHouseListRequest, newHouseDoQuery);
+        NewHouseListDomain newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);
+        return new ResponseEntity<>(newHouseListDomainResponse, HttpStatus.OK);
     }
 }

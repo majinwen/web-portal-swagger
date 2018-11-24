@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toutiao.app.api.chance.response.rent.*;
+//import com.toutiao.app.api.chance.response.rent.*;
 import com.toutiao.app.domain.rent.*;
+import com.toutiao.app.domain.rent.RentDetailsFewDo;
+import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.appV2.api.rent.RentRestApi;
-import com.toutiao.appV2.model.rent.NearHouseListRequest;
-import com.toutiao.appV2.model.rent.NearRentHouseResponse;
-import com.toutiao.appV2.model.rent.RentDetailsRequest;
-import com.toutiao.appV2.model.rent.RentHouseRequest;
+import com.toutiao.appV2.model.rent.*;
 import com.toutiao.web.common.util.city.CityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -101,8 +101,17 @@ public class RentRestController implements RentRestApi {
     }
 
     @Override
-    public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchList(@Validated RentHouseRequest rentHouseRequest) {
+    public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListGet(@Validated RentHouseRequest rentHouseRequest) {
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+        return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
+    }
 
+    @Override
+    public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListPost(@Validated @RequestBody RentHouseRequest rentHouseRequest) {
         RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
         BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
         RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
@@ -119,6 +128,16 @@ public class RentRestController implements RentRestApi {
         JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsListDo);
         RentListResponse rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject), RentListResponse.class);
         return new ResponseEntity<>(rentListResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RentDetailFewResponseList> getGuessList(RentHouseRequest rentHouseRequest) {
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+        return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
     }
 
 }

@@ -18,87 +18,121 @@ public class RentDetailsFewDo   {
   private AgentBaseDo agentBaseDo = null;
 
   @JsonProperty("areaName")
+  @ApiModelProperty("商圈名称")
   private String areaName = null;
 
   @JsonProperty("createTime")
+  @ApiModelProperty("入库时间")
   private String createTime = null;
 
   @JsonProperty("districtName")
+  @ApiModelProperty("区域名称")
   private String districtName = null;
 
   @JsonProperty("forward")
+  @ApiModelProperty("朝向ID（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）")
   private String forward = null;
 
   @JsonProperty("hall")
+  @ApiModelProperty("几厅")
   private Integer hall = null;
 
   @JsonProperty("houseArea")
+  @ApiModelProperty("房源面积")
   private Double houseArea = null;
 
   @JsonProperty("houseDesc")
+  @ApiModelProperty("房源描述")
   private String houseDesc = null;
 
   @JsonProperty("houseId")
+  @ApiModelProperty("出租房源Id")
   private String houseId = null;
 
   @JsonProperty("housePhoto")
   @Valid
+  @ApiModelProperty("房源图片")
   private List<String> housePhoto = null;
 
   @JsonProperty("houseTitle")
+  @ApiModelProperty("录入/导入房源标题")
   private String houseTitle = null;
 
   @JsonProperty("houseTitleImg")
+  @ApiModelProperty("房源标题图")
+  //@ChangeName("housePhotoTitle")
   private String houseTitleImg = null;
 
   @JsonProperty("isDefaultImage")
+  @ApiModelProperty("是否显示默认图片标志")
   private Integer isDefaultImage = null;
 
   @JsonProperty("nearbySubway")
   @Valid
+  @ApiModelProperty("地铁信息")
+  //@ChangeName("nearbyStationsDistance")
   private Map<String, String> nearbySubway = null;
 
   @JsonProperty("nearestSubway")
+  @ApiModelProperty("最近的地铁")
+  //@ChangeName("nearBySubway")
   private String nearestSubway = null;
 
   @JsonProperty("parkRatio")
+  @ApiModelProperty("车位配比")
   private String parkRatio = null;
 
   @JsonProperty("rentHousePrice")
+  @ApiModelProperty("租金(元/月)")
+  //@ChangeName("rentPrice")
   private Double rentHousePrice = null;
 
   @JsonProperty("rentHouseTagsName")
   @Valid
+  @ApiModelProperty("出租房源标签名称")
+  //@ChangeName("tags")
   private List<String> rentHouseTagsName = null;
 
   @JsonProperty("rentHouseType")
+  @ApiModelProperty("房源来源类型(录入/导入)")
   private Integer rentHouseType = null;
 
   @JsonProperty("rentType")
+  @ApiModelProperty("出租类型")
   private Integer rentType = null;
 
   @JsonProperty("rentTypeName")
+  @ApiModelProperty("租赁方式名称")
   private String rentTypeName = null;
 
   @JsonProperty("room")
+  @ApiModelProperty("几室")
   private String room = null;
 
   @JsonProperty("subwayDistanceInfo")
+  @ApiModelProperty("地铁到房子间的距离")
   private String subwayDistanceInfo = null;
 
   @JsonProperty("totalNum")
+  @ApiModelProperty("总数")
   private Integer totalNum = null;
 
   @JsonProperty("uid")
+  @ApiModelProperty("租房推优查询uid")
   private String uid = null;
 
   @JsonProperty("userId")
+  @ApiModelProperty("出租房源Id")
   private Integer userId = null;
 
   @JsonProperty("zufangId")
+  @ApiModelProperty("小区Id")
+  //@ChangeName("buildingId")
   private Integer zufangId = null;
 
   @JsonProperty("zufangName")
+  @ApiModelProperty("小区名称")
+  //@ChangeName("buildingName")
   private String zufangName = null;
 
   public RentDetailsFewDo agentBaseDo(AgentBaseDo agentBaseDo) {

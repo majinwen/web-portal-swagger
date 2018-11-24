@@ -1,6 +1,6 @@
 package com.toutiao.appV2.model.rent;
 
-import com.toutiao.app.api.chance.response.rent.RentDetailFewResponse;
+
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

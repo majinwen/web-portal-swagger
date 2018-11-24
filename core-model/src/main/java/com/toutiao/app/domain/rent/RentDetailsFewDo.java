@@ -1,7 +1,6 @@
 package com.toutiao.app.domain.rent;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
-import com.toutiao.web.common.assertUtils.ChangeName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -18,14 +17,10 @@ public class RentDetailsFewDo {
     /**
      * 小区Id
      */
-    @ChangeName("buildingId")
-    @ApiModelProperty("小区Id")
     private Integer zufangId;
     /**
      * 小区名称
      */
-    @ChangeName("buildingName")
-    @ApiModelProperty("小区名称")
     private String zufangName;
     /**
      * 房源面积
@@ -65,14 +60,10 @@ public class RentDetailsFewDo {
     /**
      * 出租房源标签名称
      */
-    @ChangeName("tags")
-    @ApiModelProperty("出租房源标签名称")
     private String[] rentHouseTagsName;
     /**
      * 租金(元/月)
      */
-    @ChangeName("rentPrice")
-    @ApiModelProperty("租金(元/月)")
     private Double rentHousePrice;
     /**
      * 总数
@@ -82,8 +73,6 @@ public class RentDetailsFewDo {
     /**
      * 房源标题图
      */
-    @ChangeName("housePhotoTitle")
-    @ApiModelProperty("房源标题图")
     private String houseTitleImg;
     /**
      * 录入/导入房源标题
@@ -101,15 +90,12 @@ public class RentDetailsFewDo {
     @ApiModelProperty("租房推优查询uid")
     private String uid;
 
-    @ChangeName("agent")
     private AgentBaseDo agentBaseDo;
 
     private Integer userId;
     /**
      * 最近的地铁
      */
-    @ApiModelProperty("最近的地铁")
-    @ChangeName("nearBySubway")
     private String nearestSubway;
     /**
      * 车位配比
@@ -126,8 +112,6 @@ public class RentDetailsFewDo {
     /**
      * 地铁信息
      */
-    @ChangeName("nearbyStationsDistance")
-    @ApiModelProperty("地铁信息")
      private Map<String,String> nearbySubway;
 
 
@@ -158,6 +142,12 @@ public class RentDetailsFewDo {
      */
     @ApiModelProperty("是否显示默认图片标志")
     private Integer isDefaultImage = 0;
+
+    @ApiModelProperty("附近距离xxkm")
+    private String nearbyDistance;
+
+    @ApiModelProperty(value = "公司图标", name = "companyIcon")
+    private String companyIcon;
 
 
 }
