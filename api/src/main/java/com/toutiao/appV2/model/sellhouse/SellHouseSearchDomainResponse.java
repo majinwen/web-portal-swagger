@@ -16,4 +16,7 @@ public class SellHouseSearchDomainResponse {
 
     @ApiModelProperty(value = "总条数", name = "totalNum")
     private Integer totalNum;
+
+    @ApiModelProperty(value = "是否为猜你喜欢的数据", name = "isGuess")
+    private Integer isGuess;
 }

@@ -103,9 +103,18 @@ public class RentRestController implements RentRestApi {
     @Override
     public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListGet(@Validated RentHouseRequest rentHouseRequest) {
         RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
         BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
         RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
-        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        if (rentDetailsListDo.getRentDetailsList().size() > 0) {
+            rentDetailFewResponseList.setIsGuess(0);
+        } else {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            rentHouseDoQuery = new RentHouseDoQuery();
+            rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+            rentDetailFewResponseList.setIsGuess(1);
+        }
+
         BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
         return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
     }
@@ -116,6 +125,14 @@ public class RentRestController implements RentRestApi {
         BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
         RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
         RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+        if (rentDetailsListDo.getRentDetailsList().size() > 0) {
+            rentDetailFewResponseList.setIsGuess(0);
+        } else {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            rentHouseDoQuery = new RentHouseDoQuery();
+            rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+            rentDetailFewResponseList.setIsGuess(1);
+        }
         BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
         return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
     }

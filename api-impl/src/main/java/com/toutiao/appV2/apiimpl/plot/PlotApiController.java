@@ -170,22 +170,39 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<PlotListResponse> getPlotListByRequirementGet(@ApiParam(value = "plotListRequest") @Valid PlotListRequest plotListRequest) {
-
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
         PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
-        return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
+        PlotListResponse plotListResponse = new PlotListResponse();
+        if (plotListDo.getPlotList().size() > 0) {
+            plotListResponse.setIsGuess(0);
+        } else {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            plotListDoQuery = new PlotListDoQuery();
+            plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
+            plotListResponse.setIsGuess(1);
+        }
+        BeanUtils.copyProperties(plotListDo, plotListResponse);
+        return new ResponseEntity<PlotListResponse>(plotListResponse, HttpStatus.OK);
 
     }
 
     @Override
     public ResponseEntity<PlotListResponse> getPlotListByRequirementPost(@ApiParam(value = "plotListRequest") @Valid @RequestBody PlotListRequest plotListRequest) {
-
         PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
         BeanUtils.copyProperties(plotListRequest, plotListDoQuery);
         PlotListDo plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
-        return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
-
+        PlotListResponse plotListResponse = new PlotListResponse();
+        if (plotListDo.getPlotList().size() > 0) {
+            plotListResponse.setIsGuess(0);
+        } else {
+            //没有根据结果查询到数据,返回猜你喜欢的数据
+            plotListDoQuery = new PlotListDoQuery();
+            plotListDo = appPlotService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
+            plotListResponse.setIsGuess(1);
+        }
+        BeanUtils.copyProperties(plotListDo, plotListResponse);
+        return new ResponseEntity<PlotListResponse>(plotListResponse, HttpStatus.OK);
     }
 
     @Override
