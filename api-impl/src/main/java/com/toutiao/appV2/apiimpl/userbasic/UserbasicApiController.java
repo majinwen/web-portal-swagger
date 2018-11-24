@@ -130,11 +130,17 @@ public class UserbasicApiController implements UserbasicApi {
     @Override
     public ResponseEntity<UserBasicResponse> updateUserAvatar(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId) {
 
-        UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(userId.get(),
-                file, request, response);
-        UserBasicResponse userBasicResponse = new UserBasicResponse();
-        BeanUtils.copyProperties(userBasicDo, userBasicResponse);
-        return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+        String userString = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse user = JSONObject.parseObject(userString, UserLoginResponse.class);
+        if (null != user) {
+            UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(user.getUserId(),
+                    file, request, response);
+            UserBasicResponse userBasicResponse = new UserBasicResponse();
+            BeanUtils.copyProperties(userBasicDo, userBasicResponse);
+            return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
+        } else {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN);
+        }
     }
 
     @Override
