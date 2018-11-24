@@ -1,11 +1,10 @@
 package com.toutiao.appV2.model.mapSearch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import java.util.List;
-
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
+
+import java.util.List;
 
 /**
  * EsfMapSearchDoRequest

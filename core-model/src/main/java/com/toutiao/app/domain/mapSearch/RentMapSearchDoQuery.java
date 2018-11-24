@@ -37,4 +37,25 @@ public class RentMapSearchDoQuery  extends QueryDo {
      * 附近距离
      */
     private Integer distance;
+
+    /**
+     * 左上维度
+     */
+    private Double topLeftLat;
+
+    /**
+     * 左上经度
+     */
+    private Double topLeftLon;
+
+    /**
+     * 右下维度
+     */
+    private Double bottomRightLat;
+
+    /**
+     * 右下经度
+     */
+    private Double bottomRightLon;
+
 }
