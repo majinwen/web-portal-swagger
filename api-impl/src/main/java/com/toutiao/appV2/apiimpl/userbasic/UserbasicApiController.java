@@ -11,15 +11,12 @@ import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.appV2.api.userbasic.UserbasicApi;
 import com.toutiao.appV2.model.StringDataResponse;
-import com.toutiao.appV2.model.userbasic.LoginVerifyCodeRequest;
+import com.toutiao.appV2.model.userbasic.*;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.toutiao.appV2.model.userbasic.UserBasicResponse;
-import com.toutiao.appV2.model.userbasic.UserLoginResponse;
-import com.toutiao.appV2.model.userbasic.UserVerifyCodeRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -190,23 +187,25 @@ public class UserbasicApiController implements UserbasicApi {
     }
 
     @Override
-    public ResponseEntity<String> sendLoginVerifyCode(@ApiParam(value = "loginVerifyCodeRequest", required = true) @Valid @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest) {
+    public ResponseEntity<LoginVerifyCodeResponse> sendLoginVerifyCode(@ApiParam(value = "loginVerifyCodeRequest", required = true) @Valid @RequestBody LoginVerifyCodeRequest loginVerifyCodeRequest) {
 
         String accept = request.getHeader("Accept");
         if (accept != null && accept.contains("")) {
             try {
                 String phone = loginVerifyCodeRequest.getPhone();
                 String nashResult = shortMessageService.sendVerifyCode(phone);
-                return new ResponseEntity<String>(nashResult, HttpStatus.OK);
+                LoginVerifyCodeResponse loginVerifyCodeResponse = new LoginVerifyCodeResponse();
+                loginVerifyCodeResponse.setMsg(nashResult);
+                return new ResponseEntity<>(loginVerifyCodeResponse, HttpStatus.OK);
             } catch (BaseException ex) {
                 throw new BaseException(ex.getCode(), ex.getMsg());
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
 
-        return new ResponseEntity<String>(HttpStatus.NOT_IMPLEMENTED);
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
 
     }
 
