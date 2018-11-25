@@ -256,7 +256,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         }
 
         //附近
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0){
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
                     .point(sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon())
                     .distance(sellHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
@@ -276,7 +276,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         }
 
         //地铁线id
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayLineId()) && sellHouseDoQuery.getSubwayLineId()>0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", sellHouseDoQuery.getSubwayLineId()));
 
         }

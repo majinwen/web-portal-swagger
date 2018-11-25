@@ -787,7 +787,7 @@ public class SellHouseServiceImpl implements SellHouseService{
         GaussDecayFunctionBuilder functionBuilder = null;
         FunctionScoreQueryBuilder queryKmBuilder = null;
         GeoDistanceSortBuilder geoDistanceSort = null;
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance()>0){
             double[] location =new double[]{sellHouseDoQuery.getLon(),sellHouseDoQuery.getLat()};
             functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",location,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
             //获取5km内所有的二手房
@@ -840,7 +840,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }
         }else{
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() >0){
                 query = QueryBuilders.functionScoreQuery(queryKmBuilder,functionBuilder).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }else{
@@ -860,7 +860,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 String details = "";
                 details=searchHit.getSourceAsString();
                 sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
-                if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+                if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())&& sellHouseDoQuery.getDistance()>0){
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
                     String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
                     sellHousesSearchDo.setNearbyDistance(distance);
@@ -939,7 +939,7 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
                 String keys="";
-                if(null!=sellHouseDoQuery.getSubwayLineId())
+                if(null!=sellHouseDoQuery.getSubwayLineId() && sellHouseDoQuery.getSubwayLineId()>0)
                 {
                     keys+=sellHouseDoQuery.getSubwayLineId().toString();
                 }
@@ -951,7 +951,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 //                {
 //                    sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
 //                }
-                if (null!=sellHouseDoQuery.getSubwayStationId()){
+                if (sellHouseDoQuery.getSubwayStationId().length>0){
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
                     for(int i=0; i<sellHouseDoQuery.getSubwayStationId().length; i++){

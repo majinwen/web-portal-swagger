@@ -294,13 +294,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             boolQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId", plotListDoQuery.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(plotListDoQuery.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(plotListDoQuery.getSubwayLineId()) && plotListDoQuery.getSubwayLineId()> 0) {
             boolQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", plotListDoQuery.getSubwayLineId()));
             key = String.valueOf(plotListDoQuery.getSubwayLineId());
         }
         //地铁站id
         List<String> keyList = new ArrayList<>();
-        if (StringTool.isNotEmpty(plotListDoQuery.getSubwayStationId())) {
+        if (StringTool.isNotEmpty(plotListDoQuery.getSubwayStationId()) && plotListDoQuery.getSubwayStationId().length > 0) {
             boolQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", plotListDoQuery.getSubwayStationId()));
             for (int i=0; i<plotListDoQuery.getSubwayStationId().length; i++) {
                 String stationKey = key +"$"+plotListDoQuery.getSubwayStationId()[i];
