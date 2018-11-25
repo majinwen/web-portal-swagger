@@ -56,4 +56,5 @@ public class RentHouseDoQuery extends QueryDo{
      * 交通类型(0:步行,1:骑车,2:公交,3:驾车)
      */
     private String trafficType;
+    private String sort;
 }

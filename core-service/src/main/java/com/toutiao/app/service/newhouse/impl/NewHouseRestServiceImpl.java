@@ -213,7 +213,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         } else if (newHouseDoQuery.getBeginTotalPrice() == 0 && newHouseDoQuery.getEndTotalPrice() != 0) {
             newHouseDoQuery.setBeginTotalPrice(0.0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice()).lte(newHouseDoQuery.getEndTotalPrice())));
-        } else if (newHouseDoQuery.getEndTotalPrice() == 0 && newHouseDoQuery.getBeginPrice() != 0) {
+        } else if (newHouseDoQuery.getEndTotalPrice() == 0 && newHouseDoQuery.getBeginTotalPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice())));
         }
 
@@ -291,7 +291,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
 
-        SearchResponse searchResponse = newHouseEsDao.getNewHouseList(booleanQueryBuilder, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize(), levelSort, buildingSort, city);
+        SearchResponse searchResponse = newHouseEsDao.getNewHouseList(booleanQueryBuilder, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize(), levelSort, buildingSort, city, newHouseDoQuery.getSort());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if (searchHists.length > 0) {
@@ -337,7 +337,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 }
 
                 //新房图片处理
-                if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http://")) {
+                if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http")) {
                     newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-dongfangdi1200x900");
                 }
 

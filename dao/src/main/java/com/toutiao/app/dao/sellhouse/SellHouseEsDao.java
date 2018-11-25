@@ -45,7 +45,7 @@ public interface SellHouseEsDao {
      * @return
      */
     SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer
-            pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort);
+            pageNum, Integer pageSize, String city, GeoDistanceSortBuilder GeoDistanceSort, String sort);
 
     SearchResponse getSellHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer
             pageNum, Integer pageSize, String city);

@@ -1,8 +1,6 @@
 package com.toutiao.app.domain.newhouse;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.toutiao.app.domain.QueryDo;
-import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 @Data
@@ -25,7 +23,7 @@ public class NewHouseDoQuery extends QueryDo {
     private String buildingFeature;
 
     /**
-     * 起始总价
+     * 开始总价
      */
     private double beginTotalPrice;
 
@@ -33,5 +31,10 @@ public class NewHouseDoQuery extends QueryDo {
      * 结束总价
      */
     private double endTotalPrice;
+
+    /**
+     * 排序 0 默认  3均价从低到高  4均价从高到低
+     */
+    private String sort;
 
 }

@@ -2,7 +2,6 @@ package com.toutiao.appV2.model.newhouse;
 
 import com.toutiao.appV2.model.BaseQueryRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
@@ -23,11 +22,9 @@ public class NewHouseListRequest extends BaseQueryRequest {
     @ApiParam("排序")
     private String sort;
 
-    @JsonProperty("beginTotalPrice")
-    @ApiParam("起始总价")
+    @ApiModelProperty(value = "起始总价格", name = "beginTotalPrice")
     private double beginTotalPrice;
 
-    @JsonProperty("endTotalPrice")
-    @ApiParam("结束总价")
+    @ApiModelProperty(value = "结束总价格", name = "endTotalPrice")
     private double endTotalPrice;
 }
