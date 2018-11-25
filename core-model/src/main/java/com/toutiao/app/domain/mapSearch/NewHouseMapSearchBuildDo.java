@@ -77,4 +77,9 @@ public class NewHouseMapSearchBuildDo {
      */
     private Integer isActive;
 
+    /**
+     * 价格描述
+     */
+    private String priceDesc;
+
 }

@@ -30,6 +30,9 @@ public interface NewHouseEsDao {
 
     SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder  boolQueryBuilder ,String city);
 
+
+    SearchResponse getBuildCount(BoolQueryBuilder  boolQueryBuilder ,String city);
+
 //    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 //
 //

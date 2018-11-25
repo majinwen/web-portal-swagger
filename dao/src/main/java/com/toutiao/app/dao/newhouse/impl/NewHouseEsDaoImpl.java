@@ -107,6 +107,22 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         return  searchresponse;
     }
 
+    @Override
+    public SearchResponse getBuildCount(BoolQueryBuilder boolQueryBuilder, String city) {
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchRequest.source(searchSourceBuilder.query(boolQueryBuilder));
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  searchresponse;
+    }
+
 
 //    @Override
 //    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {

@@ -1,20 +1,20 @@
 package com.toutiao.appV2.model.mapSearch;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
+
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.List;
-
 /**
- * EsfMapSearchDoRequest
+ * NewHouseMapSearchRequest
  */
 @Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-23T06:53:25.085Z")
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-24T10:59:38.870Z")
 @Data
-public class EsfMapSearchDoRequest   {
+public class NewHouseMapSearchRequest   {
   @JsonProperty("areaId")
-  private Integer areaId = null;
+  private List<Integer> areaId = null;
 
   @JsonProperty("beginArea")
   private Double beginArea = null;
@@ -24,9 +24,6 @@ public class EsfMapSearchDoRequest   {
 
   @JsonProperty("cityId")
   private Integer cityId = null;
-
-  @JsonProperty("distance")
-  private Integer distance = null;
 
   @JsonProperty("districtId")
   private Integer districtId = null;
@@ -73,11 +70,14 @@ public class EsfMapSearchDoRequest   {
   @JsonProperty("pageSize")
   private Integer pageSize = null;
 
+  @JsonProperty("saleStatusId")
+  private List<Integer> saleStatusId = null;
+
   @JsonProperty("subwayLineId")
   private Integer subwayLineId = null;
 
   @JsonProperty("subwayStationId")
-  private Integer subwayStationId = null;
+  private Integer[] subwayStationId = null;
 
 
 }
