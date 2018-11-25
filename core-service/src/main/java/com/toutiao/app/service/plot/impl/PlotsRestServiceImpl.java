@@ -352,15 +352,15 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     .lte(plotListDoQuery.getEndArea()), ScoreMode.None));
         }
 
-        GeoDistanceSortBuilder sort = null;
+//        GeoDistanceSortBuilder geoDistanceSort = null;
         //坐标
         if (StringTool.isNotEmpty(plotListDoQuery.getLat()) && plotListDoQuery.getLat() > 0 && plotListDoQuery.getLon() > 0 && StringTool.isNotEmpty(plotListDoQuery.getLon())) {
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location").point(plotListDoQuery.getLat(), plotListDoQuery.getLon()).distance(plotListDoQuery.getDistance(), DistanceUnit.KILOMETERS);
             boolQueryBuilder.must(location);
             //排序
-            sort = SortBuilders.geoDistanceSort("location", plotListDoQuery.getLat(), plotListDoQuery.getLon());
-            sort.unit(DistanceUnit.KILOMETERS);
-            sort.geoDistance(GeoDistance.ARC);
+//            geoDistanceSort = SortBuilders.geoDistanceSort("location", plotListDoQuery.getLat(), plotListDoQuery.getLon());
+//            geoDistanceSort.unit(DistanceUnit.KILOMETERS);
+//            geoDistanceSort.geoDistance(GeoDistance.ARC);
             //sort.point(plotListDoQuery.getLat(), plotListDoQuery.getLon());
 
         }
@@ -386,9 +386,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         PlotListDo plotListDo = new PlotListDo();
         SearchResponse searchResponse = null;
         if ((StringTool.isNotEmpty(plotListDoQuery.getLat()) && plotListDoQuery.getLat() > 0 && plotListDoQuery.getLon() > 0 && StringTool.isNotEmpty(plotListDoQuery.getLon()))) {
-            searchResponse = plotEsDao.queryPlotListByRequirementAndKeywordV1(from, boolQueryBuilder, plotListDoQuery.getPageSize(), sort, levelSort, plotScoreSort, city);
+            //排序
+            GeoDistanceSortBuilder geoDistanceSort = SortBuilders.geoDistanceSort("location", plotListDoQuery.getLat(), plotListDoQuery.getLon());
+            geoDistanceSort.unit(DistanceUnit.KILOMETERS);
+            geoDistanceSort.geoDistance(GeoDistance.ARC);
+            searchResponse = plotEsDao.queryPlotListByRequirementAndKeywordV1(from, boolQueryBuilder, plotListDoQuery.getPageSize(), geoDistanceSort, levelSort, plotScoreSort, city, plotListDoQuery.getSort());
+
         } else {
-            searchResponse = plotEsDao.queryCommonPlotList(from, boolQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city);
+            searchResponse = plotEsDao.queryCommonPlotList(from, boolQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city,plotListDoQuery.getSort());
             if (searchResponse != null) {
                 SearchHit[] hits = searchResponse.getHits().getHits();
 
@@ -423,7 +428,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 }
                 BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
                 booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder, plotListDoQuery.getPageSize() - reslocationinfo, plotListDoQuery.getKeyword(), city);
+                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder, plotListDoQuery.getPageSize() - reslocationinfo, plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit : hits1) {
                     commonMethod(hit, keyList, plotDetailsFewDoList, city ,plotListDoQuery.getDistance());
@@ -435,7 +440,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 if (oneKM_size > 0) {
                     newFrom = (int) ((plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize() - (oneKM_size / plotListDoQuery.getPageSize() + 1) * plotListDoQuery.getPageSize());
                 }
-                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city);
+                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
                 SearchHit[] hits1 = searchResponse1.getHits().getHits();
                 for (SearchHit hit : hits1) {
                     commonMethod(hit, keyList, plotDetailsFewDoList, city,plotListDoQuery.getDistance());

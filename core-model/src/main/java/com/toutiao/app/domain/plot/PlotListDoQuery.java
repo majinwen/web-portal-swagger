@@ -22,4 +22,8 @@ public class PlotListDoQuery extends QueryDo {
      * 距离
      */
     private Double distance;
+    /**
+     * 排序
+     */
+    private String sort;
 }

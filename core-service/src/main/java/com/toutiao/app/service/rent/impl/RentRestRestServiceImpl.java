@@ -467,7 +467,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 //        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
 
         GaussDecayFunctionBuilder functionBuilder = null;
-        GeoDistanceSortBuilder sort = null;
+        GeoDistanceSortBuilder geoDistanceSort = null;
         if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
             double[] location = new double[]{rentHouseDoQuery.getLon(), rentHouseDoQuery.getLat()};
 
@@ -475,9 +475,9 @@ public class RentRestRestServiceImpl implements RentRestService {
             functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location", location, "4km", "1km", 0.4);
             //根据坐标计算距离
 
-            sort = SortBuilders.geoDistanceSort("location", rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon());
-            sort.unit(DistanceUnit.KILOMETERS);
-            sort.geoDistance(GeoDistance.ARC);
+            geoDistanceSort = SortBuilders.geoDistanceSort("location", rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon());
+            geoDistanceSort.unit(DistanceUnit.KILOMETERS);
+            geoDistanceSort.geoDistance(GeoDistance.ARC);
         }
 
         //获取5km内的所有出租房源(函数得分进行加法运算,查询得分和函数得分进行乘法运算)
@@ -533,7 +533,8 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(), rentHouseDoQuery.getKeyword(), rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort);
+        SearchResponse searchResponse = rentEsDao.queryRentSearchList(query, rentHouseDoQuery.getDistance(), rentHouseDoQuery.getKeyword(), rentHouseDoQuery.getPageNum(),
+                rentHouseDoQuery.getPageSize(), city, geoDistanceSort, rentHouseDoQuery.getSort());
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length > 0) {
             List<String> imgs = new ArrayList<>();
