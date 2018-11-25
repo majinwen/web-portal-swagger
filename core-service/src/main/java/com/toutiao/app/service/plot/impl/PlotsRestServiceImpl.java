@@ -286,21 +286,21 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             boolQueryBuilder.must(queryBuilder);
         }
         //区域id
-        if (StringTool.isNotEmpty(plotListDoQuery.getDistrictId())) {
+        if (StringTool.isNotEmpty(plotListDoQuery.getDistrictId()) && plotListDoQuery.getDistrictId() !=0) {
             boolQueryBuilder.must(QueryBuilders.termQuery("areaId", plotListDoQuery.getDistrictId()));
         }
         //商圈id
-        if (StringTool.isNotEmpty(plotListDoQuery.getAreaId())) {
+        if (StringTool.isNotEmpty(plotListDoQuery.getAreaId()) && plotListDoQuery.getAreaId().length !=0) {
             boolQueryBuilder.must(QueryBuilders.termsQuery("tradingAreaId", plotListDoQuery.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(plotListDoQuery.getSubwayLineId()) && plotListDoQuery.getSubwayLineId()> 0) {
+        if (StringTool.isNotEmpty(plotListDoQuery.getSubwayLineId()) && plotListDoQuery.getSubwayLineId() !=0) {
             boolQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", plotListDoQuery.getSubwayLineId()));
             key = String.valueOf(plotListDoQuery.getSubwayLineId());
         }
         //地铁站id
         List<String> keyList = new ArrayList<>();
-        if (StringTool.isNotEmpty(plotListDoQuery.getSubwayStationId()) && plotListDoQuery.getSubwayStationId().length > 0) {
+        if (StringTool.isNotEmpty(plotListDoQuery.getSubwayStationId()) && plotListDoQuery.getSubwayStationId().length != 0) {
             boolQueryBuilder.must(QueryBuilders.termsQuery("metroStationId", plotListDoQuery.getSubwayStationId()));
             for (int i=0; i<plotListDoQuery.getSubwayStationId().length; i++) {
                 String stationKey = key +"$"+plotListDoQuery.getSubwayStationId()[i];

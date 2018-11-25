@@ -951,7 +951,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 //                {
 //                    sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
 //                }
-                if (sellHouseDoQuery.getSubwayStationId().length>0){
+                if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId()) && sellHouseDoQuery.getSubwayStationId().length>0){
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
                     for(int i=0; i<sellHouseDoQuery.getSubwayStationId().length; i++){

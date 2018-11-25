@@ -856,7 +856,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
 
         //附近
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())&&rentHouseDoQuery.getDistance()>0) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())&&rentHouseDoQuery.getDistance()!=0) {
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
                     .point(rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon())
                     .distance(rentHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
@@ -864,23 +864,23 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
 
         //城市
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getCityId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getCityId()) && rentHouseDoQuery.getCityId()!=0) {
             boolQueryBuilder.must(termQuery("city_id", rentHouseDoQuery.getCityId()));
         }
         //区域
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId()) && rentHouseDoQuery.getDistrictId()!=0) {
             boolQueryBuilder.must(termQuery("district_id", rentHouseDoQuery.getDistrictId()));
         }
         //商圈
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId()) && rentHouseDoQuery.getAreaId().length !=0) {
             boolQueryBuilder.must(termsQuery("area_id", rentHouseDoQuery.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId()) && rentHouseDoQuery.getSubwayLineId() > 0) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId()) && rentHouseDoQuery.getSubwayLineId() != 0) {
             boolQueryBuilder.must(termsQuery("subway_line_id", new int[]{rentHouseDoQuery.getSubwayLineId()}));
         }
         //地铁站id
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId()) && rentHouseDoQuery.getSubwayStationId().length>0) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId()) && rentHouseDoQuery.getSubwayStationId().length!=0) {
             boolQueryBuilder.must(termsQuery("subway_station_id", rentHouseDoQuery.getSubwayStationId()));
         }
         //租金
@@ -1134,19 +1134,19 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(termQuery("city_id", rentHouseDoQuery.getCityId()));
         }
         //区域
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId()) && rentHouseDoQuery.getDistrictId()!=0) {
             boolQueryBuilder.must(termQuery("district_id", rentHouseDoQuery.getDistrictId()));
         }
         //商圈
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId()) && rentHouseDoQuery.getAreaId().length!=0) {
             boolQueryBuilder.must(termsQuery("area_id", rentHouseDoQuery.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId()) && rentHouseDoQuery.getSubwayLineId()!=0) {
             boolQueryBuilder.must(termsQuery("subway_line_id", new int[]{rentHouseDoQuery.getSubwayLineId()}));
         }
         //地铁站id
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId()) && rentHouseDoQuery.getSubwayStationId().length!=0) {
             boolQueryBuilder.must(termsQuery("subway_station_id", rentHouseDoQuery.getSubwayStationId()));
         }
         //租金

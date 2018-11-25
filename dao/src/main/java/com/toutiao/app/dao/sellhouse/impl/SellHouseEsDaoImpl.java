@@ -126,7 +126,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        if((null != keyword && !"".equals(keyword)) || null != distance){
+        if((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)){
 //            searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
             if("0".equals(sort)){
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
