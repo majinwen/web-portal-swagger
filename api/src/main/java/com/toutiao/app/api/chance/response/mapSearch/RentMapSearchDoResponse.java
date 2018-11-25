@@ -1,17 +1,9 @@
-package com.toutiao.app.domain.mapSearch;
+package com.toutiao.app.api.chance.response.mapSearch;
 
 import lombok.Data;
 
-/**
- * @ClassName RentMapFindHouseDistrictDo
- * @Author jiangweilong
- * @Date 2018/11/23 12:45 PM
- * @Description:
- **/
-
 @Data
-public class RentMapSearchDistrictDo {
-
+public class RentMapSearchDoResponse {
 
     /**
      * 区域名称
@@ -42,4 +34,9 @@ public class RentMapSearchDistrictDo {
      * 房源数量
      */
     private Integer count;
+
+    /**
+     * 价格
+     */
+    private Double price;
 }
