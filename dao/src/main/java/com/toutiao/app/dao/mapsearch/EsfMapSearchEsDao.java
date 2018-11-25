@@ -38,4 +38,12 @@ public interface EsfMapSearchEsDao {
      */
     SearchResponse esfMapSearchByCommunity(BoolQueryBuilder boolQueryBuilder, String city);
 
+    /**
+     * 附近查询
+     * @param boolQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse esfMapSearchByNear(BoolQueryBuilder boolQueryBuilder, String city);
+
 }

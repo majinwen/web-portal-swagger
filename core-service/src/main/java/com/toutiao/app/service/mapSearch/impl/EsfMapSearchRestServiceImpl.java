@@ -7,22 +7,29 @@ import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
 import com.toutiao.app.service.mapSearch.EsfMapSearchRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.web.common.constant.map.MapGroupConstant;
+import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.mapSearch.MapGroupUtil;
+import com.toutiao.web.dao.sources.beijing.AreaMap;
+import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoPoint;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.GeoBoundingBoxQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.RoundingMode;
 import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,18 +58,26 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
     @Override
     public EsfMapSearchDomain esfMapSearch(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
 
-        //判断当前地图查询级别
+
         EsfMapSearchDomain esfMapSearchDomain = new EsfMapSearchDomain();
+        //地图附近
+        if (null!=esfMapSearchDoQuery.getLat() && null!=esfMapSearchDoQuery.getLon() && null!=esfMapSearchDoQuery.getDistance()) {
+            esfMapSearchDomain = esfMapSearchByNear(esfMapSearchDoQuery, city);
+            return esfMapSearchDomain;
+        }
+        //判断当前地图查询级别
         Integer groupTypeId = MapGroupUtil.returnMapGrouId(esfMapSearchDoQuery.getGroupType());
         //groupTypeId 1：区县，2：商圈，3：社区
         if (groupTypeId.equals(MapGroupConstant.DISTRICT_CODE)) {
 
             esfMapSearchDomain = esfMapSearchByDistrict(esfMapSearchDoQuery, city);
+            return esfMapSearchDomain;
         }
 
         if (groupTypeId.equals(MapGroupConstant.BIZCIRCLE_CODE)) {
 
             esfMapSearchDomain = esfMapSearchByBizcircle(esfMapSearchDoQuery, city);
+            return esfMapSearchDomain;
         }
 
         if (groupTypeId.equals(MapGroupConstant.COMMUNITY_CODE)) {
@@ -250,5 +265,60 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         esfMapSearchCommunityDomain.setData(data);
         esfMapSearchCommunityDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"房源");
         return esfMapSearchCommunityDomain;
+    }
+
+    /**
+     * 地图附近找房
+     * @param esfMapSearchDoQuery
+     * @return
+     */
+    public EsfMapSearchDomain esfMapSearchByNear(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
+        EsfMapSearchDomain esfMapSearchNearDomain = new EsfMapSearchDomain();
+        List<EsfMapSearchDo> data = new ArrayList<>();
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMaximumFractionDigits(1);
+        nf.setRoundingMode(RoundingMode.UP);
+
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
+
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+        SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
+        long esfCount = searchSellHouse.getHits().totalHits;
+
+        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
+                .point(sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon())
+                .distance(sellHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
+        boolQueryBuilder.must(location);
+        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByNear(boolQueryBuilder, city);
+        long searchCount = searchResponse.getHits().totalHits;
+        Terms terms = searchResponse.getAggregations().get("houseCount");
+        List buckets = terms.getBuckets();
+        for (Object bucket : buckets) {
+            EsfMapSearchDo esfMapSearchNearDo = new EsfMapSearchDo();
+            esfMapSearchNearDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//社区id
+            esfMapSearchNearDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
+
+            Terms communityName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityName");
+            esfMapSearchNearDo.setName(communityName.getBuckets().get(0).getKeyAsString());//社区名称
+
+            Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
+            esfMapSearchNearDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
+
+            Terms plotLatitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLatitude");
+            esfMapSearchNearDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
+
+            Terms plotLongitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLongitude");
+            esfMapSearchNearDo.setLongitude(plotLongitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
+
+            String desc = nf.format(esfMapSearchNearDo.getPrice()/10000) + "万(" + esfMapSearchNearDo.getCount() + "套)";//描述
+            esfMapSearchNearDo.setDesc(desc);
+            data.add(esfMapSearchNearDo);
+        }
+        esfMapSearchNearDomain.setData(data);
+        esfMapSearchNearDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"房源");
+        return esfMapSearchNearDomain;
     }
 }
