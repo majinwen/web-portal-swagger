@@ -39,14 +39,48 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
 
 //
 //        searchSourceBuilder.query(boolQueryBuilder).aggregation()
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(city)).types(ElasticCityUtils.getDbAvgPriceType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).size(0)
+                .aggregation(AggregationBuilders.terms("houseCount").field("district_id").size(200)
+                    .subAggregation(AggregationBuilders.terms("districtName").field("district_name"))
+                    .subAggregation(AggregationBuilders.terms("districtAvgPrice").field("district_avgprice"))
+                    .subAggregation(AggregationBuilders.terms("districtLatitude").field("district_latitude"))
+                    .subAggregation(AggregationBuilders.terms("districtLongitude").field("district_longitude")));
 
+        searchRequest.source(searchSourceBuilder);
 
-        return null;
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return searchResponse;
     }
 
     @Override
     public SearchResponse esfMapSearchByBizcircle(BoolQueryBuilder boolQueryBuilder, String city) {
-        return null;
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(city)).types(ElasticCityUtils.getDbAvgPriceType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        searchSourceBuilder.query(boolQueryBuilder).size(0)
+                .aggregation(AggregationBuilders.terms("houseCount").field("bizcircle_id").size(200)
+                    .subAggregation(AggregationBuilders.terms("bizcircleName").field("bizcircle_name"))
+                    .subAggregation(AggregationBuilders.terms("bizcircleAvgprice").field("bizcircle_avgprice"))
+                    .subAggregation(AggregationBuilders.terms("bizcircleLatitude").field("bizcircle_latitude"))
+                    .subAggregation(AggregationBuilders.terms("bizcircleLongitude").field("bizcircle_longitude")));
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return searchResponse;
     }
 
 
