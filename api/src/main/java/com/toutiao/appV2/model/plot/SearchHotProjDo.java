@@ -18,7 +18,7 @@ public class SearchHotProjDo   {
   @ApiModelProperty("城市id")
   private Integer cityId = null;
 
-  @ApiModelProperty("小区类型  1表示新房  2表示二手房  3表示租房")
+  @ApiModelProperty("小区类型  0表示首页/二手房/小区 1表示新房  2表示租房")
   private Integer houseType = null;
 
   @ApiModelProperty("id")

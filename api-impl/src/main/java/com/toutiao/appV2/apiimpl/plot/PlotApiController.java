@@ -273,7 +273,7 @@ public class PlotApiController implements PlotApi {
     }
 
     @Override
-    public ResponseEntity<SearchHotProjDomain> getHotPlotByCityId
+    public ResponseEntity<SearchHotProjDomain> getHotPlotByHouseType
             (@ApiParam(value = "houseType") @Valid @RequestParam(value = "houseType", required = true) Integer houseType) {
         String city = "";
         if (StringTool.isNotEmpty(CityUtils.getCity())) {
