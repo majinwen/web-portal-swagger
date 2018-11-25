@@ -163,7 +163,7 @@ public class SuggestRestController implements SuggestRestApi {
     }
 
     @Override
-    public ResponseEntity<HouseSubjectListResponse> selectSearchConditionByCityIdAndType(SearchConditionRequest searchConditionRequest) {
+    public ResponseEntity<HouseSubjectListResponse> selectSearchTagsByCityIdAndType(SearchConditionRequest searchConditionRequest) {
         HouseSubjectListResponse houseSubjectListResponse = new HouseSubjectListResponse();
         List<HouseSubject> houseSubjectList = new ArrayList<>();
         if (searchConditionRequest.getType() == 1) {
