@@ -936,6 +936,8 @@ public class SellHouseServiceImpl implements SellHouseService{
                 houseSubjectList.add(sellHouseSubject2);
                 sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
+                sellHousesSearchDo.setNearbyDistance(sellHousesSearchDo.getArea()+" "+sellHousesSearchDo.getHouseBusinessName());
+
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
                 String keys="";
