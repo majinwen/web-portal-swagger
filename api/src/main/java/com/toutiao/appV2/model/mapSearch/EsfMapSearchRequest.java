@@ -20,10 +20,10 @@ public class EsfMapSearchRequest   {
 
   @JsonProperty("beginArea")
   @ApiModelProperty(value = "商圈")
-  private Double beginArea = null;
+  private double beginArea;
 
   @JsonProperty("beginPrice")
-  private Double beginPrice = null;
+  private double beginPrice;
 
   @JsonProperty("cityId")
   private Integer cityId = null;
@@ -35,10 +35,10 @@ public class EsfMapSearchRequest   {
   private Integer districtId = null;
 
   @JsonProperty("endArea")
-  private Double endArea = null;
+  private double endArea;
 
   @JsonProperty("endPrice")
-  private Double endPrice = null;
+  private double endPrice;
 
   @JsonProperty("forwardId")
   private List<Integer> forwardId = null;

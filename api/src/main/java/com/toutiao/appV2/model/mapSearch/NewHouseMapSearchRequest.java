@@ -17,10 +17,13 @@ public class NewHouseMapSearchRequest   {
   private List<Integer> areaId = null;
 
   @JsonProperty("beginArea")
-  private Double beginArea = null;
+  private double beginArea;
 
   @JsonProperty("beginPrice")
-  private Double beginPrice = null;
+  private double beginPrice;
+
+  @JsonProperty("beginTotalPrice")
+  private double beginTotalPrice;
 
   @JsonProperty("cityId")
   private Integer cityId = null;
@@ -29,10 +32,13 @@ public class NewHouseMapSearchRequest   {
   private Integer districtId = null;
 
   @JsonProperty("endArea")
-  private Double endArea = null;
+  private double endArea;
 
   @JsonProperty("endPrice")
-  private Double endPrice = null;
+  private double endPrice;
+
+  @JsonProperty("endTotalPrice")
+  private double endTotalPrice;
 
   @JsonProperty("forwardId")
   private List<Integer> forwardId = null;
