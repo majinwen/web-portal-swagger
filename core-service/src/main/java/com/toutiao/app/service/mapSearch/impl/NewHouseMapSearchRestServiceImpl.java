@@ -135,15 +135,29 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         if (newHouseMapSearchDoQuery.getSubwayStationId() != null) {
             boolQueryBuilder.must(termsQuery("subway_station_id", newHouseMapSearchDoQuery.getSubwayStationId()));
         }
-        //总价
-        if (newHouseMapSearchDoQuery.getBeginPrice() != 0 && newHouseMapSearchDoQuery.getEndPrice() != 0) {
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseMapSearchDoQuery.getBeginPrice()).lte(newHouseMapSearchDoQuery.getEndPrice())));
-        } else if (newHouseMapSearchDoQuery.getBeginPrice() == 0 && newHouseMapSearchDoQuery.getEndPrice() != 0) {
-            newHouseMapSearchDoQuery.setBeginPrice(0.0);
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseMapSearchDoQuery.getBeginPrice()).lte(newHouseMapSearchDoQuery.getEndPrice())));
-        } else if (newHouseMapSearchDoQuery.getEndPrice() == 0 && newHouseMapSearchDoQuery.getBeginPrice() != 0) {
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseMapSearchDoQuery.getBeginPrice())));
+        //均价
+        if(StringTool.isNotEmpty(newHouseMapSearchDoQuery.getBeginPrice()) && StringTool.isNotEmpty(newHouseMapSearchDoQuery.getEndPrice()) ){
+            if (newHouseMapSearchDoQuery.getBeginPrice() != 0 && newHouseMapSearchDoQuery.getEndPrice() != 0) {
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseMapSearchDoQuery.getBeginPrice()).lte(newHouseMapSearchDoQuery.getEndPrice())));
+            } else if (newHouseMapSearchDoQuery.getBeginPrice() == 0 && newHouseMapSearchDoQuery.getEndPrice() != 0) {
+                newHouseMapSearchDoQuery.setBeginPrice(0.0);
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseMapSearchDoQuery.getBeginPrice()).lte(newHouseMapSearchDoQuery.getEndPrice())));
+            } else if (newHouseMapSearchDoQuery.getEndPrice() == 0 && newHouseMapSearchDoQuery.getBeginPrice() != 0) {
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseMapSearchDoQuery.getBeginPrice())));
+            }
         }
+
+        if(StringTool.isNotEmpty(newHouseMapSearchDoQuery.getBeginTotalPrice()) && StringTool.isNotEmpty(newHouseMapSearchDoQuery.getEndTotalPrice()) ){
+            if (newHouseMapSearchDoQuery.getBeginTotalPrice() != 0 && newHouseMapSearchDoQuery.getEndTotalPrice() != 0) {
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseMapSearchDoQuery.getBeginTotalPrice()).lte(newHouseMapSearchDoQuery.getEndTotalPrice())));
+            } else if (newHouseMapSearchDoQuery.getBeginTotalPrice() == 0 && newHouseMapSearchDoQuery.getEndTotalPrice() != 0) {
+                newHouseMapSearchDoQuery.setBeginTotalPrice(0.0);
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseMapSearchDoQuery.getBeginTotalPrice()).lte(newHouseMapSearchDoQuery.getEndTotalPrice())));
+            } else if (newHouseMapSearchDoQuery.getEndTotalPrice() == 0 && newHouseMapSearchDoQuery.getBeginTotalPrice() != 0) {
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseMapSearchDoQuery.getBeginTotalPrice())));
+            }
+        }
+
 
         //标签
         if (null != newHouseMapSearchDoQuery.getLabelId() && newHouseMapSearchDoQuery.getLabelId().length != 0) {
@@ -166,16 +180,19 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         }
 
         //面积
-        if (newHouseMapSearchDoQuery.getBeginArea() != 0 && newHouseMapSearchDoQuery.getEndArea() != 0) {
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseMapSearchDoQuery.getEndArea())));
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseMapSearchDoQuery.getBeginArea())));
-        } else if (newHouseMapSearchDoQuery.getBeginArea() == 0 && newHouseMapSearchDoQuery.getEndArea() != 0) {
+        if(StringTool.isNotEmpty(newHouseMapSearchDoQuery.getBeginArea()) && StringTool.isNotEmpty(newHouseMapSearchDoQuery.getEndArea())){
+            if (newHouseMapSearchDoQuery.getBeginArea() != 0 && newHouseMapSearchDoQuery.getEndArea() != 0) {
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseMapSearchDoQuery.getEndArea())));
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseMapSearchDoQuery.getBeginArea())));
+            } else if (newHouseMapSearchDoQuery.getBeginArea() == 0 && newHouseMapSearchDoQuery.getEndArea() != 0) {
 
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseMapSearchDoQuery.getEndArea())));
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseMapSearchDoQuery.getEndArea())));
 
-        } else if (newHouseMapSearchDoQuery.getEndArea() == 0 && newHouseMapSearchDoQuery.getBeginArea() != 0) {
-            boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseMapSearchDoQuery.getBeginArea())));
+            } else if (newHouseMapSearchDoQuery.getEndArea() == 0 && newHouseMapSearchDoQuery.getBeginArea() != 0) {
+                boolQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseMapSearchDoQuery.getBeginArea())));
+            }
         }
+
         //销售状态
         if (StringTool.isNotEmpty(newHouseMapSearchDoQuery.getSaleStatusId()) && newHouseMapSearchDoQuery.getSaleStatusId().length > 0) {
             Integer[] longs = newHouseMapSearchDoQuery.getSaleStatusId();

@@ -2,6 +2,7 @@ package com.toutiao.appV2.model.newhouse;
 
 import com.toutiao.appV2.model.BaseQueryRequest;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import lombok.Data;
 

@@ -43,4 +43,13 @@ public class NewHouseMapSearchDoQuery extends QueryDo {
      */
     private  Integer[] saleStatusId;
 
+    /**
+     * 起始总价
+     */
+    private double beginTotalPrice;
+    /**
+     * 结束总价
+     */
+    private double endTotalPrice;
+
 }
