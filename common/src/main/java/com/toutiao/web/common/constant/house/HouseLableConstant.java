@@ -13,7 +13,7 @@ public class HouseLableConstant {
     /**
      *  是否参与活动(0:未参与,1:参与)
      */
-    public static final String ISACTIVE = "活动";
+    public static final String ISACTIVE = "折扣";
 
     /**
      *  住宅类别:普通,别墅
@@ -46,7 +46,7 @@ public class HouseLableConstant {
     public static final String ICON_URL_SALESTATUS_DS = "http://wap-qn.bidewu.com/wap/salestatus_ds.png";//"待售"
     public static final String ICON_URL_SALESTATUS_DZ = "http://wap-qn.bidewu.com/wap/salestatus_daizu.png";//"待租"
 
-    public static final String ICON_URL_ISACTIVE = "http://wap-qn.bidewu.com/wap/isactive.png";//"参加"
+    public static final String ICON_URL_ISACTIVE = "http://wap-qn.bidewu.com/wap/isactive.png";//"折扣"
 
     public static final String ICON_URL_PROPERTYTYPE_ZZ = "http://wap-qn.bidewu.com/wap/propertytype_zz.png";//"住宅"
     public static final String ICON_URL_PROPERTYTYPE_BS = "http://wap-qn.bidewu.com/wap/propertytype_pt.png";//"别墅"
