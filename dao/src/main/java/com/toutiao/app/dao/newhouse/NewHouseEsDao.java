@@ -21,7 +21,7 @@ public interface NewHouseEsDao {
      * @param pageSize
      * @return
      */
-    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String city);
+    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String city, String sort);
 
 
 
@@ -29,6 +29,9 @@ public interface NewHouseEsDao {
 
 
     SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder  boolQueryBuilder ,String city);
+
+
+    SearchResponse getBuildCount(BoolQueryBuilder  boolQueryBuilder ,String city);
 
 //    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 //

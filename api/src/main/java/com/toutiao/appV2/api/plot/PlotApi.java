@@ -160,10 +160,10 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = SearchHotProjDomain.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/rest/plot/getHotPlotByCityId",
+    @RequestMapping(value = "/rest/plot/getHotPlotByHouseType",
             produces = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<SearchHotProjDomain> getHotPlotByCityId(@ApiParam(value = "1：二手房/小区，2：新房，3：租房") @Valid @RequestParam(value = "houseType", required = true) Integer houseType);
+    ResponseEntity<SearchHotProjDomain> getHotPlotByHouseType(@ApiParam(value = "0表示首页/二手房/小区 1表示新房  2表示租房") @Valid @RequestParam(value = "houseType", required = true) Integer houseType);
 
 
     @ApiOperation(value = "小区top50查询", nickname = "getTop50List", notes = "", response = PlotTop50ListResponse.class, tags = {"小区",})

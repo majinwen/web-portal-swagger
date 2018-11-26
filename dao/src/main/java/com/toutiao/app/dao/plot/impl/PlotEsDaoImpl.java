@@ -86,11 +86,21 @@ public class PlotEsDaoImpl implements PlotEsDao {
 //    }
 
     @Override
-    public SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, GeoDistanceSortBuilder sort,FieldSortBuilder levelSort,FieldSortBuilder plotScoreSort,  String city) {
+    public SearchResponse queryPlotListByRequirementAndKeywordV1(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size,
+                                                                 GeoDistanceSortBuilder geoDistanceSort,FieldSortBuilder levelSort,
+                                                                 FieldSortBuilder plotScoreSort,  String city, String sort) {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(boolQueryBuilder).sort(levelSort).sort(plotScoreSort).sort(sort).from(from).size(size);
+//        searchSourceBuilder.query(boolQueryBuilder).sort(levelSort).sort(plotScoreSort).sort(geoDistanceSort).from(from).size(size);
+        searchSourceBuilder.query(boolQueryBuilder).from(from).size(size);
+        if ("0".equals(sort)){//默认排序
+            searchSourceBuilder.sort(levelSort).sort(plotScoreSort).sort(geoDistanceSort);
+        }else if("3".equals(sort)){//均价从低到高
+            searchSourceBuilder.sort("avgPrice", SortOrder.ASC).sort(geoDistanceSort);
+        }else if("4".equals(sort)){//均价从高到低
+            searchSourceBuilder.sort("avgPrice", SortOrder.DESC).sort(geoDistanceSort);
+        }
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {
@@ -102,15 +112,30 @@ public class PlotEsDaoImpl implements PlotEsDao {
     }
 
     @Override
-    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, String city) {
+    public SearchResponse queryCommonPlotList(Integer from, BoolQueryBuilder boolQueryBuilder, Integer size, String keyword, String city, String sort) {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         if(StringTool.isNotEmpty(keyword)){
-            searchSourceBuilder.query(boolQueryBuilder).from(from).size(size).sort("_score",SortOrder.DESC).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
-
+//            searchSourceBuilder.query(boolQueryBuilder).from(from).size(size).sort("_score",SortOrder.DESC).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
+            searchSourceBuilder.query(boolQueryBuilder).from(from).size(size);
+            if ("0".equals(sort)){//默认排序
+                searchSourceBuilder.sort("_score",SortOrder.DESC).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
+            }else if("3".equals(sort)){//均价从低到高
+                searchSourceBuilder.sort("avgPrice", SortOrder.ASC);
+            }else if("4".equals(sort)){//均价从高到低
+                searchSourceBuilder.sort("avgPrice", SortOrder.DESC);
+            }
         }else{
-            searchSourceBuilder.query(boolQueryBuilder).from(from).size(size).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
+            //searchSourceBuilder.query(boolQueryBuilder).from(from).size(size).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
+            searchSourceBuilder.query(boolQueryBuilder).from(from).size(size);
+            if ("0".equals(sort)){//默认排序
+                searchSourceBuilder.sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
+            }else if("3".equals(sort)){//均价从低到高
+                searchSourceBuilder.sort("avgPrice", SortOrder.ASC);
+            }else if("4".equals(sort)){//均价从高到低
+                searchSourceBuilder.sort("avgPrice", SortOrder.DESC);
+            }
         }
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;

@@ -12,7 +12,7 @@ import java.util.List;
  **/
 
 @Data
-public class RentMapSearchDistrictDomain {
+public class RentMapSearchDomain {
 
     /**
      * 当前可视界面描述
@@ -22,5 +22,5 @@ public class RentMapSearchDistrictDomain {
     /**
      * 返回结果
      */
-    private List<RentMapSearchDistrictDo> data;
+    private List<RentMapSearchDo> data;
 }

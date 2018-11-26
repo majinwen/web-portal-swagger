@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-24T09:35:01.637Z")
 
-@Api(value = "地图找房-二手房", description = "地图找房-二手房I")
+@Api(value = "地图找房-二手房", description = "地图找房-二手房")
 public interface EsfMapSearchApi {
 
     @ApiOperation(value = "地图找房-二手房", nickname = "mapEsfSearch", notes = "", response = EsfMapSearchResponse.class, tags={ "地图找房-二手房", })

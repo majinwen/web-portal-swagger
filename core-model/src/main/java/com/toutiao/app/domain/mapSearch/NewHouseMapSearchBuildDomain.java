@@ -14,6 +14,10 @@ import java.util.List;
 @Data
 public class NewHouseMapSearchBuildDomain {
 
+    /**
+     * 当前可视界面描述
+     */
+    private String hit;
 
     /**
      * 返回结果

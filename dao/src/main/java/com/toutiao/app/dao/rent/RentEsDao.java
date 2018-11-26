@@ -81,7 +81,7 @@ public interface RentEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder sort);
+    SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder geoDistanceSort, String sort);
     /**
      * 获取搜索列表
      * @param query

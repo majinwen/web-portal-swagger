@@ -6,7 +6,6 @@ import java.util.List;
 
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
 
 /**
  * EsfMapSearchRequest
@@ -21,10 +20,10 @@ public class EsfMapSearchRequest   {
 
   @JsonProperty("beginArea")
   @ApiModelProperty(value = "商圈")
-  private Double beginArea = null;
+  private double beginArea;
 
   @JsonProperty("beginPrice")
-  private Double beginPrice = null;
+  private double beginPrice;
 
   @JsonProperty("cityId")
   private Integer cityId = null;
@@ -36,13 +35,12 @@ public class EsfMapSearchRequest   {
   private Integer districtId = null;
 
   @JsonProperty("endArea")
-  private Double endArea = null;
+  private double endArea;
 
   @JsonProperty("endPrice")
-  private Double endPrice = null;
+  private double endPrice;
 
   @JsonProperty("forwardId")
-  @Valid
   private List<Integer> forwardId = null;
 
   @JsonProperty("groupType")
@@ -55,14 +53,12 @@ public class EsfMapSearchRequest   {
   private String keyword = null;
 
   @JsonProperty("labelId")
-  @Valid
   private List<Integer> labelId = null;
 
   @JsonProperty("lat")
   private Double lat = null;
 
   @JsonProperty("layoutId")
-  @Valid
   private List<Integer> layoutId = null;
 
   @JsonProperty("lon")

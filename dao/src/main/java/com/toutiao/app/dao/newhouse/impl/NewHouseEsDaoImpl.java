@@ -44,18 +44,27 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 
 
     @Override
-    public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String city) {
+    public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,
+                                          FieldSortBuilder buildingSort, String city, String sort) {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(boolQueryBuilder).sort(levelSort).sort(buildingSort)
+        searchSourceBuilder.query(boolQueryBuilder)
                 /* .fetchSource(new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
                                  "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
                                  "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
                          null)*/.from((pageNum-1)*pageSize).size(pageSize);
 
-        if (null!=levelSort && null!=buildingSort){
+        if (null!=levelSort && null!=buildingSort && "0".equals(sort)){//默认排序
             searchSourceBuilder.sort(levelSort).sort(buildingSort);
+        }else if("1".equals(sort)){
+            searchSourceBuilder.sort("totalPrice", SortOrder.ASC);
+        }else if("2".equals(sort)){
+            searchSourceBuilder.sort("totalPrice", SortOrder.DESC);
+        }else if("3".equals(sort)){
+            searchSourceBuilder.sort("average_price", SortOrder.ASC);
+        }else if("4".equals(sort)){
+            searchSourceBuilder.sort("average_price", SortOrder.DESC);
         }
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;
@@ -103,6 +112,22 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
             e.printStackTrace();
         }
 
+
+        return  searchresponse;
+    }
+
+    @Override
+    public SearchResponse getBuildCount(BoolQueryBuilder boolQueryBuilder, String city) {
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchRequest.source(searchSourceBuilder.query(boolQueryBuilder));
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return  searchresponse;
     }

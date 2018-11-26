@@ -22,4 +22,19 @@ public class NewHouseDoQuery extends QueryDo {
      */
     private String buildingFeature;
 
+    /**
+     * 开始总价
+     */
+    private double beginTotalPrice;
+
+    /**
+     * 结束总价
+     */
+    private double endTotalPrice;
+
+    /**
+     * 排序 0 默认  3均价从低到高  4均价从高到低
+     */
+    private String sort;
+
 }

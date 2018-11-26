@@ -37,6 +37,6 @@ public class NewHouseMapSearchDistrictDo {
     /**
      * 楼盘数量
      */
-    private String count;
+    private Integer count;
 
 }

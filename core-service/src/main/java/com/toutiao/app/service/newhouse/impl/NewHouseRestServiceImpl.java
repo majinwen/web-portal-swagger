@@ -198,7 +198,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if (newHouseDoQuery.getSubwayStationId() != null) {
             booleanQueryBuilder.must(termsQuery("subway_station_id", newHouseDoQuery.getSubwayStationId()));
         }
-        //总价
+        //均价
         if (newHouseDoQuery.getBeginPrice() != 0 && newHouseDoQuery.getEndPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         } else if (newHouseDoQuery.getBeginPrice() == 0 && newHouseDoQuery.getEndPrice() != 0) {
@@ -206,6 +206,15 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         } else if (newHouseDoQuery.getEndPrice() == 0 && newHouseDoQuery.getBeginPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
+        }
+        //总价
+        if (newHouseDoQuery.getBeginTotalPrice() != 0 && newHouseDoQuery.getEndTotalPrice() != 0) {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice()).lte(newHouseDoQuery.getEndTotalPrice())));
+        } else if (newHouseDoQuery.getBeginTotalPrice() == 0 && newHouseDoQuery.getEndTotalPrice() != 0) {
+            newHouseDoQuery.setBeginTotalPrice(0.0);
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice()).lte(newHouseDoQuery.getEndTotalPrice())));
+        } else if (newHouseDoQuery.getEndTotalPrice() == 0 && newHouseDoQuery.getBeginTotalPrice() != 0) {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice())));
         }
 
         //标签
@@ -282,7 +291,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
         booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
 
-        SearchResponse searchResponse = newHouseEsDao.getNewHouseList(booleanQueryBuilder, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize(), levelSort, buildingSort, city);
+        SearchResponse searchResponse = newHouseEsDao.getNewHouseList(booleanQueryBuilder, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize(), levelSort, buildingSort, city, newHouseDoQuery.getSort());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if (searchHists.length > 0) {
@@ -328,7 +337,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 }
 
                 //新房图片处理
-                if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http://")) {
+                if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http")) {
                     newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-dongfangdi1200x900");
                 }
 
