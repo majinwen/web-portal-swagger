@@ -94,12 +94,12 @@ public class PlotEsDaoImpl implements PlotEsDao {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 //        searchSourceBuilder.query(boolQueryBuilder).sort(levelSort).sort(plotScoreSort).sort(geoDistanceSort).from(from).size(size);
         searchSourceBuilder.query(boolQueryBuilder).from(from).size(size);
-        if ("0".equals(sort)){//默认排序
-            searchSourceBuilder.sort(levelSort).sort(plotScoreSort).sort(geoDistanceSort);
-        }else if("3".equals(sort)){//均价从低到高
+        if("3".equals(sort)){//均价从低到高
             searchSourceBuilder.sort("avgPrice", SortOrder.ASC).sort(geoDistanceSort);
         }else if("4".equals(sort)){//均价从高到低
             searchSourceBuilder.sort("avgPrice", SortOrder.DESC).sort(geoDistanceSort);
+        }else{
+            searchSourceBuilder.sort(levelSort).sort(plotScoreSort).sort(geoDistanceSort);
         }
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
@@ -119,22 +119,22 @@ public class PlotEsDaoImpl implements PlotEsDao {
         if(StringTool.isNotEmpty(keyword)){
 //            searchSourceBuilder.query(boolQueryBuilder).from(from).size(size).sort("_score",SortOrder.DESC).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
             searchSourceBuilder.query(boolQueryBuilder).from(from).size(size);
-            if ("0".equals(sort)){//默认排序
-                searchSourceBuilder.sort("_score",SortOrder.DESC).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
-            }else if("3".equals(sort)){//均价从低到高
+           if("3".equals(sort)){//均价从低到高
                 searchSourceBuilder.sort("avgPrice", SortOrder.ASC);
             }else if("4".equals(sort)){//均价从高到低
                 searchSourceBuilder.sort("avgPrice", SortOrder.DESC);
+            }else{
+                searchSourceBuilder.sort("_score",SortOrder.DESC).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
             }
         }else{
             //searchSourceBuilder.query(boolQueryBuilder).from(from).size(size).sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
             searchSourceBuilder.query(boolQueryBuilder).from(from).size(size);
-            if ("0".equals(sort)){//默认排序
-                searchSourceBuilder.sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
-            }else if("3".equals(sort)){//均价从低到高
+            if("3".equals(sort)){//均价从低到高
                 searchSourceBuilder.sort("avgPrice", SortOrder.ASC);
             }else if("4".equals(sort)){//均价从高到低
                 searchSourceBuilder.sort("avgPrice", SortOrder.DESC);
+            }else{
+                searchSourceBuilder.sort("level", SortOrder.ASC).sort("plotScore", SortOrder.DESC);
             }
         }
         searchRequest.source(searchSourceBuilder);
