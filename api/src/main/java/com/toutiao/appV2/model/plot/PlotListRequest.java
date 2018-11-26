@@ -31,7 +31,7 @@ public class PlotListRequest {
 
     @JsonProperty("distance")
     @ApiParam("附近距离")
-    private Integer distance;
+    private double distance;
 
     @JsonProperty("districtId")
     @ApiParam("区域")
