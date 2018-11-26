@@ -49,7 +49,7 @@ public class HouseLableConstant {
     public static final String ICON_URL_ISACTIVE = "http://wap-qn.bidewu.com/wap/isactive.png";//"折扣"
 
     public static final String ICON_URL_PROPERTYTYPE_ZZ = "http://wap-qn.bidewu.com/wap/propertytype_zz.png";//"住宅"
-    public static final String ICON_URL_PROPERTYTYPE_BS = "http://wap-qn.bidewu.com/wap/propertytype_pt.png";//"别墅"
+    public static final String ICON_URL_PROPERTYTYPE_BS = "http://wap-qn.bidewu.com/wap/propertytype_bs.png";//"别墅"
 
     public static final String ICON_URL_CUTPRICE = "http://wap-qn.bidewu.com/wap/cutprice.png";//"降价房"
     public static final String ICON_URL_LOWPRICE = "http://wap-qn.bidewu.com/wap/lowprice.png";//"捡漏房"
