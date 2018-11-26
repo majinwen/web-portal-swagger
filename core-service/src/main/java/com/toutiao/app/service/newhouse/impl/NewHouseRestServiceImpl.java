@@ -9,6 +9,8 @@ import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.constant.house.NewHouseLableConstant;
+import com.toutiao.web.common.constant.house.NewHouseLableEnum;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
@@ -343,18 +345,23 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
                 //新房标签
                 List<HouseLable> houseLableList= new ArrayList<>();
-                HouseLable houseLable = new HouseLable();
-                houseLable.setText("在售");
-                houseLable.setIcon("http://wap-qn.bidewu.com/wap/zs.png");
-                houseLableList.add(houseLable);
-                HouseLable houseLable1 = new HouseLable();
-                houseLable1.setText("折扣");
-                houseLable1.setIcon("http://wap-qn.bidewu.com/wap/zk.png");
-                houseLableList.add(houseLable1);
-                HouseLable houseLable2 = new HouseLable();
-                houseLable2.setText("别墅");
-                houseLable2.setIcon("http://wap-qn.bidewu.com/wap/bs.png");
-                houseLableList.add(houseLable2);
+                String saleStatusName= newHouseListDos.getSaleStatusName();
+
+                if(!StringUtil.isNullString(saleStatusName) && NewHouseLableEnum.containKey(saleStatusName)){
+                    HouseLable houseLable = new HouseLable(NewHouseLableEnum.getEnumByKey(saleStatusName));
+                    houseLableList.add(houseLable);
+                }
+                String isActive= newHouseListDos.getIsActive().toString();
+                if(!StringUtil.isNullString(isActive) && NewHouseLableEnum.containKey(isActive)){
+                    HouseLable houseLable = new HouseLable(NewHouseLableEnum.getEnumByKey(isActive));
+                    houseLableList.add(houseLable);
+                }
+                String propertyType= newHouseListDos.getPropertyType();
+                if(!StringUtil.isNullString(propertyType) && NewHouseLableEnum.containKey(propertyType)){
+                    HouseLable houseLable = new HouseLable(NewHouseLableEnum.getEnumByKey(propertyType));
+                    houseLableList.add(houseLable);
+                }
+
                 newHouseListDos.setHouseLabelList(houseLableList);
 
                 //新房动态
