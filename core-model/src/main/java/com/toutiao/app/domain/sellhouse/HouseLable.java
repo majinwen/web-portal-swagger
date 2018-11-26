@@ -1,6 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
-import com.toutiao.web.common.constant.house.NewHouseLableEnum;
+import com.toutiao.web.common.constant.house.HouseLableEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -32,9 +32,9 @@ public class HouseLable {
     public HouseLable(){
     }
 
-    public HouseLable(NewHouseLableEnum newHouseLableEnum){
-        this.setText(newHouseLableEnum.getKey());
-        this.setIcon(newHouseLableEnum.getValue());
+    public HouseLable(HouseLableEnum houseLableEnum){
+        this.setText(houseLableEnum.getKey());
+        this.setIcon(houseLableEnum.getValue());
     }
 
 }

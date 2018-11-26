@@ -9,8 +9,7 @@ import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
-import com.toutiao.web.common.constant.house.NewHouseLableConstant;
-import com.toutiao.web.common.constant.house.NewHouseLableEnum;
+import com.toutiao.web.common.constant.house.HouseLableEnum;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
@@ -347,18 +346,18 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 List<HouseLable> houseLableList= new ArrayList<>();
                 String saleStatusName= newHouseListDos.getSaleStatusName();
 
-                if(!StringUtil.isNullString(saleStatusName) && NewHouseLableEnum.containKey(saleStatusName)){
-                    HouseLable houseLable = new HouseLable(NewHouseLableEnum.getEnumByKey(saleStatusName));
+                if(!StringUtil.isNullString(saleStatusName) && HouseLableEnum.containKey(saleStatusName)){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.getEnumByKey(saleStatusName));
                     houseLableList.add(houseLable);
                 }
-                String isActive= newHouseListDos.getIsActive().toString();
-                if(!StringUtil.isNullString(isActive) && NewHouseLableEnum.containKey(isActive)){
-                    HouseLable houseLable = new HouseLable(NewHouseLableEnum.getEnumByKey(isActive));
+                int isActive= newHouseListDos.getIsActive();
+                if(isActive ==1){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.ISACTIVE);
                     houseLableList.add(houseLable);
                 }
                 String propertyType= newHouseListDos.getPropertyType();
-                if(!StringUtil.isNullString(propertyType) && NewHouseLableEnum.containKey(propertyType)){
-                    HouseLable houseLable = new HouseLable(NewHouseLableEnum.getEnumByKey(propertyType));
+                if(!StringUtil.isNullString(propertyType) && HouseLableEnum.containKey(propertyType)){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.getEnumByKey(propertyType));
                     houseLableList.add(houseLable);
                 }
 

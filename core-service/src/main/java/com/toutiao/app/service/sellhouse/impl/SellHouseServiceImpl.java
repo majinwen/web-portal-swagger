@@ -17,6 +17,8 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.web.common.constant.company.CompanyIconEnum;
+import com.toutiao.web.common.constant.house.HouseLableEnum;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
@@ -904,22 +906,30 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHousesSearchDo.setAgentBaseDo(agentBaseDo);
 
                 //设置房源公司图标
-                sellHousesSearchDo.setCompanyIcon("http://wap-qn.bidewu.com/wap/5i5j.png");
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    sellHousesSearchDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
+
                 //设置房源标签
                 List<HouseLable> houseLableList= new ArrayList<>();
-                HouseLable houseLable = new HouseLable();
-                houseLable.setText("捡漏");
-                houseLable.setIcon("http://wap-qn.bidewu.com/wap/jl.png");
-                houseLableList.add(houseLable);
-                HouseLable houseLable1 = new HouseLable();
-                houseLable1.setText("降价");
-                houseLable1.setIcon("http://wap-qn.bidewu.com/wap/jj.png");
-                houseLableList.add(houseLable1);
-                HouseLable houseLable2 = new HouseLable();
-                houseLable2.setText("抢手");
-                houseLable2.setIcon("http://wap-qn.bidewu.com/wap/qs.png");
-                houseLableList.add(houseLable2);
+                int isLowPrice = sellHousesSearchDo.getIsLowPrice();
+                if(isLowPrice == 1){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.LOWPRICE);
+                    houseLableList.add(houseLable);
+                }
+                int isCutPrice = sellHousesSearchDo.getIsCutPrice();
+                if(isCutPrice == 1){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.CUTPRICE);
+                    houseLableList.add(houseLable);
+                }
+                int isMustRob = sellHousesSearchDo.getIsMustRob();
+                if(isMustRob == 1){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.MUSTROB);
+                    houseLableList.add(houseLable);
+                }
                 sellHousesSearchDo.setHouseLableList(houseLableList);
+
                 //设置房源专题
                 List<HouseSubject> houseSubjectList = new ArrayList<>();
                 HouseSubject sellHouseSubject = new HouseSubject();
