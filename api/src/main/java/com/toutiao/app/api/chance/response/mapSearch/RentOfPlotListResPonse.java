@@ -1,21 +1,19 @@
 package com.toutiao.app.api.chance.response.mapSearch;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class RentOfPlotListResPonse {
-    /**
-     * 租房列表
-     */
+
+    @ApiModelProperty(value = "租房列表")
     private List<RentOfPlotResPonse> data;
-    /**
-     * 附近的地铁线
-     */
+
+    @ApiModelProperty(value = "附近的地铁线")
     private String nearSubwayLine;
-    /**
-     * 总套数
-     */
+
+    @ApiModelProperty(value = "总套数")
     private Integer totalNum;
 }
