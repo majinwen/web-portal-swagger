@@ -16,7 +16,7 @@ public class EsfMapCommunityDo {
     /**
      * 社区ID
      */
-    private Integer houseBusinessNameId;
+    private Integer newcode;
 
     /**
      * 坐标 纬度
