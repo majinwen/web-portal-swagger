@@ -150,7 +150,10 @@ public class RentDetailsFewDo {
 
     @ApiModelProperty("时间(单位:min)")
     private String time;
-
+    /**
+     * 最近的地铁线
+     */
+    private Integer nearestSubwayLine;
 
 
 
