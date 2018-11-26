@@ -10,7 +10,7 @@ import com.toutiao.web.common.constant.base.StringBaseType;
 public enum NewHouseLableEnum implements StringBaseType {
 
     /**
-     * 城市枚举
+     * 新房标签枚举
      */
 
     SALESTATUS_ZS(NewHouseLableConstant.SALESTATUS_ZS, NewHouseLableConstant.ICON_URL_SALESTATUS_ZS),
@@ -18,7 +18,6 @@ public enum NewHouseLableEnum implements StringBaseType {
     SALESTATUS_DS(NewHouseLableConstant.SALESTATUS_DS, NewHouseLableConstant.ICON_URL_SALESTATUS_DS),
     SALESTATUS_DZ(NewHouseLableConstant.SALESTATUS_DZ, NewHouseLableConstant.ICON_URL_SALESTATUS_DZ),
     ISACTIVE_YES(NewHouseLableConstant.ISACTIVE_YES, NewHouseLableConstant.ICON_URL_ISACTIVE_YES),
-    ISACTIVE_NO(NewHouseLableConstant.ISACTIVE_NO, NewHouseLableConstant.ICON_URL_ISACTIVE_NO),
     PROPERTYTYPE_PT(NewHouseLableConstant.PROPERTYTYPE_ZZ, NewHouseLableConstant.ICON_URL_PROPERTYTYPE_ZZ),
     PROPERTYTYPE_BS(NewHouseLableConstant.PROPERTYTYPE_BS, NewHouseLableConstant.ICON_URL_PROPERTYTYPE_BS);
 

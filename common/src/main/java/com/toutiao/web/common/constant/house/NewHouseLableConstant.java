@@ -14,7 +14,6 @@ public class NewHouseLableConstant {
      *  是否参与活动(0:未参与,1:参与)
      */
     public static final String ISACTIVE_YES = "1";
-    public static final String ISACTIVE_NO = "0";
 
     /**
      *  住宅类别:普通,别墅
