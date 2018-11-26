@@ -88,5 +88,7 @@ public class EsfMapSearchRequest   {
   @JsonProperty("subwayStationId")
   private Integer[] subwayStationId = null;
 
+  @JsonProperty("newcode")
+  private Integer newcode = null;
 }
 

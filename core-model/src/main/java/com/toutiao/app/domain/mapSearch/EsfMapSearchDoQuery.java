@@ -52,7 +52,10 @@ public class EsfMapSearchDoQuery extends QueryDo {
      */
     private Double lon;
 
-
+    /**
+     * 小区id
+     */
+    private Integer newcode;
 
 
 

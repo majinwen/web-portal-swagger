@@ -1,8 +1,11 @@
 package com.toutiao.app.dao.mapsearch;
 
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 
 /**
  * @ClassName EsfMapSearchEsDaoImpl
@@ -23,7 +26,7 @@ public interface EsfMapSearchEsDao {
 
 
     /**
-     * 区域查询
+     * 商圈查询
      * @param boolQueryBuilder
      * @param city
      * @return
@@ -37,5 +40,31 @@ public interface EsfMapSearchEsDao {
      * @return
      */
     SearchResponse esfMapSearchByCommunity(BoolQueryBuilder boolQueryBuilder, String city);
+
+    /**
+     * 房源列表
+     * @param query
+     * @param city
+     * @param sort
+     * @return
+     */
+    SearchResponse esfMapSearchHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword,
+                                         Integer pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort);
+
+    /**
+     * 附近查询
+     * @param boolQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse esfMapSearchByNear(BoolQueryBuilder boolQueryBuilder, String city);
+
+    /**
+     * 地铁找房
+     * @param boolQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse esfMapSearchBySubway(BoolQueryBuilder boolQueryBuilder, String city);
 
 }
