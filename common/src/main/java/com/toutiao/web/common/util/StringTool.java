@@ -273,6 +273,22 @@ public class StringTool {
         return (o != null);
     }
 
+    public static boolean isDoubleNotEmpty(Double d){
+        if (null!=d&&d>0){
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public static boolean isDoubleEmpty(Double d){
+        if (null!=d&&d>0){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
     public static boolean isNotEmpty(Integer[] o) {
         return !isEmpty(o);
     }
