@@ -975,7 +975,9 @@ public class SellHouseServiceImpl implements SellHouseService{
             sellHouseSearchDomain.setData(sellHousesSearchDos);
             sellHouseSearchDomain.setTotalNum((int)searchResponse.getHits().getTotalHits());
         }else{
-            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
+            sellHouseSearchDomain.setData(sellHousesSearchDos);
+            sellHouseSearchDomain.setTotalNum((int)searchResponse.getHits().getTotalHits());
+//            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
         }
 
 

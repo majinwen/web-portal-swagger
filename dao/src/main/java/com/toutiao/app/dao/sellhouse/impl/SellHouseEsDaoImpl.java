@@ -24,7 +24,7 @@ import java.io.IOException;
 
 
 @Service
-public class SellHouseEsDaoImpl implements SellHouseEsDao{
+public class SellHouseEsDaoImpl implements SellHouseEsDao {
 
     @Value("${tt.esfFullAmount.index}")
     private String esfFullAmountIndex;
@@ -34,9 +34,8 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
     private RestHighLevelClient restHighLevelClient;
 
 
-
     @Override
-    public SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder,String city) {
+    public SearchResponse getSellHouseByHouseId(BoolQueryBuilder booleanQueryBuilder, String city) {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -59,7 +58,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
      * @return
      */
     @Override
-    public SearchResponse getSellHouseCountByPlotsId(Integer plotsId , String city) {
+    public SearchResponse getSellHouseCountByPlotsId(Integer plotsId, String city) {
 
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", plotsId));
@@ -80,6 +79,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
     /**
      * 根据小区id获取小区的房源数量v2(非聚合)
+     *
      * @param plotsId
      * @return
      */
@@ -104,7 +104,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
 
     @Override
-    public SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize,  String city) {
+    public SearchResponse getEsfByPlotsIdAndRoom(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize, String city) {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
@@ -126,34 +126,38 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        if((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)){
-          //   searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
-            if("1".equals(sort)){
+        if ((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)) {
+            //   searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
+            if ("1".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC).sort(geoDistanceSort);
-            }else if("3".equals(sort)){
+            } else if ("3".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC).sort(geoDistanceSort);
-            }else if("4".equals(sort)){
+            } else if ("4".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC).sort(geoDistanceSort);
-            }else if("5".equals(sort)){
+            } else if ("5".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC).sort(geoDistanceSort);
-            }else if("6".equals(sort)){
+            } else if ("6".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC).sort(geoDistanceSort);
-            }else{
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
+            } else {
+                if (geoDistanceSort != null) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+                }
             }
-        }else{
-            if("1".equals(sort)){
+        } else {
+            if ("1".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC);
-            }else if("3".equals(sort)){
+            } else if ("3".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
-            }else if("4".equals(sort)){
+            } else if ("4".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
-            }else if("5".equals(sort)){
+            } else if ("5".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC);
-            }else if("6".equals(sort)){
+            } else if ("6".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC);
-            }else{
-                searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort",SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else {
+                searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }
         }
         searchRequest.source(searchSourceBuilder);
@@ -173,10 +177,10 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        if((null != keyword && !"".equals(keyword)) || null != distance){
+        if ((null != keyword && !"".equals(keyword)) || null != distance) {
             searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
-        }else{
-            searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort",SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+        } else {
+            searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
         }
         searchRequest.source(searchSourceBuilder);
         SearchResponse response = null;
@@ -194,7 +198,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(query).from((pageNum-1)*pageSize).size(pageSize);
+        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
         searchRequest.source(searchSourceBuilder);
         SearchResponse response = null;
         try {
@@ -216,14 +220,14 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
             searchSourceBuilder.searchAfter(new String[]{uid});
         }
         searchSourceBuilder.query(query).sort("_uid", SortOrder.DESC).size(1)
-                .fetchSource(new String[] {"areaId","houseId","housePhotoTitle","houseTitle","tagsName","claimHouseId","claimHouseTitle","claimHousePhotoTitle","price_increase_decline","houseTotalPrices",
-                        "houseUnitCost","buildArea","claimTagsName","room","hall","forwardName","area","houseBusinessName",
-                        "plotName","year","parkRadio","subwayDistince","housePlotLocation","newcode","housePhoto","is_claim","userId",
-                        "houseProxyName","ofCompany","houseProxyPhone","houseProxyPhoto","claim_time","price_increase_decline","import_time","price_increase_decline_amount",
-                        "isMainLayout","isDealLayout","avgDealCycle","isLowPrice","isCutPrice","isMustRob","isLowest","isNew","isCommunityTopHouse","avgAbsoluteWithCommunity",
-                        "avgAbsoluteWithBizcircle","avgAbsoluteWithDistrict","avgRelativeWithCommunity","avgRelativeWithBizcircle","avgRelativeWithDistrict","totalAbsoluteWithCommunity",
-                        "totalAbsoluteWithBizcircle","totalAbsoluteWithDistrict","totalRelativeWithCommunity","totalRelativeWithBizcircle","totalRelativeWithDistrict","traffic","priceFloat",
-                        "recommendBuildTagsId","recommendBuildTagsName","nearPark","rankLowInBizcircleLayout","rankInLowCommunityLayout"} ,null);
+                .fetchSource(new String[]{"areaId", "houseId", "housePhotoTitle", "houseTitle", "tagsName", "claimHouseId", "claimHouseTitle", "claimHousePhotoTitle", "price_increase_decline", "houseTotalPrices",
+                        "houseUnitCost", "buildArea", "claimTagsName", "room", "hall", "forwardName", "area", "houseBusinessName",
+                        "plotName", "year", "parkRadio", "subwayDistince", "housePlotLocation", "newcode", "housePhoto", "is_claim", "userId",
+                        "houseProxyName", "ofCompany", "houseProxyPhone", "houseProxyPhoto", "claim_time", "price_increase_decline", "import_time", "price_increase_decline_amount",
+                        "isMainLayout", "isDealLayout", "avgDealCycle", "isLowPrice", "isCutPrice", "isMustRob", "isLowest", "isNew", "isCommunityTopHouse", "avgAbsoluteWithCommunity",
+                        "avgAbsoluteWithBizcircle", "avgAbsoluteWithDistrict", "avgRelativeWithCommunity", "avgRelativeWithBizcircle", "avgRelativeWithDistrict", "totalAbsoluteWithCommunity",
+                        "totalAbsoluteWithBizcircle", "totalAbsoluteWithDistrict", "totalRelativeWithCommunity", "totalRelativeWithBizcircle", "totalRelativeWithDistrict", "traffic", "priceFloat",
+                        "recommendBuildTagsId", "recommendBuildTagsName", "nearPark", "rankLowInBizcircleLayout", "rankInLowCommunityLayout"}, null);
         searchRequest.source(searchSourceBuilder);
         SearchResponse response = null;
         try {
@@ -287,9 +291,9 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(booleanQueryBuilder).fetchSource(
                 new String[]{"houseId", "housePhotoTitle", "area", "areaId", "houseBusinessNameId",
-                                "houseBusinessName", "plotName", "newcode", "buildArea", "room", "forwardName",
-                                "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob", "hall"},
-                        null);
+                        "houseBusinessName", "plotName", "newcode", "buildArea", "room", "forwardName",
+                        "houseTotalPrices", "isCutPrice", "priceFloat", "isLowPrice", "isMustRob", "hall"},
+                null);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;
         try {
@@ -328,7 +332,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao{
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(booleanQueryBuilder).sort(sortFile).from((pageNum-1)*pageSize).size(pageSize);
+        searchSourceBuilder.query(booleanQueryBuilder).sort(sortFile).from((pageNum - 1) * pageSize).size(pageSize);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;
         try {
