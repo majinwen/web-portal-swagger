@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Api(value = "地图找房-新房", description = "地图找房-新房")
 public interface NewHouseMapSearchApi {
 
-    @ApiOperation(value = "getNewHouseMapSearchByBuild", nickname = "getNewHouseMapSearchByBuild", notes = "", response = NewHouseMapSearchBuildResponse.class, tags={ "地图找房", })
+    @ApiOperation(value = "新房楼盘详细信息", nickname = "getNewHouseMapSearchByBuild", notes = "", response = NewHouseMapSearchBuildResponse.class, tags={ "地图找房", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = NewHouseMapSearchBuildResponse.class),
         @ApiResponse(code = 201, message = "Created"),
@@ -33,7 +33,7 @@ public interface NewHouseMapSearchApi {
     ResponseEntity<NewHouseMapSearchBuildResponse> getNewHouseMapSearchByBuild(@ApiParam(value = "newHouseMapSearchRequest", required = true) @Valid NewHouseMapSearchRequest newHouseMapSearchRequest);
 
 
-    @ApiOperation(value = "getNewHouseMapSearchByDistrict", nickname = "getNewHouseMapSearchByDistrict", notes = "", response = NewHouseMapSearchDistrictResponse.class, tags={ "地图找房", })
+    @ApiOperation(value = "区域新房信息", nickname = "getNewHouseMapSearchByDistrict", notes = "", response = NewHouseMapSearchDistrictResponse.class, tags={ "地图找房", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = NewHouseMapSearchDistrictResponse.class),
         @ApiResponse(code = 201, message = "Created"),

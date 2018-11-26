@@ -17,10 +17,10 @@ import javax.validation.Valid;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-24T09:35:01.637Z")
 
-@Api(value = "地图找房-二手房", description = "地图找房-二手房")
+@Api(value = "二手房", description = "地图找房-二手房")
 public interface EsfMapSearchApi {
 
-    @ApiOperation(value = "地图找房-二手房", nickname = "mapEsfSearch", notes = "", response = EsfMapSearchResponse.class, tags={ "地图找房-二手房", })
+    @ApiOperation(value = "二手房", nickname = "mapEsfSearch", notes = "", response = EsfMapSearchResponse.class, tags={ "地图找房", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = EsfMapSearchResponse.class),
         @ApiResponse(code = 201, message = "Created"),
@@ -32,7 +32,7 @@ public interface EsfMapSearchApi {
     @RequestMapping(value = "/rest/map/esf/search", produces = { "application/json" }, method = RequestMethod.GET)
     ResponseEntity<EsfMapSearchResponse> mapEsfSearch(@ApiParam(value = "esfMapSearchDoRequest", required = true) @Valid  EsfMapSearchRequest esfMapSearchRequest);
 
-    @ApiOperation(value = "二手房-小区房源列表", nickname = "mapEsfSearchList", notes = "", response = EsfHouseListResponse.class, tags={ "二手房-小区房源列表", })
+    @ApiOperation(value = "二手房-小区房源列表", nickname = "mapEsfSearchList", notes = "", response = EsfHouseListResponse.class, tags={ "地图找房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = EsfHouseListResponse.class),
             @ApiResponse(code = 201, message = "Created"),
