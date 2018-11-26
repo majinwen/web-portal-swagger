@@ -28,6 +28,8 @@ public class CompanyConstant {
 
     public static final String COMPANY_TAIPINGYANGFANGWU = "太平洋房屋";
 
+    public static final String COMPANY_LIANJIA = "链家";
+
     /**
      * 公司图标URL
      */
@@ -46,4 +48,6 @@ public class CompanyConstant {
     public static final String COMPANY_ICON_MAITIANFANGCHAN = "http://wap-qn.bidewu.com/wap/mtfc.png";
 
     public static final String COMPANY_ICON_TAIPINGYANGFANGWU = "http://wap-qn.bidewu.com/wap/tpyfw.png";
+
+    public static final String COMPANY_ICON_LIANJIA = "http://wap-qn.bidewu.com/wap/lj.png";
 }
