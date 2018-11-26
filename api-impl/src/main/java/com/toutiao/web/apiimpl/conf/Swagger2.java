@@ -22,7 +22,7 @@ public class Swagger2 {
                 .host("app.dev.bidewu.com/searchapiv2")
                 .select()
                 //为controller包路径
-                .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl.mapSearch"))
+                .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl"))
                 .paths(PathSelectors.any())
                 .build();
     }

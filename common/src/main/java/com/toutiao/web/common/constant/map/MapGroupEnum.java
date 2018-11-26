@@ -14,7 +14,10 @@ public enum MapGroupEnum implements IntBaseType {
 
     DISTRICT(MapGroupConstant.DISTRICT,MapGroupConstant.DISTRICT_CODE),
     BIZCIRCLE(MapGroupConstant.BIZCIRCLE,MapGroupConstant.BIZCIRCLE_CODE),
-    COMMUNITY(MapGroupConstant.COMMUNITY,MapGroupConstant.COMMUNITY_CODE);
+    COMMUNITY(MapGroupConstant.COMMUNITY,MapGroupConstant.COMMUNITY_CODE),
+    BUILD(MapGroupConstant.BUILD,MapGroupConstant.BUILD_CODE),
+    LINE(MapGroupConstant.LINE,MapGroupConstant.LINE_CODE),
+    STATION(MapGroupConstant.STATION,MapGroupConstant.STATION_CODE);
 
 
     private String desc;

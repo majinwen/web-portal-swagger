@@ -2,8 +2,10 @@ package com.toutiao.appV2.apiimpl.mapSearch;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toutiao.app.api.chance.response.mapSearch.RentOfPlotListResPonse;
 import com.toutiao.app.domain.mapSearch.RentMapSearchDoQuery;
 import com.toutiao.app.domain.mapSearch.RentMapSearchDomain;
+import com.toutiao.app.domain.mapSearch.RentOfPlotListDo;
 import com.toutiao.app.service.mapSearch.RentMapSearchRestService;
 import com.toutiao.appV2.api.mapSearch.RentMapSearchApi;
 import com.toutiao.appV2.model.mapSearch.RentMapSearchDoRequest;
@@ -49,4 +51,14 @@ public class RentMapSearchApiController implements RentMapSearchApi {
         RentMapSearchDomainResponse rentMapSearchDomainResponse = JSON.parseObject(JSON.toJSONString(rentMapSearchDomain), RentMapSearchDomainResponse.class);
         return new ResponseEntity<RentMapSearchDomainResponse>(rentMapSearchDomainResponse, HttpStatus.OK);
     }
+
+
+    @Override
+    public ResponseEntity<RentOfPlotListResPonse> getRentOfPlot(@ApiParam(value = "rentMapSearchDoRequest" ,required=true )  @Valid  RentMapSearchDoRequest rentMapSearchDoRequest){
+        RentMapSearchDoQuery rentMapSearchDoQuery = JSON.parseObject(JSON.toJSONString(rentMapSearchDoRequest), RentMapSearchDoQuery.class);
+        RentOfPlotListDo rentOfPlot = rentMapSearchRestService.getRentOfPlot(rentMapSearchDoQuery, CityUtils.getCity());
+        RentOfPlotListResPonse rentOfPlotListResPonse = JSON.parseObject(JSON.toJSONString(rentOfPlot), RentOfPlotListResPonse.class);
+        return new ResponseEntity<RentOfPlotListResPonse>(rentOfPlotListResPonse, HttpStatus.OK);
+    }
+
 }

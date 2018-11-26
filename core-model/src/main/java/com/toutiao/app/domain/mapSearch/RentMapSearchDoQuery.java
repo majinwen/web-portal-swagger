@@ -57,5 +57,17 @@ public class RentMapSearchDoQuery  extends QueryDo {
      * 右下经度
      */
     private Double bottomRightLon;
+    /**
+     * 中心维度
+     */
+    private Double centerLat;
+    /**
+     * 中心经度
+     */
+    private Double centerLon;
+    /**
+     * 小区id
+     */
+    private Integer newcode;
 
 }

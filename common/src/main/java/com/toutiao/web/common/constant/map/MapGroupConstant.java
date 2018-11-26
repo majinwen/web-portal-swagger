@@ -23,6 +23,22 @@ public class MapGroupConstant {
      */
     public static final String COMMUNITY = "community";
 
+    /**
+     * 楼盘
+     */
+
+    public static final String BUILD = "build";
+
+    /**
+     * 地铁线
+     */
+    public static final String LINE = "line";
+
+    /**
+     * 地铁站
+     */
+    public static final String STATION = "station";
+
 
     /**
      * 区县代码
@@ -38,5 +54,20 @@ public class MapGroupConstant {
      * 社区代码
      */
     public static final Integer COMMUNITY_CODE = 3;
+
+    /**
+     * 楼盘代码
+     */
+    public static final Integer BUILD_CODE = 4;
+
+    /**
+     * 地铁线代码
+     */
+    public static final Integer LINE_CODE = 5;
+
+    /**
+     * 地铁站代码
+     */
+    public static final Integer STATION_CODE = 6;
 
 }
