@@ -5,6 +5,7 @@
  */
 package com.toutiao.appV2.api.mapSearch;
 
+import com.toutiao.appV2.model.mapSearch.EsfHouseListResponse;
 import com.toutiao.appV2.model.mapSearch.EsfMapSearchRequest;
 import com.toutiao.appV2.model.mapSearch.EsfMapSearchResponse;
 import io.swagger.annotations.*;
@@ -30,5 +31,17 @@ public interface EsfMapSearchApi {
     })
     @RequestMapping(value = "/rest/map/esf/search", produces = { "application/json" }, method = RequestMethod.GET)
     ResponseEntity<EsfMapSearchResponse> mapEsfSearch(@ApiParam(value = "esfMapSearchDoRequest", required = true) @Valid  EsfMapSearchRequest esfMapSearchRequest);
+
+    @ApiOperation(value = "二手房-小区房源列表", nickname = "mapEsfSearchList", notes = "", response = EsfHouseListResponse.class, tags={ "二手房-小区房源列表", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = EsfHouseListResponse.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/map/esf/list", produces = { "application/json" }, method = RequestMethod.GET)
+    ResponseEntity<EsfHouseListResponse> mapEsfHouseList(@ApiParam(value = "esfMapSearchDoRequest", required = true) @Valid  EsfMapSearchRequest esfMapSearchRequest);
 
 }
