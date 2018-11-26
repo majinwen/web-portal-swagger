@@ -180,9 +180,7 @@ public class RentEsDaoImpl implements RentEsDao {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         if((null!=keyword && !"".equals(keyword)) || (null!=distance && distance > 0)){
             //searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
-            if("0".equals(sort)){
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
-            }else if("1".equals(sort)){
+            if("1".equals(sort)){
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("update_time",SortOrder.DESC).sort(geoDistanceSort);
             }else if("3".equals(sort)){
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price",SortOrder.ASC).sort(geoDistanceSort);
@@ -190,12 +188,12 @@ public class RentEsDaoImpl implements RentEsDao {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price",SortOrder.DESC).sort(geoDistanceSort);
             }else if("6".equals(sort)){
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("house_area",SortOrder.DESC).sort(geoDistanceSort);
+            }else{
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
             }
         }else{
             //searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
-            if("0".equals(sort)){
-                searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
-            }else if("1".equals(sort)){
+            if("1".equals(sort)){
                 searchSourceBuilder.query(query).sort("update_time",SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }else if("3".equals(sort)){
                 searchSourceBuilder.query(query).sort("rent_house_price",SortOrder.ASC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
@@ -203,6 +201,8 @@ public class RentEsDaoImpl implements RentEsDao {
                 searchSourceBuilder.query(query).sort("rent_house_price",SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }else if("6".equals(sort)){
                 searchSourceBuilder.query(query).sort("house_area",SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            }else{
+                searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }
         }
         searchRequest.source(searchSourceBuilder);

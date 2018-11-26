@@ -55,16 +55,19 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
                                  "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
                          null)*/.from((pageNum-1)*pageSize).size(pageSize);
 
-        if (null!=levelSort && null!=buildingSort && "0".equals(sort)){//默认排序
-            searchSourceBuilder.sort(levelSort).sort(buildingSort);
-        }else if("1".equals(sort)){
-            searchSourceBuilder.sort("totalPrice", SortOrder.ASC);
+//        if (null!=levelSort && null!=buildingSort && "0".equals(sort)){//默认排序
+//            searchSourceBuilder.sort(levelSort).sort(buildingSort);
+//        }else
+        if("1".equals(sort)){
+            searchSourceBuilder.sort("totalPrice", SortOrder.ASC).sort(levelSort).sort(buildingSort);
         }else if("2".equals(sort)){
-            searchSourceBuilder.sort("totalPrice", SortOrder.DESC);
+            searchSourceBuilder.sort("totalPrice", SortOrder.DESC).sort(levelSort).sort(buildingSort);
         }else if("3".equals(sort)){
-            searchSourceBuilder.sort("average_price", SortOrder.ASC);
+            searchSourceBuilder.sort("average_price", SortOrder.ASC).sort(levelSort).sort(buildingSort);
         }else if("4".equals(sort)){
-            searchSourceBuilder.sort("average_price", SortOrder.DESC);
+            searchSourceBuilder.sort("average_price", SortOrder.DESC).sort(levelSort).sort(buildingSort);
+        }else{
+            searchSourceBuilder.sort(levelSort).sort(buildingSort);
         }
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;

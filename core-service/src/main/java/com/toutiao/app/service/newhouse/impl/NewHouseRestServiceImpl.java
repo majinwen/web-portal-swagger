@@ -197,7 +197,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = newHouseDoQuery.getSubwayLineId().toString();
         }
         //地铁站id
-        if (newHouseDoQuery.getSubwayStationId() != null) {
+        if (newHouseDoQuery.getSubwayStationId() != null && newHouseDoQuery.getSubwayStationId().length>0) {
             booleanQueryBuilder.must(termsQuery("subway_station_id", newHouseDoQuery.getSubwayStationId()));
         }
         //均价
@@ -301,7 +301,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 String details = "";
                 details = searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
-                if (null != newHouseDoQuery.getSubwayStationId()) {
+                if (null != newHouseDoQuery.getSubwayStationId() && newHouseDoQuery.getSubwayStationId().length>0) {
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
                     for (int i=0; i<newHouseDoQuery.getSubwayStationId().length; i++) {
@@ -409,7 +409,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             newHouseListVo.setData(newHouseListDoList);
             newHouseListVo.setTotalCount(hits.getTotalHits());
         } else {
-            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND, "新房楼盘列表为空");
+            newHouseListVo.setData(newHouseListDoList);
+            newHouseListVo.setTotalCount(hits.getTotalHits());
+//            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND, "新房楼盘列表为空");
         }
 
 
