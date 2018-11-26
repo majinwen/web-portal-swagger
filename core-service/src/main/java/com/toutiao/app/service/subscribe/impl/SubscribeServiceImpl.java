@@ -124,10 +124,10 @@ public class SubscribeServiceImpl implements SubscribeService {
 //            userSubscribeDetailDo.setDistrictId(ZERO);
 //        }
         if (userSubscribeDetailDo.getBeginPrice() == null) {
-            userSubscribeDetailDo.setBeginPrice(0);
+            userSubscribeDetailDo.setBeginPrice(0d);
         }
         if (userSubscribeDetailDo.getEndPrice() == null) {
-            userSubscribeDetailDo.setEndPrice(0);
+            userSubscribeDetailDo.setEndPrice(0d);
         }
         return userSubscribeMapper.selectByUserSubscribeMap(userSubscribeDetailDo, userId);
     }

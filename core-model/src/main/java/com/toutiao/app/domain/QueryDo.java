@@ -88,4 +88,14 @@ public class QueryDo {
      */
 
     private  Integer cityId;
+
+    /**
+     * 起始总价
+     */
+    private double beginTotalPrice;
+
+    /**
+     * 结束总价
+     */
+    private double endTotalPrice;
 }

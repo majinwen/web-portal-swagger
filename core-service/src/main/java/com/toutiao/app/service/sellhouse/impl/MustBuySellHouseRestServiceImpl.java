@@ -160,8 +160,8 @@ public class MustBuySellHouseRestServiceImpl implements MustBuySellHouseRestServ
                 districtIdsStr = StringTool.IntegerArrayToString(districtIds);
             }
             userSubscribeDetailDo.setDistrictId(districtIdsStr);
-            userSubscribeDetailDo.setBeginPrice((int) beginPrice);
-            userSubscribeDetailDo.setEndPrice((int) endPrice);
+            userSubscribeDetailDo.setBeginPrice(beginPrice);
+            userSubscribeDetailDo.setEndPrice(endPrice);
 
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.valueOf(userBasic.getUserId()));
             if (userSubscribe != null) {

@@ -207,6 +207,23 @@ public class ElasticCityUtils {
         return  getESIndexMap(ESIndexConstant.AREA_ROOM_TYPE,cityCode);
     }
 
+    /**
+     * 获取区县商圈index
+     * @param cityCode
+     * @return
+     */
+    public static String getDbAvgPriceIndex(String cityCode){
+        return  getESIndexMap(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_INDEX,cityCode);
+    }
+
+    /**
+     * 获取区县商圈type
+     * @param cityCode
+     * @return
+     */
+    public static String getDbAvgPriceType(String cityCode){
+        return  getESIndexMap(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,cityCode);
+    }
 
 
 }

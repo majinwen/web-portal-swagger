@@ -1126,8 +1126,8 @@ public class SellHouseServiceImpl implements SellHouseService{
             UserSubscribeDetailDo userSubscribeDetailDo=new UserSubscribeDetailDo();
             BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,userSubscribeDetailDo);
             userSubscribeDetailDo.setTopicType(3);
-            userSubscribeDetailDo.setBeginPrice((int) sellHouseBeSureToSnatchDoQuery.getBeginPrice());
-            userSubscribeDetailDo.setEndPrice((int) sellHouseBeSureToSnatchDoQuery.getEndPrice());
+            userSubscribeDetailDo.setBeginPrice(sellHouseBeSureToSnatchDoQuery.getBeginPrice());
+            userSubscribeDetailDo.setEndPrice(sellHouseBeSureToSnatchDoQuery.getEndPrice());
             String districtIdsStr = "";
             Integer[] districtIds = sellHouseBeSureToSnatchDoQuery.getDistrictIds();
             if (StringTool.isNotEmpty(districtIds)) {

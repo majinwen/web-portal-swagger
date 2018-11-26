@@ -285,6 +285,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", sellHouseDoQuery.getSubwayStationId()));
         }
 
+
         if (sellHouseDoQuery.getBeginPrice()!=0 && sellHouseDoQuery.getEndPrice()!=0) {
             booleanQueryBuilder
                     .must(QueryBuilders.rangeQuery("houseTotalPrices")
@@ -298,7 +299,10 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
                     .must(QueryBuilders.rangeQuery("houseTotalPrices")
                             .lte(sellHouseDoQuery.getEndPrice()));
 
-        }        //面积
+        }
+
+        //面积
+
         if (sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()!=0) {
 
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()).lte(sellHouseDoQuery.getEndArea()));
@@ -307,6 +311,8 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         }else if(sellHouseDoQuery.getBeginArea()==0 && sellHouseDoQuery.getEndArea()!=0){
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lte(sellHouseDoQuery.getEndArea()));
         }
+
+
         //楼龄
         if (StringUtil.isNotNullString(sellHouseDoQuery.getHouseYearId())) {
             String houseYear = sellHouseDoQuery.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");

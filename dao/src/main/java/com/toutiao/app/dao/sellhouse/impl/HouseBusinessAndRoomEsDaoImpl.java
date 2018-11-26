@@ -42,7 +42,7 @@ public class HouseBusinessAndRoomEsDaoImpl implements HouseBusinessAndRoomEsDao{
     @Override
     public SearchResponse getHouseBusinessAndRoomAveragePrice(BoolQueryBuilder query, String city) {
 
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getAreaRoomIndex(city)).types(ElasticCityUtils.getAreaRoomType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchRequest.source(searchSourceBuilder.query(query));
         SearchResponse searchResponse = null;
