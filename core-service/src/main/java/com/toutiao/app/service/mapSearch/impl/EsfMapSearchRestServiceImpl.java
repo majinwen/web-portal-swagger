@@ -401,6 +401,8 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             SearchHit communityHit = searchHists[0];
             String community = communityHit.getSourceAsString();
             esfMapCommunityDo = JSON.parseObject(community, EsfMapCommunityDo.class);
+            String plotName = communityHit.getSourceAsMap().get("plotName").toString();
+            esfMapCommunityDo.setPloatName(plotName);
             esfMapCommunityDo.setCount((int)hits.totalHits);
             Date date = new Date();
             for (SearchHit searchHit : searchHists) {
