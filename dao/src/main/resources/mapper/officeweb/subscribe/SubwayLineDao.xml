@@ -7,6 +7,8 @@
         <collection property="children" ofType="com.toutiao.web.dao.entity.subscribe.SubwayStationData">
             <result column="stationid" property="stationid" jdbcType="INTEGER"/>
             <result column="station_name" property="station_name" jdbcType="VARCHAR"/>
+            <result column="coord_x" property="coordX" jdbcType="VARCHAR"/>
+            <result column="coord_y" property="coordY" jdbcType="VARCHAR"/>
         </collection>
 
     </resultMap>
@@ -17,7 +19,9 @@
         subway_name AS name,
         city_id,
         ss.station_id AS stationId,
-        ss.station_name
+        ss.station_name,
+        ss.coord_x,
+        ss.coord_y
         FROM
         subway_line AS sl LEFT JOIN subway_station AS ss ON sl.line_id = ss.line_id
         WHERE
