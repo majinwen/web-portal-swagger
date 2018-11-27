@@ -404,10 +404,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     for (SearchHit hit : hits) {
                         commonMethod(hit, keyList, plotDetailsFewDoList, city, null);
                     }
-                } else {
-                    throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND, "小区楼盘列表为空");
                 }
-
             }
             plotListDo.setPlotList(plotDetailsFewDoList);
             plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());

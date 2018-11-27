@@ -186,8 +186,8 @@ public class RentRestRestServiceImpl implements RentRestService {
             }
             rentDetailsListDo.setRentDetailsList(list);
             rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
-        } else {
-            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
+//        } else {
+//            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
         }
         return rentDetailsListDo;
     }
@@ -222,9 +222,9 @@ public class RentRestRestServiceImpl implements RentRestService {
         list.add(rentNumDo2);
         rentNumListDo.setData(list);
         rentNumListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
-        if (searchResponse.getHits().getTotalHits() == 0) {
-            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
-        }
+//        if (searchResponse.getHits().getTotalHits() == 0) {
+//            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
+//        }
         return rentNumListDo;
     }
 
@@ -389,8 +389,8 @@ public class RentRestRestServiceImpl implements RentRestService {
             }
             rentDetailsListDo.setRentDetailsList(list);
             rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
-        } else {
-            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND, "租房推荐列表为空");
+//        } else {
+//            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND, "租房推荐列表为空");
         }
 
         return rentDetailsListDo;
@@ -440,8 +440,8 @@ public class RentRestRestServiceImpl implements RentRestService {
                 rentDetailsFewDo.setUid(searchHit.getSortValues()[0].toString());
             }
 
-        } else {
-            throw new BaseException(RentInterfaceErrorCodeEnum.RECOMMEND_RENT_NOT_FOUND, "未查询到租房推优房源");
+//        } else {
+//            throw new BaseException(RentInterfaceErrorCodeEnum.RECOMMEND_RENT_NOT_FOUND, "未查询到租房推优房源");
         }
 
         return rentDetailsFewDo;
