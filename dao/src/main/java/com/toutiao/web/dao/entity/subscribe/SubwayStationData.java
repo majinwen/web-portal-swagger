@@ -12,4 +12,8 @@ public class SubwayStationData implements Serializable {
     private Integer stationid;
 
     private String station_name;
+
+    private String coordX;
+
+    private String coordY;
 }

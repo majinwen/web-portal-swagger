@@ -404,10 +404,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                     for (SearchHit hit : hits) {
                         commonMethod(hit, keyList, plotDetailsFewDoList, city, null);
                     }
-                } else {
-                    throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_NOT_FOUND, "小区楼盘列表为空");
                 }
-
             }
             plotListDo.setPlotList(plotDetailsFewDoList);
             plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
@@ -468,9 +465,11 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
         if (StringTool.isNotEmpty(distance)) {
-            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
-            String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
-            plotDetailsFewDo.setNearbyDistance(distances);
+            if (hit.getSortValues().length == 3) {
+                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
+                String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                plotDetailsFewDo.setNearbyDistance(distances);
+            }
         }
 
         if (null != plotDetailsFewDo.getMetroWithPlotsDistance() && key.size() > 0) {

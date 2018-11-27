@@ -53,7 +53,7 @@ import java.math.BigDecimal;
 import java.util.*;
 
 @Service
-public class SellHouseServiceImpl implements SellHouseService{
+public class SellHouseServiceImpl implements SellHouseService {
 
     @Autowired
     private AgentService agentService;
@@ -67,7 +67,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     private FilterSellHouseChooseService filterSellHouseChooseService;
     @Autowired
     private FavoriteRestService favoriteRestService;
-    private  final  Integer FAVORITE_ESF=2;
+    private final Integer FAVORITE_ESF = 2;
     @Autowired
     private SubscribeService subscribeService;
 
@@ -82,40 +82,38 @@ public class SellHouseServiceImpl implements SellHouseService{
         SellHouseDetailsDo sellHouseDetailsDo = new SellHouseDetailsDo();
         Date date = new Date();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        if ("FS".equals(houseId.substring(0,2))){
+        if ("FS".equals(houseId.substring(0, 2))) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
-        }else {
+        } else {
             booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
         }
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
-        SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder,city);
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder, city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
-        if (searchHists.length>0){
+        if (searchHists.length > 0) {
             UserBasic userBasic = UserBasic.getCurrent();
             for (SearchHit searchHit : searchHists) {
                 String sourceAsString = searchHit.getSourceAsString();
-                sellAndClaimHouseDetailsDo = JSON.parseObject(sourceAsString,SellAndClaimHouseDetailsDo.class);
-                BeanUtils.copyProperties(sellAndClaimHouseDetailsDo,sellHouseDetailsDo);
-
+                sellAndClaimHouseDetailsDo = JSON.parseObject(sourceAsString, SellAndClaimHouseDetailsDo.class);
+                BeanUtils.copyProperties(sellAndClaimHouseDetailsDo, sellHouseDetailsDo);
 
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHouseDetailsDo.getImportTime();
-                int isDefault = isDefaultImage(importTime ,date, sellHouseDetailsDo.getHousePhotoTitle());
-                if(isDefault==1){
+                int isDefault = isDefaultImage(importTime, date, sellHouseDetailsDo.getHousePhotoTitle());
+                if (isDefault == 1) {
                     sellHouseDetailsDo.setIsDefaultImage(1);
                 }
 
 
-
-                if (StringTool.isNotEmpty(sellAndClaimHouseDetailsDo.getUserId())&&sellAndClaimHouseDetailsDo.getIsClaim()==1){
+                if (StringTool.isNotEmpty(sellAndClaimHouseDetailsDo.getUserId()) && sellAndClaimHouseDetailsDo.getIsClaim() == 1) {
                     //经纪人信息
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getUserId().toString(), city);
-                    if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())){
+                    if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())) {
                         agentBaseDo.setAgentBusinessCard(agentBaseDo.getAgentBusinessCard().toString());
-                    }else {
+                    } else {
                         agentBaseDo.setAgentBusinessCard("");
 
                     }
@@ -145,23 +143,23 @@ public class SellHouseServiceImpl implements SellHouseService{
 //                        }
 //                    }
 
-                }else if(sellAndClaimHouseDetailsDo.getIsClaim()==0){
-                    if(StringUtil.isNotNullString(sellAndClaimHouseDetailsDo.getProjExpertUserId())){
+                } else if (sellAndClaimHouseDetailsDo.getIsClaim() == 0) {
+                    if (StringUtil.isNotNullString(sellAndClaimHouseDetailsDo.getProjExpertUserId())) {
                         //经纪人信息
                         agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDetailsDo.getProjExpertUserId().toString(), city);
-                        if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())){
+                        if (StringTool.isNotEmpty(agentBaseDo.getAgentBusinessCard())) {
                             agentBaseDo.setAgentBusinessCard(agentBaseDo.getAgentBusinessCard().toString());
-                        }else {
+                        } else {
                             agentBaseDo.setAgentBusinessCard("");
 
                         }
 
                     } else {
-                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
-                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
-                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
-                        agentBaseDo.setAgentBusinessCard(searchHit.getSourceAsMap().get("agentBusinessCard")==null?"":searchHit.getSourceAsMap().get("agentBusinessCard").toString());
+                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName") == null ? "" : searchHit.getSourceAsMap().get("houseProxyName").toString());
+                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany") == null ? "" : searchHit.getSourceAsMap().get("ofCompany").toString());
+                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhone").toString());
+                        agentBaseDo.setAgentBusinessCard(searchHit.getSourceAsMap().get("agentBusinessCard") == null ? "" : searchHit.getSourceAsMap().get("agentBusinessCard").toString());
                     }
                 }
 
@@ -176,20 +174,20 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
             }
 
-            if(StringTool.isNotEmpty(userBasic)){
-                IsFavoriteDo isFavoriteDo=new IsFavoriteDo();
+            if (StringTool.isNotEmpty(userBasic)) {
+                IsFavoriteDo isFavoriteDo = new IsFavoriteDo();
                 isFavoriteDo.setUserId(Integer.valueOf(userBasic.getUserId()));
                 isFavoriteDo.setHouseId(sellHouseDetailsDo.getHouseId());
-                boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_ESF,isFavoriteDo);
+                boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_ESF, isFavoriteDo);
                 sellHouseDetailsDo.setIsFavorite(isFavorite);
             }
-            if (sellHouseDetailsDo.getHouseHeating()==0){
+            if (sellHouseDetailsDo.getHouseHeating() == 0) {
                 sellHouseDetailsDo.setHouseHeatingName("未知");
             }
-             if (sellHouseDetailsDo.getHouseHeating()==1){
+            if (sellHouseDetailsDo.getHouseHeating() == 1) {
                 sellHouseDetailsDo.setHouseHeatingName("集中供暖");
             }
-             if (sellHouseDetailsDo.getHouseHeating()==2){
+            if (sellHouseDetailsDo.getHouseHeating() == 2) {
                 sellHouseDetailsDo.setHouseHeatingName("自供暖");
             }
         }
@@ -200,7 +198,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     @Override
     public List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseIds) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
 //        if(houseIds.indexOf("FS")>-1){
 //            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
 //        }else {
@@ -223,7 +221,7 @@ public class SellHouseServiceImpl implements SellHouseService{
     @Override
     public List<MessageSellHouseDo> querySellHouseByHouseIdNew(String[] houseIds, String city) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
 //        if(houseIds.indexOf("FS")>-1){
 //            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
 //        }else {
@@ -270,6 +268,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     /**
      * 二手房，房源列表
+     *
      * @param sellHouseQueryDo
      * @return
      */
@@ -298,15 +297,15 @@ public class SellHouseServiceImpl implements SellHouseService{
 //        boolQueryBuilder.should(queryBuilderOfMonth);
 
         BoolQueryBuilder queryBuilderOfWeek = QueryBuilders.boolQuery();
-        queryBuilderOfWeek.must(QueryBuilders.termQuery("is_claim",0));
-        queryBuilderOfWeek.must(QueryBuilders.termQuery("isNew",1));
+        queryBuilderOfWeek.must(QueryBuilders.termQuery("is_claim", 0));
+        queryBuilderOfWeek.must(QueryBuilders.termQuery("isNew", 1));
         queryBuilderOfWeek.must(QueryBuilders.termsQuery("isDel", "0"));
 
 //        queryBuilderOfWeek.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("import_time").gt(pastDateOfWeek).lte(nowDate)));
         boolQueryBuilder.should(queryBuilderOfWeek);
-        FunctionScoreQueryBuilder query = getQuery(sellHouseQueryDo,boolQueryBuilder,city);
+        FunctionScoreQueryBuilder query = getQuery(sellHouseQueryDo, boolQueryBuilder, city);
 
-          //这个注释的方法有问题，暂时不删除
+        //这个注释的方法有问题，暂时不删除
 //        Date date = new Date();
 //        String pastDateOfMonth = DateUtil.getPastDate(30)+" 00:00:00";
 //        String pastDateOfWeek = DateUtil.getPastDate(7)+" 00:00:00";
@@ -330,10 +329,10 @@ public class SellHouseServiceImpl implements SellHouseService{
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
-        if(searchHists.length > 0){
+        if (searchHists.length > 0) {
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
-                SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+                SellHouseDo sellHouseDo = JSON.parseObject(details, SellHouseDo.class);
 //                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
 //                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
 //                        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate(searchHit.getSource().get("claim_time").toString()));
@@ -355,17 +354,17 @@ public class SellHouseServiceImpl implements SellHouseService{
 //                }
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
-                if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+                if (sellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
-                }else if(sellHouseDo.getIsClaim()==0){
-                    if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
-                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
-                    }else{
-                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
-                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
-                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
+                } else if (sellHouseDo.getIsClaim() == 0) {
+                    if (StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(), city);
+                    } else {
+                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName") == null ? "" : searchHit.getSourceAsMap().get("houseProxyName").toString());
+                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany") == null ? "" : searchHit.getSourceAsMap().get("ofCompany").toString());
+                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                     }
                 }
 
@@ -375,9 +374,9 @@ public class SellHouseServiceImpl implements SellHouseService{
 
             }
             sellHouseDomain.setSellHouseList(sellHouseDos);
-            sellHouseDomain.setTotal((int)hits.getTotalHits());
-        }else{
-            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
+            sellHouseDomain.setTotal((int) hits.getTotalHits());
+        } else {
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND, "二手房列表为空");
         }
 
 
@@ -386,6 +385,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     /**
      * 二手房推荐列表V1
+     *
      * @param userFavoriteConditionDoQuery
      * @param city
      * @return
@@ -398,28 +398,28 @@ public class SellHouseServiceImpl implements SellHouseService{
         List<SellHouseDo> list = new ArrayList<>();
 
         //无预设条件
-        if(userFavoriteConditionDoQuery.getFlag()==0){
+        if (userFavoriteConditionDoQuery.getFlag() == 0) {
             SellHouseDomain sellHouseNoCondition = getSellHouseNoCondition(userFavoriteConditionDoQuery, city);
             return sellHouseNoCondition;
         }
 
-        boolQueryBuilderT1.must(QueryBuilders.termQuery("isDel",0));
-        boolQueryBuilderT1.must(QueryBuilders.termQuery("is_claim",0));
+        boolQueryBuilderT1.must(QueryBuilders.termQuery("isDel", 0));
+        boolQueryBuilderT1.must(QueryBuilders.termQuery("is_claim", 0));
 
         //区域
-        if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
-            boolQueryBuilderT1.must(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+        if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
+            boolQueryBuilderT1.must(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
         }
         //户型
-        if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-            boolQueryBuilderT1.must(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
+        if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())) {
+            boolQueryBuilderT1.must(QueryBuilders.termsQuery("room", userFavoriteConditionDoQuery.getLayoutId()));
         }
         //价格
-        if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()>0){
+        if (null != userFavoriteConditionDoQuery.getBeginPrice() && null != userFavoriteConditionDoQuery.getEndPrice() && userFavoriteConditionDoQuery.getEndPrice() > 0) {
             boolQueryBuilderT1.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
-        }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()==0){
+        } else if (null != userFavoriteConditionDoQuery.getBeginPrice() && null != userFavoriteConditionDoQuery.getEndPrice() && userFavoriteConditionDoQuery.getEndPrice() == 0) {
             boolQueryBuilderT1.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
-        }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
+        } else if (null != userFavoriteConditionDoQuery.getBeginPrice() && null == userFavoriteConditionDoQuery.getEndPrice()) {
             boolQueryBuilderT1.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
         }
 
@@ -427,34 +427,34 @@ public class SellHouseServiceImpl implements SellHouseService{
         ScoreFunctionBuilder scoreFunctionBuilderT1 = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);
         FunctionScoreQueryBuilder functionScoreQueryBuilderT1 = QueryBuilders.functionScoreQuery(boolQueryBuilderT1, scoreFunctionBuilderT1).boostMode(CombineFunction.SUM);
 
-        SearchResponse sellHouseByConditionT1 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT1,userFavoriteConditionDoQuery.getPageNum(), userFavoriteConditionDoQuery.getPageSize(), city);
+        SearchResponse sellHouseByConditionT1 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT1, userFavoriteConditionDoQuery.getPageNum(), userFavoriteConditionDoQuery.getPageSize(), city);
         SearchHit[] hitsT1 = sellHouseByConditionT1.getHits().getHits();
         int totalHits_T1 = (int) sellHouseByConditionT1.getHits().getTotalHits();
-        if(hitsT1.length>0){
-            for (SearchHit hit:hitsT1){
+        if (hitsT1.length > 0) {
+            for (SearchHit hit : hitsT1) {
                 String sourceAsString = hit.getSourceAsString();
                 SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHouseDo.getImportTime();
-                int isDefault = isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
-                if(isDefault==1){
+                int isDefault = isDefaultImage(importTime, date, sellHouseDo.getHousePhotoTitle());
+                if (isDefault == 1) {
                     sellHouseDo.setIsDefaultImage(1);
                 }
 
                 //经纪人信息
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
-                if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+                if (sellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
-                }else if(sellHouseDo.getIsClaim()==0){
-                    if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
-                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
-                    }else{
-                        agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName")==null?"":hit.getSourceAsMap().get("houseProxyName").toString());
-                        agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany")==null?"":hit.getSourceAsMap().get("ofCompany").toString());
-                        agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                        agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
+                } else if (sellHouseDo.getIsClaim() == 0) {
+                    if (StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(), city);
+                    } else {
+                        agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName") == null ? "" : hit.getSourceAsMap().get("houseProxyName").toString());
+                        agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany") == null ? "" : hit.getSourceAsMap().get("ofCompany").toString());
+                        agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone") == null ? "" : hit.getSourceAsMap().get("houseProxyPhone").toString());
                     }
                 }
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
@@ -466,49 +466,49 @@ public class SellHouseServiceImpl implements SellHouseService{
 
 
         //当T1条件分页结果不足每页大小,查询T2条件并补充
-        if (list.size()<userFavoriteConditionDoQuery.getPageSize()){
+        if (list.size() < userFavoriteConditionDoQuery.getPageSize()) {
             BoolQueryBuilder boolQueryBuilderT2 = QueryBuilders.boolQuery();
             //获取pageNum和pageSize
             int pageNum_T1 = totalHits_T1 / userFavoriteConditionDoQuery.getPageSize();
-            int pageNum_T2 = userFavoriteConditionDoQuery.getPageNum()-pageNum_T1;
+            int pageNum_T2 = userFavoriteConditionDoQuery.getPageNum() - pageNum_T1;
             int pageSize_T2 = userFavoriteConditionDoQuery.getPageSize();
-            if (pageNum_T2==1){
-                pageSize_T2 = userFavoriteConditionDoQuery.getPageSize()-totalHits_T1 % userFavoriteConditionDoQuery.getPageSize();
+            if (pageNum_T2 == 1) {
+                pageSize_T2 = userFavoriteConditionDoQuery.getPageSize() - totalHits_T1 % userFavoriteConditionDoQuery.getPageSize();
             }
-            boolQueryBuilderT2.must(QueryBuilders.termQuery("is_claim",0));
-            boolQueryBuilderT2.must(QueryBuilders.termQuery("isDel",0));
+            boolQueryBuilderT2.must(QueryBuilders.termQuery("is_claim", 0));
+            boolQueryBuilderT2.must(QueryBuilders.termQuery("isDel", 0));
 
             //只符合价格条件的房源
             //价格
-            if (null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()>0){
+            if (null != userFavoriteConditionDoQuery.getBeginPrice() && null != userFavoriteConditionDoQuery.getEndPrice() && userFavoriteConditionDoQuery.getEndPrice() > 0) {
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
                 //区域
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
                 }
                 //户型
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room", userFavoriteConditionDoQuery.getLayoutId()));
                 }
-            }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null!=userFavoriteConditionDoQuery.getEndPrice()&&userFavoriteConditionDoQuery.getEndPrice()==0){
+            } else if (null != userFavoriteConditionDoQuery.getBeginPrice() && null != userFavoriteConditionDoQuery.getEndPrice() && userFavoriteConditionDoQuery.getEndPrice() == 0) {
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
                 //区域
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
                 }
                 //户型
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room", userFavoriteConditionDoQuery.getLayoutId()));
                 }
-            }else if(null!=userFavoriteConditionDoQuery.getBeginPrice()&&null==userFavoriteConditionDoQuery.getEndPrice()){
+            } else if (null != userFavoriteConditionDoQuery.getBeginPrice() && null == userFavoriteConditionDoQuery.getEndPrice()) {
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
                 //区域
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId",userFavoriteConditionDoQuery.getDistrictId()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
                 }
                 //户型
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())){
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room",userFavoriteConditionDoQuery.getLayoutId()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("room", userFavoriteConditionDoQuery.getLayoutId()));
                 }
             }
 
@@ -519,29 +519,29 @@ public class SellHouseServiceImpl implements SellHouseService{
             SearchResponse sellHouseByConditionT2 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT2, pageNum_T2, pageSize_T2, city);
             SearchHit[] hitsT2 = sellHouseByConditionT2.getHits().getHits();
             int totalHits_T2 = (int) sellHouseByConditionT2.getHits().getTotalHits();
-            if(hitsT2.length>0){
-                for (SearchHit hit:hitsT2){
+            if (hitsT2.length > 0) {
+                for (SearchHit hit : hitsT2) {
                     String sourceAsString = hit.getSourceAsString();
                     SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
                     //判断3天内导入，且无图片，默认上显示默认图
                     String importTime = sellHouseDo.getImportTime();
-                    int isDefault = isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
-                    if(isDefault==1){
+                    int isDefault = isDefaultImage(importTime, date, sellHouseDo.getHousePhotoTitle());
+                    if (isDefault == 1) {
                         sellHouseDo.setIsDefaultImage(1);
                     }
                     //经纪人信息
                     AgentBaseDo agentBaseDo = new AgentBaseDo();
-                    if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+                    if (sellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseDo.getUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
-                    }else if(sellHouseDo.getIsClaim()==0){
-                        if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
-                            agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
-                        }else{
-                            agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName")==null?"":hit.getSourceAsMap().get("houseProxyName").toString());
-                            agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany")==null?"":hit.getSourceAsMap().get("ofCompany").toString());
-                            agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                            agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
+                    } else if (sellHouseDo.getIsClaim() == 0) {
+                        if (StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())) {
+                            agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(), city);
+                        } else {
+                            agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName") == null ? "" : hit.getSourceAsMap().get("houseProxyName").toString());
+                            agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany") == null ? "" : hit.getSourceAsMap().get("ofCompany").toString());
+                            agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
+                            agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone") == null ? "" : hit.getSourceAsMap().get("houseProxyPhone").toString());
                         }
                     }
                     sellHouseDo.setAgentBaseDo(agentBaseDo);
@@ -552,17 +552,17 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
 
             //当T2条件分页结果不足每页大小,查询T3条件并补充
-            if (list.size()<userFavoriteConditionDoQuery.getPageSize()){
+            if (list.size() < userFavoriteConditionDoQuery.getPageSize()) {
                 BoolQueryBuilder boolQueryBuilderT3 = QueryBuilders.boolQuery();
                 //获取pageNum和pageSize
-                pageNum_T2 = (totalHits_T2+totalHits_T1)/ userFavoriteConditionDoQuery.getPageSize();
-                int pageNum_T3 = userFavoriteConditionDoQuery.getPageNum()-pageNum_T2;
+                pageNum_T2 = (totalHits_T2 + totalHits_T1) / userFavoriteConditionDoQuery.getPageSize();
+                int pageNum_T3 = userFavoriteConditionDoQuery.getPageNum() - pageNum_T2;
                 int pageSize_T3 = userFavoriteConditionDoQuery.getPageSize();
-                if (pageNum_T3==1){
-                    pageSize_T3 = userFavoriteConditionDoQuery.getPageSize()-(totalHits_T2+totalHits_T1) % userFavoriteConditionDoQuery.getPageSize();
+                if (pageNum_T3 == 1) {
+                    pageSize_T3 = userFavoriteConditionDoQuery.getPageSize() - (totalHits_T2 + totalHits_T1) % userFavoriteConditionDoQuery.getPageSize();
                 }
-                boolQueryBuilderT3.must(QueryBuilders.termQuery("is_claim",0));
-                boolQueryBuilderT3.must(QueryBuilders.termQuery("isDel",0));
+                boolQueryBuilderT3.must(QueryBuilders.termQuery("is_claim", 0));
+                boolQueryBuilderT3.must(QueryBuilders.termQuery("isDel", 0));
                 //展示全部房源 即所有条件为不限
 
                 //使用functionnscore增加isNew为1的房源分数
@@ -572,29 +572,29 @@ public class SellHouseServiceImpl implements SellHouseService{
                 SearchResponse sellHouseByConditionT3 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT3, pageNum_T3, pageSize_T3, city);
                 SearchHit[] hitsT3 = sellHouseByConditionT3.getHits().getHits();
                 int totalHits_T3 = (int) sellHouseByConditionT3.getHits().getTotalHits();
-                if(hitsT3.length>0){
-                    for (SearchHit hit:hitsT3){
+                if (hitsT3.length > 0) {
+                    for (SearchHit hit : hitsT3) {
                         String sourceAsString = hit.getSourceAsString();
                         SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
                         //判断3天内导入，且无图片，默认上显示默认图
                         String importTime = sellHouseDo.getImportTime();
-                        int isDefault = isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
-                        if(isDefault==1){
+                        int isDefault = isDefaultImage(importTime, date, sellHouseDo.getHousePhotoTitle());
+                        if (isDefault == 1) {
                             sellHouseDo.setIsDefaultImage(1);
                         }
                         //经纪人信息
                         AgentBaseDo agentBaseDo = new AgentBaseDo();
-                        if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                            agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+                        if (sellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseDo.getUserId())) {
+                            agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
-                        }else if(sellHouseDo.getIsClaim()==0){
-                            if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
-                                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
-                            }else{
-                                agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName")==null?"":hit.getSourceAsMap().get("houseProxyName").toString());
-                                agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany")==null?"":hit.getSourceAsMap().get("ofCompany").toString());
-                                agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                                agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
+                        } else if (sellHouseDo.getIsClaim() == 0) {
+                            if (StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())) {
+                                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(), city);
+                            } else {
+                                agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName") == null ? "" : hit.getSourceAsMap().get("houseProxyName").toString());
+                                agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany") == null ? "" : hit.getSourceAsMap().get("ofCompany").toString());
+                                agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
+                                agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone") == null ? "" : hit.getSourceAsMap().get("houseProxyPhone").toString());
                             }
                         }
                         sellHouseDo.setAgentBaseDo(agentBaseDo);
@@ -609,9 +609,9 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
 
-
     /**
      * 二手房推荐列表V1(无预设条件)
+     *
      * @param userFavoriteConditionDoQuery
      * @param city
      * @return
@@ -623,40 +623,40 @@ public class SellHouseServiceImpl implements SellHouseService{
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         //默认条件
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
 
         //使用functionnscore增加isNew为1的房源分数
         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);
         FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(boolQueryBuilder, scoreFunctionBuilder).boostMode(CombineFunction.SUM);
 
-        SearchResponse sellHouseNoCondition = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilder,userFavoriteConditionDoQuery.getPageNum(),userFavoriteConditionDoQuery.getPageSize(),city);
+        SearchResponse sellHouseNoCondition = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilder, userFavoriteConditionDoQuery.getPageNum(), userFavoriteConditionDoQuery.getPageSize(), city);
         SearchHit[] hits = sellHouseNoCondition.getHits().getHits();
-        if(hits.length>0){
+        if (hits.length > 0) {
             Date date = new Date();
-            for (SearchHit hit : hits){
+            for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHouseDo.getImportTime();
-                int isDefault = isDefaultImage(importTime ,date, sellHouseDo.getHousePhotoTitle());
-                if(isDefault==1){
+                int isDefault = isDefaultImage(importTime, date, sellHouseDo.getHousePhotoTitle());
+                if (isDefault == 1) {
                     sellHouseDo.setIsDefaultImage(1);
                 }
                 //经纪人信息
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
-                if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+                if (sellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
-                }else if(sellHouseDo.getIsClaim()==0){
-                    if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
-                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
-                    }else{
-                        agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName")==null?"":hit.getSourceAsMap().get("houseProxyName").toString());
-                        agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany")==null?"":hit.getSourceAsMap().get("ofCompany").toString());
-                        agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto")==null?"":hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                        agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone")==null?"":hit.getSourceAsMap().get("houseProxyPhone").toString());
+                } else if (sellHouseDo.getIsClaim() == 0) {
+                    if (StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(), city);
+                    } else {
+                        agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName") == null ? "" : hit.getSourceAsMap().get("houseProxyName").toString());
+                        agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany") == null ? "" : hit.getSourceAsMap().get("ofCompany").toString());
+                        agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone") == null ? "" : hit.getSourceAsMap().get("houseProxyPhone").toString());
                     }
                 }
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
@@ -672,7 +672,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     public static void main(String[] args) {
         Date date = new Date();
-        int claimDays = DateUtil.daysBetween(date,DateUtil.getStringToDate("2018-05-25 09:58:48"))-1;
+        int claimDays = DateUtil.daysBetween(date, DateUtil.getStringToDate("2018-05-25 09:58:48")) - 1;
 
         System.out.println(claimDays);
     }
@@ -680,6 +680,7 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     /**
      * 查询二手房推荐房源
+     *
      * @param sellHouseDoQuery
      * @return
      */
@@ -690,19 +691,19 @@ public class SellHouseServiceImpl implements SellHouseService{
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim",1));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", 1));
         boolQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));
-        FunctionScoreQueryBuilder query = getQuery(sellHouseDoQuery,boolQueryBuilder,city);
+        FunctionScoreQueryBuilder query = getQuery(sellHouseDoQuery, boolQueryBuilder, city);
         SearchResponse searchResponse = sellHouseEsDao.getRecommendSellHouse(query, sellHouseDoQuery.getUid(),
                 sellHouseDoQuery.getPageSize(), city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         List<SellHouseDo> sellHouseDos = new ArrayList<>();
-        if(searchHists.length > 0){
+        if (searchHists.length > 0) {
             Date date = new Date();
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
-                SellHouseDo sellHouseDo = JSON.parseObject(details,SellHouseDo.class);
+                SellHouseDo sellHouseDo = JSON.parseObject(details, SellHouseDo.class);
 
 //                if(StringTool.isNotEmpty(searchHit.getSource().get("price_increase_decline"))){
 //                    if(Integer.valueOf(searchHit.getSource().get("price_increase_decline").toString())>0){
@@ -726,17 +727,17 @@ public class SellHouseServiceImpl implements SellHouseService{
 
                 sellHouseDo.setUid(searchHit.getSortValues()[0].toString());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
-                if(sellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHouseDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(),city);
+                if (sellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getUserId().toString(), city);
 
-                }else if(sellHouseDo.getIsClaim()==0){
-                    if(StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())){
-                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(),city);
-                    }else{
-                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
-                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
-                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
+                } else if (sellHouseDo.getIsClaim() == 0) {
+                    if (StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(), city);
+                    } else {
+                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName") == null ? "" : searchHit.getSourceAsMap().get("houseProxyName").toString());
+                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany") == null ? "" : searchHit.getSourceAsMap().get("ofCompany").toString());
+                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                     }
 
                 }
@@ -747,9 +748,9 @@ public class SellHouseServiceImpl implements SellHouseService{
 
             }
             sellHouseDomain.setSellHouseList(sellHouseDos);
-            sellHouseDomain.setTotal((int)searchResponse.getHits().getTotalHits());
-        }else{
-            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
+            sellHouseDomain.setTotal((int) searchResponse.getHits().getTotalHits());
+        } else {
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND, "二手房列表为空");
         }
 
 
@@ -757,12 +758,11 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
 
-
     @Override
-    public SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery,String city) {
+    public SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery, String city) {
 
         SellHouseSearchDomain sellHouseSearchDomain = new SellHouseSearchDomain();
-        SellHousesSearchDo  sellHousesSearchDo= new SellHousesSearchDo();
+        SellHousesSearchDo sellHousesSearchDo = new SellHousesSearchDo();
 
 
         //其他筛选条件
@@ -789,9 +789,9 @@ public class SellHouseServiceImpl implements SellHouseService{
         GaussDecayFunctionBuilder functionBuilder = null;
         FunctionScoreQueryBuilder queryKmBuilder = null;
         GeoDistanceSortBuilder geoDistanceSort = null;
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance()>0){
-            double[] location =new double[]{sellHouseDoQuery.getLon(),sellHouseDoQuery.getLat()};
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",location,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
+            double[] location = new double[]{sellHouseDoQuery.getLon(), sellHouseDoQuery.getLat()};
+            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation", location, sellHouseDoQuery.getDistance() + "km", sellHouseDoQuery.getDistance() + "km");
             //获取5km内所有的二手房
 
             geoDistanceSort = SortBuilders.geoDistanceSort("housePlotLocation", sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon());
@@ -803,26 +803,26 @@ public class SellHouseServiceImpl implements SellHouseService{
         if (StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())) {
             List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword(), city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
-            }else{
+            if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
+                filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size() + 1];
+            } else {
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()];
             }
             if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
                 int searchAreasSize = searchKeyword.size();
-                for(int i=0 ;i<searchKeyword.size();i++){
-                    QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName",searchKeyword.get(i));
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchAreasSize-i);
+                for (int i = 0; i < searchKeyword.size(); i++) {
+                    QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName", searchKeyword.get(i));
+                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchAreasSize - i);
                     filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                 }
-            }else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
+            } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
                 int searchDistrictsSize = searchKeyword.size();
                 for (int i = 0; i < searchKeyword.size(); i++) {
                     ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchDistrictsSize - i);
                     QueryBuilder filter = QueryBuilders.termsQuery("area", searchKeyword.get(i));
                     filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                 }
-            }else{
+            } else {
                 int searchTermSize = searchKeyword.size();
                 for (int i = 0; i < searchKeyword.size(); i++) {
                     ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize - i);
@@ -832,51 +832,50 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
 
 
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+            if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
                 filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
                 query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
 
-            }else{
+            } else {
                 query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }
-        }else{
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() >0){
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder,functionBuilder).boost(10).maxBoost(100)
+        } else {
+            if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
+                query = QueryBuilders.functionScoreQuery(queryKmBuilder, functionBuilder).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }else{
+            } else {
                 query = QueryBuilders.functionScoreQuery(queryKmBuilder).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }
         }
-        List<SellHousesSearchDo> sellHousesSearchDos =new ArrayList<>();
-        ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
+        List<SellHousesSearchDo> sellHousesSearchDos = new ArrayList<>();
+        ClaimSellHouseDo claimSellHouseDo = new ClaimSellHouseDo();
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query, sellHouseDoQuery.getDistance(),
                 sellHouseDoQuery.getKeyword(), sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city, geoDistanceSort, sellHouseDoQuery.getSort());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
-        if(searchHists.length > 0){
+        if (searchHists.length > 0) {
             Date date = new Date();
             for (SearchHit searchHit : searchHists) {
                 String details = "";
-                details=searchHit.getSourceAsString();
-                sellHousesSearchDo=JSON.parseObject(details,SellHousesSearchDo.class);
-                if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())&& sellHouseDoQuery.getDistance()>0){
+                details = searchHit.getSourceAsString();
+                sellHousesSearchDo = JSON.parseObject(details, SellHousesSearchDo.class);
+                if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
-                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
+                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                     sellHousesSearchDo.setNearbyDistance(distance);
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHousesSearchDo.getImportTime();
-                int isDefault = isDefaultImage(importTime ,date, sellHousesSearchDo.getHousePhotoTitle());
-                if(isDefault==1){
+                int isDefault = isDefaultImage(importTime, date, sellHousesSearchDo.getHousePhotoTitle());
+                if (isDefault == 1) {
                     sellHousesSearchDo.setIsDefaultImage(1);
                 }
-                claimSellHouseDo=JSON.parseObject(details,ClaimSellHouseDo.class);
-                if (null!=claimSellHouseDo.getIsClaim() && claimSellHouseDo.getIsClaim()==1)
-                {   //将认领信息替换
+                claimSellHouseDo = JSON.parseObject(details, ClaimSellHouseDo.class);
+                if (null != claimSellHouseDo.getIsClaim() && claimSellHouseDo.getIsClaim() == 1) {   //将认领信息替换
                     sellHousesSearchDo.setHouseId(claimSellHouseDo.getClaimHouseId());
                     sellHousesSearchDo.setHouseTitle(claimSellHouseDo.getClaimHouseTitle());
                     sellHousesSearchDo.setTagsName(claimSellHouseDo.getClaimTagsName());
@@ -889,16 +888,16 @@ public class SellHouseServiceImpl implements SellHouseService{
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
-                if(claimSellHouseDo.getIsClaim()==1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(),city);
-                }else if(claimSellHouseDo.getIsClaim()==0){
-                    if(StringUtil.isNotNullString(sellHousesSearchDo.getProjExpertUserId())){
-                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getProjExpertUserId(),city);
-                    }else{
-                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
-                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
-                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+                if (claimSellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHousesSearchDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getUserId().toString(), city);
+                } else if (claimSellHouseDo.getIsClaim() == 0) {
+                    if (StringUtil.isNotNullString(sellHousesSearchDo.getProjExpertUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getProjExpertUserId(), city);
+                    } else {
+                        agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName") == null ? "" : searchHit.getSourceAsMap().get("houseProxyName").toString());
+                        agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                        agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhone").toString());
+                        agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany") == null ? "" : searchHit.getSourceAsMap().get("ofCompany").toString());
                     }
 
                 }
@@ -907,24 +906,24 @@ public class SellHouseServiceImpl implements SellHouseService{
 
                 //设置房源公司图标
                 String AgentCompany = agentBaseDo.getAgentCompany();
-                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                if (!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)) {
                     sellHousesSearchDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                 }
 
                 //设置房源标签
-                List<HouseLable> houseLableList= new ArrayList<>();
+                List<HouseLable> houseLableList = new ArrayList<>();
                 int isLowPrice = sellHousesSearchDo.getIsLowPrice();
-                if(isLowPrice == 1){
+                if (isLowPrice == 1) {
                     HouseLable houseLable = new HouseLable(HouseLableEnum.LOWPRICE);
                     houseLableList.add(houseLable);
                 }
                 int isCutPrice = sellHousesSearchDo.getIsCutPrice();
-                if(isCutPrice == 1){
+                if (isCutPrice == 1) {
                     HouseLable houseLable = new HouseLable(HouseLableEnum.CUTPRICE);
                     houseLableList.add(houseLable);
                 }
                 int isMustRob = sellHousesSearchDo.getIsMustRob();
-                if(isMustRob == 1){
+                if (isMustRob == 1) {
                     HouseLable houseLable = new HouseLable(HouseLableEnum.MUSTROB);
                     houseLableList.add(houseLable);
                 }
@@ -932,28 +931,90 @@ public class SellHouseServiceImpl implements SellHouseService{
 
                 //设置房源专题
                 List<HouseSubject> houseSubjectList = new ArrayList<>();
-                HouseSubject sellHouseSubject = new HouseSubject();
-                sellHouseSubject.setText("长宁大豪宅社区主力户型");
-                sellHouseSubject.setUrl("http://www.baidu.com");
-                houseSubjectList.add(sellHouseSubject);
-                HouseSubject houseSubject1 = new HouseSubject();
+
+                String lowPriceStr = "";
+                double totalAbsoluteWithBizcircle = sellHousesSearchDo.getTotalAbsoluteWithBizcircle();
+                double totalAbsoluteWithCommunity = sellHousesSearchDo.getTotalAbsoluteWithCommunity();
+                if(sellHousesSearchDo.getIsLowPrice() == 1){
+                    if(totalAbsoluteWithBizcircle< 0 && totalAbsoluteWithCommunity < 0){
+                        if(Math.abs(totalAbsoluteWithBizcircle) >Math.abs(totalAbsoluteWithCommunity)){
+                            lowPriceStr ="总价低于商圈同户型"+Math.abs(totalAbsoluteWithBizcircle)+"万";
+                        }else{
+                            lowPriceStr = "总价低于小区同户型"+Math.abs(totalAbsoluteWithCommunity)+"万";
+                        }
+                    }else if (totalAbsoluteWithBizcircle< 0 ){
+                        lowPriceStr ="总价低于商圈同户型"+Math.abs(totalAbsoluteWithBizcircle)+"万";
+                    }else if (totalAbsoluteWithCommunity< 0 ){
+                        lowPriceStr = "总价低于小区同户型"+Math.abs(totalAbsoluteWithCommunity)+"万";
+                    }
+                }
+                System.out.println(lowPriceStr);
+
+                if(!StringUtil.isNullString(lowPriceStr)){
+                    HouseSubject sellHouseSubject = new HouseSubject();
+                    sellHouseSubject.setText(lowPriceStr);
+                    sellHouseSubject.setUrl("http://www.baidu.com");
+                    houseSubjectList.add(sellHouseSubject);
+                }
+
+
+                String communityLableStr = "";
+                List tagNameList = sellHousesSearchDo.getRecommendBuildTagsName();
+                String areaName = sellHousesSearchDo.getArea();
+                Map<Integer, Map<String, Integer>> typeCountsMap = sellHousesSearchDo.getTypeCounts();
+
+                if (sellHousesSearchDo.getIsMustRob() == 1 && sellHousesSearchDo.getIsMainLayout() == 1) {
+                    if (sellHousesSearchDo.getIsCommunityTopHouse() == 1) {
+                        communityLableStr = "top50社区主力户型";
+                    } else if (tagNameList.size() > 0 && typeCountsMap != null) {
+                        if(tagNameList.contains("豪宅")){
+                            communityLableStr = areaName + typeCountsMap.get(4).get(sellHousesSearchDo.getAreaId()) + "大豪宅社区主力户型";
+                        }else if(tagNameList.contains("别墅")){
+                            communityLableStr = areaName + typeCountsMap.get(5).get(sellHousesSearchDo.getAreaId()) + "大别墅社区主力户型";
+                        }else if(tagNameList.contains("首次置业")){
+                            communityLableStr = areaName + typeCountsMap.get(2).get(sellHousesSearchDo.getAreaId()) + "大首置社区主力户型";
+                        }else if(tagNameList.contains("换房升级")){
+                            communityLableStr = areaName + typeCountsMap.get(3).get(sellHousesSearchDo.getAreaId()) + "大换房社区主力户型";
+                        }else if(tagNameList.contains("近公园")){
+                            communityLableStr = "近公园社区主力户型";
+                        }
+                    }
+                }
+
+                if(!StringUtil.isNullString(communityLableStr)){
+                    HouseSubject sellHouseSubject = new HouseSubject();
+                    sellHouseSubject.setText(communityLableStr);
+                    sellHouseSubject.setUrl("http://www.baidu.com");
+                    houseSubjectList.add(sellHouseSubject);
+                }
+
+
+                double priceFloat = sellHousesSearchDo.getPriceFloat();
+                if(sellHousesSearchDo.getIsCutPrice() == 1 && priceFloat>0){
+                    HouseSubject sellHouseSubject = new HouseSubject();
+                    sellHouseSubject.setText("降"+priceFloat+"万");
+                    sellHouseSubject.setUrl("http://www.baidu.com");
+                    houseSubjectList.add(sellHouseSubject);
+                }
+
+               /* HouseSubject houseSubject1 = new HouseSubject();
                 houseSubject1.setText("总价低于商圈同户型29.53万");
+                houseSubject1.setText(lowPriceStr);
                 houseSubject1.setUrl("http://www.baidu.com");
                 houseSubjectList.add(houseSubject1);
                 HouseSubject sellHouseSubject2 = new HouseSubject();
                 sellHouseSubject2.setText("降5万");
                 sellHouseSubject2.setUrl("http://www.baidu.com");
-                houseSubjectList.add(sellHouseSubject2);
+                houseSubjectList.add(sellHouseSubject2);*/
                 sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
-                sellHousesSearchDo.setNearbyDistance(sellHousesSearchDo.getArea()+" "+sellHousesSearchDo.getHouseBusinessName());
+                sellHousesSearchDo.setNearbyDistance(sellHousesSearchDo.getArea() + " " + sellHousesSearchDo.getHouseBusinessName());
 
                 sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
-                String keys="";
-                if(null!=sellHouseDoQuery.getSubwayLineId() && sellHouseDoQuery.getSubwayLineId()>0)
-                {
-                    keys+=sellHouseDoQuery.getSubwayLineId().toString();
+                String keys = "";
+                if (null != sellHouseDoQuery.getSubwayLineId() && sellHouseDoQuery.getSubwayLineId() > 0) {
+                    keys += sellHouseDoQuery.getSubwayLineId().toString();
                 }
 //                if (null!=sellHouseDoQuery.getSubwayStationId())
 //                {
@@ -963,17 +1024,17 @@ public class SellHouseServiceImpl implements SellHouseService{
 //                {
 //                    sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(keys).toString());
 //                }
-                if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId()) && sellHouseDoQuery.getSubwayStationId().length>0){
-                    Map<Integer,String> map = new HashMap<>();
+                if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId()) && sellHouseDoQuery.getSubwayStationId().length > 0) {
+                    Map<Integer, String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
-                    for(int i=0; i<sellHouseDoQuery.getSubwayStationId().length; i++){
-                        String stationKey = keys+"$"+sellHouseDoQuery.getSubwayStationId()[i];
-                        if(StringTool.isNotEmpty(sellHousesSearchDo.getSubwayDistince().get(stationKey))){
+                    for (int i = 0; i < sellHouseDoQuery.getSubwayStationId().length; i++) {
+                        String stationKey = keys + "$" + sellHouseDoQuery.getSubwayStationId()[i];
+                        if (StringTool.isNotEmpty(sellHousesSearchDo.getSubwayDistince().get(stationKey))) {
                             String stationValue = sellHousesSearchDo.getSubwayDistince().get(stationKey).toString();
                             String[] stationValueSplit = stationValue.split("\\$");
                             Integer distance = Integer.valueOf(stationValueSplit[2]);
                             sortDistance.add(distance);
-                            map.put(distance,stationKey);
+                            map.put(distance, stationKey);
                         }
                     }
                     Integer minDistance = Collections.min(sortDistance);
@@ -983,10 +1044,10 @@ public class SellHouseServiceImpl implements SellHouseService{
 
             }
             sellHouseSearchDomain.setData(sellHousesSearchDos);
-            sellHouseSearchDomain.setTotalNum((int)searchResponse.getHits().getTotalHits());
-        }else{
+            sellHouseSearchDomain.setTotalNum((int) searchResponse.getHits().getTotalHits());
+        } else {
             sellHouseSearchDomain.setData(sellHousesSearchDos);
-            sellHouseSearchDomain.setTotalNum((int)searchResponse.getHits().getTotalHits());
+            sellHouseSearchDomain.setTotalNum((int) searchResponse.getHits().getTotalHits());
 //            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
         }
 
@@ -996,118 +1057,109 @@ public class SellHouseServiceImpl implements SellHouseService{
     }
 
 
-
-    public FunctionScoreQueryBuilder getQuery(SellHouseDoQuery sellHouseDoQuery,BoolQueryBuilder boolQueryBuilder,String city){
+    public FunctionScoreQueryBuilder getQuery(SellHouseDoQuery sellHouseDoQuery, BoolQueryBuilder boolQueryBuilder, String city) {
         FunctionScoreQueryBuilder query = null;
         List<String> searchKeyword = new ArrayList<>();
-        if(StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())){
-            searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword(),city);
+        if (StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())) {
+            searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword(), city);
         }
 
-        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())){
-            if(searchKeyword!=null && searchKeyword.size() > 0){
+        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
+            if (searchKeyword != null && searchKeyword.size() > 0) {
                 int searchTermSize = searchKeyword.size();
                 FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchTermSize];
                 if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
-                    for(int i=0 ;i<searchKeyword.size();i++){
-                        QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName",searchKeyword.get(i));
-                        ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i);
+                    for (int i = 0; i < searchKeyword.size(); i++) {
+                        QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName", searchKeyword.get(i));
+                        ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize - i);
                         filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                     }
-                }else if(StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))){
-                    for(int i=0 ;i<searchKeyword.size();i++){
-                        QueryBuilder filter = QueryBuilders.termsQuery("area",searchKeyword.get(i));
-                        ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize-i);
+                } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
+                    for (int i = 0; i < searchKeyword.size(); i++) {
+                        QueryBuilder filter = QueryBuilders.termsQuery("area", searchKeyword.get(i));
+                        ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize - i);
                         filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                     }
-                }else {
+                } else {
                     for (int i = 0; i < searchKeyword.size(); i++) {
                         QueryBuilder filter = QueryBuilders.termsQuery("plotName", searchKeyword.get(i));
                         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize - i);
                         filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
                     }
                 }
-                query =QueryBuilders.functionScoreQuery(boolQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
+                query = QueryBuilders.functionScoreQuery(boolQueryBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
             }
-        }else {
-            query =QueryBuilders.functionScoreQuery(boolQueryBuilder);
+        } else {
+            query = QueryBuilders.functionScoreQuery(boolQueryBuilder);
         }
         return query;
 
     }
 
 
-
     @Override
     public SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery, String city) {
         Date date = new Date();
-        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDomain=new SellHouseBeSureToSnatchDomain();
-        NearBySellHouseQueryDo nearBySellHouseQueryDo=new NearBySellHouseQueryDo();
-        BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,nearBySellHouseQueryDo);
+        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDomain = new SellHouseBeSureToSnatchDomain();
+        NearBySellHouseQueryDo nearBySellHouseQueryDo = new NearBySellHouseQueryDo();
+        BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery, nearBySellHouseQueryDo);
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterChoose(nearBySellHouseQueryDo);
-        List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos=new ArrayList<>();
-        FieldSortBuilder sortFile=null;
-        Integer subscribeId=-1;
-        if (null!=sellHouseBeSureToSnatchDoQuery.getIsNew())
-        {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew",1));
+        List<SellHouseBeSureToSnatchDo> sellHouseBeSureToSnatchDos = new ArrayList<>();
+        FieldSortBuilder sortFile = null;
+        Integer subscribeId = -1;
+        if (null != sellHouseBeSureToSnatchDoQuery.getIsNew()) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", 1));
         }
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob",1));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", 1));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
 //        booleanQueryBuilder.must(QueryBuilders.termQuery("status",0));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
 
-        if (null!=sellHouseBeSureToSnatchDoQuery.getSortFile() && null!=sellHouseBeSureToSnatchDoQuery.getSort() )
-        {
-            if(sellHouseBeSureToSnatchDoQuery.getSort().equals(1))
-            {
-                sortFile= SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.DESC);
-            }
-            else
-            {
-                sortFile= SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.ASC);
+        if (null != sellHouseBeSureToSnatchDoQuery.getSortFile() && null != sellHouseBeSureToSnatchDoQuery.getSort()) {
+            if (sellHouseBeSureToSnatchDoQuery.getSort().equals(1)) {
+                sortFile = SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.DESC);
+            } else {
+                sortFile = SortBuilders.fieldSort(sellHouseBeSureToSnatchDoQuery.getSortFile()).order(SortOrder.ASC);
             }
         }
-        SearchResponse searchResponse= sellHouseEsDao.getBeSureToSnatchList(booleanQueryBuilder,sellHouseBeSureToSnatchDoQuery.getPageNum(),
-                sellHouseBeSureToSnatchDoQuery.getPageSize(),sortFile, city);
+        SearchResponse searchResponse = sellHouseEsDao.getBeSureToSnatchList(booleanQueryBuilder, sellHouseBeSureToSnatchDoQuery.getPageNum(),
+                sellHouseBeSureToSnatchDoQuery.getPageSize(), sortFile, city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
 
-        for (SearchHit searchHit : searchHists)
-        {
+        for (SearchHit searchHit : searchHists) {
             String details = "";
-            Object [] sort=searchHit.getSortValues();
-            details=searchHit.getSourceAsString();
-            SellHouseBeSureToSnatchDo sellHouseBeSureToSnatchDo=JSON.parseObject(details,SellHouseBeSureToSnatchDo.class);
+            Object[] sort = searchHit.getSortValues();
+            details = searchHit.getSourceAsString();
+            SellHouseBeSureToSnatchDo sellHouseBeSureToSnatchDo = JSON.parseObject(details, SellHouseBeSureToSnatchDo.class);
 
             //判断3天内导入，且无图片，默认上显示默认图
             String importTime = sellHouseBeSureToSnatchDo.getImportTime();
-            int isDefault = isDefaultImage(importTime ,date, sellHouseBeSureToSnatchDo.getHousePhotoTitle());
-            if(isDefault==1){
+            int isDefault = isDefaultImage(importTime, date, sellHouseBeSureToSnatchDo.getHousePhotoTitle());
+            if (isDefault == 1) {
                 sellHouseBeSureToSnatchDo.setIsDefaultImage(1);
             }
 
             AgentBaseDo agentBaseDo = new AgentBaseDo();
-            if(sellHouseBeSureToSnatchDo.getIsClaim().equals(1))
-            {
+            if (sellHouseBeSureToSnatchDo.getIsClaim().equals(1)) {
                 sellHouseBeSureToSnatchDo.setHouseId(sellHouseBeSureToSnatchDo.getClaimHouseId());
                 sellHouseBeSureToSnatchDo.setHousePhotoTitle(sellHouseBeSureToSnatchDo.getClaimHousePhotoTitle());
                 sellHouseBeSureToSnatchDo.setTagsName(sellHouseBeSureToSnatchDo.getClaimTagsName());
                 sellHouseBeSureToSnatchDo.setHouseTitle(sellHouseBeSureToSnatchDo.getClaimHouseTitle());
 
-                if (StringTool.isNotEmpty(sellHouseBeSureToSnatchDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseBeSureToSnatchDo.getUserId().toString(),city);
+                if (StringTool.isNotEmpty(sellHouseBeSureToSnatchDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseBeSureToSnatchDo.getUserId().toString(), city);
                 }
 
-            }else if(sellHouseBeSureToSnatchDo.getIsClaim()==0){
-                if(StringUtil.isNotNullString(sellHouseBeSureToSnatchDo.getProjExpertUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseBeSureToSnatchDo.getProjExpertUserId(),city);
-                }else{
-                    agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
+            } else if (sellHouseBeSureToSnatchDo.getIsClaim() == 0) {
+                if (StringUtil.isNotNullString(sellHouseBeSureToSnatchDo.getProjExpertUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseBeSureToSnatchDo.getProjExpertUserId(), city);
+                } else {
+                    agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName") == null ? "" : searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany") == null ? "" : searchHit.getSourceAsMap().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                 }
 
             }
@@ -1121,10 +1173,9 @@ public class SellHouseServiceImpl implements SellHouseService{
         }
         sellHouseBeSureToSnatchDomain.setData(sellHouseBeSureToSnatchDos);
         UserBasic userBasic = UserBasic.getCurrent();
-        if (null!=userBasic)
-        {
-            UserSubscribeDetailDo userSubscribeDetailDo=new UserSubscribeDetailDo();
-            BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery,userSubscribeDetailDo);
+        if (null != userBasic) {
+            UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
+            BeanUtils.copyProperties(sellHouseBeSureToSnatchDoQuery, userSubscribeDetailDo);
             userSubscribeDetailDo.setTopicType(3);
             userSubscribeDetailDo.setBeginPrice(sellHouseBeSureToSnatchDoQuery.getBeginPrice());
             userSubscribeDetailDo.setEndPrice(sellHouseBeSureToSnatchDoQuery.getEndPrice());
@@ -1137,14 +1188,13 @@ public class SellHouseServiceImpl implements SellHouseService{
             }
             userSubscribeDetailDo.setDistrictId(districtIdsStr);
             UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.parseInt(userBasic.getUserId()));
-            if (null!=userSubscribe)
-            {
-                subscribeId=userSubscribe.getId();
+            if (null != userSubscribe) {
+                subscribeId = userSubscribe.getId();
             }
         }
         sellHouseBeSureToSnatchDomain.setSubscribeId(subscribeId);
         sellHouseBeSureToSnatchDomain.setTotalCount(hits.totalHits);
-         return sellHouseBeSureToSnatchDomain ;
+        return sellHouseBeSureToSnatchDomain;
     }
 
     /**
@@ -1178,8 +1228,8 @@ public class SellHouseServiceImpl implements SellHouseService{
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHousesSearchDo.getImportTime();
-                int isDefault = isDefaultImage(importTime ,date, sellHousesSearchDo.getHousePhotoTitle());
-                if(isDefault==1){
+                int isDefault = isDefaultImage(importTime, date, sellHousesSearchDo.getHousePhotoTitle());
+                if (isDefault == 1) {
                     sellHousesSearchDo.setIsDefaultImage(1);
                 }
 
@@ -1194,10 +1244,10 @@ public class SellHouseServiceImpl implements SellHouseService{
                     tags.toArray(tagsName);
                     sellHousesSearchDo.setTagsName(tagsName);
                     sellHousesSearchDo.setHousePhotoTitle(searchHit.getSourceAsMap().get("claimHousePhotoTitle").toString());
-                }else if(sellHousesSearchDo.getIsClaim() == 0){
-                    if(StringUtil.isNotNullString(sellHousesSearchDo.getProjExpertUserId())){
+                } else if (sellHousesSearchDo.getIsClaim() == 0) {
+                    if (StringUtil.isNotNullString(sellHousesSearchDo.getProjExpertUserId())) {
                         agentBaseDo = agentService.queryAgentInfoByUserId(sellHousesSearchDo.getProjExpertUserId(), city);
-                    }else{
+                    } else {
                         agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany") == null ? "" : searchHit.getSourceAsMap().get("ofCompany").toString());
                         agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName") == null ? "" : searchHit.getSourceAsMap().get("houseProxyName").toString());
                         agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
@@ -1219,16 +1269,16 @@ public class SellHouseServiceImpl implements SellHouseService{
 
     @Override
     public int isDefaultImage(String importTime, Date today, String image) {
-        if(StringTool.isEmpty(image)){
-            if(StringTool.isNotEmpty(importTime)){
-                int betweenDays = DateUtil.daysBetween(today,DateUtil.parseV1(importTime));
-                if(betweenDays <= 3){
+        if (StringTool.isEmpty(image)) {
+            if (StringTool.isNotEmpty(importTime)) {
+                int betweenDays = DateUtil.daysBetween(today, DateUtil.parseV1(importTime));
+                if (betweenDays <= 3) {
                     return 1;
                 } else {
-                   return 0;
+                    return 0;
                 }
             }
-        }else {
+        } else {
             return 0;
         }
         return 0;
