@@ -175,17 +175,17 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         if (newHouseMapSearchDoQuery.getDistrictId() != null && newHouseMapSearchDoQuery.getDistrictId() != 0) {
             boolQueryBuilder.must(termQuery("district_id", newHouseMapSearchDoQuery.getDistrictId()));
         }
-
-        //地铁线id
-        String keys = "";
-        if (newHouseMapSearchDoQuery.getSubwayLineId() != null && newHouseMapSearchDoQuery.getSubwayLineId() != 0) {
-            boolQueryBuilder.must(termsQuery("subway_line_id", new int[]{newHouseMapSearchDoQuery.getSubwayLineId()}));
-            keys = newHouseMapSearchDoQuery.getSubwayLineId().toString();
-        }
-        //地铁站id
-        if (newHouseMapSearchDoQuery.getSubwayStationId() != null) {
-            boolQueryBuilder.must(termsQuery("subway_station_id", newHouseMapSearchDoQuery.getSubwayStationId()));
-        }
+//
+//        //地铁线id
+//        String keys = "";
+//        if (newHouseMapSearchDoQuery.getSubwayLineId() != null && newHouseMapSearchDoQuery.getSubwayLineId() != 0) {
+//            boolQueryBuilder.must(termsQuery("subway_line_id", new int[]{newHouseMapSearchDoQuery.getSubwayLineId()}));
+//            keys = newHouseMapSearchDoQuery.getSubwayLineId().toString();
+//        }
+//        //地铁站id
+//        if (newHouseMapSearchDoQuery.getSubwayStationId() != null) {
+//            boolQueryBuilder.must(termsQuery("subway_station_id", newHouseMapSearchDoQuery.getSubwayStationId()));
+//        }
         //均价
         if(StringTool.isNotEmpty(newHouseMapSearchDoQuery.getBeginPrice()) && StringTool.isNotEmpty(newHouseMapSearchDoQuery.getEndPrice()) ){
             if (newHouseMapSearchDoQuery.getBeginPrice() != 0 && newHouseMapSearchDoQuery.getEndPrice() != 0) {
