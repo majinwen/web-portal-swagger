@@ -67,7 +67,10 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         }else if("4".equals(sort)){
             searchSourceBuilder.sort("average_price", SortOrder.DESC).sort(levelSort).sort(buildingSort);
         }else{
-            searchSourceBuilder.sort(levelSort).sort(buildingSort);
+            if (null!=levelSort && null!=buildingSort)
+            {
+                searchSourceBuilder.sort(levelSort).sort(buildingSort);
+            }
         }
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;

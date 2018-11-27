@@ -468,9 +468,11 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
         if (StringTool.isNotEmpty(distance)) {
-            BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
-            String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
-            plotDetailsFewDo.setNearbyDistance(distances);
+            if (hit.getSortValues().length == 3) {
+                BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
+                String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                plotDetailsFewDo.setNearbyDistance(distances);
+            }
         }
 
         if (null != plotDetailsFewDo.getMetroWithPlotsDistance() && key.size() > 0) {
