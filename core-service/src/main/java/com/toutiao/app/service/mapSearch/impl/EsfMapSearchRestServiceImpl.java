@@ -21,6 +21,7 @@ import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.mapSearch.MapGroupUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.apache.lucene.index.Term;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -111,15 +112,10 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             return esfMapSearchDomain;
         }
 
-        //地铁找房
-        if (null != esfMapSearchDoQuery.getSubwayLineId()) {
 
-            esfMapSearchDomain = esfMapSearchBySubway(esfMapSearchDoQuery, city);
-        }
 
         return esfMapSearchDomain;
     }
-
 
     /**
      * 按照区县搜索二手房
@@ -175,7 +171,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
         }
         esfMapSearchDistrictDomain.setData(data);
-        esfMapSearchDistrictDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"房源");
+        esfMapSearchDistrictDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"套房源");
         return esfMapSearchDistrictDomain;
     }
 
@@ -234,7 +230,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             data.add(esfMapSearchBizcircleDo);
         }
         esfMapSearchBizcircleDomain.setData(data);
-        esfMapSearchBizcircleDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"房源");
+        esfMapSearchBizcircleDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"套房源");
         return esfMapSearchBizcircleDomain;
     }
 
@@ -266,7 +262,6 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("housePlotLocation").setCornersOGC(bottomLeft, topRight);
         boolQueryBuilder.must(geoBoundingBoxQueryBuilder);
 
-
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByCommunity(boolQueryBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
         Terms houseCount = searchResponse.getAggregations().get("houseCount");
@@ -294,7 +289,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             data.add(esfMapSearchCommunityDo);
         }
         esfMapSearchCommunityDomain.setData(data);
-        esfMapSearchCommunityDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"房源");
+        esfMapSearchCommunityDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"套房源");
         return esfMapSearchCommunityDomain;
     }
 
@@ -537,16 +532,12 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder = getBoolQueryBuilder(sellHouseDoQuery);
+        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
-        SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
-        long esfCount = searchSellHouse.getHits().totalHits;
+//        SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
+//        long esfCount = searchSellHouse.getHits().totalHits;
 
-        GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
-                .point(sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon())
-                .distance(sellHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
-        boolQueryBuilder.must(location);
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByNear(boolQueryBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
         Terms terms = searchResponse.getAggregations().get("houseCount");
@@ -573,7 +564,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             data.add(esfMapSearchNearDo);
         }
         esfMapSearchNearDomain.setData(data);
-        esfMapSearchNearDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"房源");
+        esfMapSearchNearDomain.setHit("共"+searchCount+"套房源");
         return esfMapSearchNearDomain;
     }
 
@@ -583,8 +574,32 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
      * @param city
      * @return
      */
-    public EsfMapSearchDomain esfMapSearchBySubway(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
-        EsfMapSearchDomain esfMapSearchSubwayDomain = new EsfMapSearchDomain();
+    public EsfMapStationDomain esfMapSubwaySearch(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
+
+        EsfMapStationDomain esfMapStationDomain = new EsfMapStationDomain();
+        //地铁线
+        if (null!=esfMapSearchDoQuery.getSubwayLineId() && null==esfMapSearchDoQuery.getSubwayStationId()) {
+
+            esfMapStationDomain = esfMapSearchByLine(esfMapSearchDoQuery, city);
+            return esfMapStationDomain;
+        }
+
+        //地铁站
+        if (null!=esfMapSearchDoQuery.getSubwayStationId()) {
+
+            esfMapStationDomain = esfMapSearchByStation(esfMapSearchDoQuery, city);
+        }
+        return esfMapStationDomain;
+    }
+
+    /**
+     * 地铁找房（地铁线）
+     * @param esfMapSearchDoQuery
+     * @param city
+     * @return
+     */
+    public EsfMapStationDomain esfMapSearchByLine(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
+        EsfMapStationDomain esfMapSearchSubwayDomain = new EsfMapStationDomain();
         List<EsfMapSearchDo> data = new ArrayList<>();
         NumberFormat nf = NumberFormat.getNumberInstance();
         nf.setMaximumFractionDigits(1);
@@ -593,16 +608,12 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder = getBoolQueryBuilder(sellHouseDoQuery);
+        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
-        SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
-        long esfCount = searchSellHouse.getHits().totalHits;
+//        SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
+//        long esfCount = searchSellHouse.getHits().totalHits;
 
-        boolQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", esfMapSearchDoQuery.getSubwayLineId()));
-        if (null != esfMapSearchDoQuery.getSubwayStationId()) {
-
-        }
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchBySubway(boolQueryBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
         Terms terms = searchResponse.getAggregations().get("houseCount");
@@ -612,155 +623,99 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             esfMapSearchSubwayDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//地铁站id
             esfMapSearchSubwayDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
-            esfMapSearchSubwayDo.setName(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsString());//地铁站名称
+            Terms stationName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("stationName");
+            esfMapSearchSubwayDo.setName(stationName.getBuckets().get(0).getKeyAsString());//地铁站名称
 
+            Terms price = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("price");
+            esfMapSearchSubwayDo.setPrice(price.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
 
+            Terms latitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("latitude");
+            esfMapSearchSubwayDo.setLatitude(latitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
+
+            Terms longitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("longitude");
+            esfMapSearchSubwayDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
+
+            String desc = "(" + esfMapSearchSubwayDo.getCount()+ ")套";//描述
+            esfMapSearchSubwayDo.setDesc(desc);
+            data.add(esfMapSearchSubwayDo);
         }
+        esfMapSearchSubwayDomain.setStationData(data);
+        esfMapSearchSubwayDomain.setHit("共" + searchCount + "套房源");
 
         return esfMapSearchSubwayDomain;
     }
+
     /**
-     * 构建BoolQueryBuilder(地图附近找房使用)
-     * @param sellHouseDoQuery
+     * 地铁找房（地铁站）
+     * @param esfMapSearchDoQuery
+     * @param city
      * @return
      */
-    public BoolQueryBuilder getBoolQueryBuilder(SellHouseDoQuery sellHouseDoQuery) {
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        if (StringTool.isNotBlank(sellHouseDoQuery.getKeyword())) {
-            if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
-                booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2)));
-            } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
-                booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart").boost(2)));
-            } else {
-                booleanQueryBuilder.must(QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("plotName_accurate", sellHouseDoQuery.getKeyword()).operator(Operator.AND).boost(2))
-                        .should(QueryBuilders.matchQuery("area", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
-                        .should(QueryBuilders.matchQuery("plotNickname",sellHouseDoQuery.getKeyword()).fuzziness("AUTO").operator(Operator.AND))
-                        .should(QueryBuilders.matchQuery("houseBusinessName", sellHouseDoQuery.getKeyword()).operator(Operator.AND))
-                        .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
+    public EsfMapStationDomain esfMapSearchByStation(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
+        EsfMapStationDomain esfMapSearchStationDomain = new EsfMapStationDomain();
+        List<EsfMapStationDo> esfMapStationDos = new ArrayList<>();
+        NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMaximumFractionDigits(1);
+        nf.setRoundingMode(RoundingMode.UP);
+
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+//        SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
+//        long esfCount = searchSellHouse.getHits().totalHits;
+        EsfMapStationDomain subwayLine = esfMapSearchByLine(esfMapSearchDoQuery, city);
+        esfMapSearchStationDomain.setStationData(subwayLine.getStationData());
+        long searchCount = 0;
+        for (int i=0; i<esfMapSearchDoQuery.getSubwayStationId().length; i++) {
+            SearchResponse stationRes = esfMapSearchEsDao.queryStationPoint(esfMapSearchDoQuery.getSubwayStationId()[i], city);
+            SearchHits searchHits = stationRes.getHits();
+            SearchHit[] hits = searchHits.getHits();
+            Map<String, Object> stationMap = new HashMap<>();
+            if (hits.length > 0) {
+                SearchHit stationHit = hits[0];
+                stationMap = stationHit.getSourceAsMap();
             }
-        }
-        //楼盘id
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getBuildingId())){
-            booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", sellHouseDoQuery.getBuildingId()));
-        }
+            EsfMapStationDo esfMapStationDo = new EsfMapStationDo();
+            esfMapStationDo.setStationId(esfMapSearchDoQuery.getSubwayStationId()[i]);
+            esfMapStationDo.setStationName(stationMap.get("station_name").toString());
+            List<EsfMapSearchDo> esfMapSearchDos = new ArrayList<>();
+            GeoDistanceQueryBuilder geoDistanceQueryBuilder = QueryBuilders.geoDistanceQuery("subway_location")
+                    .point(Double.valueOf(stationMap.get("latitude").toString()), Double.valueOf(stationMap.get("longitude").toString()))
+                    .distance(3, DistanceUnit.KILOMETERS);
+            boolQueryBuilder.must(geoDistanceQueryBuilder);
+            SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByNear(boolQueryBuilder, city);
+            Terms terms = searchResponse.getAggregations().get("houseCount");
+            List buckets = terms.getBuckets();
+            for (Object bucket : buckets) {
+                EsfMapSearchDo esfMapSearchStationDo = new EsfMapSearchDo();
+                esfMapSearchStationDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//小区id
+                esfMapSearchStationDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
-        //商圈id
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId", sellHouseDoQuery.getAreaId()));
+                Terms communityName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityName");
+                esfMapSearchStationDo.setName(communityName.getBuckets().get(0).getKeyAsString());//小区名称
 
-        }
-        //区域id
-        if (StringTool.isNotEmpty((sellHouseDoQuery.getDistrictId()))) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", sellHouseDoQuery.getDistrictId()));
+                Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
+                esfMapSearchStationDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
 
-        }
+                Terms plotLatitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLatitude");
+                esfMapSearchStationDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
 
-        //地铁线id
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayLineId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", sellHouseDoQuery.getSubwayLineId()));
+                Terms plotLongitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLongitude");
+                esfMapSearchStationDo.setLongitude(plotLongitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
 
-        }
-        //地铁站id
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId())) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", sellHouseDoQuery.getSubwayStationId()));
-        }
-
-        if (sellHouseDoQuery.getBeginPrice()!=0 && sellHouseDoQuery.getEndPrice()!=0) {
-            booleanQueryBuilder
-                    .must(QueryBuilders.rangeQuery("houseTotalPrices")
-                            .gte(sellHouseDoQuery.getBeginPrice()).lte(sellHouseDoQuery.getEndPrice()));
-        }else if(sellHouseDoQuery.getBeginPrice()!=0 && sellHouseDoQuery.getEndPrice()==0){
-            booleanQueryBuilder
-                    .must(QueryBuilders.rangeQuery("houseTotalPrices")
-                            .gte(sellHouseDoQuery.getBeginPrice()));
-        }else if(sellHouseDoQuery.getBeginPrice()==0 && sellHouseDoQuery.getEndPrice()!=0){
-            booleanQueryBuilder
-                    .must(QueryBuilders.rangeQuery("houseTotalPrices")
-                            .lte(sellHouseDoQuery.getEndPrice()));
-
-        }
-        //面积
-
-        if (sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()!=0) {
-
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()).lte(sellHouseDoQuery.getEndArea()));
-        }else if(sellHouseDoQuery.getBeginArea()!=0 && sellHouseDoQuery.getEndArea()==0){
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").gte(sellHouseDoQuery.getBeginArea()));
-        }else if(sellHouseDoQuery.getBeginArea()==0 && sellHouseDoQuery.getEndArea()!=0){
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("buildArea").lte(sellHouseDoQuery.getEndArea()));
-        }
-
-        //楼龄
-        if (StringUtil.isNotNullString(sellHouseDoQuery.getHouseYearId())) {
-            String houseYear = sellHouseDoQuery.getHouseYearId().replaceAll("\\[","").replaceAll("]","").replaceAll("-",",");
-            String[] layoutId = houseYear.split(",");
-            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            for (int i = 0; i < layoutId.length; i = i + 2) {
-                if (i + 1 > layoutId.length) {
-                    break;
-                }
-                boolQueryBuilder.should(QueryBuilders.rangeQuery("year")
-                        //计算房源建成年代
-                        .gt(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(layoutId[i+1]))))
-                        .lte(String.valueOf(Math.subtractExact(Integer.valueOf(new SimpleDateFormat("yyyy").format(new Date())),Integer.valueOf(layoutId[i])))));
-                booleanQueryBuilder.must(boolQueryBuilder);
-
+                String desc = nf.format(esfMapSearchStationDo.getPrice()/10000) + "万(" + esfMapSearchStationDo.getCount() + "套)";//描述
+                esfMapSearchStationDo.setDesc(desc);
+                esfMapSearchDos.add(esfMapSearchStationDo);
             }
+            esfMapStationDo.setData(esfMapSearchDos);
+            esfMapStationDos.add(esfMapStationDo);
+            searchCount += esfMapSearchDos.size();
         }
-        //户型(室)
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getLayoutId())) {
-            Integer[] layoutId = sellHouseDoQuery.getLayoutId();
-//            booleanQueryBuilder.must();
-            booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room",layoutId)));
-        }
-
-
-        //朝向
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getForwardId())) {
-            Integer[] forwardId =sellHouseDoQuery.getForwardId();
-            booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("forward",forwardId)));
-        }
-
-
-        //标签(满二，满三，满五)
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getLabelId())) {
-            Integer[] longs = sellHouseDoQuery.getLabelId();
-            BoolQueryBuilder bool= QueryBuilders.boolQuery();
-            boolean has_subway = Arrays.asList(longs).contains(1);
-            if(has_subway){
-                Integer[] tagOther = new Integer[longs.length-1];
-                int idx = 0;
-                for(int i=0;i<longs.length;i++){
-                    if(longs[i].equals(1)){
-                        bool.should(QueryBuilders.termQuery("has_subway", longs[i]));
-                    } else {
-                        tagOther[idx++] = longs[i];
-                    }
-                }
-                if(tagOther.length!=0){
-                    bool.should(QueryBuilders.termsQuery("tags", tagOther));
-                }
-                booleanQueryBuilder.must(bool);
-            }else{
-                booleanQueryBuilder.must(QueryBuilders.termsQuery("tags", longs));
-            }
-        }
-        //降价房
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsCutPrice())){
-            booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", sellHouseDoQuery.getIsCutPrice()));
-        }
-        //洼地房
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsLowPrice())){
-            booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", sellHouseDoQuery.getIsLowPrice()));
-        }
-        //逢出毕抢
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsMustRob())){
-            booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", sellHouseDoQuery.getIsMustRob()));
-        }
-
-        return booleanQueryBuilder;
+        esfMapSearchStationDomain.setCommunityData(esfMapStationDos);
+        esfMapSearchStationDomain.setHit("共" + searchCount + "套房源");
+        return esfMapSearchStationDomain;
     }
 }

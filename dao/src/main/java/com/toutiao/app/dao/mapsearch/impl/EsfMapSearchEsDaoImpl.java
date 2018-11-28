@@ -158,15 +158,34 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
 
     @Override
     public SearchResponse esfMapSearchBySubway(BoolQueryBuilder boolQueryBuilder, String city) {
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getSubwayHousePriceIndex(city))
+                .types(ElasticCityUtils.getSubwayHousePriceType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(0)
-                .aggregation(AggregationBuilders.terms("houseCount").field("subwayStationId").size(200)
-                    .subAggregation(AggregationBuilders.terms("communityName").field("plotName_accurate"))
-                    .subAggregation(AggregationBuilders.terms("communityAvgPrice").field("communityAvgPrice"))
-                    .subAggregation(AggregationBuilders.terms("plotLatitude").field("plotLatitude"))
-                    .subAggregation(AggregationBuilders.terms("plotLongitude").field("plotLongitude")));
+                .aggregation(AggregationBuilders.terms("houseCount").field("station_id").size(200)
+                    .subAggregation(AggregationBuilders.terms("stationName").field("station_name"))
+                    .subAggregation(AggregationBuilders.terms("price").field("price"))
+                    .subAggregation(AggregationBuilders.terms("latitude").field("latitude"))
+                    .subAggregation(AggregationBuilders.terms("longitude").field("longitude")));
 
+        SearchResponse searchResponse = null;
+
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryStationPoint(Integer stationId, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getSubwayHousePriceIndex(city))
+                .types(ElasticCityUtils.getSubwayHousePriceType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("station_id", stationId));
+        searchSourceBuilder.query(boolQueryBuilder).size(1);
         SearchResponse searchResponse = null;
 
         try {

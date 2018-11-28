@@ -67,4 +67,12 @@ public interface EsfMapSearchEsDao {
      */
     SearchResponse esfMapSearchBySubway(BoolQueryBuilder boolQueryBuilder, String city);
 
+    /**
+     * 根据地铁站id获取地铁站坐标
+     * @param stationId
+     * @param city
+     * @return
+     */
+    SearchResponse queryStationPoint(Integer stationId, String city);
+
 }
