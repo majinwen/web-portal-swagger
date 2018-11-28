@@ -16,7 +16,7 @@ public class EsfMapSubwayResponse {
     @ApiModelProperty("当前可视界面描述")
     private String hit;
 
-    @ApiModelProperty("所传地铁站周边小区聚合结果")
+    @ApiModelProperty("所传地铁站周边小区聚合结果(当只查询地铁线时该值为空值)")
     private List<EsfMapStationDo> communityData;
 
     @ApiModelProperty("地铁线上的所有地铁站聚合结果")
