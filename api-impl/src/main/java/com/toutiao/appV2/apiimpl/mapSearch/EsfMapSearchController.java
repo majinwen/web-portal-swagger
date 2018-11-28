@@ -3,11 +3,13 @@ package com.toutiao.appV2.apiimpl.mapSearch;
 import com.toutiao.app.domain.mapSearch.EsfHouseListDomain;
 import com.toutiao.app.domain.mapSearch.EsfMapSearchDoQuery;
 import com.toutiao.app.domain.mapSearch.EsfMapSearchDomain;
+import com.toutiao.app.domain.mapSearch.EsfMapStationDomain;
 import com.toutiao.app.service.mapSearch.EsfMapSearchRestService;
 import com.toutiao.appV2.api.mapSearch.EsfMapSearchApi;
 import com.toutiao.appV2.model.mapSearch.EsfHouseListResponse;
 import com.toutiao.appV2.model.mapSearch.EsfMapSearchRequest;
 import com.toutiao.appV2.model.mapSearch.EsfMapSearchResponse;
+import com.toutiao.appV2.model.mapSearch.EsfMapSubwayResponse;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -53,6 +55,18 @@ public class EsfMapSearchController implements EsfMapSearchApi {
         EsfHouseListResponse esfHouseListResponse = new EsfHouseListResponse();
         BeanUtils.copyProperties(esfHouseListDomain, esfHouseListResponse);
         return new ResponseEntity<>(esfHouseListResponse,HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<EsfMapSubwayResponse> mapEsfSubwaySearch(EsfMapSearchRequest esfMapSearchRequest) {
+
+        EsfMapSearchDoQuery esfMapSearchDoQuery = new EsfMapSearchDoQuery();
+        BeanUtils.copyProperties(esfMapSearchRequest, esfMapSearchDoQuery);
+
+        EsfMapStationDomain esfMapStationDomain = esfMapSearchRestService.esfMapSubwaySearch(esfMapSearchDoQuery, CityUtils.getCity());
+        EsfMapSubwayResponse subwayResponse = new EsfMapSubwayResponse();
+        BeanUtils.copyProperties(esfMapStationDomain, subwayResponse);
+        return new ResponseEntity<>(subwayResponse, HttpStatus.OK);
     }
 
 
