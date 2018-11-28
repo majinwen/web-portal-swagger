@@ -166,7 +166,7 @@ public class NewHouseApiController implements NewHouseApi {
     }
 
     @Override
-    public ResponseEntity<IsAttendeActivityResponse> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest
+    public ResponseEntity<IsAttendeActivityResponse> isAttendedActivity(@RequestBody @Validated(Second.class) NewHouseActivityRequest
                                                                                 newHouseActivityRequest) {
 
         if (StringTool.isBlank(newHouseActivityRequest.getCityId())) {
@@ -230,7 +230,7 @@ public class NewHouseApiController implements NewHouseApi {
     }
 
     @Override
-    public ResponseEntity<StringDataResponse> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest
+    public ResponseEntity<StringDataResponse> saveUserActivityMsg(@RequestBody @Validated(First.class) NewHouseActivityRequest
                                                                           newHouseActivityRequest) {
         if (StringTool.isBlank(newHouseActivityRequest.getCityId())) {
             newHouseActivityRequest.setCityId(CityUtils.returnCityId(CityUtils.getCity()));

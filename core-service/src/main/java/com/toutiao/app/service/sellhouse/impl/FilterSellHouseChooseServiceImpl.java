@@ -209,7 +209,7 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 //                    .should(QueryBuilders.matchQuery("plotName", sellHouseDoQuery.getKeyword()).operator(Operator.AND).analyzer("ik_smart")));
 //            searchResponse = sellHouseEsDao.getPlotByKeyWord(bqbPlotName);
 //            long total = searchResponse.getHits().getTotalHits();
-//            out: if(total > 0l){
+//            out: if(total != 0l){
 //                break out;
 //            }else{
 //                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
@@ -251,12 +251,12 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             }
         }
         //楼盘id
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getBuildingId())){
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getBuildingId()) && sellHouseDoQuery.getBuildingId() != 0){
             booleanQueryBuilder.must(QueryBuilders.termQuery("newcode", sellHouseDoQuery.getBuildingId()));
         }
 
         //附近
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() != 0){
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("housePlotLocation")
                     .point(sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon())
                     .distance(sellHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
@@ -265,23 +265,23 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
 
         //商圈id
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId())) {
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId()) && sellHouseDoQuery.getAreaId().length != 0) {
             booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId", sellHouseDoQuery.getAreaId()));
 
         }
         //区域id
-        if (StringTool.isNotEmpty((sellHouseDoQuery.getDistrictId()))) {
+        if (StringTool.isNotEmpty((sellHouseDoQuery.getDistrictId())) && sellHouseDoQuery.getDistrictId() != 0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("areaId", sellHouseDoQuery.getDistrictId()));
 
         }
 
         //地铁线id
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayLineId()) && sellHouseDoQuery.getSubwayLineId() != 0) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", sellHouseDoQuery.getSubwayLineId()));
 
         }
         //地铁站id
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId())) {
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId()) && sellHouseDoQuery.getSubwayStationId().length != 0) {
             booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", sellHouseDoQuery.getSubwayStationId()));
         }
 
@@ -369,15 +369,15 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             }
         }
         //降价房
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsCutPrice())){
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsCutPrice()) && sellHouseDoQuery.getIsCutPrice() != 0){
             booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", sellHouseDoQuery.getIsCutPrice()));
         }
         //洼地房
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsLowPrice())){
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsLowPrice()) && sellHouseDoQuery.getIsLowPrice() != 0){
             booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", sellHouseDoQuery.getIsLowPrice()));
         }
         //逢出毕抢
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsMustRob())){
+        if(StringTool.isNotEmpty(sellHouseDoQuery.getIsMustRob()) && sellHouseDoQuery.getIsMustRob() != 0){
             booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", sellHouseDoQuery.getIsMustRob()));
         }
 

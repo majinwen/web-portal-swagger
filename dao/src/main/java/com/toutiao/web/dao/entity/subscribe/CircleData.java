@@ -11,4 +11,8 @@ public class CircleData {
     private Integer circle;
 
     private String name;
+
+    private String coordX;
+
+    private String coordY;
 }

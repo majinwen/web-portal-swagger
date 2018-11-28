@@ -27,6 +27,8 @@
         <collection property="children" ofType="com.toutiao.web.dao.entity.subscribe.CircleData">
             <result column="area_id" property="circle" jdbcType="INTEGER"/>
             <result column="area_name" property="name" jdbcType="VARCHAR"/>
+            <result column="coord_x" property="coordX" jdbcType="VARCHAR"/>
+            <result column="coord_y" property="coordY" jdbcType="VARCHAR"/>
         </collection>
     </resultMap>
 
@@ -349,7 +351,9 @@
         district.district_id,
         district.district_name,
         district_area_config.area_id,
-        area.area_name
+        area.area_name,
+        area.coord_x,
+        area.coord_y
         FROM
         district
         LEFT JOIN district_area_config ON district.district_id = district_area_config.district_id

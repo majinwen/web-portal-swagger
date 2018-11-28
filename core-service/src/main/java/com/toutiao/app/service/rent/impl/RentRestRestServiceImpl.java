@@ -11,6 +11,7 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.city.CityConstant;
+import com.toutiao.web.common.constant.company.CompanyIconEnum;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -185,8 +186,8 @@ public class RentRestRestServiceImpl implements RentRestService {
             }
             rentDetailsListDo.setRentDetailsList(list);
             rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
-        } else {
-            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
+//        } else {
+//            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
         }
         return rentDetailsListDo;
     }
@@ -221,9 +222,9 @@ public class RentRestRestServiceImpl implements RentRestService {
         list.add(rentNumDo2);
         rentNumListDo.setData(list);
         rentNumListDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
-        if (searchResponse.getHits().getTotalHits() == 0) {
-            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
-        }
+//        if (searchResponse.getHits().getTotalHits() == 0) {
+//            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
+//        }
         return rentNumListDo;
     }
 
@@ -388,8 +389,8 @@ public class RentRestRestServiceImpl implements RentRestService {
             }
             rentDetailsListDo.setRentDetailsList(list);
             rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
-        } else {
-            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND, "租房推荐列表为空");
+//        } else {
+//            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_NOT_FOUND, "租房推荐列表为空");
         }
 
         return rentDetailsListDo;
@@ -439,8 +440,8 @@ public class RentRestRestServiceImpl implements RentRestService {
                 rentDetailsFewDo.setUid(searchHit.getSortValues()[0].toString());
             }
 
-        } else {
-            throw new BaseException(RentInterfaceErrorCodeEnum.RECOMMEND_RENT_NOT_FOUND, "未查询到租房推优房源");
+//        } else {
+//            throw new BaseException(RentInterfaceErrorCodeEnum.RECOMMEND_RENT_NOT_FOUND, "未查询到租房推优房源");
         }
 
         return rentDetailsFewDo;
@@ -468,7 +469,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         GaussDecayFunctionBuilder functionBuilder = null;
         GeoDistanceSortBuilder geoDistanceSort = null;
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
             double[] location = new double[]{rentHouseDoQuery.getLon(), rentHouseDoQuery.getLat()};
 
             //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
@@ -487,7 +488,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         if (StringUtil.isNotNullString(rentHouseDoQuery.getKeyword())) {
             List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(rentHouseDoQuery.getKeyword(), city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size() + 1];
             } else {
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()];
@@ -515,7 +516,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
             }
 
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
                 filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
             } else {
@@ -524,7 +525,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
 
         } else {
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, functionBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
             } else {
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
@@ -542,7 +543,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String sourceAsString = hit.getSourceAsString();
 
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-                if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+                if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
                     BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
                     String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                     rentDetailsFewDo.setNearbyDistance(distance);
@@ -574,7 +575,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
                 //增加房子与地铁的距离
                 String keys = "";
-                if (null != rentHouseDoQuery.getSubwayLineId()) {
+                if (null != rentHouseDoQuery.getSubwayLineId() && rentHouseDoQuery.getSubwayLineId() > 0) {
                     keys += rentHouseDoQuery.getSubwayLineId().toString();
                 }
 //                if (null != rentHouseDoQuery.getSubwayStationId()) {
@@ -584,7 +585,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 //                    rentDetails
 // ewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
 //                }
-                if (null != rentHouseDoQuery.getSubwayStationId()) {
+                if (null != rentHouseDoQuery.getSubwayStationId() && rentHouseDoQuery.getSubwayStationId().length > 0) {
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
                     for (int i=0; i<rentHouseDoQuery.getSubwayStationId().length; i++) {
@@ -606,8 +607,13 @@ public class RentRestRestServiceImpl implements RentRestService {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 rentDetailsFewDo.setHouseTitleImg(titlePhoto);
+
                 //设置公司图标
-                rentDetailsFewDo.setCompanyIcon("http://wap-qn.bidewu.com/wap/5i5j.png");
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
+
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 rentDetailsFewDos.add(rentDetailsFewDo);
 
@@ -856,7 +862,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
 
         //附近
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())&&rentHouseDoQuery.getDistance()>0) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())&&rentHouseDoQuery.getDistance()!=0) {
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
                     .point(rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon())
                     .distance(rentHouseDoQuery.getDistance(), DistanceUnit.KILOMETERS);
@@ -864,23 +870,23 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
 
         //城市
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getCityId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getCityId()) && rentHouseDoQuery.getCityId()!=0) {
             boolQueryBuilder.must(termQuery("city_id", rentHouseDoQuery.getCityId()));
         }
         //区域
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId()) && rentHouseDoQuery.getDistrictId()!=0) {
             boolQueryBuilder.must(termQuery("district_id", rentHouseDoQuery.getDistrictId()));
         }
         //商圈
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId()) && rentHouseDoQuery.getAreaId().length !=0) {
             boolQueryBuilder.must(termsQuery("area_id", rentHouseDoQuery.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId()) && rentHouseDoQuery.getSubwayLineId() != 0) {
             boolQueryBuilder.must(termsQuery("subway_line_id", new int[]{rentHouseDoQuery.getSubwayLineId()}));
         }
         //地铁站id
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId()) && rentHouseDoQuery.getSubwayStationId().length!=0) {
             boolQueryBuilder.must(termsQuery("subway_station_id", rentHouseDoQuery.getSubwayStationId()));
         }
         //租金
@@ -1134,19 +1140,19 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(termQuery("city_id", rentHouseDoQuery.getCityId()));
         }
         //区域
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId()) && rentHouseDoQuery.getDistrictId()!=0) {
             boolQueryBuilder.must(termQuery("district_id", rentHouseDoQuery.getDistrictId()));
         }
         //商圈
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId()) && rentHouseDoQuery.getAreaId().length!=0) {
             boolQueryBuilder.must(termsQuery("area_id", rentHouseDoQuery.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayLineId()) && rentHouseDoQuery.getSubwayLineId()!=0) {
             boolQueryBuilder.must(termsQuery("subway_line_id", new int[]{rentHouseDoQuery.getSubwayLineId()}));
         }
         //地铁站id
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId()) && rentHouseDoQuery.getSubwayStationId().length!=0) {
             boolQueryBuilder.must(termsQuery("subway_station_id", rentHouseDoQuery.getSubwayStationId()));
         }
         //租金

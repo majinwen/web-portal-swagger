@@ -45,4 +45,6 @@ public interface NewHouseMapSearchApi {
     @RequestMapping(value = "/rest/map/newhouse/district/search", produces = { "application/json" }, method = RequestMethod.GET)
     ResponseEntity<NewHouseMapSearchDistrictResponse> getNewHouseMapSearchByDistrict(@ApiParam(value = "newHouseMapSearchRequest", required = true) @Valid NewHouseMapSearchRequest newHouseMapSearchRequest);
 
+
+
 }

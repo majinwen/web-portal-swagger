@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.web.common.constant.house.HouseLableEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -14,4 +15,26 @@ public class HouseLable {
 
     @ApiModelProperty(value = "链接", name = "url")
     private String url;
+
+
+
+    public HouseLable(String text, String icon, String url) {
+        this.text = text;
+        this.icon = icon;
+        this.url = url;
+    }
+
+    public HouseLable(String text, String icon) {
+        this.text = text;
+        this.icon = icon;
+    }
+
+    public HouseLable(){
+    }
+
+    public HouseLable(HouseLableEnum houseLableEnum){
+        this.setText(houseLableEnum.getKey());
+        this.setIcon(houseLableEnum.getValue());
+    }
+
 }

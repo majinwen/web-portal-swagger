@@ -9,6 +9,7 @@ import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.web.common.constant.house.HouseLableEnum;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
@@ -195,7 +196,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = newHouseDoQuery.getSubwayLineId().toString();
         }
         //地铁站id
-        if (newHouseDoQuery.getSubwayStationId() != null) {
+        if (newHouseDoQuery.getSubwayStationId() != null && newHouseDoQuery.getSubwayStationId().length>0) {
             booleanQueryBuilder.must(termsQuery("subway_station_id", newHouseDoQuery.getSubwayStationId()));
         }
         //均价
@@ -299,7 +300,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 String details = "";
                 details = searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
-                if (null != newHouseDoQuery.getSubwayStationId()) {
+                if (null != newHouseDoQuery.getSubwayStationId() && newHouseDoQuery.getSubwayStationId().length>0) {
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
                     for (int i=0; i<newHouseDoQuery.getSubwayStationId().length; i++) {
@@ -343,18 +344,23 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
                 //新房标签
                 List<HouseLable> houseLableList= new ArrayList<>();
-                HouseLable houseLable = new HouseLable();
-                houseLable.setText("在售");
-                houseLable.setIcon("http://wap-qn.bidewu.com/wap/zs.png");
-                houseLableList.add(houseLable);
-                HouseLable houseLable1 = new HouseLable();
-                houseLable1.setText("折扣");
-                houseLable1.setIcon("http://wap-qn.bidewu.com/wap/zk.png");
-                houseLableList.add(houseLable1);
-                HouseLable houseLable2 = new HouseLable();
-                houseLable2.setText("别墅");
-                houseLable2.setIcon("http://wap-qn.bidewu.com/wap/bs.png");
-                houseLableList.add(houseLable2);
+                String saleStatusName= newHouseListDos.getSaleStatusName();
+
+                if(!StringUtil.isNullString(saleStatusName) && HouseLableEnum.containKey(saleStatusName)){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.getEnumByKey(saleStatusName));
+                    houseLableList.add(houseLable);
+                }
+                int isActive= newHouseListDos.getIsActive();
+                if(isActive ==1){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.ISACTIVE);
+                    houseLableList.add(houseLable);
+                }
+                String propertyType= newHouseListDos.getPropertyType();
+                if(!StringUtil.isNullString(propertyType) && HouseLableEnum.containKey(propertyType)){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.getEnumByKey(propertyType));
+                    houseLableList.add(houseLable);
+                }
+
                 newHouseListDos.setHouseLabelList(houseLableList);
 
                 //新房动态
@@ -402,7 +408,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             newHouseListVo.setData(newHouseListDoList);
             newHouseListVo.setTotalCount(hits.getTotalHits());
         } else {
-            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND, "新房楼盘列表为空");
+            newHouseListVo.setData(newHouseListDoList);
+            newHouseListVo.setTotalCount(hits.getTotalHits());
+//            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_NOT_FOUND, "新房楼盘列表为空");
         }
 
 
