@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T06:33:40.959Z")
@@ -41,6 +42,7 @@ public interface HomePageApi {
             produces = { "application/json" },
             consumes = "application/json",
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<HomePageNearEsfListResponse> esfSpecialPage(@ApiParam(value = "NearHouseSpecialPageRequest" ,required=true )  @Valid @RequestBody NearHouseSpecialPageRequest nearHouseSpecialPageRequest);
 
 
@@ -53,6 +55,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homepage/count/getEsf",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<HomePageEsfCountResponse> getEsf();
 
 
@@ -106,6 +109,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homePage/getHomePageNewHouse",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<HomePageNewHouseResponseList> getHomePageNewHouse();
 
 
@@ -118,6 +122,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homepage/count/getNew",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<HomePageNewCountResponse> getNew();
 
 
@@ -130,6 +135,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homePage/getTradeQuotations",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<StringDataResponse> getTradeQuotations();
 
 
@@ -155,6 +161,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homePage/homePageNearEsf",
             produces = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<HomePageNearEsfListResponse> homePageNearEsf(@ApiParam(value = "NearHouseRequest" ,required=true )  @Valid NearHouseRequest nearHouseRequest);
 
 
@@ -167,6 +174,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homePage/homePageNearPlot",
             produces = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<HomePageNearPlotListResponse> homePageNearPlot(@ApiParam(value = "NearHouseRequest" ,required=true )  @Valid @RequestBody NearHouseRequest nearHouseRequest);
 
 
@@ -179,6 +187,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homePage/plotSpecialPage",
             produces = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<HomePageNearPlotResponse> plotSpecialPage(@ApiParam(value = "NearHouseSpecialPageRequest" ,required=true )  @Valid @RequestBody NearHouseSpecialPageRequest nearHouseSpecialPageRequest);
 
 
@@ -191,6 +200,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homePage/recommendTopic/queryRecommendTopic",
             produces = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest" ,required=true )  @Valid @RequestBody RecommendRequest recommendRequest);
 
 
@@ -203,6 +213,7 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homePage/top50",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<HomePageTop50DoMap> top50();
 
 
@@ -217,6 +228,7 @@ public interface HomePageApi {
             produces = { "application/json" },
             //consumes = "application/json",
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request" ,required=true )  @Valid @RequestBody RecommendEsf5Request recommendEsf5Request);
 
 
@@ -230,6 +242,7 @@ public interface HomePageApi {
             produces = { "application/json" },
             //consumes = "application/json",
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
     @ApiOperation(value = "根据推荐条件获取一条新房数据", nickname = "getOneNewHouseByRecommendCondition", notes = "", response = NewHouseDetailResponse.class, tags={ "首页", })
@@ -242,6 +255,7 @@ public interface HomePageApi {
             produces = { "application/json" },
             //consumes = "application/json",
             method = RequestMethod.POST )
+    @ApiIgnore
     ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 

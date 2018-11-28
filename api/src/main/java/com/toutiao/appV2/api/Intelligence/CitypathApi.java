@@ -11,6 +11,7 @@ import com.toutiao.appV2.model.StringDataResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -31,6 +32,7 @@ public interface CitypathApi {
         produces = "application/json",
 //        consumes = "application/json",
         method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<StringDataResponse> cancleMyReport(@ApiParam(value = "reportId", required = true) @PathVariable("reportId") String reportId);
 
 
@@ -46,6 +48,7 @@ public interface CitypathApi {
         produces = "application/json",
         consumes = "*/*",
         method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<StringDataResponse> collectMyReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
 
 
@@ -61,6 +64,7 @@ public interface CitypathApi {
         produces = "application/json",
         consumes = "*/*",
         method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<ReportResponse> getMyReport();
 
 
@@ -92,6 +96,7 @@ public interface CitypathApi {
         produces = "application/json",
         consumes = "application/json",
         method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<IntelligenceFh> queryPlotCountByDistrict(@ApiParam(value = "intelligenceRequest", required = true) @Valid @RequestBody IntelligenceRequest intelligenceRequest);
 
 
@@ -140,6 +145,7 @@ public interface CitypathApi {
         produces = "application/json",
         consumes = "application/json",
         method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<IntelligenceFh> queryUserChoice(@ApiParam(value = "intelligenceRequest", required = true) @Valid @RequestBody IntelligenceRequest intelligenceRequest);
 
 
@@ -155,6 +161,7 @@ public interface CitypathApi {
         produces = "application/json",
         consumes = "*/*",
         method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<IntelligenceResponse> showUserPortrayal(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
 
 
@@ -171,6 +178,7 @@ public interface CitypathApi {
         produces = "application/json",
         consumes = "application/json",
         method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<IntelligenceFhRes> showUserPortrayal(@ApiParam(value = "intelligenceRequest", required = true) @Valid @RequestBody IntelligenceRequest intelligenceRequest);
 
 

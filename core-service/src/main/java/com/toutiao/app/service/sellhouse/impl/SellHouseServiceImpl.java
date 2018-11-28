@@ -948,7 +948,6 @@ public class SellHouseServiceImpl implements SellHouseService {
                         lowPriceStr = "总价低于小区同户型"+Math.abs(totalAbsoluteWithCommunity)+"万";
                     }
                 }
-                System.out.println(lowPriceStr);
 
                 if(!StringUtil.isNullString(lowPriceStr)){
                     HouseSubject sellHouseSubject = new HouseSubject();
@@ -997,15 +996,6 @@ public class SellHouseServiceImpl implements SellHouseService {
                     houseSubjectList.add(sellHouseSubject);
                 }
 
-               /* HouseSubject houseSubject1 = new HouseSubject();
-                houseSubject1.setText("总价低于商圈同户型29.53万");
-                houseSubject1.setText(lowPriceStr);
-                houseSubject1.setUrl("http://www.baidu.com");
-                houseSubjectList.add(houseSubject1);
-                HouseSubject sellHouseSubject2 = new HouseSubject();
-                sellHouseSubject2.setText("降5万");
-                sellHouseSubject2.setUrl("http://www.baidu.com");
-                houseSubjectList.add(sellHouseSubject2);*/
                 sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
                 sellHousesSearchDo.setNearbyDistance(sellHousesSearchDo.getArea() + " " + sellHousesSearchDo.getHouseBusinessName());
