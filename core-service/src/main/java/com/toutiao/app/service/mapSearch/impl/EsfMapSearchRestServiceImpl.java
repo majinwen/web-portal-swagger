@@ -616,28 +616,30 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchBySubway(boolQueryBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
-        Terms terms = searchResponse.getAggregations().get("houseCount");
-        List buckets = terms.getBuckets();
-        for (Object bucket : buckets) {
-            EsfMapSearchDo esfMapSearchSubwayDo = new EsfMapSearchDo();
-            esfMapSearchSubwayDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//地铁站id
-            esfMapSearchSubwayDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
+        if (null!= searchResponse.getAggregations()) {
+            Terms terms = searchResponse.getAggregations().get("houseCount");
+            List buckets = terms.getBuckets();
+            for (Object bucket : buckets) {
+                EsfMapSearchDo esfMapSearchSubwayDo = new EsfMapSearchDo();
+                esfMapSearchSubwayDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//地铁站id
+                esfMapSearchSubwayDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
-            Terms stationName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("stationName");
-            esfMapSearchSubwayDo.setName(stationName.getBuckets().get(0).getKeyAsString());//地铁站名称
+                Terms stationName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("stationName");
+                esfMapSearchSubwayDo.setName(stationName.getBuckets().get(0).getKeyAsString());//地铁站名称
 
-            Terms price = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("price");
-            esfMapSearchSubwayDo.setPrice(price.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
+                Terms price = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("price");
+                esfMapSearchSubwayDo.setPrice(price.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
 
-            Terms latitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("latitude");
-            esfMapSearchSubwayDo.setLatitude(latitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
+                Terms latitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("latitude");
+                esfMapSearchSubwayDo.setLatitude(latitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
 
-            Terms longitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("longitude");
-            esfMapSearchSubwayDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
+                Terms longitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("longitude");
+                esfMapSearchSubwayDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
 
-            String desc = "(" + esfMapSearchSubwayDo.getCount()+ ")套";//描述
-            esfMapSearchSubwayDo.setDesc(desc);
-            data.add(esfMapSearchSubwayDo);
+                String desc = "(" + esfMapSearchSubwayDo.getCount()+ ")套";//描述
+                esfMapSearchSubwayDo.setDesc(desc);
+                data.add(esfMapSearchSubwayDo);
+            }
         }
         esfMapSearchSubwayDomain.setStationData(data);
         esfMapSearchSubwayDomain.setHit("共" + searchCount + "套房源");
@@ -680,35 +682,37 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             }
             EsfMapStationDo esfMapStationDo = new EsfMapStationDo();
             esfMapStationDo.setStationId(esfMapSearchDoQuery.getSubwayStationId()[i]);
-            esfMapStationDo.setStationName(stationMap.get("station_name").toString());
             List<EsfMapSearchDo> esfMapSearchDos = new ArrayList<>();
-            GeoDistanceQueryBuilder geoDistanceQueryBuilder = QueryBuilders.geoDistanceQuery("subway_location")
-                    .point(Double.valueOf(stationMap.get("latitude").toString()), Double.valueOf(stationMap.get("longitude").toString()))
-                    .distance(3, DistanceUnit.KILOMETERS);
-            boolQueryBuilder.must(geoDistanceQueryBuilder);
-            SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByNear(boolQueryBuilder, city);
-            Terms terms = searchResponse.getAggregations().get("houseCount");
-            List buckets = terms.getBuckets();
-            for (Object bucket : buckets) {
-                EsfMapSearchDo esfMapSearchStationDo = new EsfMapSearchDo();
-                esfMapSearchStationDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//小区id
-                esfMapSearchStationDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
+            if (stationMap.size() != 0){
+                esfMapStationDo.setStationName(stationMap.get("station_name").toString());
+                GeoDistanceQueryBuilder geoDistanceQueryBuilder = QueryBuilders.geoDistanceQuery("subway_location")
+                        .point(Double.valueOf(stationMap.get("latitude").toString()), Double.valueOf(stationMap.get("longitude").toString()))
+                        .distance(3, DistanceUnit.KILOMETERS);
+                boolQueryBuilder.must(geoDistanceQueryBuilder);
+                SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByNear(boolQueryBuilder, city);
+                Terms terms = searchResponse.getAggregations().get("houseCount");
+                List buckets = terms.getBuckets();
+                for (Object bucket : buckets) {
+                    EsfMapSearchDo esfMapSearchStationDo = new EsfMapSearchDo();
+                    esfMapSearchStationDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//小区id
+                    esfMapSearchStationDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
-                Terms communityName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityName");
-                esfMapSearchStationDo.setName(communityName.getBuckets().get(0).getKeyAsString());//小区名称
+                    Terms communityName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityName");
+                    esfMapSearchStationDo.setName(communityName.getBuckets().get(0).getKeyAsString());//小区名称
 
-                Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
-                esfMapSearchStationDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
+                    Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
+                    esfMapSearchStationDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
 
-                Terms plotLatitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLatitude");
-                esfMapSearchStationDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
+                    Terms plotLatitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLatitude");
+                    esfMapSearchStationDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
 
-                Terms plotLongitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLongitude");
-                esfMapSearchStationDo.setLongitude(plotLongitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
+                    Terms plotLongitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLongitude");
+                    esfMapSearchStationDo.setLongitude(plotLongitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
 
-                String desc = nf.format(esfMapSearchStationDo.getPrice()/10000) + "万(" + esfMapSearchStationDo.getCount() + "套)";//描述
-                esfMapSearchStationDo.setDesc(desc);
-                esfMapSearchDos.add(esfMapSearchStationDo);
+                    String desc = nf.format(esfMapSearchStationDo.getPrice()/10000) + "万(" + esfMapSearchStationDo.getCount() + "套)";//描述
+                    esfMapSearchStationDo.setDesc(desc);
+                    esfMapSearchDos.add(esfMapSearchStationDo);
+                }
             }
             esfMapStationDo.setData(esfMapSearchDos);
             esfMapStationDos.add(esfMapStationDo);
