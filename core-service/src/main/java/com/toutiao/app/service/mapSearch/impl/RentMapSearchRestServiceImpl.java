@@ -154,15 +154,6 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                 searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }
 
-            //小区
-            if (groupTypeId == 3) {
-                //聚合
-                searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
-                        .subAggregation(AggregationBuilders.terms("zufangName").field("zufang_name"))
-                        .subAggregation(AggregationBuilders.terms("lon").field("cummunity_longitude"))
-                        .subAggregation(AggregationBuilders.terms("lat").field("cummunity_latitude")));
-            }
-
         }else if(groupTypeId==6&&StringTool.isNotEmpty(rentMapSearchDoQuery.getSubwayLineId())){
             IncludeExclude includeExclude = null;
             String[] excludeValues = new String[]{};
@@ -199,23 +190,23 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             GeoBoundingBoxQueryBuilder location = geoBoundingBoxQuery("location").setCorners(rentMapSearchDoQuery.getTopLeftLat(), rentMapSearchDoQuery.getTopLeftLon(), rentMapSearchDoQuery.getBottomRightLat(), rentMapSearchDoQuery.getBottomRightLon());
             boolQueryBuilder.must(location);
             searchSourceBuilder.query(boolQueryBuilder);
+        }
 
-            //groupTypeId 1：区县，2：商圈，3：社区, 4: 楼盘, 5: 地铁线, 6: 地铁站
-            if (groupTypeId == 1) {
-                //聚合
-                searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("district_id").size(200));
-            }
-            if (groupTypeId == 2) {
-                //聚合
-                searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("area_id").size(200));
-            }
-            if (groupTypeId == 3) {
-                //聚合
-                searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
-                        .subAggregation(AggregationBuilders.terms("zufangName").field("zufang_name"))
-                        .subAggregation(AggregationBuilders.terms("lon").field("cummunity_longitude"))
-                        .subAggregation(AggregationBuilders.terms("lat").field("cummunity_latitude")));
-            }
+        //groupTypeId 1：区县，2：商圈，3：社区, 4: 楼盘, 5: 地铁线, 6: 地铁站
+        if (groupTypeId == 1) {
+            //聚合
+            searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("district_id").size(200));
+        }
+        if (groupTypeId == 2) {
+            //聚合
+            searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("area_id").size(200));
+        }
+        if (groupTypeId == 3) {
+            //聚合
+            searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
+                    .subAggregation(AggregationBuilders.terms("zufangName").field("zufang_name"))
+                    .subAggregation(AggregationBuilders.terms("lon").field("cummunity_longitude"))
+                    .subAggregation(AggregationBuilders.terms("lat").field("cummunity_latitude")));
         }
 
         SearchResponse rentMapSearch = rentMapSearchEsDao.getRentMapSearch(searchSourceBuilder, city);
