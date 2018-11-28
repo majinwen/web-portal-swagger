@@ -43,4 +43,17 @@ public class RentMapSearchEsDaoImpl  implements RentMapSearchEsDao {
         }
         return search;
     }
+
+    @Override
+    public SearchResponse getSubwayLineAndSubwayStationinfo(SearchSourceBuilder searchSourceBuilder) {
+        SearchRequest searchRequest = new SearchRequest("subway_line_station").types("subwayls");
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = null;
+        try {
+            search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return search;
+    }
 }

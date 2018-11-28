@@ -61,7 +61,7 @@ public class RentMapSearchDoRequest   {
   @JsonProperty("forwardId")
   private Integer[] forwardId = null;
 
-  @ApiModelProperty(value = "组类型：区域district，商圈bizcircle，社区community")
+  @ApiModelProperty(value = "组类型：区域district，商圈bizcircle，社区community, 楼盘build, 地铁线line, 地铁站station")
   @JsonProperty("groupType")
 //  @HouseTypeValidator(value = "district,bizcircle,community",message = "组类型错误")
   private String groupType = null;
