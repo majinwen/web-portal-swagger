@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -573,6 +574,33 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
                     agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
                 }
+
+                //计算nearbyDistance
+                String nearbyDistance = "";
+                String traffic = rentDetailsFewDo.getNearestSubway ();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    if(Integer.parseInt(trafficArr[2]) > 1000 ){
+                        DecimalFormat df = new DecimalFormat("0.0");
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2])/1000)+"km";
+                    }else{
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2]+"m";
+                    }
+                }
+
+                if (StringTool.isNotEmpty(rentHouseDoQuery.getLat()) && StringTool.isNotEmpty(rentHouseDoQuery.getLon()) && StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {//判断是否请求来自查附近
+                    nearbyDistance = rentHouseDoQuery.getDistance() + "km";
+                } else if (StringTool.isNotEmpty(rentHouseDoQuery.getSubwayStationId()) && rentHouseDoQuery.getSubwayStationId().length > 0) {//判断是否请求来自查地铁附近
+
+                } else if(trafficArr.length == 3 && Integer.parseInt(trafficArr[2])>2000){
+                    nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName();
+                }
+
+                if(StringTool.isNotEmpty(nearbyDistance)){
+                    rentDetailsFewDo.setNearbyDistance(nearbyDistance);
+                }
+
+
                 //增加房子与地铁的距离
                 String keys = "";
                 if (null != rentHouseDoQuery.getSubwayLineId() && rentHouseDoQuery.getSubwayLineId() > 0) {
