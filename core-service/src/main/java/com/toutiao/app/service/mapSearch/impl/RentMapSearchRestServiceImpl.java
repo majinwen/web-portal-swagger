@@ -12,6 +12,7 @@ import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.mapSearch.MapGroupUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -26,9 +27,7 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -64,14 +63,15 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
     public RentMapSearchDomain rentMapSearch(RentMapSearchDoQuery rentMapSearchDoQuery, String city) {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder().size(0);
         SearchSourceBuilder Num = new SearchSourceBuilder().size(0);
-        BoolQueryBuilder boolQueryBuilder = getBoolQueryBuilder(rentMapSearchDoQuery);
-        Num.query(boolQueryBuilder);
         SearchResponse rentMapSearchNum = rentMapSearchEsDao.getRentMapSearch(Num, city);
+        BoolQueryBuilder boolQueryBuilder = getBoolQueryBuilder(rentMapSearchDoQuery);
         Integer totalNum = 0;
         if (null!=rentMapSearchNum){
             totalNum = (int)rentMapSearchNum.getHits().getTotalHits();
         }
 
+        //groupTypeId 1：区县，2：商圈，3：社区
+        Integer groupTypeId = null != MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) ? MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) : 0;
 
         //判断是矩形查询还是中心点半径查询
         if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())){
@@ -154,19 +154,45 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                 searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }
 
-        }else if(ArrayUtils.isNotEmpty(rentMapSearchDoQuery.getSubwayStationId())&&rentMapSearchDoQuery.getSubwayStationId().length>1){
+        }else if(groupTypeId==6&&StringTool.isNotEmpty(rentMapSearchDoQuery.getSubwayLineId())){
+            IncludeExclude includeExclude = null;
+            String[] excludeValues = new String[]{};
+            Integer subwayLineId = rentMapSearchDoQuery.getSubwayLineId();
+            //获取地铁站
+            SearchSourceBuilder searchSubwayLine = new SearchSourceBuilder().size(100);
+            BoolQueryBuilder subwayLine = QueryBuilders.boolQuery();
+            subwayLine.must(QueryBuilders.termQuery("subway_line_id",subwayLineId));
+            subwayLine.must(QueryBuilders.termQuery("city_id", CityUtils.returnCityId(city)));
+            searchSubwayLine.query(subwayLine);
+
+            SearchResponse subwayLineAndSubwayStationinfo = rentMapSearchEsDao.getSubwayLineAndSubwayStationinfo(searchSubwayLine);
+            if (null!=subwayLineAndSubwayStationinfo){
+                SearchHit[] hits = subwayLineAndSubwayStationinfo.getHits().getHits();
+                if(ArrayUtils.isNotEmpty(hits)){
+                    Map<String, Object> sourceAsMap = hits[0].getSourceAsMap();
+                    List<Integer> list = (List) sourceAsMap.get("subway_station_id");
+                    List newList = new ArrayList();
+                    for (Integer l:list){
+                        newList.add(String.valueOf(l));
+                    }
+                    String[] strings = new String[newList.size()];
+                    String[] includeValues = (String[]) newList.toArray(strings);
+                    includeExclude = new IncludeExclude(includeValues,excludeValues);
+                }
+            }
+
+            searchSourceBuilder.query(boolQueryBuilder);
+
             //对地铁站做聚合
-//            searchSourceBuilder.aggregation(AggregationBuilders.terms("").field("").)
+            searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("subway_station_id").size(1000).includeExclude(includeExclude));
 
-
-        }else{
+        }else if(StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getTopLeftLat())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getTopLeftLon())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getBottomRightLat())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getBottomRightLon())){
             GeoBoundingBoxQueryBuilder location = geoBoundingBoxQuery("location").setCorners(rentMapSearchDoQuery.getTopLeftLat(), rentMapSearchDoQuery.getTopLeftLon(), rentMapSearchDoQuery.getBottomRightLat(), rentMapSearchDoQuery.getBottomRightLon());
             boolQueryBuilder.must(location);
             searchSourceBuilder.query(boolQueryBuilder);
         }
 
-        //groupTypeId 1：区县，2：商圈，3：社区
-        Integer groupTypeId = null != MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) ? MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) : 0;
+        //groupTypeId 1：区县，2：商圈，3：社区, 4: 楼盘, 5: 地铁线, 6: 地铁站
         if (groupTypeId == 1) {
             //聚合
             searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("district_id").size(200));
@@ -178,9 +204,9 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         if (groupTypeId == 3) {
             //聚合
             searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
-            .subAggregation(AggregationBuilders.terms("zufangName").field("zufang_name"))
-            .subAggregation(AggregationBuilders.terms("lon").field("cummunity_longitude"))
-            .subAggregation(AggregationBuilders.terms("lat").field("cummunity_latitude")));
+                    .subAggregation(AggregationBuilders.terms("zufangName").field("zufang_name"))
+                    .subAggregation(AggregationBuilders.terms("lon").field("cummunity_longitude"))
+                    .subAggregation(AggregationBuilders.terms("lat").field("cummunity_latitude")));
         }
 
         SearchResponse rentMapSearch = rentMapSearchEsDao.getRentMapSearch(searchSourceBuilder, city);
@@ -190,65 +216,78 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         Integer totalHits = 0;
         if (null!=rentMapSearch){
             totalHits = (int)rentMapSearch.getHits().getTotalHits();
-            Terms ID = rentMapSearch.getAggregations().get("id");
-            List buckets = ID.getBuckets();
-            for (Object bucket : buckets){
-                RentMapSearchDo rentMapSearchDo = new RentMapSearchDo();
+            if(groupTypeId>0){
+                Terms ID = rentMapSearch.getAggregations().get("id");
+                List buckets = ID.getBuckets();
+                for (Object bucket : buckets){
+                    RentMapSearchDo rentMapSearchDo = new RentMapSearchDo();
 
-                //区域
-                if(groupTypeId == 1){
-                    //id
-                    int id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
-                    rentMapSearchDo.setId(id);
-                    //数量
-                    rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
-                    Map distanceAndAreainfo = getDistanceAndAreainfo(id, 1);
-                    if(null!=distanceAndAreainfo&&StringTool.isNotEmpty(distanceAndAreainfo.get("name"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lon"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lat"))){
-                        rentMapSearchDo.setName(String.valueOf(distanceAndAreainfo.get("name")));
-                        rentMapSearchDo.setLongitude(Double.valueOf(String.valueOf(distanceAndAreainfo.get("lon"))));
-                        rentMapSearchDo.setLatitude(Double.valueOf(String.valueOf(distanceAndAreainfo.get("lat"))));
-                    }
-                }
-                //商圈
-                if(groupTypeId == 2){
-                    //id
-                    int id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
-                    rentMapSearchDo.setId(id);
-                    //数量
-                    rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
-                    Map distanceAndAreainfo = getDistanceAndAreainfo(id, 2);
-                    if(null!=distanceAndAreainfo&&StringTool.isNotEmpty(distanceAndAreainfo.get("name"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lon"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lat"))){
-                        rentMapSearchDo.setName(String.valueOf(distanceAndAreainfo.get("name")));
-                        rentMapSearchDo.setLongitude(Double.valueOf(String.valueOf(distanceAndAreainfo.get("lon"))));
-                        rentMapSearchDo.setLatitude(Double.valueOf(String.valueOf(distanceAndAreainfo.get("lat"))));
-                    }
-                }
-                //社区
-                if(groupTypeId == 3){
-                    //id
-                    int id = Integer.parseInt(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString());
-                    rentMapSearchDo.setId(id);
-                    //数量
-                    rentMapSearchDo.setCount((int)((ParsedStringTerms.ParsedBucket) bucket).getDocCount());
-                    //名称
-                    Terms district_name = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("zufangName");
-                    List buckets1 = district_name.getBuckets();
-                    for (Object bucket1:buckets1){
-                        String keyAsString = ((ParsedStringTerms.ParsedBucket) bucket1).getKeyAsString();
-                        if(StringTool.isNotEmpty(keyAsString)){
-                            rentMapSearchDo.setName(keyAsString);
+                    //区域
+                    if(groupTypeId == 1){
+                        //id
+                        int id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
+                        rentMapSearchDo.setId(id);
+                        //数量
+                        rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                        Map distanceAndAreainfo = getDistanceAndAreainfo(id, 1);
+                        if(null!=distanceAndAreainfo&&StringTool.isNotEmpty(distanceAndAreainfo.get("name"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lon"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lat"))){
+                            rentMapSearchDo.setName(String.valueOf(distanceAndAreainfo.get("name")));
+                            rentMapSearchDo.setLongitude(Double.valueOf(String.valueOf(distanceAndAreainfo.get("lon"))));
+                            rentMapSearchDo.setLatitude(Double.valueOf(String.valueOf(distanceAndAreainfo.get("lat"))));
                         }
                     }
-                    //坐标
-                    Terms lat = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("lat");
-                    Terms lon = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("lon");
-                    rentMapSearchDo.setLatitude(Double.valueOf(lat.getBuckets().get(0).getKeyAsString()));
-                    rentMapSearchDo.setLongitude(Double.valueOf(lon.getBuckets().get(0).getKeyAsString()));
-                }
-                if(StringTool.isNotEmpty(rentMapSearchDo.getId())&&StringTool.isNotEmpty(rentMapSearchDo.getName())&&StringTool.isNotEmpty(rentMapSearchDo.getLatitude())&&StringTool.isNotEmpty(rentMapSearchDo.getLongitude())){
-                    list.add(rentMapSearchDo);
+                    //商圈
+                    if(groupTypeId == 2){
+                        //id
+                        int id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
+                        rentMapSearchDo.setId(id);
+                        //数量
+                        rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                        Map distanceAndAreainfo = getDistanceAndAreainfo(id, 2);
+                        if(null!=distanceAndAreainfo&&StringTool.isNotEmpty(distanceAndAreainfo.get("name"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lon"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lat"))){
+                            rentMapSearchDo.setName(String.valueOf(distanceAndAreainfo.get("name")));
+                            rentMapSearchDo.setLongitude(Double.valueOf(String.valueOf(distanceAndAreainfo.get("lon"))));
+                            rentMapSearchDo.setLatitude(Double.valueOf(String.valueOf(distanceAndAreainfo.get("lat"))));
+                        }
+                    }
+                    //社区
+                    if(groupTypeId == 3){
+                        //id
+                        int id = Integer.parseInt(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString());
+                        rentMapSearchDo.setId(id);
+                        //数量
+                        rentMapSearchDo.setCount((int)((ParsedStringTerms.ParsedBucket) bucket).getDocCount());
+                        //名称
+                        Terms district_name = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("zufangName");
+                        List buckets1 = district_name.getBuckets();
+                        for (Object bucket1:buckets1){
+                            String keyAsString = ((ParsedStringTerms.ParsedBucket) bucket1).getKeyAsString();
+                            if(StringTool.isNotEmpty(keyAsString)){
+                                rentMapSearchDo.setName(keyAsString);
+                            }
+                        }
+                        //坐标
+                        Terms lat = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("lat");
+                        Terms lon = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("lon");
+                        rentMapSearchDo.setLatitude(Double.valueOf(lat.getBuckets().get(0).getKeyAsString()));
+                        rentMapSearchDo.setLongitude(Double.valueOf(lon.getBuckets().get(0).getKeyAsString()));
+                    }
+
+                    //地铁站
+                    if(groupTypeId==6){
+                        //id
+                        int id = Integer.parseInt(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsString());
+                        rentMapSearchDo.setId(id);
+                        //数量
+                        rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                    }
+
+//                    if(StringTool.isNotEmpty(rentMapSearchDo.getId())&&StringTool.isNotEmpty(rentMapSearchDo.getName())&&StringTool.isNotEmpty(rentMapSearchDo.getLatitude())&&StringTool.isNotEmpty(rentMapSearchDo.getLongitude())){
+                        list.add(rentMapSearchDo);
+//                    }
                 }
             }
+
 
         }
         RentMapSearchDomain rentMapSearchDomain = new RentMapSearchDomain();

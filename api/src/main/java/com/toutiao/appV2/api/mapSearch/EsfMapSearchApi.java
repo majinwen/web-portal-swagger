@@ -8,6 +8,7 @@ package com.toutiao.appV2.api.mapSearch;
 import com.toutiao.appV2.model.mapSearch.EsfHouseListResponse;
 import com.toutiao.appV2.model.mapSearch.EsfMapSearchRequest;
 import com.toutiao.appV2.model.mapSearch.EsfMapSearchResponse;
+import com.toutiao.appV2.model.mapSearch.EsfMapSubwayResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,5 +44,17 @@ public interface EsfMapSearchApi {
     })
     @RequestMapping(value = "/rest/map/esf/list", produces = { "application/json" }, method = RequestMethod.GET)
     ResponseEntity<EsfHouseListResponse> mapEsfHouseList(@ApiParam(value = "esfMapSearchDoRequest", required = true) @Valid  EsfMapSearchRequest esfMapSearchRequest);
+
+    @ApiOperation(value = "二手房-地铁找房", nickname = "mapEsfSearchSubway", notes = "", response = EsfMapSubwayResponse.class, tags={ "地图找房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = EsfMapSubwayResponse.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/map/esf/subway", produces = { "application/json" }, method = RequestMethod.GET)
+    ResponseEntity<EsfMapSubwayResponse> mapEsfSubwaySearch(@ApiParam(value = "esfMapSearchDoRequest", required = true) @Valid  EsfMapSearchRequest esfMapSearchRequest);
 
 }
