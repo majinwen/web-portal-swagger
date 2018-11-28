@@ -225,5 +225,23 @@ public class ElasticCityUtils {
         return  getESIndexMap(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,cityCode);
     }
 
+    /**
+     * 获取地铁找房index
+     * @param cityCode
+     * @return
+     */
+    public static String getSubwayHousePriceIndex(String cityCode){
+        return  getESIndexMap(ESIndexConstant.SUBWAY_HOUSE_PRICE_INDEX,cityCode);
+    }
+
+    /**
+     * 获取地铁找房type
+     * @param cityCode
+     * @return
+     */
+    public static String getSubwayHousePriceType(String cityCode){
+        return  getESIndexMap(ESIndexConstant.SUBWAY_HOUSE_PRICE_TYPE,cityCode);
+    }
+
 
 }
