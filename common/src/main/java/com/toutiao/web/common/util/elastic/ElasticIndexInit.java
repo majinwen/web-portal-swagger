@@ -104,6 +104,11 @@ public class ElasticIndexInit implements CommandLineRunner {
     @Value("${bdw.dbavgprice.type}")
     private String dbAvgPriceType;
 
+    //地铁
+    @Value("${bdw.subwayhouse.index}")
+    private String subwayHousePriceIndex;
+    @Value("${bdw.subwayhouse.type}")
+    private String subwayHousePriceType;
 
 
     //城市
@@ -157,6 +162,8 @@ public class ElasticIndexInit implements CommandLineRunner {
 
                 esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_INDEX,dbAvgPriceIndex+"_"+city[i]);
 
+                esMap.put(ESIndexConstant.SUBWAY_HOUSE_PRICE_INDEX,subwayHousePriceIndex+"_"+city[i]);
+
 
                 if(CITY_BJ.equals(city[i])){
                     esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1);
@@ -171,6 +178,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                     esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType);
                     esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType);
                     esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,dbAvgPriceType);
+                    esMap.put(ESIndexConstant.SUBWAY_HOUSE_PRICE_TYPE,subwayHousePriceType);
                 }else{
                     esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1+"_"+city[i]);
                     esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType+"_"+city[i]);
@@ -184,6 +192,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                     esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType+"_"+city[i]);
                     esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType+"_"+city[i]);
                     esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,dbAvgPriceType+"_"+city[i]);
+                    esMap.put(ESIndexConstant.SUBWAY_HOUSE_PRICE_TYPE,subwayHousePriceType+"_"+city[i]);
                 }
 
                 esIndexMaps.put(city[i],esMap);

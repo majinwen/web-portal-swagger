@@ -14,7 +14,6 @@ import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,8 +44,7 @@ public class RentMapSearchApiController implements RentMapSearchApi {
 
     @Override
     public ResponseEntity<RentMapSearchDomainResponse> mapRentSearch(@ApiParam(value = "rentMapSearchDoRequest" ,required=true )  @Valid @RequestBody RentMapSearchDoRequest rentMapSearchDoRequest) {
-        RentMapSearchDoQuery rentMapSearchDoQuery = new RentMapSearchDoQuery();
-        BeanUtils.copyProperties(rentMapSearchDoRequest,rentMapSearchDoQuery);
+        RentMapSearchDoQuery rentMapSearchDoQuery = JSON.parseObject(JSON.toJSONString(rentMapSearchDoRequest), RentMapSearchDoQuery.class);
         RentMapSearchDomain rentMapSearchDomain = rentMapSearchRestService.rentMapSearch(rentMapSearchDoQuery, CityUtils.getCity());
         RentMapSearchDomainResponse rentMapSearchDomainResponse = JSON.parseObject(JSON.toJSONString(rentMapSearchDomain), RentMapSearchDomainResponse.class);
         return new ResponseEntity<RentMapSearchDomainResponse>(rentMapSearchDomainResponse, HttpStatus.OK);
