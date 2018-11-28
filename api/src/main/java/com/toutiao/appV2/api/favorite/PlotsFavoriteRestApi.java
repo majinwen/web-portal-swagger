@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -28,6 +29,7 @@ public interface PlotsFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/plots/getPlotFavoriteByUserId",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<PlotFavoriteListResponse> getPlotFavoriteByUserId(@ApiParam(value = "plotsFavoriteListRequest", required = true) @Valid PlotsFavoriteListRequest plotsFavoriteListRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "判断小区是否被收藏", nickname = "getPlotIsFavoriteByPlotIdAndUserId", notes = "判断小区是否被收藏", tags = {"收藏",})
@@ -39,6 +41,7 @@ public interface PlotsFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/plots/getPlotIsFavoriteByPlotIdAndUserId",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<QueryFavoriteResponse> getPlotIsFavoriteByPlotIdAndUserId(@ApiParam(value = "plotIsFavoriteRequest", required = true) @Valid PlotIsFavoriteRequest plotIsFavoriteRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "添加小区收藏", nickname = "addPlotsFavorite", notes = "添加小区收藏", tags = {"收藏",})
@@ -52,6 +55,7 @@ public interface PlotsFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<ChangeFavoriteResponse> addPlotsFavorite(@ApiParam(value = "plotsAddFavoriteRequest", required = true) @Valid @RequestBody PlotsAddFavoriteRequest plotsAddFavoriteRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "小区取消收藏", nickname = "cancelFavoriteByVillage", notes = "小区取消收藏", tags = {"收藏",})
@@ -65,6 +69,7 @@ public interface PlotsFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<ChangeFavoriteResponse> cancelFavoriteByVillage(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult);
 
 
@@ -77,6 +82,7 @@ public interface PlotsFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/plots/getPlotFavoriteCountByPlotId",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<CountFavoriteResponse> getPlotFavoriteCountByPlotId(@ApiParam(value = "buildingId", required = true) @RequestParam(value = "buildingId", required = false) Integer buildingId);
 
 

@@ -306,7 +306,6 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 String stationKey = key + "$" + plotListDoQuery.getSubwayStationId()[i];
                 keyList.add(stationKey);
             }
-//            key = key + "$" + plotListDoQuery.getSubwayStationId();
         }
         //均价
         if (plotListDoQuery.getBeginPrice() != 0 && plotListDoQuery.getEndPrice() != 0) {
@@ -487,7 +486,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
             Integer minDistance = Collections.min(sortDistance);
             plotDetailsFewDo.setSubwayDistanceInfo(plotDetailsFewDo.getMetroWithPlotsDistance().get(map.get(minDistance)).toString());
-//            plotDetailsFewDo.setSubwayDistanceInfo((String) plotDetailsFewDo.getMetroWithPlotsDistance().get(key));
+
         }
         plotDetailsFewDo.setMetroWithPlotsDistance(null);
         //二手房总数

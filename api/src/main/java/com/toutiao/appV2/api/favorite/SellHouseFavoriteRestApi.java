@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -27,6 +28,7 @@ public interface SellHouseFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/esf/getEsfFavoriteByUserId",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<SellHouseFavoriteListResponse> getEsfFavoriteByUserId(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Valid SellHouseFavoriteListRequest sellHouseFavoriteListRequest, BindingResult bindingResult);
 
 
@@ -41,6 +43,7 @@ public interface SellHouseFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<ChangeFavoriteResponse> addEsfFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房取消收藏", nickname = "deleteEsfFavoriteByEsfIdAndUserId", notes = "二手房取消收藏", tags = {"收藏",})
@@ -53,6 +56,7 @@ public interface SellHouseFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<ChangeFavoriteResponse> deleteEsfFavoriteByEsfIdAndUserId(@ApiParam(value = "deleteEsfFavoriteRequest", required = true) @Valid @RequestBody DeleteEsfFavoriteRequest deleteEsfFavoriteRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "判断二手房是否被收藏", nickname = "getIsFavoriteByEsf", notes = "判断二手房是否被收藏", tags = {"收藏",})
@@ -64,6 +68,7 @@ public interface SellHouseFavoriteRestApi {
     @RequestMapping(value = "/rest/favorite/esf/getIsFavoriteByEsf",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<QueryFavoriteResponse> getIsFavoriteByEsf(@ApiParam(value = "isFavoriteRequest", required = true) @Valid IsFavoriteRequest isFavoriteRequest, BindingResult bindingResult);
 
 

@@ -21,6 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @author zym
@@ -41,6 +42,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<NewHouseLayoutCountResponse> getLayoutCountByNewHouseId(NewHouseLayoutRequest newHouseLayoutRequest);
 
 
@@ -55,6 +57,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<GetNewHouseLayoutResponse> getNewHouseLayoutByNewCode(NewHouseLayoutRequest newHouseLayoutRequest);
 
 
@@ -70,6 +73,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<NewHouseListDomainResponse> getNewHouseTopic(NewHouseListRequest newHouseListRequest);
 
 
@@ -85,6 +89,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<NewHouseDetailResponse> getNewHouseDetailByNewCode(NewHouseDetailsRequest newHouseDetailsRequest);
 
 
@@ -99,6 +104,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<GetNewHouseDynamicResponse> getNewHouseDynamicByNewCode(NewHouseDynamicRequest newHouseDynamicRequest);
 
 
@@ -128,7 +134,6 @@ public interface NewHouseApi {
             method = {RequestMethod.POST})
     ResponseEntity<NewHouseListDomainResponse> getNewHouseListPost(@RequestBody NewHouseListRequest newHouseListRequest);
 
-
     @ApiOperation(value = "根据newcode获取新房交通信息", nickname = "getNewHouseTraffic", notes = "根据newcode获取新房交通信息",
             response = NewHouseTrafficResponse.class, tags={ "新房", })
     @ApiResponses(value = {
@@ -140,8 +145,8 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<NewHouseTrafficResponse> getNewHouseTraffic(NewHouseTrafficRequest newHouseTrafficRequest);
-
 
     //新房活动
     @ApiOperation(value = "是否参加活动", nickname = "isAttendedActivity", notes = "是否参加活动",
@@ -156,8 +161,8 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<IsAttendeActivityResponse> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
-
 
     @ApiOperation(value = "查询活动信息", nickname = "queryActivityMsg", notes = "查询活动信息",
             response = ActivityMsgResponse.class, tags={ "新房", })
@@ -170,6 +175,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<ActivityMsgResponse> queryActivityMsg(@Validated(Second.class) NewHouseActivityRequest
 
                                                                  newHouseActivityRequest);
@@ -184,6 +190,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<ActivityStatisticsDo> queryActivityMsgCount();
 
 
@@ -198,6 +205,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<ActivityMsgResponse> queryUserActivityMsg(NewHouseActivityRequest newHouseActivityRequest);
 
 
@@ -212,6 +220,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<UserInfoActivityResponse> queryUserMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
 
 
@@ -227,6 +236,7 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<StringDataResponse> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest);
 
     @ApiOperation(value = "猜你喜欢:获取新房列表页", nickname = "getGuessList", notes = "获取新房列表页",
@@ -240,5 +250,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<NewHouseListDomainResponse> getGuessList(NewHouseListRequest newHouseListRequest);
 }

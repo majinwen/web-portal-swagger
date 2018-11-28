@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
@@ -34,6 +35,7 @@ public interface ComparedRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<HouseCompared> deleteCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 
@@ -48,6 +50,7 @@ public interface ComparedRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<HouseComparedIdResponse> deleteTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 
@@ -60,6 +63,7 @@ public interface ComparedRestApi {
     @RequestMapping(value = "/rest/compared/getComparedList",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<SellHouseFavoriteListResponse> getComparedList(@ApiParam(value = "sellHouseFavoriteListRequest", required = true) @Valid  SellHouseFavoriteListRequest sellHouseFavoriteListRequest);
 
 
@@ -72,6 +76,7 @@ public interface ComparedRestApi {
     @RequestMapping(value = "/rest/compared/listCompared",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<HouseComparedListDoListResponse> listCompared();
 
 
@@ -84,6 +89,7 @@ public interface ComparedRestApi {
     @RequestMapping(value = "/rest/compared/listComparedDetail",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<HouseComparedDetailDoListResponse> listComparedDetail(@NotNull @ApiParam(value = "ids", required = true) @Valid @RequestParam(value = "ids", required = true) String ids);
 
 
@@ -96,6 +102,7 @@ public interface ComparedRestApi {
     @RequestMapping(value = "/rest/compared/listTempCompared",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<HouseComparedListDoListResponse> listTempCompared();
 
 
@@ -110,6 +117,7 @@ public interface ComparedRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<HouseCompared> saveCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 
@@ -124,6 +132,7 @@ public interface ComparedRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<HouseComparedIdResponse> saveTempCompared(@ApiParam(value = "comparedRequest", required = true) @Valid @RequestBody ComparedRequest comparedRequest);
 
 }
