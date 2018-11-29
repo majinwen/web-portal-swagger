@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.mapSearch;
 
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.domain.sellhouse.HouseSubject;
 import io.swagger.annotations.ApiModelProperty;
@@ -25,6 +26,42 @@ public class EsfMapHouseDo {
      */
     @ApiModelProperty(value = "房源标题", name = "houseTitle")
     private String houseTitle;
+
+    /**
+     * 经纪人信息
+     */
+    @ApiModelProperty(value = "经纪人信息")
+    private AgentBaseDo agentBaseDo;
+
+    /**
+     * 是否主力户型(0-否，1-是)
+     */
+    @ApiModelProperty(value = "是否主力户型(0-否，1-是)", name = "isMainLayout")
+    private Integer isMainLayout;
+
+    /**
+     * 是否是top50小区房源(0-否，1-是)
+     */
+    @ApiModelProperty(value = "是否是top50小区房源(0-否，1-是)", name = "isCommunityTopHouse")
+    private Integer isCommunityTopHouse;
+
+    /**
+     * 是否价格洼地(0-否，1-是)
+     */
+    @ApiModelProperty(value = "是否价格洼地(0-否，1-是)", name = "isLowPrice")
+    private Integer isLowPrice;
+
+    /**
+     *是否降价房(0-否，1-降价房，2-涨价房)
+     */
+    @ApiModelProperty(value = "是否降价房(0-否，1-降价房，2-涨价房)", name = "isCutPrice")
+    private Integer isCutPrice;
+
+    /**
+     * 是否逢出必抢房(0-否，1-是)
+     */
+    @ApiModelProperty(value = "是否逢出必抢房(0-否，1-是)", name = "isMustRob")
+    private Integer isMustRob;
 
     /**
      * 室
@@ -57,10 +94,46 @@ public class EsfMapHouseDo {
     private String[] tagsName;
 
     /**
+     * 推荐标签名称
+     */
+    @ApiModelProperty(value = "推荐标签名称", name = "recommendBuildTagsName")
+    private List recommendBuildTagsName;
+
+    /**
      * 房源总价
      */
     @ApiModelProperty(value = "房源总价", name = "houseTotalPrices")
     private Double houseTotalPrices;
+
+    /**
+     * 区域id
+     */
+    @ApiModelProperty(value = "区域id", name = "areaId")
+    private String areaId;
+
+    /**
+     * 区域
+     */
+    @ApiModelProperty(value = "区域", name = "area")
+    private String area;
+
+    /**
+     * 商圈
+     */
+    @ApiModelProperty(value = "商圈", name = "houseBusinessName")
+    private  String houseBusinessName;
+
+    /**
+     * 与商圈平均总价的绝对值差
+     */
+    @ApiModelProperty(value = "与商圈平均总价的绝对值差", name = "totalAbsoluteWithBizcircle")
+    private Double totalAbsoluteWithBizcircle;
+
+    /**
+     * 与小区平均总价的绝对值差
+     */
+    @ApiModelProperty(value = "与小区平均总价的绝对值差", name = "totalAbsoluteWithCommunity")
+    private Double totalAbsoluteWithCommunity;
 
     /**
      * 建筑面积
@@ -134,4 +207,10 @@ public class EsfMapHouseDo {
      */
     @ApiModelProperty(value = "地铁与房子之间的距离", name = "subwayDistanceInfo")
     private  String  subwayDistanceInfo;
+
+    /**
+     * 涨降金融
+     */
+    @ApiModelProperty(value = "涨降金融", name = "priceFloat")
+    private Double priceFloat;
 }
