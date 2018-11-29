@@ -160,8 +160,6 @@ public class ElasticIndexInit implements CommandLineRunner {
 
                 esMap.put(ESIndexConstant.AREA_ROOM_INDEX,areaRoomIndex+"_"+city[i]);
 
-                esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_INDEX,dbAvgPriceIndex+"_"+city[i]);
-
 
                 if(CITY_BJ.equals(city[i])){
                     esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1);
@@ -175,7 +173,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                     esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType);
                     esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType);
                     esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType);
-                    esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,dbAvgPriceType);
+
                 }else{
                     esMap.put(ESIndexConstant.NEW_HOUSE_TYPE_T1,newHouseType_t1+"_"+city[i]);
                     esMap.put(ESIndexConstant.DYNAMIC_TYPE,dynamicType+"_"+city[i]);
@@ -188,7 +186,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                     esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType+"_"+city[i]);
                     esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType+"_"+city[i]);
                     esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType+"_"+city[i]);
-                    esMap.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,dbAvgPriceType+"_"+city[i]);
+
                 }
 
                 esIndexMaps.put(city[i],esMap);
@@ -200,6 +198,9 @@ public class ElasticIndexInit implements CommandLineRunner {
         map.put(ESIndexConstant.ESF_FULL_AMOUNT_TYPE,esfFullAmountType);
         map.put(ESIndexConstant.SUBWAY_HOUSE_PRICE_INDEX,subwayHousePriceIndex);
         map.put(ESIndexConstant.SUBWAY_HOUSE_PRICE_TYPE,subwayHousePriceType);
+        map.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_INDEX,dbAvgPriceIndex);
+        map.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,dbAvgPriceType);
+
         esIndexMaps.put(CityConstant.ABBREVIATION_QUANGUO,map);
     }
 }
