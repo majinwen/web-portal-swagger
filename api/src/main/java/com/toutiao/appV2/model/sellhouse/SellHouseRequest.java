@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 public class SellHouseRequest extends BaseQueryRequest {
 
     @ApiModelProperty(value = "推荐房源查询标志", name = "uid")
-    @NotNull(groups = {First.class},message = "推荐房源查询标志为空")
+    @NotNull(groups = {First.class}, message = "推荐房源查询标志为空")
     private String uid;
 
     @ApiModelProperty(value = "附近1,3,5km", name = "distance")
@@ -43,6 +43,9 @@ public class SellHouseRequest extends BaseQueryRequest {
     @ApiModelProperty(value = "是否逢出必抢", name = "isMustRob")
     private Integer isMustRob;
 
-    @ApiModelProperty(value = "0默认,1逛逛推荐,2逛逛附近", name = "searchType")
-    private Integer searchType;
+    @ApiModelProperty(value = "0默认,1逛逛推荐,2逛逛附近(必须传坐标)", name = "searchType")
+    private Integer searchType = 0;
+
+    @ApiModelProperty(value = "是否有预设条件(0:无,1:有 默认0)", name = "searchType")
+    private Integer flag = 0;
 }
