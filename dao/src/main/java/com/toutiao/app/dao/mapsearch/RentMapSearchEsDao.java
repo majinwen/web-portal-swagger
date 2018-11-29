@@ -10,4 +10,7 @@ public interface RentMapSearchEsDao {
     SearchResponse getDistanceAndAreainfo(SearchSourceBuilder searchSourceBuilder);
 
     SearchResponse getSubwayLineAndSubwayStationinfo(SearchSourceBuilder searchSourceBuilder);
+
+    SearchResponse getSubwayInfo(SearchSourceBuilder searchSourceBuilder);
+
 }
