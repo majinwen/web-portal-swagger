@@ -7,6 +7,7 @@ import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseTrafficResponse;
 import com.toutiao.app.api.chance.response.user.UserInfoActivityResponse;
 import com.toutiao.app.domain.activity.ActivityStatisticsDo;
+import com.toutiao.appV2.model.PageRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.newhouse.*;
 import com.toutiao.web.common.assertUtils.First;
@@ -159,7 +160,7 @@ public interface NewHouseApi {
     @ApiIgnore
     ResponseEntity<IsAttendeActivityResponse> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
 
-    @ApiOperation(value = "查询活动信息", nickname = "queryActivityMsg", notes = "查询活动信息",
+    @ApiOperation(value = "我的活动列表", nickname = "queryActivityMsg", notes = "查询活动信息",
             response = ActivityMsgResponse.class, tags={ "新房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ActivityMsgResponse.class),
@@ -170,10 +171,8 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
-    ResponseEntity<ActivityMsgResponse> queryActivityMsg(@Validated(Second.class) NewHouseActivityRequest
+    ResponseEntity<ActivityMsgResponse> queryActivityMsg(PageRequest pageRequest);
 
-                                                                 newHouseActivityRequest);
     @ApiOperation(value = "个人中心累计数量", nickname = "queryActivityMsgCount", notes = "个人中心累计数量",
             response = ActivityStatisticsDo.class, tags={ "新房", })
     @ApiResponses(value = {
@@ -187,7 +186,6 @@ public interface NewHouseApi {
             method = RequestMethod.GET)
     @ApiIgnore
     ResponseEntity<ActivityStatisticsDo> queryActivityMsgCount();
-
 
     @ApiOperation(value = "查询活动信息", nickname = "queryUserActivityMsg", notes = "查询活动信息",
             response = ActivityMsgResponse.class, tags={ "新房", })
@@ -203,7 +201,6 @@ public interface NewHouseApi {
     @ApiIgnore
     ResponseEntity<ActivityMsgResponse> queryUserActivityMsg(NewHouseActivityRequest newHouseActivityRequest);
 
-
     @ApiOperation(value = "查询用户信息", nickname = "queryUserMsg", notes = "查询用户信息",
             response = UserInfoActivityResponse.class, tags={ "新房", })
     @ApiResponses(value = {
@@ -217,7 +214,6 @@ public interface NewHouseApi {
             method = RequestMethod.GET)
     @ApiIgnore
     ResponseEntity<UserInfoActivityResponse> queryUserMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
-
 
     @ApiOperation(value = "提交活动表单", nickname = "saveUserActivityMsg", notes = "提交活动表单",
             response = StringDataResponse.class, tags={ "新房", })
