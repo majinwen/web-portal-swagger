@@ -666,20 +666,26 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+//        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
+//        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+//        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
 //        SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
 //        long esfCount = searchSellHouse.getHits().totalHits;
 
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayLineId()) && sellHouseDoQuery.getSubwayLineId() != 0) {
+            boolQueryBuilder.must(QueryBuilders.termQuery("line_id", sellHouseDoQuery.getSubwayLineId()));
+
+        }
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchBySubway(boolQueryBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
+        BoolQueryBuilder builder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
+        SearchResponse response = sellHouseEsDao.querySellHouse(builder, city);
         Terms terms = searchResponse.getAggregations().get("houseCount");
         List buckets = terms.getBuckets();
         for (Object bucket : buckets) {
             EsfMapSearchDo esfMapSearchSubwayDo = new EsfMapSearchDo();
             esfMapSearchSubwayDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//地铁站id
-            esfMapSearchSubwayDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
+            //esfMapSearchSubwayDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
             Terms stationName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("stationName");
             esfMapSearchSubwayDo.setName(stationName.getBuckets().get(0).getKeyAsString());//地铁站名称
@@ -693,12 +699,13 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             Terms longitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("longitude");
             esfMapSearchSubwayDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
 
-            String desc = "(" + esfMapSearchSubwayDo.getCount()+ ")套";//描述
+            String desc = nf.format(esfMapSearchSubwayDo.getPrice()/10000)+"万";//描述
+
             esfMapSearchSubwayDo.setDesc(desc);
             data.add(esfMapSearchSubwayDo);
         }
         esfMapSearchSubwayDomain.setStationData(data);
-        esfMapSearchSubwayDomain.setHit("共" + searchCount + "套房源");
+        esfMapSearchSubwayDomain.setHit("共" + response.getHits().totalHits + "套房源");
 
         return esfMapSearchSubwayDomain;
     }
@@ -754,16 +761,24 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     esfMapSearchStationDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
                     Terms communityName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityName");
-                    esfMapSearchStationDo.setName(communityName.getBuckets().get(0).getKeyAsString());//小区名称
+                    if(communityName.getBuckets().size() > 0){
+                        esfMapSearchStationDo.setName(communityName.getBuckets().get(0).getKeyAsString());//小区名称
+                    }
 
                     Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
-                    esfMapSearchStationDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
+                    if(communityAvgPrice.getBuckets().size() > 0){
+                        esfMapSearchStationDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
+                    }
 
                     Terms plotLatitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLatitude");
-                    esfMapSearchStationDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
+                    if(plotLatitude.getBuckets().size() > 0){
+                        esfMapSearchStationDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
+                    }
 
                     Terms plotLongitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLongitude");
-                    esfMapSearchStationDo.setLongitude(plotLongitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
+                    if(plotLongitude.getBuckets().size() > 0){
+                        esfMapSearchStationDo.setLongitude(plotLongitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
+                    }
 
                     String desc = nf.format(esfMapSearchStationDo.getPrice()/10000) + "万(" + esfMapSearchStationDo.getCount() + "套)";//描述
                     esfMapSearchStationDo.setDesc(desc);
@@ -779,58 +794,6 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         return esfMapSearchStationDomain;
     }
 
-    /**
-     * 画圈找房
-     * @param esfMapSearchDoQuery
-     * @param city
-     * @return
-     */
-    public EsfMapSearchDomain esfMapSearchDrawCircle(EsfMapSearchDoQuery esfMapSearchDoQuery, String city) {
-        EsfMapSearchDomain esfMapSearchCircleDomain = new EsfMapSearchDomain();
-        List<EsfMapSearchDo> esfMapSearchDos = new ArrayList<>();
-        NumberFormat nf = NumberFormat.getNumberInstance();
-        nf.setMaximumFractionDigits(1);
-        nf.setRoundingMode(RoundingMode.UP);
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
-        GeoPoint bottomLeft = new GeoPoint(esfMapSearchDoQuery.getMinLatitude(), esfMapSearchDoQuery.getMinLongitude());
-        GeoPoint topRight = new GeoPoint(esfMapSearchDoQuery.getMaxLatitude(), esfMapSearchDoQuery.getMaxLongitude());
-        GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("housePlotLocation")
-                .setCornersOGC(bottomLeft, topRight);
-        boolQueryBuilder.must(geoBoundingBoxQueryBuilder);
-        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByCommunity(boolQueryBuilder, city);
-        long esfCount = searchResponse.getHits().totalHits;
-        Terms terms = searchResponse.getAggregations().get("houseCount");
-        List buckets = terms.getBuckets();
-        for (Object bucket : buckets) {
-            EsfMapSearchDo esfMapSearchDo = new EsfMapSearchDo();
-            esfMapSearchDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//社区id
-            esfMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
-
-            Terms communityName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityName");
-            esfMapSearchDo.setName(communityName.getBuckets().get(0).getKeyAsString());//社区名称
-
-            Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
-            esfMapSearchDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
-
-            Terms plotLatitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLatitude");
-            esfMapSearchDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
-
-            Terms plotLongitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLongitude");
-            esfMapSearchDo.setLongitude(plotLongitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
-
-            String desc = nf.format(esfMapSearchDo.getPrice()/10000) + "万(" + esfMapSearchDo.getCount() + "套)";
-            esfMapSearchDo.setDesc(desc);
-
-            esfMapSearchDos.add(esfMapSearchDo);
-        }
-        esfMapSearchCircleDomain.setData(esfMapSearchDos);
-        esfMapSearchCircleDomain.setHit("区域内共找到" + esfCount + "套房源");
-
-        return esfMapSearchCircleDomain;
-    }
 
     /**
      * 画圈找房房源列表

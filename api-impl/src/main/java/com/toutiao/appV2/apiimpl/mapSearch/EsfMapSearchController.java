@@ -64,18 +64,6 @@ public class EsfMapSearchController implements EsfMapSearchApi {
     }
 
     @Override
-    public ResponseEntity<EsfMapSearchResponse> mapEsfDrawCircle(EsfMapSearchRequest esfMapSearchRequest) {
-
-        EsfMapSearchDoQuery esfMapSearchDoQuery = new EsfMapSearchDoQuery();
-        BeanUtils.copyProperties(esfMapSearchRequest, esfMapSearchDoQuery);
-
-        EsfMapSearchDomain esfMapSearchDomain = esfMapSearchRestService.esfMapSearchDrawCircle(esfMapSearchDoQuery, CityUtils.getCity());
-        EsfMapSearchResponse esfMapSearchResponse = new EsfMapSearchResponse();
-        BeanUtils.copyProperties(esfMapSearchDomain, esfMapSearchResponse);
-        return new ResponseEntity<>(esfMapSearchResponse, HttpStatus.OK);
-    }
-
-    @Override
     public ResponseEntity<EsfCircleListResponse> mapEsfDrawCircleList(EsfMapSearchRequest esfMapSearchRequest) {
 
         EsfMapSearchDoQuery esfMapSearchDoQuery = new EsfMapSearchDoQuery();
