@@ -95,12 +95,12 @@ public class EsfMapSearchRequest   {
   private Double minLongitude = null;
 
   @JsonProperty("pageNum")
-  @ApiParam(value = "每页的数量", defaultValue = "10")
-  private Integer pageNum = 10;
+  @ApiParam(value = "每页的数量", defaultValue = "1")
+  private Integer pageNum = 1;
 
   @JsonProperty("pageSize")
-  @ApiParam(value = "页码", defaultValue = "1")
-  private Integer pageSize = 1;
+  @ApiParam(value = "页码", defaultValue = "10")
+  private Integer pageSize = 10;
 
   @JsonProperty("subwayLineId")
   @ApiParam("地铁线id")
@@ -112,6 +112,6 @@ public class EsfMapSearchRequest   {
 
   @JsonProperty("newcode")
   @ApiParam("小区id")
-  private Integer newcode = null;
+  private Integer[] newcode = null;
 }
 

@@ -1,9 +1,6 @@
 package com.toutiao.app.service.mapSearch;
 
-import com.toutiao.app.domain.mapSearch.EsfHouseListDomain;
-import com.toutiao.app.domain.mapSearch.EsfMapSearchDoQuery;
-import com.toutiao.app.domain.mapSearch.EsfMapSearchDomain;
-import com.toutiao.app.domain.mapSearch.EsfMapStationDomain;
+import com.toutiao.app.domain.mapSearch.*;
 
 /**
  * @ClassName EsfMapSearchRestService
@@ -35,4 +32,12 @@ public interface EsfMapSearchRestService {
      * @return
      */
     EsfMapStationDomain esfMapSubwaySearch(EsfMapSearchDoQuery esfMapSearchDoQuery, String city);
+
+    /**
+     * 画圈找房房源列表
+     * @param esfMapSearchDoQuery
+     * @param city
+     * @return
+     */
+    EsfCircleListDomain esfMapDrawCircleList(EsfMapSearchDoQuery esfMapSearchDoQuery, String city);
 }
