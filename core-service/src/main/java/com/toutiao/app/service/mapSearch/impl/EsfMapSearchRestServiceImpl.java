@@ -1146,8 +1146,12 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     if (trafficArr.length == 3) {
                         nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
                     }
+                }
+
+                if (StringTool.isNotEmpty(nearbyDistance)) {
                     esfMapHouseDo.setNearbyDistance(nearbyDistance);
                 }
+
                 esfCircleListDo.setEsfMapCommunityDo(esfMapCommunityDo);
                 esfCircleListDo.setEsfMapHouseDo(esfMapHouseDo);
                 esfCircleListDos.add(esfCircleListDo);
