@@ -58,7 +58,6 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getRentDetailByRentId",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<RentDetailResponse> getRentDetailByRentId(@ApiParam(value = "rentDetailsRequest" ,required=true )  @Valid @RequestBody RentDetailsRequest rentDetailsRequest);
 
 

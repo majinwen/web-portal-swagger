@@ -42,7 +42,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<NewHouseLayoutCountResponse> getLayoutCountByNewHouseId(NewHouseLayoutRequest newHouseLayoutRequest);
 
 
@@ -57,7 +56,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<GetNewHouseLayoutResponse> getNewHouseLayoutByNewCode(NewHouseLayoutRequest newHouseLayoutRequest);
 
 
@@ -89,7 +87,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<NewHouseDetailResponse> getNewHouseDetailByNewCode(NewHouseDetailsRequest newHouseDetailsRequest);
 
 
@@ -104,7 +101,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<GetNewHouseDynamicResponse> getNewHouseDynamicByNewCode(NewHouseDynamicRequest newHouseDynamicRequest);
 
 
@@ -145,7 +141,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<NewHouseTrafficResponse> getNewHouseTraffic(NewHouseTrafficRequest newHouseTrafficRequest);
 
     //新房活动
