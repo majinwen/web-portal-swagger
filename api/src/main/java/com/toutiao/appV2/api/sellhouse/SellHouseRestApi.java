@@ -52,7 +52,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getSellHouseByChoose",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SellHouseResponse> getSellHouseByChoose(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult);
+    ResponseEntity<SellHouseSearchDomainResponse> getSellHouseByChoose(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房默认列表推荐（广告）", nickname = "getRecommendSellHouse", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
@@ -126,5 +126,15 @@ public interface SellHouseRestApi {
     @ApiIgnore
     ResponseEntity<SellHouseSearchDomainResponse> getGuessList(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
+    @ApiOperation(value = "逛逛二手房附近列表", nickname = "getNearBySellHouses", notes = "", response = NearBySellHouseDomainResponse.class, tags = {"二手房",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = NearBySellHouseDomainResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/esf/nearby/getNearBySellHouses",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<SellHouseSearchDomainResponse> getNearBySellHouses(@ApiParam(value = "nearBySellHousesRequest", required = true) @Valid NearBySellHousesRequest nearBySellHousesRequest, BindingResult bindingResult);
 
 }

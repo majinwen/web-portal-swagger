@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
+import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.appV2.api.sellhouse.SellHouseRestApi;
 import com.toutiao.appV2.model.sellhouse.*;
@@ -40,6 +41,8 @@ public class SellHouseRestController implements SellHouseRestApi {
     @Autowired
     private SellHouseService sellHouseService;
     private final HttpServletRequest request;
+    @Autowired
+    private NearSellHouseRestService nearSellHouseRestService;
 
     @Autowired
     public SellHouseRestController(HttpServletRequest request) {
@@ -84,6 +87,16 @@ public class SellHouseRestController implements SellHouseRestApi {
     }
 
 
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getNearBySellHouses(@ApiParam(value = "nearBySellHousesRequest", required = true) @Valid NearBySellHousesRequest nearBySellHousesRequest, BindingResult bindingResult) {
+        SellHouseSearchDomainResponse nearBySellHouseDomainResponse = new SellHouseSearchDomainResponse();
+        NearBySellHouseQueryDo nearBySellHouseQueryDo = new NearBySellHouseQueryDo();
+        BeanUtils.copyProperties(nearBySellHousesRequest, nearBySellHouseQueryDo);
+        NearBySellHouseDomain nearBySellHouseDomain = nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHouseQueryDo, CityUtils.getCity());
+        BeanUtils.copyProperties(nearBySellHouseDomain, nearBySellHouseDomainResponse);
+        log.info("返回结果集:{}", JSONUtil.stringfy(nearBySellHouseDomainResponse));
+        return new ResponseEntity<>(nearBySellHouseDomainResponse, HttpStatus.OK);
+    }
 //    /**
 //     * 认领二手房房源经纪人
 //     *
@@ -106,12 +119,12 @@ public class SellHouseRestController implements SellHouseRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseResponse> getSellHouseByChoose(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult) {
+    public ResponseEntity<SellHouseSearchDomainResponse> getSellHouseByChoose(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult) {
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = JSON.parseObject(JSON.toJSONString(userFavoriteConditionRequest), UserFavoriteConditionDoQuery.class);
         SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChooseV1(userFavoriteConditionDoQuery, CityUtils.getCity());
-        SellHouseResponse sellHouseResponse = JSON.parseObject(JSON.toJSONString(sellHouseDomain), SellHouseResponse.class);
+        SellHouseSearchDomainResponse sellHouseResponse = JSON.parseObject(JSON.toJSONString(sellHouseDomain), SellHouseSearchDomainResponse.class);
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
-        return new ResponseEntity<SellHouseResponse>(sellHouseResponse, HttpStatus.OK);
+        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseResponse, HttpStatus.OK);
     }
 
     /**
@@ -226,5 +239,6 @@ public class SellHouseRestController implements SellHouseRestApi {
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
         return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
     }
+
 
 }

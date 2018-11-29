@@ -21,7 +21,7 @@ import javax.validation.Valid;
 @Api(value = "租房", description = "租房房源接口")
 public interface RentRestApi {
 
-    @ApiOperation(value = "附近5km出租房源(app的是吧，那就优先三公里的录入房源由近到远)", nickname = "getNearRentByLocation", notes = "", response = NearRentHouseResponse.class, tags={ "租房", })
+    @ApiOperation(value = "逛逛附近租房列表", nickname = "getNearRentByLocation", notes = "", response = NearRentHouseResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NearRentHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -31,7 +31,7 @@ public interface RentRestApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     @ApiIgnore
-    ResponseEntity<NearRentHouseResponse> getNearRentHouseByLocationUsingGET(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
+    ResponseEntity<RentDetailFewResponseList> getNearRentHouseByLocation(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
 
 
     @ApiOperation(value = "租房推优房源", nickname = "getRecommendRent", notes = "", response = RecommendRentResponse.class, tags={ "租房", })
