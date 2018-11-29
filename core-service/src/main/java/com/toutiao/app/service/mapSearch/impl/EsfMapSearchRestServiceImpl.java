@@ -714,20 +714,26 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
         BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+//        boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
+//        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+//        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
 //        SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
 //        long esfCount = searchSellHouse.getHits().totalHits;
 
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayLineId()) && sellHouseDoQuery.getSubwayLineId() != 0) {
+            boolQueryBuilder.must(QueryBuilders.termQuery("line_id", sellHouseDoQuery.getSubwayLineId()));
+
+        }
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchBySubway(boolQueryBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
+        BoolQueryBuilder builder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
+        SearchResponse response = sellHouseEsDao.querySellHouse(builder, city);
         Terms terms = searchResponse.getAggregations().get("houseCount");
         List buckets = terms.getBuckets();
         for (Object bucket : buckets) {
             EsfMapSearchDo esfMapSearchSubwayDo = new EsfMapSearchDo();
             esfMapSearchSubwayDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//地铁站id
-            esfMapSearchSubwayDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
+            //esfMapSearchSubwayDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
             Terms stationName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("stationName");
             if (stationName.getBuckets().size() > 0) {
@@ -749,12 +755,13 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 esfMapSearchSubwayDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
             }
 
-            String desc = "(" + esfMapSearchSubwayDo.getCount()+ ")套";//描述
+            String desc = nf.format(esfMapSearchSubwayDo.getPrice()/10000)+"万";//描述
+
             esfMapSearchSubwayDo.setDesc(desc);
             data.add(esfMapSearchSubwayDo);
         }
         esfMapSearchSubwayDomain.setStationData(data);
-        esfMapSearchSubwayDomain.setHit("共" + searchCount + "套房源");
+        esfMapSearchSubwayDomain.setHit("共" + response.getHits().totalHits + "套房源");
 
         return esfMapSearchSubwayDomain;
     }

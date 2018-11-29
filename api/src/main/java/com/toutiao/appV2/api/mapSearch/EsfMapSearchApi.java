@@ -54,6 +54,7 @@ public interface EsfMapSearchApi {
     @RequestMapping(value = "/rest/map/esf/subway", produces = { "application/json" }, method = RequestMethod.GET)
     ResponseEntity<EsfMapSubwayResponse> mapEsfSubwaySearch(@ApiParam(value = "esfMapSearchDoRequest", required = true) @Valid  EsfMapSearchRequest esfMapSearchRequest);
 
+
     @ApiOperation(value = "二手房-画圈找房房源列表")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = EsfCircleListResponse.class),
