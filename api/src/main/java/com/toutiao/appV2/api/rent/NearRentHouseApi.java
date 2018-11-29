@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -28,5 +29,6 @@ public interface NearRentHouseApi {
     @RequestMapping(value = "/rest/rent/nearby/getNearRentHouseByLocation",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<RentDetailsListDo> getNearRentHouseByLocation(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
 }

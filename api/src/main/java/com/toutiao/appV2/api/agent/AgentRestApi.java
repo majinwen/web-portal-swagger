@@ -6,6 +6,7 @@ import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:08:16.328Z")
@@ -22,6 +23,7 @@ public interface AgentRestApi {
     @RequestMapping(value = "/rest/agent/getAgentInfoByUserId",
         produces = { "application/json" },
         method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<AgentResponse> getAgentInfoByUserId(@ApiParam(value = "agentRequest", required = true) @Valid AgentRequest agentRequest);
 
 }

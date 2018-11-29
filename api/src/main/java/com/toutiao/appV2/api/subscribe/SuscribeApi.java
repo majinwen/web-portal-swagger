@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -46,6 +47,7 @@ public interface SuscribeApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<StringDataResponse> deleteConditionSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
 
 
@@ -73,6 +75,7 @@ public interface SuscribeApi {
             produces = { "application/json" },
             //consumes = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<UserSubscribeList> listConditionSubscribe();
 
 
@@ -113,6 +116,7 @@ public interface SuscribeApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<UserSubscribe> saveConditionSubscribe(@ApiParam(value = "conditionSubscribeRequest", required = true) @Valid @RequestBody ConditionSubscribeRequest conditionSubscribeRequest);
 
 
@@ -141,6 +145,7 @@ public interface SuscribeApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<UserSubscribe> selectByUserConditionSubscribeMap(@ApiParam(value = "ConditionSubscribeRequest", required = true) @Valid ConditionSubscribeRequest conditionSubscribeRequest);
 
 

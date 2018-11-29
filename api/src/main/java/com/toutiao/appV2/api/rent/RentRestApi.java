@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -29,6 +30,7 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getNearRentHouseByLocation",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<NearRentHouseResponse> getNearRentHouseByLocationUsingGET(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
 
 
@@ -43,6 +45,7 @@ public interface RentRestApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<com.toutiao.appV2.model.rent.RecommendRentResponse> getRecommendRent(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
@@ -81,7 +84,7 @@ public interface RentRestApi {
     ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListPost(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
-    @ApiOperation(value = "租房推荐列表", nickname = "getRentList", notes = "", response = RentListResponse.class, tags={ "租房", })
+    @ApiOperation(value = "逛逛租房列表", nickname = "getRentList", notes = "", response = RentListResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RentListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -104,6 +107,7 @@ public interface RentRestApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@ApiParam(value = "rentHouseRequest" ,required=true ) @Validated(Second.class) @Valid() @RequestBody RentHouseRequest rentHouseRequest);
 
 
@@ -116,5 +120,6 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getGuessList",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getGuessList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 }
