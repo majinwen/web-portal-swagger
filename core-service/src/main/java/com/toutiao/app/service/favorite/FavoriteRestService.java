@@ -108,4 +108,10 @@ public interface FavoriteRestService {
      */
     Integer addRentFavorite(UserFavoriteRentDoQuery userFavoriteRent);
 
+    /**
+     * 查询我的收藏房源
+     * @param favoriteHouseDoQuery
+     * @return
+     */
+    FavoriteHouseDomain queryFavoriteHouseList(FavoriteHouseListDoQuery favoriteHouseDoQuery);
 }
