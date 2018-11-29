@@ -95,9 +95,7 @@ public class UserbasicApiController implements UserbasicApi {
             StringDataResponse stringDataResponse = new StringDataResponse();
             stringDataResponse.setData("退出登录成功");
             return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
-        }
-        else
-        {
+        } else {
             throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN);
         }
 
@@ -244,24 +242,12 @@ public class UserbasicApiController implements UserbasicApi {
 
     @Override
     public ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount() {
-
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserSubscribeEtcCountResponse userSubscribeEtcCountResponse = new UserSubscribeEtcCountResponse();
-                UserSubscribeEtc userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userBasic.getUserId()));
-                BeanUtils.copyProperties(userSubscribeEtc, userSubscribeEtcCountResponse);
-                return new ResponseEntity<UserSubscribeEtcCountResponse>(userSubscribeEtcCountResponse, HttpStatus.OK);
-            } catch (BaseException ex) {
-                throw new BaseException(ex.getCode(), ex.getMsg());
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserSubscribeEtcCountResponse userSubscribeEtcCountResponse = new UserSubscribeEtcCountResponse();
+        UserSubscribeEtc userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userBasic.getUserId()));
+        userSubscribeEtcCountResponse.setCsAccount("service");
+        BeanUtils.copyProperties(userSubscribeEtc, userSubscribeEtcCountResponse);
+        return new ResponseEntity<UserSubscribeEtcCountResponse>(userSubscribeEtcCountResponse, HttpStatus.OK);
     }
 
     /**

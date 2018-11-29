@@ -145,7 +145,7 @@ public interface UserbasicApi {
     ResponseEntity<Void> validateImageCode(@ApiParam(value = "pageCode") @Valid @RequestParam(value = "pageCode", required = false) Optional<String> pageCode);
 
 
-    @ApiOperation(value = "获取用户订阅等统计数量", nickname = "getUserSubscribeEtcCount", notes = "", response = UserSubscribeEtcCountResponse.class, tags={ "用户基本信息", })
+    @ApiOperation(value = "获取用户订阅,关注等统计数量", nickname = "getUserSubscribeEtcCount", notes = "", response = UserSubscribeEtcCountResponse.class, tags={ "用户基本信息", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserSubscribeEtcCountResponse.class),
             @ApiResponse(code = 404, message = "Not Found") })

@@ -187,17 +187,5 @@ public class UserLoginResponse {
         }
         return o.toString().replace("\n", "\n    ");
     }
-
-    public static UserLoginResponse getCurrent() {
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String userString = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        UserLoginResponse user = JSONObject.parseObject(userString, UserLoginResponse.class);
-        if (user == null) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN);
-        } else {
-            return user;
-        }
-
-    }
 }
 

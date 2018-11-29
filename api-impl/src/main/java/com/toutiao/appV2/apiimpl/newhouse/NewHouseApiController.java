@@ -31,6 +31,7 @@ import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -188,7 +189,7 @@ public class NewHouseApiController implements NewHouseApi {
     public ResponseEntity<ActivityMsgResponse> queryActivityMsg(PageRequest pageRequest) {
         UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
         BeanUtils.copyProperties(pageRequest, userNewBuildingActivityDoQuery);
-        UserLoginResponse current = UserLoginResponse.getCurrent();
+        UserBasic current = UserBasic.getCurrent();
         userNewBuildingActivityDoQuery.setUserId(Integer.parseInt(current.getUserId()));
         PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
         ActivityMsgResponse response = ActivityMsgResponse.builder()

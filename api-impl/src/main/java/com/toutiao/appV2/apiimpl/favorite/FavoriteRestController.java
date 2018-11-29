@@ -15,6 +15,7 @@ import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.JSONUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -68,7 +69,7 @@ public class FavoriteRestController implements FavoriteRestApi {
 
         // 查询登录用户信息
 
-        UserLoginResponse user = UserLoginResponse.getCurrent();
+        UserBasic user = UserBasic.getCurrent();
         FavoriteHouseResponse favoriteHouseResponse = new FavoriteHouseResponse();
 
         if (null != user) {

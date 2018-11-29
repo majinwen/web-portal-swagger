@@ -21,5 +21,7 @@ public class UserSubscribeEtcCountResponse {
     @ApiModelProperty(value = "用户订阅数量", name = "userSubscribeCount")
     private Integer userSubscribeCount;
 
-
+    @JsonProperty("csAccount")
+    @ApiModelProperty(value = "客服账号", name = "csAccount")
+    private String csAccount;
 }
