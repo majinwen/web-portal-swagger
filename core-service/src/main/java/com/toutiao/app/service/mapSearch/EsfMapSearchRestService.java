@@ -34,14 +34,6 @@ public interface EsfMapSearchRestService {
     EsfMapStationDomain esfMapSubwaySearch(EsfMapSearchDoQuery esfMapSearchDoQuery, String city);
 
     /**
-     * 地图找房-画圈找房
-     * @param esfMapSearchDoQuery
-     * @param city
-     * @return
-     */
-    EsfMapSearchDomain esfMapSearchDrawCircle(EsfMapSearchDoQuery esfMapSearchDoQuery, String city);
-
-    /**
      * 画圈找房房源列表
      * @param esfMapSearchDoQuery
      * @param city

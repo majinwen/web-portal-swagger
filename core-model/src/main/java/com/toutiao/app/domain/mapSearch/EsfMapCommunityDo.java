@@ -10,6 +10,18 @@ import lombok.Data;
 public class EsfMapCommunityDo {
 
     /**
+     * 区域名称
+     */
+    @ApiModelProperty("区域名称")
+    private String district;
+
+    /**
+     * 商圈名称
+     */
+    @ApiModelProperty("商圈名称")
+    private String bizcircle;
+
+    /**
      * 社区名称
      */
     @ApiModelProperty("社区名称")
