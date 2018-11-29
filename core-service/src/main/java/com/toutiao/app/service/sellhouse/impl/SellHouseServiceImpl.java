@@ -374,8 +374,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 sellHouseDos.add(sellHouseDo);
 
             }
-            sellHouseDomain.setSellHouseList(sellHouseDos);
-            sellHouseDomain.setTotal((int) hits.getTotalHits());
+            sellHouseDomain.setData(sellHouseDos);
+            sellHouseDomain.setTotalNum((int) hits.getTotalHits());
         } else {
             throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND, "二手房列表为空");
         }
@@ -461,8 +461,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 list.add(sellHouseDo);
             }
-            sellHouseDomain.setSellHouseList(list);
-            sellHouseDomain.setTotal(totalHits_T1);
+            sellHouseDomain.setData(list);
+            sellHouseDomain.setTotalNum(totalHits_T1);
         }
 
 
@@ -548,8 +548,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                     sellHouseDo.setAgentBaseDo(agentBaseDo);
                     list.add(sellHouseDo);
                 }
-                sellHouseDomain.setSellHouseList(list);
-                sellHouseDomain.setTotal(totalHits_T2);
+                sellHouseDomain.setData(list);
+                sellHouseDomain.setTotalNum(totalHits_T2);
             }
 
             //当T2条件分页结果不足每页大小,查询T3条件并补充
@@ -601,8 +601,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                         sellHouseDo.setAgentBaseDo(agentBaseDo);
                         list.add(sellHouseDo);
                     }
-                    sellHouseDomain.setSellHouseList(list);
-                    sellHouseDomain.setTotal(totalHits_T3);
+                    sellHouseDomain.setData(list);
+                    sellHouseDomain.setTotalNum(totalHits_T3);
                 }
             }
         }
@@ -663,8 +663,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 list.add(sellHouseDo);
             }
-            sellHouseDomain.setSellHouseList(list);
-            sellHouseDomain.setTotal((int) sellHouseNoCondition.getHits().getTotalHits());
+            sellHouseDomain.setData(list);
+            sellHouseDomain.setTotalNum((int) sellHouseNoCondition.getHits().getTotalHits());
         }
 
         return sellHouseDomain;
@@ -748,8 +748,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 sellHouseDos.add(sellHouseDo);
 
             }
-            sellHouseDomain.setSellHouseList(sellHouseDos);
-            sellHouseDomain.setTotal((int) searchResponse.getHits().getTotalHits());
+            sellHouseDomain.setData(sellHouseDos);
+            sellHouseDomain.setTotalNum((int) searchResponse.getHits().getTotalHits());
         } else {
             throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND, "二手房列表为空");
         }

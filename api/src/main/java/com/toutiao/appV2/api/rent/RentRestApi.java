@@ -30,7 +30,6 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getNearRentHouseByLocation",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getNearRentHouseByLocation(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
 
 
