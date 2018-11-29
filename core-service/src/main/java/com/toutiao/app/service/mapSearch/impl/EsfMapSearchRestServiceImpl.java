@@ -151,7 +151,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         for (Object bucket : buckets) {
             EsfMapSearchDo esfMapSearchDistrictDo = new EsfMapSearchDo();
             esfMapSearchDistrictDo.setId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));//区县id
-            esfMapSearchDistrictDo.setCount((int)((ParsedStringTerms.ParsedBucket) bucket).getDocCount());//房源数量
+           // esfMapSearchDistrictDo.setCount((int)((ParsedStringTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
             Terms districtName = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("districtName");
             esfMapSearchDistrictDo.setName(districtName.getBuckets().get(0).getKeyAsString());//区县名称
@@ -210,7 +210,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         for (Object bucket : buckets){
             EsfMapSearchDo esfMapSearchBizcircleDo = new EsfMapSearchDo();
             esfMapSearchBizcircleDo.setId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));//商圈id
-            esfMapSearchBizcircleDo.setCount((int) ((ParsedStringTerms.ParsedBucket) bucket).getDocCount());//房源数量
+            //esfMapSearchBizcircleDo.setCount((int) ((ParsedStringTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
 
             Terms bizcircleName = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("bizcircleName");
