@@ -178,7 +178,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchDistrictDo.getCount()+"套)";
             if (null != esfMapSearchDistrictDo.getPrice()){
-                desc = nf.format(esfMapSearchDistrictDo.getPrice()/10000)+"万("+esfMapSearchDistrictDo.getCount()+"套)";
+                desc = nf.format(esfMapSearchDistrictDo.getPrice()/10000)+"万";
             }
             esfMapSearchDistrictDo.setDesc(desc);
             data.add(esfMapSearchDistrictDo);
@@ -247,7 +247,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchBizcircleDo.getCount()+"套)";
             if (null != esfMapSearchBizcircleDo.getPrice()){
-                desc = nf.format(esfMapSearchBizcircleDo.getPrice()/10000)+"万("+esfMapSearchBizcircleDo.getCount()+"套)";
+                desc = nf.format(esfMapSearchBizcircleDo.getPrice()/10000)+"万";
             }
             esfMapSearchBizcircleDo.setDesc(desc);
             data.add(esfMapSearchBizcircleDo);
