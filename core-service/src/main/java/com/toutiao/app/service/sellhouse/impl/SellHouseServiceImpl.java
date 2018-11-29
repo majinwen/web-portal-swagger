@@ -881,9 +881,9 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
-                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                    String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
 //                    sellHousesSearchDo.setNearbyDistance(distance);
-                    nearbyDistance = "距您" + sellHousesSearchDo.getNearbyDistance() + "km";
+                    nearbyDistance = "距您" + distances + "km";
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图

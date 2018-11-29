@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -463,11 +464,28 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
+
+        String nearbyDistance = "";
+        String traffic = plotDetailsFewDo.getTrafficInformation();
+        String[] trafficArr = traffic.split("\\$");
+        if (trafficArr.length == 3) {
+            int i = Integer.parseInt(trafficArr[2]);
+            if (i > 2000) {
+                nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea();
+            } else if (i > 1000) {
+                DecimalFormat df = new DecimalFormat("0.0");
+                nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+            } else {
+                nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+            }
+        }
+
         if (StringTool.isNotEmpty(distance)) {
             if (hit.getSortValues().length == 3) {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
                 String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
-                plotDetailsFewDo.setNearbyDistance(distances);
+//                plotDetailsFewDo.setNearbyDistance(distances);
+                nearbyDistance = "距您" + distances + "km";
             }
         }
 
@@ -487,8 +505,18 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             Integer minDistance = Collections.min(sortDistance);
             plotDetailsFewDo.setSubwayDistanceInfo(plotDetailsFewDo.getMetroWithPlotsDistance().get(map.get(minDistance)).toString());
 
+            trafficArr = plotDetailsFewDo.getSubwayDistanceInfo().split("\\$");
+            if (trafficArr.length == 3) {
+                nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+
+            }
         }
         plotDetailsFewDo.setMetroWithPlotsDistance(null);
+
+        if (StringTool.isNotEmpty(nearbyDistance)) {
+            plotDetailsFewDo.setNearbyDistance(nearbyDistance);
+        }
+
         //二手房总数
         try {
             PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId(), city);
