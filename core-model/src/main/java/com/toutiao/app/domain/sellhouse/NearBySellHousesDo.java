@@ -386,6 +386,13 @@ public class NearBySellHousesDo {
     @ApiModelProperty(value = "是否显示默认图片标志", name = "isDefaultImage")
     private Integer isDefaultImage = 0;
 
+    @ApiModelProperty(value = "逛逛标签列表", name = "houseColorLableList")
+    private List<HouseColorLable> houseColorLableList;
 
+    @ApiModelProperty(value = "逛逛第一行弹幕", name = "houseBarrageFirstList")
+    private List<String> houseBarrageFirstList;
+
+    @ApiModelProperty(value = "逛逛第二行弹幕", name = "houseBarrageSecondList")
+    private List<String> houseBarrageSecondList;
 
 }

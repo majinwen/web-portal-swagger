@@ -280,6 +280,19 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                 rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+                List<String> houseBarrageFirstList = new ArrayList<>();
+                houseBarrageFirstList.add("小区同户型总价最低");
+                houseBarrageFirstList.add("`总价低于商圈同户型5万");
+                houseBarrageFirstList.add("`降10万");
+                houseBarrageFirstList.add("`平均成交周期7天");
+                rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
+
+                List<String> houseBarrageSecondList = new ArrayList<>();
+                houseBarrageSecondList.add("小区同户型总价最低");
+                houseBarrageSecondList.add("`总价低于商圈同户型5万");
+                houseBarrageSecondList.add("`降10万");
+                houseBarrageSecondList.add("`平均成交周期7天");
+                rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
                 list.add(rentDetailsFewDo);
             }
         }
@@ -294,6 +307,19 @@ public class RentRestRestServiceImpl implements RentRestService {
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                     rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits() + (int) response.getHits().getTotalHits());
+                    List<String> houseBarrageFirstList = new ArrayList<>();
+                    houseBarrageFirstList.add("小区同户型总价最低");
+                    houseBarrageFirstList.add("`总价低于商圈同户型5万");
+                    houseBarrageFirstList.add("`降10万");
+                    houseBarrageFirstList.add("`平均成交周期7天");
+                    rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
+
+                    List<String> houseBarrageSecondList = new ArrayList<>();
+                    houseBarrageSecondList.add("小区同户型总价最低");
+                    houseBarrageSecondList.add("`总价低于商圈同户型5万");
+                    houseBarrageSecondList.add("`降10万");
+                    houseBarrageSecondList.add("`平均成交周期7天");
+                    rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
                     list.add(rentDetailsFewDo);
                 }
             }
@@ -308,6 +334,18 @@ public class RentRestRestServiceImpl implements RentRestService {
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                     rentDetailsFewDo.setTotalNum((int) response.getHits().getTotalHits());
+                    List<String> houseBarrageFirstList = new ArrayList<>();
+                    houseBarrageFirstList.add("小区同户型总价最低");
+                    houseBarrageFirstList.add("`总价低于商圈同户型5万");
+                    houseBarrageFirstList.add("`降10万");
+                    houseBarrageFirstList.add("`平均成交周期7天");
+                    rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
+                    List<String> houseBarrageSecondList = new ArrayList<>();
+                    houseBarrageSecondList.add("小区同户型总价最低");
+                    houseBarrageSecondList.add("`总价低于商圈同户型5万");
+                    houseBarrageSecondList.add("`降10万");
+                    houseBarrageSecondList.add("`平均成交周期7天");
+                    rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
                     list.add(rentDetailsFewDo);
                 }
             }
@@ -386,6 +424,19 @@ public class RentRestRestServiceImpl implements RentRestService {
 
                 }
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
+                List<String> houseBarrageFirstList = new ArrayList<>();
+                houseBarrageFirstList.add("小区同户型总价最低");
+                houseBarrageFirstList.add("`总价低于商圈同户型5万");
+                houseBarrageFirstList.add("`降10万");
+                houseBarrageFirstList.add("`平均成交周期7天");
+                rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
+
+                List<String> houseBarrageSecondList = new ArrayList<>();
+                houseBarrageSecondList.add("小区同户型总价最低");
+                houseBarrageSecondList.add("`总价低于商圈同户型5万");
+                houseBarrageSecondList.add("`降10万");
+                houseBarrageSecondList.add("`平均成交周期7天");
+                rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
                 list.add(rentDetailsFewDo);
             }
             rentDetailsListDo.setRentDetailsList(list);

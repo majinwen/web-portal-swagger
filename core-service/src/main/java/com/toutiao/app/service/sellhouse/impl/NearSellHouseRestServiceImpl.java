@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
-import com.toutiao.app.domain.sellhouse.ClaimSellHouseDo;
-import com.toutiao.app.domain.sellhouse.NearBySellHouseDomain;
-import com.toutiao.app.domain.sellhouse.NearBySellHouseQueryDo;
-import com.toutiao.app.domain.sellhouse.NearBySellHousesDo;
+import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
@@ -165,6 +162,54 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
 
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
             nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
+
+            List<HouseColorLable> houseColorLableList = new ArrayList<>();
+            HouseColorLable houseColorLable = new HouseColorLable();
+            houseColorLable.setBackColor("FFF2F2");
+            houseColorLable.setFontColor("FF6B6B");
+            houseColorLable.setText("捡漏房");
+            houseColorLable.setUrl("http://www.baidu.com");
+            houseColorLableList.add(houseColorLable);
+            HouseColorLable houseColorLable2 = new HouseColorLable();
+            houseColorLable2.setBackColor("F0FAFF");
+            houseColorLable2.setFontColor("2FB3FF");
+            houseColorLable2.setText("抢手房");
+            houseColorLable2.setUrl("http://www.baidu.com");
+            houseColorLableList.add(houseColorLable2);
+            HouseColorLable houseColorLable3 = new HouseColorLable();
+            houseColorLable3.setBackColor("EFFFEF");
+            houseColorLable3.setFontColor("47E24C");
+            houseColorLable3.setText("降价房");
+            houseColorLable3.setUrl("http://www.baidu.com");
+            houseColorLableList.add(houseColorLable3);
+            HouseColorLable houseColorLable4 = new HouseColorLable();
+            houseColorLable4.setBackColor("FFF9E5");
+            houseColorLable4.setFontColor("E3AF00");
+            houseColorLable4.setText("5大豪宅社区");
+            houseColorLable4.setUrl("http://www.baidu.com");
+            houseColorLableList.add(houseColorLable4);
+            HouseColorLable houseColorLable5 = new HouseColorLable();
+            houseColorLable5.setBackColor("FFF9E5");
+            houseColorLable5.setFontColor("E3AF00");
+            houseColorLable5.setText("TOP50社区");
+            houseColorLable5.setUrl("http://www.baidu.com");
+            houseColorLableList.add(houseColorLable5);
+            nearBySellHousesDo.setHouseColorLableList(houseColorLableList);
+
+            List<String> houseBarrageFirstList = new ArrayList<>();
+            houseBarrageFirstList.add("小区同户型总价最低");
+            houseBarrageFirstList.add("`总价低于商圈同户型5万");
+            houseBarrageFirstList.add("`降10万");
+            houseBarrageFirstList.add("`平均成交周期7天");
+            nearBySellHousesDo.setHouseBarrageFirstList(houseBarrageFirstList);
+
+            List<String> houseBarrageSecondList = new ArrayList<>();
+            houseBarrageSecondList.add("小区同户型总价最低");
+            houseBarrageSecondList.add("`总价低于商圈同户型5万");
+            houseBarrageSecondList.add("`降10万");
+            houseBarrageSecondList.add("`平均成交周期7天");
+            nearBySellHousesDo.setHouseBarrageSecondList(houseBarrageSecondList);
+
             nearBySellHouses.add(nearBySellHousesDo);
             //增加地铁站与房源的距离
             String keys = "";
