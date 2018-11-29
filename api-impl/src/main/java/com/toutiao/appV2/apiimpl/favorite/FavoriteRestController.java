@@ -67,8 +67,8 @@ public class FavoriteRestController implements FavoriteRestApi {
     public ResponseEntity<FavoriteHouseResponse> queryFavoriteHouseList(@ApiParam(value = "favoriteHouseRequest", required = true) FavoriteHouseRequest favoriteHouseRequest) {
 
         // 查询登录用户信息
-        String userString = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        UserLoginResponse user = JSONObject.parseObject(userString, UserLoginResponse.class);
+
+        UserLoginResponse user = UserLoginResponse.getCurrent();
         FavoriteHouseResponse favoriteHouseResponse = new FavoriteHouseResponse();
 
         if (null != user) {

@@ -23,6 +23,7 @@ import com.toutiao.appV2.api.newhouse.NewHouseApi;
 import com.toutiao.appV2.model.PageRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.newhouse.*;
+import com.toutiao.appV2.model.userbasic.UserLoginResponse;
 import com.toutiao.web.apiimpl.authentication.User;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
@@ -187,7 +188,8 @@ public class NewHouseApiController implements NewHouseApi {
     public ResponseEntity<ActivityMsgResponse> queryActivityMsg(PageRequest pageRequest) {
         UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
         BeanUtils.copyProperties(pageRequest, userNewBuildingActivityDoQuery);
-        User current = User.getCurrent();
+        UserLoginResponse current = UserLoginResponse.getCurrent();
+        userNewBuildingActivityDoQuery.setUserId(Integer.parseInt(current.getUserId()));
         PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
         ActivityMsgResponse response = ActivityMsgResponse.builder()
                 .data(userNewBuildingActivityDoPageInfo.getList())

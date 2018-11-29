@@ -1,7 +1,5 @@
 package com.toutiao.web.apiimpl.authentication;
 
-import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
-import com.toutiao.web.common.exceptions.BaseException;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -54,10 +52,6 @@ public class User {
         User user = (User) request.getAttribute("_apollouser_");
         if(user==null){
             SerializableData serializabledata_ = (SerializableData) request.getAttribute("_serializabledata_");
-            if(serializabledata_ == null)
-            {
-                throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN);
-            }
             user = new User();
             user.setUserId(serializabledata_.getUserId());
             user.setUserName(serializabledata_.getUserName());

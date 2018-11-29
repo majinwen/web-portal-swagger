@@ -8,10 +8,6 @@ import lombok.Data;
  */
 @Data
 public class FavoriteHouseRequest {
-
-    @ApiModelProperty(value = "用户id", name = "userId")
-    private Integer userId;
-
     @ApiModelProperty(value = "当前页", name = "pageNum")
     private Integer pageNum = 1;
 
