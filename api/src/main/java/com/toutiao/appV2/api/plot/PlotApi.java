@@ -93,7 +93,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getPlotDetailByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<PlotDetailsResponse> getPlotDetailByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId);
 
 
