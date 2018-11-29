@@ -24,5 +24,8 @@ public interface UserBasicMapper extends BaseDao {
 
     UserBasic selectUserBasicByRcId(UserBasic record);
 
+    Integer getUserFavoriteCount(Integer userId);
+
+    Integer getUserSubscribeCount(Integer userId);
 
 }

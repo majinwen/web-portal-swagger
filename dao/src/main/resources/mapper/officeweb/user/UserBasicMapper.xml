@@ -47,6 +47,20 @@
     where phone =  #{phone,jdbcType=VARCHAR}
   </select>
 
+  <select id="getUserFavoriteCount" resultType="Integer" parameterType="java.lang.Integer" >
+    select
+    (select count(*) from user_favorite_newhouse WHERE user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_rent WHERE user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_village WHERE user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_eshouse WHERE user_id = #{userId,jdbcType=INTEGER})
+    as sum_count
+  </select>
+
+  <select id="getUserSubscribeCount" resultType="Integer"  parameterType="java.lang.Integer" >
+    SELECT count(*) FROM user_subscribe WHERE user_id = #{userId,jdbcType=INTEGER}
+  </select>
+
+
 
   <select id="selectUserBasicByRcId" resultMap="BaseResultMap" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
     select

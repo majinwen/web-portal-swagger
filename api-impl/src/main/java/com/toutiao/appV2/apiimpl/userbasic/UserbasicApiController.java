@@ -15,6 +15,8 @@ import com.toutiao.appV2.model.userbasic.*;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
+import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,8 +38,6 @@ import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-15T07:40:39.438Z")
@@ -240,6 +240,28 @@ public class UserbasicApiController implements UserbasicApi {
 
         return new ResponseEntity<Void>(HttpStatus.OK);
 
+    }
+
+    @Override
+    public ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount() {
+
+        String accept = request.getHeader("Accept");
+        if (accept != null && accept.contains("")) {
+            try {
+                UserBasic userBasic = UserBasic.getCurrent();
+                UserSubscribeEtcCountResponse userSubscribeEtcCountResponse = new UserSubscribeEtcCountResponse();
+                UserSubscribeEtc userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userBasic.getUserId()));
+                BeanUtils.copyProperties(userSubscribeEtc, userSubscribeEtcCountResponse);
+                return new ResponseEntity<UserSubscribeEtcCountResponse>(userSubscribeEtcCountResponse, HttpStatus.OK);
+            } catch (BaseException ex) {
+                throw new BaseException(ex.getCode(), ex.getMsg());
+            } catch (Exception e) {
+                log.error("Couldn't serialize response for content type ", e);
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     /**

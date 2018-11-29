@@ -10,12 +10,11 @@ import com.toutiao.web.common.constant.syserror.RestfulInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.InvokeResult;
-import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
+import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper;
 import io.rong.models.Result;
-import io.rong.models.response.TokenResult;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -149,6 +148,16 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
             userBasicDo = null;
         }
         return userBasicDo;
+    }
+
+    @Override
+    public UserSubscribeEtc getUserFavoriteEtcCount(Integer userId) {
+        UserSubscribeEtc userSubscribeEtc = new UserSubscribeEtc();
+        Integer favoriteCount = userBasicMapper.getUserFavoriteCount(userId);
+        Integer subscribeCount = userBasicMapper.getUserSubscribeCount(userId);
+        userSubscribeEtc.setUserFavoriteCount(favoriteCount);
+        userSubscribeEtc.setUserSubscribeCount(subscribeCount);
+        return userSubscribeEtc;
     }
 
 
