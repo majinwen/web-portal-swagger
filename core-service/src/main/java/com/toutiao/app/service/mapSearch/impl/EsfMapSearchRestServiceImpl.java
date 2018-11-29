@@ -1142,6 +1142,11 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     }
                     Integer minDistance = Collections.min(sortDistance);
                     esfMapHouseDo.setSubwayDistanceInfo(esfMapHouseDo.getSubwayDistince().get(map.get(minDistance)).toString());
+                    trafficArr = esfMapHouseDo.getSubwayDistanceInfo().split("\\$");
+                    if (trafficArr.length == 3) {
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                    }
+                    esfMapHouseDo.setNearbyDistance(nearbyDistance);
                 }
                 esfCircleListDo.setEsfMapCommunityDo(esfMapCommunityDo);
                 esfCircleListDo.setEsfMapHouseDo(esfMapHouseDo);
