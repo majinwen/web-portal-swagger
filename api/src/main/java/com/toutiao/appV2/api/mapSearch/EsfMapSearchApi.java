@@ -5,10 +5,7 @@
  */
 package com.toutiao.appV2.api.mapSearch;
 
-import com.toutiao.appV2.model.mapSearch.EsfHouseListResponse;
-import com.toutiao.appV2.model.mapSearch.EsfMapSearchRequest;
-import com.toutiao.appV2.model.mapSearch.EsfMapSearchResponse;
-import com.toutiao.appV2.model.mapSearch.EsfMapSubwayResponse;
+import com.toutiao.appV2.model.mapSearch.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +18,7 @@ import javax.validation.Valid;
 @Api(value = "二手房", description = "地图找房-二手房")
 public interface EsfMapSearchApi {
 
-    @ApiOperation(value = "二手房", nickname = "mapEsfSearch", notes = "", response = EsfMapSearchResponse.class, tags={ "地图找房", })
+    @ApiOperation(value = "二手房-区县商圈社区附近", nickname = "mapEsfSearch", notes = "", response = EsfMapSearchResponse.class, tags={ "地图找房", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = EsfMapSearchResponse.class),
         @ApiResponse(code = 201, message = "Created"),
@@ -57,4 +54,31 @@ public interface EsfMapSearchApi {
     @RequestMapping(value = "/rest/map/esf/subway", produces = { "application/json" }, method = RequestMethod.GET)
     ResponseEntity<EsfMapSubwayResponse> mapEsfSubwaySearch(@ApiParam(value = "esfMapSearchDoRequest", required = true) @Valid  EsfMapSearchRequest esfMapSearchRequest);
 
+    @ApiOperation(value = "二手房-画圈找房")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = EsfMapSubwayResponse.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/map/esf/drawcircle", produces = {"application/json"}, method = RequestMethod.GET)
+    ResponseEntity<EsfMapSearchResponse> mapEsfDrawCircle(@ApiParam(value = "esfMapSearchRequest", required = true) @Valid EsfMapSearchRequest esfMapSearchRequest);
+
+    @ApiOperation(value = "二手房-画圈找房房源列表")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = EsfCircleListResponse.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")
+    })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/map/esf/circlelist", produces = {"application/json"}, method = RequestMethod.GET)
+    ResponseEntity<EsfCircleListResponse> mapEsfDrawCircleList(@ApiParam(value = "esfMapSearchRequest", required = true) @Valid EsfMapSearchRequest esfMapSearchRequest);
+
 }
+

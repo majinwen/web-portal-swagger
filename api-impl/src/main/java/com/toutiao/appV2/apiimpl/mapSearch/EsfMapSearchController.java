@@ -1,15 +1,9 @@
 package com.toutiao.appV2.apiimpl.mapSearch;
 
-import com.toutiao.app.domain.mapSearch.EsfHouseListDomain;
-import com.toutiao.app.domain.mapSearch.EsfMapSearchDoQuery;
-import com.toutiao.app.domain.mapSearch.EsfMapSearchDomain;
-import com.toutiao.app.domain.mapSearch.EsfMapStationDomain;
+import com.toutiao.app.domain.mapSearch.*;
 import com.toutiao.app.service.mapSearch.EsfMapSearchRestService;
 import com.toutiao.appV2.api.mapSearch.EsfMapSearchApi;
-import com.toutiao.appV2.model.mapSearch.EsfHouseListResponse;
-import com.toutiao.appV2.model.mapSearch.EsfMapSearchRequest;
-import com.toutiao.appV2.model.mapSearch.EsfMapSearchResponse;
-import com.toutiao.appV2.model.mapSearch.EsfMapSubwayResponse;
+import com.toutiao.appV2.model.mapSearch.*;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -67,6 +61,30 @@ public class EsfMapSearchController implements EsfMapSearchApi {
         EsfMapSubwayResponse subwayResponse = new EsfMapSubwayResponse();
         BeanUtils.copyProperties(esfMapStationDomain, subwayResponse);
         return new ResponseEntity<>(subwayResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<EsfMapSearchResponse> mapEsfDrawCircle(EsfMapSearchRequest esfMapSearchRequest) {
+
+        EsfMapSearchDoQuery esfMapSearchDoQuery = new EsfMapSearchDoQuery();
+        BeanUtils.copyProperties(esfMapSearchRequest, esfMapSearchDoQuery);
+
+        EsfMapSearchDomain esfMapSearchDomain = esfMapSearchRestService.esfMapSearchDrawCircle(esfMapSearchDoQuery, CityUtils.getCity());
+        EsfMapSearchResponse esfMapSearchResponse = new EsfMapSearchResponse();
+        BeanUtils.copyProperties(esfMapSearchDomain, esfMapSearchResponse);
+        return new ResponseEntity<>(esfMapSearchResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<EsfCircleListResponse> mapEsfDrawCircleList(EsfMapSearchRequest esfMapSearchRequest) {
+
+        EsfMapSearchDoQuery esfMapSearchDoQuery = new EsfMapSearchDoQuery();
+        BeanUtils.copyProperties(esfMapSearchRequest, esfMapSearchDoQuery);
+
+        EsfCircleListDomain esfCircleListDomain = esfMapSearchRestService.esfMapDrawCircleList(esfMapSearchDoQuery, CityUtils.getCity());
+        EsfCircleListResponse esfCircleListResponse = new EsfCircleListResponse();
+        BeanUtils.copyProperties(esfCircleListDomain, esfCircleListResponse);
+        return new ResponseEntity<>(esfCircleListResponse, HttpStatus.OK);
     }
 
 
