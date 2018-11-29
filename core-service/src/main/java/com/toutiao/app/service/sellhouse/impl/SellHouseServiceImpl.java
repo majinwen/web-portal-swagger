@@ -494,16 +494,15 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 List<String> houseBarrageFirstList = new ArrayList<>();
                 houseBarrageFirstList.add("小区同户型总价最低");
-                houseBarrageFirstList.add("`总价低于商圈同户型5万");
-                houseBarrageFirstList.add("`降10万");
-                houseBarrageFirstList.add("`平均成交周期7天");
+                houseBarrageFirstList.add("总价低于商圈同户型5万");
+                houseBarrageFirstList.add("降10万");
+                houseBarrageFirstList.add("平均成交周期7天");
                 sellHouseDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
                 List<String> houseBarrageSecondList = new ArrayList<>();
-                houseBarrageSecondList.add("小区同户型总价最低");
-                houseBarrageSecondList.add("`总价低于商圈同户型5万");
-                houseBarrageSecondList.add("`降10万");
-                houseBarrageSecondList.add("`平均成交周期7天");
+                houseBarrageSecondList.add("采光很好");
+                houseBarrageSecondList.add("小区同户型低总价榜NO.4");
+                houseBarrageSecondList.add("总价低于小区同户型7万");
                 sellHouseDo.setHouseBarrageSecondList(houseBarrageSecondList);
                 list.add(sellHouseDo);
             }
@@ -741,16 +740,15 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 List<String> houseBarrageFirstList = new ArrayList<>();
                 houseBarrageFirstList.add("小区同户型总价最低");
-                houseBarrageFirstList.add("`总价低于商圈同户型5万");
-                houseBarrageFirstList.add("`降10万");
-                houseBarrageFirstList.add("`平均成交周期7天");
+                houseBarrageFirstList.add("总价低于商圈同户型5万");
+                houseBarrageFirstList.add("降10万");
+                houseBarrageFirstList.add("平均成交周期7天");
                 sellHouseDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
                 List<String> houseBarrageSecondList = new ArrayList<>();
-                houseBarrageSecondList.add("小区同户型总价最低");
-                houseBarrageSecondList.add("`总价低于商圈同户型5万");
-                houseBarrageSecondList.add("`降10万");
-                houseBarrageSecondList.add("`平均成交周期7天");
+                houseBarrageSecondList.add("采光很好");
+                houseBarrageSecondList.add("小区同户型低总价榜NO.4");
+                houseBarrageSecondList.add("总价低于小区同户型7万");
                 sellHouseDo.setHouseBarrageSecondList(houseBarrageSecondList);
 
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
