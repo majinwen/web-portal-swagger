@@ -40,4 +40,12 @@ public class SearchScopeDo {
      * 该区县或商圈下对应房源的个数
      */
     private Integer locationNum;
+    /**
+     * 经度
+     */
+    private Double longitude;
+    /**
+     * 维度
+     */
+    private Double latitude;
 }
