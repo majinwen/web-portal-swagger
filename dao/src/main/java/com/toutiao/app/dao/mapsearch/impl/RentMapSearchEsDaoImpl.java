@@ -8,6 +8,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -17,6 +18,18 @@ public class RentMapSearchEsDaoImpl  implements RentMapSearchEsDao {
 
     @Autowired
     private RestHighLevelClient restHighLevelClient;
+    @Value("${bdw.dbavgprice.index}")
+    private String bdwDbavgpriceIndex;
+    @Value("${bdw.dbavgprice.type}")
+    private String bdwDbavgpriceType;
+    @Value("${bdw.subwayhouse.index}")
+    private String bdwSubwayhouseIndex;
+    @Value("${bdw.subwayhouse.type}")
+    private String bdwSubwayhouseType;
+    @Value("${bdw.subwayLineStation.index}")
+    private String bdwSubwayLineStationIndex;
+    @Value("${bdw.subwayLineStation.type}")
+    private String bdwSubwayLineStationType;
 
     @Override
     public SearchResponse getRentMapSearch(SearchSourceBuilder searchSourceBuilder, String city) {
@@ -33,7 +46,7 @@ public class RentMapSearchEsDaoImpl  implements RentMapSearchEsDao {
 
     @Override
     public SearchResponse getDistanceAndAreainfo(SearchSourceBuilder searchSourceBuilder) {
-        SearchRequest searchRequest = new SearchRequest("district_bizcircle_average_price").types("dbavgprice");
+        SearchRequest searchRequest = new SearchRequest(bdwDbavgpriceIndex).types(bdwDbavgpriceType);
         searchRequest.source(searchSourceBuilder);
         SearchResponse search = null;
         try {
@@ -46,7 +59,20 @@ public class RentMapSearchEsDaoImpl  implements RentMapSearchEsDao {
 
     @Override
     public SearchResponse getSubwayLineAndSubwayStationinfo(SearchSourceBuilder searchSourceBuilder) {
-        SearchRequest searchRequest = new SearchRequest("subway_line_station").types("subwayls");
+        SearchRequest searchRequest = new SearchRequest(bdwSubwayLineStationIndex).types(bdwSubwayLineStationType);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = null;
+        try {
+            search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return search;
+    }
+
+    @Override
+    public SearchResponse getSubwayInfo(SearchSourceBuilder searchSourceBuilder) {
+        SearchRequest searchRequest = new SearchRequest(bdwSubwayhouseIndex).types(bdwSubwayhouseType);
         searchRequest.source(searchSourceBuilder);
         SearchResponse search = null;
         try {

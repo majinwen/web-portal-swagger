@@ -280,11 +280,18 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         rentMapSearchDo.setId(id);
                         //数量
                         rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                        Map subwayInfo = getSubwayInfo(id, CityUtils.returnCityId(city));
+                        //名称
+                        rentMapSearchDo.setName((String) subwayInfo.get("name"));
+                        //经度
+                        rentMapSearchDo.setLatitude((Double) subwayInfo.get("lat"));
+                        //维度
+                        rentMapSearchDo.setLongitude((Double) subwayInfo.get("lon"));
                     }
 
-//                    if(StringTool.isNotEmpty(rentMapSearchDo.getId())&&StringTool.isNotEmpty(rentMapSearchDo.getName())&&StringTool.isNotEmpty(rentMapSearchDo.getLatitude())&&StringTool.isNotEmpty(rentMapSearchDo.getLongitude())){
+                    if(StringTool.isNotEmpty(rentMapSearchDo.getId())&&StringTool.isNotEmpty(rentMapSearchDo.getName())&&StringTool.isNotEmpty(rentMapSearchDo.getLatitude())&&StringTool.isNotEmpty(rentMapSearchDo.getLongitude())){
                         list.add(rentMapSearchDo);
-//                    }
+                    }
                 }
             }
 
@@ -436,6 +443,30 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             }
         }
         return rentOfPlotListDo;
+    }
+
+    @Override
+    public Map getSubwayInfo(Integer id, Integer city_id) {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("station_id",id));
+        boolQueryBuilder.must(QueryBuilders.termQuery("city_id",city_id));
+        searchSourceBuilder.query(boolQueryBuilder);
+        Map map = new HashMap();
+        SearchResponse subwayInfo = rentMapSearchEsDao.getSubwayInfo(searchSourceBuilder);
+        if (null!=subwayInfo){
+            SearchHit[] hits = subwayInfo.getHits().getHits();
+            if (ArrayUtils.isNotEmpty(hits)){
+                Map<String, Object> sourceAsMap = hits[0].getSourceAsMap();
+                String station_name = (String) sourceAsMap.get("station_name");
+                Double longitude = (Double) sourceAsMap.get("longitude");
+                Double latitude = (Double) sourceAsMap.get("latitude");
+                map.put("name",station_name);
+                map.put("lon",longitude);
+                map.put("lat",latitude);
+            }
+        }
+        return map;
     }
 
 

@@ -30,4 +30,12 @@ public interface RentMapSearchRestService {
      */
     RentOfPlotListDo getRentOfPlot(RentMapSearchDoQuery rentMapSearchDoQuery, String city);
 
+    /**
+     * 获取地铁/价格信息
+     * @param id
+     * @param city_id
+     * @return
+     */
+    Map getSubwayInfo(Integer id,Integer city_id);
+
 }
