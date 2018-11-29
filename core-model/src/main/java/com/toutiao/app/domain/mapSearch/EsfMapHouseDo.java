@@ -213,4 +213,10 @@ public class EsfMapHouseDo {
      */
     @ApiModelProperty(value = "涨降金融", name = "priceFloat")
     private Double priceFloat;
+
+    /**
+     * 地铁最近
+     */
+    @ApiModelProperty(value = "地铁最近", name = "traffic")
+    private  String traffic;
 }

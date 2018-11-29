@@ -975,10 +975,10 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 String traffic = esfMapHouseDo.getTraffic();
                 String[] trafficArr = traffic.split("\\$");
                 if (trafficArr.length == 3) {
-                    int i = Integer.parseInt(trafficArr[2]);
-                    if (i > 2000) {
+                    int d = Integer.parseInt(trafficArr[2]);
+                    if (d > 2000) {
                         nearbyDistance = esfMapHouseDo.getArea() + " " + esfMapHouseDo.getHouseBusinessName();
-                    } else if (i > 1000) {
+                    } else if (d > 1000) {
                         DecimalFormat df = new DecimalFormat("0.0");
                         nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                     } else {
@@ -991,12 +991,6 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
 //                    sellHousesSearchDo.setNearbyDistance(distance);
                     nearbyDistance = "距您" + distances + "km";
-                }
-
-                if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                    BigDecimal geoDis = new BigDecimal((Double) searchHits[i].getSortValues()[0]);
-                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
-                    esfMapHouseDo.setNearbyDistance(distance);
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
