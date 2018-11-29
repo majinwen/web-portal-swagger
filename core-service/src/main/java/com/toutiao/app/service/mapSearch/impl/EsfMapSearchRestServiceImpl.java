@@ -48,6 +48,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -969,6 +970,29 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 String details = "";
                 details=searchHits[i].getSourceAsString();
                 esfMapHouseDo=JSON.parseObject(details,EsfMapHouseDo.class);
+
+                String nearbyDistance = "";
+                String traffic = esfMapHouseDo.getTraffic();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    if (i > 2000) {
+                        nearbyDistance = esfMapHouseDo.getArea() + " " + esfMapHouseDo.getHouseBusinessName();
+                    } else if (i > 1000) {
+                        DecimalFormat df = new DecimalFormat("0.0");
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    } else {
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                    }
+                }
+
+                if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
+                    BigDecimal geoDis = new BigDecimal((Double) searchHits[i].getSortValues()[0]);
+                    String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+//                    sellHousesSearchDo.setNearbyDistance(distance);
+                    nearbyDistance = "距您" + distances + "km";
+                }
+
                 if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
                     BigDecimal geoDis = new BigDecimal((Double) searchHits[i].getSortValues()[0]);
                     String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
