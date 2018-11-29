@@ -43,4 +43,6 @@ public class SellHouseRequest extends BaseQueryRequest {
     @ApiModelProperty(value = "是否逢出必抢", name = "isMustRob")
     private Integer isMustRob;
 
+    @ApiModelProperty(value = "0默认,1逛逛推荐,2逛逛附近", name = "searchType")
+    private Integer searchType;
 }
