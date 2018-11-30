@@ -434,9 +434,11 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             String districtName = communityHit.getSourceAsMap().get("area").toString();
             String bizcircleName = communityHit.getSourceAsMap().get("houseBusinessName").toString();
 
-            String description = districtName + "-" +bizcircleName;
-            if (null != esfMapSearchDoQuery.getSubwayLineId() && esfMapSearchDoQuery.getSubwayLineId() != 0) {
-                description = "近" + esfMapSearchDoQuery.getSubwayLineId() + "号线";
+            String description = districtName + " " +bizcircleName;
+            if (StringTool.isNotEmpty(esfMapSearchDoQuery.getLineId()) && esfMapSearchDoQuery.getLineId() != 0) {
+                SearchResponse line = esfMapSearchEsDao.queryStationPoint(esfMapSearchDoQuery.getLineId(), city);
+                Map<String, Object> subwayMap = line.getHits().getHits()[0].getSourceAsMap();
+                description = "近" + subwayMap.get("line_name");
             }
             esfMapCommunityDo.setDescription(description);
 
@@ -621,9 +623,12 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     }
                     Integer minDistance = Collections.min(sortDistance);
                     esfMapHouseDo.setSubwayDistanceInfo(esfMapHouseDo.getSubwayDistince().get(map.get(minDistance)).toString());
+                    trafficArr = esfMapHouseDo.getSubwayDistanceInfo().split("\\$");
+                    if (trafficArr.length == 3) {
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                    }
                 }
-
-
+                esfMapHouseDo.setNearbyDistance(nearbyDistance);
             }
             esfHouseListDomain.setEsfMapHouseDos(esfMapHouseDos);
             esfHouseListDomain.setEsfMapCommunityDo(esfMapCommunityDo);
@@ -998,21 +1003,6 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 String details = "";
                 details=searchHits[i].getSourceAsString();
                 esfMapHouseDo=JSON.parseObject(details,EsfMapHouseDo.class);
-
-//                String nearbyDistance = "";
-//                String traffic = esfMapHouseDo.getTraffic();
-//                String[] trafficArr = traffic.split("\\$");
-//                if (trafficArr.length == 3) {
-//                    int d = Integer.parseInt(trafficArr[2]);
-//                    if (d > 2000) {
-//                        nearbyDistance = esfMapHouseDo.getArea() + " " + esfMapHouseDo.getHouseBusinessName();
-//                    } else if (d > 1000) {
-//                        DecimalFormat df = new DecimalFormat("0.0");
-//                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-//                    } else {
-//                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
-//                    }
-//                }
 
                 if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
                     BigDecimal geoDis = new BigDecimal((Double) searchHits[i].getSortValues()[0]);
