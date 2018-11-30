@@ -95,4 +95,25 @@ public class FavoriteHouseDo {
 
     @ApiModelProperty(value = "商圈名称", name = "areaName")
     private String areaName;
+
+    private String[] tags;
+
+    @ApiModelProperty(value = "小区建成时间", name = "buildYears")
+    private String buildYears;
+
+    @ApiModelProperty(value = "小区建成类型", name = "buildingStructure")
+    private String buildingStructure;
+
+    @ApiModelProperty(value = "新房在售户型", name = "roomType")
+    private Integer[] roomType;
+
+    @ApiModelProperty(value = "新房是否活动", name = "isActive")
+    private Integer isActive;
+
+    @ApiModelProperty(value = "厅", name = "hall")
+    private Integer hall;
+
+    @ApiModelProperty(value = "经纪公司图标", name = "companyIcon")
+    private String companyIcon;
+
 }

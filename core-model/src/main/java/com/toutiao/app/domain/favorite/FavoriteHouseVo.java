@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 /**
  * Created by wk on 2018/11/29.
@@ -40,8 +39,8 @@ public class FavoriteHouseVo {
     @ApiModelProperty(value = "商圈名称", name = "areaName")
     private String areaName;
 
-    @ApiModelProperty(value = "标签名称", name = "tagNames")
-    private List<String> tagNames;
+    @ApiModelProperty(value = "标签名称", name = "tags")
+    private String[] tags;
 
     @ApiModelProperty(value = "上架状态(0-上架,1-下架)", name = "status")
     private Integer status;
@@ -52,11 +51,11 @@ public class FavoriteHouseVo {
     /**
      * 小区描述
      **/
-    @ApiModelProperty(value = "小区建成时间", name = "buildTime")
-    private String buildTime;
+    @ApiModelProperty(value = "小区建成时间", name = "buildYears")
+    private String buildYears;
 
-    @ApiModelProperty(value = "小区建成类型", name = "buildType")
-    private String buildType;
+    @ApiModelProperty(value = "小区建成类型", name = "buildingStructure")
+    private String buildingStructure;
 
     /**
      * 新房描述
@@ -68,8 +67,11 @@ public class FavoriteHouseVo {
     @ApiModelProperty(value = "新房结束面积", name = "houseMaxArea")
     private String houseMaxArea;
 
-    @ApiModelProperty(value = "新房在售户型", name = "sellType")
-    private List<Integer> roomType;
+    @ApiModelProperty(value = "新房在售户型", name = "roomType")
+    private Integer[] roomType;
+
+    @ApiModelProperty(value = "新房是否活动", name = "isActive")
+    private Integer isActive;
 
     /**
      * 二手房描述
@@ -85,6 +87,9 @@ public class FavoriteHouseVo {
 
     @ApiModelProperty(value = "朝向", name = "forward")
     private String forward;
+
+    @ApiModelProperty(value = "经纪公司图标", name = "companyIcon")
+    private String companyIcon;
 
     /**
      * 租房描述

@@ -53,6 +53,9 @@ public class RentHouseAddFavoriteRequest extends FavoriteBaseRequest {
     @ApiModelProperty(value = "上架状态(0-上架,1-下架)", name = "status")
     private Short status = 0;
 
+    @ApiModelProperty(value = "经纪公司图标", name = "companyIcon")
+    private String companyIcon;
+
 
 
 }

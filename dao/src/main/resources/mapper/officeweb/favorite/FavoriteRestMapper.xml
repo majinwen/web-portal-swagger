@@ -29,12 +29,21 @@
         <result column="house_area" property="houseArea" jdbcType="NUMERIC"/>
         <result column="rent_type_name" property="rentTypeName" jdbcType="VARCHAR"/>
         <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="district_name" property="districtName" jdbcType="VARCHAR"/>
+        <result column="area_name" property="areaName" jdbcType="VARCHAR"/>
+        <result column="tags" property="tags" jdbcType="ARRAY" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
+        <result column="build_years" property="buildYears" jdbcType="VARCHAR"/>
+        <result column="building_structure" property="buildingStructure" jdbcType="VARCHAR"/>
+        <result column="room_type" property="roomType" jdbcType="ARRAY" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
+        <result column="is_active" property="isActive" jdbcType="INTEGER"/>
+        <result column="hall" property="hall" jdbcType="INTEGER"/>
+        <result column="company_icon" property="companyIcon" jdbcType="VARCHAR"/>
 
     </resultMap>
 
     <select id="queryFavoriteList" parameterType="java.lang.Integer" resultMap="FavoriteBaseResultMap">
-        SELECT
-          A.*
+        SELECT A
+            .*
         FROM
             (
             SELECT
@@ -63,7 +72,16 @@
                 NULL AS rent_type,
                 0 AS house_area,
                 NULL AS rent_type_name,
-                3 AS TYPE
+                3 AS TYPE,
+                ufv.district_name,
+                ufv.area_name,
+                ufv.tags,
+                ufv.build_years,
+                ufv.building_structure,
+                NULL AS room_type,
+                0 AS is_active,
+                0 AS hall,
+		        NULL AS company_icon
             FROM
                 user_favorite_village AS ufv
             WHERE
@@ -95,7 +113,16 @@
                 NULL AS rent_type,
                 0 AS house_area,
                 NULL AS rent_type_name,
-                1 AS TYPE
+                1 AS TYPE,
+                ufn.district_name,
+                ufn.area_name,
+                ufn.tags,
+                NULL AS build_years,
+                NULL AS building_structure,
+                ufn.room_type,
+                ufn.is_active,
+                0 AS hall,
+                NULL AS company_icon
             FROM
                 user_favorite_newhouse AS ufn
             WHERE
@@ -127,7 +154,16 @@
                 NULL AS rent_type,
                 0 AS house_area,
                 NULL AS rent_type_name,
-                2 AS TYPE
+                2 AS TYPE,
+                ufe.district_name,
+                ufe.area_name,
+                ufe.tags,
+                NULL AS build_years,
+                NULL AS building_structure,
+                NULL AS room_type,
+                0 AS is_active,
+                ufe.hall,
+                ufe.company_icon
             FROM
                 user_favorite_eshouse AS ufe
             WHERE
@@ -159,7 +195,16 @@
                 ufr.rent_type,
                 ufr.house_area,
                 ufr.rent_type_name,
-                4 AS TYPE
+                4 AS TYPE,
+                ufr.district_name,
+                ufr.area_name,
+                ufr.tags,
+                NULL AS build_years,
+                NULL AS building_structure,
+                NULL AS room_type,
+                0 AS is_active,
+                ufr.hall,
+                ufr.company_icon
             FROM
                 user_favorite_rent AS ufr
             WHERE

@@ -84,5 +84,7 @@ public class UserFavoriteEsHouseDoQuery {
 
     private Short isDel = 0;
 
+    private String companyIcon;
+
 
 }

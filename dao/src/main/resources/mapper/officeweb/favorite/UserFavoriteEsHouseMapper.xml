@@ -237,6 +237,9 @@
       <if test="tags != null" >
         tags,
       </if>
+      <if test="companyIcon != null" >
+        company_icon,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
 <!--      <if test="id != null" >
@@ -298,6 +301,9 @@
       </if>
       <if test="tags != null" >
         #{tags,jdbcType=ARRAY,typeHandler=com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler},
+      </if>
+      <if test="companyIcon != null" >
+        #{companyIcon,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>

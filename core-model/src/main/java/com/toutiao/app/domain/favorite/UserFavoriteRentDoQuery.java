@@ -75,5 +75,7 @@ public class UserFavoriteRentDoQuery {
 
     private Short isDel = 0;
 
+    private String companyIcon;
+
 
 }
