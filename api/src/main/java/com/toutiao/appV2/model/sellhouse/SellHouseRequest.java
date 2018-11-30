@@ -46,6 +46,9 @@ public class SellHouseRequest extends BaseQueryRequest {
     @ApiModelProperty(value = "0默认,1逛逛推荐,2逛逛附近(必须传坐标)", name = "searchType")
     private Integer searchType = 0;
 
-    @ApiModelProperty(value = "是否有预设条件(0:无,1:有 默认0)", name = "searchType")
+    @ApiModelProperty(value = "是否有预设条件(0:无,1:有 默认0)", name = "flag")
     private Integer flag = 0;
+
+    @ApiModelProperty(value = "预设条件的区域列表", name = "districtIds")
+    private String[] districtIds;
 }

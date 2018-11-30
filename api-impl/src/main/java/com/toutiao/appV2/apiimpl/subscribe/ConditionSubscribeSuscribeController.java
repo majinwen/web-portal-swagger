@@ -135,7 +135,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      * @param userSubscribeInfoForT3
      * @return
      */
-    @Override
+//    @Override
     public ResponseEntity<UserSubscribeT3Do> saveUserSubscribeForT3(@RequestBody UserSubscribeInfoT3 userSubscribeInfoT3) {
 
         String accept = request.getHeader("Accept");
@@ -165,7 +165,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         return new ResponseEntity<UserSubscribeT3Do>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-    @Override
+//    @Override
     public ResponseEntity<UserSubscribeT3DoList> getUserSubscribeForT3List() {
         String accept = request.getHeader("Accept");
         UserSubscribeT3DoList userSubscribeT3DoList= new UserSubscribeT3DoList();

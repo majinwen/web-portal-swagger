@@ -146,30 +146,4 @@ public interface SuscribeApi {
             method = RequestMethod.POST)
     @ApiIgnore
     ResponseEntity<UserSubscribe> selectByUserConditionSubscribeMap(@ApiParam(value = "ConditionSubscribeRequest", required = true) @Valid ConditionSubscribeRequest conditionSubscribeRequest);
-
-
-    @ApiOperation(value = "新增排行榜订阅信息", nickname = "saveUserSubscribeForT3", notes = "", response = UserSubscribeT3Do.class, tags={ "订阅", })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = UserSubscribeT3Do.class),
-            @ApiResponse(code = 201, message = "Created", response = UserSubscribeT3Do.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/subscribe/saveUserSubscribeForT3",
-            produces = { "application/json" },
-            consumes = { "application/json" },
-            method = RequestMethod.POST)
-    ResponseEntity<UserSubscribeT3Do> saveUserSubscribeForT3(@ApiParam(value = "userSubscribeInfoForT3", required = true) @Valid @RequestBody UserSubscribeInfoT3 userSubscribeInfoForT3);
-
-    @ApiOperation(value = "获取排行榜订阅信息列表", nickname = "getUserSubscribeForT3List", notes = "", response = UserSubscribeT3DoList.class, tags={ "订阅", })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = UserSubscribeT3DoList.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/subscribe/getUserSubscribeForT3List",
-            produces = { "application/json" },
-            method = RequestMethod.GET)
-    ResponseEntity<UserSubscribeT3DoList> getUserSubscribeForT3List();
-
 }

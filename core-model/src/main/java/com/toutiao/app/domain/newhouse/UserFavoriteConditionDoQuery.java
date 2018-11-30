@@ -11,7 +11,7 @@ public class UserFavoriteConditionDoQuery {
     /**
      * 区域id
      */
-    private String[] districtId;
+    private String[] districtIds;
     /**
      * 起始价格
      */

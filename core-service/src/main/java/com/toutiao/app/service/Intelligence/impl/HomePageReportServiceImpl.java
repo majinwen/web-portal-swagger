@@ -80,8 +80,8 @@ public class HomePageReportServiceImpl implements HomePageReportService {
         if (null!=userFavoriteConditionDoQuery.getLayoutId()&&userFavoriteConditionDoQuery.getLayoutId().length>0){
             intelligenceQuery.setLayoutArray(StringUtils.join(userFavoriteConditionDoQuery.getLayoutId(),","));
         }
-        if(null!=userFavoriteConditionDoQuery.getDistrictId()&&userFavoriteConditionDoQuery.getDistrictId().length>0){
-            intelligenceQuery.setDistrictArray(StringUtils.join(userFavoriteConditionDoQuery.getDistrictId(),","));
+        if(null!=userFavoriteConditionDoQuery.getDistrictIds()&&userFavoriteConditionDoQuery.getDistrictIds().length>0){
+            intelligenceQuery.setDistrictArray(StringUtils.join(userFavoriteConditionDoQuery.getDistrictIds(),","));
         }
         IntelligenceQuery personas = getPersonas(intelligenceQuery);
 
