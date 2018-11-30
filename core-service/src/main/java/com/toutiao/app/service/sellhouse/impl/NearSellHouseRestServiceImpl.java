@@ -213,10 +213,10 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             nearBySellHouses.add(nearBySellHousesDo);
             //增加地铁站与房源的距离
             String keys = "";
-            if (null != nearBySellHouseQueryDo.getSubwayLineId()) {
+            if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getSubwayLineId()) && nearBySellHouseQueryDo.getSubwayLineId()>0) {
                 keys += nearBySellHouseQueryDo.getSubwayLineId().toString();
             }
-            if (null != nearBySellHouseQueryDo.getSubwayStationId()) {
+            if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getSubwayStationId())) {
                 keys += "$" + nearBySellHouseQueryDo.getSubwayStationId();
             }
             if (!"".equals(keys) && null != nearBySellHousesDo.getSubwayDistince()) {
