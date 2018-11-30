@@ -58,13 +58,9 @@ public class EsfMapSearchDoQuery extends QueryDo {
     private Integer[] newcode;
 
     /**
-     * 通过地铁站聚合结果查询二手房列表时的地铁线id
+     * 排序标志
      */
-    private Integer lineId;
-
-
-
-
+    private String sort;
 
 
 }

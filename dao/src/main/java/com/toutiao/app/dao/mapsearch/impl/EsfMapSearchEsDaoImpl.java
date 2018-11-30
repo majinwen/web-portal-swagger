@@ -98,11 +98,8 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
 
     @Override
     public SearchResponse esfMapSearchByCommunity(BoolQueryBuilder boolQueryBuilder, String city) {
-
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
-
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         searchSourceBuilder.query(boolQueryBuilder).size(0)
                 .aggregation(AggregationBuilders.terms("houseCount").field("newcode").size(200)
                         .subAggregation(AggregationBuilders.terms("communityName").field("plotName_accurate"))
@@ -122,37 +119,17 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
     }
 
     @Override
-    public SearchResponse esfMapSearchHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword,
-                                                Integer pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort) {
+    public SearchResponse esfMapSearchHouseDrawCircleList(FunctionScoreQueryBuilder query, Integer pageNum, Integer pageSize,
+                                                          String city, String sort) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
-
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        if ((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)) {
-            //   searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
-            if ("1".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC).sort(sort);
-            } else if ("3".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC).sort(sort);
-            } else if ("4".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC).sort(sort);
-            } else if ("5".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC).sort(sort);
-            } else if ("6".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC).sort(sort);
-            } else {
-                if (sort != null) {
-                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(sort);
-                } else {
-                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
-                }
-            }
-        } else {
+
             if ("1".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC);
             } else if ("3".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
             } else if ("4".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC);
             } else if ("5".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC);
             } else if ("6".equals(sort)) {
@@ -160,7 +137,7 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
             } else {
                 searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }
-        }
+
         searchRequest.source(searchSourceBuilder);
         SearchResponse response = null;
         try {
@@ -168,8 +145,82 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return response;
     }
+
+    @Override
+    public SearchResponse esfMapSearchHouseList(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder geoDistanceSort,
+                                                Integer pageNum, Integer pageSize, String city) {
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        if(null != geoDistanceSort){
+            searchSourceBuilder.sort(geoDistanceSort);
+        }
+        searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize)
+                .sort("extraTagsCount", SortOrder.DESC)
+                .sort("updateTimeSort", SortOrder.DESC);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
+
+//    @Override
+//    public SearchResponse esfMapSearchHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword,
+//                                                Integer pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort) {
+//        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+//
+//        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+//        if ((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)) {
+//            //   searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
+//            if ("1".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC).sort(sort);
+//            } else if ("3".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC).sort(sort);
+//            } else if ("4".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC).sort(sort);
+//            } else if ("5".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC).sort(sort);
+//            } else if ("6".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC).sort(sort);
+//            } else {
+//                if (sort != null) {
+//                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(sort);
+//                } else {
+//                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+//                }
+//            }
+//        } else {
+//            if ("1".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC);
+//            } else if ("3".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
+//            } else if ("4".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
+//            } else if ("5".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC);
+//            } else if ("6".equals(sort)) {
+//                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC);
+//            } else {
+//                searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+//            }
+//        }
+//        searchRequest.source(searchSourceBuilder);
+//        SearchResponse response = null;
+//        try {
+//            response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return response;
+//    }
 
     @Override
     public SearchResponse esfMapSearchByNear(BoolQueryBuilder boolQueryBuilder, String city) {
@@ -228,6 +279,30 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
 
         boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
         boolQueryBuilder.must(QueryBuilders.termQuery("station_id", stationId));
+        searchSourceBuilder.query(boolQueryBuilder).size(1);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = null;
+
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryLinePoint(Integer lineId, String city) {
+
+        Integer cityId = CityUtils.returnCityId(city);
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getSubwayHousePriceIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getSubwayHousePriceType(CityConstant.ABBREVIATION_QUANGUO));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+
+        boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
+        boolQueryBuilder.must(QueryBuilders.termQuery("line_id", lineId));
         searchSourceBuilder.query(boolQueryBuilder).size(1);
         searchRequest.source(searchSourceBuilder);
 
