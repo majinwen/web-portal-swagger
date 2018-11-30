@@ -16,6 +16,6 @@ public class FavoriteHouseResponse {
     private List<FavoriteHouseVo> list;
 
     @ApiModelProperty(value = "总条数", name = "totalCount")
-    private Integer totalCount;
+    private Integer totalNum;
 
 }

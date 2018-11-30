@@ -11,8 +11,8 @@ public class FavoriteHouseRequest {
     @ApiModelProperty(value = "当前页", name = "pageNum")
     private Integer pageNum = 1;
 
-    @ApiModelProperty(value = "每页大小", name = "size")
-    private Integer size = 10;
+    @ApiModelProperty(value = "每页大小", name = "pageSize")
+    private Integer pageSize = 10;
 }
 
 
