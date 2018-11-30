@@ -400,4 +400,6 @@ public class SellHouseDo {
 
     @ApiModelProperty(value = "逛逛第二行弹幕", name = "houseBarrageSecondList")
     private List<String> houseBarrageSecondList;
+
+    private String plotNameAccurate;
 }

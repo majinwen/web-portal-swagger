@@ -683,6 +683,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 SellHouseDo sellHouseDo = JSON.parseObject(sourceAsString, SellHouseDo.class);
+                sellHouseDo.setPlotNameAccurate(sellHouseDo.getPlotName());
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHouseDo.getImportTime();
