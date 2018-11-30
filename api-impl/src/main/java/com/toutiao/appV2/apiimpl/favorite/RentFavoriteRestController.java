@@ -11,8 +11,10 @@ import com.toutiao.app.service.favorite.RentFavoriteRestService;
 import com.toutiao.appV2.api.favorite.RentFavoriteRestApi;
 import com.toutiao.appV2.model.favorite.*;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.JSONUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -20,13 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -72,15 +72,23 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<ChangeFavoriteResponse> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult) {
+    public ResponseEntity<ChangeFavoriteResponse> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody RentHouseAddFavoriteRequest addFavorite, BindingResult bindingResult) {
+
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
         UserFavoriteRentDoQuery userFavoriteRent = new UserFavoriteRentDoQuery();
         BeanUtils.copyProperties(addFavorite, userFavoriteRent);
+        userFavoriteRent.setUserId(Integer.valueOf(user.getUserId()));
         Integer flag = favoriteRestService.addRentFavorite(userFavoriteRent);
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
             log.info("添加租房收藏成功");
             changeFavoriteResponse.setMsg("添加租房收藏成功");
-            return new ResponseEntity<ChangeFavoriteResponse>(changeFavoriteResponse,HttpStatus.OK);
+            return new ResponseEntity<ChangeFavoriteResponse>(changeFavoriteResponse, HttpStatus.OK);
         } else if (flag == 0) {
             log.info("添加租房收藏失败");
             throw new BaseException(RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_ERROR);
@@ -100,8 +108,15 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
     @Override
     public ResponseEntity<ChangeFavoriteResponse> deleteRentFavoriteByRentIdAndUserId(@ApiParam(value = "deleteRentFavoriteRequest", required = true) @Valid @RequestBody DeleteRentFavoriteRequest deleteRentFavoriteRequest, BindingResult bindingResult) {
 
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
         DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
         BeanUtils.copyProperties(deleteRentFavoriteRequest, deleteRentFavoriteDoQuery);
+        deleteRentFavoriteDoQuery.setUserId(Integer.valueOf(user.getUserId()));
         Boolean flag = favoriteRestService.updateRentFavoriteByRentIdAndUserId(deleteRentFavoriteDoQuery);
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag) {

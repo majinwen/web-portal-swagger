@@ -1,14 +1,13 @@
 package com.toutiao.appV2.apiimpl.favorite;
 
 
+import com.toutiao.app.domain.favorite.CancelFavoriteHouseDto;
 import com.toutiao.app.domain.favorite.FavoriteHouseDomain;
 import com.toutiao.app.domain.favorite.FavoriteHouseListDoQuery;
 import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.appV2.api.favorite.FavoriteRestApi;
-import com.toutiao.appV2.model.favorite.FavoriteHouseRequest;
-import com.toutiao.appV2.model.favorite.FavoriteHouseResponse;
-import com.toutiao.appV2.model.favorite.UserCenterFavoriteCountResponse;
+import com.toutiao.appV2.model.favorite.*;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.JSONUtil;
@@ -19,10 +18,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RestController
 @Slf4j
@@ -80,6 +81,36 @@ public class FavoriteRestController implements FavoriteRestApi {
         } else {
             throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
         }
+    }
+
+    /**
+     * 取消收藏房源
+     * @param cancelFavoriteHouseRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<ChangeFavoriteResponse> cancelFavoriteHouse(@ApiParam(value = "cancelFavoriteHouseRequest", required = true) @Valid @RequestBody CancelFavoriteHouseRequest cancelFavoriteHouseRequest) {
+
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
+
+        CancelFavoriteHouseDto cancelFavoriteHouseDto = new CancelFavoriteHouseDto();
+        BeanUtils.copyProperties(cancelFavoriteHouseRequest, cancelFavoriteHouseDto);
+        cancelFavoriteHouseDto.setUserId(Integer.valueOf(user.getUserId()));
+        ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
+        Integer flag = favoriteRestService.cancelFavoriteHouse(cancelFavoriteHouseDto);
+        if (flag == 1) {
+            log.info("取消收藏成功");
+            changeFavoriteResponse.setMsg("取消收藏成功");
+        } else {
+            log.info("取消收藏失败");
+            throw new BaseException(40001,"取消收藏失败");
+        }
+        return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
     }
 }
 

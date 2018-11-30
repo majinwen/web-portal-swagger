@@ -10,16 +10,14 @@ import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.UserFavoritePlotDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
-import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
-import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.dao.mapper.officeweb.favorite.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -202,43 +200,33 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
         Integer integer = userFavoriteVillageMapper.queryCountByUserIdAndHouseId(plotsAddFavoriteDoQuery);
         if (null != integer && integer > 0) {
-            Integer code = PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_REPEAT.getValue();
-            String desc = PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_REPEAT.getDesc();
-//            return NashResult.Fail(code.toString(),desc);
             return -1;
         }
         try {
             Integer result = userFavoriteVillageMapper.addPlotsFavorite(plotsAddFavoriteDoQuery);
             if (result > 0) {
-//                return NashResult.build("收藏成功");
                 return 1;
             }
         } catch (Exception e) {
             logger.error("小区添加收藏接口异常,plotId:" + plotsAddFavoriteDoQuery.getBuildingId() + ", BuildingId:" + plotsAddFavoriteDoQuery.getUserId() + "={}", e.getStackTrace());
         }
-//        return NashResult.Fail("收藏失败");
         return 0;
     }
 
     @Override
     public Integer addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery) {
-        Integer integer = userFavoriteNewHouseMapper.queryCountByUserIdAndHouseId(newHouseAddFavoriteDoQuery);
-        if (null != integer && integer > 0) {
-//            Integer code = NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT.getValue();
-//            String desc = NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT.getDesc();
-//            return NashResult.Fail(code.toString(),desc);
+        Integer i = userFavoriteNewHouseMapper.queryCountByUserIdAndHouseId(newHouseAddFavoriteDoQuery);
+        if (null != i && i > 0) {
             return -1;
         }
         try {
             Integer result = userFavoriteNewHouseMapper.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
             if (result > 0) {
-//                return NashResult.build("收藏成功");
                 return 1;
             }
         } catch (Exception e) {
             logger.error("新房添加收藏接口异常,newHouseId:" + newHouseAddFavoriteDoQuery.getBuildingId() + ", userId:" + newHouseAddFavoriteDoQuery.getUserId() + "={}", e.getStackTrace());
         }
-//        return NashResult.Fail("收藏失败");
         return 0;
     }
 
@@ -287,28 +275,20 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
         //判断重复收藏
         Integer result = 0;
-        Integer ss1 = SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_ERROR.getValue();
         Integer re = userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(userFavoriteEsHouseDoQuery.getHouseId(), userFavoriteEsHouseDoQuery.getUserId());
         if (null != re && re > 0) {
-            Integer ss = SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_REPEAT.getValue();
 
-//           return NashResult.Fail(ss.toString(),"二手房收藏添加重复");
             return -1;
         }
         try {
-            UserFavoriteEsHouse userFavoriteEsHouse = new UserFavoriteEsHouse();
-            BeanUtils.copyProperties(userFavoriteEsHouseDoQuery, userFavoriteEsHouse);
-            userFavoriteEsHouse.setCreateTime(new Date());
-            userFavoriteEsHouse.setPriceIncreaseDecline(Integer.valueOf(userFavoriteEsHouseDoQuery.getPriceIncreaseDecline()));
-            result = userFavoriteEsHouseMapper.insertSelective(userFavoriteEsHouse);
+            userFavoriteEsHouseDoQuery.setCreateTime(new Date());
+            result = userFavoriteEsHouseMapper.insertSellHouseSelective(userFavoriteEsHouseDoQuery);
         } catch (Exception e) {
             logger.error("二手房收藏接口异常：" + userFavoriteEsHouseDoQuery.getHouseId() + "={}", e.getStackTrace());
         }
         if (result > 0) {
-//           return NashResult.build("收藏收功");
             return 1;
         }
-//       return  NashResult.Fail(ss1.toString(),"二手房添加收藏失败");
         return 0;
 
 
@@ -323,24 +303,19 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
         //判断重复收藏
         Integer result = 0;
-        Integer ss1 = RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_ERROR.getValue();
-        Integer re = userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(userFavoriteRentDoQuery.getHouseId(), userFavoriteRentDoQuery.getUserId());
-        if (null != re && re > 0) {
-            Integer ss = RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_REPEAT.getValue();
-//             return NashResult.Fail(ss.toString(),"租房添加收藏重复");
+        Integer i = userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(userFavoriteRentDoQuery.getHouseId(), userFavoriteRentDoQuery.getUserId());
+        if (null != i && i > 0) {
             return -1;
         }
         try {
-            UserFavoriteRent userFavoriteRent = new UserFavoriteRent();
             if ("1".equals(userFavoriteRentDoQuery.getRentType())) {
-                userFavoriteRent.setRentTypeName("整租");
+                userFavoriteRentDoQuery.setRentTypeName("整租");
             }
             if ("2".equals(userFavoriteRentDoQuery.getRentType())) {
-                userFavoriteRent.setRentTypeName("合租");
+                userFavoriteRentDoQuery.setRentTypeName("合租");
             }
-            BeanUtils.copyProperties(userFavoriteRentDoQuery, userFavoriteRent);
-            userFavoriteRent.setCreateTime(new Date());
-            result = userFavoriteRentMapper.insertSelective(userFavoriteRent);
+            userFavoriteRentDoQuery.setCreateTime(new Date());
+            result = userFavoriteRentMapper.insertRentHouseSelective(userFavoriteRentDoQuery);
 
         } catch (Exception e) {
             logger.error("添加出租收藏异常:" + userFavoriteRentDoQuery.getHouseId() + "={}", e.getStackTrace());
@@ -379,8 +354,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
             favoriteHouseVo.setAreaName(favoriteHouseDo.getAreaName());
             favoriteHouseVo.setDistrictName(favoriteHouseDo.getDistrictName());
             favoriteHouseVo.setCityId(favoriteHouseDo.getCityId());
-            // TODO 添加标签
-            favoriteHouseVo.setTagNames(null);
+            favoriteHouseVo.setTags(favoriteHouseDo.getTags());
 
             switch (type) {
                 case 1:// 新房
@@ -397,8 +371,8 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     favoriteHouseVo.setHouseMinArea(favoriteHouseDo.getHouseMinArea());
                     favoriteHouseVo.setHouseMaxArea(favoriteHouseDo.getHouseMaxArea());
                     favoriteHouseVo.setTotalPrice(favoriteHouseDo.getTotalPrice());
-                    // TODO 销售居室
-                    favoriteHouseVo.setRoomType(null);
+                    favoriteHouseVo.setRoomType(favoriteHouseDo.getRoomType());
+                    favoriteHouseVo.setIsActive(favoriteHouseDo.getIsActive());
                     break;
                 case 2: // 二手房
                     favoriteHouseVo.setId(favoriteHouseDo.getHouseId());
@@ -413,10 +387,10 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     }
                     favoriteHouseVo.setPrice(favoriteHouseDo.getHouseTotalPrices());
                     favoriteHouseVo.setRoom(favoriteHouseDo.getRoom());
-                    // TODO 厅
-                    favoriteHouseVo.setHall(1);
+                    favoriteHouseVo.setHall(favoriteHouseDo.getHall());
                     favoriteHouseVo.setForward(favoriteHouseDo.getForward());
                     favoriteHouseVo.setBuildArea(favoriteHouseDo.getBuildArea());
+                    favoriteHouseVo.setCompanyIcon(favoriteHouseDo.getCompanyIcon());
                     break;
                 case 3: // 小区
                     favoriteHouseVo.setId(favoriteHouseDo.getBuildingId().toString());
@@ -429,9 +403,8 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                         favoriteHouseVo.setTitleImg(buildingTitleImgPlot);
                     }
                     favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice());
-                    // TODO 添加小区建成时间、类型
-                    favoriteHouseVo.setBuildTime(null);
-                    favoriteHouseVo.setBuildType(null);
+                    favoriteHouseVo.setBuildYears(favoriteHouseDo.getBuildYears());
+                    favoriteHouseVo.setBuildingStructure(favoriteHouseDo.getBuildingStructure());
                     break;
                 case 4: // 租房
                     favoriteHouseVo.setId(favoriteHouseDo.getHouseId());
@@ -447,11 +420,10 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     favoriteHouseVo.setPrice(favoriteHouseDo.getRentPrice());
                     favoriteHouseVo.setRentTypeName(favoriteHouseDo.getRentTypeName());
                     favoriteHouseVo.setRoom(favoriteHouseDo.getRoom());
-                    // TODO 厅
-                    favoriteHouseVo.setHall(1);
+                    favoriteHouseVo.setHall(favoriteHouseDo.getHall());
                     favoriteHouseVo.setHouseArea(favoriteHouseDo.getHouseArea());
                     favoriteHouseVo.setForward(favoriteHouseDo.getForward());
-
+                    favoriteHouseVo.setCompanyIcon(favoriteHouseDo.getCompanyIcon());
                     break;
             }
 
@@ -462,5 +434,49 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         favoriteHouseDomain.setTotalCount((int) page.getTotal());
         return favoriteHouseDomain;
 
+    }
+
+    /**
+     * 取消收藏房源
+     *
+     * @param cancelFavoriteHouseDto
+     * @return
+     */
+    @Override
+    @Transactional
+    public Integer cancelFavoriteHouse(CancelFavoriteHouseDto cancelFavoriteHouseDto) {
+
+        Integer flag = 0;
+        Integer type = cancelFavoriteHouseDto.getType(); // 1 新房 2 二手房 3 小区 4 租房
+        Integer userId = cancelFavoriteHouseDto.getUserId();
+        String id = cancelFavoriteHouseDto.getId();
+        switch (type) {
+            case 1:// 新房
+                UserFavoriteNewHouse userFavoriteNewHouse = new UserFavoriteNewHouse();
+                userFavoriteNewHouse.setUserId(userId);
+                userFavoriteNewHouse.setBuildingId(Integer.valueOf(id));
+                userFavoriteNewHouse.setIsDel((short) 1);
+                flag = this.userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
+                break;
+            case 2:// 二手房
+                DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
+                deleteEsfFavoriteDo.setUserId(userId);
+                deleteEsfFavoriteDo.setHouseId(id);
+                flag = this.userFavoriteEsHouseMapper.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+                break;
+            case 3:// 小区
+                PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
+                plotIsFavoriteDoQuery.setUserId(userId);
+                plotIsFavoriteDoQuery.setBuildingId(Integer.valueOf(id));
+                flag = this.userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
+                break;
+            case 4:// 租房
+                DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
+                deleteRentFavoriteDoQuery.setUserId(userId);
+                deleteRentFavoriteDoQuery.setHouseId(id);
+                flag = this.userFavoriteRentMapper.updateRentFavoriteByHouseIdAndUserId(deleteRentFavoriteDoQuery);
+                break;
+        }
+        return flag;
     }
 }

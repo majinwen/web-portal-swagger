@@ -1,14 +1,15 @@
 package com.toutiao.appV2.api.favorite;
 
-import com.toutiao.appV2.model.favorite.FavoriteHouseRequest;
-import com.toutiao.appV2.model.favorite.FavoriteHouseResponse;
-import com.toutiao.appV2.model.favorite.UserCenterFavoriteCountResponse;
+import com.toutiao.appV2.model.favorite.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.validation.Valid;
 
 /**
  * Created by wk on 2018/11/14.
@@ -38,5 +39,16 @@ public interface FavoriteRestApi {
             produces = {"application/json"},
             method = RequestMethod.GET)
     ResponseEntity<FavoriteHouseResponse> queryFavoriteHouseList(@ApiParam(value = "favoriteHouseRequest", required = true) FavoriteHouseRequest favoriteHouseRequest);
+
+    @ApiOperation(value = "取消收藏房源", nickname = "cancelFavoriteHouse", notes = "取消收藏房源", tags = {"收藏",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/favorite/cancelFavoriteHouse",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    ResponseEntity<ChangeFavoriteResponse> cancelFavoriteHouse(@ApiParam(value = "cancelFavoriteHouseRequest", required = true) @Valid @RequestBody CancelFavoriteHouseRequest cancelFavoriteHouseRequest);
 
 }

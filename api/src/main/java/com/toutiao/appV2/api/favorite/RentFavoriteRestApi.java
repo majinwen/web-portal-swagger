@@ -42,16 +42,15 @@ public interface RentFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    @ApiIgnore
-    ResponseEntity<ChangeFavoriteResponse> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult);
+    ResponseEntity<ChangeFavoriteResponse> addRentFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody RentHouseAddFavoriteRequest addFavorite, BindingResult bindingResult);
 
-    @ApiOperation(value = "租房取消收藏", nickname = "deleteRentFavoriteByRentIdAndUserId", notes = "租房取消收藏", tags = {"收藏",})
+    @ApiOperation(value = "租房取消收藏", nickname = "cancelRentFavorite", notes = "租房取消收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found")})
-    @RequestMapping(value = "/rest/favorite/rent/deleteRentFavoriteByRentIdAndUserId",
+    @RequestMapping(value = "/rest/favorite/rent/cancelRentFavorite",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)

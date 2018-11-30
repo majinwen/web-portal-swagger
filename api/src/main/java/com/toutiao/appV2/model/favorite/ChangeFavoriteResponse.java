@@ -1,6 +1,5 @@
 package com.toutiao.appV2.model.favorite;
 
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 /**

@@ -2,6 +2,9 @@ package com.toutiao.app.domain.favorite;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+import java.util.Date;
+
 
 @Data
 public class UserFavoriteEsHouseDoQuery {
@@ -9,23 +12,23 @@ public class UserFavoriteEsHouseDoQuery {
     /**
      * 室
      */
-    private  Integer  room;
+    private Integer room;
 
     /**
      * 面积
      */
-    private  Double  buildArea;
+    private Double buildArea;
 
 
     /**
-     *  大楼名称
+     * 大楼名称
      */
-    private  String buildingName;
+    private String buildingName;
 
     /**
      * 总价
      */
-    private  Double houseTotalPrices;
+    private BigDecimal houseTotalPrices;
 
     /**
      * 用户id
@@ -41,23 +44,25 @@ public class UserFavoriteEsHouseDoQuery {
     /**
      * 二手房标题图
      */
-    private  String  housePhotoTitle;
+    private String housePhotoTitle;
 
     /**
      * 二手房标题
      */
-    private  String  houseTitle;
+    private String houseTitle;
 
-    private  Double rentPrice;
+    private Double rentPrice;
 
-    private  String rentType;
+    private String rentType;
 
-    private  String forward;
+    private String forward;
+
+    private Date createTime;
 
     /**
-     * 价格涨降标志
+     * 价格涨降标志（0未变动，1涨价，2降价）
      */
-    private String priceIncreaseDecline;
+    private Integer priceIncreaseDecline;
     /**
      * 认领标志
      */
@@ -66,5 +71,20 @@ public class UserFavoriteEsHouseDoQuery {
     private Integer housePhotoTitleTags;
 
     private Integer cityId;
+
+    private Integer hall;
+
+    private Short status = 0;
+
+    private String districtName;
+
+    private String areaName;
+
+    private String[] tags;
+
+    private Short isDel = 0;
+
+    private String companyIcon;
+
 
 }
