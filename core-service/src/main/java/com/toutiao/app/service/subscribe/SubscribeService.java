@@ -42,4 +42,6 @@ public interface SubscribeService {
 
 
     UserSubscribe selectConditionSubscribeByUserSubscribeMap(UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, Integer userId, String city);
+
+    List<UserSubscribe> getSubscribeListForT3(Integer userId, Integer city,Integer subscribeType);
 }

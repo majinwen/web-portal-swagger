@@ -31,4 +31,8 @@ public interface UserSubscribeMapper {
     UserSubscribe selectConditionSubscribeByUserSubscribeMap(@Param(value = "record")UserConditionSubscribeDetailDo userConditionSubscribeDetailDo,
                                                              @Param(value = "userId")Integer userId, @Param(value = "cityId")Integer cityId);
 
+    List<UserSubscribe> getSubscribeListForT3(@Param("userId") Integer userId,
+                                              @Param("cityId") Integer cityId,
+                                              @Param("subscribeType") Integer subscribeType);
+
 }
