@@ -63,7 +63,7 @@
                 NULL AS rent_type,
                 0 AS house_area,
                 NULL AS rent_type_name,
-                1 AS TYPE
+                3 AS TYPE
             FROM
                 user_favorite_village AS ufv
             WHERE
@@ -95,7 +95,7 @@
                 NULL AS rent_type,
                 0 AS house_area,
                 NULL AS rent_type_name,
-                2 AS TYPE
+                1 AS TYPE
             FROM
                 user_favorite_newhouse AS ufn
             WHERE
@@ -127,7 +127,7 @@
                 NULL AS rent_type,
                 0 AS house_area,
                 NULL AS rent_type_name,
-                3 AS TYPE
+                2 AS TYPE
             FROM
                 user_favorite_eshouse AS ufe
             WHERE

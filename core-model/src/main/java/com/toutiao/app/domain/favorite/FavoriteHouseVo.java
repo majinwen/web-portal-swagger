@@ -69,7 +69,7 @@ public class FavoriteHouseVo {
     private String houseMaxArea;
 
     @ApiModelProperty(value = "新房在售户型", name = "sellType")
-    private List<Integer> sellType;
+    private List<Integer> roomType;
 
     /**
      * 二手房描述

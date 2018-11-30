@@ -45,7 +45,10 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
 
 //
 //        searchSourceBuilder.query(boolQueryBuilder).aggregation()
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(city)).types(ElasticCityUtils.getDbAvgPriceType(city));
+        Integer cityId = CityUtils.returnCityId(city);
+        boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getDbAvgPriceType(CityConstant.ABBREVIATION_QUANGUO));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(0)
                 .aggregation(AggregationBuilders.terms("houseCount").field("district_id").size(200)
@@ -68,7 +71,10 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
 
     @Override
     public SearchResponse esfMapSearchByBizcircle(BoolQueryBuilder boolQueryBuilder, String city) {
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(city)).types(ElasticCityUtils.getDbAvgPriceType(city));
+        Integer cityId = CityUtils.returnCityId(city);
+        boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getDbAvgPriceType(CityConstant.ABBREVIATION_QUANGUO));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
 
         searchSourceBuilder.query(boolQueryBuilder).size(0)
@@ -101,8 +107,8 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
                 .aggregation(AggregationBuilders.terms("houseCount").field("newcode").size(200)
                         .subAggregation(AggregationBuilders.terms("communityName").field("plotName_accurate"))
                         .subAggregation(AggregationBuilders.terms("communityAvgPrice").field("communityAvgPrice"))
-                        .subAggregation(AggregationBuilders.terms("plotLatitude").field("plotLatitude"))
-                        .subAggregation(AggregationBuilders.terms("plotLongitude").field("plotLongitude")));
+                        .subAggregation(AggregationBuilders.terms("plotLatitude").field("latitude"))
+                        .subAggregation(AggregationBuilders.terms("plotLongitude").field("longitude")));
 
         searchRequest.source(searchSourceBuilder);
 
@@ -121,10 +127,39 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        if((null != keyword && !"".equals(keyword)) || null != distance){
-            searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(sort);
-        }else{
-            searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort",SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+        if ((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)) {
+            //   searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
+            if ("1".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC).sort(sort);
+            } else if ("3".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC).sort(sort);
+            } else if ("4".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC).sort(sort);
+            } else if ("5".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC).sort(sort);
+            } else if ("6".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC).sort(sort);
+            } else {
+                if (sort != null) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(sort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+                }
+            }
+        } else {
+            if ("1".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC);
+            } else if ("3".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
+            } else if ("4".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
+            } else if ("5".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC);
+            } else if ("6".equals(sort)) {
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC);
+            } else {
+                searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            }
         }
         searchRequest.source(searchSourceBuilder);
         SearchResponse response = null;
@@ -144,8 +179,8 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
                 .aggregation(AggregationBuilders.terms("houseCount").field("newcode").size(200)
                     .subAggregation(AggregationBuilders.terms("communityName").field("plotName_accurate"))
                     .subAggregation(AggregationBuilders.terms("communityAvgPrice").field("communityAvgPrice"))
-                    .subAggregation(AggregationBuilders.terms("plotLatitude").field("plotLatitude"))
-                    .subAggregation(AggregationBuilders.terms("plotLongitude").field("plotLongitude")));
+                    .subAggregation(AggregationBuilders.terms("plotLatitude").field("latitude"))
+                    .subAggregation(AggregationBuilders.terms("plotLongitude").field("longitude")));
 
         searchRequest.source(searchSourceBuilder);
 

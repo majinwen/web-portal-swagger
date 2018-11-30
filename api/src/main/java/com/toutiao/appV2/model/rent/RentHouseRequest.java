@@ -156,5 +156,7 @@ public class RentHouseRequest   {
   @ApiParam("排序")
   private String sort;
 
+  @ApiModelProperty(value = "0默认,1逛逛推荐,2逛逛附近(必传坐标和距离)", name = "searchType")
+  private Integer searchType = 0;
 }
 

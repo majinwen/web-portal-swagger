@@ -1,7 +1,6 @@
 package com.toutiao.appV2.apiimpl.favorite;
 
 
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.favorite.FavoriteHouseDomain;
 import com.toutiao.app.domain.favorite.FavoriteHouseListDoQuery;
 import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
@@ -10,10 +9,8 @@ import com.toutiao.appV2.api.favorite.FavoriteRestApi;
 import com.toutiao.appV2.model.favorite.FavoriteHouseRequest;
 import com.toutiao.appV2.model.favorite.FavoriteHouseResponse;
 import com.toutiao.appV2.model.favorite.UserCenterFavoriteCountResponse;
-import com.toutiao.appV2.model.userbasic.UserLoginResponse;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
-import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
@@ -68,7 +65,6 @@ public class FavoriteRestController implements FavoriteRestApi {
     public ResponseEntity<FavoriteHouseResponse> queryFavoriteHouseList(@ApiParam(value = "favoriteHouseRequest", required = true) FavoriteHouseRequest favoriteHouseRequest) {
 
         // 查询登录用户信息
-
         UserBasic user = UserBasic.getCurrent();
         FavoriteHouseResponse favoriteHouseResponse = new FavoriteHouseResponse();
 
@@ -82,7 +78,7 @@ public class FavoriteRestController implements FavoriteRestApi {
             favoriteHouseResponse.setTotalCount(favoriteHouseDomain.getTotalCount());
             return new ResponseEntity<>(favoriteHouseResponse, HttpStatus.OK);
         } else {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN);
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
         }
     }
 }

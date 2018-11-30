@@ -52,6 +52,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getSellHouseByChoose",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<SellHouseSearchDomainResponse> getSellHouseByChoose(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房默认列表推荐（广告）", nickname = "getRecommendSellHouse", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
@@ -135,6 +136,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/nearby/getNearBySellHouses",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<SellHouseSearchDomainResponse> getNearBySellHouses(@ApiParam(value = "nearBySellHousesRequest", required = true) @Valid NearBySellHousesRequest nearBySellHousesRequest, BindingResult bindingResult);
 
 }

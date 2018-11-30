@@ -4,6 +4,7 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -155,6 +156,10 @@ public class RentDetailsFewDo {
      */
     private Integer nearestSubwayLine;
 
+    @ApiModelProperty(value = "逛逛第一行弹幕", name = "houseBarrageFirstList")
+    private List<String> houseBarrageFirstList;
 
+    @ApiModelProperty(value = "逛逛第二行弹幕", name = "houseBarrageSecondList")
+    private List<String> houseBarrageSecondList;
 
 }

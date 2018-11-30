@@ -30,6 +30,7 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getNearRentHouseByLocation",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getNearRentHouseByLocation(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
 
 
@@ -92,6 +93,7 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getRentList",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<RentListResponse> getRentList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
     @ApiOperation(value = "租房通勤找房", nickname = "getCommuteRentList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })

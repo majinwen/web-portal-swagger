@@ -59,16 +59,16 @@ public class SellHouseRestController implements SellHouseRestApi {
     @Override
     public ResponseEntity<MessageSellHouseResponse> querySellHouseByHouseId(@ApiParam(value = "houseId", required = true) @RequestParam(value = "houseId", required = false) String houseId) {
 
-                List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(houseId.split(","));
-                if (StringTool.isNotEmpty(messageSellHouseDos)) {
-                    log.info("返回结果集:{}", JSONUtil.stringfy(messageSellHouseDos));
-                    MessageSellHouseResponse messageSellHouseResponse = new MessageSellHouseResponse();
-                    messageSellHouseResponse.setSellHouseList(messageSellHouseDos);
-                    messageSellHouseResponse.setTotal(messageSellHouseDos.size());
-                    return new ResponseEntity<MessageSellHouseResponse>(messageSellHouseResponse, HttpStatus.OK);
-                } else {
-                    throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND);
-                }
+        List<MessageSellHouseDo> messageSellHouseDos = sellHouseService.querySellHouseByHouseId(houseId.split(","));
+        if (StringTool.isNotEmpty(messageSellHouseDos)) {
+            log.info("返回结果集:{}", JSONUtil.stringfy(messageSellHouseDos));
+            MessageSellHouseResponse messageSellHouseResponse = new MessageSellHouseResponse();
+            messageSellHouseResponse.setSellHouseList(messageSellHouseDos);
+            messageSellHouseResponse.setTotal(messageSellHouseDos.size());
+            return new ResponseEntity<MessageSellHouseResponse>(messageSellHouseResponse, HttpStatus.OK);
+        } else {
+            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND);
+        }
     }
 
     /**
@@ -139,27 +139,40 @@ public class SellHouseRestController implements SellHouseRestApi {
     @Override
     public ResponseEntity<SellHouseSearchDomainResponse> getSellHouseListGet(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
         return getSellHouseSearchDomainResponseResponseEntity(sellHouseRequest);
-
     }
 
     private ResponseEntity<SellHouseSearchDomainResponse> getSellHouseSearchDomainResponseResponseEntity(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest) {
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
-        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-        BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
-        if(sellHouseSearchDomain.getData().size()>0) {
-            sellHouseSearchDomainResponse.setIsGuess(0);
+        if (sellHouseRequest.getSearchType() == 1) {
+            UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = JSON.parseObject(JSON.toJSONString(sellHouseRequest), UserFavoriteConditionDoQuery.class);
+            SellHouseDomain sellHouseDomain = sellHouseService.getSellHouseByChooseV1(userFavoriteConditionDoQuery, CityUtils.getCity());
+            SellHouseSearchDomainResponse sellHouseResponse = JSON.parseObject(JSON.toJSONString(sellHouseDomain), SellHouseSearchDomainResponse.class);
+            log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseResponse));
+            return new ResponseEntity<>(sellHouseResponse, HttpStatus.OK);
+        } else if (sellHouseRequest.getSearchType() == 2) {
+            SellHouseSearchDomainResponse nearBySellHouseDomainResponse = new SellHouseSearchDomainResponse();
+            NearBySellHouseQueryDo nearBySellHouseQueryDo = new NearBySellHouseQueryDo();
+            BeanUtils.copyProperties(sellHouseRequest, nearBySellHouseQueryDo);
+            NearBySellHouseDomain nearBySellHouseDomain = nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHouseQueryDo, CityUtils.getCity());
+            BeanUtils.copyProperties(nearBySellHouseDomain, nearBySellHouseDomainResponse);
+            log.info("返回结果集:{}", JSONUtil.stringfy(nearBySellHouseDomainResponse));
+            return new ResponseEntity<>(nearBySellHouseDomainResponse, HttpStatus.OK);
+        } else {
+            SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+            SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+            BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+            SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+            if (sellHouseSearchDomain.getData().size() > 0) {
+                sellHouseSearchDomainResponse.setIsGuess(0);
+            } else {
+                //没有根据结果查询到数据,返回猜你喜欢的数据
+                sellHouseDoQuery = new SellHouseDoQuery();
+                sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+                sellHouseSearchDomainResponse.setIsGuess(1);
+            }
+            BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+            log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
+            return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
         }
-        else
-        {
-            //没有根据结果查询到数据,返回猜你喜欢的数据
-            sellHouseDoQuery = new SellHouseDoQuery();
-            sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
-            sellHouseSearchDomainResponse.setIsGuess(1);
-        }
-        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
-        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
-        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
     }
 
     /**
