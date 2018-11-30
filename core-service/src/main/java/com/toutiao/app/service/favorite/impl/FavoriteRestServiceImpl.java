@@ -373,7 +373,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
         for (FavoriteHouseDo favoriteHouseDo : favoriteHouseDoList) {
             favoriteHouseVo = new FavoriteHouseVo();
-            Integer type = favoriteHouseDo.getType(); // 1-小区、2-新房、3-二手房、4-住房
+            Integer type = favoriteHouseDo.getType(); // 1 新房 2 二手房 3 小区 4 租房
             favoriteHouseVo.setType(type);
             favoriteHouseVo.setStatus(favoriteHouseDo.getStatus());
             favoriteHouseVo.setAreaName(favoriteHouseDo.getAreaName());
@@ -383,31 +383,34 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
             favoriteHouseVo.setTagNames(null);
 
             switch (type) {
-                case 1: // 小区
+                case 1:// 新房
                     favoriteHouseVo.setId(favoriteHouseDo.getBuildingId().toString());
                     favoriteHouseVo.setBuildingName(favoriteHouseDo.getBuildingName());
-                    favoriteHouseVo.setTitleImg(qiNiuImgDomain + "/" + favoriteHouseDo.getBuildingTitleImg() + suffix);
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice());
-                    // TODO 添加小区建成时间、类型
-                    favoriteHouseVo.setBuildTime(null);
-                    favoriteHouseVo.setBuildType(null);
-                    break;
-                case 2:// 新房
-                    favoriteHouseVo.setId(favoriteHouseDo.getBuildingId().toString());
-                    favoriteHouseVo.setBuildingName(favoriteHouseDo.getBuildingName());
-                    favoriteHouseVo.setTitleImg(qiNiuImgDomain + "/" + favoriteHouseDo.getBuildingTitleImg() + suffix);
+                    String buildingTitleImg = favoriteHouseDo.getBuildingTitleImg();
+
+                    if (null != buildingTitleImg && !buildingTitleImg.startsWith("http")) {
+                        favoriteHouseVo.setTitleImg(qiNiuImgDomain + "/" + buildingTitleImg + suffix);
+                    } else {
+                        favoriteHouseVo.setTitleImg(buildingTitleImg);
+                    }
                     favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice());
                     favoriteHouseVo.setHouseMinArea(favoriteHouseDo.getHouseMinArea());
                     favoriteHouseVo.setHouseMaxArea(favoriteHouseDo.getHouseMaxArea());
                     favoriteHouseVo.setTotalPrice(favoriteHouseDo.getTotalPrice());
                     // TODO 销售居室
-                    favoriteHouseVo.setSellType(null);
+                    favoriteHouseVo.setRoomType(null);
                     break;
-                case 3: // 二手房
+                case 2: // 二手房
                     favoriteHouseVo.setId(favoriteHouseDo.getHouseId());
                     favoriteHouseVo.setBuildingName(favoriteHouseDo.getBuildingName());
                     favoriteHouseVo.setTitle(favoriteHouseDo.getBuildingName());
-                    favoriteHouseVo.setTitleImg(favoriteHouseDo.getHousePhotoTitle());
+                    String housePhotoTitle = favoriteHouseDo.getHousePhotoTitle();
+
+                    if (null != housePhotoTitle && !housePhotoTitle.startsWith("http")) {
+                        favoriteHouseVo.setTitleImg(qiNiuImgDomain + "/" + housePhotoTitle + suffix);
+                    } else {
+                        favoriteHouseVo.setTitleImg(housePhotoTitle);
+                    }
                     favoriteHouseVo.setPrice(favoriteHouseDo.getHouseTotalPrices());
                     favoriteHouseVo.setRoom(favoriteHouseDo.getRoom());
                     // TODO 厅
@@ -415,11 +418,32 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     favoriteHouseVo.setForward(favoriteHouseDo.getForward());
                     favoriteHouseVo.setBuildArea(favoriteHouseDo.getBuildArea());
                     break;
-                case 4: // 小区
+                case 3: // 小区
+                    favoriteHouseVo.setId(favoriteHouseDo.getBuildingId().toString());
+                    favoriteHouseVo.setBuildingName(favoriteHouseDo.getBuildingName());
+                    String buildingTitleImgPlot = favoriteHouseDo.getBuildingTitleImg();
+
+                    if (null != buildingTitleImgPlot && !buildingTitleImgPlot.startsWith("http")) {
+                        favoriteHouseVo.setTitleImg(qiNiuImgDomain + "/" + buildingTitleImgPlot + suffix);
+                    } else {
+                        favoriteHouseVo.setTitleImg(buildingTitleImgPlot);
+                    }
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice());
+                    // TODO 添加小区建成时间、类型
+                    favoriteHouseVo.setBuildTime(null);
+                    favoriteHouseVo.setBuildType(null);
+                    break;
+                case 4: // 租房
                     favoriteHouseVo.setId(favoriteHouseDo.getHouseId());
                     favoriteHouseVo.setBuildingName(favoriteHouseDo.getBuildingName());
                     favoriteHouseVo.setTitle(favoriteHouseDo.getHouseTitle());
-                    favoriteHouseVo.setTitleImg(qiNiuImgDomain + "/" + favoriteHouseDo.getHousePhotoTitle() + suffix);
+                    String housePhotoTitleRent = favoriteHouseDo.getHousePhotoTitle();
+
+                    if (null != housePhotoTitleRent && !housePhotoTitleRent.startsWith("http")) {
+                        favoriteHouseVo.setTitleImg(qiNiuImgDomain + "/" + housePhotoTitleRent + suffix);
+                    } else {
+                        favoriteHouseVo.setTitleImg(housePhotoTitleRent);
+                    }
                     favoriteHouseVo.setPrice(favoriteHouseDo.getRentPrice());
                     favoriteHouseVo.setRentTypeName(favoriteHouseDo.getRentTypeName());
                     favoriteHouseVo.setRoom(favoriteHouseDo.getRoom());
