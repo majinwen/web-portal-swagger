@@ -335,13 +335,13 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         EsfMapCommunityDo esfMapCommunityDo = new EsfMapCommunityDo();
         EsfMapHouseDo esfMapHouseDo = new EsfMapHouseDo();
 
-//        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-//        BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
 
         //其他筛选条件
-       // BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
+        BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         //小区id
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+       // BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termsQuery("newcode", esfMapSearchDoQuery.getNewcode()));
 
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
@@ -355,16 +355,16 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             geoDistanceSort.unit(DistanceUnit.KILOMETERS);
             geoDistanceSort.geoDistance(GeoDistance.ARC);
         }
-
-        //地铁线id
-        if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && esfMapSearchDoQuery.getSubwayLineId() != 0) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", esfMapSearchDoQuery.getSubwayLineId()));
-
-        }
-        //地铁站id
-        if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayStationId()) && esfMapSearchDoQuery.getSubwayStationId().length != 0) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", esfMapSearchDoQuery.getSubwayStationId()));
-        }
+//
+//        //地铁线id
+//        if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && esfMapSearchDoQuery.getSubwayLineId() != 0) {
+//            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", esfMapSearchDoQuery.getSubwayLineId()));
+//
+//        }
+//        //地铁站id
+//        if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayStationId()) && esfMapSearchDoQuery.getSubwayStationId().length != 0) {
+//            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", esfMapSearchDoQuery.getSubwayStationId()));
+//        }
 
 
 
@@ -996,28 +996,28 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
                 esfMapHouseDo.setNearbyDistance(esfMapHouseDo.getArea() + " " + esfMapHouseDo.getHouseBusinessName());
 
-                //增加地铁与房子之间的距离
-                String keys="";
-                if(null!=sellHouseDoQuery.getSubwayLineId())
-                {
-                    keys+=sellHouseDoQuery.getSubwayLineId().toString();
-                }
-                if (null!=sellHouseDoQuery.getSubwayStationId()){
-                    Map<Integer,String> map = new HashMap<>();
-                    List<Integer> sortDistance = new ArrayList<>();
-                    for(int j=0; j<sellHouseDoQuery.getSubwayStationId().length; j++){
-                        String stationKey = keys+"$"+sellHouseDoQuery.getSubwayStationId()[j];
-                        if(StringTool.isNotEmpty(esfMapHouseDo.getSubwayDistince().get(stationKey))){
-                            String stationValue = esfMapHouseDo.getSubwayDistince().get(stationKey).toString();
-                            String[] stationValueSplit = stationValue.split("\\$");
-                            Integer distance = Integer.valueOf(stationValueSplit[2]);
-                            sortDistance.add(distance);
-                            map.put(distance,stationKey);
-                        }
-                    }
-                    Integer minDistance = Collections.min(sortDistance);
-                    esfMapHouseDo.setSubwayDistanceInfo(esfMapHouseDo.getSubwayDistince().get(map.get(minDistance)).toString());
-                }
+//                //增加地铁与房子之间的距离
+//                String keys="";
+//                if(null!=sellHouseDoQuery.getSubwayLineId())
+//                {
+//                    keys+=sellHouseDoQuery.getSubwayLineId().toString();
+//                }
+//                if (null!=sellHouseDoQuery.getSubwayStationId()){
+//                    Map<Integer,String> map = new HashMap<>();
+//                    List<Integer> sortDistance = new ArrayList<>();
+//                    for(int j=0; j<sellHouseDoQuery.getSubwayStationId().length; j++){
+//                        String stationKey = keys+"$"+sellHouseDoQuery.getSubwayStationId()[j];
+//                        if(StringTool.isNotEmpty(esfMapHouseDo.getSubwayDistince().get(stationKey))){
+//                            String stationValue = esfMapHouseDo.getSubwayDistince().get(stationKey).toString();
+//                            String[] stationValueSplit = stationValue.split("\\$");
+//                            Integer distance = Integer.valueOf(stationValueSplit[2]);
+//                            sortDistance.add(distance);
+//                            map.put(distance,stationKey);
+//                        }
+//                    }
+//                    Integer minDistance = Collections.min(sortDistance);
+//                    esfMapHouseDo.setSubwayDistanceInfo(esfMapHouseDo.getSubwayDistince().get(map.get(minDistance)).toString());
+//                }
 
                 esfCircleListDo.setEsfMapHouseDo(esfMapHouseDo);
                 esfCircleListDos.add(esfCircleListDo);
