@@ -58,8 +58,8 @@ public class NewHouseMapSearchEsDaoImpl implements NewHouseMapSearchEsDao {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(50)
                 .fetchSource(new String[]{"district_id","district_name","property_type",
-                        "building_name","average_price","sale_status_name","building_title_img"
-                        ,"totalPrice","is_active","building_tags"},
+                        "building_name","building_name_id","average_price","sale_status_name","building_title_img"
+                        ,"totalPrice","is_active","building_tags","house_max_area","house_min_area","activity_info"},
                         null);
         searchRequest.source(searchSourceBuilder);
 
