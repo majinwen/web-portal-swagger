@@ -73,10 +73,10 @@ public class FavoriteRestController implements FavoriteRestApi {
             FavoriteHouseListDoQuery favoriteHouseDoQuery = new FavoriteHouseListDoQuery();
             favoriteHouseDoQuery.setUserId(Integer.valueOf(user.getUserId()));
             favoriteHouseDoQuery.setPageNum(favoriteHouseRequest.getPageNum());
-            favoriteHouseDoQuery.setSize(favoriteHouseRequest.getSize());
+            favoriteHouseDoQuery.setSize(favoriteHouseRequest.getPageSize());
             FavoriteHouseDomain favoriteHouseDomain = favoriteRestService.queryFavoriteHouseList(favoriteHouseDoQuery);
             favoriteHouseResponse.setList(favoriteHouseDomain.getList());
-            favoriteHouseResponse.setTotalCount(favoriteHouseDomain.getTotalCount());
+            favoriteHouseResponse.setTotalNum(favoriteHouseDomain.getTotalCount());
             return new ResponseEntity<>(favoriteHouseResponse, HttpStatus.OK);
         } else {
             throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
