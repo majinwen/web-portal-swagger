@@ -94,6 +94,11 @@ public class SubscribeServiceImpl implements SubscribeService {
         return userSubscribeMapper.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo, userId, cityId);
     }
 
+    @Override
+    public List<UserSubscribe> getSubscribeListForT3(Integer userId, Integer cityId, Integer subscribeType) {
+        return userSubscribeMapper.getSubscribeListForT3(userId,cityId,subscribeType);
+    }
+
     /**
      * @param userId           用户ID
      * @param isGetHouseDetail 是否获取符合订阅条件的房源详情

@@ -203,4 +203,14 @@
         </if>
         limit 1
     </select>
+
+    <select id="getSubscribeListForT3" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from user_subscribe
+        where subscribe_type = #{subscribeType,jdbcType=INTEGER}
+        AND city_id = #{cityId,jdbcType=INTEGER}
+        AND user_id = #{userId,jdbcType=INTEGER}
+        order by id desc
+    </select>
 </mapper>
