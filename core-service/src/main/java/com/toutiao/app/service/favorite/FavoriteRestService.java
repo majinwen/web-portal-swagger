@@ -114,4 +114,6 @@ public interface FavoriteRestService {
      * @return
      */
     FavoriteHouseDomain queryFavoriteHouseList(FavoriteHouseListDoQuery favoriteHouseDoQuery);
+
+    Integer cancelFavoriteHouse(CancelFavoriteHouseDto cancelFavoriteHouseDto);
 }

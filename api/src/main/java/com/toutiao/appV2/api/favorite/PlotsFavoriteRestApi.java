@@ -44,7 +44,7 @@ public interface PlotsFavoriteRestApi {
     @ApiIgnore
     ResponseEntity<QueryFavoriteResponse> getPlotIsFavoriteByPlotIdAndUserId(@ApiParam(value = "plotIsFavoriteRequest", required = true) @Valid PlotIsFavoriteRequest plotIsFavoriteRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "添加小区收藏", nickname = "addPlotsFavorite", notes = "添加小区收藏", tags = {"收藏",})
+    @ApiOperation(value = "小区添加收藏", nickname = "addPlotsFavorite", notes = "小区添加收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
@@ -55,17 +55,16 @@ public interface PlotsFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    @ApiIgnore
     ResponseEntity<ChangeFavoriteResponse> addPlotsFavorite(@ApiParam(value = "plotsAddFavoriteRequest", required = true) @Valid @RequestBody PlotsAddFavoriteRequest plotsAddFavoriteRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "小区取消收藏", nickname = "cancelFavoriteByVillage", notes = "小区取消收藏", tags = {"收藏",})
+    @ApiOperation(value = "小区取消收藏", nickname = "cancelPlotsFavorite", notes = "小区取消收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found")})
-    @RequestMapping(value = "/rest/favorite/plots/cancelFavoriteByVillage",
+    @RequestMapping(value = "/rest/favorite/plots/cancelPlotsFavorite",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)

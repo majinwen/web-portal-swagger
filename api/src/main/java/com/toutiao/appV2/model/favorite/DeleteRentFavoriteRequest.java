@@ -17,8 +17,8 @@ public class DeleteRentFavoriteRequest {
     @NotNull(message = "缺少租房id")
     private String houseId;
 
-    @ApiModelProperty(value = "用户id", name = "userId", required = true)
-    @NotNull(message = "缺少用户id")
-    private Integer userId;
+//    @ApiModelProperty(value = "用户id", name = "userId", required = true)
+//    @NotNull(message = "缺少用户id")
+//    private Integer userId;
 }
 

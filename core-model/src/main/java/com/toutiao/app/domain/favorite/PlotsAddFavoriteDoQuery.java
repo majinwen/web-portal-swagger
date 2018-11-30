@@ -2,6 +2,8 @@ package com.toutiao.app.domain.favorite;
 
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 public class PlotsAddFavoriteDoQuery {
     /**
@@ -15,7 +17,7 @@ public class PlotsAddFavoriteDoQuery {
     /**
      * 均价
      */
-    private Double averagePrice;
+    private BigDecimal averagePrice;
     /**
      * 小区名称
      */
@@ -31,7 +33,18 @@ public class PlotsAddFavoriteDoQuery {
     /**
      * 是否删除(0-未删除，1-已删除)
      */
-    private Short isDel;
+    private Short isDel = 0;
 
     private Integer cityId;
+
+    private String buildYears;
+
+    private String buildingStructure;
+
+    private String districtName;
+
+    private String areaName;
+
+    private String[] tags;
+
 }

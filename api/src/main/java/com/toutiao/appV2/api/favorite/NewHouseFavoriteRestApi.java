@@ -31,7 +31,7 @@ public interface NewHouseFavoriteRestApi {
     ResponseEntity<NewHouseFavoriteListResponse> getNewHouseFavoriteByUserId(@ApiParam(value = "newHouseFavoriteListRequest", required = true) @Valid NewHouseFavoriteListRequest newHouseFavoriteListRequest, BindingResult bindingResult);
 
 
-    @ApiOperation(value = "添加新房收藏", nickname = "addNewHouseFavorite", notes = "添加新房收藏", tags = {"收藏",})
+    @ApiOperation(value = "新房添加收藏", nickname = "addNewHouseFavorite", notes = "新房添加收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
@@ -42,17 +42,16 @@ public interface NewHouseFavoriteRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
-    @ApiIgnore
     ResponseEntity<ChangeFavoriteResponse> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "新房取消收藏", nickname = "cancelFavoriteByNewHouse", notes = "新房取消收藏", tags = {"收藏",})
+    @ApiOperation(value = "新房取消收藏", nickname = "cancelNewHouseFavorite", notes = "新房取消收藏", tags = {"收藏",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK"),
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found")})
-    @RequestMapping(value = "/rest/favorite/newhouse/cancelFavoriteByNewHouse",
+    @RequestMapping(value = "/rest/favorite/newhouse/cancelNewHouseFavorite",
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)

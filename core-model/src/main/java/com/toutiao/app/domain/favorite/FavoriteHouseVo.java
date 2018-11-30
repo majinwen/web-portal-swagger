@@ -25,7 +25,7 @@ public class FavoriteHouseVo {
     @ApiModelProperty(value = "标题图", name = "titleImg")
     private String titleImg;
 
-    @ApiModelProperty(value = "类型(1-小区、2-新房、3-二手房、4-住房)", name = "type")
+    @ApiModelProperty(value = "类型(1 新房 2 二手房 3 小区 4 租房)", name = "type")
     private Integer type;
 
     @ApiModelProperty(value = "价格", name = "price")

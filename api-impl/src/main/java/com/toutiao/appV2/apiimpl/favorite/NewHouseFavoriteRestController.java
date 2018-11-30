@@ -11,8 +11,10 @@ import com.toutiao.app.service.favorite.NewHouseFavoriteRestService;
 import com.toutiao.appV2.api.favorite.NewHouseFavoriteRestApi;
 import com.toutiao.appV2.model.favorite.*;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.JSONUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -20,13 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @Slf4j
@@ -89,8 +89,15 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
     @Override
     public ResponseEntity<ChangeFavoriteResponse> addNewHouseFavorite(@ApiParam(value = "newHouseAddFavoriteRequest", required = true) @Valid @RequestBody NewHouseAddFavoriteRequest newHouseAddFavoriteRequest, BindingResult bindingResult) {
 
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
         NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
         BeanUtils.copyProperties(newHouseAddFavoriteRequest, newHouseAddFavoriteDoQuery);
+        newHouseAddFavoriteDoQuery.setUserId(Integer.valueOf(user.getUserId()));
         Integer flag = favoriteRestService.addNewHouseFavorite(newHouseAddFavoriteDoQuery);
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
@@ -117,8 +124,15 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
     @Override
     public ResponseEntity<ChangeFavoriteResponse> cancelFavoriteByNewHouse(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult) {
 
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
         UserFavoriteNewHouse userFavoriteNewHouse = new UserFavoriteNewHouse();
         BeanUtils.copyProperties(cancelFavoriteRequest, userFavoriteNewHouse);
+        userFavoriteNewHouse.setUserId(Integer.valueOf(user.getUserId()));
         Integer flag = favoriteRestService.cancelNewHouseByNewCode(userFavoriteNewHouse);
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {

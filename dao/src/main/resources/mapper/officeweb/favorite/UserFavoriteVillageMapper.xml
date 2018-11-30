@@ -216,6 +216,21 @@
       <if test="cityId != null" >
         city_id,
       </if>
+      <if test="buildYears != null" >
+        build_years,
+      </if>
+      <if test="buildingStructure != null" >
+        building_structure,
+      </if>
+      <if test="districtName != null" >
+        district_name,
+      </if>
+      <if test="areaName != null" >
+        area_name,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -243,7 +258,22 @@
         #{isDel},
       </if>
       <if test="cityId != null" >
-        #{cityId}
+        #{cityId},
+      </if>
+      <if test="buildYears != null" >
+        #{buildYears},
+      </if>
+      <if test="buildingStructure != null" >
+        #{buildingStructure},
+      </if>
+      <if test="districtName != null" >
+        #{districtName},
+      </if>
+      <if test="areaName != null" >
+        #{areaName},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=ARRAY,typeHandler=com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler},
       </if>
     </trim>
   </insert>

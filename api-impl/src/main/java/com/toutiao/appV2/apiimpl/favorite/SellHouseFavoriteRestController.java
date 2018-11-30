@@ -11,8 +11,10 @@ import com.toutiao.app.service.favorite.SellHouseFavoriteRestService;
 import com.toutiao.appV2.api.favorite.SellHouseFavoriteRestApi;
 import com.toutiao.appV2.model.favorite.*;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.JSONUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -73,11 +75,17 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
      * @return
      */
     @Override
-    public ResponseEntity<ChangeFavoriteResponse> addEsfFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody AddFavorite addFavorite, BindingResult bindingResult) {
+    public ResponseEntity<ChangeFavoriteResponse> addEsfFavorite(@ApiParam(value = "addFavorite", required = true) @Valid @RequestBody SellHouseAddFavoriteRequest addFavorite, BindingResult bindingResult) {
 
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
         UserFavoriteEsHouseDoQuery userFavoriteEsHouse = new UserFavoriteEsHouseDoQuery();
         BeanUtils.copyProperties(addFavorite, userFavoriteEsHouse);
-        userFavoriteEsHouse.setPriceIncreaseDecline(addFavorite.getIsCutPrice());
+        userFavoriteEsHouse.setUserId(Integer.valueOf(user.getUserId()));
         Integer flag = favoriteRestService.addEsfFavorite(userFavoriteEsHouse);
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
@@ -104,8 +112,15 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
     @Override
     public ResponseEntity<ChangeFavoriteResponse> deleteEsfFavoriteByEsfIdAndUserId(@ApiParam(value = "deleteEsfFavoriteRequest", required = true) @Valid @RequestBody DeleteEsfFavoriteRequest deleteEsfFavoriteRequest, BindingResult bindingResult) {
 
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
         DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
         BeanUtils.copyProperties(deleteEsfFavoriteRequest, deleteEsfFavoriteDo);
+        deleteEsfFavoriteDo.setUserId(Integer.valueOf(user.getUserId()));
         Boolean flag = favoriteRestService.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag) {

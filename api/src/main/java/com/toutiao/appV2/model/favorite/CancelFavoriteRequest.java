@@ -13,16 +13,16 @@ import javax.validation.constraints.NotNull;
 @ApiModel(value = "CancelFavoriteRequest", description = "CancelFavoriteRequest")
 public class CancelFavoriteRequest {
 
-    @ApiModelProperty(value = "新房id", name = "buildingId", required = true)
-    @NotNull(message = "缺少新房id")
+    @ApiModelProperty(value = "新房或小区id", name = "buildingId", required = true)
+    @NotNull(message = "缺少新房或小区id")
     private Integer buildingId;
 
-    @ApiModelProperty(value = "用户id", name = "userId", required = true)
-    @NotNull(message = "缺少用户id")
-    private Integer userId;
-
-    @ApiModelProperty(value = "小区id", name = "villageId", required = true)
-    private Integer villageId;
+//    @ApiModelProperty(value = "用户id", name = "userId", required = true)
+//    @NotNull(message = "缺少用户id")
+//    private Integer userId;
+//
+//    @ApiModelProperty(value = "小区id", name = "villageId", required = true)
+//    private Integer villageId;
 
 }
 

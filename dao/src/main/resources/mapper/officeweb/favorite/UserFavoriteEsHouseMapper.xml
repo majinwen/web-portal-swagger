@@ -173,6 +173,135 @@
       </if>
     </trim>
   </insert>
+
+  <insert id="insertSellHouseSelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouseDoQuery" >
+    insert into user_favorite_eshouse
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+<!--      <if test="id != null" >
+        id,
+      </if>-->
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="houseId != null" >
+        house_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="isDel != null" >
+        is_del,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="buildingName != null" >
+        building_name,
+      </if>
+      <if test="buildArea != null" >
+        build_area,
+      </if>
+      <if test="room != null" >
+        room,
+      </if>
+      <if test="forward != null" >
+        forward,
+      </if>
+      <if test="houseTotalPrices != null" >
+        house_total_prices,
+      </if>
+      <if test="housePhotoTitle != null" >
+        house_photo_title,
+      </if>
+      <if test="houseTitle != null" >
+        house_title,
+      </if>
+      <if test="priceIncreaseDecline != null" >
+        price_increase_decline,
+      </if>
+      <if test="isClaim != null" >
+        is_claim,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="hall != null" >
+        hall,
+      </if>
+      <if test="districtName != null" >
+        district_name,
+      </if>
+      <if test="areaName != null" >
+        area_name,
+      </if>
+      <if test="tags != null" >
+        tags,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+<!--      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>-->
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="houseId != null" >
+        #{houseId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDel != null" >
+        #{isDel,jdbcType=SMALLINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="buildingName != null" >
+        #{buildingName,jdbcType=VARCHAR},
+      </if>
+      <if test="buildArea != null" >
+        #{buildArea,jdbcType=DOUBLE},
+      </if>
+      <if test="room != null" >
+        #{room,jdbcType=INTEGER},
+      </if>
+      <if test="forward != null" >
+        #{forward,jdbcType=VARCHAR},
+      </if>
+      <if test="houseTotalPrices != null" >
+        #{houseTotalPrices,jdbcType=DOUBLE},
+      </if>
+      <if test="housePhotoTitle != null" >
+        #{housePhotoTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="houseTitle != null" >
+        #{houseTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="priceIncreaseDecline != null" >
+        #{priceIncreaseDecline,jdbcType=VARCHAR},
+      </if>
+      <if test="isClaim != null" >
+        #{isClaim,jdbcType=VARCHAR},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="hall != null" >
+        #{hall,jdbcType=INTEGER},
+      </if>
+      <if test="districtName != null" >
+        #{districtName,jdbcType=VARCHAR},
+      </if>
+      <if test="areaName != null" >
+        #{areaName,jdbcType=VARCHAR},
+      </if>
+      <if test="tags != null" >
+        #{tags,jdbcType=ARRAY,typeHandler=com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler},
+      </if>
+    </trim>
+  </insert>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.domain.favorite.UserFavoriteEsHouse" >
     update user_favorite_eshouse
     <set >

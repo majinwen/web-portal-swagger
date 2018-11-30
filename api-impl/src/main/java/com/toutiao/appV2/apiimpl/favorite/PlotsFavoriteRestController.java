@@ -9,8 +9,10 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.appV2.api.favorite.PlotsFavoriteRestApi;
 import com.toutiao.appV2.model.favorite.*;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.JSONUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -88,8 +90,15 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
     @Override
     public ResponseEntity<ChangeFavoriteResponse> addPlotsFavorite(@ApiParam(value = "plotsAddFavoriteRequest", required = true) @Valid @RequestBody PlotsAddFavoriteRequest plotsAddFavoriteRequest, BindingResult bindingResult) {
 
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
         PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
         BeanUtils.copyProperties(plotsAddFavoriteRequest, plotsAddFavoriteDoQuery);
+        plotsAddFavoriteDoQuery.setUserId(Integer.valueOf(user.getUserId()));
         Integer flag = favoriteRestService.addPlotsFavorite(plotsAddFavoriteDoQuery);
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
@@ -115,8 +124,15 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
     @Override
     public ResponseEntity<ChangeFavoriteResponse> cancelFavoriteByVillage(@ApiParam(value = "cancelFavoriteRequest", required = true) @Valid @RequestBody CancelFavoriteRequest cancelFavoriteRequest, BindingResult bindingResult) {
 
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
         PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
         BeanUtils.copyProperties(cancelFavoriteRequest, plotIsFavoriteDoQuery);
+        plotIsFavoriteDoQuery.setUserId(Integer.valueOf(user.getUserId()));
         Integer flag = favoriteRestService.cancelVillageByVillageId(plotIsFavoriteDoQuery);
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {

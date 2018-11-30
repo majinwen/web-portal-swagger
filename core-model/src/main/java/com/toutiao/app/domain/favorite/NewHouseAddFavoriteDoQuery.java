@@ -55,8 +55,34 @@ public class NewHouseAddFavoriteDoQuery {
     /**
      * 是否删除(0-未删除，1-已删除)
      */
-    private Short isDel;
+    private Short isDel = 0;
 
     private  Integer cityId;
+
+    /**
+     * 在售户型
+     */
+    private Integer[] roomType;
+
+    /**
+     * 是否优惠活动 0-不优惠 1-优惠
+     */
+    private Integer isActive;
+
+    /**
+     * 区域
+     */
+    private String districtName;
+
+    /**
+     * 商圈
+     */
+    private String areaName;
+
+    /**
+     * 标签
+     */
+    private String[] tags;
+
 
 }

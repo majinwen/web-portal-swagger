@@ -2,6 +2,7 @@ package com.toutiao.web.dao.mapper.officeweb.favorite;
 
 import com.toutiao.app.domain.favorite.DeleteEsfFavoriteDo;
 import com.toutiao.app.domain.favorite.UserFavoriteEsHouse;
+import com.toutiao.app.domain.favorite.UserFavoriteEsHouseDoQuery;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteDo;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 import com.toutiao.web.dao.BaseDao;
@@ -17,6 +18,8 @@ public interface UserFavoriteEsHouseMapper extends BaseDao {
     int insert(UserFavoriteEsHouse record);
 
     int insertSelective(UserFavoriteEsHouse record);
+
+    Integer insertSellHouseSelective(UserFavoriteEsHouseDoQuery record);
 
     UserFavoriteEsHouse selectByPrimaryKey(Integer id);
 
