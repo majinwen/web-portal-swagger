@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -33,6 +34,7 @@ public interface FindhouseApi {
     @RequestMapping(value = "/rest/findhouse/byHouseReport/getHomePageReport",
         produces = "application/json",
         method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<com.toutiao.appV2.model.Intelligence.IntelligenceResponse> getHomePageReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
 
 
@@ -49,6 +51,7 @@ public interface FindhouseApi {
         produces = "application/json",
         consumes = "application/json",
         method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<StringDataResponse> saveHomePageReport(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 }

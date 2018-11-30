@@ -39,6 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -279,6 +280,17 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                 rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
+                List<String> houseBarrageFirstList = new ArrayList<>();
+                houseBarrageFirstList.add("小区同户型总价最低");
+                houseBarrageFirstList.add("总价低于商圈同户型5万");
+                houseBarrageFirstList.add("降10万");
+                houseBarrageFirstList.add("平均成交周期7天");
+                rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
+                List<String> houseBarrageSecondList = new ArrayList<>();
+                houseBarrageSecondList.add("采光很好");
+                houseBarrageSecondList.add("小区同户型低总价榜NO.4");
+                houseBarrageSecondList.add("总价低于小区同户型7万");
+                rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
                 list.add(rentDetailsFewDo);
             }
         }
@@ -293,6 +305,17 @@ public class RentRestRestServiceImpl implements RentRestService {
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                     rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits() + (int) response.getHits().getTotalHits());
+                    List<String> houseBarrageFirstList = new ArrayList<>();
+                    houseBarrageFirstList.add("小区同户型总价最低");
+                    houseBarrageFirstList.add("总价低于商圈同户型5万");
+                    houseBarrageFirstList.add("降10万");
+                    houseBarrageFirstList.add("平均成交周期7天");
+                    rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
+                    List<String> houseBarrageSecondList = new ArrayList<>();
+                    houseBarrageSecondList.add("采光很好");
+                    houseBarrageSecondList.add("小区同户型低总价榜NO.4");
+                    houseBarrageSecondList.add("总价低于小区同户型7万");
+                    rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
                     list.add(rentDetailsFewDo);
                 }
             }
@@ -307,6 +330,17 @@ public class RentRestRestServiceImpl implements RentRestService {
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                     rentDetailsFewDo.setTotalNum((int) response.getHits().getTotalHits());
+                    List<String> houseBarrageFirstList = new ArrayList<>();
+                    houseBarrageFirstList.add("小区同户型总价最低");
+                    houseBarrageFirstList.add("总价低于商圈同户型5万");
+                    houseBarrageFirstList.add("降10万");
+                    houseBarrageFirstList.add("平均成交周期7天");
+                    rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
+                    List<String> houseBarrageSecondList = new ArrayList<>();
+                    houseBarrageSecondList.add("采光很好");
+                    houseBarrageSecondList.add("小区同户型低总价榜NO.4");
+                    houseBarrageSecondList.add("总价低于小区同户型7万");
+                    rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
                     list.add(rentDetailsFewDo);
                 }
             }
@@ -385,6 +419,17 @@ public class RentRestRestServiceImpl implements RentRestService {
 
                 }
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
+                List<String> houseBarrageFirstList = new ArrayList<>();
+                houseBarrageFirstList.add("小区同户型总价最低");
+                houseBarrageFirstList.add("总价低于商圈同户型5万");
+                houseBarrageFirstList.add("降10万");
+                houseBarrageFirstList.add("平均成交周期7天");
+                rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
+                List<String> houseBarrageSecondList = new ArrayList<>();
+                houseBarrageSecondList.add("采光很好");
+                houseBarrageSecondList.add("小区同户型低总价榜NO.4");
+                houseBarrageSecondList.add("总价低于小区同户型7万");
+                rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
                 list.add(rentDetailsFewDo);
             }
             rentDetailsListDo.setRentDetailsList(list);
@@ -541,12 +586,26 @@ public class RentRestRestServiceImpl implements RentRestService {
             List<String> imgs = new ArrayList<>();
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
-
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                String nearbyDistance = "";
+                String traffic = rentDetailsFewDo.getNearestSubway();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    if (i > 2000) {
+                        nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName();
+                    } else if (i > 1000) {
+                        DecimalFormat df = new DecimalFormat("0.0");
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    } else {
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                    }
+                }
+
                 if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
                     BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
-                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
-                    rentDetailsFewDo.setNearbyDistance(distance);
+                    String distances= geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                    nearbyDistance = "距您" + distances + "km";
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
@@ -573,6 +632,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
                     agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
                 }
+
                 //增加房子与地铁的距离
                 String keys = "";
                 if (null != rentHouseDoQuery.getSubwayLineId() && rentHouseDoQuery.getSubwayLineId() > 0) {
@@ -600,7 +660,17 @@ public class RentRestRestServiceImpl implements RentRestService {
                     }
                     Integer minDistance = Collections.min(sortDistance);
                     rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(map.get(minDistance)));
+                    trafficArr = rentDetailsFewDo.getSubwayDistanceInfo().split("\\$");
+                    if (trafficArr.length == 3) {
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+
+                    }
                 }
+
+                if(StringTool.isNotEmpty(nearbyDistance)){
+                    rentDetailsFewDo.setNearbyDistance(nearbyDistance);
+                }
+
                 //设置标题图
                 String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
                 if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {

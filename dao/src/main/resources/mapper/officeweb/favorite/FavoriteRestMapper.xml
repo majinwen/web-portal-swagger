@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.officeweb.favorite.FavoriteRestMapper">
+
+    <resultMap id="FavoriteBaseResultMap" type="com.toutiao.app.domain.favorite.FavoriteHouseDo">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="status" property="status" jdbcType="INTEGER"/>
+        <result column="building_id" property="buildingId" jdbcType="INTEGER"/>
+        <result column="house_id" property="houseId" jdbcType="VARCHAR"/>
+        <result column="average_price" property="averagePrice" jdbcType="NUMERIC"/>
+        <result column="house_min_area" property="houseMinArea" jdbcType="VARCHAR"/>
+        <result column="house_max_area" property="houseMaxArea" jdbcType="VARCHAR"/>
+        <result column="building_name" property="buildingName" jdbcType="VARCHAR"/>
+        <result column="building_title_img" property="buildingTitleImg" jdbcType="VARCHAR"/>
+        <result column="total_price" property="totalPrice" jdbcType="NUMERIC"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="build_area" property="buildArea" jdbcType="NUMERIC"/>
+        <result column="room" property="room" jdbcType="INTEGER"/>
+        <result column="forward" property="forward" jdbcType="VARCHAR"/>
+        <result column="house_total_prices" property="houseTotalPrices" jdbcType="NUMERIC"/>
+        <result column="house_photo_title" property="housePhotoTitle" jdbcType="VARCHAR"/>
+        <result column="house_title" property="houseTitle" jdbcType="VARCHAR"/>
+        <result column="price_increase_decline" property="priceIncreaseDecline" jdbcType="INTEGER"/>
+        <result column="is_claim" property="isClaim" jdbcType="INTEGER"/>
+        <result column="rent_price" property="rentPrice" jdbcType="NUMERIC"/>
+        <result column="rent_type" property="rentType" jdbcType="INTEGER"/>
+        <result column="house_area" property="houseArea" jdbcType="NUMERIC"/>
+        <result column="rent_type_name" property="rentTypeName" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+
+    </resultMap>
+
+    <select id="queryFavoriteList" parameterType="java.lang.Integer" resultMap="FavoriteBaseResultMap">
+        SELECT
+          A.*
+        FROM
+            (
+            SELECT
+                ufv.ID,
+                ufv.user_id,
+                ufv.create_time,
+                ufv.status,
+                ufv.building_id,
+                NULL AS house_id,
+                ufv.average_price,
+                NULL AS house_min_area,
+                NULL AS house_max_area,
+                ufv.building_name,
+                ufv.building_images AS building_title_img,
+                NULL AS total_price,
+                ufv.city_id,
+                0 AS build_area,
+                0 AS room,
+                NULL AS "forward",
+                0 AS house_total_prices,
+                NULL AS house_photo_title,
+                NULL AS house_title,
+                0 AS price_increase_decline,
+                0 AS is_claim,
+                0 AS rent_price,
+                NULL AS rent_type,
+                0 AS house_area,
+                NULL AS rent_type_name,
+                3 AS TYPE
+            FROM
+                user_favorite_village AS ufv
+            WHERE
+                ufv.user_id = #{userId}
+                AND ufv.is_del = 0 UNION ALL
+            SELECT
+                ufn.ID,
+                ufn.user_id,
+                ufn.create_time,
+                ufn.status,
+                ufn.building_id,
+                NULL AS house_id,
+                ufn.average_price,
+                ufn.house_min_area,
+                ufn.house_max_area,
+                ufn.building_name,
+                ufn.building_title_img,
+                ufn.total_price,
+                ufn.city_id,
+                NULL AS build_area,
+                NULL AS room,
+                NULL AS "forward",
+                NULL AS house_total_prices,
+                NULL AS house_photo_title,
+                NULL AS house_title,
+                NULL AS price_increase_decline,
+                NULL AS is_claim,
+                0 AS rent_price,
+                NULL AS rent_type,
+                0 AS house_area,
+                NULL AS rent_type_name,
+                1 AS TYPE
+            FROM
+                user_favorite_newhouse AS ufn
+            WHERE
+                ufn.user_id = #{userId}
+                AND ufn.is_del = 0 UNION ALL
+            SELECT
+                ufe.ID,
+                ufe.user_id,
+                ufe.create_time,
+                ufe.status,
+                NULL AS building_id,
+                ufe.house_id,
+                NULL AS average_price,
+                NULL AS house_min_area,
+                NULL AS house_max_area,
+                ufe.building_name,
+                NULL AS building_title_img,
+                NULL AS total_price,
+                ufe.city_id,
+                ufe.build_area,
+                ufe.room,
+                ufe."forward",
+                ufe.house_total_prices,
+                ufe.house_photo_title,
+                ufe.house_title,
+                ufe.price_increase_decline,
+                ufe.is_claim,
+                0 AS rent_price,
+                NULL AS rent_type,
+                0 AS house_area,
+                NULL AS rent_type_name,
+                2 AS TYPE
+            FROM
+                user_favorite_eshouse AS ufe
+            WHERE
+                ufe.user_id = #{userId}
+                AND ufe.is_del = 0 UNION ALL
+            SELECT
+                ufr.ID,
+                ufr.user_id,
+                ufr.create_time,
+                ufr.status,
+                NULL AS building_id,
+                ufr.house_id,
+                NULL AS average_price,
+                NULL AS house_min_area,
+                NULL AS house_max_area,
+                ufr.building_name,
+                NULL AS building_title_img,
+                NULL AS total_price,
+                ufr.city_id,
+                NULL AS build_area,
+                ufr.room,
+                ufr."forward",
+                NULL AS house_total_prices,
+                ufr.house_photo_title,
+                ufr.house_title,
+                NULL AS price_increase_decline,
+                NULL AS is_claim,
+                ufr.rent_price,
+                ufr.rent_type,
+                ufr.house_area,
+                ufr.rent_type_name,
+                4 AS TYPE
+            FROM
+                user_favorite_rent AS ufr
+            WHERE
+                ufr.user_id = #{userId}
+                AND ufr.is_del = 0
+            ) AS A
+        ORDER BY
+            A.create_time DESC
+    </select>
+
+
+</mapper>

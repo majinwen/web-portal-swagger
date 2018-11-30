@@ -9,6 +9,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -20,7 +21,7 @@ import javax.validation.Valid;
 @Api(value = "租房", description = "租房房源接口")
 public interface RentRestApi {
 
-    @ApiOperation(value = "附近5km出租房源(app的是吧，那就优先三公里的录入房源由近到远)", nickname = "getNearRentByLocation", notes = "", response = NearRentHouseResponse.class, tags={ "租房", })
+    @ApiOperation(value = "逛逛附近租房列表", nickname = "getNearRentByLocation", notes = "", response = NearRentHouseResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NearRentHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -29,7 +30,8 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getNearRentHouseByLocation",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<NearRentHouseResponse> getNearRentHouseByLocationUsingGET(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
+    @ApiIgnore
+    ResponseEntity<RentDetailFewResponseList> getNearRentHouseByLocation(@ApiParam(value = "nearHouseListRequest"  )  @Valid @RequestBody NearHouseListRequest nearHouseListRequest);
 
 
     @ApiOperation(value = "租房推优房源", nickname = "getRecommendRent", notes = "", response = RecommendRentResponse.class, tags={ "租房", })
@@ -43,6 +45,7 @@ public interface RentRestApi {
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<com.toutiao.appV2.model.rent.RecommendRentResponse> getRecommendRent(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
@@ -81,7 +84,7 @@ public interface RentRestApi {
     ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListPost(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
 
-    @ApiOperation(value = "租房推荐列表", nickname = "getRentList", notes = "", response = RentListResponse.class, tags={ "租房", })
+    @ApiOperation(value = "逛逛租房列表", nickname = "getRentList", notes = "", response = RentListResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RentListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -90,6 +93,7 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getRentList",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<RentListResponse> getRentList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 
     @ApiOperation(value = "租房通勤找房", nickname = "getCommuteRentList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
@@ -104,6 +108,7 @@ public interface RentRestApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@ApiParam(value = "rentHouseRequest" ,required=true ) @Validated(Second.class) @Valid() @RequestBody RentHouseRequest rentHouseRequest);
 
 
@@ -116,5 +121,6 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getGuessList",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getGuessList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 }

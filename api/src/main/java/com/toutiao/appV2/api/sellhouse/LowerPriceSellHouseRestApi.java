@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -25,6 +26,7 @@ public interface LowerPriceSellHouseRestApi {
     @RequestMapping(value = "/rest/esf/lowerPrice/getLowerPriceShellHouse",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<MustBuyShellHouseResponse> getLowerPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Valid MustBuyShellHouseRequest mustBuyShellHouseRequest, BindingResult bindingResult);
 
 

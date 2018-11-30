@@ -1,18 +1,24 @@
 package com.toutiao.appV2.apiimpl.favorite;
 
 
+import com.toutiao.app.domain.favorite.FavoriteHouseDomain;
+import com.toutiao.app.domain.favorite.FavoriteHouseListDoQuery;
 import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.appV2.api.favorite.FavoriteRestApi;
+import com.toutiao.appV2.model.favorite.FavoriteHouseRequest;
+import com.toutiao.appV2.model.favorite.FavoriteHouseResponse;
 import com.toutiao.appV2.model.favorite.UserCenterFavoriteCountResponse;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.JSONUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -47,6 +53,33 @@ public class FavoriteRestController implements FavoriteRestApi {
         BeanUtils.copyProperties(userCenterFavoriteCountDo, userCenterFavoriteCountResponse);
         log.info("返回结果集:{}", JSONUtil.stringfy(userCenterFavoriteCountResponse));
         return new ResponseEntity<>(userCenterFavoriteCountResponse, HttpStatus.OK);
+    }
+
+    /**
+     * 查询我的收藏房源
+     *
+     * @param favoriteHouseRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<FavoriteHouseResponse> queryFavoriteHouseList(@ApiParam(value = "favoriteHouseRequest", required = true) FavoriteHouseRequest favoriteHouseRequest) {
+
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+        FavoriteHouseResponse favoriteHouseResponse = new FavoriteHouseResponse();
+
+        if (null != user) {
+            FavoriteHouseListDoQuery favoriteHouseDoQuery = new FavoriteHouseListDoQuery();
+            favoriteHouseDoQuery.setUserId(Integer.valueOf(user.getUserId()));
+            favoriteHouseDoQuery.setPageNum(favoriteHouseRequest.getPageNum());
+            favoriteHouseDoQuery.setSize(favoriteHouseRequest.getSize());
+            FavoriteHouseDomain favoriteHouseDomain = favoriteRestService.queryFavoriteHouseList(favoriteHouseDoQuery);
+            favoriteHouseResponse.setList(favoriteHouseDomain.getList());
+            favoriteHouseResponse.setTotalCount(favoriteHouseDomain.getTotalCount());
+            return new ResponseEntity<>(favoriteHouseResponse, HttpStatus.OK);
+        } else {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
     }
 }
 

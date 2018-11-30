@@ -67,11 +67,11 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
                 .modifier(FieldValueFactorFunction.Modifier.RECIPROCAL).missing(10);
 
         //坐标
-        Map<String,Double> map = new HashMap<>();
-        map.put("lat",nearHouseListDoQuery.getLat());
-        map.put("lon",nearHouseListDoQuery.getLon());
-        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
-
+//        Map<String,Double> map = new HashMap<>();
+//        map.put("lat",nearHouseListDoQuery.getLat());
+//        map.put("lon",nearHouseListDoQuery.getLon());
+//        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+        double[] json = new double[]{nearHouseListDoQuery.getLon(), nearHouseListDoQuery.getLat()};
         //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
         GaussDecayFunctionBuilder functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",json,"4km","1km" ,0.4);
 

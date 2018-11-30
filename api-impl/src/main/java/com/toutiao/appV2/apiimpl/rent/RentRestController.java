@@ -51,16 +51,16 @@ public class RentRestController implements RentRestApi {
     }
 
     @Override
-    public ResponseEntity<NearRentHouseResponse> getNearRentHouseByLocationUsingGET(@Validated NearHouseListRequest nearHouseListRequest) {
+    public ResponseEntity<RentDetailFewResponseList> getNearRentHouseByLocation(@Validated NearHouseListRequest nearHouseListRequest) {
 
         NearHouseDo nearHouseDo = new NearHouseDo();
         BeanUtils.copyProperties(nearHouseListRequest, nearHouseDo);
         List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
         JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
         List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
-        NearRentHouseResponse nearRentHouseResponse = new NearRentHouseResponse();
-        nearRentHouseResponse.setData(rentDetailFewResponses);
-        nearRentHouseResponse.setTotalNum(rentDetailFewResponses.size());
+        RentDetailFewResponseList nearRentHouseResponse = new RentDetailFewResponseList();
+        nearRentHouseResponse.setRentDetailsList(rentDetailFewResponses);
+        nearRentHouseResponse.setTotalCount(rentDetailFewResponses.size());
         return new ResponseEntity<>(nearRentHouseResponse, HttpStatus.OK);
     }
 
@@ -75,23 +75,6 @@ public class RentRestController implements RentRestApi {
         return new ResponseEntity<>(recommendRentResponse, HttpStatus.OK);
     }
 
-//    @Override
-//    public ResponseEntity<RentAgentResponse> getRentAgentByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
-//        String accept = request.getHeader("Accept");
-//        if (accept != null && accept.contains("")) {
-//            try {
-//                RentAgentDo rentAgentDo = appRentRestService.queryRentAgentByRentId(rentDetailsRequest.getRentId());
-//                RentAgentResponse rentAgentResponse = new RentAgentResponse();
-//                BeanUtils.copyProperties(rentAgentDo,rentAgentResponse);
-//                return new ResponseEntity<>(rentAgentResponse, HttpStatus.OK);
-//            } catch (Exception e) {
-//                log.error("服务端错误", e);
-//                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//            }
-//        }
-//
-//        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-//    }
 
     @Override
     public ResponseEntity<RentDetailResponse> getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
@@ -104,39 +87,48 @@ public class RentRestController implements RentRestApi {
 
     @Override
     public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListGet(@Validated RentHouseRequest rentHouseRequest) {
-        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
-        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
-        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
-        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
-        if (rentDetailsListDo.getRentDetailsList().size() > 0) {
-            rentDetailFewResponseList.setIsGuess(0);
-        } else {
-            //没有根据结果查询到数据,返回猜你喜欢的数据
-            rentHouseDoQuery = new RentHouseDoQuery();
-            rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
-            rentDetailFewResponseList.setIsGuess(1);
-        }
+        return getRentDetailFewResponseListResponseEntity(rentHouseRequest);
+    }
 
-        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
-        return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
+    private ResponseEntity<RentDetailFewResponseList> getRentDetailFewResponseListResponseEntity(@Validated RentHouseRequest rentHouseRequest) {
+        if (rentHouseRequest.getSearchType() == 1) {
+            RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+            BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+            RentDetailsListDo rentDetailsListDo = appRentRestService.getRentList(rentHouseDoQuery, CityUtils.getCity());
+            JSONObject jsonObject = (JSONObject) JSON.toJSON(rentDetailsListDo);
+            RentDetailFewResponseList rentListResponse = JSONObject.parseObject(String.valueOf(jsonObject), RentDetailFewResponseList.class);
+            return new ResponseEntity<>(rentListResponse, HttpStatus.OK);
+        } else if (rentHouseRequest.getSearchType() == 2) {
+            NearHouseDo nearHouseDo = new NearHouseDo();
+            BeanUtils.copyProperties(rentHouseRequest, nearHouseDo);
+            List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
+            JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
+            List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
+            RentDetailFewResponseList nearRentHouseResponse = new RentDetailFewResponseList();
+            nearRentHouseResponse.setRentDetailsList(rentDetailFewResponses);
+            nearRentHouseResponse.setTotalCount(rentDetailFewResponses.size());
+            return new ResponseEntity<>(nearRentHouseResponse, HttpStatus.OK);
+        } else {
+            RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+            RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+            BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+            RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+            if (rentDetailsListDo.getRentDetailsList().size() > 0) {
+                rentDetailFewResponseList.setIsGuess(0);
+            } else {
+                //没有根据结果查询到数据,返回猜你喜欢的数据
+                rentHouseDoQuery = new RentHouseDoQuery();
+                rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+                rentDetailFewResponseList.setIsGuess(1);
+            }
+            BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+            return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
+        }
     }
 
     @Override
     public ResponseEntity<RentDetailFewResponseList> getRentHouseSearchListPost(@Validated @RequestBody RentHouseRequest rentHouseRequest) {
-        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
-        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
-        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
-        RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
-        if (rentDetailsListDo.getRentDetailsList().size() > 0) {
-            rentDetailFewResponseList.setIsGuess(0);
-        } else {
-            //没有根据结果查询到数据,返回猜你喜欢的数据
-            rentHouseDoQuery = new RentHouseDoQuery();
-            rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
-            rentDetailFewResponseList.setIsGuess(1);
-        }
-        BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
-        return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
+        return getRentDetailFewResponseListResponseEntity(rentHouseRequest);
     }
 
     @Override

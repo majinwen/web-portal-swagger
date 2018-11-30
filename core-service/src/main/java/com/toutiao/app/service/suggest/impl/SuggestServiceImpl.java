@@ -68,10 +68,10 @@ public class SuggestServiceImpl implements SuggestService {
             if (searchType == RENT_TYPE){
                 BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
                 boolQueryBuilderAD.must(queryBuilder.should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")));
-                boolQueryBuilderAD.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
+                //boolQueryBuilderAD.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
 
                 boolQueryBuilderBuild.must(queryBuilder.should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")));
-                boolQueryBuilderBuild.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
+               // boolQueryBuilderBuild.must(queryBuilder.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
             }else {
                 boolQueryBuilderAD.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
 
@@ -183,9 +183,9 @@ public class SuggestServiceImpl implements SuggestService {
             List<SearchEnginesDo> plotList = getEnginesResult(plot, city);
 
             BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-            sellhouse.must(queryBuilder
-                    .should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings"))
-                    .should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
+            sellhouse.must(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")
+                   // .should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings"))
+            );
             List<SearchEnginesDo> rentList = getEnginesResult(sellhouse, city);
 
             rent.must(QueryBuilders.multiMatchQuery(ESF_TYPE,"search_type_sings"));
@@ -200,14 +200,13 @@ public class SuggestServiceImpl implements SuggestService {
             if (searchType == RENT_TYPE){
                 BoolQueryBuilder scopeQueryBuilderShould = QueryBuilders.boolQuery();
                 BoolQueryBuilder enginesQueryBuilderShould = QueryBuilders.boolQuery();
-                scopeQueryBuilder.must(scopeQueryBuilderShould
-                        .should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings"))
-                        .should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings"))
+                scopeQueryBuilder.must(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")
+                        //.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings"))
                 );
 
-                enginesQueryBuilder.must(enginesQueryBuilderShould
-                        .should(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings"))
-                        .should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings")));
+                enginesQueryBuilder.must(QueryBuilders.multiMatchQuery(RENT_TYPE,"search_type_sings")
+                        //.should(QueryBuilders.multiMatchQuery(APARTMENT_TYPE,"search_type_sings"))
+                );
             }else {
                 scopeQueryBuilder.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));
                 enginesQueryBuilder.must(QueryBuilders.multiMatchQuery(searchType,"search_type_sings"));

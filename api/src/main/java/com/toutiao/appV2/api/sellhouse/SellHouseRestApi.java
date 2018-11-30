@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -28,6 +29,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/querySellHouseByHouseId",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<MessageSellHouseResponse> querySellHouseByHouseId(@ApiParam(value = "houseId", required = true) @RequestParam(value = "houseId", required = false) String houseId);
 
     @ApiOperation(value = "二手房房源详情", nickname = "getSellHouseByHouseId", notes = "", response = SellHouseDetailsResponse.class, tags = {"二手房",})
@@ -41,18 +43,7 @@ public interface SellHouseRestApi {
             method = RequestMethod.GET)
     ResponseEntity<SellHouseDetailsResponse> getSellHouseByHouseId(@ApiParam(value = "sellHouseDerailsRequest", required = true) @Valid SellHouseDetailsRequest sellHouseDerailsRequest, BindingResult bindingResult);
 
-//    @ApiOperation(value = "认领二手房房源经纪人", nickname = "getAgentBySellHouseId", notes = "", response = AgentsBySellHouseResponse.class, tags = {"sell-house-rest-controller",})
-//    @ApiResponses(value = {
-//            @ApiResponse(code = 200, message = "OK", response = AgentsBySellHouseResponse.class),
-//            @ApiResponse(code = 401, message = "Unauthorized"),
-//            @ApiResponse(code = 403, message = "Forbidden"),
-//            @ApiResponse(code = 404, message = "Not Found")})
-//    @RequestMapping(value = "/rest/esf/getAgentBySellHouseId",
-//            produces = {"application/json"},
-//            method = RequestMethod.GET)
-//    ResponseEntity<AgentsBySellHouseResponse> getAgentBySellHouseId(@ApiParam(value = "agentSellHouseRequest", required = true) @Valid AgentSellHouseRequest agentSellHouseRequest, BindingResult bindingResult);
-
-    @ApiOperation(value = "二手房房源默认列表", nickname = "getSellHouseByChoose", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
+    @ApiOperation(value = "逛逛二手房列表", nickname = "getSellHouseByChoose", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -61,7 +52,8 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getSellHouseByChoose",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<SellHouseResponse> getSellHouseByChoose(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult);
+    @ApiIgnore
+    ResponseEntity<SellHouseSearchDomainResponse> getSellHouseByChoose(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房默认列表推荐（广告）", nickname = "getRecommendSellHouse", notes = "", response = SellHouseResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
@@ -74,6 +66,7 @@ public interface SellHouseRestApi {
             produces = {"application/json"},
             consumes = {"application/json"},
             method = RequestMethod.POST)
+    @ApiIgnore
     ResponseEntity<SellHouseResponse> getRecommendSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "二手房搜索结果列表", nickname = "getSellHouseList", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
@@ -107,6 +100,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getBeSureToSnatchList",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult);
 
     @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
@@ -118,6 +112,7 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getRecommendEsf5",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult);
 
     @ApiOperation(value = "猜你喜欢:二手房列表", nickname = "getGuessList", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
@@ -129,7 +124,19 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getGuessList",
             produces = {"application/json"},
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<SellHouseSearchDomainResponse> getGuessList(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
+    @ApiOperation(value = "逛逛二手房附近列表", nickname = "getNearBySellHouses", notes = "", response = NearBySellHouseDomainResponse.class, tags = {"二手房",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = NearBySellHouseDomainResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/esf/nearby/getNearBySellHouses",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    @ApiIgnore
+    ResponseEntity<SellHouseSearchDomainResponse> getNearBySellHouses(@ApiParam(value = "nearBySellHousesRequest", required = true) @Valid NearBySellHousesRequest nearBySellHousesRequest, BindingResult bindingResult);
 
 }

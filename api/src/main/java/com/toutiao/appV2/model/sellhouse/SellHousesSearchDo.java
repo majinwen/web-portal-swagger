@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.sellhouse;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.sellhouse.HouseColorLable;
 import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.domain.sellhouse.HouseSubject;
 import io.swagger.annotations.ApiModelProperty;
@@ -71,7 +72,6 @@ public class SellHousesSearchDo {
     private String forwardName;
 
     /**
-     *
      * 车位配比
      */
     @ApiModelProperty(value = "车位配比", name = "parkRadio")
@@ -87,19 +87,19 @@ public class SellHousesSearchDo {
      * 认领标识
      */
     @ApiModelProperty(value = "认领标识", name = "isClaim")
-    private  Integer isClaim;
+    private Integer isClaim;
 
     /**
      * 地铁最近
      */
     @ApiModelProperty(value = "地铁最近", name = "traffic")
-    private  String traffic;
+    private String traffic;
 
     /**
      * 楼盘名称
      */
     @ApiModelProperty(value = "楼盘名称", name = "plotNameAccurate")
-    private  String plotNameAccurate;
+    private String plotNameAccurate;
 
     /**
      * 地铁站编号
@@ -122,12 +122,12 @@ public class SellHousesSearchDo {
      * 区域
      */
     @ApiModelProperty(value = "区域", name = "area")
-    private  String area;
+    private String area;
     /**
      * 区域id
      */
     @ApiModelProperty(value = "区域id", name = "areaId")
-    private  String areaId;
+    private String areaId;
 
     /**
      * 商圈id
@@ -138,14 +138,14 @@ public class SellHousesSearchDo {
      * 商圈
      */
     @ApiModelProperty(value = "商圈", name = "houseBusinessName")
-    private  String houseBusinessName;
+    private String houseBusinessName;
 
 
     /**
      * 均价
      */
     @ApiModelProperty(value = "均价", name = "houseUnitCost")
-     private  Double houseUnitCost;
+    private Double houseUnitCost;
 
     /**
      * 小区id
@@ -174,7 +174,7 @@ public class SellHousesSearchDo {
      * 地铁与房子之间的距离
      */
     @ApiModelProperty(value = "地铁与房子之间的距离", name = "subwayDistanceInfo")
-    private  String  subwayDistanceInfo;
+    private String subwayDistanceInfo;
 
     @ApiModelProperty(value = "标题图")
     private String housePhotoTitle;
@@ -206,7 +206,7 @@ public class SellHousesSearchDo {
     private Integer isLowPrice;
 
     /**
-     *是否降价房(0-否，1-降价房，2-涨价房)
+     * 是否降价房(0-否，1-降价房，2-涨价房)
      */
     @ApiModelProperty(value = "是否降价房(0-否，1-降价房，2-涨价房)", name = "isCutPrice")
     private Integer isCutPrice;
@@ -234,7 +234,6 @@ public class SellHousesSearchDo {
      */
     @ApiModelProperty(value = "是否是top50小区房源(0-否，1-是)", name = "isCommunityTopHouse")
     private Integer isCommunityTopHouse;
-
 
 
     /**
@@ -335,7 +334,7 @@ public class SellHousesSearchDo {
      * 各个类型数量
      */
     @ApiModelProperty(value = "各个类型数量", name = "typeCounts")
-    private Map<Integer,Map<String,Integer>> typeCounts;
+    private Map<Integer, Map<String, Integer>> typeCounts;
 
 
     /**
@@ -391,4 +390,13 @@ public class SellHousesSearchDo {
 
     @ApiModelProperty(value = "专题列表", name = "sellHouseSubjectList")
     private List<HouseSubject> sellHouseSubjectList;
+
+    @ApiModelProperty(value = "逛逛标签列表", name = "houseColorLableList")
+    private List<HouseColorLable> houseColorLableList;
+
+    @ApiModelProperty(value = "逛逛第一行弹幕", name = "houseBarrageFirstList")
+    private List<String> houseBarrageFirstList;
+
+    @ApiModelProperty(value = "逛逛第二行弹幕", name = "houseBarrageSecondList")
+    private List<String> houseBarrageSecondList;
 }

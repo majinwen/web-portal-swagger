@@ -20,14 +20,18 @@ import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.newhouse.NewHouseTopicsRestService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.appV2.api.newhouse.NewHouseApi;
+import com.toutiao.appV2.model.PageRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.newhouse.*;
+import com.toutiao.appV2.model.userbasic.UserLoginResponse;
+import com.toutiao.web.apiimpl.authentication.User;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -182,12 +186,11 @@ public class NewHouseApiController implements NewHouseApi {
     }
 
     @Override
-    public ResponseEntity<ActivityMsgResponse> queryActivityMsg(@Validated(Second.class) NewHouseActivityRequest
-                                                                        newHouseActivityRequest) {
-
+    public ResponseEntity<ActivityMsgResponse> queryActivityMsg(PageRequest pageRequest) {
         UserNewBuildingActivityDoQuery userNewBuildingActivityDoQuery = new UserNewBuildingActivityDoQuery();
-        BeanUtils.copyProperties(newHouseActivityRequest, userNewBuildingActivityDoQuery);
-
+        BeanUtils.copyProperties(pageRequest, userNewBuildingActivityDoQuery);
+        UserBasic current = UserBasic.getCurrent();
+        userNewBuildingActivityDoQuery.setUserId(Integer.parseInt(current.getUserId()));
         PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
         ActivityMsgResponse response = ActivityMsgResponse.builder()
                 .data(userNewBuildingActivityDoPageInfo.getList())

@@ -155,7 +155,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         for (Object bucket : buckets) {
             EsfMapSearchDo esfMapSearchDistrictDo = new EsfMapSearchDo();
             esfMapSearchDistrictDo.setId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));//区县id
-            esfMapSearchDistrictDo.setCount((int)((ParsedStringTerms.ParsedBucket) bucket).getDocCount());//房源数量
+           // esfMapSearchDistrictDo.setCount((int)((ParsedStringTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
             Terms districtName = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("districtName");
             if (districtName.getBuckets().size() > 0) {
@@ -179,7 +179,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchDistrictDo.getCount()+"套)";
             if (null != esfMapSearchDistrictDo.getPrice()){
-                desc = nf.format(esfMapSearchDistrictDo.getPrice()/10000)+"万("+esfMapSearchDistrictDo.getCount()+"套)";
+                desc = nf.format(esfMapSearchDistrictDo.getPrice()/10000)+"万";
             }
             esfMapSearchDistrictDo.setDesc(desc);
             data.add(esfMapSearchDistrictDo);
@@ -224,7 +224,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         for (Object bucket : buckets){
             EsfMapSearchDo esfMapSearchBizcircleDo = new EsfMapSearchDo();
             esfMapSearchBizcircleDo.setId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));//商圈id
-            esfMapSearchBizcircleDo.setCount((int) ((ParsedStringTerms.ParsedBucket) bucket).getDocCount());//房源数量
+            //esfMapSearchBizcircleDo.setCount((int) ((ParsedStringTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
             Terms bizcircleName = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("bizcircleName");
             if (bizcircleName.getBuckets().size() > 0) {
@@ -248,7 +248,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchBizcircleDo.getCount()+"套)";
             if (null != esfMapSearchBizcircleDo.getPrice()){
-                desc = nf.format(esfMapSearchBizcircleDo.getPrice()/10000)+"万("+esfMapSearchBizcircleDo.getCount()+"套)";
+                desc = nf.format(esfMapSearchBizcircleDo.getPrice()/10000)+"万";
             }
             esfMapSearchBizcircleDo.setDesc(desc);
             data.add(esfMapSearchBizcircleDo);

@@ -1,6 +1,7 @@
 package com.toutiao.app.service.user;
 
 import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,4 +47,6 @@ public interface UserBasicInfoService {
      * @return
      */
     UserBasicDo queryUserBasicByRcId(String rcId);
+
+    UserSubscribeEtc getUserFavoriteEtcCount(Integer userId);
 }

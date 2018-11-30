@@ -1,14 +1,8 @@
 package com.toutiao.appV2.model.suggest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * SearchEnginesResponse
@@ -79,4 +73,14 @@ public class SearchEnginesResponse {
      */
     @ApiModelProperty("是否区域跳转(0-房源，1-区县，2-商圈)")
     private Integer isArea;
+    /**
+     * 经度
+     */
+    @ApiModelProperty("经度")
+    private Double longitude;
+    /**
+     * 维度
+     */
+    @ApiModelProperty("维度")
+    private Double latitude;
 }

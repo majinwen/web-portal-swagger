@@ -4,12 +4,15 @@ import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.mapsearch.NewHouseMapSearchEsDao;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
 import com.toutiao.app.domain.mapSearch.*;
+import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
+import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.service.mapSearch.NewHouseMapSearchRestService;
+import com.toutiao.app.service.newhouse.NewHouseLayoutService;
+import com.toutiao.web.common.constant.house.HouseLableEnum;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoPoint;
@@ -19,9 +22,6 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
-import org.elasticsearch.search.sort.FieldSortBuilder;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +44,8 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
     private NewHouseMapSearchEsDao newHouseMapSearchEsDao;
     @Autowired
     private NewHouseEsDao newHouseEsDao;
+    @Autowired
+    private NewHouseLayoutService newHouseLayoutService;
 
     @Override
     public NewHouseMapSearchDistrictDomain newHouseMapSearchByDistrict(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, String city) {
@@ -124,7 +126,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                 if(newHouseMapSearchBuildDo.getAveragePrice() > 0){
                     newHouseMapSearchBuildDo.setPriceDesc("均价"+new BigDecimal(String.valueOf(newHouseMapSearchBuildDo.getAveragePrice())).stripTrailingZeros().toPlainString()+"元/平");
                 } else if(newHouseMapSearchBuildDo.getTotalPrice() > 0){
-                    newHouseMapSearchBuildDo.setPriceDesc("总价"+new BigDecimal(String.valueOf(newHouseMapSearchBuildDo.getTotalPrice())).stripTrailingZeros().toPlainString()+"元/套");
+                    newHouseMapSearchBuildDo.setPriceDesc("总价"+new BigDecimal(String.valueOf(newHouseMapSearchBuildDo.getTotalPrice())).stripTrailingZeros().toPlainString()+"万/套");
                 } else {
                     newHouseMapSearchBuildDo.setPriceDesc("售价待定");
                 }
@@ -132,16 +134,52 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                 if(StringTool.isNotEmpty(newHouseMapSearchBuildDo.getBuildingTitleImg())){
                     newHouseMapSearchBuildDo.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseMapSearchBuildDo.getBuildingTitleImg() + "-dongfangdi1200x900");
                 }
-                String [] isActive = new String[1];
-                if(newHouseMapSearchBuildDo.getIsActive()==1){
-                    isActive[0] = "优惠楼盘";
+                //新房标签
+                List<HouseLable> houseLableList= new ArrayList<>();
+                String saleStatusName= newHouseMapSearchBuildDo.getSaleStatusName();
+
+                if(!StringUtil.isNullString(saleStatusName) && HouseLableEnum.containKey(saleStatusName)){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.getEnumByKey(saleStatusName));
+                    houseLableList.add(houseLable);
                 }
-                String [] propertyType = new String[1];
-                if(StringTool.isNotEmpty(newHouseMapSearchBuildDo.getPropertyType())){
-                    propertyType[0] = newHouseMapSearchBuildDo.getPropertyType();
+                int isActive= newHouseMapSearchBuildDo.getIsActive();
+                if(isActive ==1){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.ISACTIVE);
+                    houseLableList.add(houseLable);
                 }
-                String [] aggArr = (String[]) ArrayUtils.addAll(isActive, propertyType);
-                newHouseMapSearchBuildDo.setBuildingTags((String[]) ArrayUtils.addAll(aggArr, newHouseMapSearchBuildDo.getBuildingTags()));
+                String propertyType= newHouseMapSearchBuildDo.getPropertyType();
+                if(!StringUtil.isNullString(propertyType) && HouseLableEnum.containKey(propertyType)){
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.getEnumByKey(propertyType));
+                    houseLableList.add(houseLable);
+                }
+
+                newHouseMapSearchBuildDo.setHouseLabelList(houseLableList);
+
+
+                //新房动态
+                BoolQueryBuilder queryBuilderDynamic = boolQuery();//声明符合查询方法
+                queryBuilderDynamic.must(QueryBuilders.termQuery("newcode", newHouseMapSearchBuildDo.getBuildingNameId()));
+                SearchResponse dynamicResponse = newHouseEsDao.getDynamicByNewCode(queryBuilderDynamic, 1, 10, city);
+                long dynamicTotal = dynamicResponse.getHits().totalHits;//动态总数
+                newHouseMapSearchBuildDo.setDynamicTotal(dynamicTotal);
+
+
+                //获取新房下户型的数量
+                NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseMapSearchBuildDo.getBuildingNameId(), city);
+                if (null != newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0) {
+                    List<String> roomsType = new ArrayList<>();
+                    for (int i = 0; i < newHouseLayoutCountDomain.getRooms().size(); i++) {
+                        roomsType.add(newHouseLayoutCountDomain.getRooms().get(i).getRoom().toString());
+                    }
+                    String rooms = String.join(",", roomsType);
+                    newHouseMapSearchBuildDo.setRoomType(rooms);
+                } else {
+                    newHouseMapSearchBuildDo.setRoomType("");
+                }
+
+
+
+
                 data.add(newHouseMapSearchBuildDo);
             }
         }

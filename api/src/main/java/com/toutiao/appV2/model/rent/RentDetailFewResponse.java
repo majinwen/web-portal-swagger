@@ -163,5 +163,11 @@ public class RentDetailFewResponse   {
   @ApiModelProperty("time")
   private String time;
 
+  @ApiModelProperty(value = "逛逛第一行弹幕", name = "houseBarrageFirstList")
+  private List<String> houseBarrageFirstList;
+
+  @ApiModelProperty(value = "逛逛第二行弹幕", name = "houseBarrageSecondList")
+  private List<String> houseBarrageSecondList;
+
 }
 
