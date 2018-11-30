@@ -114,8 +114,12 @@ public class EsfMapSearchRequest   {
   @ApiParam("小区id")
   private Integer[] newcode = null;
 
-  @JsonProperty("lineId")
-  @ApiParam("通过地铁站聚合结果查询二手房列表时的地铁线id")
-  private Integer lineId;
+//  @JsonProperty("lineId")
+//  @ApiParam("通过地铁站聚合结果查询二手房列表时的地铁线id")
+//  private Integer lineId;
+
+  @JsonProperty("sort")
+  @ApiParam("排序字段")
+  private String sort;
 }
 
