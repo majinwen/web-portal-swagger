@@ -295,25 +295,21 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             esfMapSearchCommunityDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//社区id
             esfMapSearchCommunityDo.setCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
 
-
             Terms communityName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityName");
             if (communityName.getBuckets().size() > 0) {
                 esfMapSearchCommunityDo.setName(communityName.getBuckets().get(0).getKeyAsString());//社区名称
             }
-
             Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
             if (communityAvgPrice.getBuckets().size() > 0) {
                 esfMapSearchCommunityDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
             }
-
-            Terms plotLatitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLatitude");
-            if (plotLatitude.getBuckets().size() > 0) {
-                esfMapSearchCommunityDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
-            }
-
             Terms plotLongitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLongitude");
             if (plotLongitude.getBuckets().size() > 0) {
                 esfMapSearchCommunityDo.setLongitude(plotLongitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//经度
+            }
+            Terms plotLatitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLatitude");
+            if (plotLatitude.getBuckets().size() > 0) {
+                esfMapSearchCommunityDo.setLatitude(plotLatitude.getBuckets().get(0).getKeyAsNumber().doubleValue());//纬度
             }
 
             String desc = 0 + "万("+esfMapSearchCommunityDo.getCount()+"套)";
@@ -339,92 +335,43 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         EsfMapCommunityDo esfMapCommunityDo = new EsfMapCommunityDo();
         EsfMapHouseDo esfMapHouseDo = new EsfMapHouseDo();
 
-        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
-        BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
+//        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+//        BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
 
         //其他筛选条件
-        BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
+       // BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         //小区id
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termsQuery("newcode", esfMapSearchDoQuery.getNewcode()));
 
-        //过滤为删除
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
 
-        FunctionScoreQueryBuilder query = null;
-        //条件is_claim标志设置权重
-        FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim")
-                .modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11).missing(0);
+        GeoDistanceSortBuilder geoDistanceSort = null;
+        if(StringTool.isNotEmpty(esfMapSearchDoQuery.getDistance()) &&
+                StringTool.isNotEmpty(esfMapSearchDoQuery.getLat()) &&
+                StringTool.isNotEmpty(esfMapSearchDoQuery.getLon())){
+            geoDistanceSort = SortBuilders.geoDistanceSort("housePlotLocation", esfMapSearchDoQuery.getLat(), esfMapSearchDoQuery.getLon());
+            geoDistanceSort.unit(DistanceUnit.KILOMETERS);
+            geoDistanceSort.geoDistance(GeoDistance.ARC);
+        }
 
-        //设置高斯函数
-        GaussDecayFunctionBuilder functionBuilder = null;
-        FunctionScoreQueryBuilder queryKmBuilder = null;
-        GeoDistanceSortBuilder sort = null;
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-            double[] location =new double[]{sellHouseDoQuery.getLon(),sellHouseDoQuery.getLat()};
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",location,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
-            //获取5km内所有的二手房
-
-            sort = SortBuilders.geoDistanceSort("housePlotLocation", sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon());
-            sort.unit(DistanceUnit.KILOMETERS);
-            sort.geoDistance(GeoDistance.ARC);
+        //地铁线id
+        if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && esfMapSearchDoQuery.getSubwayLineId() != 0) {
+            booleanQueryBuilder.must(QueryBuilders.termQuery("subwayLineId", esfMapSearchDoQuery.getSubwayLineId()));
 
         }
-        queryKmBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
-        if (StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())) {
-            List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword(), city);
-            FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
-            }else{
-                filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()];
-            }
-            if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
-                int searchAreasSize = searchKeyword.size();
-                for(int i=0 ;i<searchKeyword.size();i++){
-                    QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName",searchKeyword.get(i));
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchAreasSize-i);
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            }else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
-                int searchDistrictsSize = searchKeyword.size();
-                for (int i = 0; i < searchKeyword.size(); i++) {
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchDistrictsSize - i);
-                    QueryBuilder filter = QueryBuilders.termsQuery("area", searchKeyword.get(i));
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            }else{
-                int searchTermSize = searchKeyword.size();
-                for (int i = 0; i < searchKeyword.size(); i++) {
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize - i);
-                    QueryBuilder filter = QueryBuilders.termsQuery("plotName", searchKeyword.get(i));
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            }
-
-
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                        .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-
-            }else{
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                        .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }
-        }else{
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder,functionBuilder).boost(10).maxBoost(100)
-                        .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }else{
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder).boost(10).maxBoost(100)
-                        .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }
+        //地铁站id
+        if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayStationId()) && esfMapSearchDoQuery.getSubwayStationId().length != 0) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("subwayStationId", esfMapSearchDoQuery.getSubwayStationId()));
         }
+
+
+
         List<EsfMapHouseDo> esfMapHouseDos = new ArrayList<>();
-        ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
-        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchHouseList(query, sellHouseDoQuery.getDistance(),
-                sellHouseDoQuery.getKeyword(),sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city, sort);
+        ClaimSellHouseDo claimSellHouseDo = new ClaimSellHouseDo();
+        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchHouseList(booleanQueryBuilder,geoDistanceSort,
+                esfMapSearchDoQuery.getPageNum(),esfMapSearchDoQuery.getPageSize(),city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if(searchHists.length > 0){
@@ -435,8 +382,8 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             String bizcircleName = communityHit.getSourceAsMap().get("houseBusinessName").toString();
 
             String description = districtName + " " +bizcircleName;
-            if (StringTool.isNotEmpty(esfMapSearchDoQuery.getLineId()) && esfMapSearchDoQuery.getLineId() != 0) {
-                SearchResponse line = esfMapSearchEsDao.queryStationPoint(esfMapSearchDoQuery.getLineId(), city);
+            if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && esfMapSearchDoQuery.getSubwayLineId() != 0) {
+                SearchResponse line = esfMapSearchEsDao.queryLinePoint(esfMapSearchDoQuery.getSubwayLineId(), city);
                 Map<String, Object> subwayMap = line.getHits().getHits()[0].getSourceAsMap();
                 description = "近" + subwayMap.get("line_name");
             }
@@ -467,11 +414,10 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 }
 
 
-                if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
+                if(StringTool.isNotEmpty(esfMapSearchDoQuery.getDistance())){
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
                     String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
-                    //esfMapHouseDo.setNearbyDistance(distance);
-                    nearbyDistance = "距您" + distance + "km";
+                    nearbyDistance = "距您" + distance;
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
@@ -604,23 +550,20 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 esfMapHouseDos.add(esfMapHouseDo);
                 //增加地铁与房子之间的距离
                 String keys="";
-                if(null!=sellHouseDoQuery.getSubwayLineId())
+                if(null!=esfMapSearchDoQuery.getSubwayLineId())
                 {
-                    keys+=sellHouseDoQuery.getSubwayLineId().toString();
+                    keys+=esfMapSearchDoQuery.getSubwayLineId().toString();
                 }
-                if (null!=sellHouseDoQuery.getSubwayStationId()){
+                if (null!=esfMapSearchDoQuery.getSubwayStationId()){
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
-                    for(int i=0; i<sellHouseDoQuery.getSubwayStationId().length; i++){
-                        String stationKey = keys+"$"+sellHouseDoQuery.getSubwayStationId()[i];
-                        if(StringTool.isNotEmpty(esfMapHouseDo.getSubwayDistince().get(stationKey))){
-                            String stationValue = esfMapHouseDo.getSubwayDistince().get(stationKey).toString();
-                            String[] stationValueSplit = stationValue.split("\\$");
-                            Integer distance = Integer.valueOf(stationValueSplit[2]);
-                            sortDistance.add(distance);
-                            map.put(distance,stationKey);
-                        }
-                    }
+                    String stationKey = keys+"$"+esfMapSearchDoQuery.getSubwayStationId()[0];
+                    String stationValue = esfMapHouseDo.getSubwayDistince().get(stationKey).toString();
+                    String[] stationValueSplit = stationValue.split("\\$");
+                    Integer distance = Integer.valueOf(stationValueSplit[2]);
+                    sortDistance.add(distance);
+                    map.put(distance,stationKey);
+
                     Integer minDistance = Collections.min(sortDistance);
                     esfMapHouseDo.setSubwayDistanceInfo(esfMapHouseDo.getSubwayDistince().get(map.get(minDistance)).toString());
                     trafficArr = esfMapHouseDo.getSubwayDistanceInfo().split("\\$");
@@ -909,107 +852,21 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("is_claim")
                 .modifier(FieldValueFactorFunction.Modifier.LN1P).factor(11).missing(0);
 
-        //设置高斯函数
-        GaussDecayFunctionBuilder functionBuilder = null;
-        FunctionScoreQueryBuilder queryKmBuilder = null;
-        GeoDistanceSortBuilder sort = null;
-        if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-            double[] location =new double[]{sellHouseDoQuery.getLon(),sellHouseDoQuery.getLat()};
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("housePlotLocation",location,sellHouseDoQuery.getDistance()+"km",sellHouseDoQuery.getDistance()+"km");
-            //获取5km内所有的二手房
+        FunctionScoreQueryBuilder queryKmBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
 
-            sort = SortBuilders.geoDistanceSort("housePlotLocation", sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon());
-            sort.unit(DistanceUnit.KILOMETERS);
-            sort.geoDistance(GeoDistance.ARC);
-
-        }
-        queryKmBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor);
-        if (StringUtil.isNotNullString(sellHouseDoQuery.getKeyword())) {
-            List<String> searchKeyword = filterSellHouseChooseService.filterKeyWords(sellHouseDoQuery.getKeyword(), city);
-            FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
-            }else{
-                filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()];
-            }
-            if (StringUtil.isNotNullString(AreaMap.getAreas(sellHouseDoQuery.getKeyword()))) {
-                int searchAreasSize = searchKeyword.size();
-                for(int i=0 ;i<searchKeyword.size();i++){
-                    QueryBuilder filter = QueryBuilders.termsQuery("houseBusinessName",searchKeyword.get(i));
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchAreasSize-i);
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            }else if (StringUtil.isNotNullString(DistrictMap.getDistricts(sellHouseDoQuery.getKeyword()))) {
-                int searchDistrictsSize = searchKeyword.size();
-                for (int i = 0; i < searchKeyword.size(); i++) {
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchDistrictsSize - i);
-                    QueryBuilder filter = QueryBuilders.termsQuery("area", searchKeyword.get(i));
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            }else{
-                int searchTermSize = searchKeyword.size();
-                for (int i = 0; i < searchKeyword.size(); i++) {
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize - i);
-                    QueryBuilder filter = QueryBuilders.termsQuery("plotName", searchKeyword.get(i));
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            }
-
-
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
+        query = QueryBuilders.functionScoreQuery(queryKmBuilder).boost(10).maxBoost(100)
                         .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-
-            }else{
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder, filterFunctionBuilders).boost(10).maxBoost(100)
-                        .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }
-        }else{
-            if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder,functionBuilder).boost(10).maxBoost(100)
-                        .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }else{
-                query = QueryBuilders.functionScoreQuery(queryKmBuilder).boost(10).maxBoost(100)
-                        .scoreMode(FunctionScoreQuery.ScoreMode.MAX).boostMode(CombineFunction.MULTIPLY).setMinScore(0);
-            }
-        }
         ClaimSellHouseDo claimSellHouseDo=new ClaimSellHouseDo();
-        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchHouseList(query, sellHouseDoQuery.getDistance(),
-                sellHouseDoQuery.getKeyword(),sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city, sort);
+        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchHouseDrawCircleList(query,sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city, sellHouseDoQuery.getSort());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHits = hits.getHits();
+        Date date = new Date();
         if(searchHits.length > 0){
             for (int i=0; i<searchHits.length; i++) {
                 EsfCircleListDo esfCircleListDo = new EsfCircleListDo();
-                EsfMapCommunityDo esfMapCommunityDo = new EsfMapCommunityDo();
                 EsfMapHouseDo esfMapHouseDo = new EsfMapHouseDo();
-                SearchHit communityHit = searchHits[i];
-                String community = communityHit.getSourceAsString();
-                esfMapCommunityDo = JSON.parseObject(community, EsfMapCommunityDo.class);
-
-                String description = "";
-
-                String districtName = communityHit.getSourceAsMap().get("area").toString();
-                String bizcircleName = communityHit.getSourceAsMap().get("houseBusinessName").toString();
-
-                description = districtName + " " + bizcircleName;
-                esfMapCommunityDo.setDescription(description);
-
-                String plotName = communityHit.getSourceAsMap().get("plotName").toString();
-                esfMapCommunityDo.setPloatName(plotName);
-                esfMapCommunityDo.setCount((int)hits.totalHits);
-                Date date = new Date();
-                String details = "";
-                details=searchHits[i].getSourceAsString();
+                String details=searchHits[i].getSourceAsString();
                 esfMapHouseDo=JSON.parseObject(details,EsfMapHouseDo.class);
-
-                if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
-                    BigDecimal geoDis = new BigDecimal((Double) searchHits[i].getSortValues()[0]);
-                    String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
-                    esfMapHouseDo.setNearbyDistance(distance);
-//                    nearbyDistance = "距您" + distances + "km";
-                }
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = esfMapHouseDo.getImportTime();
@@ -1162,7 +1019,6 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     esfMapHouseDo.setSubwayDistanceInfo(esfMapHouseDo.getSubwayDistince().get(map.get(minDistance)).toString());
                 }
 
-                esfCircleListDo.setEsfMapCommunityDo(esfMapCommunityDo);
                 esfCircleListDo.setEsfMapHouseDo(esfMapHouseDo);
                 esfCircleListDos.add(esfCircleListDo);
             }

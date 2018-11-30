@@ -41,15 +41,20 @@ public interface EsfMapSearchEsDao {
      */
     SearchResponse esfMapSearchByCommunity(BoolQueryBuilder boolQueryBuilder, String city);
 
+
+    SearchResponse esfMapSearchHouseDrawCircleList(FunctionScoreQueryBuilder query,
+                                                   Integer pageNum, Integer pageSize, String city, String sort);
+
     /**
      * 房源列表
-     * @param query
-     * @param city
+     * @param boolQueryBuilder
      * @param sort
+     * @param pageNum
+     * @param pageSize
+     * @param city
      * @return
      */
-    SearchResponse esfMapSearchHouseList(FunctionScoreQueryBuilder query, Integer distance, String keyword,
-                                         Integer pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort);
+    SearchResponse esfMapSearchHouseList(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder sort, Integer pageNum, Integer pageSize, String city);
 
     /**
      * 附近查询
@@ -74,5 +79,13 @@ public interface EsfMapSearchEsDao {
      * @return
      */
     SearchResponse queryStationPoint(Integer stationId, String city);
+
+    /**
+     * 根据地铁线id获取地铁线信息
+     * @param lineId
+     * @param city
+     * @return
+     */
+    SearchResponse queryLinePoint(Integer lineId, String city);
 
 }
