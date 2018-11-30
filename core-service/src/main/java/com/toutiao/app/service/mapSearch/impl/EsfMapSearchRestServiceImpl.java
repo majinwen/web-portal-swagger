@@ -993,7 +993,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 String districtName = communityHit.getSourceAsMap().get("area").toString();
                 String bizcircleName = communityHit.getSourceAsMap().get("houseBusinessName").toString();
 
-                description = districtName + "-" + bizcircleName;
+                description = districtName + " " + bizcircleName;
                 esfMapCommunityDo.setDescription(description);
 
                 String plotName = communityHit.getSourceAsMap().get("plotName").toString();
