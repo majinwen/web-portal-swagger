@@ -435,10 +435,14 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             String bizcircleName = communityHit.getSourceAsMap().get("houseBusinessName").toString();
 
             String description = districtName + " " +bizcircleName;
-            if (StringTool.isNotEmpty(esfMapSearchDoQuery.getLineId()) && esfMapSearchDoQuery.getLineId() != 0) {
-                SearchResponse line = esfMapSearchEsDao.queryStationPoint(esfMapSearchDoQuery.getLineId(), city);
-                Map<String, Object> subwayMap = line.getHits().getHits()[0].getSourceAsMap();
-                description = "近" + subwayMap.get("line_name");
+            if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId())) {
+//                SearchResponse line = esfMapSearchEsDao.queryStationPoint(esfMapSearchDoQuery.getLineId(), city);
+//                Map<String, Object> subwayMap = line.getHits().getHits()[0].getSourceAsMap();
+//                description = "近" + subwayMap.get("line_name");
+                Map<String, Object> subwayMap = communityHit.getSourceAsMap();
+                String subwayInfo = subwayMap.get("traffic").toString();
+                String[] subwayInfoArr = subwayInfo.split("\\$");
+                description = "近" + subwayInfoArr[0];
             }
             esfMapCommunityDo.setDescription(description);
 
@@ -467,11 +471,11 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 }
 
 
-                if(StringTool.isNotEmpty(sellHouseDoQuery.getDistance())){
-                    BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
+                if(StringTool.isNotEmpty(esfMapSearchDoQuery.getDistance())){
+                    BigDecimal geoDis = new BigDecimal((Double)searchHit.getSortValues()[0]);
                     String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
                     //esfMapHouseDo.setNearbyDistance(distance);
-                    nearbyDistance = "距您" + distance + "km";
+                    nearbyDistance = "距您" + distance;
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
