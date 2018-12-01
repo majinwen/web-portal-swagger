@@ -30,9 +30,9 @@ public interface RentMapSearchApi {
     })
     @RequestMapping(value = "/rest/map/rent/search",
         produces = "application/json",
-        consumes = "application/json",
-        method = RequestMethod.POST)
-    ResponseEntity<RentMapSearchDomainResponse> mapRentSearch(@ApiParam(value = "rentMapSearchDoRequest", required = true) @Valid @RequestBody RentMapSearchDoRequest rentMapSearchDoRequest);
+
+        method = RequestMethod.GET)
+    ResponseEntity<RentMapSearchDomainResponse> mapRentSearch(@ApiParam(value = "rentMapSearchDoRequest", required = true) @Valid RentMapSearchDoRequest rentMapSearchDoRequest);
 
     @ApiOperation(value = "地图找房-租房列表", nickname = "getRentOfPlot", notes = "", response = RentOfPlotListResPonse.class, tags={ "地图找房", })
     @ApiResponses(value = {
@@ -44,7 +44,7 @@ public interface RentMapSearchApi {
     })
     @RequestMapping(value = "/rest/map/rent/getRentOfPlot",
             produces = "application/json",
-            method = RequestMethod.POST)
+            method = RequestMethod.GET)
     ResponseEntity<RentOfPlotListResPonse> getRentOfPlot(@ApiParam(value = "rentMapSearchDoRequest", required = true) @Valid  RentMapSearchDoRequest rentMapSearchDoRequest);
 
 }

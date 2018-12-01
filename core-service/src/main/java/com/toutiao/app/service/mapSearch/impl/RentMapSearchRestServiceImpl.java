@@ -205,8 +205,8 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             //聚合
             searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
                     .subAggregation(AggregationBuilders.terms("zufangName").field("zufang_name"))
-                    .subAggregation(AggregationBuilders.terms("lon").field("cummunity_longitude"))
-                    .subAggregation(AggregationBuilders.terms("lat").field("cummunity_latitude")));
+                    .subAggregation(AggregationBuilders.terms("lon").field("longitude"))
+                    .subAggregation(AggregationBuilders.terms("lat").field("latitude")));
         }
 
         SearchResponse rentMapSearch = rentMapSearchEsDao.getRentMapSearch(searchSourceBuilder, city);
@@ -229,6 +229,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         rentMapSearchDo.setId(id);
                         //数量
                         rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                        rentMapSearchDo.setDesc(rentMapSearchDo.getCount()+"套");
                         Map distanceAndAreainfo = getDistanceAndAreainfo(id, 1);
                         if(null!=distanceAndAreainfo&&StringTool.isNotEmpty(distanceAndAreainfo.get("name"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lon"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lat"))){
                             rentMapSearchDo.setName(String.valueOf(distanceAndAreainfo.get("name")));
@@ -243,6 +244,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         rentMapSearchDo.setId(id);
                         //数量
                         rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                        rentMapSearchDo.setDesc(rentMapSearchDo.getCount()+"套");
                         Map distanceAndAreainfo = getDistanceAndAreainfo(id, 2);
                         if(null!=distanceAndAreainfo&&StringTool.isNotEmpty(distanceAndAreainfo.get("name"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lon"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lat"))){
                             rentMapSearchDo.setName(String.valueOf(distanceAndAreainfo.get("name")));
@@ -271,6 +273,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         Terms lon = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("lon");
                         rentMapSearchDo.setLatitude(Double.valueOf(lat.getBuckets().get(0).getKeyAsString()));
                         rentMapSearchDo.setLongitude(Double.valueOf(lon.getBuckets().get(0).getKeyAsString()));
+                        rentMapSearchDo.setDesc(rentMapSearchDo.getCount()+"套");
                     }
 
                     //地铁站
@@ -280,6 +283,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         rentMapSearchDo.setId(id);
                         //数量
                         rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                        rentMapSearchDo.setDesc(rentMapSearchDo.getCount()+"套");
                         Map subwayInfo = getSubwayInfo(id, CityUtils.returnCityId(city));
                         //名称
                         rentMapSearchDo.setName((String) subwayInfo.get("name"));
