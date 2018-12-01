@@ -117,6 +117,11 @@ public class NewHouseMapSearchBuildDo {
     private  Double houseMaxArea;
 
     /**
+     * 成交时间
+     */
+    private  String deliverTime;
+
+    /**
      * 优惠活动
      */
     private List<ActivityInfoDo> activityInfo;

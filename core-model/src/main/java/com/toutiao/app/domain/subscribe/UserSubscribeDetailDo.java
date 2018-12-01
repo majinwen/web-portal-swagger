@@ -45,4 +45,10 @@ public class UserSubscribeDetailDo {
      */
     @ApiModelProperty(value = "平均价格", name = "avgPrice")
     private Double avgPrice;
+    /**
+     * 标题图
+     */
+    @ApiModelProperty(value = "标题图", name = "titleImg")
+    private String titleImg;
+
 }

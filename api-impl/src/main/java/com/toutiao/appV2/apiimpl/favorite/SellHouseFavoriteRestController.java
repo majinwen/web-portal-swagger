@@ -90,6 +90,7 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
             log.info("添加二手房收藏成功");
+            changeFavoriteResponse.setId(userFavoriteEsHouse.getHouseId());
             changeFavoriteResponse.setMsg("添加二手房收藏成功");
 
         } else if (flag == 0) {
@@ -97,7 +98,9 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
             throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_ERROR);
         } else {
             log.info("添加二手房收藏重复");
-            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_REPEAT);
+//            throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_FAVORITE_ADD_REPEAT);
+            changeFavoriteResponse.setId(userFavoriteEsHouse.getHouseId());
+            changeFavoriteResponse.setMsg("添加二手房收藏重复");
         }
         return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
     }
