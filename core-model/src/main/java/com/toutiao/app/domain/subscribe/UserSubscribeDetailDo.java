@@ -21,6 +21,16 @@ public class UserSubscribeDetailDo {
     @ApiModelProperty(value = "区域", name = "districtName")
     private String districtName;
     /**
+     * 商圈Id
+     */
+    @ApiModelProperty(value = "商圈Id", name = "areaId")
+    private Integer areaId;
+    /**
+     * 户型
+     */
+    @ApiModelProperty(value = "户型", name = "room")
+    private Integer room;
+    /**
      * 开始价格
      */
     @ApiModelProperty(value = "开始价格", name = "beginPrice")
@@ -30,4 +40,9 @@ public class UserSubscribeDetailDo {
      */
     @ApiModelProperty(value = "结束价格", name = "endPrice")
     private Double endPrice;
+    /**
+     * 平均价格
+     */
+    @ApiModelProperty(value = "平均价格", name = "avgPrice")
+    private Double avgPrice;
 }

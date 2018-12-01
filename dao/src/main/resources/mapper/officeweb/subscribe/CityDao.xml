@@ -34,7 +34,8 @@
 
     <resultMap id="WapCityMap" type="com.toutiao.web.dao.entity.subscribe.WapCity">
         <result column="city_pinyin_initials" property="cityPinyinInitials" jdbcType="VARCHAR"/>
-        <result column="city_json" property="cityJson" jdbcType="OTHER" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.JSONTypeHandler"/>
+        <result column="city_json" property="cityJson" jdbcType="OTHER"
+                typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.JSONTypeHandler"/>
     </resultMap>
 
     <sql id="Example_Where_Clause">
@@ -105,7 +106,8 @@
             ${fields}
         </if>
     </sql>
-    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.toutiao.web.dao.entity.subscribe.CityQuery">
+    <select id="selectByExample" resultMap="BaseResultMap"
+            parameterType="com.toutiao.web.dao.entity.subscribe.CityQuery">
         select
         <if test="distinct">
             distinct
@@ -266,6 +268,19 @@
     <select id="selectCityName" resultType="java.lang.String" parameterType="java.lang.Integer">
         SELECT  city_name  from cities where city_id=#{cityId}
     </select>
+
+    <select id="selectAreaName" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT  area_name  from area where area_id=#{areaId}
+    </select>
+
+    <select id="selectDistrictName" resultType="java.lang.String" parameterType="java.util.ArrayList">
+        SELECT array_to_string(ARRAY(SELECT unnest(array_agg(district_name))),',') as district_name FROM "district"
+        where district_id in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+    </select>
+
     <!--List<District> selectDistrictListByCityId(String cityId);-->
     <select id="selectDistrictListByCityId" resultType="com.toutiao.web.dao.entity.subscribe.District">
         SELECT
@@ -319,7 +334,8 @@
         ORDER BY city_id
     </select>
 
-    <select id="getCityAdInfo" parameterType="java.lang.Integer" resultType="com.toutiao.web.dao.entity.subscribe.CityAdInfo">
+    <select id="getCityAdInfo" parameterType="java.lang.Integer"
+            resultType="com.toutiao.web.dao.entity.subscribe.CityAdInfo">
         SELECT city_id AS cityId, ad_info AS adInfo
         FROM city_ad_info
         WHERE 1 = 1
@@ -387,7 +403,7 @@
         from cities where city_domain=#{cityDomain} limit 1
     </select>
 
-    <select id="selectWapCity" resultMap="WapCityMap" >
+    <select id="selectWapCity" resultMap="WapCityMap">
         select a.city_pinyin_initials,json_agg(b) as city_json from
         (SELECT city_pinyin_initials FROM cities where is_show = 1 group by city_pinyin_initials) a left join
         (select city_id,city_name,city_pinyin_initials,is_hot,city_domain FROM cities where is_show=1) b on a.city_pinyin_initials=b.city_pinyin_initials

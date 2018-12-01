@@ -243,7 +243,8 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
     public ResponseEntity<UserSubscribeListDoList> listSubscribe() {
         UserBasic userBasic = UserBasic.getCurrent();
         UserSubscribeListDoList userSubscribeListDoList = new UserSubscribeListDoList();
-        userSubscribeListDoList.setUserSubscribeListDoData(subscribeService.getMySubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity()));
+        List<UserSubscribeListDo> mySubscribeInfo = subscribeService.getMySubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity());
+        userSubscribeListDoList.setUserSubscribeListDoData(mySubscribeInfo);
         return new ResponseEntity<UserSubscribeListDoList>(userSubscribeListDoList, HttpStatus.OK);
     }
 
