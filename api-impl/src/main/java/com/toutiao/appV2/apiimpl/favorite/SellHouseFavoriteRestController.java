@@ -90,6 +90,7 @@ public class SellHouseFavoriteRestController implements SellHouseFavoriteRestApi
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
             log.info("添加二手房收藏成功");
+            changeFavoriteResponse.setId(userFavoriteEsHouse.getHouseId());
             changeFavoriteResponse.setMsg("添加二手房收藏成功");
 
         } else if (flag == 0) {

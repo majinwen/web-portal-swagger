@@ -103,6 +103,7 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
             log.info("添加小区收藏成功");
+            changeFavoriteResponse.setId(plotsAddFavoriteDoQuery.getBuildingId().toString());
             changeFavoriteResponse.setMsg("添加小区收藏成功");
         } else if (flag == 0) {
             log.info("添加小区收藏失败");

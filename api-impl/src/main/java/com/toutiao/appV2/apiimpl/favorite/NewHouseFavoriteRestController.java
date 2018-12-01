@@ -102,6 +102,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
             log.info("添加新房收藏成功");
+            changeFavoriteResponse.setId(newHouseAddFavoriteDoQuery.getBuildingId().toString());
             changeFavoriteResponse.setMsg("添加新房收藏成功");
 
         } else if (flag == 0) {

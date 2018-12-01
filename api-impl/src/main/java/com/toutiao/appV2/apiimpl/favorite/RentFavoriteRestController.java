@@ -87,6 +87,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
             log.info("添加租房收藏成功");
+            changeFavoriteResponse.setId(userFavoriteRent.getHouseId());
             changeFavoriteResponse.setMsg("添加租房收藏成功");
             return new ResponseEntity<ChangeFavoriteResponse>(changeFavoriteResponse, HttpStatus.OK);
         } else if (flag == 0) {
