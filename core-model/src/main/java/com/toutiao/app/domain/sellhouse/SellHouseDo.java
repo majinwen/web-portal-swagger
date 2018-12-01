@@ -402,4 +402,7 @@ public class SellHouseDo {
     private List<String> houseBarrageSecondList;
 
     private String plotNameAccurate;
+
+    @ApiModelProperty(value = "公司图标", name = "companyIcon")
+    private String companyIcon;
 }

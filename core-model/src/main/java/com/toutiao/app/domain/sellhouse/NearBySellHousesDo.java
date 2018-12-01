@@ -395,4 +395,7 @@ public class NearBySellHousesDo {
     @ApiModelProperty(value = "逛逛第二行弹幕", name = "houseBarrageSecondList")
     private List<String> houseBarrageSecondList;
 
+    @ApiModelProperty(value = "公司图标", name = "companyIcon")
+    private String companyIcon;
+
 }

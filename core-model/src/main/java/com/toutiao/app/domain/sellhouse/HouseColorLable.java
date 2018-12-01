@@ -18,4 +18,14 @@ public class HouseColorLable {
 
     @ApiModelProperty(value = "链接", name = "url")
     private String url;
+
+    public HouseColorLable(String backColor, String fontColor, String text, String url) {
+        this.backColor = backColor;
+        this.fontColor = fontColor;
+        this.text = text;
+        this.url = url;
+    }
+
+    public HouseColorLable() {
+    }
 }
