@@ -107,6 +107,7 @@ public class FavoriteRestController implements FavoriteRestApi {
         Integer flag = favoriteRestService.cancelFavoriteHouse(cancelFavoriteHouseDto);
         if (flag == 1) {
             log.info("取消收藏成功");
+            changeFavoriteResponse.setId(cancelFavoriteHouseDto.getId());
             changeFavoriteResponse.setMsg("取消收藏成功");
         } else {
             log.info("取消收藏失败");

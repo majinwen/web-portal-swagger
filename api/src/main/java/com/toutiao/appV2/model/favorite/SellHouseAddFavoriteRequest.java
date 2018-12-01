@@ -52,8 +52,8 @@ public class SellHouseAddFavoriteRequest extends FavoriteBaseRequest {
     @ApiModelProperty(value = "二手房价格涨降标志(0未变动，1降价，2涨价)", name = "priceIncreaseDecline")
     private Integer priceIncreaseDecline;
 
-    @ApiModelProperty(value = "认领标志", name = "isClaim")
-    private Integer isClaim;
+    @ApiModelProperty(value = "认领标志（0未认领，1认领）", name = "isClaim")
+    private Integer isClaim = 0;
 
     @ApiModelProperty(value = "上架状态(0-上架,1-下架)", name = "status")
     private Short status = 0;
