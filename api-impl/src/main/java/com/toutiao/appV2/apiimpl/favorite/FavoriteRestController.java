@@ -1,15 +1,16 @@
 package com.toutiao.appV2.apiimpl.favorite;
 
 
-import com.toutiao.app.domain.favorite.CancelFavoriteHouseDto;
-import com.toutiao.app.domain.favorite.FavoriteHouseDomain;
-import com.toutiao.app.domain.favorite.FavoriteHouseListDoQuery;
-import com.toutiao.app.domain.favorite.UserCenterFavoriteCountDo;
+import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.api.chance.response.user.UserLoginResponse;
+import com.toutiao.app.domain.favorite.*;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.appV2.api.favorite.FavoriteRestApi;
 import com.toutiao.appV2.model.favorite.*;
+import com.toutiao.web.common.constant.syserror.FavoriteErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
@@ -85,6 +86,7 @@ public class FavoriteRestController implements FavoriteRestApi {
 
     /**
      * 取消收藏房源
+     *
      * @param cancelFavoriteHouseRequest
      * @return
      */
@@ -108,9 +110,61 @@ public class FavoriteRestController implements FavoriteRestApi {
             changeFavoriteResponse.setMsg("取消收藏成功");
         } else {
             log.info("取消收藏失败");
-            throw new BaseException(40001,"取消收藏失败");
+            throw new BaseException(FavoriteErrorCodeEnum.ADD_FAVORITE_FAIL);
         }
         return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
+    }
+
+    /**
+     * 收藏房源
+     *
+     * @param addFavoriteHouseRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<ChangeFavoriteResponse> addFavoriteHouse(@ApiParam(value = "addFavoriteHouseRequest", required = true) @Valid @RequestBody AddFavoriteHouseRequest addFavoriteHouseRequest) {
+        // 查询登录用户信息
+        UserBasic user = UserBasic.getCurrent();
+
+        if (null == user) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
+
+        CancelFavoriteHouseDto cancelFavoriteHouseDto = new CancelFavoriteHouseDto();
+        BeanUtils.copyProperties(addFavoriteHouseRequest, cancelFavoriteHouseDto);
+        cancelFavoriteHouseDto.setUserId(Integer.valueOf(user.getUserId()));
+        ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
+        Integer flag = favoriteRestService.addFavoriteHouse(cancelFavoriteHouseDto);
+        if (flag == 1) {
+            log.info("收藏成功");
+            changeFavoriteResponse.setMsg("收藏成功");
+        } else {
+            log.info("收藏失败");
+            throw new BaseException(FavoriteErrorCodeEnum.ADD_FAVORITE_FAIL);
+        }
+        return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
+    }
+
+    /**
+     * 查询用户收藏房源统计
+     *
+     * @return
+     */
+    @Override
+    public ResponseEntity<FavoriteHouseCountResponse> queryFavoriteHouseCount() {
+
+        FavoriteHouseCountResponse favoriteHouseCountResponse = new FavoriteHouseCountResponse();
+        // 查询登录用户信息
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        if (null != user) {
+            UserLoginResponse userLogin = JSONObject.parseObject(user,UserLoginResponse.class);
+            FavoriteHouseCountDto favoriteHouseCountDto = favoriteRestService.queryFavoriteHouseCount(Integer.valueOf(userLogin.getUserId()));
+            if (null != favoriteHouseCountDto) {
+                BeanUtils.copyProperties(favoriteHouseCountDto, favoriteHouseCountResponse);
+            }
+        }
+
+        return new ResponseEntity<>(favoriteHouseCountResponse, HttpStatus.OK);
     }
 }
 

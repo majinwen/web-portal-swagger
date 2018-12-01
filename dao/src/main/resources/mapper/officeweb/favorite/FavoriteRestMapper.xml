@@ -31,14 +31,27 @@
         <result column="type" property="type" jdbcType="INTEGER"/>
         <result column="district_name" property="districtName" jdbcType="VARCHAR"/>
         <result column="area_name" property="areaName" jdbcType="VARCHAR"/>
-        <result column="tags" property="tags" jdbcType="ARRAY" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
+        <result column="tags" property="tags" jdbcType="ARRAY"
+                typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
         <result column="build_years" property="buildYears" jdbcType="VARCHAR"/>
         <result column="building_structure" property="buildingStructure" jdbcType="VARCHAR"/>
-        <result column="room_type" property="roomType" jdbcType="ARRAY" typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
+        <result column="room_type" property="roomType" jdbcType="ARRAY"
+                typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
         <result column="is_active" property="isActive" jdbcType="INTEGER"/>
         <result column="hall" property="hall" jdbcType="INTEGER"/>
         <result column="company_icon" property="companyIcon" jdbcType="VARCHAR"/>
 
+    </resultMap>
+
+    <resultMap id="HouseCountMap" type="com.toutiao.app.domain.favorite.FavoriteHouseCountDto">
+        <result column="rent_house_ids" property="rentHouseIds" jdbcType="ARRAY"
+                typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
+        <result column="sell_house_ids" property="sellHouseIds" jdbcType="ARRAY"
+                typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
+        <result column="new_house_ids" property="newHouseIds" jdbcType="ARRAY"
+                typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
+        <result column="plot_ids" property="plotIds" jdbcType="ARRAY"
+                typeHandler="com.toutiao.web.common.extension.mybatis.typehandler.ArrayTypeHandler"/>
     </resultMap>
 
     <select id="queryFavoriteList" parameterType="java.lang.Integer" resultMap="FavoriteBaseResultMap">
@@ -213,6 +226,19 @@
             ) AS A
         ORDER BY
             A.create_time DESC
+    </select>
+
+    <select id="queryFavoriteHouseCount" resultMap="HouseCountMap">
+        SELECT
+            A.*,
+            B.*,
+            C.*,
+            D.*
+        FROM
+            ( SELECT ARRAY_AGG ( ufr.house_id ) AS rent_house_ids FROM user_favorite_rent AS ufr WHERE ufr.user_id = #{userId} AND ufr.is_del = 0 ) AS A,
+            ( SELECT ARRAY_AGG ( ufe.house_id ) AS sell_house_ids FROM user_favorite_eshouse AS ufe WHERE ufe.user_id = #{userId} AND ufe.is_del = 0 ) AS B,
+            ( SELECT ARRAY_AGG ( ufn.building_id ) AS new_house_ids FROM user_favorite_newhouse AS ufn WHERE ufn.user_id = #{userId} AND ufn.is_del = 0 ) AS C,
+            ( SELECT ARRAY_AGG ( ufv.building_id ) AS plot_ids FROM user_favorite_village AS ufv WHERE ufv.user_id = #{userId} AND ufv.is_del = 0 ) AS D
     </select>
 
 

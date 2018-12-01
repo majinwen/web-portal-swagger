@@ -13,6 +13,7 @@ import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
+import com.toutiao.web.dao.mapper.subscribe.CityDao;
 import com.toutiao.web.dao.mapper.subscribe.UserSubscribeMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ import java.util.List;
 public class SubscribeServiceImpl implements SubscribeService {
     @Autowired
     UserSubscribeMapper userSubscribeMapper;
+    @Autowired
+    CityDao cityDao;
     @Autowired
     private SellHouseService sellHouseService;
     @Autowired
@@ -96,7 +99,7 @@ public class SubscribeServiceImpl implements SubscribeService {
 
     @Override
     public List<UserSubscribe> getSubscribeListForT3(Integer userId, Integer cityId, Integer subscribeType) {
-        return userSubscribeMapper.getSubscribeListForT3(userId,cityId,subscribeType);
+        return userSubscribeMapper.getSubscribeListForT3(userId, cityId, subscribeType);
     }
 
     /**
@@ -111,12 +114,26 @@ public class SubscribeServiceImpl implements SubscribeService {
             UserSubscribeListDo userSubscribeListDo = new UserSubscribeListDo();
             BeanUtils.copyProperties(userSubscribe, userSubscribeListDo);
             UserSubscribeDetailDo userSubscribeDetailDo = JSONObject.parseObject(userSubscribe.getUserSubscribeMap(), UserSubscribeDetailDo.class);
+
             userSubscribeListDo.setUserSubscribeDetail(userSubscribeDetailDo);
             //填充新增数量
-            userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo,city));
+            if (userSubscribeListDo.getSubscribeType() == 0) {
+                userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo, city));
+                if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
+                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));
+                }
+            } else {
+                if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
+                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));
+                }
+                if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+                    userSubscribeDetailDo.setDistrictName(cityDao.selectAreaName(userSubscribeDetailDo.getAreaId()));
+                }
+                userSubscribeListDo.setNewCount((long) 0);
+            }
             if (isGetHouseDetail) {
                 //填充房源列表数据
-                userSubscribeListDo.setHouseList(getHouseListBySubscribe(userSubscribeDetailDo,city));
+                userSubscribeListDo.setHouseList(getHouseListBySubscribe(userSubscribeDetailDo, city));
             }
             userSubscribeListDoList.add(userSubscribeListDo);
         }
@@ -155,7 +172,7 @@ public class SubscribeServiceImpl implements SubscribeService {
             if (userSubscribeDetailDo.getEndPrice() != null && userSubscribeDetailDo.getEndPrice() != 0) {
                 sellHouseBeSureToSnatchDoQuery.setEndPrice(userSubscribeDetailDo.getEndPrice());
             }
-            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery,city);
+            SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery, city);
             return sellHouseBeSureToSnatchDos.getTotalCount();
         } else if (userSubscribeDetailDo.getTopicType() == 1 || userSubscribeDetailDo.getTopicType() == 2) {
             MustBuyShellHouseDoQuery mustBuyShellHouseDoQuery = new MustBuyShellHouseDoQuery();

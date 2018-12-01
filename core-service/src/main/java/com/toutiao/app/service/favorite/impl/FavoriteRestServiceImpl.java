@@ -5,12 +5,15 @@ import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.toutiao.app.domain.favorite.*;
+import com.toutiao.app.domain.newhouse.NewHouseDetailDo;
 import com.toutiao.app.domain.plot.PlotFavoriteListDo;
 import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.UserFavoritePlotDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,6 +46,9 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
 
     @Autowired
     private FavoriteRestMapper favoriteRestMapper;
+
+    @Autowired
+    private NewHouseRestService newHouseService;
 
     @Value("${qiniu.img_domain}")
     private String qiNiuImgDomain;
@@ -478,5 +485,43 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                 break;
         }
         return flag;
+    }
+
+    @Override
+    @Transactional
+    public Integer addFavoriteHouse(CancelFavoriteHouseDto cancelFavoriteHouseDto) {
+        Integer flag = 0;
+        Integer type = cancelFavoriteHouseDto.getType(); // 1 新房 2 二手房 3 小区 4 租房
+        Integer userId = cancelFavoriteHouseDto.getUserId();
+        String id = cancelFavoriteHouseDto.getId();
+        switch (type) {
+            case 1:// 新房
+                NewHouseDetailDo newHouseDetailDo = newHouseService.getNewHouseBuildByNewCode(Integer.valueOf(id), CityUtils.getCity());
+                NewHouseAddFavoriteDoQuery newHouseAddFavoriteDo = new NewHouseAddFavoriteDoQuery();
+                newHouseAddFavoriteDo.setUserId(userId);
+                newHouseAddFavoriteDo.setBuildingId(newHouseDetailDo.getBuildingNameId());
+                newHouseAddFavoriteDo.setAveragePrice(BigDecimal.valueOf(newHouseDetailDo.getAveragePrice()));
+                newHouseAddFavoriteDo.setHouseMinArea(String.valueOf(newHouseDetailDo.getHouseMinArea()));
+                newHouseAddFavoriteDo.setHouseMaxArea(String.valueOf(newHouseDetailDo.getHouseMaxArea()));
+                newHouseAddFavoriteDo.setBuildingName(newHouseDetailDo.getBuildingName());
+                newHouseAddFavoriteDo.setBuildingTitleImg(newHouseDetailDo.getBuildingTitleImg());
+                newHouseAddFavoriteDo.setTotalPrice(BigDecimal.valueOf(newHouseDetailDo.getTotalPrice()));
+                newHouseAddFavoriteDo.setCityId(newHouseDetailDo.getCityId());
+                newHouseAddFavoriteDo.setRoomType(newHouseDetailDo.getRedecorateTypeId());
+                flag = userFavoriteNewHouseMapper.addNewHouseFavorite(newHouseAddFavoriteDo);
+                break;
+            case 2:// 二手房
+                break;
+            case 3:// 小区
+                break;
+            case 4:// 租房
+                break;
+        }
+        return flag;
+    }
+
+    @Override
+    public FavoriteHouseCountDto queryFavoriteHouseCount(Integer userId) {
+        return favoriteRestMapper.queryFavoriteHouseCount(userId);
     }
 }

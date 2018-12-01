@@ -38,6 +38,10 @@ public interface CityDao {
      */
     String selectCityName(Integer cityId);
 
+    String selectAreaName(Integer cityId);
+
+    String selectDistrictName(String[] districtId);
+
     City selectCityByDomain(@Param("cityDomain") String cityDomain);
 
     List<District> selectDistrictListByCityId(@Param("cityId") Integer cityId);
@@ -64,5 +68,5 @@ public interface CityDao {
 
     List<WapCity> selectWapCity();
 
-    List<CityConditionDo> getCityConditionByIdAndType(@Param("cityId") Integer cityId,@Param("type") String type);
+    List<CityConditionDo> getCityConditionByIdAndType(@Param("cityId") Integer cityId, @Param("type") String type);
 }
