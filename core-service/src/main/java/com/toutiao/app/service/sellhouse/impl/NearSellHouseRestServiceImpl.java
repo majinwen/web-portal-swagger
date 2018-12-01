@@ -169,7 +169,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
             nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
 
-            List<HouseColorLable> houseColorLableList = new ArrayList<>();
+            /*List<HouseColorLable> houseColorLableList = new ArrayList<>();
             HouseColorLable houseColorLable = new HouseColorLable();
             houseColorLable.setBackColor("FFF2F2");
             houseColorLable.setFontColor("FF6B6B");
@@ -214,6 +214,108 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             houseBarrageSecondList.add("`总价低于商圈同户型5万");
             houseBarrageSecondList.add("`降10万");
             houseBarrageSecondList.add("`平均成交周期7天");
+            nearBySellHousesDo.setHouseBarrageSecondList(houseBarrageSecondList);*/
+
+            List<HouseColorLable> houseColorLableList = new ArrayList<>();
+
+            int isMustRob = nearBySellHousesDo.getIsMustRob();
+            if (isMustRob == 1) {
+                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", "http://www.baidu.com"));
+            }
+
+            int isLowPrice = nearBySellHousesDo.getIsLowPrice();
+            if (isLowPrice == 1) {
+                houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", "http://www.baidu.com"));
+            }
+
+            int isCutPrice = nearBySellHousesDo.getIsCutPrice();
+            if (isCutPrice == 1) {
+                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价房", "http://www.baidu.com"));
+            }
+
+            List recommendBuildTagNameList = nearBySellHousesDo.getRecommendBuildTagsName();
+            String areaName = nearBySellHousesDo.getArea();
+            Map<Integer, Map<String, Integer>> typeCountsMap = nearBySellHousesDo.getTypeCounts();
+
+            if (recommendBuildTagNameList.size() > 0 && StringTool.isNotEmpty(typeCountsMap)) {
+                String communityLableStr = "";
+                if (recommendBuildTagNameList.contains("豪宅")) {
+                    communityLableStr = areaName + typeCountsMap.get(4).get(nearBySellHousesDo.getAreaId()) + "大豪宅社区主力户型";
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                }
+                if (recommendBuildTagNameList.contains("别墅")) {
+                    communityLableStr = areaName + typeCountsMap.get(5).get(nearBySellHousesDo.getAreaId()) + "大别墅社区主力户型";
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                }
+                if (recommendBuildTagNameList.contains("首次置业")) {
+                    communityLableStr = areaName + typeCountsMap.get(2).get(nearBySellHousesDo.getAreaId()) + "大首置社区主力户型";
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                }
+                if (recommendBuildTagNameList.contains("换房升级")) {
+                    communityLableStr = areaName + typeCountsMap.get(3).get(nearBySellHousesDo.getAreaId()) + "大换房社区主力户型";
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                }
+                if (recommendBuildTagNameList.contains("近公园")) {
+//                    communityLableStr = "近公园社区主力户型";
+                    communityLableStr = "近公园";
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                }
+            }
+
+            if (nearBySellHousesDo.getIsCommunityTopHouse() == 1 ) {
+                houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", "TOP50社区", "http://www.baidu.com"));
+            }
+
+            Integer rankLowInBizcircleLayout = nearBySellHousesDo.getRankLowInBizcircleLayout();
+            if (rankLowInBizcircleLayout > 0 &&  rankLowInBizcircleLayout<10){
+                String text = nearBySellHousesDo.getHouseBusinessName()+"居室低总价榜NO."+rankLowInBizcircleLayout;
+                houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
+            }
+
+            //二手房弹幕第一行
+            List<String> houseBarrageFirstList = new ArrayList<>();
+            if (nearBySellHousesDo.getIsLowest() == 1 ){
+                houseBarrageFirstList.add("小区同户型总价最低");
+            }
+            boolean titleTag = true;
+            if(nearBySellHousesDo.getTotalAbsoluteWithBizcircle()<0){
+                String lowPriceStr = "总价低于商圈同户型" + Math.abs(nearBySellHousesDo.getTotalAbsoluteWithBizcircle()) + "万";
+                houseBarrageFirstList.add(lowPriceStr);
+                titleTag = false;
+            }
+            double priceFloat = nearBySellHousesDo.getPriceFloat();
+            if (nearBySellHousesDo.getIsCutPrice() == 1 && priceFloat > 0) {
+                houseBarrageFirstList.add("降" + priceFloat + "万");
+                titleTag = false;
+            }
+            Integer avgDealCycle = nearBySellHousesDo.getAvgDealCycle();
+            if (nearBySellHousesDo.getIsDealLayout() == 1 && avgDealCycle > 0) {
+                houseBarrageFirstList.add("平均成交周期" + avgDealCycle + "天");
+//                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
+                titleTag = false;
+            }
+            if(titleTag){
+                houseBarrageFirstList.add(nearBySellHousesDo.getHouseTitle());
+            }
+            nearBySellHousesDo.setHouseBarrageFirstList(houseBarrageFirstList);
+
+            //二手房弹幕第二行
+            List<String> houseBarrageSecondList = new ArrayList<>();
+
+            if(nearBySellHousesDo.getForwardName().contains("东") || nearBySellHousesDo.getForwardName().contains("南")){
+                houseBarrageSecondList.add("采光很好");
+            }
+            if(nearBySellHousesDo.getRankInLowCommunityLayout()>0){
+                houseBarrageSecondList.add("小区同户型低总价榜NO."+nearBySellHousesDo.getRankInLowCommunityLayout());
+            }
+            if (nearBySellHousesDo.getTotalAbsoluteWithCommunity() < 0) {
+                houseBarrageSecondList.add( "总价低于小区同户型" + Math.abs(nearBySellHousesDo.getTotalAbsoluteWithCommunity()) + "万");
+            }
+
+            for (String tag : nearBySellHousesDo.getTagsName()){
+                houseBarrageSecondList.add(tag);
+            }
+
             nearBySellHousesDo.setHouseBarrageSecondList(houseBarrageSecondList);
 
             nearBySellHouses.add(nearBySellHousesDo);
