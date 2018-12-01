@@ -1,5 +1,6 @@
 package com.toutiao.web.dao.mapper.officeweb.favorite;
 
+import com.toutiao.app.domain.favorite.FavoriteHouseCountDto;
 import com.toutiao.app.domain.favorite.FavoriteHouseDo;
 import com.toutiao.web.dao.BaseDao;
 import org.apache.ibatis.annotations.Param;
@@ -15,4 +16,5 @@ public interface FavoriteRestMapper extends BaseDao {
 
     List<FavoriteHouseDo> queryFavoriteList(@Param("userId") Integer userId);
 
+    FavoriteHouseCountDto queryFavoriteHouseCount(@Param("userId") Integer userId);
 }

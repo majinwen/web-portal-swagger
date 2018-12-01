@@ -1022,11 +1022,6 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 //设置房源标签
                 List<HouseLable> houseLableList = new ArrayList<>();
-                int isLowPrice = sellHousesSearchDo.getIsLowPrice();
-                if (isLowPrice == 1) {
-                    HouseLable houseLable = new HouseLable(HouseLableEnum.LOWPRICE);
-                    houseLableList.add(houseLable);
-                }
                 int isCutPrice = sellHousesSearchDo.getIsCutPrice();
                 if (isCutPrice == 1) {
                     HouseLable houseLable = new HouseLable(HouseLableEnum.CUTPRICE);
@@ -1037,11 +1032,23 @@ public class SellHouseServiceImpl implements SellHouseService {
                     HouseLable houseLable = new HouseLable(HouseLableEnum.MUSTROB);
                     houseLableList.add(houseLable);
                 }
+                int isLowPrice = sellHousesSearchDo.getIsLowPrice();
+                if (isLowPrice == 1) {
+                    HouseLable houseLable = new HouseLable(HouseLableEnum.LOWPRICE);
+                    houseLableList.add(houseLable);
+                }
                 sellHousesSearchDo.setHouseLableList(houseLableList);
 
                 //设置房源专题
                 List<HouseSubject> houseSubjectList = new ArrayList<>();
 
+                //1.同户型小区均价最低
+                if(sellHousesSearchDo.getIsLowest() == 1){
+                    HouseSubject houseSubject = new HouseSubject("小区同户型总价最低","");
+                    houseSubjectList.add(houseSubject);
+                }
+
+                //2.总价低于小区/商圈同户型xx万
                 String lowPriceStr = "";
                 double totalAbsoluteWithBizcircle = sellHousesSearchDo.getTotalAbsoluteWithBizcircle();
                 double totalAbsoluteWithCommunity = sellHousesSearchDo.getTotalAbsoluteWithCommunity();
@@ -1066,7 +1073,23 @@ public class SellHouseServiceImpl implements SellHouseService {
                     houseSubjectList.add(sellHouseSubject);
                 }
 
+                //3.降/涨X万
+                double priceFloat = sellHousesSearchDo.getPriceFloat();
+                if (sellHousesSearchDo.getIsCutPrice() == 1 && priceFloat > 0) {
+                    HouseSubject sellHouseSubject = new HouseSubject();
+                    sellHouseSubject.setText("降" + priceFloat + "万");
+                    sellHouseSubject.setUrl("http://www.baidu.com");
+                    houseSubjectList.add(sellHouseSubject);
+                }
 
+                //4.平均成交天数
+                Integer avgDealCycle = sellHousesSearchDo.getAvgDealCycle();
+                if (sellHousesSearchDo.getIsDealLayout() == 1 && avgDealCycle > 0) {
+                    HouseSubject sellHouseSubject = new HouseSubject("本户型平均成交时间为" + avgDealCycle + "天", "");
+                    houseSubjectList.add(sellHouseSubject);
+                }
+
+                //5.商圈N大XX社区主力户型
                 String communityLableStr = "";
                 List recommendBuildTagNameList = sellHousesSearchDo.getRecommendBuildTagsName();
                 String areaName = sellHousesSearchDo.getArea();
@@ -1090,18 +1113,19 @@ public class SellHouseServiceImpl implements SellHouseService {
                     }
                 }
 
-                if (StringTool.isNotEmpty(communityLableStr)) {
+                //6同商圈同户型范围内做低价排名
+                Integer rankInLowCommunityLayout = sellHousesSearchDo.getRankInLowCommunityLayout();
+                if (rankInLowCommunityLayout > 0) {
                     HouseSubject sellHouseSubject = new HouseSubject();
-                    sellHouseSubject.setText(communityLableStr);
-                    sellHouseSubject.setUrl("http://www.baidu.com");
+                    sellHouseSubject.setText(sellHousesSearchDo.getHouseBusinessName()+sellHousesSearchDo.getRoom()+"居室低总价榜NO."+rankInLowCommunityLayout);
+                    sellHouseSubject.setUrl("");
                     houseSubjectList.add(sellHouseSubject);
                 }
 
 
-                double priceFloat = sellHousesSearchDo.getPriceFloat();
-                if (sellHousesSearchDo.getIsCutPrice() == 1 && priceFloat > 0) {
+                if (StringTool.isNotEmpty(communityLableStr)) {
                     HouseSubject sellHouseSubject = new HouseSubject();
-                    sellHouseSubject.setText("降" + priceFloat + "万");
+                    sellHouseSubject.setText(communityLableStr);
                     sellHouseSubject.setUrl("http://www.baidu.com");
                     houseSubjectList.add(sellHouseSubject);
                 }

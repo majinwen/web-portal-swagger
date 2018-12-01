@@ -51,4 +51,27 @@ public interface FavoriteRestApi {
             method = RequestMethod.POST)
     ResponseEntity<ChangeFavoriteResponse> cancelFavoriteHouse(@ApiParam(value = "cancelFavoriteHouseRequest", required = true) @Valid @RequestBody CancelFavoriteHouseRequest cancelFavoriteHouseRequest);
 
+    @ApiOperation(value = "收藏房源", nickname = "addFavoriteHouse", notes = "收藏房源", tags = {"收藏",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/favorite/addFavoriteHouse",
+            produces = {"application/json"},
+            method = RequestMethod.POST)
+    @ApiIgnore
+    ResponseEntity<ChangeFavoriteResponse> addFavoriteHouse(@ApiParam(value = "addFavoriteHouseRequest", required = true) @Valid @RequestBody AddFavoriteHouseRequest addFavoriteHouseRequest);
+
+    @ApiOperation(value = "查询用户收藏房源统计", nickname = "queryFavoriteHouseCount", notes = "查询用户收藏房源统计", tags = {"收藏",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/favorite/queryFavoriteHouseCount",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<FavoriteHouseCountResponse> queryFavoriteHouseCount();
+
 }

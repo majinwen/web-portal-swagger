@@ -116,4 +116,8 @@ public interface FavoriteRestService {
     FavoriteHouseDomain queryFavoriteHouseList(FavoriteHouseListDoQuery favoriteHouseDoQuery);
 
     Integer cancelFavoriteHouse(CancelFavoriteHouseDto cancelFavoriteHouseDto);
+
+    Integer addFavoriteHouse(CancelFavoriteHouseDto cancelFavoriteHouseDto);
+
+    FavoriteHouseCountDto queryFavoriteHouseCount(Integer userId);
 }
