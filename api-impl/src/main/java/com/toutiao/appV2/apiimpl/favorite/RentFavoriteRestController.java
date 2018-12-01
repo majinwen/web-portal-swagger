@@ -89,14 +89,16 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
             log.info("添加租房收藏成功");
             changeFavoriteResponse.setId(userFavoriteRent.getHouseId());
             changeFavoriteResponse.setMsg("添加租房收藏成功");
-            return new ResponseEntity<ChangeFavoriteResponse>(changeFavoriteResponse, HttpStatus.OK);
         } else if (flag == 0) {
             log.info("添加租房收藏失败");
             throw new BaseException(RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_ERROR);
         } else {
             log.info("添加租房收藏重复");
-            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_REPEAT);
+//            throw new BaseException(RentInterfaceErrorCodeEnum.RENT_FAVORITE_ADD_REPEAT);
+            changeFavoriteResponse.setId(userFavoriteRent.getHouseId());
+            changeFavoriteResponse.setMsg("添加租房收藏重复");
         }
+        return new ResponseEntity<ChangeFavoriteResponse>(changeFavoriteResponse, HttpStatus.OK);
     }
 
 

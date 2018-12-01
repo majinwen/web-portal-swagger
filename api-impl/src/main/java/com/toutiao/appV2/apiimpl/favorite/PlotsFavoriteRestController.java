@@ -110,7 +110,9 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
             throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_ERROR);
         } else {
             log.info("添加小区收藏重复");
-            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_REPEAT);
+//            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_FAVORITE_ADD_REPEAT);
+            changeFavoriteResponse.setId(plotsAddFavoriteDoQuery.getBuildingId().toString());
+            changeFavoriteResponse.setMsg("添加小区收藏重复");
         }
         return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
     }
