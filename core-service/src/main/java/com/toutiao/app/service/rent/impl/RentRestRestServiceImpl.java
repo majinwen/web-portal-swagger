@@ -291,6 +291,11 @@ public class RentRestRestServiceImpl implements RentRestService {
                 houseBarrageSecondList.add("小区同户型低总价榜NO.4");
                 houseBarrageSecondList.add("总价低于小区同户型7万");
                 rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
+                //设置公司图标
+                String AgentCompany = rentDetailsFewDo.getBrokerageAgency();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
                 list.add(rentDetailsFewDo);
             }
         }
@@ -316,6 +321,11 @@ public class RentRestRestServiceImpl implements RentRestService {
                     houseBarrageSecondList.add("小区同户型低总价榜NO.4");
                     houseBarrageSecondList.add("总价低于小区同户型7万");
                     rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
+                    //设置公司图标
+                    String AgentCompany = rentDetailsFewDo.getBrokerageAgency();
+                    if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                        rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                    }
                     list.add(rentDetailsFewDo);
                 }
             }
@@ -341,6 +351,11 @@ public class RentRestRestServiceImpl implements RentRestService {
                     houseBarrageSecondList.add("小区同户型低总价榜NO.4");
                     houseBarrageSecondList.add("总价低于小区同户型7万");
                     rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
+                    //设置公司图标
+                    String AgentCompany = rentDetailsFewDo.getBrokerageAgency();
+                    if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                        rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                    }
                     list.add(rentDetailsFewDo);
                 }
             }
@@ -370,6 +385,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 //        boolQueryBuilder.must(QueryBuilders.rangeQuery("update_time").gt(pastDate).lte(nowDate));
 //        boolQueryBuilder.must(QueryBuilders.rangeQuery("is_recommend").gte(0));
 //        boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType","1"));
+
 
         boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType", "3"));//目前只展示导入的房源
 //        boolQueryBuilder.must(QueryBuilders.termQuery("rent_type","1"));
@@ -417,6 +433,11 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("phone") == null ? "" : searchHit.getSourceAsMap().get("phone").toString());
                     agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("agent_headphoto") == null ? "" : searchHit.getSourceAsMap().get("agent_headphoto").toString());
 
+                }
+                //设置公司图标
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                 }
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 List<String> houseBarrageFirstList = new ArrayList<>();
@@ -494,6 +515,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
     @Override
     public RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city) {
+
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         Date date = new Date();

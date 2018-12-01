@@ -458,6 +458,11 @@ public class SellHouseServiceImpl implements SellHouseService {
                         agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone") == null ? "" : hit.getSourceAsMap().get("houseProxyPhone").toString());
                     }
                 }
+                //设置房源公司图标
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if (!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)) {
+                    sellHouseDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
                 sellHouseDo.setAgentBaseDo(agentBaseDo);
                 List<HouseColorLable> houseColorLableList = new ArrayList<>();
                 HouseColorLable houseColorLable = new HouseColorLable();
@@ -591,6 +596,11 @@ public class SellHouseServiceImpl implements SellHouseService {
                         }
                     }
                     sellHouseDo.setAgentBaseDo(agentBaseDo);
+                    //设置房源公司图标
+                    String AgentCompany = agentBaseDo.getAgentCompany();
+                    if (!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)) {
+                        sellHouseDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                    }
                     list.add(sellHouseDo);
                 }
                 sellHouseDomain.setData(list);
@@ -644,6 +654,11 @@ public class SellHouseServiceImpl implements SellHouseService {
                             }
                         }
                         sellHouseDo.setAgentBaseDo(agentBaseDo);
+                        //设置房源公司图标
+                        String AgentCompany = agentBaseDo.getAgentCompany();
+                        if (!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)) {
+                            sellHouseDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                        }
                         list.add(sellHouseDo);
                     }
                     sellHouseDomain.setData(list);
@@ -705,6 +720,11 @@ public class SellHouseServiceImpl implements SellHouseService {
                         agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
                         agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone") == null ? "" : hit.getSourceAsMap().get("houseProxyPhone").toString());
                     }
+                }
+                //设置房源公司图标
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if (!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)) {
+                    sellHouseDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                 }
                 List<HouseColorLable> houseColorLableList = new ArrayList<>();
                 HouseColorLable houseColorLable = new HouseColorLable();
