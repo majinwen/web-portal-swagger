@@ -102,6 +102,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
         ChangeFavoriteResponse changeFavoriteResponse = new ChangeFavoriteResponse();
         if (flag == 1) {
             log.info("添加新房收藏成功");
+            changeFavoriteResponse.setId(newHouseAddFavoriteDoQuery.getBuildingId().toString());
             changeFavoriteResponse.setMsg("添加新房收藏成功");
 
         } else if (flag == 0) {
@@ -109,7 +110,9 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
             throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_ERROR);
         } else {
             log.info("添加新房收藏重复");
-            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT);
+//            throw new BaseException(NewHouseInterfaceErrorCodeEnum.NEWHOUSE_FAVORITE_ADD_REPEAT);
+            changeFavoriteResponse.setId(newHouseAddFavoriteDoQuery.getBuildingId().toString());
+            changeFavoriteResponse.setMsg("添加新房收藏重复");
         }
         return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
     }
