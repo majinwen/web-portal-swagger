@@ -114,8 +114,8 @@ public class SubscribeServiceImpl implements SubscribeService {
             UserSubscribeListDo userSubscribeListDo = new UserSubscribeListDo();
             BeanUtils.copyProperties(userSubscribe, userSubscribeListDo);
             UserSubscribeDetailDo userSubscribeDetailDo = JSONObject.parseObject(userSubscribe.getUserSubscribeMap(), UserSubscribeDetailDo.class);
+            userSubscribeDetailDo.setTitleImg("http://s1.qn.toutiaofangchan.com/imgLoadErr.png-agent400x300");
 
-            userSubscribeListDo.setUserSubscribeDetail(userSubscribeDetailDo);
             //填充新增数量
             if (userSubscribeListDo.getSubscribeType() == 0) {
                 userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo, city));
@@ -135,6 +135,7 @@ public class SubscribeServiceImpl implements SubscribeService {
                 //填充房源列表数据
                 userSubscribeListDo.setHouseList(getHouseListBySubscribe(userSubscribeDetailDo, city));
             }
+            userSubscribeListDo.setUserSubscribeDetail(userSubscribeDetailDo);
             userSubscribeListDoList.add(userSubscribeListDo);
         }
         return userSubscribeListDoList;
