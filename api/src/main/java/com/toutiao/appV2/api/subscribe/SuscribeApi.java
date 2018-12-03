@@ -11,6 +11,8 @@ package com.toutiao.appV2.api.subscribe;
  */
 
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
+import com.toutiao.app.domain.subscribe.UserTopSubscribeDetailDo;
+import com.toutiao.app.domain.subscribe.UserTopicSubscribeDetailDo;
 import com.toutiao.appV2.model.subscribe.UserSubscribeInfoT3;
 import com.toutiao.appV2.model.subscribe.UserSubscribeT3DoList;
 import com.toutiao.appV2.model.subscribe.UserSubscribeT3Do;
@@ -119,18 +121,31 @@ public interface SuscribeApi {
     ResponseEntity<UserSubscribe> saveConditionSubscribe(@ApiParam(value = "conditionSubscribeRequest", required = true) @Valid @RequestBody ConditionSubscribeRequest conditionSubscribeRequest);
 
 
-    @ApiOperation(value = "新增订阅信息", nickname = "saveSubscribe", notes = "", response = UserSubscribe.class, tags={ "订阅", })
+    @ApiOperation(value = "新增专题订阅", nickname = "saveTopicSubscribe", notes = "", response = UserSubscribe.class, tags={ "订阅", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
             @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/subscribe/saveSubscribe",
+    @RequestMapping(value = "/rest/subscribe/saveTopicSubscribe",
             produces = { "application/json" },
             consumes = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<UserSubscribe> saveSubscribe(@ApiParam(value = "userSubscribeDetailDo", required = true) @Valid @RequestBody UserSubscribeDetailDo userSubscribeDetailDo);
+    ResponseEntity<UserSubscribe> saveTopicSubscribe(@ApiParam(value = "UserTopicSubscribeDetailDo", required = true) @Valid @RequestBody UserTopicSubscribeDetailDo userSubscribeDetailDo);
+
+    @ApiOperation(value = "新增排行榜订阅", nickname = "saveTopSubscribe", notes = "", response = UserSubscribe.class, tags={ "订阅", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = UserSubscribe.class),
+            @ApiResponse(code = 201, message = "Created", response = UserSubscribe.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/subscribe/saveTopSubscribe",
+            produces = { "application/json" },
+            consumes = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<UserSubscribe> saveTopSubscribe(@ApiParam(value = "UserTopSubscribeDetailDo", required = true) @Valid @RequestBody UserTopSubscribeDetailDo userSubscribeDetailDo);
 
 
     @ApiOperation(value = "判断订阅信息是否存在", nickname = "selectByUserConditionSubscribeMap", notes = "", response = UserSubscribe.class, tags={ "订阅", })

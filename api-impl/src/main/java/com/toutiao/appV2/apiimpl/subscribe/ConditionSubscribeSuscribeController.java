@@ -130,82 +130,37 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
     }
 
-    /**
-     * 新增排行榜订阅信息
-     *
-     * @param userSubscribeInfoForT3
-     * @return
-     */
-//    @Override
-    public ResponseEntity<UserSubscribeT3Do> saveUserSubscribeForT3(@RequestBody UserSubscribeInfoT3 userSubscribeInfoT3) {
-
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserSubscribe userSubscribe = new UserSubscribe();
-                userSubscribe.setCreateTime(DateTime.now().toDate());
-                userSubscribe.setUpdateTime(DateTime.now().toDate());
-                userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
-                userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
-                userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeInfoT3, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
-                userSubscribe.setSubscribeType(3);
-                int result = subscribeService.insertSelective(userSubscribe);
-                if (result > 0) {
-                    UserSubscribeT3Do userSubscribeT3Do = new UserSubscribeT3Do();
-                    BeanUtils.copyProperties(userSubscribe, userSubscribeT3Do);
-                    userSubscribeT3Do.setUserSubscribeInfoT3(userSubscribeInfoT3);
-                    return new ResponseEntity<UserSubscribeT3Do>(userSubscribeT3Do, HttpStatus.CREATED);
-                }
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<UserSubscribeT3Do>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<UserSubscribeT3Do>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    //    @Override
-    public ResponseEntity<UserSubscribeT3DoList> getUserSubscribeForT3List() {
-        String accept = request.getHeader("Accept");
-        UserSubscribeT3DoList userSubscribeT3DoList = new UserSubscribeT3DoList();
-        if (accept != null && accept.contains("application/json")) {
-            try {
-                List<UserSubscribeT3Do> list = new ArrayList<UserSubscribeT3Do>();
-                UserBasic userBasic = UserBasic.getCurrent();
-                UserSubscribeListDoList userSubscribeListDoList = new UserSubscribeListDoList();
-                Integer userId = Integer.parseInt(userBasic.getUserId());
-                Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
-                Integer subscribeType = 3;
-                List<UserSubscribe> userSubscribeList = subscribeService.getSubscribeListForT3(userId, cityId, subscribeType);
-                for (UserSubscribe userSubscribe : userSubscribeList) {
-                    UserSubscribeInfoT3 userSubscribeInfoT3 = JSONObject.parseObject(userSubscribe.getUserSubscribeMap(), UserSubscribeInfoT3.class);
-                    UserSubscribeT3Do userSubscribeT3Do = new UserSubscribeT3Do();
-                    BeanUtils.copyProperties(userSubscribe, userSubscribeT3Do);
-                    userSubscribeT3Do.setUserSubscribeInfoT3(userSubscribeInfoT3);
-                    list.add(userSubscribeT3Do);
-                }
-                userSubscribeT3DoList.setList(list);
-                userSubscribeT3DoList.setTotalCount(list.size());
-                return new ResponseEntity<UserSubscribeT3DoList>(userSubscribeT3DoList, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type application/json", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-    }
 
 
     /**
-     * 新增订阅信息
+     * 新增专题订阅信息
      *
      * @param userSubscribeDetailDo
      * @return
      */
     @Override
-    public ResponseEntity<UserSubscribe> saveSubscribe(@ApiParam(value = "userSubscribeDetailDo", required = true) @Valid @RequestBody UserSubscribeDetailDo userSubscribeDetailDo) {
+    public ResponseEntity<UserSubscribe> saveTopicSubscribe(@ApiParam(value = "userSubscribeDetailDo", required = true) @Valid @RequestBody UserTopicSubscribeDetailDo userSubscribeDetailDo) {
+        //对区域id排序
+        userSubscribeDetailDo.setDistrictId(idsSort(userSubscribeDetailDo.getDistrictId()));
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserSubscribe userSubscribe = new UserSubscribe();
+        userSubscribe.setCreateTime(DateTime.now().toDate());
+        userSubscribe.setUpdateTime(DateTime.now().toDate());
+        userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
+        userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
+        subscribeService.insertSelective(userSubscribe);
+        return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
+    }
+
+    /**
+     * 新增排行榜专题订阅信息
+     *
+     * @param userSubscribeDetailDo
+     * @return
+     */
+    @Override
+    public ResponseEntity<UserSubscribe> saveTopSubscribe(@ApiParam(value = "userSubscribeDetailDo", required = true) @Valid @RequestBody UserTopSubscribeDetailDo userSubscribeDetailDo) {
         //对区域id排序
         userSubscribeDetailDo.setDistrictId(idsSort(userSubscribeDetailDo.getDistrictId()));
         UserBasic userBasic = UserBasic.getCurrent();
