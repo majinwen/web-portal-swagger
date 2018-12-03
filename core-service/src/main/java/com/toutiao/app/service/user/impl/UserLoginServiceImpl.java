@@ -78,7 +78,7 @@ public class UserLoginServiceImpl implements UserLoginService {
             //验证成功,判断用户是否存在，如果存在则，则更新用户登录时间
             try {
                 userBasic.setPhone(userBasicDo.getUserPhone());
-                userBasic.setIdentityType(userBasicDo.getIdentityType());
+//                userBasic.setIdentityType(userBasicDo.getIdentityType());
                 userBasic.setIdentifier(userBasicDo.getUserPhone());
                 userBasic.setUserStatus(ServiceStateConstant.USER_BASIC_STATUS);
 

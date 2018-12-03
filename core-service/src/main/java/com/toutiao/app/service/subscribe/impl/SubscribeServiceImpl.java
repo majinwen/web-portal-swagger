@@ -129,6 +129,8 @@ public class SubscribeServiceImpl implements SubscribeService {
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
                     userSubscribeDetailDo.setDistrictName(cityDao.selectAreaName(userSubscribeDetailDo.getAreaId()));
                 }
+
+
                 userSubscribeListDo.setNewCount((long) 0);
             }
             if (isGetHouseDetail) {
