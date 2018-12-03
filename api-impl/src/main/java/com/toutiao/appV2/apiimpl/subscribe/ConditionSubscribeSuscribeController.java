@@ -132,6 +132,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
 
     /**
      * 新增排行榜订阅信息
+     *
      * @param userSubscribeInfoForT3
      * @return
      */
@@ -150,9 +151,9 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
                 userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeInfoT3, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
                 userSubscribe.setSubscribeType(3);
                 int result = subscribeService.insertSelective(userSubscribe);
-                if(result > 0 ){
+                if (result > 0) {
                     UserSubscribeT3Do userSubscribeT3Do = new UserSubscribeT3Do();
-                    BeanUtils.copyProperties(userSubscribe,userSubscribeT3Do);
+                    BeanUtils.copyProperties(userSubscribe, userSubscribeT3Do);
                     userSubscribeT3Do.setUserSubscribeInfoT3(userSubscribeInfoT3);
                     return new ResponseEntity<UserSubscribeT3Do>(userSubscribeT3Do, HttpStatus.CREATED);
                 }
@@ -165,10 +166,10 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         return new ResponseEntity<UserSubscribeT3Do>(HttpStatus.NOT_IMPLEMENTED);
     }
 
-//    @Override
+    //    @Override
     public ResponseEntity<UserSubscribeT3DoList> getUserSubscribeForT3List() {
         String accept = request.getHeader("Accept");
-        UserSubscribeT3DoList userSubscribeT3DoList= new UserSubscribeT3DoList();
+        UserSubscribeT3DoList userSubscribeT3DoList = new UserSubscribeT3DoList();
         if (accept != null && accept.contains("application/json")) {
             try {
                 List<UserSubscribeT3Do> list = new ArrayList<UserSubscribeT3Do>();
@@ -177,17 +178,17 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
                 Integer userId = Integer.parseInt(userBasic.getUserId());
                 Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
                 Integer subscribeType = 3;
-                List<UserSubscribe> userSubscribeList = subscribeService.getSubscribeListForT3(userId,cityId,subscribeType);
-                for (UserSubscribe userSubscribe : userSubscribeList){
+                List<UserSubscribe> userSubscribeList = subscribeService.getSubscribeListForT3(userId, cityId, subscribeType);
+                for (UserSubscribe userSubscribe : userSubscribeList) {
                     UserSubscribeInfoT3 userSubscribeInfoT3 = JSONObject.parseObject(userSubscribe.getUserSubscribeMap(), UserSubscribeInfoT3.class);
                     UserSubscribeT3Do userSubscribeT3Do = new UserSubscribeT3Do();
-                    BeanUtils.copyProperties(userSubscribe,userSubscribeT3Do);
+                    BeanUtils.copyProperties(userSubscribe, userSubscribeT3Do);
                     userSubscribeT3Do.setUserSubscribeInfoT3(userSubscribeInfoT3);
                     list.add(userSubscribeT3Do);
                 }
                 userSubscribeT3DoList.setList(list);
                 userSubscribeT3DoList.setTotalCount(list.size());
-                return new ResponseEntity<UserSubscribeT3DoList>(userSubscribeT3DoList,HttpStatus.OK);
+                return new ResponseEntity<UserSubscribeT3DoList>(userSubscribeT3DoList, HttpStatus.OK);
             } catch (Exception e) {
                 log.error("Couldn't serialize response for content type application/json", e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -245,6 +246,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         UserSubscribeListDoList userSubscribeListDoList = new UserSubscribeListDoList();
         List<UserSubscribeListDo> mySubscribeInfo = subscribeService.getMySubscribeInfo(Integer.parseInt(userBasic.getUserId()), CityUtils.getCity());
         userSubscribeListDoList.setUserSubscribeListDoData(mySubscribeInfo);
+        userSubscribeListDoList.setTotalNum(mySubscribeInfo.size());
         return new ResponseEntity<UserSubscribeListDoList>(userSubscribeListDoList, HttpStatus.OK);
     }
 
