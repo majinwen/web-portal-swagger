@@ -25,13 +25,13 @@ public class RentMapSearchDoRequest   {
   @JsonProperty("beginPrice")
   private Double beginPrice = null;
 
-  @ApiModelProperty(value = "右下维度")
-  @JsonProperty("bottomRightLat")
-  private Double bottomRightLat = null;
+  @ApiModelProperty(value = "右上维度")
+  @JsonProperty("maxLatitude")
+  private Double maxLatitude = null;
 
-  @ApiModelProperty(value = "右下经度")
-  @JsonProperty("bottomRightLon")
-  private Double bottomRightLon = null;
+  @ApiModelProperty(value = "右上经度")
+  @JsonProperty("maxLongitude")
+  private Double maxLongitude = null;
 
   @ApiModelProperty(value = "城市id")
   @JsonProperty("cityId")
@@ -106,13 +106,13 @@ public class RentMapSearchDoRequest   {
   @JsonProperty("subwayStationId")
   private Integer[] subwayStationId = null;
 
-  @ApiModelProperty(value = "左上维度")
-  @JsonProperty("topLeftLat")
-  private Double topLeftLat = null;
+  @ApiModelProperty(value = "左下维度")
+  @JsonProperty("minLatitude")
+  private Double minLatitude = null;
 
-  @ApiModelProperty(value = "左上经度")
-  @JsonProperty("topLeftLon")
-  private Double topLeftLon = null;
+  @ApiModelProperty(value = "左下经度")
+  @JsonProperty("minLongitude")
+  private Double minLongitude = null;
 
   @ApiModelProperty(value = "中心维度")
   @JsonProperty("centerLat")

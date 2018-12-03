@@ -19,6 +19,7 @@ import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
+import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
 import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
@@ -186,9 +187,14 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             //对地铁站做聚合
             searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("subway_station_id").size(1000).includeExclude(includeExclude));
 
-        }else if(StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getTopLeftLat())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getTopLeftLon())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getBottomRightLat())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getBottomRightLon())){
-            GeoBoundingBoxQueryBuilder location = geoBoundingBoxQuery("location").setCorners(rentMapSearchDoQuery.getTopLeftLat(), rentMapSearchDoQuery.getTopLeftLon(), rentMapSearchDoQuery.getBottomRightLat(), rentMapSearchDoQuery.getBottomRightLon());
-            boolQueryBuilder.must(location);
+        }else if(StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMaxLatitude())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMaxLongitude())&&
+                StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMinLatitude())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMinLongitude())){
+
+            GeoPoint topRight = new GeoPoint(rentMapSearchDoQuery.getMaxLatitude(),rentMapSearchDoQuery.getMaxLongitude());
+            GeoPoint bottomLeft = new GeoPoint(rentMapSearchDoQuery.getMinLatitude(),rentMapSearchDoQuery.getMinLongitude());
+            GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("location").setCornersOGC(bottomLeft, topRight);
+            boolQueryBuilder.must(geoBoundingBoxQueryBuilder);
+
             searchSourceBuilder.query(boolQueryBuilder);
         }
 

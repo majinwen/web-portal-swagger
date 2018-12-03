@@ -1530,6 +1530,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 String text = sellHouseDo.getHouseBusinessName()+"居室低总价榜NO."+rankLowInBizcircleLayout;
                 houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
             }
+            sellHouseDo.setHouseColorLableList(houseColorLableList);
 
             //二手房弹幕第一行
             List<String> houseBarrageFirstList = new ArrayList<>();
