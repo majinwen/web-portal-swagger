@@ -1,6 +1,7 @@
 package com.toutiao.app.service.subscribe.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.toutiao.app.dao.sellhouse.HouseBusinessAndRoomEsDao;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDomain;
@@ -15,6 +16,10 @@ import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.mapper.subscribe.CityDao;
 import com.toutiao.web.dao.mapper.subscribe.UserSubscribeMapper;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +37,8 @@ public class SubscribeServiceImpl implements SubscribeService {
     private SellHouseService sellHouseService;
     @Autowired
     private MustBuySellHouseRestService mustBuySellHouseRestService;
+    @Autowired
+    private HouseBusinessAndRoomEsDao houseBusinessAndRoomEsDao;
 
     @Override
     public int deleteByPrimaryKey(Integer id) {
@@ -129,9 +136,14 @@ public class SubscribeServiceImpl implements SubscribeService {
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
                     userSubscribeDetailDo.setDistrictName(cityDao.selectAreaName(userSubscribeDetailDo.getAreaId()));
                 }
-
-
-                userSubscribeListDo.setNewCount((long) 0);
+                BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", userSubscribeDetailDo.getAreaId()));
+                boolQueryBuilder.must(QueryBuilders.termQuery("room",  userSubscribeDetailDo.getRoom()));
+                boolQueryBuilder.must(QueryBuilders.termQuery("isNew", 1));
+                SearchResponse houseBusinessAndRoomHouses = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomHouses(
+                        boolQueryBuilder, 1, 1, city);
+                SearchHits hits = houseBusinessAndRoomHouses.getHits();
+                userSubscribeListDo.setNewCount(hits.getTotalHits());
             }
             if (isGetHouseDetail) {
                 //填充房源列表数据
