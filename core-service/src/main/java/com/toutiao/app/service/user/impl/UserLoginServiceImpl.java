@@ -136,7 +136,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
                 //登陆后合并cookie中的对比信息
                 String currHouseId = CookieUtils.getCookie(request, response, CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED);
-                if (StringUtil.isNotNullString(currHouseId)) {
+                if (StringTool.isNotEmpty(currHouseId)) {
                     String[] currHouseIdArray = currHouseId.split("_");
                     List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
                     for (String houseId : currHouseIdList) {
