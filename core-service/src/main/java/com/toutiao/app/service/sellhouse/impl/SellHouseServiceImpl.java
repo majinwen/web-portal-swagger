@@ -989,7 +989,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                         DecimalFormat df = new DecimalFormat("0.0");
                         nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                     } else {
-                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
                     }
                 }
 
@@ -1190,7 +1190,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                     sellHousesSearchDo.setSubwayDistanceInfo(sellHousesSearchDo.getSubwayDistince().get(map.get(minDistance)).toString());
                     trafficArr = sellHousesSearchDo.getSubwayDistanceInfo().split("\\$");
                     if (trafficArr.length == 3) {
-                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
 
                     }
                 }
