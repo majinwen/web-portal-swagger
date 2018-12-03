@@ -39,24 +39,24 @@ public class RentMapSearchDoQuery  extends QueryDo {
     private Integer distance;
 
     /**
-     * 左上维度
+     * 左下维度
      */
-    private Double topLeftLat;
+    private Double minLatitude;
 
     /**
-     * 左上经度
+     * 左下经度
      */
-    private Double topLeftLon;
+    private Double minLongitude;
 
     /**
-     * 右下维度
+     * 右上维度
      */
-    private Double bottomRightLat;
+    private Double maxLatitude;
 
     /**
-     * 右下经度
+     * 右上经度
      */
-    private Double bottomRightLon;
+    private Double maxLongitude;
     /**
      * 中心维度
      */
