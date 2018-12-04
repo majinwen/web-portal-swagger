@@ -78,7 +78,7 @@ public class UserLoginServiceImpl implements UserLoginService {
             //验证成功,判断用户是否存在，如果存在则，则更新用户登录时间
             try {
                 userBasic.setPhone(userBasicDo.getUserPhone());
-                userBasic.setIdentityType(userBasicDo.getIdentityType());
+//                userBasic.setIdentityType(userBasicDo.getIdentityType());
                 userBasic.setIdentifier(userBasicDo.getUserPhone());
                 userBasic.setUserStatus(ServiceStateConstant.USER_BASIC_STATUS);
 
@@ -136,7 +136,7 @@ public class UserLoginServiceImpl implements UserLoginService {
 
                 //登陆后合并cookie中的对比信息
                 String currHouseId = CookieUtils.getCookie(request, response, CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED);
-                if (StringUtil.isNotNullString(currHouseId)) {
+                if (StringTool.isNotEmpty(currHouseId)) {
                     String[] currHouseIdArray = currHouseId.split("_");
                     List<String> currHouseIdList = Arrays.asList(currHouseIdArray);
                     for (String houseId : currHouseIdList) {

@@ -618,9 +618,9 @@ public class RentRestRestServiceImpl implements RentRestService {
                         nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName();
                     } else if (i > 1000) {
                         DecimalFormat df = new DecimalFormat("0.0");
-                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                        nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName()+ " "+"距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                     } else {
-                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                        nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName()+ " "+"距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
                     }
                 }
 
@@ -684,7 +684,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                     rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(map.get(minDistance)));
                     trafficArr = rentDetailsFewDo.getSubwayDistanceInfo().split("\\$");
                     if (trafficArr.length == 3) {
-                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
 
                     }
                 }

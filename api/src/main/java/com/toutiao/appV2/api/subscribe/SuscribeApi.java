@@ -61,9 +61,8 @@ public interface SuscribeApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/subscribe/deleteSubscribe",
             produces = { "application/json" },
-            consumes = { "application/json" },
-            method = RequestMethod.POST)
-    ResponseEntity<StringDataResponse> deleteSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
+            method = RequestMethod.GET)
+    ResponseEntity<StringDataResponse> deleteSubscribe(Integer id);
 
 
     @ApiOperation(value = "用户获取订阅信息列表", nickname = "listConditionSubscribe", notes = "", response = UserSubscribeList.class, tags={ "订阅", })

@@ -36,7 +36,9 @@
     from user_basic
     where phone = #{phone,jdbcType=VARCHAR}
     and user_status = #{userStatus,jdbcType=SMALLINT}
-    and identity_type = #{identityType,jdbcType=SMALLINT}
+    <if test="identityType != null" >
+      and identity_type = #{identityType,jdbcType=SMALLINT}
+    </if>
     and identifier = #{identifier,jdbcType=VARCHAR}
   </select>
 
