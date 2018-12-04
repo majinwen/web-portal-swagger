@@ -93,7 +93,7 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getPlotDetailByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<PlotDetailsResponse> getPlotDetailByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId);
+    ResponseEntity<PlotDetailsResponse> getPlotDetailByPlotId(@ApiParam(value = "plotId") @Valid @RequestParam(value = "plotId", required = true) Integer plotId);
 
 
     @ApiOperation(value = "根据条件获取小区列表", nickname = "getPlotListByRequirement", notes = "", response = PlotListResponse.class, tags = {"小区",})

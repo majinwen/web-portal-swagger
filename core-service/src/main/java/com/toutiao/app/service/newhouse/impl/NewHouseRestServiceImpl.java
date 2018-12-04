@@ -12,6 +12,7 @@ import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.constant.house.HouseLableEnum;
 import com.toutiao.web.common.constant.syserror.NewHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
@@ -92,13 +93,19 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             details = searchHit.getSourceAsString();
         }
         if (StringUtils.isNotEmpty(details)) {
-            UserBasic userBasic = UserBasic.getCurrent();
-            if (StringTool.isNotEmpty(userBasic)) {
-                NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
-                newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
-                newHouseIsFavoriteDoQuery.setBuildingId(newHouseDetailDo.getBuildingNameId());
-                Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
-                newHouseDetailDo.setIsFavorite(isFavorite);
+            try {
+
+                UserBasic userBasic = UserBasic.getCurrent();
+                if (StringTool.isNotEmpty(userBasic)) {
+                    NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+                    newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
+                    newHouseIsFavoriteDoQuery.setBuildingId(newHouseDetailDo.getBuildingNameId());
+                    Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
+                    newHouseDetailDo.setIsFavorite(isFavorite);
+                }
+            } catch (BaseException e) {
+                logger.info("用户未登录");
+                newHouseDetailDo.setIsFavorite(Boolean.FALSE);
             }
             newHouseDetailDo = JSON.parseObject(details, NewHouseDetailDo.class);
 
