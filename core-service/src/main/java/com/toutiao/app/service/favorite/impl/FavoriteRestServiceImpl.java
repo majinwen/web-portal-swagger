@@ -145,6 +145,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
+    @Transactional
     public Boolean updateEsfFavoriteByEsfIdAndUserId(DeleteEsfFavoriteDo deleteEsfFavoriteDo) {
         boolean flag = false;
         Integer integer = userFavoriteEsHouseMapper.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
@@ -155,6 +156,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
+    @Transactional
     public Boolean updateRentFavoriteByRentIdAndUserId(DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery) {
         boolean flag = false;
         Integer integer = userFavoriteRentMapper.updateRentFavoriteByHouseIdAndUserId(deleteRentFavoriteDoQuery);
@@ -203,6 +205,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
+    @Transactional
     public Integer addPlotsFavorite(PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery) {
 
         Integer integer = userFavoriteVillageMapper.queryCountByUserIdAndHouseId(plotsAddFavoriteDoQuery);
@@ -221,6 +224,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
+    @Transactional
     public Integer addNewHouseFavorite(NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery) {
         Integer i = userFavoriteNewHouseMapper.queryCountByUserIdAndHouseId(newHouseAddFavoriteDoQuery);
         if (null != i && i > 0) {
@@ -244,6 +248,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      * @return
      */
     @Override
+    @Transactional
     public Integer cancelNewHouseByNewCode(UserFavoriteNewHouse userFavoriteNewHouse) {
         try {
             userFavoriteNewHouse.setIsDel((short) 1);
@@ -259,6 +264,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     }
 
     @Override
+    @Transactional
     public Integer cancelVillageByVillageId(PlotIsFavoriteDoQuery plotIsFavoriteDoQuery) {
         try {
             int result = userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
@@ -278,6 +284,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      * 添加二手房收藏
      */
     @Override
+    @Transactional
     public Integer addEsfFavorite(UserFavoriteEsHouseDoQuery userFavoriteEsHouseDoQuery) {
 
         //判断重复收藏
@@ -306,6 +313,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
      * @return 添加出租收藏
      */
     @Override
+    @Transactional
     public Integer addRentFavorite(UserFavoriteRentDoQuery userFavoriteRentDoQuery) {
 
         //判断重复收藏

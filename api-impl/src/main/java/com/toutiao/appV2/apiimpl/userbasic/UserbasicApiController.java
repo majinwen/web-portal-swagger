@@ -242,11 +242,16 @@ public class UserbasicApiController implements UserbasicApi {
 
     @Override
     public ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount() {
-        UserBasic userBasic = UserBasic.getCurrent();
+
         UserSubscribeEtcCountResponse userSubscribeEtcCountResponse = new UserSubscribeEtcCountResponse();
-        UserSubscribeEtc userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userBasic.getUserId()));
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         userSubscribeEtcCountResponse.setCsAccount("service");
-        BeanUtils.copyProperties(userSubscribeEtc, userSubscribeEtcCountResponse);
+
+        if (null != user) {
+            UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+            UserSubscribeEtc userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userLoginResponse.getUserId()));
+            BeanUtils.copyProperties(userSubscribeEtc, userSubscribeEtcCountResponse);
+        }
         return new ResponseEntity<UserSubscribeEtcCountResponse>(userSubscribeEtcCountResponse, HttpStatus.OK);
     }
 
