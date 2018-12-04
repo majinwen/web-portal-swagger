@@ -75,7 +75,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         Integer groupTypeId = null != MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) ? MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) : 0;
 
         //判断是矩形查询还是中心点半径查询
-        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())){
+        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance()) && rentMapSearchDoQuery.getDistance()!=0){
             FunctionScoreQueryBuilder query = null;
             //设置基础分(录入优先展示)(录入:1,导入1/3)
             FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("rentHouseTypeId")
@@ -83,14 +83,14 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
             GaussDecayFunctionBuilder functionBuilder = null;
             GeoDistanceSortBuilder sort = null;
-            if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())) {
-                double[] location = new double[]{rentMapSearchDoQuery.getCenterLon(), rentMapSearchDoQuery.getCenterLat()};
+            if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance()) && rentMapSearchDoQuery.getDistance()!=0) {
+                double[] location = new double[]{rentMapSearchDoQuery.getLon(), rentMapSearchDoQuery.getLat()};
 
                 //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
                 functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location", location, "4km", "1km", 0.4);
                 //根据坐标计算距离
 
-                sort = SortBuilders.geoDistanceSort("location", rentMapSearchDoQuery.getCenterLat(), rentMapSearchDoQuery.getCenterLon());
+                sort = SortBuilders.geoDistanceSort("location", rentMapSearchDoQuery.getLat(), rentMapSearchDoQuery.getLon());
                 sort.unit(DistanceUnit.KILOMETERS);
                 sort.geoDistance(GeoDistance.ARC);
             }
@@ -102,7 +102,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             if (StringUtil.isNotNullString(rentMapSearchDoQuery.getKeyword())) {
                 List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(rentMapSearchDoQuery.getKeyword(), city);
                 FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
-                if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())) {
+                if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance()) && rentMapSearchDoQuery.getDistance()!=0) {
                     filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size() + 1];
                 } else {
                     filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()];
@@ -130,7 +130,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                     }
                 }
 
-                if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())) {
+                if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())&&rentMapSearchDoQuery.getDistance()!=0) {
                     filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
                     query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
                 } else {
@@ -139,7 +139,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
 
             } else {
-                if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())) {
+                if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())&&rentMapSearchDoQuery.getDistance()!=0) {
                     query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, functionBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
                 } else {
                     query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
@@ -362,14 +362,14 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
         GaussDecayFunctionBuilder functionBuilder = null;
         GeoDistanceSortBuilder sort = null;
-        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())) {
-            double[] location = new double[]{rentMapSearchDoQuery.getCenterLon(), rentMapSearchDoQuery.getCenterLat()};
+        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance()) &&rentMapSearchDoQuery.getDistance()!=0) {
+            double[] location = new double[]{rentMapSearchDoQuery.getLon(), rentMapSearchDoQuery.getLat()};
 
             //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
             functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location", location, "4km", "1km", 0.4);
             //根据坐标计算距离
 
-            sort = SortBuilders.geoDistanceSort("location", rentMapSearchDoQuery.getCenterLat(), rentMapSearchDoQuery.getCenterLon());
+            sort = SortBuilders.geoDistanceSort("location", rentMapSearchDoQuery.getLat(), rentMapSearchDoQuery.getLon());
             sort.unit(DistanceUnit.KILOMETERS);
             sort.geoDistance(GeoDistance.ARC);
         }
@@ -381,7 +381,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         if (StringUtil.isNotNullString(rentMapSearchDoQuery.getKeyword())) {
             List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(rentMapSearchDoQuery.getKeyword(), city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
-            if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())&&rentMapSearchDoQuery.getDistance()!=0) {
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size() + 1];
             } else {
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()];
@@ -409,7 +409,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                 }
             }
 
-            if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())&&rentMapSearchDoQuery.getDistance()!=0) {
                 filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
             } else {
@@ -418,7 +418,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
 
         } else {
-            if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())&&rentMapSearchDoQuery.getDistance()!=0) {
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, functionBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
             } else {
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
@@ -510,9 +510,11 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         }
 
         //附近房源/楼盘
-        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance()) && StringTool.isNotEmpty(rentMapSearchDoQuery.getCenterLat()) && StringTool.isNotEmpty(rentMapSearchDoQuery.getCenterLon())) {
+        if ((StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance())&&rentMapSearchDoQuery.getDistance()!=0) &&
+                (StringTool.isNotEmpty(rentMapSearchDoQuery.getLat())&& rentMapSearchDoQuery.getLat()!=0) &&
+                (StringTool.isNotEmpty(rentMapSearchDoQuery.getLon()) && rentMapSearchDoQuery.getLon()!=0)) {
             GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
-                    .point(rentMapSearchDoQuery.getCenterLat(), rentMapSearchDoQuery.getCenterLon())
+                    .point(rentMapSearchDoQuery.getLat(), rentMapSearchDoQuery.getLon())
                     .distance(rentMapSearchDoQuery.getDistance(), DistanceUnit.KILOMETERS);
             boolQueryBuilder.must(location);
         }

@@ -115,12 +115,12 @@ public class RentMapSearchDoRequest   {
   private Double minLongitude = null;
 
   @ApiModelProperty(value = "中心维度")
-  @JsonProperty("centerLat")
-  private Double centerLat = null;
+  @JsonProperty("lat")
+  private Double lat = null;
 
   @ApiModelProperty(value = "中心经度")
-  @JsonProperty("centertLon")
-  private Double centertLon = null;
+  @JsonProperty("lon")
+  private Double lon = null;
 
   @ApiModelProperty(value = "小区id")
   @JsonProperty("newcode")
