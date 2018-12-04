@@ -108,7 +108,6 @@ public interface RentRestApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
-    @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@ApiParam(value = "rentHouseRequest" ,required=true ) @Validated(Second.class) @Valid() @RequestBody RentHouseRequest rentHouseRequest);
 
 
