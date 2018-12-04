@@ -384,6 +384,50 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                //获取新房的收藏数量
 //                int newHouseFavoriteCount=favoriteRestService.newHouseFavoriteByNewCode(newHouseListDos.getBuildingNameId());
 //                newHouseListDos.setNewHouseFavorite(newHouseFavoriteCount);
+
+                //descHigh : 位于 districtName ringRoad环 buildingAddress
+                StringBuilder descHigh = new StringBuilder();
+                descHigh.append("位于");
+                if(StringTool.isNotEmpty(newHouseListDos.getDistrictName())){
+                    descHigh.append(newHouseListDos.getDistrictName());
+                }
+                if(StringTool.isNotEmpty(newHouseListDos.getRingRoad())){
+                    descHigh.append(newHouseListDos.getRingRoad());
+                    descHigh.append("环");
+                }
+                if(StringTool.isNotEmpty(newHouseListDos.getBuildingAddress())){
+                    descHigh.append(newHouseListDos.getBuildingAddress());
+                }
+                newHouseListDos.setDescHigh(descHigh.toString().equals("位于")?"":descHigh.toString());
+
+                //descMid : 位于 developers建propertyType,openedTimeDesc,deliverTimeDesc
+                StringBuilder descMidSb = new StringBuilder();
+                if(StringTool.isNotEmpty(newHouseListDos.getDevelopers())){
+                    descMidSb.append(newHouseListDos.getDevelopers());
+                    descMidSb.append("建");
+                }
+                if(StringTool.isNotEmpty(newHouseListDos.getPropertyType())){
+                    descMidSb .append(newHouseListDos.getPropertyType());
+                    descMidSb .append(",");
+                }else if(StringTool.isNotEmpty(descMidSb.toString())){
+                    descMidSb .append(",");
+                }
+                if(StringTool.isNotEmpty(newHouseListDos.getOpenedTimeDesc())){
+                    descMidSb.append(newHouseListDos.getOpenedTimeDesc());
+                    descMidSb .append(",");
+                }
+                if(StringTool.isNotEmpty(newHouseListDos.getDeliverTimeDesc())){
+                    descMidSb.append(newHouseListDos.getDeliverTimeDesc());
+                    descMidSb .append(",");
+                }
+                String descMidStr = "";
+                if(StringTool.isNotEmpty(descMidSb.toString())){
+                    descMidStr = descMidSb.substring(0,descMidSb.length()-1);
+                }
+
+                newHouseListDos.setDescMid(descMidStr);
+
+
                 newHouseListDoList.add(newHouseListDos);
             }
 
