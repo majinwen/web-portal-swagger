@@ -217,7 +217,9 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         GeoPoint bottomLeft = new GeoPoint(esfMapSearchDoQuery.getMinLatitude(),esfMapSearchDoQuery.getMinLongitude());
         GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("bizcircle_location").setCornersOGC(bottomLeft, topRight);
         aggBuilder.must(geoBoundingBoxQueryBuilder);
-        aggBuilder.must(QueryBuilders.termQuery("district_id", sellHouseDoQuery.getDistrictId()));
+        if(StringTool.isNotEmpty((sellHouseDoQuery.getDistrictId())) && sellHouseDoQuery.getDistrictId() != 0){
+            aggBuilder.must(QueryBuilders.termQuery("district_id", sellHouseDoQuery.getDistrictId()));
+        }
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByBizcircle(aggBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
         Terms houseCount = searchResponse.getAggregations().get("houseCount");
