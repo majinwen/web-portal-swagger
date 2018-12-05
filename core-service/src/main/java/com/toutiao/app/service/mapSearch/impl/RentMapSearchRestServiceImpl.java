@@ -520,7 +520,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         }
 
         //城市
-        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getCityId())) {
+        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getCityId()) && rentMapSearchDoQuery.getCityId()!=0) {
             boolQueryBuilder.must(termQuery("city_id", rentMapSearchDoQuery.getCityId()));
         }
 
@@ -535,7 +535,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 //        }
 
         //地铁线id
-        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getSubwayLineId()) && rentMapSearchDoQuery.getSubwayLineId()!=0) {
             boolQueryBuilder.must(termQuery("subway_line_id", rentMapSearchDoQuery.getSubwayLineId()));
         }
 
@@ -654,13 +654,13 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         }
 
         //朝向
-        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getForwardId())) {
+        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getForwardId()) && rentMapSearchDoQuery.getForwardId().length!=0) {
             Integer[] forword = rentMapSearchDoQuery.getForwardId();
             boolQueryBuilder.must(QueryBuilders.termsQuery("forward_type", forword));
         }
 
         //标签
-        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getLabelId())) {
+        if (StringTool.isNotEmpty(rentMapSearchDoQuery.getLabelId()) && rentMapSearchDoQuery.getLabelId().length!=0) {
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_house_tags_id", rentMapSearchDoQuery.getLabelId()));
         }
 

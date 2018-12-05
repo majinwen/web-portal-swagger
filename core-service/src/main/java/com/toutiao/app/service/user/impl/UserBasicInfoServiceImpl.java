@@ -169,10 +169,15 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
 
         if (StringUtils.isNotEmpty(result)) {
             Map resultMap = JSON.parseObject(result, Map.class);
-            Object count = resultMap.get("count");
+            Object newsCount = resultMap.get("newsCount");
+            Object channelCount = resultMap.get("channelCount");
 
-            if (null != count) {
-                favoriteCount += (Integer) count;
+            if (null != newsCount) {
+                favoriteCount += (Integer) newsCount;
+            }
+
+            if (null != channelCount) {
+                subscribeCount += (Integer) channelCount;
             }
         }
         userSubscribeEtc.setUserFavoriteCount(favoriteCount);
