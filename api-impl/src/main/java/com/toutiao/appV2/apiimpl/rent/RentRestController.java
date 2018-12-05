@@ -106,7 +106,12 @@ public class RentRestController implements RentRestApi {
             List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
             RentDetailFewResponseList nearRentHouseResponse = new RentDetailFewResponseList();
             nearRentHouseResponse.setRentDetailsList(rentDetailFewResponses);
-            nearRentHouseResponse.setTotalCount(rentDetailFewResponses.size());
+            if (list.size() > 0) {
+                nearRentHouseResponse.setTotalCount(list.get(0).getTotalNum());
+            } else {
+                nearRentHouseResponse.setTotalCount(0);
+            }
+
             return new ResponseEntity<>(nearRentHouseResponse, HttpStatus.OK);
         } else {
             RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
