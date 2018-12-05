@@ -89,7 +89,7 @@ public class RentDetailResponse {
     @JsonProperty("housePhoto")
     @Valid
     @ApiModelProperty("房源图片")
-    private List<String> housePhoto = null;
+    private String[] housePhoto = null;
 
     @JsonProperty("houseTitle")
     @ApiModelProperty("录入/导入房源标题")
