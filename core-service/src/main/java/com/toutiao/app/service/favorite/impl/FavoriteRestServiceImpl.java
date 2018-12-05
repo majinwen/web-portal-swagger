@@ -382,10 +382,10 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     } else {
                         favoriteHouseVo.setTitleImg(buildingTitleImg);
                     }
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice());
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice().intValue());
                     favoriteHouseVo.setHouseMinArea(favoriteHouseDo.getHouseMinArea());
                     favoriteHouseVo.setHouseMaxArea(favoriteHouseDo.getHouseMaxArea());
-                    favoriteHouseVo.setTotalPrice(favoriteHouseDo.getTotalPrice());
+                    favoriteHouseVo.setTotalPrice(favoriteHouseDo.getTotalPrice().intValue());
                     favoriteHouseVo.setRoomType(favoriteHouseDo.getRoomType());
                     favoriteHouseVo.setIsActive(favoriteHouseDo.getIsActive());
                     break;
@@ -400,7 +400,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     } else {
                         favoriteHouseVo.setTitleImg(housePhotoTitle);
                     }
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getHouseTotalPrices());
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getHouseTotalPrices().intValue());
                     favoriteHouseVo.setRoom(favoriteHouseDo.getRoom());
                     favoriteHouseVo.setHall(favoriteHouseDo.getHall());
                     favoriteHouseVo.setForward(favoriteHouseDo.getForward());
@@ -417,7 +417,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     } else {
                         favoriteHouseVo.setTitleImg(buildingTitleImgPlot);
                     }
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice());
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice().intValue());
                     favoriteHouseVo.setBuildYears(favoriteHouseDo.getBuildYears());
                     favoriteHouseVo.setBuildingStructure(favoriteHouseDo.getBuildingStructure());
                     break;
@@ -432,7 +432,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     } else {
                         favoriteHouseVo.setTitleImg(housePhotoTitleRent);
                     }
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getRentPrice());
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getRentPrice().intValue());
                     favoriteHouseVo.setRentTypeName(favoriteHouseDo.getRentTypeName());
                     favoriteHouseVo.setRoom(favoriteHouseDo.getRoom());
                     favoriteHouseVo.setHall(favoriteHouseDo.getHall());
