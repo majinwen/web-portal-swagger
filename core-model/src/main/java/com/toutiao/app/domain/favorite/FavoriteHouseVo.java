@@ -28,10 +28,10 @@ public class FavoriteHouseVo {
     private Integer type;
 
     @ApiModelProperty(value = "价格", name = "price")
-    private BigDecimal price;
+    private Integer price;
 
     @ApiModelProperty(value = "新房总价", name = "totalPrice")
-    private BigDecimal totalPrice;
+    private Integer totalPrice;
 
     @ApiModelProperty(value = "区域名称", name = "districtName")
     private String districtName;
