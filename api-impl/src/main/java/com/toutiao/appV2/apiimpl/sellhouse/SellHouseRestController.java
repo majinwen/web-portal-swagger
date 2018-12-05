@@ -170,6 +170,7 @@ public class SellHouseRestController implements SellHouseRestApi {
                 sellHouseSearchDomainResponse.setIsGuess(1);
             }
             BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+            sellHouseSearchDomainResponse.setTotalNum(sellHouseSearchDomain.getTotalNum());
             log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
             return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
         }

@@ -1431,29 +1431,36 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(queryBuilder);
         }
         //城市
-        if (StringTool.isNotEmpty(nearHouseDo.getCityId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getCityId()) && nearHouseDo.getCityId()>0) {
             boolQueryBuilder.must(termQuery("city_id", nearHouseDo.getCityId()));
         }
         //区域
-        if (StringTool.isNotEmpty(nearHouseDo.getDistrictId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getDistrictId()) && nearHouseDo.getDistrictId() > 0) {
             boolQueryBuilder.must(termQuery("district_id", nearHouseDo.getDistrictId()));
         }
         //商圈
-        if (StringTool.isNotEmpty(nearHouseDo.getAreaId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getAreaId()) && nearHouseDo.getAreaId()>0) {
             boolQueryBuilder.must(termQuery("area_id", nearHouseDo.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(nearHouseDo.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getSubwayLineId())&& nearHouseDo.getSubwayLineId()>0) {
             boolQueryBuilder.must(termsQuery("subway_line_id", new int[]{nearHouseDo.getSubwayLineId()}));
         }
         //地铁站id
-        if (StringTool.isNotEmpty(nearHouseDo.getSubwayStationId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getSubwayStationId())&& nearHouseDo.getSubwayStationId()>0) {
             boolQueryBuilder.must(termsQuery("subway_station_id", new int[]{nearHouseDo.getSubwayStationId()}));
         }
         //租金
-        if (StringTool.isNotEmpty(nearHouseDo.getBeginPrice()) && StringTool.isNotEmpty(nearHouseDo.getEndPrice())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getBeginPrice()) && StringTool.isNotEmpty(nearHouseDo.getEndPrice()) && nearHouseDo.getBeginPrice()>0 && nearHouseDo.getEndPrice()>0) {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
                     .gte(nearHouseDo.getBeginPrice()).lte(nearHouseDo.getEndPrice()));
+        } else if (StringTool.isNotEmpty(nearHouseDo.getBeginPrice()) && StringTool.isNotEmpty(nearHouseDo.getEndPrice()) && nearHouseDo.getBeginPrice()>0 && nearHouseDo.getEndPrice()==0) {
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
+                    .gte(nearHouseDo.getBeginPrice()));
+        }
+        else if (StringTool.isNotEmpty(nearHouseDo.getBeginPrice()) && StringTool.isNotEmpty(nearHouseDo.getEndPrice()) && nearHouseDo.getBeginPrice() == 0 && nearHouseDo.getEndPrice() > 0) {
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
+                    .lte(nearHouseDo.getEndPrice()));
         }
         //面积
         if (StringTool.isNotEmpty(nearHouseDo.getRentHouseArea())) {
