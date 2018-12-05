@@ -1170,10 +1170,6 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
-                //计算nearbyDistance
-
-
-                sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
                 String keys = "";
                 if (null != sellHouseDoQuery.getSubwayLineId() && sellHouseDoQuery.getSubwayLineId() > 0) {
@@ -1206,6 +1202,54 @@ public class SellHouseServiceImpl implements SellHouseService {
                     sellHousesSearchDo.setNearbyDistance(nearbyDistance);
                 }
 
+                //二手房弹幕第一行
+                List<String> houseBarrageFirstList = new ArrayList<>();
+                if (sellHousesSearchDo.getIsLowest() == 1 ){
+                    houseBarrageFirstList.add("小区同户型总价最低");
+                }
+                boolean titleTag = true;
+                if(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()<0){
+//                    String lowPriceStr = "总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万";
+                    houseBarrageFirstList.add("总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万");
+                    titleTag = false;
+                }
+
+//                double priceFloat = sellHousesSearchDo.getPriceFloat();
+                if (sellHousesSearchDo.getIsCutPrice() == 1 && priceFloat > 0) {
+                    houseBarrageFirstList.add("降" + priceFloat + "万");
+                    titleTag = false;
+                }
+//                Integer avgDealCycle = sellHousesSearchDo.getAvgDealCycle();
+                if (sellHousesSearchDo.getIsDealLayout() == 1 && avgDealCycle > 0) {
+                    houseBarrageFirstList.add("平均成交周期" + avgDealCycle + "天");
+//                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
+                    titleTag = false;
+                }
+                if(titleTag){
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
+                }
+                sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
+
+                //二手房弹幕第二行
+                List<String> houseBarrageSecondList = new ArrayList<>();
+
+                if(sellHousesSearchDo.getForwardName().contains("东") || sellHousesSearchDo.getForwardName().contains("南")){
+                    houseBarrageSecondList.add("采光很好");
+                }
+                if(sellHousesSearchDo.getRankInLowCommunityLayout()>0){
+                    houseBarrageSecondList.add("小区同户型低总价榜NO."+sellHousesSearchDo.getRankInLowCommunityLayout());
+                }
+                if (sellHousesSearchDo.getTotalAbsoluteWithCommunity() < 0) {
+                    houseBarrageSecondList.add( "总价低于小区同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithCommunity()) + "万");
+                }
+
+                for (String tag : sellHousesSearchDo.getTagsName()){
+                    houseBarrageSecondList.add(tag);
+                }
+
+                sellHousesSearchDo.setHouseBarrageSecondList(houseBarrageSecondList);
+
+                sellHousesSearchDos.add(sellHousesSearchDo);
             }
             sellHouseSearchDomain.setData(sellHousesSearchDos);
             sellHouseSearchDomain.setTotalNum((int) searchResponse.getHits().getTotalHits());
