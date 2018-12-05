@@ -656,14 +656,18 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
         EsfMapStationDomain esfMapStationDomain = new EsfMapStationDomain();
         //地铁线
-        if (null!=esfMapSearchDoQuery.getSubwayLineId() && null==esfMapSearchDoQuery.getSubwayStationId()) {
-
+//        if (null!=esfMapSearchDoQuery.getSubwayLineId() && null==esfMapSearchDoQuery.getSubwayStationId()) {
+//
+//            esfMapStationDomain = esfMapSearchByLine(esfMapSearchDoQuery, city);
+//            return esfMapStationDomain;
+//        }
+        if(StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && StringTool.isEmpty(esfMapSearchDoQuery.getSubwayStationId())){
             esfMapStationDomain = esfMapSearchByLine(esfMapSearchDoQuery, city);
             return esfMapStationDomain;
         }
 
         //地铁站
-        if (null!=esfMapSearchDoQuery.getSubwayStationId()) {
+        if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayStationId())) {
 
             esfMapStationDomain = esfMapSearchByStation(esfMapSearchDoQuery, city);
         }

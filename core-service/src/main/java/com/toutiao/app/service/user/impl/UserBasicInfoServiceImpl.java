@@ -9,12 +9,14 @@ import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.constant.syserror.RestfulInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper;
 import io.rong.models.Result;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class UserBasicInfoServiceImpl implements UserBasicInfoService{
@@ -38,6 +42,10 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     public String headPicDirectory;
     @Value("${qiniu.img_wapapp_domain}")
     public String headPicPath;
+    @Value("${bdw.cms.base.url}")
+    private String cmsBaseUrl;
+    @Value("${bdw.cms.news.count}")
+    private String newsCountUrl;
 
     /**
      * 更新用户头像
@@ -155,6 +163,18 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
         UserSubscribeEtc userSubscribeEtc = new UserSubscribeEtc();
         Integer favoriteCount = userBasicMapper.getUserFavoriteCount(userId);
         Integer subscribeCount = userBasicMapper.getUserSubscribeCount(userId);
+        Map<String,String> paramMap = new HashMap<>();
+        paramMap.put("userId", userId.toString());
+        String result = HttpUtils.get(cmsBaseUrl + newsCountUrl, paramMap);
+
+        if (StringUtils.isNotEmpty(result)) {
+            Map resultMap = JSON.parseObject(result, Map.class);
+            Object count = resultMap.get("count");
+
+            if (null != count) {
+                favoriteCount += (Integer) count;
+            }
+        }
         userSubscribeEtc.setUserFavoriteCount(favoriteCount);
         userSubscribeEtc.setUserSubscribeCount(subscribeCount);
         return userSubscribeEtc;

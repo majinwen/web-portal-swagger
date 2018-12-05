@@ -127,8 +127,8 @@ public class NewHouseLayoutServiceImpl implements NewHouseLayoutService{
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         NewHouseLayoutPriceDo newHouseLayoutPriceDo = new NewHouseLayoutPriceDo();
-//        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
-        boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newHouseId));
+        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(newHouseType,QueryBuilders.termQuery("building_name_id",newHouseId) ,false));
+//        boolQueryBuilder.must(QueryBuilders.termQuery("building_name_id",newHouseId));
 
         SearchResponse searchResponse=newHouseLayoutEsDao.getLayoutPriceByNewHouseId(boolQueryBuilder,city);
 
