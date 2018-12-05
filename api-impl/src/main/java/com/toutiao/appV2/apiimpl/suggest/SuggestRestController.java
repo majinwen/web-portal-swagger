@@ -257,7 +257,7 @@ public class SuggestRestController implements SuggestRestApi {
         }
         CityAllInfoMap cityAllInfoMap = new CityAllInfoMap();
         Map<String, Object> res = cityService.getCityAllInfo(cityId);
-        cityAllInfoMap.setVersion(3);
+        cityAllInfoMap.setVersion(4);
         cityAllInfoMap.setCityAllInfos(res);
         return new ResponseEntity<CityAllInfoMap>(cityAllInfoMap, HttpStatus.OK);
     }
