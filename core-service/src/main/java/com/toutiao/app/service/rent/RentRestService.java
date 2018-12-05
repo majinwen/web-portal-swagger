@@ -78,7 +78,4 @@ public interface RentRestService {
      */
     int isDefaultImage(String importTime, Date today, String image);
 
-
-
-
 }

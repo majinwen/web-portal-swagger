@@ -89,7 +89,7 @@ public class RentDetailResponse {
     @JsonProperty("housePhoto")
     @Valid
     @ApiModelProperty("房源图片")
-    private List<String> housePhoto = null;
+    private String[] housePhoto = null;
 
     @JsonProperty("houseTitle")
     @ApiModelProperty("录入/导入房源标题")
@@ -196,6 +196,9 @@ public class RentDetailResponse {
     @JsonProperty("zufangName")
     @ApiModelProperty("小区名称")
     private String zufangName = null;
+
+    @ApiModelProperty(value = "公司图标", name = "companyIcon")
+    private String companyIcon;
 
 }
 

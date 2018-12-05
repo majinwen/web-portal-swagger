@@ -491,6 +491,11 @@ public class SellHouseDetailsDo {
      */
     private Integer isDefaultImage = 0;
 
+    /**
+     * 公司图标
+     */
+    private String companyIcon;
+
 
 
 }

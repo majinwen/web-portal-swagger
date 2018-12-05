@@ -124,29 +124,19 @@ public class MessagePushController implements MessagePushApi {
     @Override
     public ResponseEntity<HomeMessageResponse> getHomeMessage(@ApiParam(value = "homePageMessageRequest") HomePageMessageRequest homePageMessageRequest, HttpServletRequest req,
                                                               HttpServletResponse response) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                String userId = getUserIdByCookie(req, response);
-                if (StringTool.isEmpty(userId)) {
-                    return new ResponseEntity("用户未登录", HttpStatus.BAD_REQUEST);
-                    }
-                HomeMessageDoQuery homeMessageDoQuery = new HomeMessageDoQuery();
-                BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
-//        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
-                //新版本也暂时隐掉二手房动态消息
-                List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessage(homeMessageDoQuery, userId);
-                HomeMessageResponse homeMessageResponse = new HomeMessageResponse();
-                homeMessageResponse.setData(homePageMessage);
-                homeMessageResponse.setTotalNum(homePageMessage.size());
-                return new ResponseEntity<>(homeMessageResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
+        String userId = getUserIdByCookie(req, response);
+        if (StringTool.isEmpty(userId)) {
+            return new ResponseEntity("用户未登录", HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        HomeMessageDoQuery homeMessageDoQuery = new HomeMessageDoQuery();
+        BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
+//        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
+        //新版本也暂时隐掉二手房动态消息
+        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
+        HomeMessageResponse homeMessageResponse = new HomeMessageResponse();
+        homeMessageResponse.setData(homePageMessage);
+        homeMessageResponse.setTotalNum(homePageMessage.size());
+        return new ResponseEntity<>(homeMessageResponse, HttpStatus.OK);
     }
 
     @Override
