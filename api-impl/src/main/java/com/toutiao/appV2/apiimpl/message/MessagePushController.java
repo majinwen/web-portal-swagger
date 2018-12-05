@@ -14,6 +14,7 @@ import com.toutiao.appV2.model.message.HomePageMessageRequest;
 import com.toutiao.appV2.model.message.MessagePushRequest;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +47,7 @@ public class MessagePushController implements MessagePushApi {
         this.objectMapper = objectMapper;
         this.request = request;
     }
+
     @Autowired
     private MessagePushService messagePushService;
 
@@ -120,69 +122,41 @@ public class MessagePushController implements MessagePushApi {
 //        //TODO 仍有地方调用，但是接口无效
 //        return NashResult.build("消息已读!");
 //    }
-
     @Override
     public ResponseEntity<HomeMessageResponse> getHomeMessage(@ApiParam(value = "homePageMessageRequest") HomePageMessageRequest homePageMessageRequest, HttpServletRequest req,
                                                               HttpServletResponse response) {
-        String userId = getUserIdByCookie(req, response);
-        if (StringTool.isEmpty(userId)) {
-            return new ResponseEntity("用户未登录", HttpStatus.BAD_REQUEST);
-        }
+        UserBasic current = UserBasic.getCurrent();
         HomeMessageDoQuery homeMessageDoQuery = new HomeMessageDoQuery();
         BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
 //        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
         //新版本也暂时隐掉二手房动态消息
-        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
+        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessage(homeMessageDoQuery, current.getUserId());
         HomeMessageResponse homeMessageResponse = new HomeMessageResponse();
         homeMessageResponse.setData(homePageMessage);
         homeMessageResponse.setTotalNum(homePageMessage.size());
         return new ResponseEntity<>(homeMessageResponse, HttpStatus.OK);
+
+    }
+
+
+    @Override
+    public ResponseEntity<MessagePushDomain> getHouseTypeMessage(@ApiParam(value = "messagePushRequest") @Validated MessagePushRequest messagePushRequest, HttpServletRequest
+            req, HttpServletResponse response) {
+        UserBasic current = UserBasic.getCurrent();
+        MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
+        BeanUtils.copyProperties(messagePushRequest, messagePushQuery);
+        MessagePushDomain message = messagePushService.getHouseTypeMessageNew(messagePushQuery, current.getUserId(), request);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<MessagePushDomain> getHouseTypeMessage(@ApiParam(value = "messagePushRequest")@Validated MessagePushRequest messagePushRequest, HttpServletRequest
+    public ResponseEntity<MessagePushDomain> getThemeTypeMessage(@ApiParam(value = "messagePushRequest") @Validated MessagePushRequest messagePushRequest, HttpServletRequest
             req, HttpServletResponse response) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                String userId = getUserIdByCookie(req, response);
-                if (StringTool.isEmpty(userId)) {
-                    return new ResponseEntity("用户未登录", HttpStatus.BAD_REQUEST);
-                }
-                MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
-                BeanUtils.copyProperties(messagePushRequest, messagePushQuery);
-                MessagePushDomain message = messagePushService.getHouseTypeMessageNew(messagePushQuery, userId, request);
-                return new ResponseEntity<>(message, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-    }
-
-    @Override
-    public ResponseEntity<MessagePushDomain> getThemeTypeMessage(@ApiParam(value = "messagePushRequest")@Validated MessagePushRequest messagePushRequest, HttpServletRequest
-            req, HttpServletResponse response) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                String userId = getUserIdByCookie(req, response);
-                if (StringTool.isEmpty(userId)) {
-                    return new ResponseEntity("用户未登录", HttpStatus.BAD_REQUEST);
-                }
-                MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
-                BeanUtils.copyProperties(messagePushRequest, messagePushQuery);
-                MessagePushDomain message = messagePushService.getThemeTypeMessage(messagePushQuery, userId, request);
-                return new ResponseEntity<>(message, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("服务端错误", e);
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        UserBasic current = UserBasic.getCurrent();
+        MessagePushDoQuery messagePushQuery = new MessagePushDoQuery();
+        BeanUtils.copyProperties(messagePushRequest, messagePushQuery);
+        MessagePushDomain message = messagePushService.getThemeTypeMessage(messagePushQuery, current.getUserId(), request);
+        return new ResponseEntity<>(message, HttpStatus.OK);
     }
 
 

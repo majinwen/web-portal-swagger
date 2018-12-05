@@ -80,7 +80,7 @@ public class UserbasicApiController implements UserbasicApi {
             BeanUtils.copyProperties(userLoginResponse, userLoginResponse1);
             return new ResponseEntity<UserLoginResponse>(userLoginResponse1, HttpStatus.OK);
         } else {
-            throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
+            throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR);
         }
     }
 
