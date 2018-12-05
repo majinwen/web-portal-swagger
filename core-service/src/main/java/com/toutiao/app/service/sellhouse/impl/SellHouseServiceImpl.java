@@ -1010,7 +1010,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
                     String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
 //                    sellHousesSearchDo.setNearbyDistance(distance);
-                    nearbyDistance = "距您" + distances + "km";
+                    nearbyDistance = "距您" + distances;
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图

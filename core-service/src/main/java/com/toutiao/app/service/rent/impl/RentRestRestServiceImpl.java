@@ -600,7 +600,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
                     BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
                     String distances= geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
-                    nearbyDistance = "距您" + distances + "km";
+                    nearbyDistance = "距您" + distances;
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
