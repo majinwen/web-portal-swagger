@@ -1,14 +1,12 @@
 package com.toutiao.appV2.model.message;
 
-import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiParam;
 import org.springframework.validation.annotation.Validated;
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 /**
  * MessagePushRequest
@@ -19,7 +17,8 @@ import javax.validation.constraints.*;
 public class MessagePushRequest   {
   @JsonProperty("contentType")
   @NotNull(message = "内容类型不能为空")
-  @ApiParam(value = "内容类型(3-符合找房条件的房源上新, 4-关注小区房源上新, 5-关注房源价格变动, 6-订阅的主题有更新)", required = true)
+  @ApiParam(value = "内容类型(3-符合找房条件的房源上新, 4-关注小区房源上新, 5-关注房源价格变动, 6-订阅的主题有更新, 8-关注二手房小区新上" +
+          ", 9-关注租房小区新上, 10-关注二手房下架, 11-关注租房下，12-关注租房价格变动)", required = true)
   private Integer contentType = null;
 
   @JsonProperty("lastMessageId")

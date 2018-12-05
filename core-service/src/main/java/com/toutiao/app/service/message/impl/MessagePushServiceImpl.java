@@ -731,7 +731,6 @@ public class MessagePushServiceImpl implements MessagePushService {
         } else {
             RentDetailsDo rentDetailsDo = rentRestService.queryRentDetailByHouseId(houseId, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
             jsonObject = esfInfo.getJSONObject(houseId);
-            //新数据可以从esfInfo查询，判断是否下架
             if (rentDetailsDo == null){
                 jsonObject.put("status", 1);
             } else {

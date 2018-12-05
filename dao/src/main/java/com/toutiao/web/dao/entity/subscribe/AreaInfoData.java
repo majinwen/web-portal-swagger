@@ -13,5 +13,9 @@ public class AreaInfoData {
 
     private String name;
 
+    private String coordX;
+
+    private String coordY;
+
     private List<CircleData> children;
 }
