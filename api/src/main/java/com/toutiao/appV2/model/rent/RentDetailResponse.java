@@ -197,5 +197,8 @@ public class RentDetailResponse {
     @ApiModelProperty("小区名称")
     private String zufangName = null;
 
+    @ApiModelProperty(value = "公司图标", name = "companyIcon")
+    private String companyIcon;
+
 }
 

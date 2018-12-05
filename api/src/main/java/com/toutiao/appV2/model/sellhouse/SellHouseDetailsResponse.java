@@ -570,4 +570,7 @@ public class SellHouseDetailsResponse {
      */
     @ApiModelProperty(value = "是否显示默认图片标志", name = "isDefaultImage")
     private Integer isDefaultImage = 0;
+
+    @ApiModelProperty(value = "公司图标", name = "companyIcon")
+    private String companyIcon;
 }

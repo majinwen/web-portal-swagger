@@ -125,6 +125,13 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo.setUserId(searchHit.getSourceAsMap().get("userId") == null ? "" : searchHit.getSourceAsMap().get("userId").toString());
                 }
                 rentDetailsDo.setAgentBaseDo(agentBaseDo);
+
+                //公司图标
+                String AgentCompany = rentDetailsDo.getBrokerageAgency();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    rentDetailsDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
+
             }
             try {
 
@@ -1507,6 +1514,10 @@ public class RentRestRestServiceImpl implements RentRestService {
         return boolQueryBuilder;
     }
 
+    /**
+     * 增加弹幕信息
+     * @param rentDetailsFewDo
+     */
     private void fullHouseBarrage(RentDetailsFewDo rentDetailsFewDo) {
         //二手房弹幕第一行
         List<String> houseBarrageFirstList = new ArrayList<>();
