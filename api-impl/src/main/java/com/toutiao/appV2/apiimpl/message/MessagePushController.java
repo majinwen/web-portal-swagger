@@ -130,7 +130,8 @@ public class MessagePushController implements MessagePushApi {
         BeanUtils.copyProperties(homePageMessageRequest, homeMessageDoQuery);
 //        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
         //新版本也暂时隐掉二手房动态消息
-        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessage(homeMessageDoQuery, current.getUserId());
+        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, current
+                .getUserId());
         HomeMessageResponse homeMessageResponse = new HomeMessageResponse();
         homeMessageResponse.setData(homePageMessage);
         homeMessageResponse.setTotalNum(homePageMessage.size());
