@@ -129,33 +129,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         FieldSortBuilder levelSort = null;
         FieldSortBuilder buildingSort = null;
 
-
-//        BoolQueryBuilder bqbPlotName = QueryBuilders.boolQuery();
-//        if (StringTool.isNotBlank(newHouseDoQuery.getKeyword())) {
-//            SearchResponse searchResponse = null;
-//            bqbPlotName.must(QueryBuilders.termQuery("building_name_accurate",newHouseDoQuery.getKeyword()));
-//            searchResponse = newHouseEsDao.getPlotByKeyWord(bqbPlotName, city);
-//            long total = searchResponse.getHits().getTotalHits();
-//            out: if(total > 0l){
-//                break out;
-//            }else{
-//                BoolQueryBuilder bqb = QueryBuilders.boolQuery();
-//                bqb.must(QueryBuilders.multiMatchQuery(newHouseDoQuery.getKeyword(),"search_nickname").operator(Operator.AND).minimumShouldMatch("100%"));
-//                searchResponse = newHouseEsDao.getPlotByNickNameKeyWord(bqb, city);
-//                if(searchResponse.getHits().getTotalHits()>0l){
-//                    SearchHits hits = searchResponse.getHits();
-//
-//                    SearchHit[] searchHists = hits.getHits();
-//                    outFor:for (SearchHit hit : searchHists) {
-//                        hit.getSource().get("search_name");
-//                        newHouseDoQuery.setKeyword(hit.getSource().get("search_name").toString());
-//                        break outFor ;
-//                    }
-//                }
-//            }
-//        }
-
-
         if (StringUtil.isNotNullString(newHouseDoQuery.getKeyword())) {
             if (StringUtil.isNotNullString(DistrictMap.getDistricts(newHouseDoQuery.getKeyword()))) {
                 queryBuilder = QueryBuilders.disMaxQuery()
@@ -196,7 +169,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             keys = newHouseDoQuery.getSubwayLineId().toString();
         }
         //地铁站id
-        if (newHouseDoQuery.getSubwayStationId() != null && newHouseDoQuery.getSubwayStationId().length>0) {
+        if (newHouseDoQuery.getSubwayStationId() != null && newHouseDoQuery.getSubwayStationId().length > 0) {
             booleanQueryBuilder.must(termsQuery("subway_station_id", newHouseDoQuery.getSubwayStationId()));
         }
         //均价
@@ -300,17 +273,17 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 String details = "";
                 details = searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
-                if (null != newHouseDoQuery.getSubwayStationId() && newHouseDoQuery.getSubwayStationId().length>0) {
-                    Map<Integer,String> map = new HashMap<>();
+                if (null != newHouseDoQuery.getSubwayStationId() && newHouseDoQuery.getSubwayStationId().length > 0) {
+                    Map<Integer, String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
-                    for (int i=0; i<newHouseDoQuery.getSubwayStationId().length; i++) {
-                        String stationKey = keys+"$"+newHouseDoQuery.getSubwayStationId()[i];
+                    for (int i = 0; i < newHouseDoQuery.getSubwayStationId().length; i++) {
+                        String stationKey = keys + "$" + newHouseDoQuery.getSubwayStationId()[i];
                         if (StringTool.isNotEmpty(newHouseListDos.getNearbysubway().get(stationKey))) {
                             String stationValue = newHouseListDos.getNearbysubway().get(stationKey).toString();
                             String[] stationValueSplit = stationValue.split("\\$");
                             Integer distance = Integer.valueOf(stationValueSplit[2]);
                             sortDistance.add(distance);
-                            map.put(distance,stationKey);
+                            map.put(distance, stationKey);
                         }
                     }
                     Integer minDistance = Collections.min(sortDistance);
@@ -343,21 +316,24 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 }
 
                 //新房标签
-                List<HouseLable> houseLableList= new ArrayList<>();
-                String saleStatusName= newHouseListDos.getSaleStatusName();
+                List<HouseLable> houseLableList = new ArrayList<>();
+                String saleStatusName = newHouseListDos.getSaleStatusName();
 
-                if(!StringUtil.isNullString(saleStatusName) && HouseLableEnum.containKey(saleStatusName)){
+                if (!StringUtil.isNullString(saleStatusName) && HouseLableEnum.containKey(saleStatusName)) {
                     HouseLable houseLable = new HouseLable(HouseLableEnum.getEnumByKey(saleStatusName));
+                    houseLable.setShakeIcon(houseLable.getIcon().replace(".png", "_shake.png"));
                     houseLableList.add(houseLable);
                 }
-                int isActive= newHouseListDos.getIsActive();
-                if(isActive ==1){
+                int isActive = newHouseListDos.getIsActive();
+                if (isActive == 1) {
                     HouseLable houseLable = new HouseLable(HouseLableEnum.ISACTIVE);
+                    houseLable.setShakeIcon(houseLable.getIcon().replace(".png", "_shake.png"));
                     houseLableList.add(houseLable);
                 }
-                String propertyType= newHouseListDos.getPropertyType();
-                if(!StringUtil.isNullString(propertyType) && HouseLableEnum.containKey(propertyType)){
+                String propertyType = newHouseListDos.getPropertyType();
+                if (!StringUtil.isNullString(propertyType) && HouseLableEnum.containKey(propertyType)) {
                     HouseLable houseLable = new HouseLable(HouseLableEnum.getEnumByKey(propertyType));
+                    houseLable.setShakeIcon(houseLable.getIcon().replace(".png", "_shake.png"));
                     houseLableList.add(houseLable);
                 }
 

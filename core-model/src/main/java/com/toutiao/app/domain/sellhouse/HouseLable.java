@@ -16,6 +16,9 @@ public class HouseLable {
     @ApiModelProperty(value = "链接", name = "url")
     private String url;
 
+    @ApiModelProperty(value = "逛逛图标", name = "shakeIcon")
+    private String shakeIcon;
+
 
 
     public HouseLable(String text, String icon, String url) {
