@@ -146,7 +146,7 @@ public class MessageSellHouseDo {
 
     @ApiModelProperty(value = "（出租）租金，单位：元/月", name = "rentPrice")
     private Double rentPrice;
-//
-//    @ApiModelProperty(value = "（出租）标签", name = "tags")
-//    private List<Integer> tags;
+
+    @ApiModelProperty(value = "（出租）标签", name = "tags")
+    private String[] tags;
 }
