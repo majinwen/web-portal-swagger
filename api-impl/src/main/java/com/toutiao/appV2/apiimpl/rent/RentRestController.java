@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
@@ -82,6 +83,7 @@ public class RentRestController implements RentRestApi {
         RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
         BeanUtils.copyProperties(rentDetailsDo, rentDetailResponse);
+        rentDetailResponse.setAgentBaseDo(rentDetailsDo.getAgentBaseDo());
         return new ResponseEntity<>(rentDetailResponse, HttpStatus.OK);
     }
 

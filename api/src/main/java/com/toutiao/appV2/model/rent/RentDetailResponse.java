@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.rent;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
