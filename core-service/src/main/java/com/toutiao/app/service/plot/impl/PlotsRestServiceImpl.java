@@ -492,7 +492,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
                 String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
 //                plotDetailsFewDo.setNearbyDistance(distances);
-                nearbyDistance = "距您" + distances + "km";
+                nearbyDistance = "距您" + distances;
             }
         }
 
