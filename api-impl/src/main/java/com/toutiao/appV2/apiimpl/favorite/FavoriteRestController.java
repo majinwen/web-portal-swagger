@@ -109,9 +109,12 @@ public class FavoriteRestController implements FavoriteRestApi {
             log.info("取消收藏成功");
             changeFavoriteResponse.setId(cancelFavoriteHouseDto.getId());
             changeFavoriteResponse.setMsg("取消收藏成功");
+        } else if (flag == 2) {
+            log.info("未收藏该房源");
+            throw new BaseException(FavoriteErrorCodeEnum.CANCEL_FAVORITE_NOT_FOUND);
         } else {
             log.info("取消收藏失败");
-            throw new BaseException(FavoriteErrorCodeEnum.ADD_FAVORITE_FAIL);
+            throw new BaseException(FavoriteErrorCodeEnum.CANCEL_FAVORITE_FAIL);
         }
         return new ResponseEntity<>(changeFavoriteResponse, HttpStatus.OK);
     }

@@ -467,29 +467,58 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         String id = cancelFavoriteHouseDto.getId();
         switch (type) {
             case 1:// 新房
-                UserFavoriteNewHouse userFavoriteNewHouse = new UserFavoriteNewHouse();
-                userFavoriteNewHouse.setUserId(userId);
-                userFavoriteNewHouse.setBuildingId(Integer.valueOf(id));
-                userFavoriteNewHouse.setIsDel((short) 1);
-                flag = this.userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
+
+                NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+                newHouseIsFavoriteDoQuery.setUserId(userId);
+                newHouseIsFavoriteDoQuery.setBuildingId(Integer.valueOf(id));
+
+                if (this.userFavoriteNewHouseMapper.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery) > 0) {
+                    UserFavoriteNewHouse userFavoriteNewHouse = new UserFavoriteNewHouse();
+                    userFavoriteNewHouse.setUserId(userId);
+                    userFavoriteNewHouse.setBuildingId(Integer.valueOf(id));
+                    userFavoriteNewHouse.setIsDel((short) 1);
+                    flag = this.userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
+                } else {
+                    flag = 2;
+                }
                 break;
             case 2:// 二手房
-                DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
-                deleteEsfFavoriteDo.setUserId(userId);
-                deleteEsfFavoriteDo.setHouseId(id);
-                flag = this.userFavoriteEsHouseMapper.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+
+                if (this.userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(id, userId) > 0) {
+                    DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
+                    deleteEsfFavoriteDo.setUserId(userId);
+                    deleteEsfFavoriteDo.setHouseId(id);
+                    flag = this.userFavoriteEsHouseMapper.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+                } else {
+                    flag = 2;
+                }
                 break;
             case 3:// 小区
+
                 PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
                 plotIsFavoriteDoQuery.setUserId(userId);
                 plotIsFavoriteDoQuery.setBuildingId(Integer.valueOf(id));
-                flag = this.userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
+
+                if (this.userFavoriteVillageMapper.selectPlotIsFavorite(plotIsFavoriteDoQuery) > 0) {
+
+                    plotIsFavoriteDoQuery.setUserId(userId);
+                    plotIsFavoriteDoQuery.setBuildingId(Integer.valueOf(id));
+                    flag = this.userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
+                } else {
+                    flag = 2;
+                }
                 break;
             case 4:// 租房
-                DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
-                deleteRentFavoriteDoQuery.setUserId(userId);
-                deleteRentFavoriteDoQuery.setHouseId(id);
-                flag = this.userFavoriteRentMapper.updateRentFavoriteByHouseIdAndUserId(deleteRentFavoriteDoQuery);
+
+                if (this.userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(id, userId) > 0) {
+
+                    DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
+                    deleteRentFavoriteDoQuery.setUserId(userId);
+                    deleteRentFavoriteDoQuery.setHouseId(id);
+                    flag = this.userFavoriteRentMapper.updateRentFavoriteByHouseIdAndUserId(deleteRentFavoriteDoQuery);
+                } else {
+                    flag = 2;
+                }
                 break;
         }
         return flag;
