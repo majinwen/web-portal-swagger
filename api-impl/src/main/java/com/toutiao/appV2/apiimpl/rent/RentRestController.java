@@ -10,6 +10,8 @@ import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.appV2.api.rent.RentRestApi;
+import com.toutiao.appV2.model.plot.PlotDetailsResponse;
+import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.appV2.model.rent.*;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -79,11 +81,16 @@ public class RentRestController implements RentRestApi {
 
     @Override
     public ResponseEntity<RentDetailResponse> getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
-
+        PlotDetailsResponse plotInfo = new PlotDetailsResponse();
+        PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
         RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
         BeanUtils.copyProperties(rentDetailsDo, rentDetailResponse);
         rentDetailResponse.setAgentBaseDo(rentDetailsDo.getAgentBaseDo());
+        BeanUtils.copyProperties(rentDetailsDo.getPlotDetailsDo(), plotInfo);
+        BeanUtils.copyProperties(rentDetailsDo.getPlotDetailsDo().getPlotsHousesDomain(),plotsHousesDomain);
+        plotInfo.setPlotsHousesDomain(plotsHousesDomain);
+        rentDetailResponse.setPlotInfo(plotInfo);
         return new ResponseEntity<>(rentDetailResponse, HttpStatus.OK);
     }
 

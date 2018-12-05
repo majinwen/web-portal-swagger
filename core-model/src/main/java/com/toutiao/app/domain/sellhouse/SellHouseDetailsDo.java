@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.sellhouse;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -495,6 +496,11 @@ public class SellHouseDetailsDo {
      * 公司图标
      */
     private String companyIcon;
+
+    /**
+     * 小区信息
+     */
+    private PlotDetailsDo plotDetailsDo;
 
 
 

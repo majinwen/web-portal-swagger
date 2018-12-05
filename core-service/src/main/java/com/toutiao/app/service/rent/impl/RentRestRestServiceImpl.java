@@ -2,12 +2,16 @@ package com.toutiao.app.service.rent.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
+import com.toutiao.app.service.plot.PlotsHomesRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.city.CityConstant;
@@ -22,6 +26,7 @@ import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
@@ -65,6 +70,10 @@ public class RentRestRestServiceImpl implements RentRestService {
     private AgentService agentService;
     @Autowired
     private FavoriteRestService favoriteRestService;
+    @Autowired
+    private PlotEsDao plotEsDao;
+    @Autowired
+    private PlotsHomesRestService plotsHomesRestService;
 
     /**
      * 租房详情信息
@@ -145,6 +154,30 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
             } catch (BaseException e) {
                 rentDetailsDo.setIsFavorite(Boolean.FALSE);
+            }
+        }
+
+        Integer plotId = rentDetailsDo.getZufangId();
+
+        if (null != plotId) {
+
+            String details = "";
+            BoolQueryBuilder plotBoolQueryBuilder = QueryBuilders.boolQuery();
+            plotBoolQueryBuilder.must(QueryBuilders.termQuery("id", plotId));
+            SearchResponse plotSearchResponse = plotEsDao.queryPlotDetail(plotBoolQueryBuilder, city);
+            SearchHit[] plotHits = plotSearchResponse.getHits().getHits();
+
+            for (SearchHit searchHit : plotHits) {
+                details = searchHit.getSourceAsString();
+            }
+
+            if (StringUtils.isNotEmpty(details)) {
+                PlotDetailsDo plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
+                PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId, city);
+
+                plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
+                plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
+                rentDetailsDo.setPlotDetailsDo(plotDetailsDo);
             }
         }
         return rentDetailsDo;

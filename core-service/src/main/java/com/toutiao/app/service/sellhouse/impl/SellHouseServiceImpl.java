@@ -3,17 +3,21 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
+import com.toutiao.app.service.plot.PlotsHomesRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
@@ -30,7 +34,7 @@ import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
@@ -74,6 +78,10 @@ public class SellHouseServiceImpl implements SellHouseService {
 
     @Autowired
     private CommunityRestService communityRestService;
+    @Autowired
+    private PlotEsDao plotEsDao;
+    @Autowired
+    private PlotsHomesRestService plotsHomesRestService;
 
     @Override
     public SellHouseDetailsDo getSellHouseByHouseId(String houseId, String city) {
@@ -206,6 +214,29 @@ public class SellHouseServiceImpl implements SellHouseService {
             }
         }
 
+        Integer plotId = sellHouseDetailsDo.getNewcode();
+
+        if (null != plotId) {
+
+            String details = "";
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("id", plotId));
+            SearchResponse plotSearchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder, city);
+            SearchHit[] plotHits = plotSearchResponse.getHits().getHits();
+
+            for (SearchHit searchHit : plotHits) {
+                details = searchHit.getSourceAsString();
+            }
+
+            if (StringUtils.isNotEmpty(details)) {
+                PlotDetailsDo plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
+                PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId, city);
+
+                plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
+                plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
+                sellHouseDetailsDo.setPlotDetailsDo(plotDetailsDo);
+            }
+        }
         return sellHouseDetailsDo;
     }
 
