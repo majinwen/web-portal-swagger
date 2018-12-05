@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.rent;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.text.ParseException;
@@ -281,5 +282,10 @@ public class RentDetailsDo {
      * 是否显示默认图片标志
      */
     private Integer isDefaultImage = 0;
+
+    /**
+     * 公司图标
+     */
+    private String companyIcon;
 
 }

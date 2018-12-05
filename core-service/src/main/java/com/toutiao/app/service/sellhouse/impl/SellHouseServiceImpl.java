@@ -173,6 +173,12 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                }
                 sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
+
+                //公司图标
+                String AgentCompany = sellHouseDetailsDo.getOfCompany();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    sellHouseDetailsDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
             }
 
             try {
