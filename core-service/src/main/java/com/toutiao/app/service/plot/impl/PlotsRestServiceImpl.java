@@ -96,18 +96,25 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             for (SearchHit searchHit : hits) {
                 details = searchHit.getSourceAsString();
             }
+
             if (StringUtils.isNotEmpty(details)) {
-                UserBasic userBasic = UserBasic.getCurrent();
 
                 plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
 //                String[] photos = plotDetailsDo.getPhoto().get(0).split(",");
                 plotDetailsDo.setPhotos(plotDetailsDo.getPhoto().toArray(new String[0]));
-                if (StringTool.isNotEmpty(userBasic)) {
-                    PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
-                    plotIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
-                    plotIsFavoriteDoQuery.setBuildingId(plotDetailsDo.getId());
-                    Boolean isFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDoQuery);
-                    plotDetailsDo.setIsFavorite(isFavorite);
+
+                try {
+                    UserBasic userBasic = UserBasic.getCurrent();
+                    if (StringTool.isNotEmpty(userBasic)) {
+                        PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
+                        plotIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
+                        plotIsFavoriteDoQuery.setBuildingId(plotDetailsDo.getId());
+                        Boolean isFavorite = favoriteRestService.getPlotIsFavorite(plotIsFavoriteDoQuery);
+                        plotDetailsDo.setIsFavorite(isFavorite);
+                    }
+                } catch (BaseException e) {
+                    logger.info("用户未登录");
+                    plotDetailsDo.setIsFavorite(Boolean.FALSE);
                 }
                 plotDetailsDo.setAvgPrice((double) Math.round(plotDetailsDo.getAvgPrice()));
                 if ("商电".equals(plotDetailsDo.getElectricSupply())) {
@@ -474,9 +481,9 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea();
             } else if (i > 1000) {
                 DecimalFormat df = new DecimalFormat("0.0");
-                nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea()+ " "+"距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea() + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
             } else {
-                nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea()+ " "+"距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea() + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
             }
         }
 

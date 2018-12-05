@@ -94,7 +94,7 @@ public class SellHouseServiceImpl implements SellHouseService {
         SearchHit[] searchHists = hits.getHits();
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         if (searchHists.length > 0) {
-            UserBasic userBasic = UserBasic.getCurrent();
+
             for (SearchHit searchHit : searchHists) {
                 String sourceAsString = searchHit.getSourceAsString();
                 sellAndClaimHouseDetailsDo = JSON.parseObject(sourceAsString, SellAndClaimHouseDetailsDo.class);
@@ -175,13 +175,20 @@ public class SellHouseServiceImpl implements SellHouseService {
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
             }
 
-            if (StringTool.isNotEmpty(userBasic)) {
-                IsFavoriteDo isFavoriteDo = new IsFavoriteDo();
-                isFavoriteDo.setUserId(Integer.valueOf(userBasic.getUserId()));
-                isFavoriteDo.setHouseId(sellHouseDetailsDo.getHouseId());
-                boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_ESF, isFavoriteDo);
-                sellHouseDetailsDo.setIsFavorite(isFavorite);
+            try {
+
+                UserBasic userBasic = UserBasic.getCurrent();
+                if (StringTool.isNotEmpty(userBasic)) {
+                    IsFavoriteDo isFavoriteDo = new IsFavoriteDo();
+                    isFavoriteDo.setUserId(Integer.valueOf(userBasic.getUserId()));
+                    isFavoriteDo.setHouseId(sellHouseDetailsDo.getHouseId());
+                    boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_ESF, isFavoriteDo);
+                    sellHouseDetailsDo.setIsFavorite(isFavorite);
+                }
+            } catch (BaseException e) {
+                sellHouseDetailsDo.setIsFavorite(Boolean.FALSE);
             }
+
             if (sellHouseDetailsDo.getHouseHeating() == 0) {
                 sellHouseDetailsDo.setHouseHeatingName("未知");
             }
@@ -778,7 +785,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             list = getResultFromSearchHitList(city, list, searchHitList);
             sellHouseDomain.setData(list);
 //            sellHouseDomain.setTotalNum((int) sellHouseNoCondition.getHits().getTotalHits());
-            sellHouseDomain.setTotalNum(list.size());
+            sellHouseDomain.setTotalNum((int)sellHouseNoCondition.getHits().getTotalHits());
         }
 
         return sellHouseDomain;

@@ -161,9 +161,9 @@ public class PlotApiController implements PlotApi {
     }
 
     @Override
-    public ResponseEntity<PlotDetailsResponse> getPlotDetailByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId) {
+    public ResponseEntity<PlotDetailsResponse> getPlotDetailByPlotId(@ApiParam(value = "plotId", required = true) @Valid @RequestParam(value = "plotId", required = true) Integer plotId) {
 
-        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotId.get(), CityUtils.getCity());
+        PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotId, CityUtils.getCity());
         PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
         BeanUtils.copyProperties(plotDetailsDo, plotDetailsResponse);
         return new ResponseEntity<PlotDetailsResponse>(plotDetailsResponse, HttpStatus.OK);

@@ -85,7 +85,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         AgentBaseDo agentBaseDo = new AgentBaseDo();
         if (hits.length > 0) {
             List<String> imgs = new ArrayList<>();
-            UserBasic userBasic = UserBasic.getCurrent();
+
             for (SearchHit searchHit : hits) {
                 String sourceAsString = searchHit.getSourceAsString();
                 rentDetailsDo = JSON.parseObject(sourceAsString, RentDetailsDo.class);
@@ -126,12 +126,18 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
                 rentDetailsDo.setAgentBaseDo(agentBaseDo);
             }
-            if (StringTool.isNotEmpty(userBasic)) {
-                IsFavoriteDo isFavoriteDo = new IsFavoriteDo();
-                isFavoriteDo.setUserId(Integer.valueOf(userBasic.getUserId()));
-                isFavoriteDo.setHouseId(rentDetailsDo.getHouseId());
-                boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_RENT, isFavoriteDo);
-                rentDetailsDo.setIsFavorite(isFavorite);
+            try {
+
+                UserBasic userBasic = UserBasic.getCurrent();
+                if (StringTool.isNotEmpty(userBasic)) {
+                    IsFavoriteDo isFavoriteDo = new IsFavoriteDo();
+                    isFavoriteDo.setUserId(Integer.valueOf(userBasic.getUserId()));
+                    isFavoriteDo.setHouseId(rentDetailsDo.getHouseId());
+                    boolean isFavorite = favoriteRestService.getIsFavorite(FAVORITE_RENT, isFavoriteDo);
+                    rentDetailsDo.setIsFavorite(isFavorite);
+                }
+            } catch (BaseException e) {
+                rentDetailsDo.setIsFavorite(Boolean.FALSE);
             }
         }
         return rentDetailsDo;
