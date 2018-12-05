@@ -785,7 +785,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             list = getResultFromSearchHitList(city, list, searchHitList);
             sellHouseDomain.setData(list);
 //            sellHouseDomain.setTotalNum((int) sellHouseNoCondition.getHits().getTotalHits());
-            sellHouseDomain.setTotalNum(list.size());
+            sellHouseDomain.setTotalNum((int)sellHouseNoCondition.getHits().getTotalHits());
         }
 
         return sellHouseDomain;
