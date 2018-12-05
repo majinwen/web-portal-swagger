@@ -257,6 +257,7 @@ public class SuggestRestController implements SuggestRestApi {
         }
         CityAllInfoMap cityAllInfoMap = new CityAllInfoMap();
         Map<String, Object> res = cityService.getCityAllInfo(cityId);
+        cityAllInfoMap.setVersion("1.0");
         cityAllInfoMap.setCityAllInfos(res);
         return new ResponseEntity<CityAllInfoMap>(cityAllInfoMap, HttpStatus.OK);
     }
@@ -273,7 +274,7 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityConditionInfoMap cityConditionInfoMap = new CityConditionInfoMap();
-        Map<String,Object>   res = cityService.getCityConditionInfo(cityId);
+        Map<String, Object> res = cityService.getCityConditionInfo(cityId);
         cityConditionInfoMap.setCityConditionInfos(res);
         return new ResponseEntity<CityConditionInfoMap>(cityConditionInfoMap, HttpStatus.OK);
     }
@@ -290,7 +291,7 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityCircleInfoMap cityCircleInfoMap = new CityCircleInfoMap();
-        Map<String,Object>   res = cityService.getCityCircleInfo(cityId);
+        Map<String, Object> res = cityService.getCityCircleInfo(cityId);
         cityCircleInfoMap.setCityCircleInfos(res);
         return new ResponseEntity<CityCircleInfoMap>(cityCircleInfoMap, HttpStatus.OK);
     }
@@ -307,7 +308,7 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityDiscrictInfoMap cityDiscrictInfoMap = new CityDiscrictInfoMap();
-        Map<String,Object>   res = cityService.getCityDistrictInfo(cityId);
+        Map<String, Object> res = cityService.getCityDistrictInfo(cityId);
         cityDiscrictInfoMap.setCityDiscrictInfos(res);
         return new ResponseEntity<CityDiscrictInfoMap>(cityDiscrictInfoMap, HttpStatus.OK);
     }
@@ -325,7 +326,7 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityParkInfoMap cityParkInfoMap = new CityParkInfoMap();
-        Map<String,Object>  res = cityService.getCityParkInfo(cityId);
+        Map<String, Object> res = cityService.getCityParkInfo(cityId);
         cityParkInfoMap.setCityParkInfos(res);
         return new ResponseEntity<CityParkInfoMap>(cityParkInfoMap, HttpStatus.OK);
     }
@@ -361,11 +362,10 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityPidsInfoMap cityPidsInfoMap = new CityPidsInfoMap();
-        Map<String,Object>  res = cityService.getCityPidsInfo(cityId);
+        Map<String, Object> res = cityService.getCityPidsInfo(cityId);
         cityPidsInfoMap.setCityPidsInfos(res);
         return new ResponseEntity<CityPidsInfoMap>(cityPidsInfoMap, HttpStatus.OK);
     }
-
 
 
     @Override
