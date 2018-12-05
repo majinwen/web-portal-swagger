@@ -212,12 +212,13 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
         long esfCount = searchSellHouse.getHits().totalHits;
 
+        BoolQueryBuilder aggBuilder = QueryBuilders.boolQuery();
         GeoPoint topRight = new GeoPoint(esfMapSearchDoQuery.getMaxLatitude(),esfMapSearchDoQuery.getMaxLongitude());
         GeoPoint bottomLeft = new GeoPoint(esfMapSearchDoQuery.getMinLatitude(),esfMapSearchDoQuery.getMinLongitude());
         GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("bizcircle_location").setCornersOGC(bottomLeft, topRight);
-        boolQueryBuilder.must(geoBoundingBoxQueryBuilder);
-
-        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByBizcircle(boolQueryBuilder, city);
+        aggBuilder.must(geoBoundingBoxQueryBuilder);
+        aggBuilder.must(QueryBuilders.termQuery("district_id", sellHouseDoQuery.getDistrictId()));
+        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByBizcircle(aggBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
         Terms houseCount = searchResponse.getAggregations().get("houseCount");
         List buckets= houseCount.getBuckets();
