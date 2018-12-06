@@ -305,4 +305,13 @@ public class PlotDetailsDo {
      * 二手房，租房信息
      */
     private PlotsHousesDomain plotsHousesDomain;
+
+    /**
+     * 标签名称
+     */
+    private List<String> recommendBuildTagsName;
+    /**
+     * 标签id
+     */
+    private List<Integer> recommendBuildTagsId;
 }

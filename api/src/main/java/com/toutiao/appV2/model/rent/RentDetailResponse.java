@@ -28,6 +28,10 @@ public class RentDetailResponse {
     @ApiModelProperty("商圈名称")
     private String areaName = null;
 
+    @JsonProperty("areaId")
+    @ApiModelProperty("商圈Id")
+    private Integer areaId = null;
+
     @JsonProperty("balcony")
     @ApiModelProperty("阳台")
     private Integer balcony = null;
@@ -55,6 +59,10 @@ public class RentDetailResponse {
     @JsonProperty("districtName")
     @ApiModelProperty("区域名称")
     private String districtName = null;
+
+    @JsonProperty("districtId")
+    @ApiModelProperty("区域Id")
+    private String districtId = null;
 
     @JsonProperty("floor")
     @ApiModelProperty("房源所在楼层数(地下室为负数)")

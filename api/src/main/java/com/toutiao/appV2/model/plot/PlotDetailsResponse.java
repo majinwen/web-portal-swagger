@@ -112,5 +112,11 @@ public class PlotDetailsResponse {
     @ApiModelProperty("供水")
     private String waterSupply = null;
 
+    @ApiModelProperty("标签名称")
+    private List<String> recommendBuildTagsName = null;
+
+    @ApiModelProperty("标签id")
+    private List<Integer> recommendBuildTagsId = null;
+
 }
 
