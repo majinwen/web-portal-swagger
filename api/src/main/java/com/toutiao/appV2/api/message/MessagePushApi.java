@@ -3,6 +3,7 @@ package com.toutiao.appV2.api.message;
 import com.toutiao.app.domain.message.MessagePushDomain;
 import com.toutiao.appV2.model.message.HomeMessageResponse;
 import com.toutiao.appV2.model.message.HomePageMessageRequest;
+import com.toutiao.appV2.model.message.HouseMessageV2Request;
 import com.toutiao.appV2.model.message.MessagePushRequest;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -45,6 +46,24 @@ public interface MessagePushApi {
             method = RequestMethod.GET)
     ResponseEntity<MessagePushDomain> getHouseTypeMessage(@Validated MessagePushRequest messagePushRequest, HttpServletRequest
             request, HttpServletResponse response);
+
+
+
+    @ApiOperation(value = "房源类消息列表v2", nickname = "getHouseTypeMessageV2", notes = "房源类消息列表v2", response =
+            MessagePushDomain.class, tags={ "消息推送", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = MessagePushDomain.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/messagePush/getHouseTypeMessage/v2",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<MessagePushDomain> getHouseTypeMessageV2(@Validated HouseMessageV2Request houseMessageV2Request,
+                                                           HttpServletRequest request);
+
+
+
 
     @ApiOperation(value = "获取专题消息列表", nickname = "getThemeTypeMessage", notes = "获取专题消息列表", response =
             MessagePushDomain.class, tags={ "消息推送", })

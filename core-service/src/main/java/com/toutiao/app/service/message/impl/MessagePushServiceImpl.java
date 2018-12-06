@@ -42,6 +42,12 @@ public class MessagePushServiceImpl implements MessagePushService {
         CITYID2ABBREVIATION.put(67, "suzhou");
     }
 
+    private static final Map<Integer, List<Integer>> TYPE2CONTENTTYPE = new HashMap<>();
+    static {
+        TYPE2CONTENTTYPE.put(1, Arrays.asList(5, 10, 11, 12));
+        TYPE2CONTENTTYPE.put(2, Arrays.asList(8, 9));
+    }
+
     /**
      * 搜索订阅
      */
@@ -456,6 +462,77 @@ public class MessagePushServiceImpl implements MessagePushService {
     }
 
     /**
+     * 获取房源消息列表V2
+     *
+     * @param houseMessageV2Query
+     * @param userId
+     * @param request
+     * @return
+     */
+    @Override
+    public MessagePushDomain getHouseTypeMessageV2(HouseMessageV2Query houseMessageV2Query, String userId, HttpServletRequest request) {
+        MessagePushExample example = new MessagePushExample();
+        example.setOrderByClause("id DESC");
+        MessagePushExample.Criteria criteria = example.createCriteria();
+        if (StringTool.isNotEmpty(userId)) {
+            criteria.andUserIdEqualTo(Integer.valueOf(userId));
+        }
+        List<Integer> contentType = TYPE2CONTENTTYPE.get(houseMessageV2Query.getType());
+        criteria.andContentTypeIn(contentType);
+
+        //推送类型(0-系统消息, 1-定向推送)
+        criteria.andPushTypeEqualTo(1);
+        Integer lastMessageId = houseMessageV2Query.getLastMessageId();
+        if (lastMessageId != null && lastMessageId != 0) {
+            criteria.andIdLessThan(lastMessageId);
+        }
+        List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
+        List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
+        MessagePushDomain messagePushDomain = new MessagePushDomain();
+        if (CollectionUtils.isEmpty(messagePushDos)) {
+            return messagePushDomain;
+        }
+
+        int messageHouseCount = 0;
+        Integer lastId = null;
+        List<MessagePushDo> message = new ArrayList<>();
+        for (MessagePushDo messagePushDo : messagePushDos) {
+            JSONObject esfInfo = messagePushDo.getEsfInfo();
+            List<MessageSellHouseDo> messageSellHouseDos = new ArrayList<>();
+            String houseIds = messagePushDo.getHouseId();
+            if (!"{}".equals(houseIds)) {
+                String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
+                //配置房源展示数量
+                String hostUrl = getHostOfUrl(request);
+                for (String houseId : split){
+                    replaceHouseDo(messagePushDo, esfInfo, houseId, messageSellHouseDos, hostUrl);
+                }
+                messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
+                // esf_info 数据只是元数据，对调用方无实际作用
+                messagePushDo.setEsfInfo(null);
+                message.add(messagePushDo);
+                messageHouseCount += messageSellHouseDos.size();
+                if (messageHouseCount >= 10) {
+                    lastId = messagePushDo.getId();
+                    break;
+                } else {
+                    lastId = messagePushDo.getId();
+                }
+            }
+        }
+        messagePushDomain.setData(message);
+        messagePushDomain.setTotalCount(message.size());
+        messagePushDomain.setLastMessageId(lastId);
+
+        //清空消息
+        if (lastMessageId == null || lastMessageId == 0){
+            updateIsRead(contentType, userId);
+        }
+
+        return messagePushDomain;
+    }
+
+    /**
      * 生成消息内容
      *
      * @param messagePushDo
@@ -576,11 +653,15 @@ public class MessagePushServiceImpl implements MessagePushService {
      * @param contentType
      * @param userId
      */
-    private int updateIsRead(Integer contentType, String userId) {
+    private int updateIsRead(Object contentType, String userId) {
         MessagePushExample example = new MessagePushExample();
         MessagePushExample.Criteria criteria = example.createCriteria();
         criteria.andIsReadEqualTo((short)0);
-        criteria.andContentTypeEqualTo(contentType);
+        if (contentType instanceof List){
+            criteria.andContentTypeIn((List<Integer>) contentType);
+        } else if (contentType instanceof Integer) {
+            criteria.andContentTypeEqualTo((Integer) contentType);
+        }
         if (StringTool.isNotEmpty(userId)){
             criteria.andUserIdEqualTo(Integer.valueOf(userId));
         }
