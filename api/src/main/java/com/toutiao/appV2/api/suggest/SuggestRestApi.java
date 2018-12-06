@@ -3,6 +3,8 @@ package com.toutiao.appV2.api.suggest;
 import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
+import com.toutiao.appV2.model.houseCount.HouseCountRequest;
+import com.toutiao.appV2.model.houseCount.HouseCountResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
 import com.toutiao.appV2.model.subscribe.*;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
@@ -181,4 +183,15 @@ public interface SuggestRestApi {
     ResponseEntity<CityConditionDoList> getCityconditionByIdAndType(@ApiParam(value = "cityId", required = true) @Valid @RequestParam(value = "cityId",required = true) Integer cityId,
                                                                     @ApiParam(value = "type", required = true) @Valid @RequestParam(value = "type",required = true) String type);
 
+    @ApiOperation(value = "关键字搜索房源数量", nickname = "getHouseCount", notes = "", response = HouseCountResponse.class, tags={ "其他", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = HouseCountResponse.class),
+            @ApiResponse(code = 201, message = "Created", response = HouseCountResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/getHouseCount",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<HouseCountResponse> getHouseCount(@ApiParam(value = "houseCountRequest", required = false)HouseCountRequest houseCountRequest);
 }

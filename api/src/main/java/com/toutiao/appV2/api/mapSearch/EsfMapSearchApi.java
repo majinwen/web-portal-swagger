@@ -55,7 +55,7 @@ public interface EsfMapSearchApi {
     ResponseEntity<EsfMapSubwayResponse> mapEsfSubwaySearch(@ApiParam(value = "esfMapSearchDoRequest", required = true) @Valid  EsfMapSearchRequest esfMapSearchRequest);
 
 
-    @ApiOperation(value = "二手房-画圈找房房源列表")
+    @ApiOperation(value = "二手房-画圈找房房源列表", nickname = "mapEsfSearchSubway", notes = "", response = EsfCircleListResponse.class, tags={ "地图找房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = EsfCircleListResponse.class),
             @ApiResponse(code = 201, message = "Created"),
