@@ -32,7 +32,7 @@ public interface MessagePushApi {
     @RequestMapping(value = "/rest/messagePush/getHomeMessage",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<HomeMessageResponse> getHomeMessage(@Validated HomePageMessageRequest homePageMessageRequest, HttpServletRequest request,
+    ResponseEntity<HomeMessageResponse> getHomeMessage(HttpServletRequest request,
                                                        HttpServletResponse response);
 
 
