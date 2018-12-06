@@ -16,12 +16,6 @@ public class MessageSellHouseDo {
     private String housePhotoTitle;
 
     /**
-     * 房源总价
-     */
-    @ApiModelProperty(value = "（二手）房源总价", name = "houseTotalPrices")
-    private Double houseTotalPrices;
-
-    /**
      * 建筑面积
      */
     @ApiModelProperty(value = "（公用）建筑面积", name = "buildArea")
@@ -83,30 +77,6 @@ public class MessageSellHouseDo {
     private Integer newcode;
 
     /**
-     * 是否价格洼地(0-否，1-是)
-     */
-    @ApiModelProperty(value = "（二手）是否价格洼地(0-否，1-是)", name = "isLowPrice")
-    private Integer isLowPrice;
-
-    /**
-     * 是否降价房(0-否，1-降价房，2-涨价房)
-     */
-    @ApiModelProperty(value = "（二手）是否降价房(0-否，1-降价房，2-涨价房)", name = "isCutPrice")
-    private Integer isCutPrice;
-
-    /**
-     * 价格浮动(单位:万)
-     */
-    @ApiModelProperty(value = "（二手）价格浮动(单位:万)", name = "priceFloat")
-    private Double priceFloat;
-
-    /**
-     * 是否逢出必抢房(0-否，1-是)
-     */
-    @ApiModelProperty(value = "（二手）是否逢出必抢房(0-否，1-是)", name = "isMustRob")
-    private Integer isMustRob;
-
-    /**
      * 状态(0-未发布/1-已发布)
      */
     @ApiModelProperty(value = "（公用）状态(0-未发布/1-已发布)", name = "releaseStatus")
@@ -131,12 +101,44 @@ public class MessageSellHouseDo {
     @ApiModelProperty(value = "（公用）公司Icon", name = "companyIcon")
     private String companyIcon;
 
+    /**
+     * 房源总价
+     */
+    @ApiModelProperty(value = "（二手）房源总价", name = "houseTotalPrices")
+    private Double houseTotalPrices;
+
+    /**
+     * 是否降价房(0-否，1-降价房，2-涨价房)
+     */
+    @ApiModelProperty(value = "（二手房标签）是否降价房(0-否，1-降价房，2-涨价房)", name = "isCutPrice")
+    private Integer isCutPrice;
+
+    /**
+     * 价格浮动(单位:万)
+     */
+    @ApiModelProperty(value = "（二手房-小区新上降价房）价格浮动(单位:万)", name = "priceFloat")
+    private Double priceFloat;
+
+    /**
+     * 是否价格洼地(0-否，1-是)
+     */
+    @ApiModelProperty(value = "（二手房标签）是否捡漏房(0-否，1-是)", name = "isLowPrice")
+    private Integer isLowPrice;
+
+    @ApiModelProperty(value = "（二手房-小区新上捡漏房）同户型低于小区总价", name = "avgDealCycle")
+    private Integer avgDealCycle;
+
+    /**
+     * 是否逢出必抢房(0-否，1-是)
+     */
+    @ApiModelProperty(value = "（二手房标签）是否抢手房(0-否，1-是)", name = "isMustRob")
+    private Integer isMustRob;
+
+    @ApiModelProperty(value = "（二手房-小区新上抢手房）平均成交周期（单位：天）")
+    private Integer totalAbsoluteWithCommunity;
+
 
     /********************************租房********************************************/
-
-
-    @ApiModelProperty(value = "（出租）同户型低于小区总价", name = "avgDealCycle")
-    private Integer avgDealCycle;
 
     @ApiModelProperty(value = "（出租）租赁方式", name = "rentType")
     private Integer rentType;
@@ -144,12 +146,12 @@ public class MessageSellHouseDo {
     @ApiModelProperty(value = "（出租）租赁方式名称", name = "rentTypeName")
     private String rentTypeName;
 
-    @ApiModelProperty(value = "（出租）租金，单位：元/月", name = "rentPrice")
+    @ApiModelProperty(value = "（出租）租金（单位：元/月）", name = "rentPrice")
     private Double rentPrice;
 
     @ApiModelProperty(value = "（出租）标签", name = "tags")
     private String[] tags;
 
-    @ApiModelProperty(value = "房源类型，1-二手，2-租房", name = "houseType")
+    @ApiModelProperty(value = "房源类型，1-二手，2-出租", name = "houseType")
     private Integer houseType;
 }
