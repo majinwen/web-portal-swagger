@@ -154,4 +154,9 @@ public class PlotDetailsFewDo {
      * 附近距离
      */
     private String nearbyDistance;
+
+    /**
+     * 建筑类型
+     */
+    private String buildingStructure;
 }

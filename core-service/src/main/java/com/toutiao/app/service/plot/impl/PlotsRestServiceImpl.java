@@ -101,7 +101,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
 //                String[] photos = plotDetailsDo.getPhoto().get(0).split(",");
-                plotDetailsDo.setPhotos(plotDetailsDo.getPhoto().toArray(new String[0]));
+                plotDetailsDo.setPhoto(plotDetailsDo.getPhoto());
 
                 try {
                     UserBasic userBasic = UserBasic.getCurrent();
