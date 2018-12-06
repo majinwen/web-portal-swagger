@@ -521,8 +521,8 @@ public class MessagePushServiceImpl implements MessagePushService {
             messageContent.append(YOURFAVORITE).append(SPACE).append(blodMessageContent);
         } else if (contentType.equals(FAVORITEVILLAGEESF) || contentType.equals(FAVORITEVILLAGERENT)
                 || contentType.equals(ESFSHELVES) || contentType.equals(RENTSHELVES)) {
-            messageContent.append(mcJson.get("messageContent"));
             blodMessageContent.append(mcJson.get("messageContent"));
+            messageContent = blodMessageContent;
         } else if (contentType.equals(RENTCHANGEPRICE)) {
             blodMessageContent.append(mcJson.get("buildingName")).append(mcJson.get("rentTypeName"));
             Integer room = (Integer) mcJson.get("room");
@@ -537,8 +537,9 @@ public class MessagePushServiceImpl implements MessagePushService {
             } else {
                 blodMessageContent.append(SPACE).append(DROP).append(mcJson.get("money")).append(RENTUNITPRICE);
             }
+            messageContent = blodMessageContent;
         }
-        contentArr[0] = blodMessageContent.toString();
+        contentArr[0] = messageContent.toString();
         contentArr[1] = blodMessageContent.toString();
         return contentArr;
     }
