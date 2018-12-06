@@ -391,11 +391,84 @@ public class MessagePushServiceImpl implements MessagePushService {
     /**
      * 首页消息列表(新)
      *
-     * @param homeMessageDoQuery
      * @param userId
      * @return
      */
     @Override
+    public List<HomeMessageDo> getHomeMessageNew(String userId) {
+        ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
+
+            List<MessagePush> houseActivity = new ArrayList<>();
+            List<MessagePush>  listRenewal = new  ArrayList<>();
+            if (StringTool.isNotEmpty(userId)) {
+                 houseActivity = messagePushMapper.selectHouseActivity(Integer.valueOf(userId));
+                 listRenewal = messagePushMapper.selectListRenewal(Integer.valueOf(userId));
+            }
+
+            List<MessagePushDo> houseActivityDos = ToutiaoBeanUtils.copyPropertiesToList(houseActivity, MessagePushDo.class);
+            Integer houseActivityContentYype = houseActivityDos.get(0).getContentType();
+
+            List<MessagePushDo> listRenewalDos = ToutiaoBeanUtils.copyPropertiesToList(listRenewal, MessagePushDo.class);
+            Integer listRenewalDosContentYype = listRenewalDos.get(0).getContentType();
+
+            String[] messageContent = getMessageContent(houseActivityDos.get(0), houseActivityContentYype);
+            HomeMessageDo homeMessageDo = new HomeMessageDo();
+            homeMessageDo.setContentType(houseActivityContentYype);
+
+            switch (houseActivityContentYype){
+                case 12:
+                    homeMessageDo.setMessageContent("您关注的租房价格变动"+messageContent[0]);
+                    break;
+                case 5:
+                    homeMessageDo.setMessageContent(messageContent[0]);
+                    break;
+                default:
+                    homeMessageDo.setMessageContent(houseActivityDos.get(0).getMessageTheme().getString("messageTitle")+messageContent[0]);
+            }
+
+            homeMessageDo.setBoldMessageContent(messageContent[1]);
+            homeMessageDo.setCreateTime(houseActivityDos.get(0).getCreateTime().getTime());
+
+            //查询一段时间内消息未读数量
+            MessagePushExample countExample = new MessagePushExample();
+            MessagePushExample.Criteria countCriteria = countExample.createCriteria();
+            if (StringTool.isNotEmpty(userId)) {
+                countCriteria.andUserIdEqualTo(Integer.valueOf(userId));
+            }
+            countCriteria.andIsReadEqualTo((short)0);
+            countCriteria.andPushTypeEqualTo(1);
+            countCriteria.andContentTypeEqualTo(houseActivityContentYype);
+            int unreadCount = messagePushMapper.countByExample(countExample);
+            if (StringTool.isNotEmpty(messageContent[0])) {
+                homeMessageDo.setUnReadCount(unreadCount);
+            }
+            homeMessageDos.add(homeMessageDo);
+
+        String[] messageContent2 = getMessageContent(listRenewalDos.get(0), listRenewalDosContentYype);
+        HomeMessageDo homeMessageDo2 = new HomeMessageDo();
+        homeMessageDo2.setContentType(listRenewalDosContentYype);
+        homeMessageDo2.setMessageContent(messageContent2[0]);
+        homeMessageDo2.setBoldMessageContent(messageContent2[1]);
+        homeMessageDo2.setCreateTime(listRenewalDos.get(0).getCreateTime().getTime());
+
+        //查询一段时间内消息未读数量
+        MessagePushExample countExample1 = new MessagePushExample();
+        MessagePushExample.Criteria countCriteria1 = countExample1.createCriteria();
+        if (StringTool.isNotEmpty(userId)) {
+            countCriteria1.andUserIdEqualTo(Integer.valueOf(userId));
+        }
+        countCriteria1.andIsReadEqualTo((short)0);
+        countCriteria1.andPushTypeEqualTo(1);
+        countCriteria1.andContentTypeEqualTo(listRenewalDosContentYype);
+        int unreadCount1 = messagePushMapper.countByExample(countExample1);
+        if (StringTool.isNotEmpty(messageContent2[0])) {
+            homeMessageDo2.setUnReadCount(unreadCount1);
+        }
+        homeMessageDos.add(homeMessageDo2);
+        return homeMessageDos;
+    }
+
+   /* @Override
     public List<HomeMessageDo> getHomeMessageNew(HomeMessageDoQuery homeMessageDoQuery, String userId) {
         ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
         for (int i = 3; i <= 12; i++) {
@@ -459,7 +532,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             homeMessageDos.add(homeMessageDo);
         }
         return homeMessageDos;
-    }
+    }*/
 
     /**
      * 获取房源消息列表V2

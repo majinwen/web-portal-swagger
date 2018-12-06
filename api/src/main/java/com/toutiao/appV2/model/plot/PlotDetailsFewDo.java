@@ -151,6 +151,13 @@ public class PlotDetailsFewDo   {
   @JsonProperty("nearbyDistance")
   private String nearbyDistance;
 
+  /**
+   * 建筑类型
+   */
+  @ApiModelProperty("建筑类型")
+  @JsonProperty("buildingStructure")
+  private String buildingStructure;
+
   public PlotDetailsFewDo abbreviatedAge(String abbreviatedAge) {
     this.abbreviatedAge = abbreviatedAge;
     return this;

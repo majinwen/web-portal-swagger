@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,11 +32,11 @@ public interface MessagePushApi {
     @RequestMapping(value = "/rest/messagePush/getHomeMessage",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<HomeMessageResponse> getHomeMessage(@Validated HomePageMessageRequest homePageMessageRequest, HttpServletRequest request,
+    ResponseEntity<HomeMessageResponse> getHomeMessage(HttpServletRequest request,
                                                        HttpServletResponse response);
 
 
-    @ApiOperation(value = "房源类和专题类消息列表", nickname = "getHouseTypeMessage", notes = "房源类和专题类消息列表", response = MessagePushDomain.class, tags={ "消息推送", })
+    @ApiOperation(value = "专题类消息列表", nickname = "getHouseTypeMessage", notes = "专题类消息列表", response = MessagePushDomain.class, tags={ "消息推送", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = MessagePushDomain.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -75,6 +76,7 @@ public interface MessagePushApi {
     @RequestMapping(value = "/rest/messagePush/getThemeTypeMessage",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<MessagePushDomain> getThemeTypeMessage(@Validated MessagePushRequest messagePushRequest, HttpServletRequest
             request, HttpServletResponse response);
 }

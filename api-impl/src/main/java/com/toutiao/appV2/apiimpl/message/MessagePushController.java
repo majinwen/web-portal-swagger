@@ -61,6 +61,21 @@ public class MessagePushController implements MessagePushApi {
     }
 
     @Override
+    public ResponseEntity<HomeMessageResponse> getHomeMessage( HttpServletRequest req,
+                                                              HttpServletResponse response) {
+        UserBasic current = UserBasic.getCurrent();
+
+//        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(homeMessageDoQuery, userId);
+        //新版本也暂时隐掉二手房动态消息
+        List<HomeMessageDo> homePageMessage = messagePushService.getHomeMessageNew(current.getUserId());
+        HomeMessageResponse homeMessageResponse = new HomeMessageResponse();
+        homeMessageResponse.setData(homePageMessage);
+        homeMessageResponse.setTotalNum(homePageMessage.size());
+        return new ResponseEntity<>(homeMessageResponse, HttpStatus.OK);
+
+    }
+
+  /*  @Override
     public ResponseEntity<HomeMessageResponse> getHomeMessage(@ApiParam(value = "homePageMessageRequest") HomePageMessageRequest homePageMessageRequest, HttpServletRequest req,
                                                               HttpServletResponse response) {
         UserBasic current = UserBasic.getCurrent();
@@ -75,7 +90,7 @@ public class MessagePushController implements MessagePushApi {
         homeMessageResponse.setTotalNum(homePageMessage.size());
         return new ResponseEntity<>(homeMessageResponse, HttpStatus.OK);
 
-    }
+    }*/
 
 
     @Override
