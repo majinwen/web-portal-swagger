@@ -158,5 +158,14 @@ public class RentHouseRequest   {
 
   @ApiModelProperty(value = "0默认,1逛逛推荐,2逛逛附近(必传坐标和距离)", name = "searchType")
   private Integer searchType = 0;
+
+  @ApiModelProperty(value = "房源id", name = "houseId")
+  private String houseId;
+
+  @ApiModelProperty(value = "出租价格", name = "totalPrice")
+  private double totalPrice;
+
+  @ApiModelProperty(value = "小区id", name = "buildingId")
+  private Integer buildingId;
 }
 

@@ -723,6 +723,149 @@ public class RentRestRestServiceImpl implements RentRestService {
     }
 
     @Override
+    public RentDetailsListDo getSimilarRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city) {
+       // BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        Date date = new Date();
+
+        //添加筛选条件
+        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+
+        //商圈id
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getAreaId()) && rentHouseDoQuery.getAreaId().length != 0) {
+            booleanQueryBuilder.must(termsQuery("area_id", rentHouseDoQuery.getAreaId()));
+        }
+        //户型(室)
+        if (StringTool.isNotBlank(rentHouseDoQuery.getElo()) && !StringTool.isNotBlank(rentHouseDoQuery.getJlo())) {
+
+            if (rentHouseDoQuery.getElo().equals("0")) {
+                booleanQueryBuilder.must(rangeQuery("erent_layout").gt(0));
+            } else {
+                String[] roommore = new String[]{"5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                String[] room = rentHouseDoQuery.getElo().split(",");
+                boolean roomflag = Arrays.asList(room).contains(LAYOUT);
+                if (roomflag) {
+                    String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
+                    booleanQueryBuilder.must(termsQuery("erent_layout", roomresult));
+                } else {
+                    booleanQueryBuilder.must(termsQuery("erent_layout", room));
+                }
+            }
+
+        } else if (!StringTool.isNotBlank(rentHouseDoQuery.getElo()) && StringTool.isNotBlank(rentHouseDoQuery.getJlo())) {
+            if (rentHouseDoQuery.getJlo().equals("0")) {
+                booleanQueryBuilder.must(rangeQuery("jrent_layout").gt(0));
+            } else {
+                String[] roommore = new String[]{"5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                String[] room = rentHouseDoQuery.getJlo().split(",");
+
+                boolean roomflag = Arrays.asList(room).contains(LAYOUT);
+                if (roomflag) {
+                    String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
+                    booleanQueryBuilder.must(termsQuery("jrent_layout", roomresult));
+                } else {
+                    booleanQueryBuilder.must(termsQuery("jrent_layout", room));
+                }
+            }
+
+        }
+
+
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getHouseId())) {
+            booleanQueryBuilder.mustNot(QueryBuilders.termQuery("house_id", rentHouseDoQuery.getHouseId()));
+        }
+
+
+        if (StringTool.isDoubleNotEmpty(rentHouseDoQuery.getTotalPrice())){
+            double beginPrice = rentHouseDoQuery.getTotalPrice()-(rentHouseDoQuery.getTotalPrice()*0.1);
+            double endPrice = rentHouseDoQuery.getTotalPrice()+(rentHouseDoQuery.getTotalPrice()*0.1);
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(beginPrice).lte(endPrice));
+        }
+
+        GeoDistanceSortBuilder geoDistanceSort = null;
+        if (StringTool.isDoubleNotEmpty(rentHouseDoQuery.getLat()) && StringTool.isDoubleNotEmpty(rentHouseDoQuery.getLon()) ) {
+            geoDistanceSort = SortBuilders.geoDistanceSort("location", rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon());
+            geoDistanceSort.unit(DistanceUnit.KILOMETERS);
+            geoDistanceSort.geoDistance(GeoDistance.ARC);
+        }
+
+        booleanQueryBuilder.must(QueryBuilders.termQuery("rentHouseType", "3"));//目前只展示导入的房源
+
+
+        RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
+        List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
+        SearchResponse searchResponse = rentEsDao.querySimilarRentSearchList(booleanQueryBuilder, city, geoDistanceSort);
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if (hits.length > 0) {
+            List<String> imgs = new ArrayList<>();
+            for (SearchHit hit : hits) {
+                String sourceAsString = hit.getSourceAsString();
+                RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                String nearbyDistance = "";
+
+                if(rentHouseDoQuery.getBuildingId().equals(rentDetailsFewDo.getZufangId())){
+                    nearbyDistance = "小区同户型";
+                }else{
+                    BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[1]);
+                    String distances= geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                    nearbyDistance = "距本房源" + distances;
+                }
+
+
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = rentDetailsFewDo.getCreateTime();
+                int isDefault = isDefaultImage(importTime, date, rentDetailsFewDo.getHouseTitleImg());
+                if (isDefault == 1) {
+                    rentDetailsFewDo.setIsDefaultImage(1);
+                }
+
+
+                List<Map<String, String>> rentHouseImg = (List<Map<String, String>>) hit.getSourceAsMap().get("rent_house_img");
+                for (int i = 0; i < rentHouseImg.size(); i++) {
+                    imgs.add(rentHouseImg.get(i).get("image_path"));
+
+                }
+                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
+
+                } else {
+                    agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent") == null ? "" : hit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency") == null ? "" : hit.getSourceAsMap().get("brokerage_agency").toString());
+                    agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
+                }
+
+
+
+                if(StringTool.isNotEmpty(nearbyDistance)){
+                    rentDetailsFewDo.setNearbyDistance(nearbyDistance);
+                }
+
+                //设置标题图
+                String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
+                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                rentDetailsFewDo.setHouseTitleImg(titlePhoto);
+
+                //设置公司图标
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
+                fullHouseBarrage(rentDetailsFewDo);
+                rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
+                rentDetailsFewDos.add(rentDetailsFewDo);
+
+            }
+        }
+        rentDetailsListDo.setRentDetailsList(rentDetailsFewDos);
+        rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
+        return rentDetailsListDo;
+    }
+
+    @Override
     public RentDetailsListDo getCommuteRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();

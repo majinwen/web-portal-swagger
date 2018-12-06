@@ -224,6 +224,21 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
+    public SearchResponse querySimilarRentSearchList(BoolQueryBuilder boolQueryBuilder, String city, GeoDistanceSortBuilder geoDistanceSort) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).size(3).sort("update_time", SortOrder.DESC).sort(geoDistanceSort);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
+
+    @Override
     public SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();

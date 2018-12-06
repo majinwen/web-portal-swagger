@@ -175,4 +175,27 @@ public class RentRestController implements RentRestApi {
         return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<RentDetailFewResponseList> getSimilarRentHouseListGet(@Validated RentHouseRequest rentHouseRequest) {
+        return getSimilarRentList(rentHouseRequest);
+    }
+
+    @Override
+    public ResponseEntity<RentDetailFewResponseList> getSimilarRentHouseListPost(@Validated @RequestBody RentHouseRequest rentHouseRequest) {
+        return getSimilarRentList(rentHouseRequest);
+    }
+
+
+    private ResponseEntity<RentDetailFewResponseList> getSimilarRentList(@Validated RentHouseRequest rentHouseRequest) {
+
+            RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+            RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
+            BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+            RentDetailsListDo rentDetailsListDo = appRentRestService.getSimilarRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+
+            BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
+            return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);
+
+    }
+
 }

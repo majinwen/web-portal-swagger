@@ -28,6 +28,8 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.InternalOrder;
 import org.elasticsearch.search.aggregations.bucket.terms.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -185,7 +187,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             searchSourceBuilder.query(boolQueryBuilder);
 
             //对地铁站做聚合
-            searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("subway_station_id").size(1000).includeExclude(includeExclude));
+            searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("subway_station_id").order(BucketOrder.key(true)).size(1000).includeExclude(includeExclude));
 
         }else if(StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMaxLatitude())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMaxLongitude())&&
                 StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMinLatitude())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMinLongitude())){

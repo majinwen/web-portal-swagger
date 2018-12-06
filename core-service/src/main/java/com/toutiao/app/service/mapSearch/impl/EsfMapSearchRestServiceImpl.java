@@ -179,7 +179,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchDistrictDo.getCount()+"套)";
             if (null != esfMapSearchDistrictDo.getPrice()){
-                desc = nf.format(esfMapSearchDistrictDo.getPrice()/10000)+"万";
+                desc = nf.format(esfMapSearchDistrictDo.getPrice()/10000)+"万/m²";
             }
             esfMapSearchDistrictDo.setDesc(desc);
             data.add(esfMapSearchDistrictDo);
@@ -251,7 +251,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchBizcircleDo.getCount()+"套)";
             if (null != esfMapSearchBizcircleDo.getPrice()){
-                desc = nf.format(esfMapSearchBizcircleDo.getPrice()/10000)+"万";
+                desc = nf.format(esfMapSearchBizcircleDo.getPrice()/10000)+"万/m²";
             }
             esfMapSearchBizcircleDo.setDesc(desc);
             data.add(esfMapSearchBizcircleDo);
@@ -317,7 +317,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchCommunityDo.getCount()+"套)";
             if (null != esfMapSearchCommunityDo.getPrice()){
-                desc = nf.format(esfMapSearchCommunityDo.getPrice()/10000)+"万("+esfMapSearchCommunityDo.getCount()+"套)";
+                desc = nf.format(esfMapSearchCommunityDo.getPrice()/10000)+"万/m²("+esfMapSearchCommunityDo.getCount()+"套)";
             }
             esfMapSearchCommunityDo.setDesc(desc);
             data.add(esfMapSearchCommunityDo);

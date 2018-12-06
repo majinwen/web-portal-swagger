@@ -51,4 +51,13 @@ public class SellHouseRequest extends BaseQueryRequest {
 
     @ApiModelProperty(value = "预设条件的区域列表", name = "districtIds")
     private String[] districtIds;
+
+    @ApiModelProperty(value = "房源总价", name = "totalPrice")
+    private double totalPrice;
+
+    @ApiModelProperty(value = "厅", name = "hall")
+    private Integer hall;
+
+    @ApiModelProperty(value = "房源ID", name = "houseId")
+    private String houseId;
 }

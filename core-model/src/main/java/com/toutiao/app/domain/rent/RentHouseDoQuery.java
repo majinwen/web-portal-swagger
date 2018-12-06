@@ -57,4 +57,19 @@ public class RentHouseDoQuery extends QueryDo{
      */
     private String trafficType;
     private String sort;
+
+    /**
+     * 房源id
+     */
+    private String houseId;
+
+    /**
+     * 出租价格
+     */
+    private double totalPrice;
+
+    /**
+     * 小区id
+     */
+    private Integer buildingId;
 }
