@@ -73,6 +73,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
             NewHouseMapSearchDistrictDo newHouseMapSearchDistrictDo = new NewHouseMapSearchDistrictDo();
             newHouseMapSearchDistrictDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());
             newHouseMapSearchDistrictDo.setCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+            newHouseMapSearchDistrictDo.setDesc(newHouseMapSearchDistrictDo.getCount()+"个");
             BoolQueryBuilder builder = new BoolQueryBuilder();
             builder.must(termQuery("district_id", newHouseMapSearchDistrictDo.getId()));
             SearchResponse newHouseMapByDbAvgPrice = newHouseMapSearchEsDao.getNewHouseMapByDbAvgPrice(builder, city);
