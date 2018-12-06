@@ -23,6 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -53,6 +54,9 @@ public class UserbasicApiController implements UserbasicApi {
 
     private final HttpServletResponse response;
 
+    @Value("${qiniu.img_wapapp_domain}")
+    public String headPicPath;
+
     @Autowired
     private UserLoginService userLoginService;
     @Autowired
@@ -75,6 +79,7 @@ public class UserbasicApiController implements UserbasicApi {
         com.toutiao.app.api.chance.response.user.UserLoginResponse userLoginResponse = JSONObject.parseObject(user, com.toutiao.app.api.chance.response.user.UserLoginResponse.class);
         if (null != userLoginResponse) {
             UserBasicDo userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            userBasic.setAvatar(headPicPath + "/" + userBasic.getAvatar());
             BeanUtils.copyProperties(userBasic, userLoginResponse);
             UserLoginResponse userLoginResponse1 = new UserLoginResponse();
             BeanUtils.copyProperties(userLoginResponse, userLoginResponse1);
