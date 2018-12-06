@@ -2,7 +2,6 @@ package com.toutiao.app.domain.message;
 
 import com.toutiao.web.common.assertUtils.ChangeName;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiParam;
 import lombok.Data;
 
 @Data
@@ -151,6 +150,6 @@ public class MessageSellHouseDo {
     @ApiModelProperty(value = "（出租）标签", name = "tags")
     private String[] tags;
 
-    @ApiParam(value = "房源类型，1-二手，2-租房", name = "houseType")
+    @ApiModelProperty(value = "房源类型，1-二手，2-租房", name = "houseType")
     private Integer houseType;
 }
