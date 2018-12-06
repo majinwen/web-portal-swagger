@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.rent;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -287,5 +288,10 @@ public class RentDetailsDo {
      * 公司图标
      */
     private String companyIcon;
+
+    /**
+     * 小区信息
+     */
+    private PlotDetailsDo plotDetailsDo;
 
 }

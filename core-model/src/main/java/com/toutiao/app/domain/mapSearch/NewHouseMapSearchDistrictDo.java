@@ -39,4 +39,9 @@ public class NewHouseMapSearchDistrictDo {
      */
     private Integer count;
 
+    /**
+     * 描述
+     */
+    private String desc;
+
 }

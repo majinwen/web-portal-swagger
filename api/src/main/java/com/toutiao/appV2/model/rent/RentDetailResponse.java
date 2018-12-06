@@ -2,6 +2,7 @@ package com.toutiao.appV2.model.rent;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.appV2.model.plot.PlotDetailsResponse;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -197,6 +198,9 @@ public class RentDetailResponse {
     @JsonProperty("zufangName")
     @ApiModelProperty("小区名称")
     private String zufangName = null;
+
+    @ApiModelProperty(value = "小区信息", name = "plotInfo")
+    private PlotDetailsResponse plotInfo;
 
     @ApiModelProperty(value = "公司图标", name = "companyIcon")
     private String companyIcon;
