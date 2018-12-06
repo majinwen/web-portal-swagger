@@ -36,49 +36,49 @@ public class MessageSellHouseDo {
     /**
      * 朝向
      */
-    @ApiModelProperty(value = "朝向", name = "forwardName")
+    @ApiModelProperty(value = "朝向", name = "forward")
     @ChangeName("forward")
     private String forwardName;
 
     /**
      * 区域名称
      */
-    @ApiModelProperty(value = "区域名称", name = "area")
+    @ApiModelProperty(value = "区域名称", name = "districtName")
     @ChangeName("districtName")
     private String area;
 
     /**
      * 区域id
      */
-    @ApiModelProperty(value = "区域id", name = "areaId")
+    @ApiModelProperty(value = "区域id", name = "districtId")
     @ChangeName("districtId")
     private String areaId;
 
     /**
      * 商圈id
      */
-    @ApiModelProperty(value = "商圈id", name = "houseBusinessNameId")
+    @ApiModelProperty(value = "商圈id", name = "areaId")
     @ChangeName("areaId")
     private String houseBusinessNameId;
 
     /**
      * 商圈名称
      */
-    @ApiModelProperty(value = "商圈名称", name = "houseBusinessName")
+    @ApiModelProperty(value = "商圈名称", name = "area")
     @ChangeName("area")
     private String houseBusinessName;
 
     /**
      * 小区名称
      */
-    @ApiModelProperty(value = "小区名称", name = "plotName")
+    @ApiModelProperty(value = "小区名称", name = "buildingName")
     @ChangeName("buildingName")
     private String plotName;
 
     /**
      * 小区id
      */
-    @ApiModelProperty(value = "小区id", name = "newcode")
+    @ApiModelProperty(value = "小区id", name = "buildingId")
     @ChangeName("buildingId")
     private Integer newcode;
 
@@ -109,7 +109,7 @@ public class MessageSellHouseDo {
     /**
      * 状态(0-未发布/1-已发布)
      */
-    @ApiModelProperty(value = "状态(0-未发布/1-已发布)", name = "status")
+    @ApiModelProperty(value = "状态(0-未发布/1-已发布)", name = "releaseStatus")
     @ChangeName("releaseStatus")
     private Short status;
 
@@ -124,4 +124,29 @@ public class MessageSellHouseDo {
      */
     @ApiModelProperty(value = "厅", name = "hall")
     private String hall;
+
+    @ApiModelProperty(value = "公司", name = "ofCompany")
+    private String ofCompany;
+
+    @ApiModelProperty(value = "公司Icon", name = "companyIcon")
+    private String companyIcon;
+
+
+    /********************************租房********************************************/
+
+
+    @ApiModelProperty(value = "（出租）同户型低于小区总价", name = "avgDealCycle")
+    private Integer avgDealCycle;
+
+    @ApiModelProperty(value = "（出租）租赁方式", name = "rentType")
+    private Integer rentType;
+
+    @ApiModelProperty(value = "（出租）租赁方式名称", name = "rentTypeName")
+    private String rentTypeName;
+
+    @ApiModelProperty(value = "（出租）租金，单位：元/月", name = "rentPrice")
+    private Double rentPrice;
+
+    @ApiModelProperty(value = "（出租）标签", name = "tags")
+    private String[] tags;
 }

@@ -2,12 +2,16 @@ package com.toutiao.app.service.rent.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
+import com.toutiao.app.service.plot.PlotsHomesRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.city.CityConstant;
@@ -22,6 +26,7 @@ import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
@@ -65,6 +70,10 @@ public class RentRestRestServiceImpl implements RentRestService {
     private AgentService agentService;
     @Autowired
     private FavoriteRestService favoriteRestService;
+    @Autowired
+    private PlotEsDao plotEsDao;
+    @Autowired
+    private PlotsHomesRestService plotsHomesRestService;
 
     /**
      * 租房详情信息
@@ -125,6 +134,13 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo.setUserId(searchHit.getSourceAsMap().get("userId") == null ? "" : searchHit.getSourceAsMap().get("userId").toString());
                 }
                 rentDetailsDo.setAgentBaseDo(agentBaseDo);
+
+                //公司图标
+                String AgentCompany = rentDetailsDo.getBrokerageAgency();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    rentDetailsDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
+
             }
             try {
 
@@ -138,6 +154,30 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
             } catch (BaseException e) {
                 rentDetailsDo.setIsFavorite(Boolean.FALSE);
+            }
+        }
+
+        Integer plotId = rentDetailsDo.getZufangId();
+
+        if (null != plotId) {
+
+            String details = "";
+            BoolQueryBuilder plotBoolQueryBuilder = QueryBuilders.boolQuery();
+            plotBoolQueryBuilder.must(QueryBuilders.termQuery("id", plotId));
+            SearchResponse plotSearchResponse = plotEsDao.queryPlotDetail(plotBoolQueryBuilder, city);
+            SearchHit[] plotHits = plotSearchResponse.getHits().getHits();
+
+            for (SearchHit searchHit : plotHits) {
+                details = searchHit.getSourceAsString();
+            }
+
+            if (StringUtils.isNotEmpty(details)) {
+                PlotDetailsDo plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
+                PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId, city);
+
+                plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
+                plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
+                rentDetailsDo.setPlotDetailsDo(plotDetailsDo);
             }
         }
         return rentDetailsDo;
@@ -286,17 +326,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                 rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits());
-                List<String> houseBarrageFirstList = new ArrayList<>();
-                houseBarrageFirstList.add("小区同户型总价最低");
-                houseBarrageFirstList.add("总价低于商圈同户型5万");
-                houseBarrageFirstList.add("降10万");
-                houseBarrageFirstList.add("平均成交周期7天");
-                rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
-                List<String> houseBarrageSecondList = new ArrayList<>();
-                houseBarrageSecondList.add("采光很好");
-                houseBarrageSecondList.add("小区同户型低总价榜NO.4");
-                houseBarrageSecondList.add("总价低于小区同户型7万");
-                rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
+                fullHouseBarrage(rentDetailsFewDo);
                 //设置公司图标
                 String AgentCompany = rentDetailsFewDo.getBrokerageAgency();
                 if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
@@ -316,17 +346,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                     rentDetailsFewDo.setTotalNum((int) searchResponse.getHits().getTotalHits() + (int) response.getHits().getTotalHits());
-                    List<String> houseBarrageFirstList = new ArrayList<>();
-                    houseBarrageFirstList.add("小区同户型总价最低");
-                    houseBarrageFirstList.add("总价低于商圈同户型5万");
-                    houseBarrageFirstList.add("降10万");
-                    houseBarrageFirstList.add("平均成交周期7天");
-                    rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
-                    List<String> houseBarrageSecondList = new ArrayList<>();
-                    houseBarrageSecondList.add("采光很好");
-                    houseBarrageSecondList.add("小区同户型低总价榜NO.4");
-                    houseBarrageSecondList.add("总价低于小区同户型7万");
-                    rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
+                    fullHouseBarrage(rentDetailsFewDo);
                     //设置公司图标
                     String AgentCompany = rentDetailsFewDo.getBrokerageAgency();
                     if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
@@ -346,17 +366,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                     rentDetailsFewDo.setTotalNum((int) response.getHits().getTotalHits());
-                    List<String> houseBarrageFirstList = new ArrayList<>();
-                    houseBarrageFirstList.add("小区同户型总价最低");
-                    houseBarrageFirstList.add("总价低于商圈同户型5万");
-                    houseBarrageFirstList.add("降10万");
-                    houseBarrageFirstList.add("平均成交周期7天");
-                    rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
-                    List<String> houseBarrageSecondList = new ArrayList<>();
-                    houseBarrageSecondList.add("采光很好");
-                    houseBarrageSecondList.add("小区同户型低总价榜NO.4");
-                    houseBarrageSecondList.add("总价低于小区同户型7万");
-                    rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
+                    fullHouseBarrage(rentDetailsFewDo);
                     //设置公司图标
                     String AgentCompany = rentDetailsFewDo.getBrokerageAgency();
                     if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
@@ -446,17 +456,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                     rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                 }
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
-                List<String> houseBarrageFirstList = new ArrayList<>();
-                houseBarrageFirstList.add("小区同户型总价最低");
-                houseBarrageFirstList.add("总价低于商圈同户型5万");
-                houseBarrageFirstList.add("降10万");
-                houseBarrageFirstList.add("平均成交周期7天");
-                rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
-                List<String> houseBarrageSecondList = new ArrayList<>();
-                houseBarrageSecondList.add("采光很好");
-                houseBarrageSecondList.add("小区同户型低总价榜NO.4");
-                houseBarrageSecondList.add("总价低于小区同户型7万");
-                rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
+                fullHouseBarrage(rentDetailsFewDo);
                 list.add(rentDetailsFewDo);
             }
             rentDetailsListDo.setRentDetailsList(list);
@@ -633,7 +633,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
                     BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
                     String distances= geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
-                    nearbyDistance = "距您" + distances + "km";
+                    nearbyDistance = "距您" + distances;
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
@@ -711,7 +711,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
                     rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                 }
-
+                fullHouseBarrage(rentDetailsFewDo);
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 rentDetailsFewDos.add(rentDetailsFewDo);
 
@@ -1471,29 +1471,36 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(queryBuilder);
         }
         //城市
-        if (StringTool.isNotEmpty(nearHouseDo.getCityId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getCityId()) && nearHouseDo.getCityId()>0) {
             boolQueryBuilder.must(termQuery("city_id", nearHouseDo.getCityId()));
         }
         //区域
-        if (StringTool.isNotEmpty(nearHouseDo.getDistrictId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getDistrictId()) && nearHouseDo.getDistrictId() > 0) {
             boolQueryBuilder.must(termQuery("district_id", nearHouseDo.getDistrictId()));
         }
         //商圈
-        if (StringTool.isNotEmpty(nearHouseDo.getAreaId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getAreaId()) && nearHouseDo.getAreaId()>0) {
             boolQueryBuilder.must(termQuery("area_id", nearHouseDo.getAreaId()));
         }
         //地铁线id
-        if (StringTool.isNotEmpty(nearHouseDo.getSubwayLineId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getSubwayLineId())&& nearHouseDo.getSubwayLineId()>0) {
             boolQueryBuilder.must(termsQuery("subway_line_id", new int[]{nearHouseDo.getSubwayLineId()}));
         }
         //地铁站id
-        if (StringTool.isNotEmpty(nearHouseDo.getSubwayStationId())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getSubwayStationId())&& nearHouseDo.getSubwayStationId()>0) {
             boolQueryBuilder.must(termsQuery("subway_station_id", new int[]{nearHouseDo.getSubwayStationId()}));
         }
         //租金
-        if (StringTool.isNotEmpty(nearHouseDo.getBeginPrice()) && StringTool.isNotEmpty(nearHouseDo.getEndPrice())) {
+        if (StringTool.isNotEmpty(nearHouseDo.getBeginPrice()) && StringTool.isNotEmpty(nearHouseDo.getEndPrice()) && nearHouseDo.getBeginPrice()>0 && nearHouseDo.getEndPrice()>0) {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
                     .gte(nearHouseDo.getBeginPrice()).lte(nearHouseDo.getEndPrice()));
+        } else if (StringTool.isNotEmpty(nearHouseDo.getBeginPrice()) && StringTool.isNotEmpty(nearHouseDo.getEndPrice()) && nearHouseDo.getBeginPrice()>0 && nearHouseDo.getEndPrice()==0) {
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
+                    .gte(nearHouseDo.getBeginPrice()));
+        }
+        else if (StringTool.isNotEmpty(nearHouseDo.getBeginPrice()) && StringTool.isNotEmpty(nearHouseDo.getEndPrice()) && nearHouseDo.getBeginPrice() == 0 && nearHouseDo.getEndPrice() > 0) {
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price")
+                    .lte(nearHouseDo.getEndPrice()));
         }
         //面积
         if (StringTool.isNotEmpty(nearHouseDo.getRentHouseArea())) {
@@ -1540,5 +1547,37 @@ public class RentRestRestServiceImpl implements RentRestService {
         return boolQueryBuilder;
     }
 
+    /**
+     * 增加弹幕信息
+     * @param rentDetailsFewDo
+     */
+    private void fullHouseBarrage(RentDetailsFewDo rentDetailsFewDo) {
+        //二手房弹幕第一行
+        List<String> houseBarrageFirstList = new ArrayList<>();
+        if(StringTool.isNotEmpty(rentDetailsFewDo.getHouseTitle())){
+            houseBarrageFirstList.add(rentDetailsFewDo.getHouseTitle());
+        }
+        if(StringTool.isNotEmpty(rentDetailsFewDo.getRentTypeName())){
+            houseBarrageFirstList.add(rentDetailsFewDo.getRentTypeName());
+        }
+        rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
+        //二手房弹幕第二行
+        List<String> houseBarrageSecondList = new ArrayList<>();
+        if(StringTool.isNotEmpty(rentDetailsFewDo.getNearestSubway())){
+            String[] trafficArr = rentDetailsFewDo.getNearestSubway().split("\\$");
+            if (trafficArr.length == 3) {
+                String  nearbyDistance = "距" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                houseBarrageSecondList.add(nearbyDistance);
+            }
+        }
+        if(rentDetailsFewDo.getForward().contains("东") || rentDetailsFewDo.getForward().contains("南")){
+            houseBarrageSecondList.add("采光很好");
+        }
+        for (String tag : rentDetailsFewDo.getRentHouseTagsName()){
+            houseBarrageSecondList.add(tag);
+        }
+        rentDetailsFewDo.setHouseBarrageSecondList(houseBarrageSecondList);
+
+    }
 }

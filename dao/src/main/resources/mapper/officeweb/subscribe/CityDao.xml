@@ -24,6 +24,8 @@
     <resultMap id="CircleDataMap" type="com.toutiao.web.dao.entity.subscribe.AreaInfoData">
         <result column="district_id" property="districtId" jdbcType="INTEGER"/>
         <result column="district_name" property="name" jdbcType="VARCHAR"/>
+        <result column="district_coord_x" property="districtCoordX" jdbcType="VARCHAR"/>
+        <result column="district_coord_y" property="districtCoordY" jdbcType="VARCHAR"/>
         <collection property="children" ofType="com.toutiao.web.dao.entity.subscribe.CircleData">
             <result column="area_id" property="circle" jdbcType="INTEGER"/>
             <result column="area_name" property="name" jdbcType="VARCHAR"/>
@@ -366,6 +368,8 @@
         SELECT
         district.district_id,
         district.district_name,
+        district.coord_x as district_coord_x,
+        district.coord_y as district_coord_y,
         district_area_config.area_id,
         area.area_name,
         area.coord_x,

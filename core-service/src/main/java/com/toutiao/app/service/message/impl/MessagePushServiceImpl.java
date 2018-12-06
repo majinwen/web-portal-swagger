@@ -2,7 +2,9 @@ package com.toutiao.app.service.message.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.message.*;
+import com.toutiao.app.domain.rent.RentDetailsDo;
 import com.toutiao.app.service.message.MessagePushService;
+import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.ToutiaoBeanUtils;
@@ -56,6 +58,26 @@ public class MessagePushServiceImpl implements MessagePushService {
      * 主题订阅
      */
     private static final Integer SUBSCRIBETHEME = 6;
+    /**
+     * 关注房源小区二手房新上
+     */
+    private static final Integer FAVORITEVILLAGEESF = 8;
+    /**
+     * 关注房源小区租房新上
+     */
+    private static final Integer FAVORITEVILLAGERENT = 9;
+    /**
+     * 关注二手房下架
+     */
+    private static final Integer ESFSHELVES = 10;
+    /**
+     * 关注租房下架
+     */
+    private static final Integer RENTSHELVES = 11;
+    /**
+     * 关注租房价格变动
+     */
+    private static final Integer RENTCHANGEPRICE = 12;
 
     /**
      * 常用汉字
@@ -79,13 +101,16 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String SQUAREMETER = "㎡";
     //    private static final String CHINESESQUAREMETER = "平米";
     private static final String OF = "的";
-    private static final String RISE = "涨";
-    private static final String DROP = "降";
+    private static final String RISE = "已涨";
+    private static final String DROP = "已降";
+    private static final String RENTUNITPRICE = "元/月";
 
     @Autowired
     private MessagePushMapper messagePushMapper;
     @Autowired
     private SellHouseService sellHouseService;
+    @Autowired
+    private RentRestService rentRestService;
     @Value("${qiniu.img_domain}")
     private String qinniuImg;
     @Value("${app.domain.name}")
@@ -367,7 +392,10 @@ public class MessagePushServiceImpl implements MessagePushService {
     @Override
     public List<HomeMessageDo> getHomeMessageNew(HomeMessageDoQuery homeMessageDoQuery, String userId) {
         ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
-        for (int i = 3; i < 7; i++) {
+        for (int i = 3; i <= 12; i++) {
+            if (i == 7){
+                continue;
+            }
             MessagePushExample example = new MessagePushExample();
             example.setOrderByClause("id DESC");
             MessagePushExample.Criteria criteria = example.createCriteria();
@@ -407,6 +435,16 @@ public class MessagePushServiceImpl implements MessagePushService {
                 countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteHouseDate()));
             } else if (i == SUBSCRIBETHEME && homeMessageDoQuery.getSubscribeThemeDate() != 0) {
                 countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getSubscribeThemeDate()));
+            } else if (i == FAVORITEVILLAGEESF && homeMessageDoQuery.getFavoriteVillageEsfDate() != 0){
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteVillageEsfDate()));
+            } else if (i == FAVORITEVILLAGERENT && homeMessageDoQuery.getFavoriteVillageRentDate() != 0) {
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteVillageRentDate()));
+            } else if (i == ESFSHELVES && homeMessageDoQuery.getEsfShelvesDate() != 0) {
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getEsfShelvesDate()));
+            } else if (i == RENTSHELVES && homeMessageDoQuery.getRentShelvesDate() != 0) {
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getRentShelvesDate()));
+            } else if (i == RENTCHANGEPRICE && homeMessageDoQuery.getRentChangePriceDate() != 0) {
+                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getRentChangePriceDate()));
             }
             int unreadCount = messagePushMapper.countByExample(countExample);
             if (StringTool.isNotEmpty(messageContent[0])) {
@@ -481,6 +519,25 @@ public class MessagePushServiceImpl implements MessagePushService {
             }
 
             messageContent.append(YOURFAVORITE).append(SPACE).append(blodMessageContent);
+        } else if (contentType.equals(FAVORITEVILLAGEESF) || contentType.equals(FAVORITEVILLAGERENT)
+                || contentType.equals(ESFSHELVES) || contentType.equals(RENTSHELVES)) {
+            blodMessageContent.append(mcJson.get("messageContent"));
+            messageContent = blodMessageContent;
+        } else if (contentType.equals(RENTCHANGEPRICE)) {
+            blodMessageContent.append(mcJson.get("buildingName")).append(mcJson.get("rentTypeName"));
+            Integer room = (Integer) mcJson.get("room");
+            if (room != null) {
+                blodMessageContent.append(room).append(LIVINGROOM);
+            } else {
+                blodMessageContent.append(ANYLIVINGROOM);
+            }
+
+            if ("1".equals(mcJson.get("flag"))) {
+                blodMessageContent.append(SPACE).append(RISE).append(mcJson.get("money")).append(RENTUNITPRICE);
+            } else {
+                blodMessageContent.append(SPACE).append(DROP).append(mcJson.get("money")).append(RENTUNITPRICE);
+            }
+            messageContent = blodMessageContent;
         }
         contentArr[0] = messageContent.toString();
         contentArr[1] = blodMessageContent.toString();
@@ -630,27 +687,28 @@ public class MessagePushServiceImpl implements MessagePushService {
             List<MessageSellHouseDo> messageSellHouseDos,
             String hostUrl) {
         JSONObject jsonObject;
-        List<MessageSellHouseDo> esHouseDos = sellHouseService.querySellHouseByHouseIdNew(new String[]{houseId},
-                CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
-        Integer subscribeType = messagePushDo.getSubscribeType();
-        if (esfInfo == null || "{}".equals(esfInfo.toString())){
-            //旧数据查不到，从Es表查询
-            if (CollectionUtils.isNotEmpty(esHouseDos)){
-                jsonObject = (JSONObject)JSONObject.toJSON(esHouseDos.get(0));
-                jsonObject.put("status", 0);
-                jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
-                jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId(), hostUrl));
-                addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
-            }
-        } else {
-            jsonObject = esfInfo.getJSONObject(houseId);
-            //新数据可以从esfInfo查询，判断是否下架
+        if (isEsfType(messagePushDo.getContentType())) {
+            List<MessageSellHouseDo> esHouseDos = sellHouseService.querySellHouseByHouseIdNew(new String[]{houseId},
+                    CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
+            Integer subscribeType = messagePushDo.getSubscribeType();
+            if (esfInfo == null || "{}".equals(esfInfo.toString())){
+                //旧数据查不到，从Es表查询
+                if (CollectionUtils.isNotEmpty(esHouseDos)){
+                    jsonObject = (JSONObject)JSONObject.toJSON(esHouseDos.get(0));
+                    jsonObject.put("status", 0);
+                    jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
+                    jsonObject.put("houseDetailUrl", dealEsfDetailUrl(houseId, messagePushDo.getCityId(), hostUrl, 1));
+                    addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
+                }
+            } else {
+                jsonObject = esfInfo.getJSONObject(houseId);
+                //新数据可以从esfInfo查询，判断是否下架
 //            if(jsonObject != null){
                 if (CollectionUtils.isEmpty(esHouseDos)){
                     jsonObject.put("status", 1);
                     jsonObject.put("houseId", houseId);
                     jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
-                    jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId(), hostUrl));
+                    jsonObject.put("houseDetailUrl", dealEsfDetailUrl(houseId, messagePushDo.getCityId(), hostUrl, 1));
                     addHouseDoToList(messageSellHouseDos, jsonObject, subscribeType);
                 } else {
                     jsonObject.put("status", 0);
@@ -658,7 +716,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                     jsonObject.put("houseTotalPrices", esHouseDos.get(0).getHouseTotalPrices());
                     jsonObject.put("priceFloat", esHouseDos.get(0).getPriceFloat());
                     jsonObject.put("housePhotoTitle", dealPhotoTitle(esHouseDos.get(0).getHousePhotoTitle()));
-                    jsonObject.put("houseDetailUrl", dealDetailUrl(houseId, messagePushDo.getCityId(), hostUrl));
+                    jsonObject.put("houseDetailUrl", dealEsfDetailUrl(houseId, messagePushDo.getCityId(), hostUrl, 1));
                     //如果是专题类消息，要替换isCutPrice、isLowPrice、isMustRob内容
                     if (isAddList(subscribeType, jsonObject, esHouseDos)) {
                         jsonObject.put("isCutPrice", esHouseDos.get(0).getIsCutPrice());
@@ -670,7 +728,29 @@ public class MessagePushServiceImpl implements MessagePushService {
                     }
                 }
 //            }
+            }
+        } else {
+            RentDetailsDo rentDetailsDo = rentRestService.queryRentDetailByHouseId(houseId, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
+            jsonObject = esfInfo.getJSONObject(houseId);
+            if (rentDetailsDo == null){
+                jsonObject.put("status", 1);
+            } else {
+                jsonObject.put("status", 0);
+            }
+            jsonObject.put("houseId", houseId);
+            jsonObject.put("housePhotoTitle", dealPhotoTitle(jsonObject.get("housePhotoTitle").toString()));
+            jsonObject.put("houseDetailUrl", dealEsfDetailUrl(houseId, messagePushDo.getCityId(), hostUrl, 2));
+            messageSellHouseDos.add(JSONObject.parseObject(jsonObject.toString(), MessageSellHouseDo.class));
         }
+
+    }
+
+    private boolean isEsfType(Integer contentType) {
+        List<Integer> esfTypeList = Arrays.asList(3, 4, 5, 6, 8, 10);
+        if (esfTypeList.contains(contentType)) {
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -704,11 +784,17 @@ public class MessagePushServiceImpl implements MessagePushService {
         return photoUrl;
     }
 
-    private String dealDetailUrl(String houseId, Integer cityId, String hostUrl) {
+    private String dealEsfDetailUrl(String houseId, Integer cityId, String hostUrl, Integer type) {
         String houseDetailUrl = null;
-        if (StringTool.isNotEmpty(houseId) && StringTool.isNotEmpty(CITYID2ABBREVIATION.get(cityId))) {
-            houseDetailUrl = String.format(hostUrl + "/#/%s/details/secondHand?houseId=%s",
-                    CITYID2ABBREVIATION.get(cityId), houseId);
+        String cityCode = CITYID2ABBREVIATION.get(cityId);
+        if (StringTool.isNotEmpty(houseId) && StringTool.isNotEmpty(cityCode)) {
+            if (type == 1) {
+                houseDetailUrl = String.format(hostUrl + "/#/%s/details/secondHand?houseId=%s",
+                        cityCode, houseId);
+            } else {
+                houseDetailUrl = String.format(hostUrl + "/#/%s/details/rent?rentId=%s",
+                        cityCode, houseId);
+            }
         }
         return houseDetailUrl;
     }

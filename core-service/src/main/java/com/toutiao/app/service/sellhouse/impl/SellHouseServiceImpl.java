@@ -3,17 +3,21 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
+import com.toutiao.app.service.plot.PlotsHomesRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
@@ -30,7 +34,7 @@ import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
@@ -74,6 +78,10 @@ public class SellHouseServiceImpl implements SellHouseService {
 
     @Autowired
     private CommunityRestService communityRestService;
+    @Autowired
+    private PlotEsDao plotEsDao;
+    @Autowired
+    private PlotsHomesRestService plotsHomesRestService;
 
     @Override
     public SellHouseDetailsDo getSellHouseByHouseId(String houseId, String city) {
@@ -173,6 +181,12 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                }
                 sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 sellHouseDetailsDo.setAgentBaseDo(agentBaseDo);
+
+                //公司图标
+                String AgentCompany = sellHouseDetailsDo.getOfCompany();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    sellHouseDetailsDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
             }
 
             try {
@@ -200,6 +214,29 @@ public class SellHouseServiceImpl implements SellHouseService {
             }
         }
 
+        Integer plotId = sellHouseDetailsDo.getNewcode();
+
+        if (null != plotId) {
+
+            String details = "";
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(QueryBuilders.termQuery("id", plotId));
+            SearchResponse plotSearchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder, city);
+            SearchHit[] plotHits = plotSearchResponse.getHits().getHits();
+
+            for (SearchHit searchHit : plotHits) {
+                details = searchHit.getSourceAsString();
+            }
+
+            if (StringUtils.isNotEmpty(details)) {
+                PlotDetailsDo plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
+                PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId, city);
+
+                plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
+                plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
+                sellHouseDetailsDo.setPlotDetailsDo(plotDetailsDo);
+            }
+        }
         return sellHouseDetailsDo;
     }
 
@@ -1004,7 +1041,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
                     String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
 //                    sellHousesSearchDo.setNearbyDistance(distance);
-                    nearbyDistance = "距您" + distances + "km";
+                    nearbyDistance = "距您" + distances;
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
@@ -1170,10 +1207,6 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
-                //计算nearbyDistance
-
-
-                sellHousesSearchDos.add(sellHousesSearchDo);
                 //增加地铁与房子之间的距离
                 String keys = "";
                 if (null != sellHouseDoQuery.getSubwayLineId() && sellHouseDoQuery.getSubwayLineId() > 0) {
@@ -1206,6 +1239,54 @@ public class SellHouseServiceImpl implements SellHouseService {
                     sellHousesSearchDo.setNearbyDistance(nearbyDistance);
                 }
 
+                //二手房弹幕第一行
+                List<String> houseBarrageFirstList = new ArrayList<>();
+                if (sellHousesSearchDo.getIsLowest() == 1 ){
+                    houseBarrageFirstList.add("小区同户型总价最低");
+                }
+                boolean titleTag = true;
+                if(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()<0){
+//                    String lowPriceStr = "总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万";
+                    houseBarrageFirstList.add("总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万");
+                    titleTag = false;
+                }
+
+//                double priceFloat = sellHousesSearchDo.getPriceFloat();
+                if (sellHousesSearchDo.getIsCutPrice() == 1 && priceFloat > 0) {
+                    houseBarrageFirstList.add("降" + priceFloat + "万");
+                    titleTag = false;
+                }
+//                Integer avgDealCycle = sellHousesSearchDo.getAvgDealCycle();
+                if (sellHousesSearchDo.getIsDealLayout() == 1 && avgDealCycle > 0) {
+                    houseBarrageFirstList.add("平均成交周期" + avgDealCycle + "天");
+//                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
+                    titleTag = false;
+                }
+                if(titleTag){
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
+                }
+                sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
+
+                //二手房弹幕第二行
+                List<String> houseBarrageSecondList = new ArrayList<>();
+
+                if(sellHousesSearchDo.getForwardName().contains("东") || sellHousesSearchDo.getForwardName().contains("南")){
+                    houseBarrageSecondList.add("采光很好");
+                }
+                if(sellHousesSearchDo.getRankInLowCommunityLayout()>0){
+                    houseBarrageSecondList.add("小区同户型低总价榜NO."+sellHousesSearchDo.getRankInLowCommunityLayout());
+                }
+                if (sellHousesSearchDo.getTotalAbsoluteWithCommunity() < 0) {
+                    houseBarrageSecondList.add( "总价低于小区同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithCommunity()) + "万");
+                }
+
+                for (String tag : sellHousesSearchDo.getTagsName()){
+                    houseBarrageSecondList.add(tag);
+                }
+
+                sellHousesSearchDo.setHouseBarrageSecondList(houseBarrageSecondList);
+
+                sellHousesSearchDos.add(sellHousesSearchDo);
             }
             sellHouseSearchDomain.setData(sellHousesSearchDos);
             sellHouseSearchDomain.setTotalNum((int) searchResponse.getHits().getTotalHits());

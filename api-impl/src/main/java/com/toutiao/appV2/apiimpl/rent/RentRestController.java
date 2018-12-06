@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.appV2.api.rent.RentRestApi;
+import com.toutiao.appV2.model.plot.PlotDetailsResponse;
+import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.appV2.model.rent.*;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -78,10 +81,16 @@ public class RentRestController implements RentRestApi {
 
     @Override
     public ResponseEntity<RentDetailResponse> getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
-
+        PlotDetailsResponse plotInfo = new PlotDetailsResponse();
+        PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
         RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
         BeanUtils.copyProperties(rentDetailsDo, rentDetailResponse);
+        rentDetailResponse.setAgentBaseDo(rentDetailsDo.getAgentBaseDo());
+        BeanUtils.copyProperties(rentDetailsDo.getPlotDetailsDo(), plotInfo);
+        BeanUtils.copyProperties(rentDetailsDo.getPlotDetailsDo().getPlotsHousesDomain(),plotsHousesDomain);
+        plotInfo.setPlotsHousesDomain(plotsHousesDomain);
+        rentDetailResponse.setPlotInfo(plotInfo);
         return new ResponseEntity<>(rentDetailResponse, HttpStatus.OK);
     }
 
@@ -106,7 +115,12 @@ public class RentRestController implements RentRestApi {
             List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
             RentDetailFewResponseList nearRentHouseResponse = new RentDetailFewResponseList();
             nearRentHouseResponse.setRentDetailsList(rentDetailFewResponses);
-            nearRentHouseResponse.setTotalCount(rentDetailFewResponses.size());
+            if (list.size() > 0) {
+                nearRentHouseResponse.setTotalCount(list.get(0).getTotalNum());
+            } else {
+                nearRentHouseResponse.setTotalCount(0);
+            }
+
             return new ResponseEntity<>(nearRentHouseResponse, HttpStatus.OK);
         } else {
             RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();

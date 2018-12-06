@@ -2,6 +2,7 @@ package com.toutiao.appV2.model.sellhouse;
 
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.appV2.model.plot.PlotDetailsResponse;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -570,4 +571,10 @@ public class SellHouseDetailsResponse {
      */
     @ApiModelProperty(value = "是否显示默认图片标志", name = "isDefaultImage")
     private Integer isDefaultImage = 0;
+
+    @ApiModelProperty(value = "公司图标", name = "companyIcon")
+    private String companyIcon;
+
+    @ApiModelProperty(value = "小区信息", name = "plotInfo")
+    private PlotDetailsResponse plotInfo;
 }

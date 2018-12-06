@@ -388,4 +388,11 @@ public class SellHousesSearchDo {
 
     @ApiModelProperty(value = "专题列表", name = "houseSubjectList")
     private List<HouseSubject> houseSubjectList;
+
+    @ApiModelProperty(value = "第一行弹幕", name = "houseBarrageFirstList")
+    private List<String> houseBarrageFirstList;
+
+    @ApiModelProperty(value = "第二行弹幕", name = "houseBarrageSecondList")
+    private List<String> houseBarrageSecondList;
+
 }

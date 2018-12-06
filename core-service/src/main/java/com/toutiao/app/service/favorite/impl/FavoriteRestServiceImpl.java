@@ -382,10 +382,10 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     } else {
                         favoriteHouseVo.setTitleImg(buildingTitleImg);
                     }
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice());
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice().intValue());
                     favoriteHouseVo.setHouseMinArea(favoriteHouseDo.getHouseMinArea());
                     favoriteHouseVo.setHouseMaxArea(favoriteHouseDo.getHouseMaxArea());
-                    favoriteHouseVo.setTotalPrice(favoriteHouseDo.getTotalPrice());
+                    favoriteHouseVo.setTotalPrice(favoriteHouseDo.getTotalPrice().intValue());
                     favoriteHouseVo.setRoomType(favoriteHouseDo.getRoomType());
                     favoriteHouseVo.setIsActive(favoriteHouseDo.getIsActive());
                     break;
@@ -400,7 +400,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     } else {
                         favoriteHouseVo.setTitleImg(housePhotoTitle);
                     }
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getHouseTotalPrices());
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getHouseTotalPrices().intValue());
                     favoriteHouseVo.setRoom(favoriteHouseDo.getRoom());
                     favoriteHouseVo.setHall(favoriteHouseDo.getHall());
                     favoriteHouseVo.setForward(favoriteHouseDo.getForward());
@@ -417,7 +417,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     } else {
                         favoriteHouseVo.setTitleImg(buildingTitleImgPlot);
                     }
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice());
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getAveragePrice().intValue());
                     favoriteHouseVo.setBuildYears(favoriteHouseDo.getBuildYears());
                     favoriteHouseVo.setBuildingStructure(favoriteHouseDo.getBuildingStructure());
                     break;
@@ -432,7 +432,7 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     } else {
                         favoriteHouseVo.setTitleImg(housePhotoTitleRent);
                     }
-                    favoriteHouseVo.setPrice(favoriteHouseDo.getRentPrice());
+                    favoriteHouseVo.setPrice(favoriteHouseDo.getRentPrice().intValue());
                     favoriteHouseVo.setRentTypeName(favoriteHouseDo.getRentTypeName());
                     favoriteHouseVo.setRoom(favoriteHouseDo.getRoom());
                     favoriteHouseVo.setHall(favoriteHouseDo.getHall());
@@ -467,29 +467,58 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
         String id = cancelFavoriteHouseDto.getId();
         switch (type) {
             case 1:// 新房
-                UserFavoriteNewHouse userFavoriteNewHouse = new UserFavoriteNewHouse();
-                userFavoriteNewHouse.setUserId(userId);
-                userFavoriteNewHouse.setBuildingId(Integer.valueOf(id));
-                userFavoriteNewHouse.setIsDel((short) 1);
-                flag = this.userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
+
+                NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+                newHouseIsFavoriteDoQuery.setUserId(userId);
+                newHouseIsFavoriteDoQuery.setBuildingId(Integer.valueOf(id));
+
+                if (this.userFavoriteNewHouseMapper.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery) > 0) {
+                    UserFavoriteNewHouse userFavoriteNewHouse = new UserFavoriteNewHouse();
+                    userFavoriteNewHouse.setUserId(userId);
+                    userFavoriteNewHouse.setBuildingId(Integer.valueOf(id));
+                    userFavoriteNewHouse.setIsDel((short) 1);
+                    flag = this.userFavoriteNewHouseMapper.cancelNewHouseFavoriteByUserIdAndHouseId(userFavoriteNewHouse);
+                } else {
+                    flag = 2;
+                }
                 break;
             case 2:// 二手房
-                DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
-                deleteEsfFavoriteDo.setUserId(userId);
-                deleteEsfFavoriteDo.setHouseId(id);
-                flag = this.userFavoriteEsHouseMapper.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+
+                if (this.userFavoriteEsHouseMapper.isEsfFavoriteByHouseIdAndUserId(id, userId) > 0) {
+                    DeleteEsfFavoriteDo deleteEsfFavoriteDo = new DeleteEsfFavoriteDo();
+                    deleteEsfFavoriteDo.setUserId(userId);
+                    deleteEsfFavoriteDo.setHouseId(id);
+                    flag = this.userFavoriteEsHouseMapper.updateEsfFavoriteByEsfIdAndUserId(deleteEsfFavoriteDo);
+                } else {
+                    flag = 2;
+                }
                 break;
             case 3:// 小区
+
                 PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
                 plotIsFavoriteDoQuery.setUserId(userId);
                 plotIsFavoriteDoQuery.setBuildingId(Integer.valueOf(id));
-                flag = this.userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
+
+                if (this.userFavoriteVillageMapper.selectPlotIsFavorite(plotIsFavoriteDoQuery) > 0) {
+
+                    plotIsFavoriteDoQuery.setUserId(userId);
+                    plotIsFavoriteDoQuery.setBuildingId(Integer.valueOf(id));
+                    flag = this.userFavoriteVillageMapper.cancelVillageByVillageIdAndUserId(plotIsFavoriteDoQuery);
+                } else {
+                    flag = 2;
+                }
                 break;
             case 4:// 租房
-                DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
-                deleteRentFavoriteDoQuery.setUserId(userId);
-                deleteRentFavoriteDoQuery.setHouseId(id);
-                flag = this.userFavoriteRentMapper.updateRentFavoriteByHouseIdAndUserId(deleteRentFavoriteDoQuery);
+
+                if (this.userFavoriteRentMapper.isRentFavoriteByRentIdAndUserId(id, userId) > 0) {
+
+                    DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
+                    deleteRentFavoriteDoQuery.setUserId(userId);
+                    deleteRentFavoriteDoQuery.setHouseId(id);
+                    flag = this.userFavoriteRentMapper.updateRentFavoriteByHouseIdAndUserId(deleteRentFavoriteDoQuery);
+                } else {
+                    flag = 2;
+                }
                 break;
         }
         return flag;
