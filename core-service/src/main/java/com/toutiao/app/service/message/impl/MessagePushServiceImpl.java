@@ -420,7 +420,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                     homeMessageDo.setMessageContent("您关注的租房价格变动"+messageContent[0]);
                     break;
                 case 5:
-                    homeMessageDo.setMessageContent("您关注的二手房价格变动"+messageContent[0]);
+                    homeMessageDo.setMessageContent(messageContent[0]);
                     break;
                 default:
                     homeMessageDo.setMessageContent(houseActivityDos.get(0).getMessageTheme().getString("messageTitle")+messageContent[0]);
