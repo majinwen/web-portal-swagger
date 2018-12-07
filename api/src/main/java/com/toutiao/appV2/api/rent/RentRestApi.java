@@ -108,7 +108,6 @@ public interface RentRestApi {
             produces = "application/json",
             consumes = "application/json",
             method = RequestMethod.POST)
-    @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getCommuteRentList(@ApiParam(value = "rentHouseRequest" ,required=true ) @Validated(Second.class) @Valid() @RequestBody RentHouseRequest rentHouseRequest);
 
 
@@ -123,4 +122,29 @@ public interface RentRestApi {
             method = RequestMethod.GET)
     @ApiIgnore
     ResponseEntity<RentDetailFewResponseList> getGuessList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
+
+
+
+    @ApiOperation(value = "出租:相似好房", nickname = "getSimilarRentHouseList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = RentDetailFewResponseList.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/rent/getSimilarRentHouseList",
+            produces = { "application/json" },
+            method = {RequestMethod.GET})
+    ResponseEntity<RentDetailFewResponseList> getSimilarRentHouseListGet(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid RentHouseRequest rentHouseRequest);
+
+    @ApiOperation(value = "出租:相似好房", nickname = "getSimilarRentHouseList", notes = "", response = RentDetailFewResponseList.class, tags={ "租房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = RentDetailFewResponseList.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/rent/getSimilarRentHouseList",
+            produces = { "application/json" },
+            method = {RequestMethod.POST})
+    ResponseEntity<RentDetailFewResponseList> getSimilarRentHouseListPost(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
+
 }

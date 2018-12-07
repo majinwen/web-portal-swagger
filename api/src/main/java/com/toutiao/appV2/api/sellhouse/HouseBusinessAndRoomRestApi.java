@@ -26,7 +26,6 @@ public interface HouseBusinessAndRoomRestApi {
     @RequestMapping(value = "/rest/esf/houseBusinessAndRoom/getHouseBusinessAndRoomHouses",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<HouseBusinessAndRoomResponse> getHouseBusinessAndRoomHouses(@ApiParam(value = "houseBusinessAndRoomRequest", required = true) @Valid HouseBusinessAndRoomRequest houseBusinessAndRoomRequest, BindingResult bindingResult);
 
 

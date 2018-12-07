@@ -47,11 +47,20 @@ public interface MessagePushService {
     /**
      * 首页消息列表(新)
      *
-     * @param homeMessageDoQuery
      * @param userId
      * @return
      */
-    List<HomeMessageDo> getHomeMessageNew(HomeMessageDoQuery homeMessageDoQuery, String userId);
+    List<HomeMessageDo> getHomeMessageNew(String userId);
+
+    /**
+     * 获取房源消息列表V2
+     *
+     * @param houseMessageV2Query
+     * @param userId
+     * @param request
+     * @return
+     */
+    MessagePushDomain getHouseTypeMessageV2(HouseMessageV2Query houseMessageV2Query, String userId, HttpServletRequest request);
 
     /**
      * 修改消息已读

@@ -60,11 +60,11 @@ public class RentMapSearchDoQuery  extends QueryDo {
     /**
      * 中心维度
      */
-    private Double centerLat;
+    private Double lat;
     /**
      * 中心经度
      */
-    private Double centerLon;
+    private Double lon;
     /**
      * 小区id
      */

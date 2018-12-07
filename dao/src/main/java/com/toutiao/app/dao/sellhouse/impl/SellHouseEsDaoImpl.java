@@ -343,6 +343,21 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
     }
 
     @Override
+    public SearchResponse getSimilarSellHouseList(BoolQueryBuilder query, String city, GeoDistanceSortBuilder geoDistanceSort) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query).size(3).sort("updateTimeSort", SortOrder.DESC).sort(geoDistanceSort);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchresponse;
+    }
+
+    @Override
     public SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize, FieldSortBuilder sortFile, String city) {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));

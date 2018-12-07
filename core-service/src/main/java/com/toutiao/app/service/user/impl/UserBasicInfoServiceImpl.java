@@ -10,6 +10,7 @@ import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.constant.syserror.RestfulInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.httpUtil.HttpUtils;
 import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
@@ -25,6 +26,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +35,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,6 +57,10 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     public String headPicDirectory;
     @Value("${qiniu.img_wapapp_domain}")
     public String headPicPath;
+    @Value("${bdw.cms.base.url}")
+    private String cmsBaseUrl;
+    @Value("${bdw.cms.news.count}")
+    private String newsCountUrl;
     @Value("${bdw.weixin.appid}")
     public String appid;
     @Value("${bdw.weixin.secret}")
@@ -177,6 +185,23 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
         UserSubscribeEtc userSubscribeEtc = new UserSubscribeEtc();
         Integer favoriteCount = userBasicMapper.getUserFavoriteCount(userId);
         Integer subscribeCount = userBasicMapper.getUserSubscribeCount(userId);
+        Map<String,String> paramMap = new HashMap<>();
+        paramMap.put("userId", userId.toString());
+        String result = HttpUtils.get(cmsBaseUrl + newsCountUrl, paramMap);
+
+        if (StringUtils.isNotEmpty(result)) {
+            Map resultMap = JSON.parseObject(result, Map.class);
+            Object newsCount = resultMap.get("newsCount");
+            Object channelCount = resultMap.get("channelCount");
+
+            if (null != newsCount) {
+                favoriteCount += (Integer) newsCount;
+            }
+
+            if (null != channelCount) {
+                subscribeCount += (Integer) channelCount;
+            }
+        }
         userSubscribeEtc.setUserFavoriteCount(favoriteCount);
         userSubscribeEtc.setUserSubscribeCount(subscribeCount);
         return userSubscribeEtc;

@@ -181,7 +181,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      * @return
      */
     @Override
-    public ResponseEntity<StringDataResponse> deleteSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id) {
+    public ResponseEntity<StringDataResponse> deleteSubscribe(@NotNull Integer id) {
 
         int i = subscribeService.deleteByPrimaryKey(id);
         StringDataResponse stringDataResponse = new StringDataResponse();

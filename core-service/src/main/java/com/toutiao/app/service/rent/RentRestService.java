@@ -63,6 +63,14 @@ public interface RentRestService {
     RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city);
 
     /**
+     * 相似好房
+     * @param rentHouseDoQuery
+     * @param city
+     * @return
+     */
+    RentDetailsListDo getSimilarRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city);
+
+    /**
      * 租房搜索结果
      * @param rentHouseDoQuery
      * @return
@@ -77,8 +85,5 @@ public interface RentRestService {
      * @return
      */
     int isDefaultImage(String importTime, Date today, String image);
-
-
-
 
 }

@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -37,6 +38,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Optional;
@@ -53,6 +55,9 @@ public class UserbasicApiController implements UserbasicApi {
     private final HttpServletRequest request;
 
     private final HttpServletResponse response;
+
+    @Value("${qiniu.img_wapapp_domain}")
+    public String headPicPath;
 
     @Autowired
     private UserLoginService userLoginService;
@@ -76,6 +81,9 @@ public class UserbasicApiController implements UserbasicApi {
         UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
         if (null != userLoginResponse) {
             UserBasicDo userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            if(userBasic.getAvatar().indexOf("http:")==-1){
+                userBasic.setAvatar(headPicPath + "/" + userBasic.getAvatar());
+            }
             BeanUtils.copyProperties(userBasic, userLoginResponse);
             UserLoginResponse userLoginResponse1 = new UserLoginResponse();
             BeanUtils.copyProperties(userLoginResponse, userLoginResponse1);
@@ -264,11 +272,16 @@ public class UserbasicApiController implements UserbasicApi {
 
     @Override
     public ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount() {
-        UserBasic userBasic = UserBasic.getCurrent();
+
         UserSubscribeEtcCountResponse userSubscribeEtcCountResponse = new UserSubscribeEtcCountResponse();
-        UserSubscribeEtc userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userBasic.getUserId()));
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         userSubscribeEtcCountResponse.setCsAccount("service");
-        BeanUtils.copyProperties(userSubscribeEtc, userSubscribeEtcCountResponse);
+
+        if (null != user) {
+            UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+            UserSubscribeEtc userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userLoginResponse.getUserId()));
+            BeanUtils.copyProperties(userSubscribeEtc, userSubscribeEtcCountResponse);
+        }
         return new ResponseEntity<UserSubscribeEtcCountResponse>(userSubscribeEtcCountResponse, HttpStatus.OK);
     }
 

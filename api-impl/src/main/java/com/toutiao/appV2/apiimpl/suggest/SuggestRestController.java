@@ -5,19 +5,34 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.houseCount.HouseCountDomain;
+import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
+import com.toutiao.app.domain.newhouse.NewHouseListDomain;
+import com.toutiao.app.domain.plot.PlotListDo;
+import com.toutiao.app.domain.plot.PlotListDoQuery;
+import com.toutiao.app.domain.rent.RentDetailsListDo;
+import com.toutiao.app.domain.rent.RentHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.HouseSubject;
+import com.toutiao.app.domain.sellhouse.SellHouseDoQuery;
+import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.domain.suggest.SearchEnginesDo;
 import com.toutiao.app.domain.suggest.SearchScopeDo;
 import com.toutiao.app.domain.suggest.SuggestListDo;
 import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.app.domain.suggest.SuggestResultDo;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.app.service.plot.PlotsRestService;
+import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.app.service.search.SearchConditionService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.CityService;
 import com.toutiao.app.service.suggest.SuggestService;
 import com.toutiao.appV2.api.suggest.SuggestRestApi;
 import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
+import com.toutiao.appV2.model.houseCount.HouseCountRequest;
+import com.toutiao.appV2.model.houseCount.HouseCountResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
 import com.toutiao.appV2.model.search.SearchConditionResponse;
 import com.toutiao.appV2.model.subscribe.*;
@@ -29,6 +44,7 @@ import com.toutiao.web.dao.entity.search.SearchCondition;
 import com.toutiao.web.dao.entity.subscribe.City;
 import com.toutiao.web.dao.entity.subscribe.CityParkInfo;
 import com.toutiao.web.dao.entity.subscribe.SubwayLineData;
+import com.toutiao.web.domain.query.RentHouseQuery;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -73,6 +89,18 @@ public class SuggestRestController implements SuggestRestApi {
 
     @Autowired
     private SearchConditionService searchConditionService;
+
+    @Autowired
+    private NewHouseRestService newHouseRestService;
+
+    @Autowired
+    private SellHouseService sellHouseService;
+
+    @Autowired
+    private RentRestService rentRestService;
+
+    @Autowired
+    private PlotsRestService plotsRestService;
 
     @Override
     public ResponseEntity<SuggestResultResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest) {
@@ -257,6 +285,7 @@ public class SuggestRestController implements SuggestRestApi {
         }
         CityAllInfoMap cityAllInfoMap = new CityAllInfoMap();
         Map<String, Object> res = cityService.getCityAllInfo(cityId);
+        cityAllInfoMap.setVersion(4);
         cityAllInfoMap.setCityAllInfos(res);
         return new ResponseEntity<CityAllInfoMap>(cityAllInfoMap, HttpStatus.OK);
     }
@@ -273,7 +302,7 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityConditionInfoMap cityConditionInfoMap = new CityConditionInfoMap();
-        Map<String,Object>   res = cityService.getCityConditionInfo(cityId);
+        Map<String, Object> res = cityService.getCityConditionInfo(cityId);
         cityConditionInfoMap.setCityConditionInfos(res);
         return new ResponseEntity<CityConditionInfoMap>(cityConditionInfoMap, HttpStatus.OK);
     }
@@ -290,7 +319,7 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityCircleInfoMap cityCircleInfoMap = new CityCircleInfoMap();
-        Map<String,Object>   res = cityService.getCityCircleInfo(cityId);
+        Map<String, Object> res = cityService.getCityCircleInfo(cityId);
         cityCircleInfoMap.setCityCircleInfos(res);
         return new ResponseEntity<CityCircleInfoMap>(cityCircleInfoMap, HttpStatus.OK);
     }
@@ -307,7 +336,7 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityDiscrictInfoMap cityDiscrictInfoMap = new CityDiscrictInfoMap();
-        Map<String,Object>   res = cityService.getCityDistrictInfo(cityId);
+        Map<String, Object> res = cityService.getCityDistrictInfo(cityId);
         cityDiscrictInfoMap.setCityDiscrictInfos(res);
         return new ResponseEntity<CityDiscrictInfoMap>(cityDiscrictInfoMap, HttpStatus.OK);
     }
@@ -325,7 +354,7 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityParkInfoMap cityParkInfoMap = new CityParkInfoMap();
-        Map<String,Object>  res = cityService.getCityParkInfo(cityId);
+        Map<String, Object> res = cityService.getCityParkInfo(cityId);
         cityParkInfoMap.setCityParkInfos(res);
         return new ResponseEntity<CityParkInfoMap>(cityParkInfoMap, HttpStatus.OK);
     }
@@ -361,11 +390,10 @@ public class SuggestRestController implements SuggestRestApi {
             }
         }
         CityPidsInfoMap cityPidsInfoMap = new CityPidsInfoMap();
-        Map<String,Object>  res = cityService.getCityPidsInfo(cityId);
+        Map<String, Object> res = cityService.getCityPidsInfo(cityId);
         cityPidsInfoMap.setCityPidsInfos(res);
         return new ResponseEntity<CityPidsInfoMap>(cityPidsInfoMap, HttpStatus.OK);
     }
-
 
 
     @Override
@@ -380,6 +408,35 @@ public class SuggestRestController implements SuggestRestApi {
         CityConditionDoList cityConditionDoList = new CityConditionDoList();
         cityConditionDoList.setCityConditionDos(cityService.getCityConditionByIdAndType(cityId, type));
         return new ResponseEntity<CityConditionDoList>(cityConditionDoList, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<HouseCountResponse> getHouseCount(HouseCountRequest houseCountRequest) {
+        HouseCountDomain houseCountDomain = new HouseCountDomain();
+
+        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
+        BeanUtils.copyProperties(houseCountRequest, newHouseDoQuery);
+        NewHouseListDomain newHouseListDomain  = newHouseRestService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+        houseCountDomain.setNewHouseCount(newHouseListDomain.getTotalCount());
+
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        BeanUtils.copyProperties(houseCountRequest, sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+        houseCountDomain.setEsfHouseCount(sellHouseSearchDomain.getTotalNum());
+
+        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
+        BeanUtils.copyProperties(houseCountRequest, rentHouseDoQuery);
+        RentDetailsListDo rentDetailsListDo = rentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+        houseCountDomain.setRentHouseCount(rentDetailsListDo.getTotalCount());
+
+        PlotListDoQuery plotListDoQuery = new PlotListDoQuery();
+        BeanUtils.copyProperties(houseCountRequest, plotListDoQuery);
+        PlotListDo plotListDo = plotsRestService.queryPlotListByRequirement(plotListDoQuery, CityUtils.getCity());
+        houseCountDomain.setPlotHouseCount(plotListDo.getTotalCount());
+
+        HouseCountResponse houseCountResponse = new HouseCountResponse();
+        BeanUtils.copyProperties(houseCountDomain, houseCountResponse);
+        return new ResponseEntity<HouseCountResponse>(houseCountResponse, HttpStatus.OK);
     }
 
 }

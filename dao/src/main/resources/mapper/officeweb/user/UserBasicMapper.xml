@@ -37,6 +37,9 @@
     from user_basic
     where phone = #{phone,jdbcType=VARCHAR}
     and user_status = #{userStatus,jdbcType=SMALLINT}
+    <if test="identityType != null" >
+      and identity_type = #{identityType,jdbcType=SMALLINT}
+    </if>
     and identifier = #{identifier,jdbcType=VARCHAR}
   </select>
 
@@ -49,10 +52,10 @@
 
   <select id="getUserFavoriteCount" resultType="Integer" parameterType="java.lang.Integer" >
     select
-    (select count(*) from user_favorite_newhouse WHERE user_id = #{userId,jdbcType=INTEGER})
-    +(select count(*) from user_favorite_rent WHERE user_id = #{userId,jdbcType=INTEGER})
-    +(select count(*) from user_favorite_village WHERE user_id = #{userId,jdbcType=INTEGER})
-    +(select count(*) from user_favorite_eshouse WHERE user_id = #{userId,jdbcType=INTEGER})
+    (select count(*) from user_favorite_newhouse WHERE is_del = 0 and user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_rent WHERE is_del = 0 and user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_village WHERE is_del = 0 and user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_eshouse WHERE is_del = 0 and user_id = #{userId,jdbcType=INTEGER})
     as sum_count
   </select>
 

@@ -8,6 +8,8 @@ import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.appV2.api.sellhouse.SellHouseRestApi;
+import com.toutiao.appV2.model.plot.PlotDetailsResponse;
+import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.appV2.model.sellhouse.*;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
@@ -80,8 +82,14 @@ public class SellHouseRestController implements SellHouseRestApi {
     @Override
     public ResponseEntity<SellHouseDetailsResponse> getSellHouseByHouseId(@ApiParam(value = "sellHouseDerailsRequest", required = true) @Valid SellHouseDetailsRequest sellHouseDerailsRequest, BindingResult bindingResult) {
         SellHouseDetailsResponse sellHouseDetailsResponse = new SellHouseDetailsResponse();
+        PlotDetailsResponse plotInfo = new PlotDetailsResponse();
+        PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
         SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId(), CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseByHouse, sellHouseDetailsResponse);
+        BeanUtils.copyProperties(sellHouseByHouse.getPlotDetailsDo(), plotInfo);
+        BeanUtils.copyProperties(sellHouseByHouse.getPlotDetailsDo().getPlotsHousesDomain(),plotsHousesDomain);
+        plotInfo.setPlotsHousesDomain(plotsHousesDomain);
+        sellHouseDetailsResponse.setPlotInfo(plotInfo);
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseDetailsResponse));
         return new ResponseEntity<SellHouseDetailsResponse>(sellHouseDetailsResponse, HttpStatus.OK);
     }
@@ -96,6 +104,35 @@ public class SellHouseRestController implements SellHouseRestApi {
         BeanUtils.copyProperties(nearBySellHouseDomain, nearBySellHouseDomainResponse);
         log.info("返回结果集:{}", JSONUtil.stringfy(nearBySellHouseDomainResponse));
         return new ResponseEntity<>(nearBySellHouseDomainResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouseListGet(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+
+        return getSimilarSellHouse(sellHouseRequest);
+    }
+
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+        return getSimilarSellHouse(sellHouseRequest);
+    }
+
+
+
+
+
+    private ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest) {
+
+            SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+            SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+            BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+            SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSimilarSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+
+            BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+            sellHouseSearchDomainResponse.setTotalNum(sellHouseSearchDomain.getTotalNum());
+            log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
+            return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+
     }
 
     /**
@@ -170,6 +207,7 @@ public class SellHouseRestController implements SellHouseRestApi {
                 sellHouseSearchDomainResponse.setIsGuess(1);
             }
             BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+            sellHouseSearchDomainResponse.setTotalNum(sellHouseSearchDomain.getTotalNum());
             log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
             return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
         }

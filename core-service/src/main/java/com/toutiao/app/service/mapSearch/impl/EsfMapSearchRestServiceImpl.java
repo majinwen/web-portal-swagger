@@ -179,7 +179,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchDistrictDo.getCount()+"套)";
             if (null != esfMapSearchDistrictDo.getPrice()){
-                desc = nf.format(esfMapSearchDistrictDo.getPrice()/10000)+"万";
+                desc = nf.format(esfMapSearchDistrictDo.getPrice()/10000)+"万/m²";
             }
             esfMapSearchDistrictDo.setDesc(desc);
             data.add(esfMapSearchDistrictDo);
@@ -212,12 +212,15 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
         long esfCount = searchSellHouse.getHits().totalHits;
 
+        BoolQueryBuilder aggBuilder = QueryBuilders.boolQuery();
         GeoPoint topRight = new GeoPoint(esfMapSearchDoQuery.getMaxLatitude(),esfMapSearchDoQuery.getMaxLongitude());
         GeoPoint bottomLeft = new GeoPoint(esfMapSearchDoQuery.getMinLatitude(),esfMapSearchDoQuery.getMinLongitude());
         GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("bizcircle_location").setCornersOGC(bottomLeft, topRight);
-        boolQueryBuilder.must(geoBoundingBoxQueryBuilder);
-
-        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByBizcircle(boolQueryBuilder, city);
+        aggBuilder.must(geoBoundingBoxQueryBuilder);
+        if(StringTool.isNotEmpty((sellHouseDoQuery.getDistrictId())) && sellHouseDoQuery.getDistrictId() != 0){
+            aggBuilder.must(QueryBuilders.termQuery("district_id", sellHouseDoQuery.getDistrictId()));
+        }
+        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByBizcircle(aggBuilder, city);
         long searchCount = searchResponse.getHits().totalHits;
         Terms houseCount = searchResponse.getAggregations().get("houseCount");
         List buckets= houseCount.getBuckets();
@@ -248,7 +251,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchBizcircleDo.getCount()+"套)";
             if (null != esfMapSearchBizcircleDo.getPrice()){
-                desc = nf.format(esfMapSearchBizcircleDo.getPrice()/10000)+"万";
+                desc = nf.format(esfMapSearchBizcircleDo.getPrice()/10000)+"万/m²";
             }
             esfMapSearchBizcircleDo.setDesc(desc);
             data.add(esfMapSearchBizcircleDo);
@@ -314,7 +317,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
             String desc = 0 + "万("+esfMapSearchCommunityDo.getCount()+"套)";
             if (null != esfMapSearchCommunityDo.getPrice()){
-                desc = nf.format(esfMapSearchCommunityDo.getPrice()/10000)+"万("+esfMapSearchCommunityDo.getCount()+"套)";
+                desc = nf.format(esfMapSearchCommunityDo.getPrice()/10000)+"万/m²("+esfMapSearchCommunityDo.getCount()+"套)";
             }
             esfMapSearchCommunityDo.setDesc(desc);
             data.add(esfMapSearchCommunityDo);
@@ -656,14 +659,18 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
         EsfMapStationDomain esfMapStationDomain = new EsfMapStationDomain();
         //地铁线
-        if (null!=esfMapSearchDoQuery.getSubwayLineId() && null==esfMapSearchDoQuery.getSubwayStationId()) {
-
+//        if (null!=esfMapSearchDoQuery.getSubwayLineId() && null==esfMapSearchDoQuery.getSubwayStationId()) {
+//
+//            esfMapStationDomain = esfMapSearchByLine(esfMapSearchDoQuery, city);
+//            return esfMapStationDomain;
+//        }
+        if(StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && StringTool.isEmpty(esfMapSearchDoQuery.getSubwayStationId())){
             esfMapStationDomain = esfMapSearchByLine(esfMapSearchDoQuery, city);
             return esfMapStationDomain;
         }
 
         //地铁站
-        if (null!=esfMapSearchDoQuery.getSubwayStationId()) {
+        if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayStationId())) {
 
             esfMapStationDomain = esfMapSearchByStation(esfMapSearchDoQuery, city);
         }

@@ -125,5 +125,11 @@ public class NewHouseListDo  {
     @ApiModelProperty(value = "标签列表")
     private List<HouseLable> houseLabelList;
 
+    @ApiModelProperty(value = "描述（高位）")
+    private  String descHigh;
+
+    @ApiModelProperty(value = "描述（中位）")
+    private  String descMid;
+
 
 }

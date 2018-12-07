@@ -10,6 +10,9 @@ public class UserSubscribeDetailDo {
      */
     @ApiModelProperty(value = "专题类型 1：降价房 2：价格洼地 3：逢出必抢", name = "topicType")
     private Integer topicType;
+
+    @ApiModelProperty(value = "专题名称", name = "topicTypeName")
+    private String topicTypeName;
     /**
      * 区域Id
      */
