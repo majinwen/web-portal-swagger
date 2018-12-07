@@ -28,4 +28,8 @@ public interface UserBasicMapper extends BaseDao {
 
     Integer getUserSubscribeCount(Integer userId);
 
+    Integer unbindweixin(String userId);
+
+    UserBasic getUserBasicByunionId(String unionId);
+
 }
