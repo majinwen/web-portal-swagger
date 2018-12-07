@@ -325,23 +325,37 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         rentMapSearchDo.setLatitude((Double) subwayInfo.get("lat"));
                         //维度
                         rentMapSearchDo.setLongitude((Double) subwayInfo.get("lon"));
+                        stationDict.put(rentMapSearchDo.getId().toString(),rentMapSearchDo);
                     }
 
 //                    if(StringTool.isNotEmpty(rentMapSearchDo.getId())&&StringTool.isNotEmpty(rentMapSearchDo.getName())&&StringTool.isNotEmpty(rentMapSearchDo.getLatitude())&&StringTool.isNotEmpty(rentMapSearchDo.getLongitude())){
 //                        list.add(rentMapSearchDo);
 //                    }
-                    stationDict.put(rentMapSearchDo.getId().toString(),rentMapSearchDo);
+                    if(groupTypeId==6){
+                        for(int i=0;i<newList.size();i++){
+                            if(stationDict.containsKey(newList.get(i))){
+                                list.add(stationDict.get(newList.get(i)));
+                            }else{
+                                list.add(allStationDict.get(newList.get(i)));
+                            }
+                        }
+                    }else{
+                        list.add(rentMapSearchDo);
+                    }
+
                 }
 
-                if(groupTypeId==6){
-                    for(int i=0;i<newList.size();i++){
-                        if(stationDict.containsKey(newList.get(i))){
-                            list.add(stationDict.get(newList.get(i)));
-                        }else{
-                            list.add(allStationDict.get(newList.get(i)));
-                        }
-                    }
-                }
+//                if(groupTypeId==6){
+//                    for(int i=0;i<newList.size();i++){
+//                        if(stationDict.containsKey(newList.get(i))){
+//                            list.add(stationDict.get(newList.get(i)));
+//                        }else{
+//                            list.add(allStationDict.get(newList.get(i)));
+//                        }
+//                    }
+//                }else{
+//                    list.add(rentMapSearchDo);
+//                }
             }
 
 
