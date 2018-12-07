@@ -460,18 +460,16 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-                    String nearbyDistance = "";
+                    String nearbyDistance = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
                     String traffic = rentDetailsFewDo.getNearestSubway();
                     String[] trafficArr = traffic.split("\\$");
                     if (trafficArr.length == 3) {
                         int i = Integer.parseInt(trafficArr[2]);
-                        if (i > 2000) {
-                            nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName();
-                        } else if (i > 1000) {
+                        if (i < 1000) {
+                            nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                        } else if (i < 2000) {
                             DecimalFormat df = new DecimalFormat("0.0");
-                            nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName()+ " "+"距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-                        } else {
-                            nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName()+ " "+"距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                            nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                         }
                     }
 
