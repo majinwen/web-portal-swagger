@@ -1,6 +1,7 @@
 package com.toutiao.app.service.user;
 
 import com.toutiao.app.domain.user.UserBasicDo;
+import com.toutiao.app.domain.user.WXUserBasicDo;
 import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,4 +50,19 @@ public interface UserBasicInfoService {
     UserBasicDo queryUserBasicByRcId(String rcId);
 
     UserSubscribeEtc getUserFavoriteEtcCount(Integer userId);
+    /**
+     * 解除微信绑定
+     */
+    Integer unbindweixin(String userId);
+
+    /**
+     * 获取微信信息
+     */
+    WXUserBasicDo queryWXUserBasic(String code, String type, HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 微信登录
+     */
+    UserBasicDo weixinLogin(String unionid);
+
 }

@@ -17,10 +17,11 @@
     <result column="rong_cloud_token" property="rongCloudToken" jdbcType="VARCHAR" />
     <result column="user_only_sign" property="userOnlySign" jdbcType="VARCHAR" />
     <result column="user_call_name" property="userCallName" jdbcType="VARCHAR" />
+    <result column="union_id" property="unionid" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, user_name, user_pwd, phone, avatar, create_time, login_time, update_time, 
-    user_status, register_source, identity_type, identifier, rong_cloud_token, user_only_sign,user_call_name
+    user_status, register_source, identity_type, identifier, rong_cloud_token, user_only_sign,user_call_name,union_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -135,6 +136,9 @@
       <if test="userCallName != null" >
         user_call_name,
       </if>
+      <if test="unionid != null" >
+        union_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -181,6 +185,9 @@
       </if>
       <if test="userCallName != null" >
         #{userCallName,jdbcType=VARCHAR},
+      </if>
+      <if test="unionid != null" >
+        #{unionid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -229,6 +236,9 @@
       <if test="userCallName != null" >
         user_call_name = #{userCallName,jdbcType=VARCHAR},
       </if>
+      <if test="unionid != null" >
+        union_id = #{unionid,jdbcType=VARCHAR},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
@@ -250,4 +260,13 @@
       user_call_name = #{userCallName,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
+  <update id="unbindweixin"  parameterType="java.lang.String">
+    UPDATE user_basic
+    SET union_id = NULL
+    WHERE user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="getUserBasicByunionId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * FROM user_basic
+    WHERE union_id = #{unionId,jdbcType=VARCHAR}
+  </select>
 </mapper>

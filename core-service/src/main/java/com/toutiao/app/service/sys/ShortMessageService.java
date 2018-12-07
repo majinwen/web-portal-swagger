@@ -10,7 +10,7 @@ public interface ShortMessageService {
 
 
 
-    String sendVerifyCode(String phone);
+    String sendVerifyCode(String phone, Integer type);
 
     /**
      * 发送优惠活动短信信息
@@ -19,5 +19,7 @@ public interface ShortMessageService {
      * @return
      */
     NashResult sendSmsByActivity(String userPhone, UserNewBuildingActivity userNewBuildingActivity);
+
+
 
 }

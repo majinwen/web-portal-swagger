@@ -2,10 +2,12 @@ package com.toutiao.appV2.apiimpl.userbasic;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.bingoohuang.patchca.custom.ConfigurableCaptchaService;
 import com.github.bingoohuang.patchca.service.Captcha;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.domain.user.UserBasicDoQuery;
+import com.toutiao.app.domain.user.WXUserBasicDo;
 import com.toutiao.app.service.sys.ShortMessageService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.app.service.user.UserLoginService;
@@ -17,12 +19,11 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
@@ -76,16 +78,18 @@ public class UserbasicApiController implements UserbasicApi {
     @Override
     public ResponseEntity<UserLoginResponse> getUserCache() {
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        com.toutiao.app.api.chance.response.user.UserLoginResponse userLoginResponse = JSONObject.parseObject(user, com.toutiao.app.api.chance.response.user.UserLoginResponse.class);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
         if (null != userLoginResponse) {
             UserBasicDo userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-            userBasic.setAvatar(headPicPath + "/" + userBasic.getAvatar());
+            if(userBasic.getAvatar().indexOf("http:")==-1){
+                userBasic.setAvatar(headPicPath + "/" + userBasic.getAvatar());
+            }
             BeanUtils.copyProperties(userBasic, userLoginResponse);
             UserLoginResponse userLoginResponse1 = new UserLoginResponse();
             BeanUtils.copyProperties(userLoginResponse, userLoginResponse1);
             return new ResponseEntity<UserLoginResponse>(userLoginResponse1, HttpStatus.OK);
         } else {
-            throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR);
+            throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
         }
     }
 
@@ -150,13 +154,22 @@ public class UserbasicApiController implements UserbasicApi {
     public ResponseEntity<UserLoginResponse> userVerifyCodeLogin(@ApiParam(value = "loginRequest", required = true) @Valid @RequestBody UserVerifyCodeRequest loginRequest) {
         UserBasicDoQuery userBasicDoQuery = new UserBasicDoQuery();
         UserLoginResponse userLoginResponse = new UserLoginResponse();
+        UserBasicDo userBasicDo = new UserBasicDo();
         BeanUtils.copyProperties(loginRequest, userBasicDoQuery);
-        UserBasicDo userBasicDo = userLoginService.checkUserVerifyCodeLogin(userBasicDoQuery, request, response);
+        if(StringTool.isNotEmpty(userBasicDoQuery.getUnionid())){
+            userBasicDo = userLoginService.checkUserVerifyCodeBindWXLogin(userBasicDoQuery, request, response);
+        }else {
+            userBasicDo = userLoginService.checkUserVerifyCodeLogin(userBasicDoQuery, request, response);
+        }
 
         if (StringTool.isNotBlank(userBasicDo)) {
             BeanUtils.copyProperties(userBasicDo, userLoginResponse);
             try {
-                setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response);
+                if (StringTool.isNotEmpty(userBasicDoQuery.getUnionid())){
+                    setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response, 1);
+                }else {
+                    setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response, 0);
+                }
                 return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.OK);
             } catch (Exception e) {
                 throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
@@ -168,7 +181,7 @@ public class UserbasicApiController implements UserbasicApi {
     }
 
     @Override
-    public ResponseEntity<Void> produceImageCode() {
+    public ResponseEntity<Void> produceImageCode(@ApiParam(value = "0:普通, 1:微信", required = true) @Valid @RequestParam(value = "type", defaultValue = "0") String type) {
         String accept = request.getHeader("Accept");
         String patchca = "";
         // 设置页面不缓存
@@ -183,7 +196,12 @@ public class UserbasicApiController implements UserbasicApi {
             //获取验证码
             patchca = captcha.getChallenge();
             //将验证码数据放到cookie中
-            Cookie cookie = CookieUtils.setCookie(request, response, "imageCode", patchca);
+            Cookie cookie = null;
+            if ("1".equals(type)){
+                cookie = CookieUtils.setCookie(request, response, "wxImageCode", patchca);
+            }else {
+                cookie = CookieUtils.setCookie(request, response, "imageCode", patchca);
+            }
             response.addCookie(cookie);
             //将验证码传输到页面中
             ImageIO.write(captcha.getImage(), "png", os);
@@ -204,7 +222,8 @@ public class UserbasicApiController implements UserbasicApi {
         if (accept != null && accept.contains("")) {
             try {
                 String phone = loginVerifyCodeRequest.getPhone();
-                String nashResult = shortMessageService.sendVerifyCode(phone);
+                Integer type = loginVerifyCodeRequest.getType();
+                String nashResult = shortMessageService.sendVerifyCode(phone,type);
                 LoginVerifyCodeResponse loginVerifyCodeResponse = new LoginVerifyCodeResponse();
                 loginVerifyCodeResponse.setMsg(nashResult);
                 return new ResponseEntity<>(loginVerifyCodeResponse, HttpStatus.OK);
@@ -221,14 +240,20 @@ public class UserbasicApiController implements UserbasicApi {
     }
 
     @Override
-    public ResponseEntity<Void> validateImageCode(@ApiParam(value = "pageCode") @Valid @RequestParam(value = "pageCode", required = false) Optional<String> pageCode) {
+    public ResponseEntity<Void> validateImageCode(@ApiParam(value = "图形验证码", required = true) @Valid @RequestParam(value = "pageCode", required = true) String pageCode,
+                                                  @ApiParam(value = "0:普通,1:微信", required = true, defaultValue = "0") @Valid @RequestParam(value = "type", required = true) String type) {
 
         String accept = request.getHeader("Accept");
 
         String info = "";
         try {
-            String code = CookieUtils.getCookie(request, response, "imageCode");
-            if (code.toLowerCase().equals(pageCode.get().toLowerCase())) {
+            String code = "";
+            if("1".equals(type)){
+                code = CookieUtils.getCookie(request, response, "wxImageCode");
+            }else {
+                code = CookieUtils.getCookie(request, response, "imageCode");
+            }
+            if (code.toLowerCase().equals(pageCode.toLowerCase())) {
                 info = Constant.YES;
             } else {
                 info = Constant.NO;
@@ -276,9 +301,13 @@ public class UserbasicApiController implements UserbasicApi {
     }
 
     private void setCookieAndCache(String phone, UserLoginResponse userLoginResponse,
-                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
+                                   HttpServletRequest request, HttpServletResponse response, Integer type) throws Exception {
         //删除保存的短信验证码
-        redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + "_" + phone);
+        if(type==1){
+            redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_BIND_WX_REGISTER + "_" + phone);
+        }else {
+            redis.delKey(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + "_" + phone);
+        }
         //清空redis中该手机号的失败次数
         redis.delKey(phone + RedisNameUtil.separativeSignCount);
         // 设置登录会员的cookie信息
@@ -291,6 +320,64 @@ public class UserbasicApiController implements UserbasicApi {
         // 将登录用户放入缓存（此处缓存的数据及数据结构值得推敲，暂时先全部缓存起来）
         redis.set2(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
                 + phone, userJson, RedisObjectType.SYS_USER_MANAGER.getExpiredTime());
+    }
+
+    @Override
+    public ResponseEntity<UnbindResponse> unbindweixin(){
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+        UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+        UnbindResponse unbind = new UnbindResponse();
+        if (StringTool.isNotEmpty(userLoginResponse)){
+            UserBasicDo userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
+            if(StringTool.isNotEmpty(userBasic)){
+                if(StringTool.isNotEmpty(userBasic.getUnionid())){
+                    Integer integer = userBasicInfoService.unbindweixin(userBasic.getUserId());
+                    if (integer==1){
+                        unbind.setMessage("success");
+                        return new ResponseEntity<UnbindResponse>(unbind, HttpStatus.OK);
+                    }
+                }else {
+                    throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_BIND_WX, "用户未绑定微信");
+                }
+            }else {
+                throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
+            }
+        }else {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+        }
+        unbind.setMessage("fail");
+        return new ResponseEntity<UnbindResponse>(unbind, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @Override
+    public ResponseEntity<UserLoginResponse> weixinLogin(@ApiParam(value = "微信唯一标识", required = true) @Valid @RequestBody WXUserLoginRequest wxUserLoginRequest){
+        UserLoginResponse userLoginResponse = new UserLoginResponse();
+        UserBasicDo userBasicDo = userBasicInfoService.weixinLogin(wxUserLoginRequest.getUnionid());
+        if (StringTool.isNotEmpty(userBasicDo.getUserId())){
+            BeanUtils.copyProperties(userBasicDo,userLoginResponse);
+            // 设置登录会员的cookie信息
+            StringBuilder sb = new StringBuilder();
+            String userJson = JSON.toJSONString(userLoginResponse);
+            sb.append(userJson).append(RedisNameUtil.separativeSign);
+            //用户信息加密
+            String str = Com35Aes.encrypt(Com35Aes.KEYCODE, sb.toString());
+            CookieUtils.setCookie(request, response, CookieUtils.COOKIE_NAME_USER, str);
+            // 将登录用户放入缓存（此处缓存的数据及数据结构值得推敲，暂时先全部缓存起来）
+            redis.set2(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
+                    + String.valueOf(userBasicDo.getPhone()), userJson, RedisObjectType.SYS_USER_MANAGER.getExpiredTime());
+            return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.OK);
+        }else {
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_BIND_WX, "用户未绑定微信");
+        }
+
+    }
+
+    @Override
+    public ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code",required = true) @Valid @RequestParam(value = "code") String code, @ApiParam(value = "type(0:web,1:小程序)",required = true) @Valid @RequestParam(value = "type") String type){
+        WXUserBasicResponse wxUserBasicResponse = new WXUserBasicResponse();
+        WXUserBasicDo wxUserBasicDo = userBasicInfoService.queryWXUserBasic(code, type, request, response);
+        BeanUtils.copyProperties(wxUserBasicResponse,wxUserBasicDo);
+        return new ResponseEntity<WXUserBasicResponse>(wxUserBasicResponse, HttpStatus.OK);
     }
 
 }

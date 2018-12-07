@@ -88,6 +88,13 @@ public class UserBasic {
      */
     private String userCallName;
 
+    /**
+     * 微信账号
+     */
+    private String unionid;
+
+
+
     public static UserBasic getCurrent() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
