@@ -80,7 +80,8 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         if (null!=rentMapSearchNum){
             totalNum = (int)rentMapSearchNum.getHits().getTotalHits();
         }
-
+        List newList = new ArrayList();
+        Hashtable<String, RentMapSearchDo> allStationDict = new Hashtable<>();
         //groupTypeId 1：区县，2：商圈，3：社区
         Integer groupTypeId = null != MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) ? MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) : 0;
 
@@ -182,7 +183,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                 if(ArrayUtils.isNotEmpty(hits)){
                     Map<String, Object> sourceAsMap = hits[0].getSourceAsMap();
                     List<Integer> list = (List) sourceAsMap.get("subway_station_id");
-                    List newList = new ArrayList();
+//                    List newList = new ArrayList();
                     for (Integer l:list){
                         newList.add(String.valueOf(l));
                     }
@@ -196,6 +197,23 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
             //对地铁站做聚合
             searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("subway_station_id").order(BucketOrder.key(true)).size(1000).includeExclude(includeExclude));
+
+            BoolQueryBuilder subwayStation = QueryBuilders.boolQuery();
+            subwayStation.must(QueryBuilders.termQuery("line_id",rentMapSearchDoQuery.getSubwayLineId()));
+            SearchResponse subwayStationinfo = rentMapSearchEsDao.getSubwayStationinfo(subwayStation, city);
+            SearchHit[] hits = subwayStationinfo.getHits().getHits();
+            if(hits.length>0){
+                for(SearchHit hit : hits){
+                    RentMapSearchDo rentMapSearchDo = new RentMapSearchDo();
+                    rentMapSearchDo.setId((Integer) hit.getSourceAsMap().get("station_id"));
+                    rentMapSearchDo.setName((String) hit.getSourceAsMap().get("station_name"));
+                    rentMapSearchDo.setLatitude((Double) hit.getSourceAsMap().get("latitude"));
+                    rentMapSearchDo.setLongitude((Double) hit.getSourceAsMap().get("longitude"));
+                    rentMapSearchDo.setDesc("0套");
+                    allStationDict.put(rentMapSearchDo.getId().toString(),rentMapSearchDo);
+                }
+            }
+
 
         }else if(StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMaxLatitude())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMaxLongitude())&&
                 StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMinLatitude())&&StringTool.isDoubleNotEmpty(rentMapSearchDoQuery.getMinLongitude())){
@@ -226,7 +244,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         }
 
         SearchResponse rentMapSearch = rentMapSearchEsDao.getRentMapSearch(searchSourceBuilder, city);
-
+        Hashtable<String, RentMapSearchDo> stationDict = new Hashtable<>();
 
         List<RentMapSearchDo> list = new ArrayList<>();
         Integer totalHits = 0;
@@ -309,8 +327,19 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         rentMapSearchDo.setLongitude((Double) subwayInfo.get("lon"));
                     }
 
-                    if(StringTool.isNotEmpty(rentMapSearchDo.getId())&&StringTool.isNotEmpty(rentMapSearchDo.getName())&&StringTool.isNotEmpty(rentMapSearchDo.getLatitude())&&StringTool.isNotEmpty(rentMapSearchDo.getLongitude())){
-                        list.add(rentMapSearchDo);
+//                    if(StringTool.isNotEmpty(rentMapSearchDo.getId())&&StringTool.isNotEmpty(rentMapSearchDo.getName())&&StringTool.isNotEmpty(rentMapSearchDo.getLatitude())&&StringTool.isNotEmpty(rentMapSearchDo.getLongitude())){
+//                        list.add(rentMapSearchDo);
+//                    }
+                    stationDict.put(rentMapSearchDo.getId().toString(),rentMapSearchDo);
+                }
+
+                if(groupTypeId==6){
+                    for(int i=0;i<newList.size();i++){
+                        if(stationDict.containsKey(newList.get(i))){
+                            list.add(stationDict.get(newList.get(i)));
+                        }else{
+                            list.add(allStationDict.get(newList.get(i)));
+                        }
                     }
                 }
             }
