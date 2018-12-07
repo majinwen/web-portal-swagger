@@ -46,5 +46,18 @@ public interface NewHouseMapSearchApi {
     ResponseEntity<NewHouseMapSearchDistrictResponse> getNewHouseMapSearchByDistrict(@ApiParam(value = "newHouseMapSearchRequest", required = true) @Valid NewHouseMapSearchRequest newHouseMapSearchRequest);
 
 
+    @ApiOperation(value = "新房地铁", nickname = "getNewHouseSubway", notes = "", response = NewHouseMapSearchDistrictResponse.class, tags={ "地图找房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = NewHouseMapSearchDistrictResponse.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/map/newhouse/subway/search", produces = { "application/json" }, method = RequestMethod.GET)
+    ResponseEntity<NewHouseMapSearchDistrictResponse> getNewHouseSubway(@ApiParam(value = "newHouseMapSearchRequest", required = true) @Valid NewHouseMapSearchRequest newHouseMapSearchRequest);
+
+
 
 }
