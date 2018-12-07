@@ -2,14 +2,18 @@ package com.toutiao.app.service.mapSearch.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.mapsearch.RentMapSearchEsDao;
+import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.mapSearch.RentMapSearchDo;
 import com.toutiao.app.domain.mapSearch.RentMapSearchDoQuery;
 import com.toutiao.app.domain.mapSearch.RentMapSearchDomain;
 import com.toutiao.app.domain.mapSearch.RentOfPlotListDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
+import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.mapSearch.RentMapSearchRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
+import com.toutiao.web.common.constant.company.CompanyIconEnum;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -38,6 +42,8 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -61,6 +67,8 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
     private NearRentHouseRestService nearRentHouseRestService;
     @Autowired
     private RentMapSearchEsDao rentMapSearchEsDao;
+    @Autowired
+    private AgentService agentService;
 
     @Override
     public RentMapSearchDomain rentMapSearch(RentMapSearchDoQuery rentMapSearchDoQuery, String city) {
@@ -354,6 +362,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
     @Override
     public RentOfPlotListDo getRentOfPlot(RentMapSearchDoQuery rentMapSearchDoQuery, String city) {
+        Date date = new Date();
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         BoolQueryBuilder boolQueryBuilder = getBoolQueryBuilder(rentMapSearchDoQuery);
 
@@ -442,19 +451,143 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             long totalHits = rentMapSearch.getHits().getTotalHits();
             SearchHit[] hits = rentMapSearch.getHits().getHits();
             if (hits.length>0){
-
+                List<String> imgs = new ArrayList<>();
                 List<RentDetailsFewDo> list = new ArrayList<>();
                 for (SearchHit hit:hits){
+//                    String sourceAsString = hit.getSourceAsString();
+//                    RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+//                    list.add(rentDetailsFewDo);
+
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                    String nearbyDistance = "";
+                    String traffic = rentDetailsFewDo.getNearestSubway();
+                    String[] trafficArr = traffic.split("\\$");
+                    if (trafficArr.length == 3) {
+                        int i = Integer.parseInt(trafficArr[2]);
+                        if (i > 2000) {
+                            nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName();
+                        } else if (i > 1000) {
+                            DecimalFormat df = new DecimalFormat("0.0");
+                            nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName()+ " "+"距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                        } else {
+                            nearbyDistance = rentDetailsFewDo.getDistrictName () + " " + rentDetailsFewDo.getAreaName()+ " "+"距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                        }
+                    }
+
+                    if (StringTool.isNotEmpty(rentMapSearchDoQuery.getDistance()) && rentMapSearchDoQuery.getDistance() > 0) {
+                        BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                        String distances= geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                        nearbyDistance = "距您" + distances;
+                    }
+
+                    //判断3天内导入，且无图片，默认上显示默认图
+                    String importTime = rentDetailsFewDo.getCreateTime();
+                    int isDefault = isDefaultImage(importTime, date, rentDetailsFewDo.getHouseTitleImg());
+                    if (isDefault == 1) {
+                        rentDetailsFewDo.setIsDefaultImage(1);
+                    }
+
+
+                    List<Map<String, String>> rentHouseImg = (List<Map<String, String>>) hit.getSourceAsMap().get("rent_house_img");
+                    for (int i = 0; i < rentHouseImg.size(); i++) {
+                        imgs.add(rentHouseImg.get(i).get("image_path"));
+
+                    }
+                    rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
+                    AgentBaseDo agentBaseDo = new AgentBaseDo();
+                    if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
+
+                    } else {
+                        agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent") == null ? "" : hit.getSourceAsMap().get("estate_agent").toString());
+                        agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency") == null ? "" : hit.getSourceAsMap().get("brokerage_agency").toString());
+                        agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
+                        agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
+                    }
+
+                    //增加房子与地铁的距离
+                    String keys = "";
+                    if (null != rentMapSearchDoQuery.getSubwayLineId() && rentMapSearchDoQuery.getSubwayLineId() > 0) {
+                        keys += rentMapSearchDoQuery.getSubwayLineId().toString();
+                    }
+//                if (null != rentHouseDoQuery.getSubwayStationId()) {
+//                    keys += "$" + rentHouseDoQuery.getSubwayStationId();
+//                }
+//                if (!"".equals(keys) && null != rentDetailsFewDo.getNearbySubway()) {
+//                    rentDetails
+// ewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
+//                }
+                    if (null != rentMapSearchDoQuery.getSubwayStationId() && rentMapSearchDoQuery.getSubwayStationId().length > 0) {
+                        Map<Integer,String> map = new HashMap<>();
+                        List<Integer> sortDistance = new ArrayList<>();
+                        for (int i=0; i<rentMapSearchDoQuery.getSubwayStationId().length; i++) {
+                            String stationKey = keys+"$"+rentMapSearchDoQuery.getSubwayStationId()[i];
+                            if (StringTool.isNotEmpty(rentDetailsFewDo.getNearbySubway().get(stationKey))) {
+                                String stationValue = rentDetailsFewDo.getNearbySubway().get(stationKey);
+                                String[] stationValueSplit = stationValue.split("\\$");
+                                Integer distance = Integer.valueOf(stationValueSplit[2]);
+                                sortDistance.add(distance);
+                                map.put(distance,stationKey);
+                            }
+                        }
+                        Integer minDistance = Collections.min(sortDistance);
+                        rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(map.get(minDistance)));
+                        trafficArr = rentDetailsFewDo.getSubwayDistanceInfo().split("\\$");
+                        if (trafficArr.length == 3) {
+                            nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+
+                        }
+                    }
+
+                    if(StringTool.isNotEmpty(nearbyDistance)){
+                        rentDetailsFewDo.setNearbyDistance(nearbyDistance);
+                    }
+
+                    //设置标题图
+                    String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
+                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    }
+                    rentDetailsFewDo.setHouseTitleImg(titlePhoto);
+
+                    //设置公司图标
+                    String AgentCompany = agentBaseDo.getAgentCompany();
+                    if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                        rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                    }
+
+                    rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                     list.add(rentDetailsFewDo);
+
+
+
+
                 }
                 rentOfPlotListDo.setData(list);
                 rentOfPlotListDo.setTotalNum((int) totalHits);
-                rentOfPlotListDo.setNearSubwayLine((String) hits[0].getSourceAsMap().get("nearestSubwayLine"));
+                //rentOfPlotListDo.setNearSubwayLine((String) hits[0].getSourceAsMap().get("nearestSubwayLine"));
             }
         }
         return rentOfPlotListDo;
+    }
+
+
+
+    public int isDefaultImage(String importTime, Date today, String image) {
+        if (StringTool.isEmpty(image)) {
+            if (StringTool.isNotEmpty(importTime)) {
+                int betweenDays = DateUtil.daysBetween(today, DateUtil.parseV1(importTime));
+                if (betweenDays <= 3) {
+                    return 1;
+                } else {
+                    return 0;
+                }
+            }
+        } else {
+            return 0;
+        }
+        return 0;
     }
 
     @Override
