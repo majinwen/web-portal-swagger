@@ -156,7 +156,7 @@ public class RentDetailResponse {
     @JsonProperty("rentHouseTagsName")
     @Valid
     @ApiModelProperty("出租房源标签名称")
-    private List<String> rentHouseTagsName = null;
+    private String[] rentHouseTagsName = null;
 
     @JsonProperty("rentHouseType")
     @ApiModelProperty("房源来源类型(录入/导入)")
@@ -185,7 +185,7 @@ public class RentDetailResponse {
     @JsonProperty("supportingFacilities")
     @Valid
     @ApiModelProperty("配套设施(字符串数组)")
-    private List<String> supportingFacilities = null;
+    private String[] supportingFacilities = null;
 
     @JsonProperty("toilet")
     @ApiModelProperty("几卫")
