@@ -560,13 +560,15 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                     rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                     list.add(rentDetailsFewDo);
 
-
-
-
                 }
                 rentOfPlotListDo.setData(list);
                 rentOfPlotListDo.setTotalNum((int) totalHits);
-                //rentOfPlotListDo.setNearSubwayLine((String) hits[0].getSourceAsMap().get("nearestSubwayLine"));
+                rentOfPlotListDo.setPloatName(list.get(0).getZufangName());
+                rentOfPlotListDo.setNewcode(list.get(0).getZufangId());
+                if(StringTool.isNotEmpty(list.get(0).getNearestSubway())){
+                    String[] traffic = list.get(0).getNearestSubway().split("\\$");
+                    rentOfPlotListDo.setNearSubwayLine("近"+traffic[0]);
+                }
             }
         }
         return rentOfPlotListDo;
