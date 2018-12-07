@@ -401,21 +401,18 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 details=searchHit.getSourceAsString();
                 esfMapHouseDo=JSON.parseObject(details,EsfMapHouseDo.class);
 
-                String nearbyDistance = "";
+                String nearbyDistance = StringTool.nullToString(esfMapHouseDo.getArea()) + " " + StringTool.nullToString(esfMapHouseDo.getHouseBusinessName());
                 String traffic = esfMapHouseDo.getTraffic();
                 String[] trafficArr = traffic.split("\\$");
                 if (trafficArr.length == 3) {
-                    int d = Integer.parseInt(trafficArr[2]);
-                    if (d > 2000) {
-                        nearbyDistance = esfMapHouseDo.getArea() + " " + esfMapHouseDo.getHouseBusinessName();
-                    } else if (d > 1000) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    if (i < 1000) {
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                    } else if (i < 2000) {
                         DecimalFormat df = new DecimalFormat("0.0");
-                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-                    } else {
-                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "m";
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                     }
                 }
-
 
                 if(StringTool.isNotEmpty(esfMapSearchDoQuery.getDistance())){
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
