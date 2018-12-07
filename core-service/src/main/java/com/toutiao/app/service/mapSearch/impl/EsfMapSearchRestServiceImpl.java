@@ -347,11 +347,11 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
        // BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termsQuery("newcode", esfMapSearchDoQuery.getNewcode()));
 
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
 
         GeoDistanceSortBuilder geoDistanceSort = null;
-        if(StringTool.isNotEmpty(esfMapSearchDoQuery.getDistance()) &&
+        if((StringTool.isNotEmpty(esfMapSearchDoQuery.getDistance()) && esfMapSearchDoQuery.getDistance()!=0) &&
                 StringTool.isNotEmpty(esfMapSearchDoQuery.getLat()) &&
                 StringTool.isNotEmpty(esfMapSearchDoQuery.getLon())){
             geoDistanceSort = SortBuilders.geoDistanceSort("housePlotLocation", esfMapSearchDoQuery.getLat(), esfMapSearchDoQuery.getLon());
@@ -414,7 +414,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     }
                 }
 
-                if(StringTool.isNotEmpty(esfMapSearchDoQuery.getDistance())){
+                if(StringTool.isNotEmpty(esfMapSearchDoQuery.getDistance()) && esfMapSearchDoQuery.getDistance()!=0){
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
                     String distance = geoDis.setScale(1, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
                     nearbyDistance = "距您" + distance;
@@ -554,7 +554,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 {
                     keys+=esfMapSearchDoQuery.getSubwayLineId().toString();
                 }
-                if (null!=esfMapSearchDoQuery.getSubwayStationId()){
+                if (null!=esfMapSearchDoQuery.getSubwayStationId() && esfMapSearchDoQuery.getSubwayStationId().length!=0){
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
                     String stationKey = keys+"$"+esfMapSearchDoQuery.getSubwayStationId()[0];

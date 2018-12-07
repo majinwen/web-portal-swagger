@@ -1037,8 +1037,9 @@ public class RentRestRestServiceImpl implements RentRestService {
                     rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(map.get(minDistance)));
                 }
                 //设置标题图
+                //设置标题图
                 String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
-                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http://")) {
+                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 rentDetailsFewDo.setHouseTitleImg(titlePhoto);
