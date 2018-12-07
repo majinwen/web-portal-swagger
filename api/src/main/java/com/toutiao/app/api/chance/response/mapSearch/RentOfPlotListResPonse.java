@@ -11,6 +11,19 @@ public class RentOfPlotListResPonse {
     @ApiModelProperty(value = "租房列表")
     private List<RentOfPlotResPonse> data;
 
+    /**
+     * 社区名称
+     */
+    @ApiModelProperty("社区名称")
+    private String ploatName;
+
+    /**
+     * 社区ID
+     */
+    @ApiModelProperty("社区ID")
+    private Integer newcode;
+
+
     @ApiModelProperty(value = "附近的地铁线")
     private String nearSubwayLine;
 
