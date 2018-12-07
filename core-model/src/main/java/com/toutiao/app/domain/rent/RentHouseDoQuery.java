@@ -34,7 +34,7 @@ public class RentHouseDoQuery extends QueryDo{
     /**
      * 导入:3/录入:1
      */
-    private Integer rentHouseType = 1;
+    private Integer rentHouseType;
     /**
      * 过滤标志
      */

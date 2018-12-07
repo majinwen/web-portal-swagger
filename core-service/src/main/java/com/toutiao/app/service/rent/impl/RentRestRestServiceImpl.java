@@ -884,7 +884,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 //        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
 
         GaussDecayFunctionBuilder functionBuilder = null;
-        if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance())){
+        if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance()!=0){
             double[] location =new double[]{rentHouseDoQuery.getLon(),rentHouseDoQuery.getLat()};
             //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
             functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",location,"4km","1km" ,0.4);
@@ -906,7 +906,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         if (StringUtil.isNotNullString(rentHouseDoQuery.getKeyword())) {
             List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(rentHouseDoQuery.getKeyword(), city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance()!=0) {
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size() + 1];
             } else {
                 filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()];
@@ -934,7 +934,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
             }
 
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance()!=0) {
                 filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
             } else {
@@ -943,7 +943,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
 
         } else {
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())) {
+            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())&& rentHouseDoQuery.getDistance()!=0) {
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, functionBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
             } else {
                 query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
@@ -1020,7 +1020,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 //                    rentDetails
 // ewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
 //                }
-                if (null != rentHouseDoQuery.getSubwayStationId()) {
+                if (null != rentHouseDoQuery.getSubwayStationId() && rentHouseDoQuery.getSubwayStationId().length !=0) {
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
                     for (int i=0; i<rentHouseDoQuery.getSubwayStationId().length; i++) {
@@ -1043,7 +1043,10 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
                 rentDetailsFewDo.setHouseTitleImg(titlePhoto);
                 //设置公司图标
-                rentDetailsFewDo.setCompanyIcon("http://wap-qn.bidewu.com/wap/5i5j.png");
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 rentDetailsFewDos.add(rentDetailsFewDo);
 
@@ -1375,9 +1378,9 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
 
         //城市
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getCityId())) {
-            boolQueryBuilder.must(termQuery("city_id", rentHouseDoQuery.getCityId()));
-        }
+//        if (StringTool.isNotEmpty(rentHouseDoQuery.getCityId()) && ) {
+//            boolQueryBuilder.must(termQuery("city_id", rentHouseDoQuery.getCityId()));
+//        }
         //区域
         if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId()) && rentHouseDoQuery.getDistrictId()!=0) {
             boolQueryBuilder.must(termQuery("district_id", rentHouseDoQuery.getDistrictId()));
@@ -1410,7 +1413,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(termsQuery("data_source_sign", source));
         }
         //朝向
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getForwardId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getForwardId()) && rentHouseDoQuery.getForwardId().length!=0) {
             Integer[] forword = rentHouseDoQuery.getForwardId();
             boolQueryBuilder.must(QueryBuilders.termsQuery("forward_type", forword));
         }
@@ -1540,7 +1543,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
 
         //标签
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getLabelId())) {
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getLabelId()) && rentHouseDoQuery.getLabelId().length!=0) {
             Integer[] split = rentHouseDoQuery.getLabelId();
             BoolQueryBuilder booleanQueryBuilder = boolQuery();
             boolean has_subway = Arrays.asList(split).contains(0);

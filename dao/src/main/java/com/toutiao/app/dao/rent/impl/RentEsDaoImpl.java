@@ -242,7 +242,7 @@ public class RentEsDaoImpl implements RentEsDao {
     public SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        if ((null != keyword && !"".equals(keyword)) || null != distance) {
+        if ((null != keyword && !"".equals(keyword)) || (null != distance && distance!=0)) {
             searchSourceBuilder.query(query).sort(sort).from((pageNum - 1) * pageSize).size(pageSize);
         } else {
             searchSourceBuilder.query(query).sort(sort).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);

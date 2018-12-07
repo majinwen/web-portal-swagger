@@ -137,7 +137,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
             } else if ("5".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC).sort(geoDistanceSort);
             } else if ("6".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC).sort(geoDistanceSort);
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("buildArea", SortOrder.DESC).sort(geoDistanceSort);
             } else {
                 if (geoDistanceSort != null) {
                     searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
@@ -151,11 +151,11 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
             } else if ("3".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
             } else if ("4".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC);
             } else if ("5".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC);
             } else if ("6".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC);
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("buildArea", SortOrder.DESC);
             } else {
                 searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }
