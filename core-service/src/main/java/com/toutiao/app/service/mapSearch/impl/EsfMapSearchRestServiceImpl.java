@@ -374,7 +374,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         List<EsfMapHouseDo> esfMapHouseDos = new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo = new ClaimSellHouseDo();
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchHouseList(booleanQueryBuilder,geoDistanceSort,
-                esfMapSearchDoQuery.getPageNum(),esfMapSearchDoQuery.getPageSize(),city);
+                esfMapSearchDoQuery.getPageNum(),esfMapSearchDoQuery.getPageSize(),city, esfMapSearchDoQuery.getSort());
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if(searchHists.length > 0){

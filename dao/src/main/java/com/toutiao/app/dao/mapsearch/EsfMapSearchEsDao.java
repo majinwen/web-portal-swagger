@@ -54,7 +54,7 @@ public interface EsfMapSearchEsDao {
      * @param city
      * @return
      */
-    SearchResponse esfMapSearchHouseList(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder sort, Integer pageNum, Integer pageSize, String city);
+    SearchResponse esfMapSearchHouseList(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder geoDistanceSort, Integer pageNum, Integer pageSize, String city, String sort);
 
     /**
      * 附近查询
