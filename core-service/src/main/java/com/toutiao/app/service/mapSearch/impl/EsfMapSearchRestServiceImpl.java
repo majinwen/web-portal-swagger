@@ -345,7 +345,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         //小区id
        // BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("newcode", esfMapSearchDoQuery.getNewcode()));
+        booleanQueryBuilder.must(QueryBuilders.termsQuery("newcode", esfMapSearchDoQuery.getNewCode()));
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
@@ -845,7 +845,8 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         //其他筛选条件
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         //小区id
-        booleanQueryBuilder.must(QueryBuilders.termsQuery("newcode", esfMapSearchDoQuery.getNewcode()));
+        Integer[] newcode = esfMapSearchDoQuery.getNewCode();
+        booleanQueryBuilder.must(QueryBuilders.termsQuery("newcode", newcode));
 
         //过滤为删除
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));

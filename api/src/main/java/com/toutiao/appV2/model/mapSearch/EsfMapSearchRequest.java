@@ -110,9 +110,9 @@ public class EsfMapSearchRequest   {
   @ApiParam("地铁站id")
   private Integer[] subwayStationId = null;
 
-  @JsonProperty("newcode")
+  @JsonProperty("newCode")
   @ApiParam("小区id")
-  private Integer[] newcode = null;
+  private Integer[] newCode = null;
 
 //  @JsonProperty("lineId")
 //  @ApiParam("通过地铁站聚合结果查询二手房列表时的地铁线id")
