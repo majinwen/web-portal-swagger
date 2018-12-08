@@ -331,31 +331,23 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 //                    if(StringTool.isNotEmpty(rentMapSearchDo.getId())&&StringTool.isNotEmpty(rentMapSearchDo.getName())&&StringTool.isNotEmpty(rentMapSearchDo.getLatitude())&&StringTool.isNotEmpty(rentMapSearchDo.getLongitude())){
 //                        list.add(rentMapSearchDo);
 //                    }
-                    if(groupTypeId==6){
-                        for(int i=0;i<newList.size();i++){
-                            if(stationDict.containsKey(newList.get(i))){
-                                list.add(stationDict.get(newList.get(i)));
-                            }else{
-                                list.add(allStationDict.get(newList.get(i)));
-                            }
-                        }
-                    }else{
+                    if(groupTypeId!=6){
+
+
                         list.add(rentMapSearchDo);
                     }
 
                 }
 
-//                if(groupTypeId==6){
-//                    for(int i=0;i<newList.size();i++){
-//                        if(stationDict.containsKey(newList.get(i))){
-//                            list.add(stationDict.get(newList.get(i)));
-//                        }else{
-//                            list.add(allStationDict.get(newList.get(i)));
-//                        }
-//                    }
-//                }else{
-//                    list.add(rentMapSearchDo);
-//                }
+                if(groupTypeId==6){
+                    for(int i=0;i<newList.size();i++){
+                        if(stationDict.containsKey(newList.get(i))){
+                            list.add(stationDict.get(newList.get(i)));
+                        }else{
+                            list.add(allStationDict.get(newList.get(i)));
+                        }
+                    }
+                }
             }
 
 
