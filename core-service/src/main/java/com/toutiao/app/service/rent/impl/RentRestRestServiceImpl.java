@@ -952,7 +952,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryCommuteRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort);
+        SearchResponse searchResponse = rentEsDao.queryCommuteRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort,rentHouseDoQuery.getSort());
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length > 0) {
             List<String> imgs = new ArrayList<>();
