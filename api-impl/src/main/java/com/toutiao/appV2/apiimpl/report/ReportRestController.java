@@ -6,7 +6,6 @@ import com.toutiao.app.service.report.ReportCityService;
 import com.toutiao.appV2.api.report.ReportRestApi;
 import com.toutiao.appV2.model.report.*;
 import com.toutiao.web.common.util.city.CityUtils;
-import com.toutiao.web.dao.mapper.report.ReportNewGuideAttentionMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 public class ReportRestController implements ReportRestApi {
@@ -21,9 +21,10 @@ public class ReportRestController implements ReportRestApi {
     private final HttpServletRequest request;
 
     @Autowired
-    private  ReportCityService reportCityService;
+    private ReportCityService reportCityService;
+
     @Autowired
-    public ReportRestController(HttpServletRequest request){
+    public ReportRestController(HttpServletRequest request) {
         this.request = request;
     }
 
@@ -38,33 +39,77 @@ public class ReportRestController implements ReportRestApi {
     @Override
     public ResponseEntity<ReportNewGuideAttentionListResponse> selectReportNewGuideAttentionList() {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
-//        return new ResponseEntity<>(reportCityService.selectReportNewGuideAttentionList(cityId), HttpStatus.OK);
-        return null;
+        ReportNewGuideAttentionListResponse rsp = new ReportNewGuideAttentionListResponse();
+        List<ReportNewGuideAttention> data = reportCityService.selectReportNewGuideAttentionList(cityId);
+        rsp.setData(data);
+        rsp.setTotalCount(data.size());
+        return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ReportNewGuideHotListResponse> selectReportNewGuideHotList() {
-        return null;
+        Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
+        ReportNewGuideHotListResponse rsp = new ReportNewGuideHotListResponse();
+        List<ReportNewGuideHot> data = reportCityService.selectReportNewGuideHotList(cityId);
+        rsp.setData(data);
+        rsp.setTotalCount(data.size());
+        return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ReportNewGuidePopularListResponse> selectReportNewGuidePopularList() {
-        return null;
+        Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
+        ReportNewGuidePopularListResponse rsp = new ReportNewGuidePopularListResponse();
+        List<ReportNewGuidePopular> data = reportCityService.selectReportNewGuidePopularList(cityId);
+        rsp.setData(data);
+        rsp.setTotalCount(data.size());
+        return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ReportNewGuideSalesListResponse> selectReportNewGuideSalesList() {
-        return null;
+        Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
+        ReportNewGuideSalesListResponse rsp = new ReportNewGuideSalesListResponse();
+        List<ReportNewGuideSales> data = reportCityService.selectReportNewGuideSalesList(cityId);
+        rsp.setData(data);
+        rsp.setTotalCount(data.size());
+        return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
     public ResponseEntity<ReportNewPreferentialListResponse> selectReportNewPreferentialList() {
-        return null;
+        Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
+        ReportNewPreferentialListResponse rsp = new ReportNewPreferentialListResponse();
+        List<ReportNewPreferential> data = reportCityService.selectReportNewPreferentialList(cityId);
+        rsp.setData(data);
+        rsp.setTotalCount(data.size());
+        return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
-    private ReportCityResponse turnToResponse(ReportCity reportCity){
+    @Override
+    public ResponseEntity<ReportEsfProjHotListResponse> selectReportEsfProjHotList() {
+        Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
+        ReportEsfProjHotListResponse rsp = new ReportEsfProjHotListResponse();
+        List<ReportEsfProjHot> data = reportCityService.selectReportEsfProjHotList(cityId);
+        rsp.setData(data);
+        rsp.setTotalCount(data.size());
+        return new ResponseEntity<>(rsp, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList() {
+        Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
+        ReportAreaHotListResponse rsp = new ReportAreaHotListResponse();
+        List<ReportAreaHot> data = reportCityService.selectReportAreaHotList(cityId);
+        rsp.setData(data);
+        rsp.setTotalCount(data.size());
+        return new ResponseEntity<>(rsp, HttpStatus.OK);
+    }
+
+
+    private ReportCityResponse turnToResponse(ReportCity reportCity) {
         ReportCityResponse reportCityResponse = new ReportCityResponse();
-        BeanUtils.copyProperties(reportCity,reportCityResponse);
+        BeanUtils.copyProperties(reportCity, reportCityResponse);
         reportCityResponse.setNewGuideAttention(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideAttention.class));
         reportCityResponse.setNewGuideHot(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideHot.class));
         reportCityResponse.setNewGuideSales(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideSales.class));
@@ -74,9 +119,9 @@ public class ReportRestController implements ReportRestApi {
         reportCityResponse.setAreaHot(JSONArray.parseArray(reportCity.getAreaHot(), ReportAreaHot.class));
         reportCityResponse.setZfPriceRange(JSONArray.parseArray(reportCity.getZfPriceRange(), ReportRentPriceDistrbution.class));
         reportCityResponse.setEsfPriceRange(JSONArray.parseArray(reportCity.getEsfPriceRange(), ReportEsfTongbiDescription.class));
-//        reportCityResponse.setEsfTeseJiangjia(JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportEsfTongbiDescription.class));
-//        reportCityResponse.setEsfTeseJianlou(JSONArray.parseArray(reportCity.getEsfTeseJianlou, ReportEsfTongbiDescription.class));
-//        reportCityResponse.setEsfTeseQiangshou(JSONArray.parseArray(reportCity.getEsfTeseQiangshou, ReportEsfTongbiDescription.class));
+        reportCityResponse.setEsfTeseJiangjia(JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTopicHouseTrend.class));
+        reportCityResponse.setEsfTeseJianlou(JSONArray.parseArray(reportCity.getEsfTeseJianlou(), ReportTopicHouseTrend.class));
+        reportCityResponse.setEsfTeseQiangshou(JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTopicHouseTrend.class));
         return reportCityResponse;
     }
 }

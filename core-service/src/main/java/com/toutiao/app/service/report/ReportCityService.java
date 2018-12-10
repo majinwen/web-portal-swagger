@@ -49,5 +49,19 @@ public interface ReportCityService {
      * @return
      */
     List<ReportNewPreferential> selectReportNewPreferentialList(Integer cityId);
+    /**
+     * 根据城市ID查询全部数据
+     *
+     * @param cityId
+     * @return
+     */
+    List<ReportEsfProjHot> selectReportEsfProjHotList(Integer cityId);
+    /**
+     * 根据城市ID查询全部数据
+     *
+     * @param cityId
+     * @return
+     */
+    List<ReportAreaHot> selectReportAreaHotList(Integer cityId);
 
 }

@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.report.ReportTopicHouseTrendMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.dao.report.ReportTopicHouseTrend" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="INTEGER" />
+    <result column="rob_house_count" property="robHouseCount" jdbcType="INTEGER" />
+    <result column="lower_house_avg_price" property="lowerHouseAvgPrice" jdbcType="INTEGER" />
+    <result column="cut_house_avg_price" property="cutHouseAvgPrice" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, city_id, year, month, rob_house_count, lower_house_avg_price, cut_house_avg_price, 
+    create_time, update_time
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_topic_house_trend
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_topic_house_trend
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.toutiao.app.dao.report.ReportTopicHouseTrend" >
+    insert into report_topic_house_trend (id, city_id, year, 
+      month, rob_house_count, lower_house_avg_price, 
+      cut_house_avg_price, create_time, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{year,jdbcType=INTEGER}, 
+      #{month,jdbcType=INTEGER}, #{robHouseCount,jdbcType=INTEGER}, #{lowerHouseAvgPrice,jdbcType=INTEGER}, 
+      #{cutHouseAvgPrice,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.app.dao.report.ReportTopicHouseTrend" >
+    insert into report_topic_house_trend
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="year != null" >
+        year,
+      </if>
+      <if test="month != null" >
+        month,
+      </if>
+      <if test="robHouseCount != null" >
+        rob_house_count,
+      </if>
+      <if test="lowerHouseAvgPrice != null" >
+        lower_house_avg_price,
+      </if>
+      <if test="cutHouseAvgPrice != null" >
+        cut_house_avg_price,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="year != null" >
+        #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null" >
+        #{month,jdbcType=INTEGER},
+      </if>
+      <if test="robHouseCount != null" >
+        #{robHouseCount,jdbcType=INTEGER},
+      </if>
+      <if test="lowerHouseAvgPrice != null" >
+        #{lowerHouseAvgPrice,jdbcType=INTEGER},
+      </if>
+      <if test="cutHouseAvgPrice != null" >
+        #{cutHouseAvgPrice,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.dao.report.ReportTopicHouseTrend" >
+    update report_topic_house_trend
+    <set >
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="year != null" >
+        year = #{year,jdbcType=INTEGER},
+      </if>
+      <if test="month != null" >
+        month = #{month,jdbcType=INTEGER},
+      </if>
+      <if test="robHouseCount != null" >
+        rob_house_count = #{robHouseCount,jdbcType=INTEGER},
+      </if>
+      <if test="lowerHouseAvgPrice != null" >
+        lower_house_avg_price = #{lowerHouseAvgPrice,jdbcType=INTEGER},
+      </if>
+      <if test="cutHouseAvgPrice != null" >
+        cut_house_avg_price = #{cutHouseAvgPrice,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.dao.report.ReportTopicHouseTrend" >
+    update report_topic_house_trend
+    set city_id = #{cityId,jdbcType=INTEGER},
+      year = #{year,jdbcType=INTEGER},
+      month = #{month,jdbcType=INTEGER},
+      rob_house_count = #{robHouseCount,jdbcType=INTEGER},
+      lower_house_avg_price = #{lowerHouseAvgPrice,jdbcType=INTEGER},
+      cut_house_avg_price = #{cutHouseAvgPrice,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
