@@ -12,6 +12,7 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -96,5 +97,23 @@ public class NewHouseMapSearchEsDaoImpl implements NewHouseMapSearchEsDao {
             e.printStackTrace();
         }
         return searchResponse;
+    }
+
+    @Override
+    public SearchResponse getSubwayLineAndSubwayStationinfo(BoolQueryBuilder boolQueryBuilder, String city) {
+        Integer cityId = CityUtils.returnCityId(city);
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getSubwayHousePriceIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getSubwayHousePriceType(CityConstant.ABBREVIATION_QUANGUO));
+        boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).size(100).sort("sorting", SortOrder.ASC);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = null;
+        try {
+            search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return search;
     }
 }

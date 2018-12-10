@@ -1022,18 +1022,16 @@ public class SellHouseServiceImpl implements SellHouseService {
                 details = searchHit.getSourceAsString();
                 sellHousesSearchDo = JSON.parseObject(details, SellHousesSearchDo.class);
 
-                String nearbyDistance = "";
+                String nearbyDistance = StringTool.nullToString(sellHousesSearchDo.getArea()) + " " + StringTool.nullToString(sellHousesSearchDo.getHouseBusinessName());
                 String traffic = sellHousesSearchDo.getTraffic();
                 String[] trafficArr = traffic.split("\\$");
                 if (trafficArr.length == 3) {
                     int i = Integer.parseInt(trafficArr[2]);
-                    if (i > 2000) {
-                        nearbyDistance = sellHousesSearchDo.getArea() + " " + sellHousesSearchDo.getHouseBusinessName();
-                    } else if (i > 1000) {
+                    if (i < 1000) {
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                    } else if (i < 2000) {
                         DecimalFormat df = new DecimalFormat("0.0");
-                        nearbyDistance = sellHousesSearchDo.getArea() + " " + sellHousesSearchDo.getHouseBusinessName() +" "+"距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-                    } else {
-                        nearbyDistance = sellHousesSearchDo.getArea() + " " + sellHousesSearchDo.getHouseBusinessName() +" "+"距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                     }
                 }
 

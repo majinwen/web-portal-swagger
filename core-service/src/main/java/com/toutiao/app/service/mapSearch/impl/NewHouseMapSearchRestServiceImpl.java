@@ -9,9 +9,12 @@ import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.service.mapSearch.NewHouseMapSearchRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.constant.house.HouseLableEnum;
+import com.toutiao.web.common.constant.map.MapGroupConstant;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
+import com.toutiao.web.common.util.mapSearch.MapGroupUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
@@ -57,6 +60,9 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         boolQueryBuilder.must(termQuery("is_approve", 1));
         boolQueryBuilder.must(termQuery("is_del", 0));
         boolQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
+        if(StringTool.isNotBlank(newHouseMapSearchDoQuery.getSubwayLineId()) && newHouseMapSearchDoQuery.getSubwayLineId()!=0){
+            boolQueryBuilder.must(QueryBuilders.termsQuery("subway_line_id",new int[]{newHouseMapSearchDoQuery.getSubwayLineId()}));
+        }
         GeoPoint topRight = new GeoPoint(newHouseMapSearchDoQuery.getMaxLatitude(),newHouseMapSearchDoQuery.getMaxLongitude());
         GeoPoint bottomLeft = new GeoPoint(newHouseMapSearchDoQuery.getMinLatitude(),newHouseMapSearchDoQuery.getMinLongitude());
         GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("location").setCornersOGC(bottomLeft, topRight);
@@ -94,6 +100,32 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         }
         newHouseMapSearchDistrictDomain.setHit("共"+totalHits+"个楼盘，拖动可查看全部");
         newHouseMapSearchDistrictDomain.setData(data);
+        return newHouseMapSearchDistrictDomain;
+    }
+
+    @Override
+    public NewHouseMapSearchDistrictDomain newHouseMapSubwaySearch(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, String city) {
+        NewHouseMapSearchDistrictDomain newHouseMapSearchDistrictDomain = new NewHouseMapSearchDistrictDomain();
+
+        List<NewHouseMapSearchDistrictDo> newHouseMapSearchDistrictDos = new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("line_id",newHouseMapSearchDoQuery.getSubwayLineId()));
+        SearchResponse subwayLineAndSubwayStationinfo = newHouseMapSearchEsDao.getSubwayLineAndSubwayStationinfo(boolQueryBuilder, city);
+
+        SearchHit[] searchHists = subwayLineAndSubwayStationinfo.getHits().getHits();
+        if(searchHists.length > 0){
+            for(SearchHit searchHit : searchHists){
+                NewHouseMapSearchDistrictDo newHouseMapSearchDistrictDo = new NewHouseMapSearchDistrictDo();
+
+                newHouseMapSearchDistrictDo.setId((Integer) searchHit.getSourceAsMap().get("station_id"));
+                newHouseMapSearchDistrictDo.setName((String) searchHit.getSourceAsMap().get("station_name"));
+                newHouseMapSearchDistrictDo.setLatitude((Double) searchHit.getSourceAsMap().get("latitude"));
+                newHouseMapSearchDistrictDo.setLongitude((Double) searchHit.getSourceAsMap().get("longitude"));
+                newHouseMapSearchDistrictDos.add(newHouseMapSearchDistrictDo);
+            }
+            newHouseMapSearchDistrictDomain.setData(newHouseMapSearchDistrictDos);
+        }
+
         return newHouseMapSearchDistrictDomain;
     }
 

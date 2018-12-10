@@ -239,14 +239,50 @@ public class RentEsDaoImpl implements RentEsDao {
     }
 
     @Override
-    public SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum, Integer pageSize, String city, GeoDistanceSortBuilder sort) {
+    public SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query, Integer distance, String keyword, Integer pageNum,
+                                                     Integer pageSize, String city, GeoDistanceSortBuilder GeoDistanceSort, String sorting) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        if ((null != keyword && !"".equals(keyword)) || null != distance) {
-            searchSourceBuilder.query(query).sort(sort).from((pageNum - 1) * pageSize).size(pageSize);
+//        if ((null != keyword && !"".equals(keyword)) || (null != distance && distance!=0)) {
+//            searchSourceBuilder.query(query).sort(sort).from((pageNum - 1) * pageSize).size(pageSize);
+//        } else {
+//            searchSourceBuilder.query(query).sort(sort).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+//        }
+
+
+        if ((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)) {
+            //searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
+            if ("1".equals(sorting)) {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).from((pageNum - 1) * pageSize).size(pageSize).sort("update_time", SortOrder.DESC);
+            } else if ("3".equals(sorting)) {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price", SortOrder.ASC);
+            } else if ("4".equals(sorting)) {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price", SortOrder.DESC);
+            } else if ("6".equals(sorting)) {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).from((pageNum - 1) * pageSize).size(pageSize).sort("house_area", SortOrder.DESC);
+            } else {
+                if (StringTool.isNotEmpty(sorting)) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(GeoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+                }
+            }
         } else {
-            searchSourceBuilder.query(query).sort(sort).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            //searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            if ("1".equals(sorting)) {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).sort("update_time", SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else if ("3".equals(sorting)) {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).sort("rent_house_price", SortOrder.ASC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else if ("4".equals(sorting)) {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).sort("rent_house_price", SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else if ("6".equals(sorting)) {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).sort("house_area", SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else {
+                searchSourceBuilder.query(query).sort(GeoDistanceSort).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            }
         }
+
+
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {

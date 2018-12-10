@@ -103,7 +103,7 @@ public interface RentEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder sort);
+    SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder geoDistanceSort, String sort);
 
     /**
      * 获取小区出租房源均价最低

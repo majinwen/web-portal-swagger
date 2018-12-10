@@ -48,7 +48,7 @@ public class EsfMapSearchRequest   {
 
   @JsonProperty("forwardId")
   @ApiParam("朝向")
-  private List<Integer> forwardId = null;
+  private Integer[] forwardId = null;
 
   @JsonProperty("groupType")
   @ApiParam("组类型：区域district，商圈bizcircle，社区community")
@@ -64,7 +64,7 @@ public class EsfMapSearchRequest   {
 
   @JsonProperty("labelId")
   @ApiParam("标签")
-  private List<Integer> labelId = null;
+  private Integer[] labelId = null;
 
   @JsonProperty("lat")
   @ApiParam("y坐标")
@@ -72,7 +72,7 @@ public class EsfMapSearchRequest   {
 
   @JsonProperty("layoutId")
   @ApiParam("居室")
-  private List<Integer> layoutId = null;
+  private Integer[] layoutId = null;
 
   @JsonProperty("lon")
   @ApiParam("x坐标")
@@ -110,9 +110,9 @@ public class EsfMapSearchRequest   {
   @ApiParam("地铁站id")
   private Integer[] subwayStationId = null;
 
-  @JsonProperty("newcode")
+  @JsonProperty("newCode")
   @ApiParam("小区id")
-  private Integer[] newcode = null;
+  private Integer[] newCode = null;
 
 //  @JsonProperty("lineId")
 //  @ApiParam("通过地铁站聚合结果查询二手房列表时的地铁线id")
