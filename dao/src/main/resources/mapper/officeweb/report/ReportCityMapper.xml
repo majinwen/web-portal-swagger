@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.report.ReportCityMapper">
+    <resultMap id="BaseResultMap" type="com.toutiao.app.dao.report.ReportCity">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="esf_month_price" property="esfMonthPrice" jdbcType="VARCHAR"/>
+        <result column="esf_price_huanbi" property="esfPriceHuanbi" jdbcType="VARCHAR"/>
+        <result column="esf_price_fenbu" property="esfPriceFenbu" jdbcType="OTHER"/>
+        <result column="new_month_price" property="newMonthPrice" jdbcType="VARCHAR"/>
+        <result column="new_price_huanbi" property="newPriceHuanbi" jdbcType="VARCHAR"/>
+        <result column="new_price_range" property="newPriceRange" jdbcType="OTHER"/>
+        <result column="month_des" property="monthDes" jdbcType="VARCHAR"/>
+        <result column="chengjiaozhouqi" property="chengjiaozhouqi" jdbcType="VARCHAR"/>
+        <result column="new_count" property="newCount" jdbcType="VARCHAR"/>
+        <result column="esf_count" property="esfCount" jdbcType="VARCHAR"/>
+        <result column="zf_count" property="zfCount" jdbcType="VARCHAR"/>
+        <result column="esf_add" property="esfAdd" jdbcType="VARCHAR"/>
+        <result column="esf_qiangzou" property="esfQiangzou" jdbcType="VARCHAR"/>
+        <result column="esf_xujiaxiajia" property="esfXujiaxiajia" jdbcType="VARCHAR"/>
+        <result column="esf_chulitousu" property="esfChulitousu" jdbcType="VARCHAR"/>
+        <result column="esf_peifujine" property="esfPeifujine" jdbcType="VARCHAR"/>
+        <result column="esf_price_range" property="esfPriceRange" jdbcType="OTHER"/>
+        <result column="esf_tese_jianlou" property="esfTeseJianlou" jdbcType="OTHER"/>
+        <result column="esf_tese_jiangjia" property="esfTeseJiangjia" jdbcType="OTHER"/>
+        <result column="esf_tese_qiangshou" property="esfTeseQiangshou" jdbcType="OTHER"/>
+        <result column="zf_zhengzu_count" property="zfZhengzuCount" jdbcType="VARCHAR"/>
+        <result column="zf_hezu_count" property="zfHezuCount" jdbcType="VARCHAR"/>
+        <result column="zf_zhengzu_shangxin" property="zfZhengzuShangxin" jdbcType="VARCHAR"/>
+        <result column="zf_zhengzu_yizu" property="zfZhengzuYizu" jdbcType="VARCHAR"/>
+        <result column="zf_hezu_shangxin" property="zfHezuShangxin" jdbcType="VARCHAR"/>
+        <result column="zf_hezu_yizu" property="zfHezuYizu" jdbcType="VARCHAR"/>
+        <result column="zf_mianzujin_count" property="zfMianzujinCount" jdbcType="VARCHAR"/>
+        <result column="zf_mianzujin_shangxin" property="zfMianzujinShangxin" jdbcType="VARCHAR"/>
+        <result column="zf_mianzujin_yizu" property="zfMianzujinYizu" jdbcType="VARCHAR"/>
+        <result column="zf_pinpai_count" property="zfPinpaiCount" jdbcType="VARCHAR"/>
+        <result column="zf_pinpai_shangxin" property="zfPinpaiShangxin" jdbcType="VARCHAR"/>
+        <result column="zf_pinpai_yizu" property="zfPinpaiYizu" jdbcType="VARCHAR"/>
+        <result column="zf_price_range" property="zfPriceRange" jdbcType="OTHER"/>
+        <result column="new_yestoday_price" property="newYestodayPrice" jdbcType="VARCHAR"/>
+        <result column="new_benyuekaipan" property="newBenyuekaipan" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+        <result column="city_name" property="cityName" jdbcType="VARCHAR"/>
+        <result column="new_guide_popular" property="newGuidePopular" jdbcType="OTHER"/>
+        <result column="new_guide_sales" property="newGuideSales" jdbcType="OTHER"/>
+        <result column="new_guide_attention" property="newGuideAttention" jdbcType="OTHER"/>
+        <result column="new_guide_hot" property="newGuideHot" jdbcType="OTHER"/>
+        <result column="new_preferential" property="newPreferential" jdbcType="OTHER"/>
+        <result column="esf_plot_hot" property="esfPlotHot" jdbcType="OTHER"/>
+        <result column="area_hot" property="areaHot" jdbcType="OTHER"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+      id, esf_month_price, esf_price_huanbi,
+      esf_price_fenbu, new_month_price, new_price_huanbi,
+      new_price_range, month_des, chengjiaozhouqi,
+      new_count, esf_count, zf_count,
+      esf_add, esf_qiangzou, esf_xujiaxiajia,
+      esf_chulitousu, esf_peifujine, esf_price_range,
+      esf_tese_jianlou, esf_tese_jiangjia, esf_tese_qiangshou,
+      zf_zhengzu_count, zf_hezu_count, zf_zhengzu_shangxin,
+      zf_zhengzu_yizu, zf_hezu_shangxin, zf_hezu_yizu,
+      zf_mianzujin_count, zf_mianzujin_shangxin,
+      zf_mianzujin_yizu, zf_pinpai_count, zf_pinpai_shangxin,
+      zf_pinpai_yizu, zf_price_range, new_yestoday_price,
+      new_benyuekaipan, city_id, city_name,
+      new_guide_popular, new_guide_sales, new_guide_attention,
+      new_guide_hot, new_preferential, esf_plot_hot,
+      area_hot
+    </sql>
+    <select id="selectOne" resultMap="BaseResultMap" parameterType="map">
+        select
+        <include refid="Base_Column_List"/>
+        from report_city
+        where city_id = #{cityId,jdbcType=INTEGER}
+        order by id desc
+        limit 1
+    </select>
+
+
+</mapper>
