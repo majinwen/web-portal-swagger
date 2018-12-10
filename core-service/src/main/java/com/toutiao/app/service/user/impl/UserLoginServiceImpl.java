@@ -203,12 +203,21 @@ public class UserLoginServiceImpl implements UserLoginService {
 
                 userBasic = userBasicMapper.selectUserByExample(userBasic);
 
+                String unionid = userBasicDo.getUnionid();
+                //解密
+                if("2".equals(userBasicDo.getType())||"3".equals(userBasicDo.getType())){
+                    String decrypt = Com35Aes.decrypt(Com35Aes.KEYCODE, unionid);
+                    String[] split = decrypt.split(RedisNameUtil.separativeSign);
+                    if (split.length==2){
+                        unionid = split[0];
+                    }
+                }
 
                 if (StringTool.isNotBlank(userBasic)) {
                     //验证成功后，更新用户登录时间绑定微信，清除缓存
                     userBasic.setUserId(userBasic.getUserId());
                     userBasic.setLoginTime(new Date());
-                    userBasic.setUnionid(userBasicDo.getUnionid());
+                    userBasic.setUnionid(unionid);
                     userBasic.setIdentityType(userBasicDo.getIdentityType());
 //                    userBasic.setRefreshToken(wxInfo[1]);
 //                           userBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
@@ -242,7 +251,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                     insertUserBasic.setRegisterSource(ServiceStateConstant.USER_REGISTER_SOURCE_APP);
                     insertUserBasic.setIdentityType(userBasicDo.getIdentityType());
                     insertUserBasic.setIdentifier(userBasicDo.getUserPhone());
-                    insertUserBasic.setUnionid(userBasicDo.getUnionid());
+                    insertUserBasic.setUnionid(unionid);
 //                    insertUserBasic.setRefreshToken(wxInfo[1]);
                     Date d = new Date();
 //                        insertUserBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));

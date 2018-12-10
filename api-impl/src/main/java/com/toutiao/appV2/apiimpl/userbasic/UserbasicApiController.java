@@ -18,7 +18,6 @@ import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
-import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +37,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Optional;
@@ -111,8 +109,8 @@ public class UserbasicApiController implements UserbasicApi {
     }
 
     @Override
-    public ResponseEntity<UserBasicResponse> queryUserBasic(@ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId) {
-        UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(userId.get());
+    public ResponseEntity<UserBasicResponse> queryUserBasic(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "userId", required = true) String userId) {
+        UserBasicDo userBasicDo = userBasicInfoService.queryUserBasic(userId);
         if (StringTool.isNotBlank(userBasicDo)) {
             UserBasicResponse userBasicResponse = new UserBasicResponse();
             BeanUtils.copyProperties(userBasicDo, userBasicResponse);
@@ -156,7 +154,8 @@ public class UserbasicApiController implements UserbasicApi {
         UserLoginResponse userLoginResponse = new UserLoginResponse();
         UserBasicDo userBasicDo = new UserBasicDo();
         BeanUtils.copyProperties(loginRequest, userBasicDoQuery);
-        if(StringTool.isNotEmpty(userBasicDoQuery.getUnionid())){
+        String type = userBasicDoQuery.getType();
+        if("1".equals(type)||"2".equals(type)||"3".equals(type)){
             userBasicDo = userLoginService.checkUserVerifyCodeBindWXLogin(userBasicDoQuery, request, response);
         }else {
             userBasicDo = userLoginService.checkUserVerifyCodeLogin(userBasicDoQuery, request, response);
@@ -352,7 +351,7 @@ public class UserbasicApiController implements UserbasicApi {
     @Override
     public ResponseEntity<UserLoginResponse> weixinLogin(@ApiParam(value = "微信唯一标识", required = true) @Valid @RequestBody WXUserLoginRequest wxUserLoginRequest){
         UserLoginResponse userLoginResponse = new UserLoginResponse();
-        UserBasicDo userBasicDo = userBasicInfoService.weixinLogin(wxUserLoginRequest.getUnionid());
+        UserBasicDo userBasicDo = userBasicInfoService.weixinLogin(wxUserLoginRequest.getUnionid(),wxUserLoginRequest.getType());
         if (StringTool.isNotEmpty(userBasicDo.getUserId())){
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
             // 设置登录会员的cookie信息
@@ -379,5 +378,29 @@ public class UserbasicApiController implements UserbasicApi {
         BeanUtils.copyProperties(wxUserBasicResponse,wxUserBasicDo);
         return new ResponseEntity<WXUserBasicResponse>(wxUserBasicResponse, HttpStatus.OK);
     }
+
+
+    @Override
+    public ResponseEntity<UserLoginResponse> smallProgramLogin(@ApiParam(value = "临时code", required = true) @Valid @RequestParam(value = "code") String code	,
+                                                                        @ApiParam(value = "偏移量", required = true) @Valid @RequestParam(value = "iv") String iv,
+                                                                        @ApiParam(value = "密文", required = true) @Valid @RequestParam(value = "rawData") String rawData) {
+        UserBasicDo userBasicDo = userBasicInfoService.smallProgramLogin(code,iv,rawData);
+        UserLoginResponse userLoginResponse = new UserLoginResponse();
+        BeanUtils.copyProperties(userBasicDo,userLoginResponse);
+        if (null!=userBasicDo.getUserId()&&userBasicDo.getUserId().length()>0){
+            // 设置登录会员的cookie信息
+            StringBuilder sb = new StringBuilder();
+            String userJson = JSON.toJSONString(userLoginResponse);
+            sb.append(userJson).append(RedisNameUtil.separativeSign);
+            //用户信息加密
+            String str = Com35Aes.encrypt(Com35Aes.KEYCODE, sb.toString());
+            CookieUtils.setCookie(request, response, CookieUtils.COOKIE_NAME_USER, str);
+            // 将登录用户放入缓存（此处缓存的数据及数据结构值得推敲，暂时先全部缓存起来）
+            redis.set2(RedisObjectType.SYS_USER_MANAGER.getPrefix() + Constant.SYS_FLAGS
+                    + String.valueOf(userBasicDo.getPhone()), userJson, RedisObjectType.SYS_USER_MANAGER.getExpiredTime());
+        }
+        return new ResponseEntity<UserLoginResponse>(userLoginResponse, HttpStatus.OK);
+    }
+
 
 }

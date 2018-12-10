@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 
 public interface UserBasicInfoService {
@@ -63,6 +64,21 @@ public interface UserBasicInfoService {
     /**
      * 微信登录
      */
-    UserBasicDo weixinLogin(String unionid);
+    UserBasicDo weixinLogin(String unionid, String type);
+
+    /**
+     * 获取小程序信息
+     * @param code
+     */
+    Map getSmallProgramInfo(String code);
+
+    /**
+     * 小程序获取微信信息
+     * @param code
+     * @param iv
+     * @param rawData
+     * @return
+     */
+    UserBasicDo smallProgramLogin(String code, String iv, String rawData);
 
 }
