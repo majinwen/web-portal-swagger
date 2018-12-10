@@ -323,7 +323,7 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
             if (null != result && result.length() > 0) {
                 JSONObject userInfoJSON = JSON.parseObject(result);
                 String unionId = String.valueOf(userInfoJSON.get("unionId"));
-                userBasicDo = weixinLogin(unionId,"3");
+                userBasicDo = weixinLogin(unionId,"0");
                 if (null!=userBasicDo.getUserId()&&userBasicDo.getUserId().length()>0){
                     return userBasicDo;
                 }
