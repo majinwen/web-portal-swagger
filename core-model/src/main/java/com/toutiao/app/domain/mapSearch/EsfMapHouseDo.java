@@ -3,6 +3,7 @@ package com.toutiao.app.domain.mapSearch;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.domain.sellhouse.HouseSubject;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -219,4 +220,18 @@ public class EsfMapHouseDo {
      */
     @ApiModelProperty(value = "地铁最近", name = "traffic")
     private  String traffic;
+
+    /**
+     * 小区名称
+     */
+    @ApiModelProperty(value = "小区名称", name = "plotName")
+    @ChangeName("buildingName")
+    private String plotName;
+
+    /**
+     * 小区id
+     */
+    @ApiModelProperty(value = "小区id", name = "newcode")
+    @ChangeName("buildingId")
+    private Integer newcode;
 }

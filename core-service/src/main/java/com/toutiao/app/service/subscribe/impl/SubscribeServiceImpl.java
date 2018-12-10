@@ -129,6 +129,16 @@ public class SubscribeServiceImpl implements SubscribeService {
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
                     userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));
                 }
+                // 1：降价房 2：价格洼地 3：逢出必抢
+                Integer topicType = userSubscribeDetailDo.getTopicType();
+                switch (topicType) {
+                    case 1 : userSubscribeDetailDo.setTopicTypeName("降价房");
+                        break;
+                    case 2 : userSubscribeDetailDo.setTopicTypeName("价格洼地");
+                        break;
+                    case 3 : userSubscribeDetailDo.setTopicTypeName("逢出必抢");
+                        break;
+                }
             } else {
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
                     userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));

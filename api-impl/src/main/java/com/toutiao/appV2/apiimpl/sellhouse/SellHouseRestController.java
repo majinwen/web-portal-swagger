@@ -106,6 +106,35 @@ public class SellHouseRestController implements SellHouseRestApi {
         return new ResponseEntity<>(nearBySellHouseDomainResponse, HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouseListGet(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+
+        return getSimilarSellHouse(sellHouseRequest);
+    }
+
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
+        return getSimilarSellHouse(sellHouseRequest);
+    }
+
+
+
+
+
+    private ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest) {
+
+            SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+            SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+            BeanUtils.copyProperties(sellHouseRequest, sellHouseDoQuery);
+            SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getSimilarSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+
+            BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+            sellHouseSearchDomainResponse.setTotalNum(sellHouseSearchDomain.getTotalNum());
+            log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
+            return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+
+    }
+
     /**
      * 二手房房源默认列表
      *

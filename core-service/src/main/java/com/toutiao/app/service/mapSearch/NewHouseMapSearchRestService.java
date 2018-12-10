@@ -14,6 +14,9 @@ public interface NewHouseMapSearchRestService {
 
     NewHouseMapSearchDistrictDomain newHouseMapSearchByDistrict(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, String city);
 
+
+    NewHouseMapSearchDistrictDomain newHouseMapSubwaySearch(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, String city);
+
     NewHouseMapSearchBuildDomain newHouseMapSearchByBuild(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, String city);
 
 }

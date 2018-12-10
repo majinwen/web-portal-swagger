@@ -34,7 +34,7 @@ public class RentHouseDoQuery extends QueryDo{
     /**
      * 导入:3/录入:1
      */
-    private Integer rentHouseType = 1;
+    private Integer rentHouseType;
     /**
      * 过滤标志
      */
@@ -57,4 +57,19 @@ public class RentHouseDoQuery extends QueryDo{
      */
     private String trafficType;
     private String sort;
+
+    /**
+     * 房源id
+     */
+    private String houseId;
+
+    /**
+     * 出租价格
+     */
+    private double totalPrice;
+
+    /**
+     * 小区id
+     */
+    private Integer buildingId;
 }

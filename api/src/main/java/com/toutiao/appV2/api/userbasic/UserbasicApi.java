@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.util.Optional;
@@ -114,9 +115,9 @@ public interface UserbasicApi {
     })
     @RequestMapping(value = "/userbasic/imageCode",
             produces = "application/json",
-            consumes = "application/json",
+//            consumes = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<Void> produceImageCode();
+    ResponseEntity<Void> produceImageCode(@ApiParam(value = "0:普通, 1:微信", defaultValue = "0") @Valid @RequestParam(value = "type", required = true, defaultValue="0") String type);
 
 
     @ApiOperation(value = "登录时发送手机验证码", nickname = "sendLoginVerifyCode", notes = "", response = LoginVerifyCodeResponse.class, tags={ "用户基本信息", })
@@ -140,9 +141,9 @@ public interface UserbasicApi {
     })
     @RequestMapping(value = "/userbasic/getCode",
             produces = "application/json",
-            consumes = "application/json",
+//            consumes = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<Void> validateImageCode(@ApiParam(value = "pageCode") @Valid @RequestParam(value = "pageCode", required = false) Optional<String> pageCode);
+    ResponseEntity<Void> validateImageCode(@ApiParam(value = "pageCode") @Valid @RequestParam(value = "pageCode") String pageCode, @ApiParam(value = "type",defaultValue = "0") @Valid @RequestParam(value = "type") String type);
 
 
     @ApiOperation(value = "获取用户订阅,关注等统计数量", nickname = "getUserSubscribeEtcCount", notes = "", response = UserSubscribeEtcCountResponse.class, tags={ "用户基本信息", })
@@ -156,5 +157,41 @@ public interface UserbasicApi {
             //consumes = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount();
+
+    @ApiOperation(value = "解除微信绑定", nickname = "unbindweixin", notes = "", tags={ "用户基本信息", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/unbindweixin",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<UnbindResponse> unbindweixin();
+
+    @ApiOperation(value = "微信登录", nickname = "weixinLogin", notes = "", tags={ "用户基本信息", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/weixinLogin",
+            produces = "application/json",
+            consumes = "application/json",
+            method = RequestMethod.POST)
+    ResponseEntity<UserLoginResponse> weixinLogin(@ApiParam(value = "wxUserLoginRequest") @Valid @RequestBody WXUserLoginRequest wxUserLoginRequest);
+
+    @ApiOperation(value = "获取微信用户信息", nickname = "getWXUserBasic", notes = "", tags={ "用户基本信息", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/getWXUserBasic",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    @ApiIgnore
+    ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code") @Valid @RequestParam(value = "code") String code, @ApiParam(value = "type") @Valid @RequestParam(value = "type") String type);
+
 
 }

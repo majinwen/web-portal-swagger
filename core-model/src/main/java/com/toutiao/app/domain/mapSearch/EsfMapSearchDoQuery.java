@@ -55,7 +55,7 @@ public class EsfMapSearchDoQuery extends QueryDo {
     /**
      * 小区id
      */
-    private Integer[] newcode;
+    private Integer[] newCode;
 
     /**
      * 排序标志

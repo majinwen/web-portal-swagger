@@ -106,4 +106,13 @@ public interface SellHouseEsDao {
     SearchResponse querySellHouseByHouseIdNew(BoolQueryBuilder boolQueryBuilder, String city);
 
     SearchResponse querySellHouse(BoolQueryBuilder boolQueryBuilder, String city);
+
+    /**
+     * 相似好房
+     * @param query
+     * @param city
+     * @param geoDistanceSort
+     * @return
+     */
+    SearchResponse getSimilarSellHouseList(BoolQueryBuilder query, String city, GeoDistanceSortBuilder geoDistanceSort);
 }

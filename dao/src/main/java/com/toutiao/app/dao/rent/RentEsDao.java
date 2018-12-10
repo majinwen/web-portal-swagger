@@ -82,6 +82,18 @@ public interface RentEsDao {
      * @return
      */
     SearchResponse queryRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder geoDistanceSort, String sort);
+
+
+    /**
+     * 相似好房
+     * @param boolQueryBuilder
+     * @param city
+     * @param geoDistanceSort
+     * @return
+     */
+    SearchResponse querySimilarRentSearchList(BoolQueryBuilder boolQueryBuilder , String city, GeoDistanceSortBuilder geoDistanceSort);
+
+
     /**
      * 获取搜索列表
      * @param query
@@ -91,7 +103,7 @@ public interface RentEsDao {
      * @param size
      * @return
      */
-    SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder sort);
+    SearchResponse queryCommuteRentSearchList(FunctionScoreQueryBuilder query ,Integer distance, String keyword, Integer from, Integer size, String city, GeoDistanceSortBuilder geoDistanceSort, String sort);
 
     /**
      * 获取小区出租房源均价最低

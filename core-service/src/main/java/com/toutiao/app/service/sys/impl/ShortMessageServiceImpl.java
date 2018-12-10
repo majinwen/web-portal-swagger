@@ -1,10 +1,8 @@
 package com.toutiao.app.service.sys.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.aliyuncs.exceptions.ClientException;
 import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.app.service.sys.ShortMessageService;
-import com.toutiao.web.common.constant.syserror.ShortMessageInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
@@ -14,9 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import static com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum.ILLEGAL_PHONE;
-import static com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum.USER_LOGIN_EXCEPTION;
-import static com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum.VERIFY_TOO_FAST;
+import static com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum.*;
 
 /**
  * 短信验证码接口服务
@@ -45,7 +41,7 @@ public class ShortMessageServiceImpl implements ShortMessageService {
      * @return
      */
     @Override
-    public String sendVerifyCode(String phone) {
+    public String sendVerifyCode(String phone, Integer type) {
 
         Integer exceptionCode = 0;
         if (phone.equals("13900000000")) {
@@ -59,7 +55,11 @@ public class ShortMessageServiceImpl implements ShortMessageService {
 
             if (null != sendResult && "OK".equals(sendResult)) {
                 //短信验证码发送成功，保存至redis以用于校验，有效期2分钟
-                redis.set2(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + "_" + phone, code, RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
+                if (type==1){
+                    redis.set2(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_BIND_WX_REGISTER + "_" + phone, code, RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
+                }else {
+                    redis.set2(ServiceStateConstant.ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER + "_" + phone, code, RedisObjectType.USER_PHONE_VALIDATECODE.getExpiredTime());
+                }
                 redis.incr(phone + RedisNameUtil.separativeSignCount);
                 String phoneCount = redis.getValue(phone + RedisNameUtil.separativeSignCount);
                 return phoneCount;
@@ -110,4 +110,5 @@ public class ShortMessageServiceImpl implements ShortMessageService {
         }
         return NashResult.build("");
     }
+
 }

@@ -92,4 +92,10 @@ public class UserBasicDo {
      */
     private String userCallName;
 
+    /**
+     * 微信账号
+     */
+    private String unionid;
+
+
 }

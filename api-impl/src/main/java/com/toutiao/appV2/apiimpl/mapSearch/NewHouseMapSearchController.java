@@ -43,6 +43,16 @@ public class NewHouseMapSearchController implements NewHouseMapSearchApi {
 
     }
 
+    @Override
+    public ResponseEntity<NewHouseMapSearchDistrictResponse> getNewHouseSubway(@ApiParam(value = "newHouseMapSearchRequest" ,required=true )  @Valid NewHouseMapSearchRequest newHouseMapSearchRequest) {
+        NewHouseMapSearchDoQuery newHouseMapSearchDoQuery = new NewHouseMapSearchDoQuery();
+        BeanUtils.copyProperties(newHouseMapSearchRequest,newHouseMapSearchDoQuery);
+        NewHouseMapSearchDistrictDomain newHouseMapSearchDistrictDomain = newHouseMapSearchRestService.newHouseMapSubwaySearch(newHouseMapSearchDoQuery, CityUtils.getCity());
+        NewHouseMapSearchDistrictResponse newHouseMapSearchDistrictResponse = new NewHouseMapSearchDistrictResponse();
+        BeanUtils.copyProperties(newHouseMapSearchDistrictDomain, newHouseMapSearchDistrictResponse);
+        return new ResponseEntity<>(newHouseMapSearchDistrictResponse,HttpStatus.OK);
+    }
+
 
     public ResponseEntity<NewHouseMapSearchBuildResponse> getNewHouseMapSearchByBuild(@ApiParam(value = "newHouseMapSearchRequest" ,required=true )  @Valid NewHouseMapSearchRequest newHouseMapSearchRequest) {
 

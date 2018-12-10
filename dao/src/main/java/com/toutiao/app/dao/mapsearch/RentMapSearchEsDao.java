@@ -1,6 +1,7 @@
 package com.toutiao.app.dao.mapsearch;
 
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 public interface RentMapSearchEsDao {
@@ -12,5 +13,7 @@ public interface RentMapSearchEsDao {
     SearchResponse getSubwayLineAndSubwayStationinfo(SearchSourceBuilder searchSourceBuilder);
 
     SearchResponse getSubwayInfo(SearchSourceBuilder searchSourceBuilder);
+
+    SearchResponse getSubwayStationinfo(BoolQueryBuilder boolQueryBuilder, String city);
 
 }

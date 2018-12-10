@@ -81,6 +81,13 @@ public interface SellHouseService {
     SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery,String city);
 
 
+    /**
+     * 二手房相似好房
+     * @param sellHouseDoQuery
+     * @return
+     */
+    SellHouseSearchDomain getSimilarSellHouseList(SellHouseDoQuery sellHouseDoQuery,String city);
+
 
     /**
      * 缝出必抢专题页

@@ -31,4 +31,13 @@ public class UserBasicDoQuery {
 
     private String title;
 
+    /**
+     * 微信id
+     */
+    private String unionid;
+    /**
+     * 头像
+     */
+    private String avatar;
+
 }

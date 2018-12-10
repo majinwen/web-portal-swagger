@@ -133,7 +133,7 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
             } else if ("5".equals(sort)) {
                 searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC);
             } else if ("6".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.DESC);
+                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("buildArea", SortOrder.DESC);
             } else {
                 searchSourceBuilder.query(query).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
             }
@@ -151,16 +151,28 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
 
     @Override
     public SearchResponse esfMapSearchHouseList(BoolQueryBuilder boolQueryBuilder, GeoDistanceSortBuilder geoDistanceSort,
-                                                Integer pageNum, Integer pageSize, String city) {
+                                                Integer pageNum, Integer pageSize, String city, String sort) {
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         if(null != geoDistanceSort){
             searchSourceBuilder.sort(geoDistanceSort);
         }
-        searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize)
-                .sort("extraTagsCount", SortOrder.DESC)
-                .sort("updateTimeSort", SortOrder.DESC);
+
+        if ("1".equals(sort)) {
+            searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC);
+        } else if ("3".equals(sort)) {
+            searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
+        } else if ("4".equals(sort)) {
+            searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC);
+        } else if ("5".equals(sort)) {
+            searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC);
+        } else if ("6".equals(sort)) {
+            searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize).sort("buildArea", SortOrder.DESC);
+        } else {
+            searchSourceBuilder.query(boolQueryBuilder).sort("extraTagsCount", SortOrder.DESC).sort("updateTimeSort", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+        }
+
         searchRequest.source(searchSourceBuilder);
 
         SearchResponse searchResponse = null;
@@ -252,7 +264,7 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
         boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(0)
-                .aggregation(AggregationBuilders.terms("houseCount").field("station_id").size(200)
+                .aggregation(AggregationBuilders.terms("sorting").field("sorting").size(200)
                     .subAggregation(AggregationBuilders.terms("stationName").field("station_name"))
                     .subAggregation(AggregationBuilders.terms("price").field("price"))
                     .subAggregation(AggregationBuilders.terms("latitude").field("latitude"))

@@ -28,6 +28,10 @@ public class RentDetailResponse {
     @ApiModelProperty("商圈名称")
     private String areaName = null;
 
+    @JsonProperty("areaId")
+    @ApiModelProperty("商圈Id")
+    private Integer areaId = null;
+
     @JsonProperty("balcony")
     @ApiModelProperty("阳台")
     private Integer balcony = null;
@@ -55,6 +59,10 @@ public class RentDetailResponse {
     @JsonProperty("districtName")
     @ApiModelProperty("区域名称")
     private String districtName = null;
+
+    @JsonProperty("districtId")
+    @ApiModelProperty("区域Id")
+    private String districtId = null;
 
     @JsonProperty("floor")
     @ApiModelProperty("房源所在楼层数(地下室为负数)")
@@ -148,7 +156,7 @@ public class RentDetailResponse {
     @JsonProperty("rentHouseTagsName")
     @Valid
     @ApiModelProperty("出租房源标签名称")
-    private List<String> rentHouseTagsName = null;
+    private String[] rentHouseTagsName = null;
 
     @JsonProperty("rentHouseType")
     @ApiModelProperty("房源来源类型(录入/导入)")
@@ -177,7 +185,7 @@ public class RentDetailResponse {
     @JsonProperty("supportingFacilities")
     @Valid
     @ApiModelProperty("配套设施(字符串数组)")
-    private List<String> supportingFacilities = null;
+    private String[] supportingFacilities = null;
 
     @JsonProperty("toilet")
     @ApiModelProperty("几卫")

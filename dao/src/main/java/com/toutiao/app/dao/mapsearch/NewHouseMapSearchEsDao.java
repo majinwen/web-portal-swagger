@@ -2,6 +2,7 @@ package com.toutiao.app.dao.mapsearch;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 
 /**
  * @ClassName NewHouseMapSearchEsDao
@@ -21,4 +22,8 @@ public interface NewHouseMapSearchEsDao {
 
 
     SearchResponse getNewHouseMapByDbAvgPrice(BoolQueryBuilder boolQueryBuilder, String city);
+
+
+
+    SearchResponse getSubwayLineAndSubwayStationinfo(BoolQueryBuilder boolQueryBuilder, String city);
 }

@@ -101,7 +101,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
 //                String[] photos = plotDetailsDo.getPhoto().get(0).split(",");
-                plotDetailsDo.setPhotos(plotDetailsDo.getPhoto().toArray(new String[0]));
+                plotDetailsDo.setPhoto(plotDetailsDo.getPhoto());
 
                 try {
                     UserBasic userBasic = UserBasic.getCurrent();
@@ -472,26 +472,24 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
 
-        String nearbyDistance = "";
+        String nearbyDistance = StringTool.nullToString(plotDetailsFewDo.getArea()) + " " + StringTool.nullToString(plotDetailsFewDo.getTradingArea());
         String traffic = plotDetailsFewDo.getTrafficInformation();
         String[] trafficArr = traffic.split("\\$");
         if (trafficArr.length == 3) {
             int i = Integer.parseInt(trafficArr[2]);
-            if (i > 2000) {
-                nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea();
-            } else if (i > 1000) {
+            if (i < 1000) {
+                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+            } else if (i < 2000) {
                 DecimalFormat df = new DecimalFormat("0.0");
-                nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea() + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-            } else {
-                nearbyDistance = plotDetailsFewDo.getArea() + " " + plotDetailsFewDo.getTradingArea() + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
             }
         }
+
 
         if (StringTool.isNotEmpty(distance)) {
             if (hit.getSortValues().length == 3) {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
                 String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
-//                plotDetailsFewDo.setNearbyDistance(distances);
                 nearbyDistance = "距您" + distances;
             }
         }
