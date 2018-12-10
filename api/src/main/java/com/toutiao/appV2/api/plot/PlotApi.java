@@ -173,7 +173,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getHotPlotByHouseType",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<SearchHotProjDomain> getHotPlotByHouseType(@ApiParam(value = "0表示首页/二手房/小区 1表示新房  2表示租房") @Valid @RequestParam(value = "houseType", required = true) Integer houseType);
 
 

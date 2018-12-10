@@ -56,7 +56,7 @@ public class InvitationApiController implements InvitationApi {
     public ResponseEntity<InvitationResponse> getInvitation() {
         InvitationCodeDoQuery invitationCodeDoQuery = new InvitationCodeDoQuery();
         invitationCodeDoQuery.setUserId(UserBasic.getCurrent().getUserId());
-        invitationCodeDoQuery.setEquipmentNo(request.getHeader("equipmentNo"));
+        invitationCodeDoQuery.setEquipmentNo(request.getHeader("deviceid"));
         InvitationCodeDo invitationCodeDo = invitationCodeService.getInvitation(invitationCodeDoQuery);
         InvitationResponse invitationResponse = new InvitationResponse();
         BeanUtils.copyProperties(invitationCodeDo, invitationResponse);
@@ -85,7 +85,7 @@ public class InvitationApiController implements InvitationApi {
             throw new BaseException(UserInterfaceErrorCodeEnum.INVITATION_CODE_NOT_EXITS);
         }
         inviteHistory.setUserId(UserBasic.getCurrent().getUserId());
-        inviteHistory.setEquipmentNo(request.getHeader("equipmentNo"));
+        inviteHistory.setEquipmentNo(request.getHeader("deviceid"));
         int i = inviteHistoryService.saveInviteHistory(inviteHistory);
         List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
         if (!CollectionUtils.isEmpty(inviteHistoryByCode)) {
