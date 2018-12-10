@@ -943,10 +943,10 @@ public class MessagePushServiceImpl implements MessagePushService {
         String cityCode = CITYID2ABBREVIATION.get(cityId);
         if (StringTool.isNotEmpty(houseId) && StringTool.isNotEmpty(cityCode)) {
             if (type == 1) {
-                houseDetailUrl = String.format(hostUrl + "/#/%s/details/secondHand?houseId=%s",
+                houseDetailUrl = String.format(hostUrl + "/%s/detail/second?id=%s",
                         cityCode, houseId);
             } else {
-                houseDetailUrl = String.format(hostUrl + "/#/%s/details/rent?rentId=%s",
+                houseDetailUrl = String.format(hostUrl + "/%s/detail/rent?id=%s",
                         cityCode, houseId);
             }
         }
