@@ -704,7 +704,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         long searchCount = searchResponse.getHits().totalHits;
         BoolQueryBuilder builder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
         SearchResponse response = sellHouseEsDao.querySellHouse(builder, city);
-        Terms terms = searchResponse.getAggregations().get("sorting");
+        Terms terms = searchResponse.getAggregations().get("station_id");
         List buckets = terms.getBuckets();
         for (Object bucket : buckets) {
             EsfMapSearchDo esfMapSearchSubwayDo = new EsfMapSearchDo();
