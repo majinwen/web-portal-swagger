@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -72,7 +73,7 @@ public class InvitationApiController implements InvitationApi {
     }
 
     @Override
-    public ResponseEntity<StringDataResponse> saveInviteHistory(@Validated InviteHistoryRequest inviteHistoryRequest) {
+    public ResponseEntity<StringDataResponse> saveInviteHistory(@RequestBody @Validated InviteHistoryRequest inviteHistoryRequest) {
 
         InviteHistory inviteHistory = new InviteHistory();
         BeanUtils.copyProperties(inviteHistoryRequest, inviteHistory);
