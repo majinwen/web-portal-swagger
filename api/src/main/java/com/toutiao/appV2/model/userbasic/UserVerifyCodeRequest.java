@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.userbasic;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -34,6 +35,10 @@ public class UserVerifyCodeRequest   {
 
   @JsonProperty("avatar")
   private String avatar = null;
+
+  @JsonProperty("type")
+  @ApiModelProperty(value = "1:app微信,2:web微信,3:微信小程序",required = true)
+  private String type = null;
 
 }
 

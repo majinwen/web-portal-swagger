@@ -265,6 +265,7 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(0)
                 .aggregation(AggregationBuilders.terms("sorting").field("sorting").size(200)
+                        .subAggregation(AggregationBuilders.terms("stationId").field("station_id"))
                     .subAggregation(AggregationBuilders.terms("stationName").field("station_name"))
                     .subAggregation(AggregationBuilders.terms("price").field("price"))
                     .subAggregation(AggregationBuilders.terms("latitude").field("latitude"))

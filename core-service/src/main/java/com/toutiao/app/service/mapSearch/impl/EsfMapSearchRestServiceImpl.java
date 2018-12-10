@@ -708,8 +708,13 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         List buckets = terms.getBuckets();
         for (Object bucket : buckets) {
             EsfMapSearchDo esfMapSearchSubwayDo = new EsfMapSearchDo();
-            esfMapSearchSubwayDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//地铁站id
+            //esfMapSearchSubwayDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());//地铁站id
             //esfMapSearchSubwayDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());//房源数量
+
+            Terms stationId = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("stationId");
+            if (stationId.getBuckets().size() > 0) {
+                esfMapSearchSubwayDo.setId(stationId.getBuckets().get(0).getKeyAsNumber().intValue());//地铁站名称
+            }
 
             Terms stationName = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("stationName");
             if (stationName.getBuckets().size() > 0) {

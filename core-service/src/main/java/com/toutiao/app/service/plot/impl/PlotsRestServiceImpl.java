@@ -404,53 +404,63 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
         } else {
             searchResponse = plotEsDao.queryCommonPlotList(from, boolQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
-            if (searchResponse != null) {
-                SearchHit[] hits = searchResponse.getHits().getHits();
-
-                if (hits.length > 0) {
-                    for (SearchHit hit : hits) {
-                        commonMethod(hit, keyList, plotDetailsFewDoList, city, null);
-                    }
-                }
-            }
-            plotListDo.setPlotList(plotDetailsFewDoList);
-            plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
-            return plotListDo;
+//            if (searchResponse != null) {
+//                SearchHit[] hits = searchResponse.getHits().getHits();
+//
+//                if (hits.length > 0) {
+//                    for (SearchHit hit : hits) {
+//                        commonMethod(hit, keyList, plotDetailsFewDoList, city, null);
+//                    }
+//                }
+//            }
+//            plotListDo.setPlotList(plotDetailsFewDoList);
+//            plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
+//            return plotListDo;
         }
 
-        long oneKM_size = searchResponse.getHits().getTotalHits();
+//        long oneKM_size = searchResponse.getHits().getTotalHits();
+////        if (searchResponse != null) {
+//            int resLocationInfo = searchResponse.getHits().getHits().length;
+//            if (resLocationInfo == 10) {
+//                SearchHits hits = searchResponse.getHits();
+//                SearchHit[] searchHists = hits.getHits();
+//                for (SearchHit hit : searchHists) {
+//                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+//                }
+//            } else if (resLocationInfo < 10 && resLocationInfo > 0) {
+//                SearchHits hits = searchResponse.getHits();
+//                SearchHit[] searchHists = hits.getHits();
+//                for (SearchHit hit : searchHists) {
+//                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+//                }
+//                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+//                booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+//                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder, plotListDoQuery.getPageSize() - resLocationInfo, plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
+//                SearchHit[] hits1 = searchResponse1.getHits().getHits();
+//                for (SearchHit hit : hits1) {
+//                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+//                }
+//            } else if (resLocationInfo == 0) {
+//                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+//                booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+//                Integer newFrom = (plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize();
+//                if (oneKM_size > 0) {
+//                    newFrom = (int) ((plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize() - (oneKM_size / plotListDoQuery.getPageSize() + 1) * plotListDoQuery.getPageSize());
+//                }
+//                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
+//                SearchHit[] hits1 = searchResponse1.getHits().getHits();
+//                for (SearchHit hit : hits1) {
+//                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+//                }
+//            }
+//        }
+
         if (searchResponse != null) {
-            int reslocationinfo = searchResponse.getHits().getHits().length;
-            if (reslocationinfo == 10) {
-                SearchHits hits = searchResponse.getHits();
-                SearchHit[] searchHists = hits.getHits();
-                for (SearchHit hit : searchHists) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
-                }
-            } else if (reslocationinfo < 10 && reslocationinfo > 0) {
-                SearchHits hits = searchResponse.getHits();
-                SearchHit[] searchHists = hits.getHits();
-                for (SearchHit hit : searchHists) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
-                }
-                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder, plotListDoQuery.getPageSize() - reslocationinfo, plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
-                SearchHit[] hits1 = searchResponse1.getHits().getHits();
-                for (SearchHit hit : hits1) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
-                }
-            } else if (reslocationinfo == 0) {
-                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-                Integer newFrom = (plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize();
-                if (oneKM_size > 0) {
-                    newFrom = (int) ((plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize() - (oneKM_size / plotListDoQuery.getPageSize() + 1) * plotListDoQuery.getPageSize());
-                }
-                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
-                SearchHit[] hits1 = searchResponse1.getHits().getHits();
-                for (SearchHit hit : hits1) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+            SearchHit[] hits = searchResponse.getHits().getHits();
+
+            if (hits.length > 0) {
+                for (SearchHit hit : hits) {
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city, null);
                 }
             }
         }

@@ -9,11 +9,7 @@ import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.userbasic.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -62,7 +58,7 @@ public interface UserbasicApi {
             produces = "application/json",
             params = "userId",
             method = RequestMethod.GET)
-    ResponseEntity<UserBasicResponse> queryUserBasic(@ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId);
+    ResponseEntity<UserBasicResponse> queryUserBasic(@ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) String userId);
 
 
     @ApiOperation(value = "通过融云ID获取基本信息", nickname = "queryUserBasicByRcId", notes = "",
@@ -192,6 +188,20 @@ public interface UserbasicApi {
             method = RequestMethod.GET)
     @ApiIgnore
     ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code") @Valid @RequestParam(value = "code") String code, @ApiParam(value = "type") @Valid @RequestParam(value = "type") String type);
+
+
+    @ApiOperation(value = "小程序登录", nickname = "smallProgramLogin", notes = "", tags={ "用户基本信息", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/userbasic/smallProgramLogin",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<UserLoginResponse> smallProgramLogin(@ApiParam(value = "code") @Valid @RequestParam(value = "code") String code	,
+                                                                 @ApiParam(value = "iv") @Valid @RequestParam(value = "iv") String iv,
+                                                                 @ApiParam(value = "rawData") @Valid @RequestParam(value = "rawData") String rawData);
 
 
 }

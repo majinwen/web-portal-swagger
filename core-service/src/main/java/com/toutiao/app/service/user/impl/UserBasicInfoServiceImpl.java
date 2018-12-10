@@ -1,6 +1,7 @@
 package com.toutiao.app.service.user.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.qiniu.storage.model.DefaultPutRet;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.domain.user.UserLoginDomain;
@@ -17,16 +18,14 @@ import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper;
 import io.rong.models.Result;
-import org.apache.http.Consts;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,8 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -61,13 +58,18 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     private String cmsBaseUrl;
     @Value("${bdw.cms.news.count}")
     private String newsCountUrl;
-    @Value("${bdw.weixin.appid}")
-    public String appid;
-    @Value("${bdw.weixin.secret}")
-    public String secret;
+    @Value("${bdw.weixinSmallProgram.appid}")
+    public String smallProgramAppId;
+    @Value("${bdw.weixinSmallProgram.secret}")
+    public String smallProgramSecret;
+    @Value("${bdw.weixinWeb.appid}")
+    public String webAppId;
+    @Value("${bdw.weixinWeb.secret}")
+    public String webSecret;
 
-    private final String weixinAccessToken = "https://api.weixin.qq.com/sns/oauth2/access_token";
-    private final String weixinUserInfo = "https://api.weixin.qq.com/sns/userinfo";
+    private final String weixinWebAccessToken = "https://api.weixin.qq.com/sns/oauth2/access_token";
+    private final String weixinsmallProgramAccessToken = "https://api.weixin.qq.com/sns/jscode2session";
+    private final String weixinWebUserInfo = "https://api.weixin.qq.com/sns/userinfo";
 
     /**
      * 更新用户头像
@@ -216,42 +218,34 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     @Override
     public WXUserBasicDo queryWXUserBasic(String code, String type, HttpServletRequest request, HttpServletResponse response) {
         WXUserBasicDo wxUserBasicDo = new WXUserBasicDo();
-        Map map = new HashMap();
-        String weiXinInfo = "";
+        String tokenInfo = "";
+        String userInfo = "";
         //根据code获取token
         CloseableHttpClient httpclient = HttpClients.createDefault();
-        List<NameValuePair> tokenFormParams = new ArrayList<>();
-        tokenFormParams.add(new BasicNameValuePair("appid",appid));
-        tokenFormParams.add(new BasicNameValuePair("secret",secret));
-        tokenFormParams.add(new BasicNameValuePair("code",code));
-        tokenFormParams.add(new BasicNameValuePair("grant_type","authorization_code"));
-        UrlEncodedFormEntity tokenEntity = new UrlEncodedFormEntity(tokenFormParams, Consts.UTF_8);
-        HttpPost tokenHttpPost = new HttpPost(weixinAccessToken);
-        tokenHttpPost.setEntity(tokenEntity);
+        String tokenUrl = weixinWebAccessToken+"?appid="+webAppId+"&secret="+webSecret+"&code="+code+"&grant_type=authorization_code";
+        HttpGet tokenHttpGet = new HttpGet(tokenUrl);
         CloseableHttpResponse tokenResponse = null;
         try {
-            tokenResponse = httpclient.execute(tokenHttpPost);
+            tokenResponse = httpclient.execute(tokenHttpGet);
+            HttpEntity tokenResult = tokenResponse.getEntity();
+            tokenInfo =EntityUtils.toString(tokenResult);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        HttpEntity tokenResult = tokenResponse.getEntity();
+
+        String access_token= String.valueOf(JSON.parseObject(tokenInfo).get("access_token"));
+        String openid = String.valueOf(JSON.parseObject(tokenInfo).get("openid"));
 
 
         //根据token获取userInfo
         CloseableHttpResponse userResponse = null;
         HttpEntity userResult = null;
-        List<NameValuePair> userFormParams = new ArrayList<>();
-        //todo
-        userFormParams.add(new BasicNameValuePair("access_token","access_token"));
-        userFormParams.add(new BasicNameValuePair("openid","openid"));
-        UrlEncodedFormEntity userEntity = new UrlEncodedFormEntity(userFormParams, Consts.UTF_8);
-        HttpPost userHttpPost = new HttpPost(weixinUserInfo);
-        userHttpPost.setEntity(userEntity);
+        String userInfoUrl = weixinWebUserInfo+"?access_token="+access_token+"&openid="+openid;
+        HttpGet userHttpGet = new HttpGet(userInfoUrl);
         try {
-            userResponse = httpclient.execute(userHttpPost);
+            userResponse = httpclient.execute(userHttpGet);
             userResult = userResponse.getEntity();
-            //todo
-            weiXinInfo = userResult.toString();
+            userInfo = EntityUtils.toString(userResult);
         }catch (Exception e){
             e.printStackTrace();
         }finally {
@@ -268,14 +262,77 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     }
 
     @Override
-    public UserBasicDo weixinLogin(String unionid) {
+    public UserBasicDo weixinLogin(String unionid, String type) {
         UserBasicDo userBasicDo = new UserBasicDo();
+
+        //解密
+        if("2".equals(type)||"3".equals(type)){
+            String decrypt = Com35Aes.decrypt(Com35Aes.KEYCODE, unionid);
+            String[] split = decrypt.split(RedisNameUtil.separativeSign);
+            if (split.length==2){
+                unionid = split[0];
+            }
+        }
+
         UserBasic userBasic = userBasicMapper.getUserBasicByunionId(unionid);
         if (StringTool.isNotEmpty(userBasic)){
             BeanUtils.copyProperties(userBasic,userBasicDo);
             if (userBasicDo.getAvatar().indexOf("http:")==-1){
                 userBasicDo.setAvatar(headPicPath + "/" + userBasicDo.getAvatar());
             }
+        }
+        return userBasicDo;
+    }
+
+    @Override
+    public Map getSmallProgramInfo(String code) {
+        Map map = new HashMap();
+        String tokenInfo = "";
+        //根据code获取token
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        List<NameValuePair> tokenFormParams = new ArrayList<>();
+        String tokenUrl = weixinsmallProgramAccessToken+"?appid="+smallProgramAppId+"&secret="+smallProgramSecret+"&js_code="+code+"&grant_type=authorization_code";
+        HttpGet tokenHttpGet = new HttpGet(tokenUrl);
+        CloseableHttpResponse tokenResponse = null;
+        try {
+            tokenResponse = httpclient.execute(tokenHttpGet);
+            HttpEntity tokenResult = tokenResponse.getEntity();
+            tokenInfo =EntityUtils.toString(tokenResult);
+            String sessionKey= String.valueOf(JSON.parseObject(tokenInfo).get("session_key"));
+            String openid = String.valueOf(JSON.parseObject(tokenInfo).get("openid"));
+//            if (StringUtils.isEmpty(JSON.parseObject(tokenInfo).get("errmsg").toString())){
+//                throw new BaseException(Integer.valueOf(String.valueOf(JSON.parseObject(tokenInfo).get("errcode"))),String.valueOf(JSON.parseObject(tokenInfo).get("errmsg")));
+//            }
+            map.put("openid",openid);
+            map.put("sessionKey",sessionKey);
+            httpclient.close();
+            tokenResponse.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
+
+    @Override
+    public UserBasicDo smallProgramLogin(String code, String iv, String rawData) {
+        Map smallProgramInfo = getSmallProgramInfo(code);
+        UserBasicDo userBasicDo = new UserBasicDo();
+        try {
+            //解密
+            String result  = AesCbcUtil.decrypt(rawData, String.valueOf(smallProgramInfo.get("sessionKey")), iv, "UTF-8");
+            if (null != result && result.length() > 0) {
+                JSONObject userInfoJSON = JSON.parseObject(result);
+                String unionId = String.valueOf(userInfoJSON.get("unionId"));
+                userBasicDo = weixinLogin(unionId,"0");
+                if (null!=userBasicDo.getUserId()&&userBasicDo.getUserId().length()>0){
+                    return userBasicDo;
+                }
+                //unionid加密
+                String str = Com35Aes.encrypt(Com35Aes.KEYCODE, (unionId+RedisNameUtil.separativeSign+"加密").toString());
+                userBasicDo.setUnionid(str);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return userBasicDo;
     }
