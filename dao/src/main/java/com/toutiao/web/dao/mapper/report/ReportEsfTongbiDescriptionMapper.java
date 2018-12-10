@@ -1,7 +1,9 @@
 package com.toutiao.web.dao.mapper.report;
 
 import com.toutiao.app.dao.report.ReportEsfTongbiDescription;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ReportEsfTongbiDescriptionMapper {
     int deleteByPrimaryKey(Integer id);
 

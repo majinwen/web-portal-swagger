@@ -1,7 +1,9 @@
 package com.toutiao.web.dao.mapper.report;
 
 import com.toutiao.app.dao.report.ReportRentPriceDistrbution;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ReportRentPriceDistrbutionMapper {
     int deleteByPrimaryKey(Short id);
 

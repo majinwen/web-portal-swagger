@@ -23,6 +23,10 @@ public class ReportCityServiceImpl implements ReportCityService {
     private ReportNewGuideSalesMapper reportNewGuideSalesMapper;
     @Autowired
     private ReportNewPreferentialMapper reportNewPreferentialMapper;
+    @Autowired
+    private ReportEsfProjHotMapper reportEsfProjHotMapper;
+    @Autowired
+    private ReportAreaHotMapper reportAreaHotMapper;
 
     /**
      * 根据城市ID查询最新一条数据
@@ -57,5 +61,15 @@ public class ReportCityServiceImpl implements ReportCityService {
     @Override
     public List<ReportNewPreferential> selectReportNewPreferentialList(Integer cityId) {
         return reportNewPreferentialMapper.selectAll(cityId);
+    }
+
+    @Override
+    public List<ReportEsfProjHot> selectReportEsfProjHotList(Integer cityId) {
+        return reportEsfProjHotMapper.selectAll(cityId);
+    }
+
+    @Override
+    public List<ReportAreaHot> selectReportAreaHotList(Integer cityId) {
+        return reportAreaHotMapper.selectAll(cityId);
     }
 }

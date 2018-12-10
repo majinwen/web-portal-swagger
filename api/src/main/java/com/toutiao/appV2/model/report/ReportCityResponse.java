@@ -122,19 +122,19 @@ public class ReportCityResponse {
      * 二手房特色房源：捡漏房
      */
     @ApiModelProperty(value = "二手房特色房源：捡漏房")
-    private Object esfTeseJianlou;
+    private List<ReportTopicHouseTrend> esfTeseJianlou;
 
     /**
      * 二手房特色房源：降价房
      */
     @ApiModelProperty(value = "二手房特色房源：降价房")
-    private Object esfTeseJiangjia;
+    private List<ReportTopicHouseTrend> esfTeseJiangjia;
 
     /**
      * 二手房特色房源：抢手房
      */
     @ApiModelProperty(value = "二手房特色房源：抢手房")
-    private Object esfTeseQiangshou;
+    private List<ReportTopicHouseTrend> esfTeseQiangshou;
 
     /**
      * 租房整租数量
