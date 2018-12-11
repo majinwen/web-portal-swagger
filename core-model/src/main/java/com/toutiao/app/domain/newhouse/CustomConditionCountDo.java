@@ -20,7 +20,7 @@ public class CustomConditionCountDo {
     /**
      * 定制总数
      */
-    private Integer CustomCount;
+    private Integer customCount;
 
     /**
      * 描述

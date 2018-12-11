@@ -22,7 +22,6 @@ import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
 
 @Api(value = "推荐条件", description = "推荐条件")
-@RequestMapping(value = "/rest/")
 public interface ConditionApi {
 
     @ApiOperation(value = "删除推荐条件", nickname = "deleteRecommendCondition", notes = "", response = Integer.class, tags={ "首页推荐条件", })
@@ -71,9 +70,9 @@ public interface ConditionApi {
     ResponseEntity<StringDataResponse> saveRecommendCondition(@ApiParam(value = "推荐条件", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 
-    @ApiOperation(value = "定制条件筛选结果数量", nickname = "getCustomCondition", notes = "", response = Integer.class, tags={ "首页推荐条件", })
+    @ApiOperation(value = "定制条件筛选结果数量", nickname = "getCustomCondition", notes = "", response = CustomConditionCountResponse.class, tags={ "首页推荐条件", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Integer.class),
+            @ApiResponse(code = 200, message = "OK", response = CustomConditionCountResponse.class),
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
@@ -83,7 +82,6 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/homePage/getCustomCondition",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "推荐条件", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 }

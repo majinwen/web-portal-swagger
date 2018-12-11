@@ -614,13 +614,7 @@ public class HomePageServiceImpl implements HomePageRestService {
         SearchResponse houseCount = null;
         SearchResponse searchResponse = null;
         //预算
-        if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
-        }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
-        }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
-        }
+
 
         if(userFavoriteConditionDoQuery.getConditionType()==0){
             //二手房
@@ -628,6 +622,13 @@ public class HomePageServiceImpl implements HomePageRestService {
             boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds()) && userFavoriteConditionDoQuery.getDistrictIds().length!=0){
                 boolQueryBuilder.must(termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictIds()));
+            }
+            if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+            }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+            }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
             }
 
             searchResponse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
@@ -649,6 +650,14 @@ public class HomePageServiceImpl implements HomePageRestService {
 //            }
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getSubwayLineId()) && userFavoriteConditionDoQuery.getSubwayLineId().length!=0){
                 boolQueryBuilder.must(QueryBuilders.termsQuery("subway_line_id",userFavoriteConditionDoQuery.getSubwayLineId()));
+            }
+
+            if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+            }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+            }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_pricex").lte(userFavoriteConditionDoQuery.getEndPrice()));
             }
 
             searchResponse = rentEsDao.queryRentList(boolQueryBuilder,0,0,city);
