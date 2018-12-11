@@ -110,6 +110,7 @@ public class RentRestController implements RentRestApi {
         } else if (rentHouseRequest.getSearchType() == 2) {
             NearHouseDo nearHouseDo = new NearHouseDo();
             BeanUtils.copyProperties(rentHouseRequest, nearHouseDo);
+            nearHouseDo.setDistance(5);
             List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
             JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
             List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
