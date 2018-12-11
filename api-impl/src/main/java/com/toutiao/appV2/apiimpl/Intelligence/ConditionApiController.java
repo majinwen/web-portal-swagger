@@ -2,11 +2,13 @@ package com.toutiao.appV2.apiimpl.Intelligence;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.newhouse.CustomConditionCountDo;
+import com.toutiao.app.domain.newhouse.CustomConditionUserSampleDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.appV2.api.Intelligence.ConditionApi;
 import com.toutiao.appV2.model.Intelligence.CustomConditionCountResponse;
+import com.toutiao.appV2.model.Intelligence.CustomConditionUserSampleResponse;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionResponse;
 import com.toutiao.appV2.model.StringDataResponse;
@@ -57,19 +59,21 @@ public class ConditionApiController implements ConditionApi {
     @Override
     public ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId) {
         UserFavoriteConditionResponse userFavoriteConditionResponse = new UserFavoriteConditionResponse();
-        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userId, CityUtils.getCity());
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        userFavoriteConditionDoQuery.setUserId(userId);
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(recommendCondition, userFavoriteConditionResponse);
         return new ResponseEntity<UserFavoriteConditionResponse>(userFavoriteConditionResponse, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<StringDataResponse> saveRecommendCondition(@ApiParam(value = "推荐条件", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<CustomConditionUserSampleResponse> saveRecommendCondition(@ApiParam(value = "userFavoriteConditionRequest") @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
-        Integer integer = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
-        StringDataResponse stringDataResponse = new StringDataResponse();
-        stringDataResponse.setData("保存推荐条件成功");
-        return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
+        CustomConditionUserSampleDo conditionUserSampleDo = homePageRestService.saveRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
+        CustomConditionUserSampleResponse conditionUserSampleResponse = new CustomConditionUserSampleResponse();
+        conditionUserSampleResponse.setData(conditionUserSampleDo);
+        return new ResponseEntity<>(conditionUserSampleResponse, HttpStatus.OK);
     }
 
     @Override

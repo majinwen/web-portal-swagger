@@ -652,8 +652,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         BoolQueryBuilder bqb = QueryBuilders.boolQuery();
         //组装条件
         //区域
-        if (null != userFavoriteConditionDoQuery.getDistrictIds() && userFavoriteConditionDoQuery.getDistrictIds().length > 0) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictIds()));
+        if (null != userFavoriteConditionDoQuery.getDistrictId() && userFavoriteConditionDoQuery.getDistrictId().length > 0) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
         }
         //户型
         if (null != userFavoriteConditionDoQuery.getLayoutId() && userFavoriteConditionDoQuery.getLayoutId().length > 0) {

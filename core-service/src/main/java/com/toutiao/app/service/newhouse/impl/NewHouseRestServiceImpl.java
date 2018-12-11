@@ -507,8 +507,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         //组装条件
         //区域
-        if (null != userFavoriteConditionDoQuery.getDistrictIds() && userFavoriteConditionDoQuery.getDistrictIds().length > 0) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("district_id", userFavoriteConditionDoQuery.getDistrictIds()));
+        if (null != userFavoriteConditionDoQuery.getDistrictId() && userFavoriteConditionDoQuery.getDistrictId().length > 0) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("district_id", userFavoriteConditionDoQuery.getDistrictId()));
         }
         //户型
         if (null != userFavoriteConditionDoQuery.getLayoutId() && userFavoriteConditionDoQuery.getLayoutId().length > 0) {

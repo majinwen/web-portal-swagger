@@ -144,7 +144,7 @@ public class PlotApiController implements PlotApi {
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         userFavoriteConditionDoQuery.setBeginPrice(beginPrice.get());
         userFavoriteConditionDoQuery.setCity(city.get());
-        userFavoriteConditionDoQuery.setDistrictIds((String[]) districtId.get().toArray());
+        userFavoriteConditionDoQuery.setDistrictId((String[]) districtId.get().toArray());
         userFavoriteConditionDoQuery.setEndPrice(endPrice.get());
         userFavoriteConditionDoQuery.setFlag(flag.get());
         userFavoriteConditionDoQuery.setLayoutId((String[]) layoutId.get().toArray());

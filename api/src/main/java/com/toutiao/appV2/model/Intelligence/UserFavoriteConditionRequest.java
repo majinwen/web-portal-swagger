@@ -16,8 +16,7 @@ import java.util.Objects;
 /**
  * UserFavoriteConditionRequest
  */
-@Validated
-@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
+
 @Data
 public class UserFavoriteConditionRequest   {
   @ApiModelProperty(name = "beginPrice", value = "起始价格")
@@ -30,7 +29,6 @@ public class UserFavoriteConditionRequest   {
 
   @ApiModelProperty(name = "districtId", value = "区域id")
   @JsonProperty("districtId")
-  @Valid
   private String[] districtId = null;
 
   @ApiModelProperty(name = "endPrice", value = "结束价格")
@@ -43,8 +41,7 @@ public class UserFavoriteConditionRequest   {
 
   @ApiModelProperty(name = "layoutId", value = "户型id")
   @JsonProperty("layoutId")
-  @Valid
-  private String[] layoutId = null;
+  private String[] layoutId;
 
   @ApiModelProperty(name = "pageNum", value = "当前页")
   @JsonProperty("pageNum")
@@ -61,8 +58,7 @@ public class UserFavoriteConditionRequest   {
 
   @ApiModelProperty(name = "subwayLineId", value = "地铁线id")
   @JsonProperty("subwayLineId")
-  @Valid
-  private String[] subwayLineId = null;
+  private String[] subwayLineId;
 
   @ApiModelProperty(name = "rentType", value = "租房类型(1:整租，2:合租)")
   @JsonProperty("rentType")

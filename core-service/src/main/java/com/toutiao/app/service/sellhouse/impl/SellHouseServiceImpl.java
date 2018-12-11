@@ -452,8 +452,8 @@ public class SellHouseServiceImpl implements SellHouseService {
         boolQueryBuilderT1.must(QueryBuilders.termQuery("is_claim", 0));
 
         //区域
-        if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds())) {
-            boolQueryBuilderT1.must(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictIds()));
+        if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
+            boolQueryBuilderT1.must(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
         }
         //户型
         if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())) {
@@ -578,8 +578,8 @@ public class SellHouseServiceImpl implements SellHouseService {
             if (null != userFavoriteConditionDoQuery.getBeginPrice() && null != userFavoriteConditionDoQuery.getEndPrice() && userFavoriteConditionDoQuery.getEndPrice() > 0) {
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
                 //区域
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds())) {
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictIds()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())) {
@@ -588,8 +588,8 @@ public class SellHouseServiceImpl implements SellHouseService {
             } else if (null != userFavoriteConditionDoQuery.getBeginPrice() && null != userFavoriteConditionDoQuery.getEndPrice() && userFavoriteConditionDoQuery.getEndPrice() == 0) {
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
                 //区域
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds())) {
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictIds()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())) {
@@ -598,8 +598,8 @@ public class SellHouseServiceImpl implements SellHouseService {
             } else if (null != userFavoriteConditionDoQuery.getBeginPrice() && null == userFavoriteConditionDoQuery.getEndPrice()) {
                 boolQueryBuilderT2.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
                 //区域
-                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds())) {
-                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictIds()));
+                if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
+                    boolQueryBuilderT2.mustNot(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
                 }
                 //户型
                 if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId())) {
