@@ -61,7 +61,7 @@ public class ReportNewGuideAttention {
      * 价格
      */
     @ApiModelProperty(value = "价格")
-    private Double price;
+    private Double averagePrice;
 
     /**
      * 创建时间
