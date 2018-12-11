@@ -62,7 +62,7 @@ public interface SuscribeApi {
     @RequestMapping(value = "/rest/subscribe/deleteSubscribe",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<StringDataResponse> deleteSubscribe(Integer id);
+    ResponseEntity<StringDataResponse> deleteSubscribe(@RequestParam(value = "id") Integer id);
 
 
     @ApiOperation(value = "用户获取订阅信息列表", nickname = "listConditionSubscribe", notes = "", response = UserSubscribeList.class, tags={ "订阅", })

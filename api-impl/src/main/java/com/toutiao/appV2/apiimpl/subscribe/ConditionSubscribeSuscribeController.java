@@ -14,6 +14,8 @@ import com.toutiao.appV2.model.UserSubscribeListDoList;
 import com.toutiao.appV2.model.subscribe.UserSubscribeInfoT3;
 import com.toutiao.appV2.model.subscribe.UserSubscribeT3Do;
 import com.toutiao.appV2.model.subscribe.UserSubscribeT3DoList;
+import com.toutiao.web.common.constant.syserror.SubscribeErrorEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
@@ -181,8 +183,13 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
      * @return
      */
     @Override
-    public ResponseEntity<StringDataResponse> deleteSubscribe(@NotNull Integer id) {
+    public ResponseEntity<StringDataResponse> deleteSubscribe(@NotNull @RequestParam(value = "id")  Integer id) {
 
+        UserSubscribe userSubscribe = subscribeService.selectByPrimaryKey(id);
+
+        if (null == userSubscribe) {
+            throw new BaseException(SubscribeErrorEnum.USER_SUBSCRIBE_NOT_FOUND);
+        }
         int i = subscribeService.deleteByPrimaryKey(id);
         StringDataResponse stringDataResponse = new StringDataResponse();
         stringDataResponse.setData("删除订阅成功");
