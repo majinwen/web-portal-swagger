@@ -4,7 +4,7 @@ import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 @Data
-public class UserFavoriteConditionDoQuery extends QueryDo {
+public class UserFavoriteConditionDoQuery{
     /**
      * 用户id
      */
