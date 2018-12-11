@@ -383,6 +383,8 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             esfMapCommunityDo = JSON.parseObject(community, EsfMapCommunityDo.class);
             String districtName = communityHit.getSourceAsMap().get("area").toString();
             String bizcircleName = communityHit.getSourceAsMap().get("houseBusinessName").toString();
+            esfMapCommunityDo.setDistrictName(districtName);
+            esfMapCommunityDo.setAreaName(bizcircleName);
 
             String description = districtName + " " +bizcircleName;
             if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && esfMapSearchDoQuery.getSubwayLineId() != 0) {
@@ -391,6 +393,13 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 description = "近" + subwayMap.get("line_name");
             }
             esfMapCommunityDo.setDescription(description);
+
+            String year = communityHit.getSourceAsMap().get("year").toString();
+            esfMapCommunityDo.setBuildYears(year);
+            String buildingImages = communityHit.getSourceAsMap().get("plotPhoto").toString();
+            esfMapCommunityDo.setBuildingImages(buildingImages);
+            String buildingStructure = communityHit.getSourceAsMap().get("buildCategoryName").toString();
+            esfMapCommunityDo.setBuildingStructure(buildingStructure);
 
             String plotName = communityHit.getSourceAsMap().get("plotName").toString();
             esfMapCommunityDo.setPloatName(plotName);
