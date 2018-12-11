@@ -1,9 +1,10 @@
 package com.toutiao.app.domain.newhouse;
 
+import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 @Data
-public class UserFavoriteConditionDoQuery {
+public class UserFavoriteConditionDoQuery extends QueryDo {
     /**
      * 用户id
      */
