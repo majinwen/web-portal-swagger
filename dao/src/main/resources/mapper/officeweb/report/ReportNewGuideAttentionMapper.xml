@@ -10,11 +10,11 @@
     <result column="area_name" property="areaName" jdbcType="VARCHAR" />
     <result column="livindate" property="livindate" jdbcType="VARCHAR" />
     <result column="city_id" property="cityId" jdbcType="INTEGER" />
-    <result column="price" property="price" jdbcType="NUMERIC" />
+    <result column="average_price" property="averagePrice" jdbcType="NUMERIC" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
   </resultMap>
   <sql id="Base_Column_List">
-        newcode, projname, district_id, district_name, area_id, area_name, livindate, city_id, price, create_time
+        newcode, projname, district_id, district_name, area_id, area_name, livindate, city_id, average_price, create_time
     </sql>
   <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
     select
