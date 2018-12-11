@@ -169,5 +169,8 @@ public class RentDetailFewResponse   {
   @ApiModelProperty(value = "逛逛第二行弹幕", name = "houseBarrageSecondList")
   private List<String> houseBarrageSecondList;
 
+  @ApiModelProperty("坐标")
+  private String location;
+
 }
 
