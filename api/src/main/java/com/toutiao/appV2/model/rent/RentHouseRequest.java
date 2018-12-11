@@ -67,7 +67,7 @@ public class RentHouseRequest   {
   @JsonProperty("forwardId")
   @ApiParam("朝向")
   @ApiModelProperty("朝向")
-  private List<Integer> forwardId = null;
+  private Integer[] forwardId = null;
 
   @JsonProperty("houseYearId")
   @ApiParam("楼龄[0-5]")
@@ -87,7 +87,7 @@ public class RentHouseRequest   {
   @JsonProperty("labelId")
   @ApiParam("标签")
   @ApiModelProperty("标签")
-  private List<Integer> labelId = null;
+  private Integer[] labelId = null;
 
   @JsonProperty("lat")
   @ApiParam("维度")
@@ -97,7 +97,7 @@ public class RentHouseRequest   {
   @JsonProperty("layoutId")
   @ApiParam("居室")
   @ApiModelProperty("居室")
-  private List<Integer> layoutId = null;
+  private Integer[] layoutId = null;
 
   @JsonProperty("lon")
   @ApiParam("经度")

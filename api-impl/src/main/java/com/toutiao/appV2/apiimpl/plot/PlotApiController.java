@@ -98,27 +98,9 @@ public class PlotApiController implements PlotApi {
     }
 
     @Override
-    public ResponseEntity<NearbyPlotsListResponse> getNearbyPlotsList(@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<Integer>> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) Optional<List<Integer>> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) Optional<List<Integer>> labelId, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Optional<Double> beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Optional<Double> endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) Optional<String> houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Optional<Integer> districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) Optional<List<Integer>> areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Optional<Integer> subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) Optional<List<Integer>> subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) Optional<String> keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Optional<Integer> pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Optional<Integer> cityId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Optional<Double> lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Optional<Double> lon, @ApiParam(value = "") @Valid @RequestParam(value = "distance", required = false) Optional<String> distance) {
+    public ResponseEntity<NearbyPlotsListResponse> getNearbyPlotsList(@ApiParam(value = "plotListRequest") @Valid PlotListRequest plotListRequest) {
         NearbyPlotsDoQuery nearbyPlotsDoQuery = new NearbyPlotsDoQuery();
-        nearbyPlotsDoQuery.setLayoutId((Integer[]) layoutId.get().toArray());
-        nearbyPlotsDoQuery.setForwardId((Integer[]) forwardId.get().toArray());
-        nearbyPlotsDoQuery.setDistance(distance.get());
-        nearbyPlotsDoQuery.setLat(lat.get());
-        nearbyPlotsDoQuery.setLon(lon.get());
-        nearbyPlotsDoQuery.setAreaId((Integer[]) areaId.get().toArray());
-        nearbyPlotsDoQuery.setBeginArea(beginArea.get());
-        nearbyPlotsDoQuery.setBeginPrice(beginPrice.get());
-        nearbyPlotsDoQuery.setCityId(cityId.get());
-        nearbyPlotsDoQuery.setDistrictId(districtId.get());
-        nearbyPlotsDoQuery.setEndArea(endArea.get());
-        nearbyPlotsDoQuery.setEndPrice(endPrice.get());
-        nearbyPlotsDoQuery.setHouseYearId(houseYearId.get());
-        nearbyPlotsDoQuery.setKeyword(keyword.get());
-        nearbyPlotsDoQuery.setLabelId((Integer[]) labelId.get().toArray());
-        nearbyPlotsDoQuery.setPageNum(pageNum.get());
-        nearbyPlotsDoQuery.setPageSize(pageSize.get());
-        nearbyPlotsDoQuery.setSubwayLineId(subwayLineId.get());
-        nearbyPlotsDoQuery.setSubwayStationId((Integer[]) subwayStationId.get().toArray());
+        BeanUtils.copyProperties(plotListRequest,nearbyPlotsDoQuery);
         PlotDetailsFewDomain plotDetailsFewDomain = nearbyPlotsRestService.queryNearbyPlotsListByUserCoordinate(nearbyPlotsDoQuery, CityUtils.getCity());
         NearbyPlotsListResponse newHouseLayoutCountResponse = new NearbyPlotsListResponse();
         BeanUtils.copyProperties(plotDetailsFewDomain, newHouseLayoutCountResponse);
@@ -218,29 +200,9 @@ public class PlotApiController implements PlotApi {
     }
 
     @Override
-    public ResponseEntity<PlotsThemeResponse> getPlotsTheme
-            (@ApiParam(value = "居室") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<Integer>> layoutId, @ApiParam(value = "朝向") @Valid @RequestParam(value = "forwardId", required = false) Optional<List<Integer>> forwardId, @ApiParam(value = "标签") @Valid @RequestParam(value = "labelId", required = false) Optional<List<Integer>> labelId, @ApiParam(value = "") @Valid @RequestParam(value = "districtIds", required = false) Optional<List<Integer>> districtIds, @ApiParam(value = "起始价格") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "结束价格") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "起始面积") @Valid @RequestParam(value = "beginArea", required = false) Optional<Double> beginArea, @ApiParam(value = "结束面积") @Valid @RequestParam(value = "endArea", required = false) Optional<Double> endArea, @ApiParam(value = "楼龄[0-5]") @Valid @RequestParam(value = "houseYearId", required = false) Optional<String> houseYearId, @ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Optional<Integer> districtId, @ApiParam(value = "商圈id") @Valid @RequestParam(value = "areaId", required = false) Optional<List<Integer>> areaId, @ApiParam(value = "地铁线Id") @Valid @RequestParam(value = "subwayLineId", required = false) Optional<Integer> subwayLineId, @ApiParam(value = "地铁站id") @Valid @RequestParam(value = "subwayStationId", required = false) Optional<List<Integer>> subwayStationId, @ApiParam(value = "关键字") @Valid @RequestParam(value = "keyword", required = false) Optional<String> keyword, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Optional<Integer> pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Optional<Integer> pageSize, @ApiParam(value = "城市id") @Valid @RequestParam(value = "cityId", required = false) Optional<Integer> cityId, @ApiParam(value = "") @Valid @RequestParam(value = "nearestPark", required = false) Optional<String> nearestPark, @ApiParam(value = "") @Valid @RequestParam(value = "recommendBuildTagsId", required = false) Optional<Integer> recommendBuildTagsId) {
-
+    public ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotListRequest") @Valid PlotListRequest plotListRequest) {
         PlotsThemeDoQuery plotsThemeDoQuery = new PlotsThemeDoQuery();
-        plotsThemeDoQuery.setDistrictIds((Integer[]) districtIds.get().toArray());
-        plotsThemeDoQuery.setDistrictId(districtId.get());
-        plotsThemeDoQuery.setNearestPark(nearestPark.get());
-        plotsThemeDoQuery.setRecommendBuildTagsId(recommendBuildTagsId.get());
-        plotsThemeDoQuery.setAreaId((Integer[]) areaId.get().toArray());
-        plotsThemeDoQuery.setBeginArea(beginArea.get());
-        plotsThemeDoQuery.setBeginPrice(beginPrice.get());
-        plotsThemeDoQuery.setCityId(cityId.get());
-        plotsThemeDoQuery.setEndArea(endArea.get());
-        plotsThemeDoQuery.setEndPrice(endPrice.get());
-        plotsThemeDoQuery.setForwardId((Integer[]) forwardId.get().toArray());
-        plotsThemeDoQuery.setHouseYearId(houseYearId.get());
-        plotsThemeDoQuery.setKeyword(keyword.get());
-        plotsThemeDoQuery.setLabelId((Integer[]) labelId.get().toArray());
-        plotsThemeDoQuery.setLayoutId((Integer[]) layoutId.get().toArray());
-        plotsThemeDoQuery.setPageNum(pageNum.get());
-        plotsThemeDoQuery.setPageSize(pageSize.get());
-        plotsThemeDoQuery.setSubwayLineId(subwayLineId.get());
-        plotsThemeDoQuery.setSubwayStationId((Integer[]) subwayStationId.get().toArray());
+        BeanUtils.copyProperties(plotListRequest,plotsThemeDoQuery);
         PlotsThemeDomain plotsThemeDos = plotsThemeRestService.getPlotsThemeList(plotsThemeDoQuery, CityUtils.getCity());
         PlotsThemeResponse plotsThemeResponse = new PlotsThemeResponse();
         BeanUtils.copyProperties(plotsThemeDos, plotsThemeResponse);
