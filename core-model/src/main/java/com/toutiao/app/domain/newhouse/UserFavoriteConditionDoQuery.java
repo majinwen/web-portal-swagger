@@ -42,4 +42,19 @@ public class UserFavoriteConditionDoQuery {
      * 是否有预设条件(0:无,1:有 默认0)
      */
     private Integer flag ;
+
+    /**
+     * 租房类型
+     */
+    private Integer rentType;
+
+    /**
+     * 找房条件类型
+     */
+    private Integer conditionType;
+
+    /**
+     * 区域id
+     */
+    private String[] subwayLineId;
 }

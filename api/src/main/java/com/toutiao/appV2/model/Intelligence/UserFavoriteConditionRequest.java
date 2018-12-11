@@ -3,6 +3,8 @@ package com.toutiao.appV2.model.Intelligence;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.toutiao.web.common.assertUtils.First;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.models.auth.In;
+import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
@@ -16,7 +18,7 @@ import java.util.Objects;
  */
 @Validated
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
-
+@Data
 public class UserFavoriteConditionRequest   {
   @ApiModelProperty(name = "beginPrice", value = "起始价格")
   @JsonProperty("beginPrice")
@@ -29,7 +31,7 @@ public class UserFavoriteConditionRequest   {
   @ApiModelProperty(name = "districtId", value = "区域id")
   @JsonProperty("districtId")
   @Valid
-  private List<String> districtId = null;
+  private String[] districtId = null;
 
   @ApiModelProperty(name = "endPrice", value = "结束价格")
   @JsonProperty("endPrice")
@@ -42,7 +44,7 @@ public class UserFavoriteConditionRequest   {
   @ApiModelProperty(name = "layoutId", value = "户型id")
   @JsonProperty("layoutId")
   @Valid
-  private List<String> layoutId = null;
+  private String[] layoutId = null;
 
   @ApiModelProperty(name = "pageNum", value = "当前页")
   @JsonProperty("pageNum")
@@ -57,255 +59,19 @@ public class UserFavoriteConditionRequest   {
   @NotNull(groups = {First.class},message = "用户id不能为空")
   private Integer userId = null;
 
-  public UserFavoriteConditionRequest beginPrice(Double beginPrice) {
-    this.beginPrice = beginPrice;
-    return this;
-  }
+  @ApiModelProperty(name = "subwayLineId", value = "地铁线id")
+  @JsonProperty("subwayLineId")
+  @Valid
+  private String[] subwayLineId = null;
 
-  /**
-   * Get beginPrice
-   * @return beginPrice
-  **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(name = "rentType", value = "租房类型(1:整租，2:合租)")
+  @JsonProperty("rentType")
+  private Integer rentType;
 
-
-  public Double getBeginPrice() {
-    return beginPrice;
-  }
-
-  public void setBeginPrice(Double beginPrice) {
-    this.beginPrice = beginPrice;
-  }
-
-  public UserFavoriteConditionRequest city(String city) {
-    this.city = city;
-    return this;
-  }
-
-  /**
-   * Get city
-   * @return city
-  **/
-  @ApiModelProperty(value = "")
+  @ApiModelProperty(name = "conditionType", value = "定制条件类型(0:二手房,1:租房)")
+  @JsonProperty("conditionType")
+  private Integer conditionType;
 
 
-  public String getCity() {
-    return city;
-  }
-
-  public void setCity(String city) {
-    this.city = city;
-  }
-
-  public UserFavoriteConditionRequest districtId(List<String> districtId) {
-    this.districtId = districtId;
-    return this;
-  }
-
-  public UserFavoriteConditionRequest addDistrictIdItem(String districtIdItem) {
-    if (this.districtId == null) {
-      this.districtId = new ArrayList<String>();
-    }
-    this.districtId.add(districtIdItem);
-    return this;
-  }
-
-  /**
-   * Get districtId
-   * @return districtId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public List<String> getDistrictId() {
-    return districtId;
-  }
-
-  public void setDistrictId(List<String> districtId) {
-    this.districtId = districtId;
-  }
-
-  public UserFavoriteConditionRequest endPrice(Double endPrice) {
-    this.endPrice = endPrice;
-    return this;
-  }
-
-  /**
-   * Get endPrice
-   * @return endPrice
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Double getEndPrice() {
-    return endPrice;
-  }
-
-  public void setEndPrice(Double endPrice) {
-    this.endPrice = endPrice;
-  }
-
-  public UserFavoriteConditionRequest flag(Integer flag) {
-    this.flag = flag;
-    return this;
-  }
-
-  /**
-   * Get flag
-   * @return flag
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getFlag() {
-    return flag;
-  }
-
-  public void setFlag(Integer flag) {
-    this.flag = flag;
-  }
-
-  public UserFavoriteConditionRequest layoutId(List<String> layoutId) {
-    this.layoutId = layoutId;
-    return this;
-  }
-
-  public UserFavoriteConditionRequest addLayoutIdItem(String layoutIdItem) {
-    if (this.layoutId == null) {
-      this.layoutId = new ArrayList<String>();
-    }
-    this.layoutId.add(layoutIdItem);
-    return this;
-  }
-
-  /**
-   * Get layoutId
-   * @return layoutId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public List<String> getLayoutId() {
-    return layoutId;
-  }
-
-  public void setLayoutId(List<String> layoutId) {
-    this.layoutId = layoutId;
-  }
-
-  public UserFavoriteConditionRequest pageNum(Integer pageNum) {
-    this.pageNum = pageNum;
-    return this;
-  }
-
-  /**
-   * Get pageNum
-   * @return pageNum
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getPageNum() {
-    return pageNum;
-  }
-
-  public void setPageNum(Integer pageNum) {
-    this.pageNum = pageNum;
-  }
-
-  public UserFavoriteConditionRequest pageSize(Integer pageSize) {
-    this.pageSize = pageSize;
-    return this;
-  }
-
-  /**
-   * Get pageSize
-   * @return pageSize
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getPageSize() {
-    return pageSize;
-  }
-
-  public void setPageSize(Integer pageSize) {
-    this.pageSize = pageSize;
-  }
-
-  public UserFavoriteConditionRequest userId(Integer userId) {
-    this.userId = userId;
-    return this;
-  }
-
-  /**
-   * Get userId
-   * @return userId
-  **/
-  @ApiModelProperty(value = "")
-
-
-  public Integer getUserId() {
-    return userId;
-  }
-
-  public void setUserId(Integer userId) {
-    this.userId = userId;
-  }
-
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    UserFavoriteConditionRequest userFavoriteConditionRequest = (UserFavoriteConditionRequest) o;
-    return Objects.equals(this.beginPrice, userFavoriteConditionRequest.beginPrice) &&
-        Objects.equals(this.city, userFavoriteConditionRequest.city) &&
-        Objects.equals(this.districtId, userFavoriteConditionRequest.districtId) &&
-        Objects.equals(this.endPrice, userFavoriteConditionRequest.endPrice) &&
-        Objects.equals(this.flag, userFavoriteConditionRequest.flag) &&
-        Objects.equals(this.layoutId, userFavoriteConditionRequest.layoutId) &&
-        Objects.equals(this.pageNum, userFavoriteConditionRequest.pageNum) &&
-        Objects.equals(this.pageSize, userFavoriteConditionRequest.pageSize) &&
-        Objects.equals(this.userId, userFavoriteConditionRequest.userId);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(beginPrice, city, districtId, endPrice, flag, layoutId, pageNum, pageSize, userId);
-  }
-
-  @Override
-  public String toString() {
-    StringBuilder sb = new StringBuilder();
-    sb.append("class UserFavoriteConditionRequest {\n");
-    
-    sb.append("    beginPrice: ").append(toIndentedString(beginPrice)).append("\n");
-    sb.append("    city: ").append(toIndentedString(city)).append("\n");
-    sb.append("    districtId: ").append(toIndentedString(districtId)).append("\n");
-    sb.append("    endPrice: ").append(toIndentedString(endPrice)).append("\n");
-    sb.append("    flag: ").append(toIndentedString(flag)).append("\n");
-    sb.append("    layoutId: ").append(toIndentedString(layoutId)).append("\n");
-    sb.append("    pageNum: ").append(toIndentedString(pageNum)).append("\n");
-    sb.append("    pageSize: ").append(toIndentedString(pageSize)).append("\n");
-    sb.append("    userId: ").append(toIndentedString(userId)).append("\n");
-    sb.append("}");
-    return sb.toString();
-  }
-
-  /**
-   * Convert the given object to string with each line indented by 4 spaces
-   * (except the first line).
-   */
-  private String toIndentedString(Object o) {
-    if (o == null) {
-      return "null";
-    }
-    return o.toString().replace("\n", "\n    ");
-  }
 }
 

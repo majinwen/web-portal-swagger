@@ -1,6 +1,7 @@
 package com.toutiao.app.service.homepage;
 
 import com.toutiao.app.domain.homepage.*;
+import com.toutiao.app.domain.newhouse.CustomConditionCountDo;
 import com.toutiao.app.domain.newhouse.NewHouseListDomain;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
@@ -97,4 +98,11 @@ public interface HomePageRestService {
      * @return
      */
     Integer deleteRecommendCondition (Integer userId, Integer cityId);
+
+    /**
+     * 条件筛选数量
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    CustomConditionCountDo getCustomCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 }

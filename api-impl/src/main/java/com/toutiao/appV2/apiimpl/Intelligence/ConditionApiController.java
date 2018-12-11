@@ -1,10 +1,12 @@
 package com.toutiao.appV2.apiimpl.Intelligence;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toutiao.app.domain.newhouse.CustomConditionCountDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.appV2.api.Intelligence.ConditionApi;
+import com.toutiao.appV2.model.Intelligence.CustomConditionCountResponse;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionResponse;
 import com.toutiao.appV2.model.StringDataResponse;
@@ -68,6 +70,17 @@ public class ConditionApiController implements ConditionApi {
         StringDataResponse stringDataResponse = new StringDataResponse();
         stringDataResponse.setData("保存推荐条件成功");
         return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "userFavoriteConditionRequest", required = true)  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
+
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+        CustomConditionCountDo customCondition = homePageRestService.getCustomCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
+        CustomConditionCountResponse customConditionCountResponse = new CustomConditionCountResponse();
+        customConditionCountResponse.setData(customCondition);
+        return new ResponseEntity<>(customConditionCountResponse,HttpStatus.OK);
     }
 
 }

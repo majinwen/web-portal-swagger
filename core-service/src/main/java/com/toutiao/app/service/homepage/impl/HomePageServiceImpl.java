@@ -3,13 +3,12 @@ package com.toutiao.app.service.homepage.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
+import com.toutiao.app.dao.rent.RentEsDao;
+import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.UserFavoriteCondition;
 import com.toutiao.app.domain.homepage.*;
-import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
-import com.toutiao.app.domain.newhouse.NewHouseListDomain;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
@@ -38,6 +37,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
+
 @Service
 public class HomePageServiceImpl implements HomePageRestService {
     @Autowired
@@ -63,6 +64,12 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private SellHouseService sellHouseService;
+
+    @Autowired
+    private SellHouseEsDao sellHouseEsDao;
+
+    @Autowired
+    private RentEsDao rentEsDao;
     /**
      * @return 获取二手房5条
      */
@@ -596,5 +603,66 @@ public class HomePageServiceImpl implements HomePageRestService {
 
         int result = userFavoriteConditionMapper.deleteRecommendCondition(userId ,cityId);
         return result;
+    }
+
+    @Override
+    public CustomConditionCountDo getCustomCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        CustomConditionCountDo customConditionCountDo = new CustomConditionCountDo();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
+
+        SearchResponse houseCount = null;
+        SearchResponse searchResponse = null;
+        //预算
+        if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+        }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+        }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
+        }
+
+        if(userFavoriteConditionDoQuery.getConditionType()==0){
+            //二手房
+            String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
+            boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds()) && userFavoriteConditionDoQuery.getDistrictIds().length!=0){
+                boolQueryBuilder.must(termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictIds()));
+            }
+
+            searchResponse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
+            builder.must(QueryBuilders.termQuery("isDel", "0"));
+            builder.must(QueryBuilders.termQuery("is_claim", "0"));
+            houseCount = sellHouseEsDao.querySellHouse(builder, city);
+        }else if(userFavoriteConditionDoQuery.getConditionType()==1){
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getRentType()) && userFavoriteConditionDoQuery.getRentType()!=0){
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",userFavoriteConditionDoQuery.getRentType()));
+                String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
+                if(userFavoriteConditionDoQuery.getRentType()==1){
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", layoutId));
+                }else if(userFavoriteConditionDoQuery.getRentType()==2){
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", layoutId));
+                }
+            }
+//            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds()) && userFavoriteConditionDoQuery.getDistrictIds().length!=0){
+//                boolQueryBuilder.must(termsQuery("area_id", userFavoriteConditionDoQuery.getDistrictIds()));
+//            }
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getSubwayLineId()) && userFavoriteConditionDoQuery.getSubwayLineId().length!=0){
+                boolQueryBuilder.must(QueryBuilders.termsQuery("subway_line_id",userFavoriteConditionDoQuery.getSubwayLineId()));
+            }
+
+            searchResponse = rentEsDao.queryRentList(boolQueryBuilder,0,0,city);
+            builder.must(QueryBuilders.termQuery("rentHouseType", "3"));
+            houseCount = rentEsDao.queryRentList(builder,0,0,city);
+        }
+
+
+        long customCount = searchResponse.getHits().totalHits;
+        long totalCount = houseCount.getHits().totalHits;
+        customConditionCountDo.setCustomCount((int)customCount);
+        customConditionCountDo.setTotalCount((int)totalCount);
+
+        customConditionCountDo.setDesc("已从"+totalCount+"套房源中筛选出"+customCount+"套");
+        return customConditionCountDo;
     }
 }
