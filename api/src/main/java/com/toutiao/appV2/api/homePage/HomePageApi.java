@@ -227,9 +227,9 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/esf/getRecommendEsf5",
             produces = { "application/json" },
             //consumes = "application/json",
-            method = RequestMethod.POST)
+            method = RequestMethod.GET)
     @ApiIgnore
-    ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request" ,required=true )  @Valid @RequestBody RecommendEsf5Request recommendEsf5Request);
+    ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request" ,required=true )  @Valid RecommendEsf5Request recommendEsf5Request);
 
 
     @ApiOperation(value = "获取推荐小区", nickname = "getPlotByRecommendCondition", notes = "", response = PlotDetailsFewDoList.class, tags={ "首页", })

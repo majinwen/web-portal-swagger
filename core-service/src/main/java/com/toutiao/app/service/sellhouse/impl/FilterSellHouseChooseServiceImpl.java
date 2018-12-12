@@ -419,13 +419,13 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
 
         //总价(上下浮动10%)
         double beginPrice = recommendEsf5DoQuery.getBeginPrice();
-        if (beginPrice != 0) {
-            beginPrice *= 0.9;
-        }
+//        if (beginPrice != 0) {
+//            beginPrice *= 0.9;
+//        }
         double endPrice = recommendEsf5DoQuery.getEndPrice();
-        if (endPrice != 0) {
-            endPrice *= 1.1;
-        }
+//        if (endPrice != 0) {
+//            endPrice *= 1.1;
+//        }
         if (beginPrice != 0 && endPrice != 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
         } else if (beginPrice == 0 && endPrice != 0) {

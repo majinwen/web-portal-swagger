@@ -243,22 +243,22 @@ public class SellHouseRestController implements SellHouseRestApi {
         return new ResponseEntity<SellHouseBeSureToSnatchResponse>(sellHouseBeSureToSnatchResponses, HttpStatus.OK);
     }
 
-    /**
-     * 获取推荐房源5条
-     *
-     * @param recommendEsf5Request
-     * @return
-     */
-    @Override
-    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult) {
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
-        RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
-        BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
-        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
-        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
-    }
+//    /**
+//     * 获取推荐房源5条
+//     *
+//     * @param recommendEsf5Request
+//     * @return
+//     */
+//    @Override
+//    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult) {
+//        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+//        RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
+//        BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
+//        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
+//        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+//        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
+//        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+//    }
 
     /**
      * 猜你喜欢:二手房列表

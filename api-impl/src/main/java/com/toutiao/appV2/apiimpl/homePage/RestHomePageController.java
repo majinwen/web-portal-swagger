@@ -232,13 +232,13 @@ public class RestHomePageController implements HomePageApi {
     }
 
     @Override
-    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request", required = true) @Valid @RequestBody RecommendEsf5Request recommendEsf5Request) {
+    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request) {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
         RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
         BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
         SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
-        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+        return new ResponseEntity<>(sellHouseSearchDomainResponse, HttpStatus.OK);
     }
 
     @Override
