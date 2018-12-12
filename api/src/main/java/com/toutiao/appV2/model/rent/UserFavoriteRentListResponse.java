@@ -17,9 +17,10 @@ public class UserFavoriteRentListResponse {
     @JsonProperty("rentDetailsList")
     @Valid
     @ApiModelProperty("出租房源详情")
-    private List<UserFavoriteRentDetailDo> userFavoriteRentDetails = null;
+    private List<UserFavoriteRentDetailDo> favoriteRentDetails = null;
 
     @JsonProperty("totalCount")
     @ApiModelProperty("总数")
     private Integer totalCount = null;
+
 }

@@ -1,5 +1,6 @@
 package com.toutiao.appV2.api.rent;
 
+import com.toutiao.appV2.model.rent.RentHouseRequest;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListResponse;
 import com.toutiao.appV2.model.sellhouse.UserFavoriteConditionRequest;
 import io.swagger.annotations.*;
@@ -23,8 +24,8 @@ public interface UserFavoriteRentApi {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/rent/getRentByFavoriteCondition",
+    @RequestMapping(value = "/rest/rent/getRentByUserFavorite",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<UserFavoriteRentListResponse> getNearRentHouseByLocation(@ApiParam(value = "userFavoriteConditionRequest"  )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "rentHouseRequest"  )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
 }
