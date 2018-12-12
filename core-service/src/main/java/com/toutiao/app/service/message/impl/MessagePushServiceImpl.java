@@ -121,6 +121,9 @@ public class MessagePushServiceImpl implements MessagePushService {
     private String qinniuImg;
     @Value("${app.domain.name}")
     private String appName;
+    @Value("${wap.domain.name}")
+    private String wapName;
+
     /**
      * 房源类消息列表
      *
@@ -820,10 +823,11 @@ public class MessagePushServiceImpl implements MessagePushService {
      * @return
      */
     private String getHostOfUrl(HttpServletRequest request) {
-        StringBuffer requestURL = request.getRequestURL();
-        String tempContextUrl = requestURL.delete(requestURL.length() - request.getRequestURI().length(),
-                requestURL.length()).toString();
-        return tempContextUrl;
+//        StringBuffer requestURL = request.getRequestURL();
+//        String tempContextUrl = requestURL.delete(requestURL.length() - request.getRequestURI().length(),
+//                requestURL.length()).toString();
+//        return tempContextUrl;
+        return wapName;
     }
 
     /**
