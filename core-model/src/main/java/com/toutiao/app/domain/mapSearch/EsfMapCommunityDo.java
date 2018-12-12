@@ -3,6 +3,8 @@ package com.toutiao.app.domain.mapSearch;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * Created by CuiShihao on 2018/11/26
  */
@@ -49,7 +51,7 @@ public class EsfMapCommunityDo {
     /**
      * 标签
      */
-    private String[] tagsName;
+    private List<String> tagsName;
 
     /**
      * 是否删除(0-未删除，1-已删除)
@@ -67,6 +69,12 @@ public class EsfMapCommunityDo {
      */
     @ApiModelProperty("社区名称")
     private String ploatName;
+
+    /**
+     * 社区id
+     */
+    @ApiModelProperty("社区id")
+    private String plotId;
 
     /**
      * 社区ID
