@@ -653,9 +653,9 @@ public class HomePageServiceImpl implements HomePageRestService {
     }
 
     @Override
-    public Integer deleteRecommendCondition(Integer userId, Integer cityId) {
+    public Integer deleteRecommendCondition(Integer userId, Integer conditionType, Integer cityId) {
 
-        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId ,cityId);
+        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId ,conditionType, cityId);
         return result;
     }
 

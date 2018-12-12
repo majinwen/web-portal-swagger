@@ -101,6 +101,6 @@
     <set>
       is_del = 1
     </set>
-    WHERE user_id = #{userId} and is_del = 0 and city_id = #{cityId}
+    WHERE user_id = #{userId} and is_del = 0 and city_id = #{cityId} and condition_type = #{conditionType}
   </update>
 </mapper>

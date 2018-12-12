@@ -48,9 +48,10 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId) {
+    public ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "userId", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId,
+                                                                       @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType) {
         Integer city = CityUtils.returnCityId(CityUtils.getCity());
-        Integer integer = homePageRestService.deleteRecommendCondition(userId, city);
+        Integer integer = homePageRestService.deleteRecommendCondition(userId, conditionType, city);
         StringDataResponse stringDataResponse = new StringDataResponse();
         stringDataResponse.setData("删除推荐条件成功");
         return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);

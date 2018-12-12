@@ -94,7 +94,7 @@ public interface HomePageRestService {
      * @param userId
      * @return
      */
-    Integer deleteRecommendCondition (Integer userId, Integer cityId);
+    Integer deleteRecommendCondition (Integer userId, Integer conditionType, Integer cityId);
 
     /**
      * 条件筛选数量

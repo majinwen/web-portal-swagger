@@ -1,7 +1,6 @@
 package com.toutiao.web.dao.mapper.officeweb.favorite;
 
 import com.toutiao.app.domain.favorite.UserFavoriteCondition;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.web.dao.BaseDao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -16,5 +15,5 @@ public interface UserFavoriteConditionMapper extends BaseDao {
 
     int updateRecommendCondition(UserFavoriteCondition record);
 
-    int deleteRecommendCondition(@Param("userId") Integer userId, @Param("cityId") Integer cityId);
+    int deleteRecommendCondition(@Param("userId") Integer userId, @Param("conditionType") Integer conditionType, @Param("cityId") Integer cityId);
 }

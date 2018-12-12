@@ -38,8 +38,8 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/homePage/deleteRecommendCondition",
         produces = "application/json",
         method = RequestMethod.GET)
-    @ApiIgnore
-    ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
+    ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "userId", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId,
+                                                                @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType);
 
     @ApiOperation(value = "获取推荐条件", nickname = "getRecommendCondition", notes = "", response = UserFavoriteConditionResponse.class, tags={ "首页推荐条件", })
     @ApiResponses(value = { 
@@ -52,7 +52,6 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/homePage/getRecommendCondition",
         produces = "application/json",
         method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "userId", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId,
                                                                         @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType);
 
