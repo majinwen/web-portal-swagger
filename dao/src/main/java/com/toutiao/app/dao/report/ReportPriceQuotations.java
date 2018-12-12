@@ -23,7 +23,7 @@ public class ReportPriceQuotations {
     /**
      * 0:新房 1:二手房
      */
-    @ApiModelProperty(value = "0:新房 1:二手房")
+    @ApiModelProperty(value = "0:新房,1:二手房")
     private Short nOrE;
 
     /**
