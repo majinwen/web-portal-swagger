@@ -81,10 +81,17 @@ public class InvitationApiController implements InvitationApi {
         InviteHistory inviteHistory = new InviteHistory();
         BeanUtils.copyProperties(inviteHistoryRequest, inviteHistory);
         InvitationCode invitationValid = invitationCodeService.getInvitationValid(inviteHistoryRequest.getInvitationCode());
+
         if (invitationValid == null) {
             throw new BaseException(UserInterfaceErrorCodeEnum.INVITATION_CODE_NOT_EXITS);
         }
-        inviteHistory.setUserId(UserBasic.getCurrent().getUserId());
+        String userId = UserBasic.getCurrent().getUserId();
+
+        if (invitationValid.getUserId().equals(userId)) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.INVITATION_CODE_ADD_YOURSELF);
+        }
+
+        inviteHistory.setUserId(userId);
         inviteHistory.setEquipmentNo(request.getHeader("deviceid"));
         int i = inviteHistoryService.saveInviteHistory(inviteHistory);
         List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
