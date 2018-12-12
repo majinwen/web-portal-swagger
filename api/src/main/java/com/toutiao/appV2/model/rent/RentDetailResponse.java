@@ -73,7 +73,7 @@ public class RentDetailResponse {
     private String floorLevel = null;
 
     @JsonProperty("forward")
-    @ApiModelProperty("朝向ID（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）")
+    @ApiModelProperty("朝向")
     private String forward = null;
 
     @JsonProperty("hall")
