@@ -3,11 +3,13 @@ package com.toutiao.appV2.apiimpl.sellhouse;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDomain;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.appV2.api.sellhouse.SellHouseRestApi;
+import com.toutiao.appV2.model.Intelligence.CustomConditionDetailsResponse;
 import com.toutiao.appV2.model.plot.PlotDetailsResponse;
 import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.appV2.model.sellhouse.*;
@@ -116,10 +118,6 @@ public class SellHouseRestController implements SellHouseRestApi {
     public ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult) {
         return getSimilarSellHouse(sellHouseRequest);
     }
-
-
-
-
 
     private ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest) {
 
@@ -275,6 +273,20 @@ public class SellHouseRestController implements SellHouseRestApi {
         BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
         return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest userFavoriteConditionRequest) {
+
+        CustomConditionDetailsResponse conditionDetailsResponse = new CustomConditionDetailsResponse();
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+
+        CustomConditionDetailsDomain conditionDetailsDomain = sellHouseService.getEsfCustomConditionDetails(userFavoriteConditionDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(conditionDetailsDomain, conditionDetailsResponse);
+
+        return new ResponseEntity<>(conditionDetailsResponse, HttpStatus.OK);
     }
 
 

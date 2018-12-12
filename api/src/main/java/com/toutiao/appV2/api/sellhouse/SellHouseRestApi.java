@@ -1,6 +1,8 @@
 package com.toutiao.appV2.api.sellhouse;
 
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.appV2.model.Intelligence.CustomConditionCountResponse;
+import com.toutiao.appV2.model.Intelligence.CustomConditionDetailsResponse;
 import com.toutiao.appV2.model.sellhouse.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -160,5 +162,20 @@ public interface SellHouseRestApi {
             produces = {"application/json"},
             method = {RequestMethod.POST})
     ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult);
+
+
+    @ApiOperation(value = "二手房定制条件筛选结果分布", nickname = "getEsfCustomConditionDetails", notes = "", response = CustomConditionCountResponse.class, tags={ "首页推荐条件", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CustomConditionCountResponse.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/esf/getEsfCustomConditionDetails",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 }

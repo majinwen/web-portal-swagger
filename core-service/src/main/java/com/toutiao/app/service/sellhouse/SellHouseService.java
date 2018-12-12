@@ -2,6 +2,8 @@ package com.toutiao.app.service.sellhouse;
 
 
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDomain;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 
@@ -112,4 +114,11 @@ public interface SellHouseService {
      * @return
      */
     int isDefaultImage(String importTime, Date today, String image);
+
+    /**
+     * 定制条件分布结果
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    CustomConditionDetailsDomain getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 }

@@ -7,10 +7,7 @@ package com.toutiao.appV2.api.Intelligence;
 
 
 import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
-import com.toutiao.appV2.model.Intelligence.CustomConditionCountResponse;
-import com.toutiao.appV2.model.Intelligence.CustomConditionUserSampleResponse;
-import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
-import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionResponse;
+import com.toutiao.appV2.model.Intelligence.*;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.newhouse.NewHouseListRequest;
 import io.swagger.annotations.*;
@@ -83,6 +80,8 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/homePage/getCustomCondition",
             produces = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "推荐条件", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+
+
 
 }

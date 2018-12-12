@@ -8,7 +8,10 @@ import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
+import com.toutiao.app.domain.mapSearch.EsfMapSearchDo;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDomain;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotsHousesDomain;
@@ -48,14 +51,21 @@ import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.metrics.max.ParsedMax;
+import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
 import org.elasticsearch.search.sort.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.*;
+
+import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
 public class SellHouseServiceImpl implements SellHouseService {
@@ -2161,6 +2171,76 @@ public class SellHouseServiceImpl implements SellHouseService {
             list.add(sellHouseDo);
         }
         return list;
+    }
+
+
+
+    @Override
+    public CustomConditionDetailsDomain getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        CustomConditionDetailsDomain customConditionDetailsDomain = new CustomConditionDetailsDomain();
+        List<CustomConditionDetailsDo> customConditionDetailsDos = new ArrayList<>();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+        String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
+        if(layoutId.length > 0){
+            boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+        }
+        if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+        }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+        }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
+        }
+        if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
+            boolQueryBuilder.must(termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
+        }
+
+        SearchResponse searchResponse = sellHouseEsDao.getEsfCustomConditionDetails(boolQueryBuilder, city);
+        //long searchCount = searchResponse.getHits().totalHits;
+        Terms terms = searchResponse.getAggregations().get("areaName");
+        List buckets = terms.getBuckets();
+        for (Object bucket : buckets){
+            CustomConditionDetailsDo conditionDetailsDo = new CustomConditionDetailsDo();
+            conditionDetailsDo.setBizcircleId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());
+            conditionDetailsDo.setHouseCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+            ParsedMin houseMinArea = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("houseMinArea");
+
+            Double minArea = houseMinArea.getValue();
+            if (null!=minArea) {
+                conditionDetailsDo.setHouseMinArea( new BigDecimal(minArea).setScale(1, RoundingMode.UP).doubleValue());
+            }
+            ParsedMax houseMaxArea = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("houseMaxArea");
+            Double maxArea = houseMaxArea.getValue();
+            if (null!=maxArea) {
+                conditionDetailsDo.setHouseMaxArea(new BigDecimal(maxArea).setScale(1, RoundingMode.UP).doubleValue());
+            }
+
+            conditionDetailsDo.setHouseAreaDesc(conditionDetailsDo.getHouseMinArea()+"-"+conditionDetailsDo.getHouseMaxArea()+"m²");
+            Terms buildCount = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("buildCount");
+            if(buildCount.getBuckets().size() > 0){
+                conditionDetailsDo.setBuildCount(buildCount.getBuckets().size());
+            }else{
+                conditionDetailsDo.setBuildCount(0);
+            }
+
+
+            BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+            boolQuery.must(QueryBuilders.termQuery("bizcircle_id",conditionDetailsDo.getBizcircleId()));
+            SearchResponse avgPriceByBizcircle = sellHouseEsDao.getAvgPriceByBizcircle(boolQuery, city);
+            SearchHits layoutHits = avgPriceByBizcircle.getHits();
+            SearchHit[] searchHists = layoutHits.getHits();
+            if(searchHists.length > 0){
+                for(SearchHit searchHit : searchHists){
+                    conditionDetailsDo.setBizcircleName(searchHit.getSourceAsMap().get("bizcircle_name")==null?"":searchHit.getSourceAsMap().get("bizcircle_name").toString());
+                    conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice")+"元/m²");
+                }
+            }
+            customConditionDetailsDos.add(conditionDetailsDo);
+        }
+        customConditionDetailsDomain.setData(customConditionDetailsDos);
+        return customConditionDetailsDomain;
     }
 
 }

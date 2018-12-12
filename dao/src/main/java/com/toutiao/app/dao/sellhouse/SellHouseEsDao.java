@@ -115,4 +115,13 @@ public interface SellHouseEsDao {
      * @return
      */
     SearchResponse getSimilarSellHouseList(BoolQueryBuilder query, String city, GeoDistanceSortBuilder geoDistanceSort);
+
+
+    SearchResponse getEsfCustomConditionDetails(BoolQueryBuilder query, String city);
+
+
+
+    SearchResponse getAvgPriceByBizcircle(BoolQueryBuilder query, String city);
+
+
 }
