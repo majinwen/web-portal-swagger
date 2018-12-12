@@ -11,10 +11,12 @@
     <result column="cut_house_avg_price" property="cutHouseAvgPrice" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="day" property="day" jdbcType="INTEGER" />
+    <result column="desc" property="desc" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, city_id, year, month, rob_house_count, lower_house_avg_price, cut_house_avg_price, 
-    create_time, update_time
+    create_time, update_time, day, desc
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 

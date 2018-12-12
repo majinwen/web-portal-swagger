@@ -1,15 +1,14 @@
 package com.toutiao.appV2.model.report;
 
 import com.toutiao.app.dao.report.*;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-@ApiModel(value = "数据报告")
 public class ReportCityResponse {
+
     /**
      * id
      */
@@ -278,4 +277,10 @@ public class ReportCityResponse {
      */
     @ApiModelProperty(value = "热门商圈")
     private List<ReportAreaHot> areaHot;
+
+    /**
+     * 当前日期
+     */
+    @ApiModelProperty(value = "当前日期")
+    private String today;
 }

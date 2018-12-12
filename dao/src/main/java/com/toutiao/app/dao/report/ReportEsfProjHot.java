@@ -7,7 +7,6 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "二手房热门小区")
 public class ReportEsfProjHot {
 
     /**
