@@ -57,10 +57,12 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId) {
+    public ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "userId", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId,
+                                                                               @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType) {
         UserFavoriteConditionResponse userFavoriteConditionResponse = new UserFavoriteConditionResponse();
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         userFavoriteConditionDoQuery.setUserId(userId);
+        userFavoriteConditionDoQuery.setConditionType(conditionType);
         UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         BeanUtils.copyProperties(recommendCondition, userFavoriteConditionResponse);
         return new ResponseEntity<UserFavoriteConditionResponse>(userFavoriteConditionResponse, HttpStatus.OK);

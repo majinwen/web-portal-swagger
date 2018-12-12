@@ -53,7 +53,8 @@ public interface ConditionApi {
         produces = "application/json",
         method = RequestMethod.GET)
     @ApiIgnore
-    ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
+    ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "userId", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId,
+                                                                        @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType);
 
 
     @ApiOperation(value = "保存更新推荐条件", nickname = "getNewHouseList", notes = "",

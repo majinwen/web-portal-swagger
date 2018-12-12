@@ -48,6 +48,14 @@ public class UserFavoriteConditionResponse   {
   @Valid
   private String[] subwayLineId = null;
 
+  @ApiModelProperty(name = "conditionType", value = "定制找房类型")
+  @JsonProperty("conditionType")
+  private Integer conditionType = null;
+
+  @ApiModelProperty(name = "rentType", value = "租房类型1整租2合租")
+  @JsonProperty("rentType")
+  private Integer rentType = null;
+
 
 }
 
