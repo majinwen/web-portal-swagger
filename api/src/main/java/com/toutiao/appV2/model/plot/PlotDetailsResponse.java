@@ -1,5 +1,6 @@
 package com.toutiao.appV2.model.plot;
 
+import com.toutiao.app.domain.plot.PlotMarketDomain;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -118,5 +119,7 @@ public class PlotDetailsResponse {
     @ApiModelProperty("标签id")
     private List<Integer> recommendBuildTagsId = null;
 
+    @ApiModelProperty("小区行情")
+    private PlotMarketDomain plotMarketDomain;
 }
 
