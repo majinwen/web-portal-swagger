@@ -5,6 +5,7 @@ import com.toutiao.app.dao.report.*;
 import com.toutiao.app.service.report.ReportCityService;
 import com.toutiao.appV2.api.report.ReportRestApi;
 import com.toutiao.appV2.model.report.*;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +110,7 @@ public class ReportRestController implements ReportRestApi {
 
     private ReportCityResponse turnToResponse(ReportCity reportCity) {
         ReportCityResponse reportCityResponse = new ReportCityResponse();
+        reportCityResponse.setToday(DateUtil.getCurrStrDate());
         BeanUtils.copyProperties(reportCity, reportCityResponse);
         reportCityResponse.setNewGuideAttention(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideAttention.class));
         reportCityResponse.setNewGuideHot(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideHot.class));

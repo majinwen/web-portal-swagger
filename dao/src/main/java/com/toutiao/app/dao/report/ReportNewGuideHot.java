@@ -7,7 +7,6 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "新房指南热门新盘")
 public class ReportNewGuideHot {
     /**
      * 楼盘Id
