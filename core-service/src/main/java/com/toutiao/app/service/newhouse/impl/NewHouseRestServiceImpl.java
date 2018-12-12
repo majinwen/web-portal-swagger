@@ -187,8 +187,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         } else if (newHouseDoQuery.getEndPrice() == 0 && newHouseDoQuery.getBeginPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
-        } else {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
         }
         //总价
         if (newHouseDoQuery.getBeginTotalPrice() != 0 && newHouseDoQuery.getEndTotalPrice() != 0) {
@@ -198,8 +196,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice()).lte(newHouseDoQuery.getEndTotalPrice())));
         } else if (newHouseDoQuery.getEndTotalPrice() == 0 && newHouseDoQuery.getBeginTotalPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice())));
-        } else {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)));
+        }
+
+        if ("3".equals(newHouseDoQuery.getSort())) {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
         }
 
         //标签
