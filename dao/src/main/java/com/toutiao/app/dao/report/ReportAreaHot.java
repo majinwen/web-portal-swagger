@@ -7,7 +7,6 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "热门商圈排行榜")
 public class ReportAreaHot {
     /**
      * ID

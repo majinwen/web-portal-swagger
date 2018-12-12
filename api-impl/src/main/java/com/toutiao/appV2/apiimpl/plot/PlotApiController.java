@@ -15,6 +15,7 @@ import com.toutiao.appV2.model.plot.*;
 import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.appV2.api.plot.PlotApi;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.*;
@@ -148,6 +149,13 @@ public class PlotApiController implements PlotApi {
         PlotDetailsDo plotDetailsDo = appPlotService.queryPlotDetailByPlotId(plotId, CityUtils.getCity());
         PlotDetailsResponse plotDetailsResponse = new PlotDetailsResponse();
         BeanUtils.copyProperties(plotDetailsDo, plotDetailsResponse);
+
+        PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
+
+        if (null != plotDetailsDo.getPlotsHousesDomain()) {
+            BeanUtils.copyProperties(plotDetailsDo.getPlotsHousesDomain(),plotsHousesDomain);
+        }
+        plotDetailsResponse.setPlotsHousesDomain(plotsHousesDomain);
         return new ResponseEntity<PlotDetailsResponse>(plotDetailsResponse, HttpStatus.OK);
     }
 

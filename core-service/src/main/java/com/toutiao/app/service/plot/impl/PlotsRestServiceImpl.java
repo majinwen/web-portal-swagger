@@ -10,6 +10,7 @@ import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsHomesRestService;
+import com.toutiao.app.service.plot.PlotsMarketService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
@@ -75,6 +76,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private FavoriteRestService favoriteRestService;
     @Autowired
     private PlotsHomesRestService plotsHomesRestService;
+    @Autowired
+    private PlotsMarketService plotsMarketService;
 
 
     /**
@@ -146,7 +149,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
 
             PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId, city);
+            PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotId);
 
+            PlotMarketDomain plotMarketDomain = null;
+            if (null != plotMarketDo) {
+                plotMarketDomain = new PlotMarketDomain();
+                org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                plotDetailsDo.setPlotMarketDomain(plotMarketDomain);
+            }
             plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
             plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
         } catch (Exception e) {

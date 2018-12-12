@@ -1,13 +1,11 @@
 package com.toutiao.app.dao.report;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-@ApiModel(value = "主题房源趋势表")
 public class ReportTopicHouseTrend {
 
     /**
@@ -63,4 +61,16 @@ public class ReportTopicHouseTrend {
      */
     @ApiModelProperty(value = "更新时间")
     private Date updateTime;
+
+    /**
+     * 天
+     */
+    @ApiModelProperty(value = "天")
+    private Integer day;
+
+    /**
+     * 每日行情描述
+     */
+    @ApiModelProperty(value = "每日行情描述")
+    private Integer desc;
 }
