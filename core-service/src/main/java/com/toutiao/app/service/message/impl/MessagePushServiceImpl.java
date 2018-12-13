@@ -890,7 +890,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         } else {
             RentDetailsDo rentDetailsDo = rentRestService.queryRentDetailByHouseId(houseId, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
             jsonObject = esfInfo.getJSONObject(houseId);
-            if (rentDetailsDo == null){
+            if (rentDetailsDo.getHouseId() == null){
                 jsonObject.put("status", 1);
             } else {
                 jsonObject.put("status", 0);
