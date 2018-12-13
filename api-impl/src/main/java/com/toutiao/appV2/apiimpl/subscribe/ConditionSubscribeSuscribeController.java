@@ -150,6 +150,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         userSubscribe.setUpdateTime(DateTime.now().toDate());
         userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
         userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        userSubscribe.setSubscribeType(0);
         userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
         subscribeService.insertSelective(userSubscribe);
         return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
@@ -171,6 +172,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         userSubscribe.setUpdateTime(DateTime.now().toDate());
         userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
         userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
+        userSubscribe.setSubscribeType(3);
         userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
         subscribeService.insertSelective(userSubscribe);
         return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
