@@ -20,48 +20,48 @@ public interface ReportCityService {
      * @param cityId
      * @return
      */
-    List<ReportNewGuideAttention> selectReportNewGuideAttentionList(Integer cityId);
+    List<ReportNewGuideAttention> selectReportNewGuideAttentionList(Integer cityId,Integer pageNum,Integer pageSize);
     /**
      * 根据城市ID查询全部数据
      *
      * @param cityId
      * @return
      */
-    List<ReportNewGuideHot> selectReportNewGuideHotList(Integer cityId);
+    List<ReportNewGuideHot> selectReportNewGuideHotList(Integer cityId,Integer pageNum,Integer pageSize);
     /**
      * 根据城市ID查询全部数据
      *
      * @param cityId
      * @return
      */
-    List<ReportNewGuidePopular> selectReportNewGuidePopularList(Integer cityId);
+    List<ReportNewGuidePopular> selectReportNewGuidePopularList(Integer cityId,Integer pageNum,Integer pageSize);
     /**
      * 根据城市ID查询全部数据
      *
      * @param cityId
      * @return
      */
-    List<ReportNewGuideSales> selectReportNewGuideSalesList(Integer cityId);
+    List<ReportNewGuideSales> selectReportNewGuideSalesList(Integer cityId,Integer pageNum,Integer pageSize);
     /**
      * 根据城市ID查询全部数据
      *
      * @param cityId
      * @return
      */
-    List<ReportNewPreferential> selectReportNewPreferentialList(Integer cityId);
+    List<ReportNewPreferential> selectReportNewPreferentialList(Integer cityId,Integer pageNum,Integer pageSize);
     /**
      * 根据城市ID查询全部数据
      *
      * @param cityId
      * @return
      */
-    List<ReportEsfProjHot> selectReportEsfProjHotList(Integer cityId);
+    List<ReportEsfProjHot> selectReportEsfProjHotList(Integer cityId,Integer pageNum,Integer pageSize);
     /**
      * 根据城市ID查询全部数据
      *
      * @param cityId
      * @return
      */
-    List<ReportAreaHot> selectReportAreaHotList(Integer cityId);
+    List<ReportAreaHot> selectReportAreaHotList(Integer cityId,Integer pageNum,Integer pageSize);
 
 }
