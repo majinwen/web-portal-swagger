@@ -663,6 +663,13 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String keys = "";
                 if (null != rentHouseDoQuery.getSubwayLineId() && rentHouseDoQuery.getSubwayLineId() > 0) {
                     keys += rentHouseDoQuery.getSubwayLineId().toString();
+                    //增加地铁线选择，地铁站选择不限
+                    if(StringTool.isNotEmpty(rentDetailsFewDo.getNearbySubway().get(keys))){
+                        trafficArr = rentDetailsFewDo.getNearbySubway().get(keys).split("\\$");
+                        if (trafficArr.length == 3) {
+                            nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                        }
+                    }
                 }
 //                if (null != rentHouseDoQuery.getSubwayStationId()) {
 //                    keys += "$" + rentHouseDoQuery.getSubwayStationId();

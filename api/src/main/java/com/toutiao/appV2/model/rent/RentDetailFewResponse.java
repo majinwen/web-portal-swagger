@@ -51,9 +51,9 @@ public class RentDetailFewResponse   {
   @ApiModelProperty("几厅")
   private Integer hall;
   /**
-   * 朝向ID（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）
+   * 朝向
    */
-  @ApiModelProperty("朝向ID（1-东,2-西,3-南,4-北,5-东南,6-西南,7-东北,8-西北,9-东西,10-南北,11-其他）")
+  @ApiModelProperty("朝向")
   private String forward;
   /**
    * 商圈名称

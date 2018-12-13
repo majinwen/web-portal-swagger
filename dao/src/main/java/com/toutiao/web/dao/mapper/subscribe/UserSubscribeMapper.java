@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface UserSubscribeMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
     int insert(UserSubscribe record);
 

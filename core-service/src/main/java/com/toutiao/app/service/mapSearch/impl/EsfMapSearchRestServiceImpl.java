@@ -1,10 +1,13 @@
 package com.toutiao.app.service.mapSearch.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.sun.corba.se.impl.naming.pcosnaming.PersistentBindingIterator;
 import com.toutiao.app.dao.mapsearch.EsfMapSearchEsDao;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.mapSearch.*;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.agent.AgentService;
@@ -76,6 +79,8 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
     private EsfMapSearchEsDao esfMapSearchEsDao;
     @Autowired
     private SellHouseEsDao sellHouseEsDao;
+    @Autowired
+    private PlotEsDao plotEsDao;
 
 
     /**
@@ -379,31 +384,19 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         SearchHit[] searchHists = hits.getHits();
         if(searchHists.length > 0){
             SearchHit communityHit = searchHists[0];
-            String community = communityHit.getSourceAsString();
-            esfMapCommunityDo = JSON.parseObject(community, EsfMapCommunityDo.class);
+
             String districtName = communityHit.getSourceAsMap().get("area").toString();
             String bizcircleName = communityHit.getSourceAsMap().get("houseBusinessName").toString();
-            esfMapCommunityDo.setDistrictName(districtName);
-            esfMapCommunityDo.setAreaName(bizcircleName);
 
+            esfMapCommunityDo.setCount((int)hits.totalHits);
             String description = districtName + " " +bizcircleName;
             if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && esfMapSearchDoQuery.getSubwayLineId() != 0) {
                 SearchResponse line = esfMapSearchEsDao.queryLinePoint(esfMapSearchDoQuery.getSubwayLineId(), city);
                 Map<String, Object> subwayMap = line.getHits().getHits()[0].getSourceAsMap();
                 description = "近" + subwayMap.get("line_name");
             }
-            esfMapCommunityDo.setDescription(description);
+           esfMapCommunityDo.setDescription(description);
 
-            String year = communityHit.getSourceAsMap().get("year").toString();
-            esfMapCommunityDo.setBuildYears(year);
-            String buildingImages = communityHit.getSourceAsMap().get("plotPhoto").toString();
-            esfMapCommunityDo.setBuildingImages(buildingImages);
-            String buildingStructure = communityHit.getSourceAsMap().get("buildCategoryName").toString();
-            esfMapCommunityDo.setBuildingStructure(buildingStructure);
-
-            String plotName = communityHit.getSourceAsMap().get("plotName").toString();
-            esfMapCommunityDo.setPloatName(plotName);
-            esfMapCommunityDo.setCount((int)hits.totalHits);
             Date date = new Date();
             for (SearchHit searchHit : searchHists) {
                 String details = "";
@@ -583,7 +576,40 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 esfMapHouseDo.setNearbyDistance(nearbyDistance);
             }
             esfHouseListDomain.setEsfMapHouseDos(esfMapHouseDos);
-            esfHouseListDomain.setEsfMapCommunityDo(esfMapCommunityDo);
+            BoolQueryBuilder builder = QueryBuilders.boolQuery();
+            builder.must(QueryBuilders.termsQuery("id",esfMapSearchDoQuery.getNewCode()));
+            SearchResponse response = plotEsDao.queryPlotDetail(builder, city);
+            if(null!=response) {
+                SearchHit[] searchHits = response.getHits().getHits();
+                for (SearchHit hit:searchHits){
+                    String details = hit.getSourceAsString();
+                    PlotDetailsDo plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
+
+                    esfMapCommunityDo.setPloatName(plotDetailsDo.getRc());
+                    esfMapCommunityDo.setPlotId(plotDetailsDo.getId().toString());
+                    if(StringTool.isDoubleNotEmpty(plotDetailsDo.getAvgPrice())){
+                        esfMapCommunityDo.setCommunityAvgPrice(plotDetailsDo.getAvgPrice());
+                    }
+
+                    if (StringTool.isNotEmpty(plotDetailsDo.getPhoto()) && plotDetailsDo.getPhoto().length > 0) {
+                        String titlePhoto = plotDetailsDo.getPhoto()[0];
+                        if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                            titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                        }
+                        esfMapCommunityDo.setBuildingImages(titlePhoto);
+                    }
+                    esfMapCommunityDo.setCityId(CityUtils.returnCityId(city));
+                    esfMapCommunityDo.setBuildYears(plotDetailsDo.getAbbreviatedAge());
+                    esfMapCommunityDo.setBuildingStructure(plotDetailsDo.getBuildingStructure());
+                    esfMapCommunityDo.setDistrictName(plotDetailsDo.getArea());
+                    esfMapCommunityDo.setAreaName(plotDetailsDo.getTradingArea());
+                    esfMapCommunityDo.setTagsName(plotDetailsDo.getLabel());
+
+                }
+                esfHouseListDomain.setEsfMapCommunityDo(esfMapCommunityDo);
+            }
+
+
         }else{
             throw new BaseException(SellHouseInterfaceErrorCodeEnum.ESF_NOT_FOUND,"二手房列表为空");
         }

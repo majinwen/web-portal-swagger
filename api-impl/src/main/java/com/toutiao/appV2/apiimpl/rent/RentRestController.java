@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
@@ -81,14 +82,22 @@ public class RentRestController implements RentRestApi {
 
     @Override
     public ResponseEntity<RentDetailResponse> getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
+
+        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
         PlotDetailsResponse plotInfo = new PlotDetailsResponse();
         PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
-        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
         BeanUtils.copyProperties(rentDetailsDo, rentDetailResponse);
         rentDetailResponse.setAgentBaseDo(rentDetailsDo.getAgentBaseDo());
-        BeanUtils.copyProperties(rentDetailsDo.getPlotDetailsDo(), plotInfo);
-        BeanUtils.copyProperties(rentDetailsDo.getPlotDetailsDo().getPlotsHousesDomain(),plotsHousesDomain);
+        PlotDetailsDo plotDetailsDo = rentDetailsDo.getPlotDetailsDo();
+
+        if (null != plotDetailsDo) {
+            BeanUtils.copyProperties(plotDetailsDo, plotInfo);
+
+            if (null != plotDetailsDo.getPlotsHousesDomain()) {
+                BeanUtils.copyProperties(plotDetailsDo.getPlotsHousesDomain(),plotsHousesDomain);
+            }
+        }
         plotInfo.setPlotsHousesDomain(plotsHousesDomain);
         rentDetailResponse.setPlotInfo(plotInfo);
         return new ResponseEntity<>(rentDetailResponse, HttpStatus.OK);
@@ -110,6 +119,7 @@ public class RentRestController implements RentRestApi {
         } else if (rentHouseRequest.getSearchType() == 2) {
             NearHouseDo nearHouseDo = new NearHouseDo();
             BeanUtils.copyProperties(rentHouseRequest, nearHouseDo);
+            nearHouseDo.setDistance(5);
             List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
             JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
             List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);

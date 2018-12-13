@@ -22,7 +22,7 @@ public class SuggestRequest {
 
     @JsonProperty("property")
     @HouseTypeValidator(value = "plot,sellhouse,newhouse,rent", message = "房源路径类型错误")
-    @ApiModelProperty(value = "房源类型")
+    @ApiModelProperty(value = "房源类型新房newhouse 小区plot 二手房sellhouse 租房rent 首页不传")
     private String property = null;
 
     public SuggestRequest keyword(String keyword) {
