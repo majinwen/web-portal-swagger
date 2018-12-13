@@ -155,6 +155,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             if (null != plotMarketDo) {
                 plotMarketDomain = new PlotMarketDomain();
                 org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                plotMarketDomain.setDistrictName(plotDetailsDo.getArea());
                 plotDetailsDo.setPlotMarketDomain(plotMarketDomain);
             }
             plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
