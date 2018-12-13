@@ -714,5 +714,20 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         return list;
     }
 
+    @Override
+    public PlotDetailsDo queryPlotByPlotId(String PlotId, String city) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("id",PlotId));
+
+        SearchResponse searchResponse = plotEsDao.queryPlotByPlotId(boolQueryBuilder, city);
+        PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if (hits.length>0){
+            String sourceAsString = hits[0].getSourceAsString();
+            plotDetailsDo = JSON.parseObject(sourceAsString, PlotDetailsDo.class);
+        }
+        return plotDetailsDo;
+    }
+
 
 }

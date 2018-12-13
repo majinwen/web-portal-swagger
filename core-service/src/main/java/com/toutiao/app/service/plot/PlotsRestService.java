@@ -64,4 +64,7 @@ public interface PlotsRestService {
     List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
 
+    PlotDetailsDo queryPlotByPlotId(String PlotId, String city);
+
+
 }

@@ -10,7 +10,7 @@
     <result column="building_name" jdbcType="VARCHAR" property="buildingName" />
   </resultMap>
   <select id="newhouseTrendList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    SELECT * FROM ( SELECT * FROM price_trend  where "month" BETWEEN  now() - interval '13 month' AND now() )as temp
+    SELECT * FROM ( SELECT * FROM price_trend  where "month" BETWEEN  now() - interval '20 month' AND now() )as temp
     <where>
     <if test="buildingId != null">
        OR building_id  =#{buildingId}

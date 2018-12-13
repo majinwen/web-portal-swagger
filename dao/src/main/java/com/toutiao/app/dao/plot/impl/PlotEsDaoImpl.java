@@ -1,6 +1,8 @@
 package com.toutiao.app.dao.plot.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.plot.PlotEsDao;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequest;
@@ -10,6 +12,8 @@ import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.IdsQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
@@ -18,6 +22,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.io.IOException;
+import java.util.Map;
 
 
 @Service
@@ -205,6 +210,25 @@ public class PlotEsDaoImpl implements PlotEsDao {
         }
 
         return  searchResponse;
+    }
+
+    @Override
+    public SearchResponse queryPlotByPlotId(BoolQueryBuilder boolQueryBuilder, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+
+        searchSourceBuilder.query(boolQueryBuilder).fetchSource(new String[]{"photo","rc","id","avgPrice"}, null);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return searchResponse;
     }
 
 
