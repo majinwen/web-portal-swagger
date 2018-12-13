@@ -314,4 +314,20 @@ public class RentEsDaoImpl implements RentEsDao {
         }
         return searchResponse;
     }
-}
+
+    @Override
+    public SearchResponse guessYoourLikeRent(BoolQueryBuilder boolQueryBuilder, String city, Integer pageNum, Integer pageSize) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
+    }
+

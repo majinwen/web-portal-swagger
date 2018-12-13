@@ -5,12 +5,19 @@ import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.favorite.FavoriteHouseDomain;
+import com.toutiao.app.domain.favorite.FavoriteHouseListDoQuery;
+import com.toutiao.app.domain.favorite.FavoriteHouseVo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
+import com.toutiao.app.domain.favorite.rent.RentFavoriteDo;
+import com.toutiao.app.domain.favorite.rent.RentFavoriteDomain;
+import com.toutiao.app.domain.favorite.rent.RentFavoriteListDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
+import com.toutiao.app.service.favorite.RentFavoriteRestService;
 import com.toutiao.app.service.plot.PlotsHomesRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
@@ -19,6 +26,7 @@ import com.toutiao.web.common.constant.company.CompanyIconEnum;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -45,6 +53,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -74,7 +83,11 @@ public class RentRestRestServiceImpl implements RentRestService {
     private PlotEsDao plotEsDao;
     @Autowired
     private PlotsHomesRestService plotsHomesRestService;
+    @Autowired
+    private RentFavoriteRestService rentFavoriteRestService;
 
+    @Autowired
+    private RentRestRestServiceImpl rentRestRestService;
     /**
      * 租房详情信息
      *
@@ -724,6 +737,61 @@ public class RentRestRestServiceImpl implements RentRestService {
         }
         rentDetailsListDo.setRentDetailsList(rentDetailsFewDos);
         rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
+        return rentDetailsListDo;
+    }
+
+    @Override
+    public RentDetailsListDo rentGuessYouLike(RentGuessYourLikeQuery rentGuessYourLikeQuery, String city,Integer userId) {
+        boolean isQueryEs = false;
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
+        if (rentGuessYourLikeQuery.getRentType()!=null){
+            isQueryEs = true;
+        }
+        if (userId != null) {
+            RentFavoriteListDoQuery rentFavoriteListDoQuery = new RentFavoriteListDoQuery();
+            rentFavoriteListDoQuery.setUserId(userId);
+            rentFavoriteListDoQuery.setSize(10);
+            rentFavoriteListDoQuery.setPageNum(1);
+            RentFavoriteDomain rentFavoriteDomain = rentFavoriteRestService.queryRentFavoriteListByUserId(rentFavoriteListDoQuery);
+            if (rentFavoriteDomain.getData().size() > 0){
+                isQueryEs = true;
+                RentFavoriteDo rentFavoriteDo = rentFavoriteDomain.getData().get(rentFavoriteDomain.getData().size()-1);
+                RentDetailsDo  rentDetailsDo = rentRestRestService.queryRentDetailByHouseId(rentFavoriteDo.getHouseId(),city);
+                rentGuessYourLikeQuery.setAreaId(rentDetailsDo.getAreaId());
+                rentGuessYourLikeQuery.setRentType(rentDetailsDo.getRentType());
+                rentGuessYourLikeQuery.setTotalPrice(rentDetailsDo.getRentHousePrice());
+                rentGuessYourLikeQuery.setHall(rentDetailsDo.getHall());
+                rentGuessYourLikeQuery.setRoom(rentDetailsDo.getRoom());
+            }
+        }
+
+        if (isQueryEs){
+            boolQueryBuilder.must(termQuery("area_id", rentGuessYourLikeQuery.getAreaId()));
+            boolQueryBuilder.must(termQuery("hall", rentGuessYourLikeQuery.getHall()));
+            boolQueryBuilder.must(termQuery("room", rentGuessYourLikeQuery.getRoom()));
+            boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rentGuessYourLikeQuery.getTotalPrice()+rentGuessYourLikeQuery.getTotalPrice()*0.3).lte(rentGuessYourLikeQuery.getTotalPrice()-rentGuessYourLikeQuery.getTotalPrice()*0.3));
+        }else {
+            Date date = new Date();
+            String today =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
+            Calendar cal=Calendar.getInstance();
+            cal.add(Calendar.DATE,-7);
+            Date sevenDaysAgo=cal.getTime();
+            String sevenDaysAgoChar =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sevenDaysAgo);
+            boolQueryBuilder.must(rangeQuery("update_time").lte(today).gte(sevenDaysAgoChar));
+        }
+        List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
+        SearchResponse searchResponse = rentEsDao.guessYoourLikeRent(boolQueryBuilder, city, rentGuessYourLikeQuery.getPageNum(),rentGuessYourLikeQuery.getPageSize());
+        SearchHit[]  hits = searchResponse.getHits().getHits();
+        if (hits.length > 0) {
+            for (SearchHit hit : hits) {
+                String sourceAsString = hit.getSourceAsString();
+                RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                rentDetailsFewDos.add(rentDetailsFewDo);
+            }
+        }
+        rentDetailsListDo.setRentDetailsList(rentDetailsFewDos);
+        rentDetailsListDo.setTotalCount(rentDetailsFewDos.size());
         return rentDetailsListDo;
     }
 
