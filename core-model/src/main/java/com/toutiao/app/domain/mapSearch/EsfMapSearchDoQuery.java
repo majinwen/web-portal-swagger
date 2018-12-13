@@ -62,5 +62,10 @@ public class EsfMapSearchDoQuery extends QueryDo {
      */
     private String sort;
 
+    /**
+     * 二手房定制区域id
+     */
+    private Integer[] customDistrictId;
+
 
 }
