@@ -27,9 +27,9 @@ public class ReportCityResponse {
     private String esfPriceHuanbi;
 
     /**
-     * 二手房均价走势，近6个月数据
+     * 二手房均价趋势，近6个月数据
      */
-    @ApiModelProperty(value = "二手房均价走势，近6个月数据")
+    @ApiModelProperty(value = "二手房均价趋势，近6个月数据")
     private List<ReportPriceQuotationsResponse> esfPriceFenbu;
 
     /**
@@ -45,9 +45,9 @@ public class ReportCityResponse {
     private String newPriceHuanbi;
 
     /**
-     * 新房均价走势，近6个月数据
+     * 新房均价趋势，近6个月数据
      */
-    @ApiModelProperty(value = "新房均价走势，近6个月数据")
+    @ApiModelProperty(value = "新房均价趋势，近6个月数据")
     private List<ReportPriceQuotationsResponse> newPriceRange;
 
     /**
