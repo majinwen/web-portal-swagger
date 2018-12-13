@@ -125,5 +125,9 @@ public class RentMapSearchDoRequest   {
   @ApiModelProperty(value = "小区id")
   @JsonProperty("newcode")
   private Integer newcode;
+
+  @ApiModelProperty(value = "排序")
+  @JsonProperty("sort")
+  private String sort;
   }
 
