@@ -114,7 +114,7 @@ public class SuggestRestController implements SuggestRestApi {
                     for (SuggestListDo suggestListDo : suggestResultDo.getSuggestResultList()) {
                         //搜索结果无商圈信息
                         SearchScopeDo searchScope = suggestListDo.getSearchScope();
-                        if (searchScope == null) {
+                        if (searchScope == null && suggestListDo.getSearchEnginesList() != null) {
                             if (suggestListDo.getSearchEnginesList().size() > 0) {
                                 for (SearchEnginesDo searchEnginesDo : suggestListDo.getSearchEnginesList()) {
                                     SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
@@ -123,7 +123,7 @@ public class SuggestRestController implements SuggestRestApi {
                                     searchEnginesResponseList.add(searchEnginesResponse);
                                 }
                             }
-                        } else {
+                        } else if (searchScope != null){
                             SearchEnginesResponse searchScopeResponse = new SearchEnginesResponse();
                             searchScopeResponse.setSearchName(searchScope.getSearchName());
                             searchScopeResponse.setAreaId(searchScope.getSearchId());
