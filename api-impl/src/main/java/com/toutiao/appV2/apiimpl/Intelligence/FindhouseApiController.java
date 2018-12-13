@@ -124,6 +124,7 @@ public class FindhouseApiController implements FindhouseApi {
         intelligenceDo.setFhpt(fhpt);
         intelligenceDo.setFhtp(fhtp);
         BeanUtils.copyProperties(intelligenceDo, intelligenceResponse);
+        intelligenceResponse.setFhpt(fhpt);
         return new ResponseEntity<IntelligenceResponse>(intelligenceResponse, HttpStatus.OK);
     }
 
