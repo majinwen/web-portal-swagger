@@ -1,12 +1,12 @@
 package com.toutiao.appV2.apiimpl.rent;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toutiao.app.domain.rent.SubwayLineHouseDomain;
+import com.toutiao.app.domain.rent.RentCustomConditionDomain;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDoQuery;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDomain;
 import com.toutiao.app.service.rent.UserFavoriteRentService;
 import com.toutiao.appV2.api.rent.UserFavoriteRentApi;
-import com.toutiao.appV2.model.rent.SubwayLineHouseResponse;
+import com.toutiao.appV2.model.rent.RentCustomConditionResponse;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListRequest;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListResponse;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -58,13 +57,13 @@ public class UserFavoriteRentListController implements UserFavoriteRentApi {
     }
 
     @Override
-    public ResponseEntity<SubwayLineHouseResponse> getHouseCountBySubway(@Valid UserFavoriteRentListRequest userFavoriteRentListRequest) {
+    public ResponseEntity<RentCustomConditionResponse> getHouseCountBySubway(@Valid UserFavoriteRentListRequest userFavoriteRentListRequest) {
         UserFavoriteRentListDoQuery userFavoriteRentListDoQuery = new UserFavoriteRentListDoQuery();
         BeanUtils.copyProperties(userFavoriteRentListRequest, userFavoriteRentListDoQuery);
-        SubwayLineHouseDomain subwayLineHouseDomain = userFavoriteRentService.querySubwayLineHouse(userFavoriteRentListDoQuery, CityUtils.getCity());
-        SubwayLineHouseResponse subwayLineHouseResponse = new SubwayLineHouseResponse();
-        BeanUtils.copyProperties(subwayLineHouseDomain, subwayLineHouseResponse);
+        RentCustomConditionDomain rentCustomConditionDomain = userFavoriteRentService.querySubwayLineHouse(userFavoriteRentListDoQuery, CityUtils.getCity());
+        RentCustomConditionResponse rentCustomConditionResponse = new RentCustomConditionResponse();
+        BeanUtils.copyProperties(rentCustomConditionDomain, rentCustomConditionResponse);
 
-        return new ResponseEntity<>(subwayLineHouseResponse, HttpStatus.OK);
+        return new ResponseEntity<>(rentCustomConditionResponse, HttpStatus.OK);
     }
 }

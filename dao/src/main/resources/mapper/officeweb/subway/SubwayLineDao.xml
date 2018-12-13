@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.subway.SubwayLineInfoDao">
+    <resultMap id="SubwayResultMap" type="com.toutiao.web.dao.entity.subway.SubwayLineDo">
+        <result column="line_id" property="lineId" jdbcType="INTEGER"/>
+        <result column="subway_name" property="subwayName" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="selectLineInfoByLineId" resultMap="SubwayResultMap" parameterType="java.lang.Integer">
+        SELECT
+        line_id,
+        subway_name,
+        city_id
+        FROM
+        subway_line
+        WHERE
+        line_id = #{lineId}
+    </select>
+</mapper>
