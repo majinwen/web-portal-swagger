@@ -1,4 +1,4 @@
-package com.toutiao.app.dao.report;
+package com.toutiao.appV2.model.report;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -6,19 +6,19 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ReportEsfProjHot {
+public class ReportEsfProjHotResponse {
 
     /**
      * ID
      */
-    @ApiModelProperty(value = "ID")
-    private Integer id;
+//    @ApiModelProperty(value = "ID")
+//    private Integer id;
 
     /**
      * 城市id
      */
-    @ApiModelProperty(value = "城市id")
-    private Integer cityId;
+//    @ApiModelProperty(value = "城市id")
+//    private Integer cityId;
 
     /**
      * 小区名称
@@ -42,17 +42,25 @@ public class ReportEsfProjHot {
      * 挂牌量
      */
     @ApiModelProperty(value = "挂牌量")
-    private Integer hosueCount;
+    private Integer houseCount;
+
+    /**
+     * 城市名称
+     */
+//    @ApiModelProperty(value = "城市名称")
+//    private String cityName;
 
     /**
      * 更新时间
      */
-    @ApiModelProperty(value = "更新时间")
-    private Date time;
+//    @ApiModelProperty(value = "更新时间")
+//    private Date time;
 
-    /**
+     /**
      * 排序
      */
     @ApiModelProperty(value = "排序")
     private Integer sort;
+
+
 }

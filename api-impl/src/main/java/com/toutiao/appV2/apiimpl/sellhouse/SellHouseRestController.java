@@ -202,7 +202,7 @@ public class SellHouseRestController implements SellHouseRestApi {
             if (sellHouseSearchDomain.getData().size() > 0) {
                 sellHouseSearchDomainResponse.setIsGuess(0);
             } else {
-                //没有根据结果查询到数据,返回猜你喜欢的数据
+                //没有根据结果查询到数据,返回猜你喜欢的数据-
                 sellHouseDoQuery = new SellHouseDoQuery();
                 sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
                 sellHouseSearchDomainResponse.setIsGuess(1);

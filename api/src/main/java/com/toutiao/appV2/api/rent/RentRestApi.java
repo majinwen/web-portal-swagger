@@ -120,8 +120,8 @@ public interface RentRestApi {
     @RequestMapping(value = "/rest/rent/getGuessList",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
-    ResponseEntity<RentDetailFewResponseList> getGuessList(@ApiParam(value = "rentHouseRequest" ,required=true )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
+    //@ApiIgnore
+    ResponseEntity<RentDetailFewResponseList> getGuessList(@ApiParam(value = "rentHouseRequest" ,required=false )  @Valid @RequestBody RentGuessYourLikeRequest rentGuessYourLikeRequest);
 
 
 
