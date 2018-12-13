@@ -198,6 +198,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice())));
         }
 
+        if ("3".equals(newHouseDoQuery.getSort()) || "4".equals(newHouseDoQuery.getSort())) {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
+        }
+
         //标签
         if (null != newHouseDoQuery.getLabelId() && newHouseDoQuery.getLabelId().length != 0) {
 
