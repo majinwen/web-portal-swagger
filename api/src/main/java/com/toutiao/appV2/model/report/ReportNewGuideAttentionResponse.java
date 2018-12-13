@@ -1,12 +1,10 @@
-package com.toutiao.app.dao.report;
+package com.toutiao.appV2.model.report;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class ReportNewGuideAttention {
+public class ReportNewGuideAttentionResponse {
     /**
      * 楼盘Id
      */
@@ -52,8 +50,8 @@ public class ReportNewGuideAttention {
     /**
      * 城市Id
      */
-    @ApiModelProperty(value = "城市Id")
-    private Integer cityId;
+//    @ApiModelProperty(value = "城市Id")
+//    private Integer cityId;
 
     /**
      * 价格
@@ -64,6 +62,6 @@ public class ReportNewGuideAttention {
     /**
      * 创建时间
      */
-    @ApiModelProperty(value = "创建时间")
-    private Date createTime;
+//    @ApiModelProperty(value = "创建时间")
+//    private Date createTime;
 }

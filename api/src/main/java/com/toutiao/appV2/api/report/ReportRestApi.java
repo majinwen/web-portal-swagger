@@ -1,14 +1,14 @@
 package com.toutiao.appV2.api.report;
 
 import com.toutiao.appV2.model.report.*;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import springfox.documentation.annotations.ApiIgnore;
+
+import javax.validation.Valid;
 
 @Api(value = "数据报告", description = "数据报告")
 public interface ReportRestApi {
@@ -100,6 +100,7 @@ public interface ReportRestApi {
     @RequestMapping(value = "/rest/report/selectReportAreaHotList",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList();
+    ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList(@ApiParam(value = "pageNum") @Valid @RequestParam(value = "pageNum",defaultValue = "1") Integer pageNum,
+                                                                      @ApiParam(value = "pageSize") @Valid @RequestParam(value = "pageSize",defaultValue = "5") Integer pageSize);
 
 }
