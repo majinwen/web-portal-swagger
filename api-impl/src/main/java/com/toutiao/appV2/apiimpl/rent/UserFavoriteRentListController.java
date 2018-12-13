@@ -1,10 +1,12 @@
 package com.toutiao.appV2.apiimpl.rent;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toutiao.app.domain.rent.SubwayLineHouseDomain;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDoQuery;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDomain;
 import com.toutiao.app.service.rent.UserFavoriteRentService;
 import com.toutiao.appV2.api.rent.UserFavoriteRentApi;
+import com.toutiao.appV2.model.rent.SubwayLineHouseResponse;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListRequest;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListResponse;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 /**
  * Created by CuiShihao on 2018/12/11
@@ -42,7 +45,7 @@ public class UserFavoriteRentListController implements UserFavoriteRentApi {
         this.request = request;
     }
     @Override
-    public ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@Validated UserFavoriteRentListRequest userFavoriteRentListRequest) {
+    public ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@Valid UserFavoriteRentListRequest userFavoriteRentListRequest) {
         UserFavoriteRentListDoQuery userFavoriteRentListDoQuery = new UserFavoriteRentListDoQuery();
         BeanUtils.copyProperties(userFavoriteRentListRequest, userFavoriteRentListDoQuery);
 
@@ -55,9 +58,13 @@ public class UserFavoriteRentListController implements UserFavoriteRentApi {
     }
 
     @Override
-    public ResponseEntity<UserFavoriteRentListResponse> getHouseCountBySubway(@Validated UserFavoriteRentListRequest userFavoriteRentListRequest) {
+    public ResponseEntity<SubwayLineHouseResponse> getHouseCountBySubway(@Valid UserFavoriteRentListRequest userFavoriteRentListRequest) {
         UserFavoriteRentListDoQuery userFavoriteRentListDoQuery = new UserFavoriteRentListDoQuery();
         BeanUtils.copyProperties(userFavoriteRentListRequest, userFavoriteRentListDoQuery);
-        return null;
+        SubwayLineHouseDomain subwayLineHouseDomain = userFavoriteRentService.querySubwayLineHouse(userFavoriteRentListDoQuery, CityUtils.getCity());
+        SubwayLineHouseResponse subwayLineHouseResponse = new SubwayLineHouseResponse();
+        BeanUtils.copyProperties(subwayLineHouseDomain, subwayLineHouseResponse);
+
+        return new ResponseEntity<>(subwayLineHouseResponse, HttpStatus.OK);
     }
 }

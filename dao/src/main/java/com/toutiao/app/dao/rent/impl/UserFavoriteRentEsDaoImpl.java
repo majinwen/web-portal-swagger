@@ -25,11 +25,6 @@ public class UserFavoriteRentEsDaoImpl implements UserFavoriteRentEsDao {
     @Autowired
     private RestHighLevelClient restHighLevelClient;
 
-    @Value("${bdw.subwayLineStation.index}")
-    private String bdwSubwayLineStationIndex;
-    @Value("${bdw.subwayLineStation.type}")
-    private String bdwSubwayLineStationType;
-
     @Override
     public SearchResponse queryRentListByUserFavorite(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String city, String sort) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
@@ -60,7 +55,7 @@ public class UserFavoriteRentEsDaoImpl implements UserFavoriteRentEsDao {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(0)
-                .aggregation(AggregationBuilders.terms("subwayLine").field("subway_line_id").size(0)
+                .aggregation(AggregationBuilders.terms("subwayLine").field("subway_line_id").size(1000)
                     .subAggregation(AggregationBuilders.terms("community").field("zufang_id")));
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;

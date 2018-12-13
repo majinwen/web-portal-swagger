@@ -18,7 +18,7 @@ public class UserFavoriteRentListRequest {
 
     @JsonProperty("districtId")
     @ApiParam("区域")
-    private Integer districtId = null;
+    private Integer[] districtId = null;
 
     @JsonProperty("elo")
     @ApiParam("整租户型")

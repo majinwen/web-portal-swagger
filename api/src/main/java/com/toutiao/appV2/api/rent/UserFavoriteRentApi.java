@@ -1,9 +1,8 @@
 package com.toutiao.appV2.api.rent;
 
-import com.toutiao.appV2.model.rent.RentHouseRequest;
+import com.toutiao.appV2.model.rent.SubwayLineHouseResponse;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListRequest;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListResponse;
-import com.toutiao.appV2.model.sellhouse.UserFavoriteConditionRequest;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,17 +26,17 @@ public interface UserFavoriteRentApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/rent/getRentByUserFavorite",
             produces = { "application/json" },
-            method = RequestMethod.POST)
-    ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "userFavoriteRentListRequest"  )  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
+            method = RequestMethod.GET)
+    ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "userFavoriteRentListRequest"  )  @Valid UserFavoriteRentListRequest userFavoriteRentListRequest);
 
-    @ApiOperation(value = "根据地铁线获取相应的小区数量和房源数量", nickname = "getHouseCountBySubway", notes = "", response = UserFavoriteRentListResponse.class, tags={ "租房", })
+    @ApiOperation(value = "根据地铁线获取相应的小区数量和房源数量", nickname = "getHouseCountBySubway", notes = "", response = SubwayLineHouseResponse.class, tags={ "租房", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = UserFavoriteRentListResponse.class),
+            @ApiResponse(code = 200, message = "OK", response = SubwayLineHouseResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/rent/getHouseCountBySubway",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<UserFavoriteRentListResponse> getHouseCountBySubway(@ApiParam(value = "userFavoriteRentListRequest"  )  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
+    ResponseEntity<SubwayLineHouseResponse> getHouseCountBySubway(@ApiParam(value = "userFavoriteRentListRequest"  )  @Valid UserFavoriteRentListRequest userFavoriteRentListRequest);
 }

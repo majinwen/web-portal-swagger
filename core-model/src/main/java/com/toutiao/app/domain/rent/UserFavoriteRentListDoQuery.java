@@ -17,7 +17,7 @@ public class UserFavoriteRentListDoQuery {
     /**
      * 区域id
      */
-    private Integer districtId = null;
+    private Integer[] districtId = null;
 
     /**
      * 整租户型

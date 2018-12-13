@@ -5,16 +5,19 @@ import com.toutiao.app.dao.rent.UserFavoriteRentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.mapSearch.RentMapSearchRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.UserFavoriteRentService;
 import com.toutiao.web.common.constant.company.CompanyIconEnum;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +41,11 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
     private AgentService agentService;
 
     @Autowired
+    private RentMapSearchRestService rentMapSearchRestService;
 
-    private static final String LAYOUT = "4";
+    @Autowired
+
+    private static final String LAYOUT = "5";
 
     @Override
     public UserFavoriteRentListDomain queryRentListByUserFavorite(UserFavoriteRentListDoQuery rentHouseDoQuery, String city) {
@@ -144,10 +150,30 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
         List buckets = terms.getBuckets();
         for (Object bucket : buckets) {
             SubwayLineHouseDo subwayLineHouseDo = new SubwayLineHouseDo();
-            subwayLineHouseDo.setSubwayLineId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));//地铁线id
 
+            Integer subwayLineId = Integer.valueOf(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsString());
+            for (int i = 0; i < rentHouseDoQuery.getSubwayLineId().length; i++) {
+                if (null !=  subwayLineId && subwayLineId == rentHouseDoQuery.getSubwayLineId()[i]) {
+                    Integer houseCount = (int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount();
+                    subwayLineHouseDo.setHouseCount(houseCount);
+                    //设置地铁线id
+                    subwayLineHouseDo.setSubwayLineId(subwayLineId);
+                    //设置地铁线名称
+                    Map map = rentMapSearchRestService.getSubwayInfo(subwayLineId, CityUtils.returnCityId(city));
+                    subwayLineHouseDo.setSubwayLineName(map.get("name").toString());
+                    //遍历该地铁线下的所有小区求出楼盘总量
+                    Terms communityTerms = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("community");
+                    List communityBuckets = communityTerms.getBuckets();
+                    Integer communityCount = 0;
+                    for (Object communityBucket : communityBuckets) {
+                        communityCount += (int)((ParsedStringTerms.ParsedBucket) communityBucket).getDocCount();
+                    }
+                }
+            }
 
+            subwayLineHouseDos.add(subwayLineHouseDo);
         }
+        subwayLineHouseDomain.setSubwayLineHouseDos(subwayLineHouseDos);
 
         return subwayLineHouseDomain;
     }
@@ -161,8 +187,8 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         //区域
-        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId()) && rentHouseDoQuery.getDistrictId()!=0) {
-            boolQueryBuilder.must(termQuery("district_id", rentHouseDoQuery.getDistrictId()));
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getDistrictId()) && rentHouseDoQuery.getDistrictId().length!=0) {
+            boolQueryBuilder.must(termsQuery("district_id", rentHouseDoQuery.getDistrictId()));
         }
 
         //地铁线id
@@ -197,7 +223,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
             if (rentHouseDoQuery.getElo().equals("0")) {
                 boolQueryBuilder.must(rangeQuery("erent_layout").gt(0));
             } else {
-                String[] roommore = new String[]{"5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
                 String[] room = rentHouseDoQuery.getElo().split(",");
                 boolean roomflag = Arrays.asList(room).contains(LAYOUT);
                 if (roomflag) {
