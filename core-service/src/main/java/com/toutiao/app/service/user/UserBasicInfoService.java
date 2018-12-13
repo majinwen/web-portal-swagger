@@ -79,6 +79,6 @@ public interface UserBasicInfoService {
      * @param rawData
      * @return
      */
-    UserBasicDo smallProgramLogin(String code, String iv, String rawData);
+    UserBasicDo smallProgramLogin(String code, String iv, String rawData) throws Exception;
 
 }
