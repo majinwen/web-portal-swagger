@@ -2,22 +2,27 @@ package com.toutiao.app.service.mapSearch.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.mapsearch.RentMapSearchEsDao;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.mapSearch.RentMapSearchDo;
 import com.toutiao.app.domain.mapSearch.RentMapSearchDoQuery;
 import com.toutiao.app.domain.mapSearch.RentMapSearchDomain;
 import com.toutiao.app.domain.mapSearch.RentOfPlotListDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.mapSearch.RentMapSearchRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.company.CompanyIconEnum;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.mapSearch.MapGroupUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
@@ -69,6 +74,8 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
     private RentMapSearchEsDao rentMapSearchEsDao;
     @Autowired
     private AgentService agentService;
+    @Autowired
+    private PlotEsDao plotEsDao;
 
     @Override
     public RentMapSearchDomain rentMapSearch(RentMapSearchDoQuery rentMapSearchDoQuery, String city) {
@@ -596,8 +603,42 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                 }
                 rentOfPlotListDo.setData(list);
                 rentOfPlotListDo.setTotalNum((int) totalHits);
-                rentOfPlotListDo.setPloatName(list.get(0).getZufangName());
-                rentOfPlotListDo.setNewcode(list.get(0).getZufangId());
+//                rentOfPlotListDo.setBuildingName(list.get(0).getZufangName());
+//                rentOfPlotListDo.setBuildingId(list.get(0).getZufangId());
+//                rentOfPlotListDo.setDistrictName(list.get(0).getDistrictName());
+//                rentOfPlotListDo.setAreaName(list.get(0).getAreaName());
+                BoolQueryBuilder builder = QueryBuilders.boolQuery();
+                builder.must(QueryBuilders.termQuery("id",list.get(0).getZufangId()));
+                SearchResponse searchResponse = plotEsDao.queryPlotDetail(builder, city);
+                if(null!=searchResponse) {
+                    SearchHit[] searchHits = searchResponse.getHits().getHits();
+                    for (SearchHit hit:searchHits){
+                        String details = hit.getSourceAsString();
+                        PlotDetailsDo plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
+
+                        rentOfPlotListDo.setBuildingName(plotDetailsDo.getRc());
+                        rentOfPlotListDo.setBuildingId(plotDetailsDo.getId());
+                        if(StringTool.isDoubleNotEmpty(plotDetailsDo.getAvgPrice())){
+                            rentOfPlotListDo.setAveragePrice(BigDecimal.valueOf(plotDetailsDo.getAvgPrice()));
+                        }
+
+                        if (StringTool.isNotEmpty(plotDetailsDo.getPhoto()) && plotDetailsDo.getPhoto().length > 0) {
+                            String titlePhoto = plotDetailsDo.getPhoto()[0];
+                            if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                                titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                            }
+                            rentOfPlotListDo.setBuildingImages(titlePhoto);
+                        }
+                        rentOfPlotListDo.setCityId(CityUtils.returnCityId(city));
+                        rentOfPlotListDo.setBuildYears(plotDetailsDo.getAbbreviatedAge());
+                        rentOfPlotListDo.setBuildingStructure(plotDetailsDo.getBuildingStructure());
+                        rentOfPlotListDo.setDistrictName(plotDetailsDo.getArea());
+                        rentOfPlotListDo.setAreaName(plotDetailsDo.getTradingArea());
+                        rentOfPlotListDo.setTags(plotDetailsDo.getLabel());
+
+                    }
+                }
+
                 if(StringTool.isNotEmpty(list.get(0).getNearestSubway())){
                     String[] traffic = list.get(0).getNearestSubway().split("\\$");
                     rentOfPlotListDo.setNearSubwayLine("近"+traffic[0]);

@@ -121,6 +121,9 @@ public class MessagePushServiceImpl implements MessagePushService {
     private String qinniuImg;
     @Value("${app.domain.name}")
     private String appName;
+    @Value("${wap.domain.name}")
+    private String wapName;
+
     /**
      * 房源类消息列表
      *
@@ -405,25 +408,23 @@ public class MessagePushServiceImpl implements MessagePushService {
                  listRenewal = messagePushMapper.selectListRenewal(Integer.valueOf(userId));
             }
 
-            List<MessagePushDo> houseActivityDos = ToutiaoBeanUtils.copyPropertiesToList(houseActivity, MessagePushDo.class);
+        List<MessagePushDo> houseActivityDos = ToutiaoBeanUtils.copyPropertiesToList(houseActivity, MessagePushDo.class);
+
+        if (houseActivityDos.size() > 0) {
             Integer houseActivityContentYype = houseActivityDos.get(0).getContentType();
-
-            List<MessagePushDo> listRenewalDos = ToutiaoBeanUtils.copyPropertiesToList(listRenewal, MessagePushDo.class);
-            Integer listRenewalDosContentYype = listRenewalDos.get(0).getContentType();
-
             String[] messageContent = getMessageContent(houseActivityDos.get(0), houseActivityContentYype);
             HomeMessageDo homeMessageDo = new HomeMessageDo();
             homeMessageDo.setContentType(houseActivityContentYype);
 
-            switch (houseActivityContentYype){
+            switch (houseActivityContentYype) {
                 case 12:
-                    homeMessageDo.setMessageContent("您关注的租房价格变动"+messageContent[0]);
+                    homeMessageDo.setMessageContent("您关注的租房价格变动" + messageContent[0]);
                     break;
                 case 5:
                     homeMessageDo.setMessageContent(messageContent[0]);
                     break;
                 default:
-                    homeMessageDo.setMessageContent(houseActivityDos.get(0).getMessageTheme().getString("messageTitle")+messageContent[0]);
+                    homeMessageDo.setMessageContent(houseActivityDos.get(0).getMessageTheme().getString("messageTitle") + messageContent[0]);
             }
 
             homeMessageDo.setBoldMessageContent(messageContent[1]);
@@ -435,7 +436,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             if (StringTool.isNotEmpty(userId)) {
                 countCriteria.andUserIdEqualTo(Integer.valueOf(userId));
             }
-            countCriteria.andIsReadEqualTo((short)0);
+            countCriteria.andIsReadEqualTo((short) 0);
             countCriteria.andPushTypeEqualTo(1);
             countCriteria.andContentTypeEqualTo(houseActivityContentYype);
             int unreadCount = messagePushMapper.countByExample(countExample);
@@ -443,28 +444,50 @@ public class MessagePushServiceImpl implements MessagePushService {
                 homeMessageDo.setUnReadCount(unreadCount);
             }
             homeMessageDos.add(homeMessageDo);
-
-        String[] messageContent2 = getMessageContent(listRenewalDos.get(0), listRenewalDosContentYype);
-        HomeMessageDo homeMessageDo2 = new HomeMessageDo();
-        homeMessageDo2.setContentType(listRenewalDosContentYype);
-        homeMessageDo2.setMessageContent(messageContent2[0]);
-        homeMessageDo2.setBoldMessageContent(messageContent2[1]);
-        homeMessageDo2.setCreateTime(listRenewalDos.get(0).getCreateTime().getTime());
-
-        //查询一段时间内消息未读数量
-        MessagePushExample countExample1 = new MessagePushExample();
-        MessagePushExample.Criteria countCriteria1 = countExample1.createCriteria();
-        if (StringTool.isNotEmpty(userId)) {
-            countCriteria1.andUserIdEqualTo(Integer.valueOf(userId));
+        } else {
+            HomeMessageDo homeMessageDo = new HomeMessageDo();
+            homeMessageDo.setContentType(3);
+            homeMessageDo.setBoldMessageContent("");
+            homeMessageDo.setMessageContent("");
+            homeMessageDo.setUnReadCount(0);
+            homeMessageDos.add(homeMessageDo);
         }
-        countCriteria1.andIsReadEqualTo((short)0);
-        countCriteria1.andPushTypeEqualTo(1);
-        countCriteria1.andContentTypeEqualTo(listRenewalDosContentYype);
-        int unreadCount1 = messagePushMapper.countByExample(countExample1);
-        if (StringTool.isNotEmpty(messageContent2[0])) {
-            homeMessageDo2.setUnReadCount(unreadCount1);
+
+
+        List<MessagePushDo> listRenewalDos = ToutiaoBeanUtils.copyPropertiesToList(listRenewal, MessagePushDo.class);
+        if (listRenewalDos.size() > 0) {
+            Integer listRenewalDosContentYype = listRenewalDos.get(0).getContentType();
+            String[] messageContent2 = getMessageContent(listRenewalDos.get(0), listRenewalDosContentYype);
+            HomeMessageDo homeMessageDo2 = new HomeMessageDo();
+            homeMessageDo2.setContentType(listRenewalDosContentYype);
+            homeMessageDo2.setMessageContent(messageContent2[0]);
+            homeMessageDo2.setBoldMessageContent(messageContent2[1]);
+            homeMessageDo2.setCreateTime(listRenewalDos.get(0).getCreateTime().getTime());
+
+            //查询一段时间内消息未读数量
+            MessagePushExample countExample1 = new MessagePushExample();
+            MessagePushExample.Criteria countCriteria1 = countExample1.createCriteria();
+            if (StringTool.isNotEmpty(userId)) {
+                countCriteria1.andUserIdEqualTo(Integer.valueOf(userId));
+            }
+            countCriteria1.andIsReadEqualTo((short) 0);
+            countCriteria1.andPushTypeEqualTo(1);
+            countCriteria1.andContentTypeEqualTo(listRenewalDosContentYype);
+            int unreadCount1 = messagePushMapper.countByExample(countExample1);
+            if (StringTool.isNotEmpty(messageContent2[0])) {
+                homeMessageDo2.setUnReadCount(unreadCount1);
+            }
+            homeMessageDos.add(homeMessageDo2);
+        } else {
+            HomeMessageDo homeMessageDo = new HomeMessageDo();
+            homeMessageDo.setContentType(6);
+            homeMessageDo.setBoldMessageContent("");
+            homeMessageDo.setMessageContent("");
+            homeMessageDo.setUnReadCount(0);
+            homeMessageDos.add(homeMessageDo);
         }
-        homeMessageDos.add(homeMessageDo2);
+
+
         return homeMessageDos;
     }
 
@@ -577,7 +600,7 @@ public class MessagePushServiceImpl implements MessagePushService {
                 String[] split = houseIds.substring(1, houseIds.length() - 1).split(",");
                 //配置房源展示数量
                 String hostUrl = getHostOfUrl(request);
-                for (String houseId : split){
+                for (String houseId : split) {
                     replaceHouseDo(messagePushDo, esfInfo, houseId, messageSellHouseDos, hostUrl);
                 }
                 messagePushDo.setMessageSellHouseDos(messageSellHouseDos);
@@ -598,7 +621,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         messagePushDomain.setLastMessageId(lastId);
 
         //清空消息
-        if (lastMessageId == null || lastMessageId == 0){
+        if (lastMessageId == null || lastMessageId == 0) {
             updateIsRead(contentType, userId);
         }
 
@@ -820,10 +843,11 @@ public class MessagePushServiceImpl implements MessagePushService {
      * @return
      */
     private String getHostOfUrl(HttpServletRequest request) {
-        StringBuffer requestURL = request.getRequestURL();
-        String tempContextUrl = requestURL.delete(requestURL.length() - request.getRequestURI().length(),
-                requestURL.length()).toString();
-        return tempContextUrl;
+//        StringBuffer requestURL = request.getRequestURL();
+//        String tempContextUrl = requestURL.delete(requestURL.length() - request.getRequestURI().length(),
+//                requestURL.length()).toString();
+//        return tempContextUrl;
+        return wapName;
     }
 
     /**
@@ -886,7 +910,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         } else {
             RentDetailsDo rentDetailsDo = rentRestService.queryRentDetailByHouseId(houseId, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
             jsonObject = esfInfo.getJSONObject(houseId);
-            if (rentDetailsDo == null){
+            if (rentDetailsDo.getHouseId() == null){
                 jsonObject.put("status", 1);
             } else {
                 jsonObject.put("status", 0);

@@ -322,4 +322,9 @@ public class NewHouseDetailDo {
      * 优惠活动
      */
     private List<ActivityInfoDo> activityInfo;
+
+    /**
+     * 新房户型
+     */
+    private String roomType;
 }

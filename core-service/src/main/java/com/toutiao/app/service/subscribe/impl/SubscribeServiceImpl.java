@@ -23,6 +23,7 @@ import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,7 @@ public class SubscribeServiceImpl implements SubscribeService {
     private HouseBusinessAndRoomEsDao houseBusinessAndRoomEsDao;
 
     @Override
+    @Transactional
     public int deleteByPrimaryKey(Integer id) {
         return userSubscribeMapper.deleteByPrimaryKey(id);
     }

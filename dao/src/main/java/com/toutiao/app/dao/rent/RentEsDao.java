@@ -112,4 +112,12 @@ public interface RentEsDao {
      */
     SearchResponse getRentPriceByPlotId(BoolQueryBuilder boolQueryBuilder, String city);
 
+
+    /**
+     * 猜你喜欢租房
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse guessYoourLikeRent(BoolQueryBuilder boolQueryBuilder, String city,Integer pageNum,Integer pageSize);
+
 }

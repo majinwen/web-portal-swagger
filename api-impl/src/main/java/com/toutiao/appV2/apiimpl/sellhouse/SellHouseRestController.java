@@ -189,6 +189,7 @@ public class SellHouseRestController implements SellHouseRestApi {
             SellHouseSearchDomainResponse nearBySellHouseDomainResponse = new SellHouseSearchDomainResponse();
             NearBySellHouseQueryDo nearBySellHouseQueryDo = new NearBySellHouseQueryDo();
             BeanUtils.copyProperties(sellHouseRequest, nearBySellHouseQueryDo);
+            nearBySellHouseQueryDo.setDistance(5);
             NearBySellHouseDomain nearBySellHouseDomain = nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHouseQueryDo, CityUtils.getCity());
             BeanUtils.copyProperties(nearBySellHouseDomain, nearBySellHouseDomainResponse);
             log.info("返回结果集:{}", JSONUtil.stringfy(nearBySellHouseDomainResponse));
@@ -201,7 +202,7 @@ public class SellHouseRestController implements SellHouseRestApi {
             if (sellHouseSearchDomain.getData().size() > 0) {
                 sellHouseSearchDomainResponse.setIsGuess(0);
             } else {
-                //没有根据结果查询到数据,返回猜你喜欢的数据
+                //没有根据结果查询到数据,返回猜你喜欢的数据-
                 sellHouseDoQuery = new SellHouseDoQuery();
                 sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
                 sellHouseSearchDomainResponse.setIsGuess(1);

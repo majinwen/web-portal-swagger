@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.report.ReportEsfTongbiDescriptionMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.dao.report.ReportEsfTongbiDescription" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="esf_count" property="esfCount" jdbcType="INTEGER" />
+    <result column="esf_range" property="esfRange" jdbcType="VARCHAR" />
+    <result column="percent" property="percent" jdbcType="NUMERIC" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, city_id, create_time, esf_count, esf_range, percent
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_esf_tongbi_description
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_esf_tongbi_description
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.toutiao.app.dao.report.ReportEsfTongbiDescription" >
+    insert into report_esf_tongbi_description (id, city_id, create_time, 
+      esf_count, esf_range, percent
+      )
+    values (#{id,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{esfCount,jdbcType=INTEGER}, #{esfRange,jdbcType=VARCHAR}, #{percent,jdbcType=NUMERIC}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.app.dao.report.ReportEsfTongbiDescription" >
+    insert into report_esf_tongbi_description
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="esfCount != null" >
+        esf_count,
+      </if>
+      <if test="esfRange != null" >
+        esf_range,
+      </if>
+      <if test="percent != null" >
+        percent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="esfCount != null" >
+        #{esfCount,jdbcType=INTEGER},
+      </if>
+      <if test="esfRange != null" >
+        #{esfRange,jdbcType=VARCHAR},
+      </if>
+      <if test="percent != null" >
+        #{percent,jdbcType=NUMERIC},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.dao.report.ReportEsfTongbiDescription" >
+    update report_esf_tongbi_description
+    <set >
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="esfCount != null" >
+        esf_count = #{esfCount,jdbcType=INTEGER},
+      </if>
+      <if test="esfRange != null" >
+        esf_range = #{esfRange,jdbcType=VARCHAR},
+      </if>
+      <if test="percent != null" >
+        percent = #{percent,jdbcType=NUMERIC},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.dao.report.ReportEsfTongbiDescription" >
+    update report_esf_tongbi_description
+    set city_id = #{cityId,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      esf_count = #{esfCount,jdbcType=INTEGER},
+      esf_range = #{esfRange,jdbcType=VARCHAR},
+      percent = #{percent,jdbcType=NUMERIC}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

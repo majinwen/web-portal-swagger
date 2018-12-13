@@ -164,4 +164,7 @@ public class RentDetailsFewDo {
 
     private String brokerageAgency;
 
+    @ApiModelProperty("坐标")
+    private String location;
+
 }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
@@ -13,8 +14,11 @@ import com.toutiao.appV2.api.rent.RentRestApi;
 import com.toutiao.appV2.model.plot.PlotDetailsResponse;
 import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.appV2.model.rent.*;
+import com.toutiao.appV2.model.userbasic.UserLoginResponse;
 import com.toutiao.web.common.assertUtils.Second;
+import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.city.CityUtils;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +30,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.List;
 
 //import com.toutiao.app.api.chance.response.rent.*;
@@ -81,14 +86,22 @@ public class RentRestController implements RentRestApi {
 
     @Override
     public ResponseEntity<RentDetailResponse> getRentDetailByRentId(@Validated RentDetailsRequest rentDetailsRequest) {
+
+        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
         PlotDetailsResponse plotInfo = new PlotDetailsResponse();
         PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
-        RentDetailsDo rentDetailsDo = appRentRestService.queryRentDetailByHouseId(rentDetailsRequest.getRentId(), CityUtils.getCity());
         RentDetailResponse rentDetailResponse = new RentDetailResponse();
         BeanUtils.copyProperties(rentDetailsDo, rentDetailResponse);
         rentDetailResponse.setAgentBaseDo(rentDetailsDo.getAgentBaseDo());
-        BeanUtils.copyProperties(rentDetailsDo.getPlotDetailsDo(), plotInfo);
-        BeanUtils.copyProperties(rentDetailsDo.getPlotDetailsDo().getPlotsHousesDomain(),plotsHousesDomain);
+        PlotDetailsDo plotDetailsDo = rentDetailsDo.getPlotDetailsDo();
+
+        if (null != plotDetailsDo) {
+            BeanUtils.copyProperties(plotDetailsDo, plotInfo);
+
+            if (null != plotDetailsDo.getPlotsHousesDomain()) {
+                BeanUtils.copyProperties(plotDetailsDo.getPlotsHousesDomain(),plotsHousesDomain);
+            }
+        }
         plotInfo.setPlotsHousesDomain(plotsHousesDomain);
         rentDetailResponse.setPlotInfo(plotInfo);
         return new ResponseEntity<>(rentDetailResponse, HttpStatus.OK);
@@ -110,6 +123,7 @@ public class RentRestController implements RentRestApi {
         } else if (rentHouseRequest.getSearchType() == 2) {
             NearHouseDo nearHouseDo = new NearHouseDo();
             BeanUtils.copyProperties(rentHouseRequest, nearHouseDo);
+            nearHouseDo.setDistance(5);
             List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
             JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
             List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
@@ -166,10 +180,19 @@ public class RentRestController implements RentRestApi {
     }
 
     @Override
-    public ResponseEntity<RentDetailFewResponseList> getGuessList(RentHouseRequest rentHouseRequest) {
-        RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
-        BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
-        RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+    public ResponseEntity<RentDetailFewResponseList> getGuessList(RentGuessYourLikeRequest rentGuessYourLikeRequest) {
+        RentGuessYourLikeQuery rentGuessYourLikeQuery =new RentGuessYourLikeQuery();
+        BeanUtils.copyProperties(rentGuessYourLikeRequest, rentGuessYourLikeQuery);
+        // 如果用户登录获取用户
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+
+        Integer userId = null;
+        if (null != user) {
+            UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+            userId = Integer.valueOf(userLoginResponse.getUserId());
+        }
+        RentDetailsListDo rentDetailsListDo =  appRentRestService.rentGuessYouLike(rentGuessYourLikeQuery,CityUtils.getCity(),userId);
+
         RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
         BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);
         return new ResponseEntity<>(rentDetailFewResponseList, HttpStatus.OK);

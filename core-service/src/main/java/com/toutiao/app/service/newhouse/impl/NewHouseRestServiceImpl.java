@@ -122,6 +122,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             newHouseDetailDo.setHeatingType("自供暖");
         }
 
+        NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newCode, city);
+        newHouseDetailDo.setRoomType(getNewHouseRoomType(newHouseLayoutCountDomain));
+
         return newHouseDetailDo;
 
     }
@@ -183,7 +186,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if (newHouseDoQuery.getBeginPrice() != 0 && newHouseDoQuery.getEndPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         } else if (newHouseDoQuery.getBeginPrice() == 0 && newHouseDoQuery.getEndPrice() != 0) {
-            newHouseDoQuery.setBeginPrice(0.0);
+            newHouseDoQuery.setBeginPrice(1.0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         } else if (newHouseDoQuery.getEndPrice() == 0 && newHouseDoQuery.getBeginPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
@@ -192,10 +195,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if (newHouseDoQuery.getBeginTotalPrice() != 0 && newHouseDoQuery.getEndTotalPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice()).lte(newHouseDoQuery.getEndTotalPrice())));
         } else if (newHouseDoQuery.getBeginTotalPrice() == 0 && newHouseDoQuery.getEndTotalPrice() != 0) {
-            newHouseDoQuery.setBeginTotalPrice(0.0);
+            newHouseDoQuery.setBeginTotalPrice(1.0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice()).lte(newHouseDoQuery.getEndTotalPrice())));
         } else if (newHouseDoQuery.getEndTotalPrice() == 0 && newHouseDoQuery.getBeginTotalPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice())));
+        }
+
+        if ("3".equals(newHouseDoQuery.getSort()) || "4".equals(newHouseDoQuery.getSort())) {
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
         }
 
         //标签
@@ -296,22 +303,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     Integer minDistance = Collections.min(sortDistance);
                     newHouseListDos.setSubwayDistanceInfo(newHouseListDos.getNearbysubway().get(map.get(minDistance)).toString());
                 }
-//                if ("" != keys && null != newHouseListDos.getNearbysubway()) {
-//                    newHouseListDos.setSubwayDistanceInfo((String) newHouseListDos.getNearbysubway().get(keys));
-//                }
                 try {
                     //获取新房下户型的数量
                     NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(), city);
-                    if (null != newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0) {
-                        List<String> roomsType = new ArrayList<>();
-                        for (int i = 0; i < newHouseLayoutCountDomain.getRooms().size(); i++) {
-                            roomsType.add(newHouseLayoutCountDomain.getRooms().get(i).getRoom().toString());
-                        }
-                        String rooms = String.join(",", roomsType);
-                        newHouseListDos.setRoomType(rooms);
-                    } else {
-                        newHouseListDos.setRoomType("");
-                    }
+                    newHouseListDos.setRoomType(getNewHouseRoomType(newHouseLayoutCountDomain));
+
 
                 } catch (Exception e) {
                     logger.error("获取新房户型信息异常信息={}", e.getStackTrace());
@@ -371,41 +367,41 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 //descHigh : 位于 districtName ringRoad环 buildingAddress
                 StringBuilder descHigh = new StringBuilder();
                 descHigh.append("位于");
-                if(StringTool.isNotEmpty(newHouseListDos.getDistrictName())){
+                if (StringTool.isNotEmpty(newHouseListDos.getDistrictName())) {
                     descHigh.append(newHouseListDos.getDistrictName());
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getRingRoad())){
+                if (StringTool.isNotEmpty(newHouseListDos.getRingRoad())) {
                     descHigh.append(newHouseListDos.getRingRoad());
                     descHigh.append("环");
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getBuildingAddress())){
+                if (StringTool.isNotEmpty(newHouseListDos.getBuildingAddress())) {
                     descHigh.append(newHouseListDos.getBuildingAddress());
                 }
-                newHouseListDos.setDescHigh(descHigh.toString().equals("位于")?"":descHigh.toString());
+                newHouseListDos.setDescHigh(descHigh.toString().equals("位于") ? "" : descHigh.toString());
 
                 //descMid : 位于 developers建propertyType,openedTimeDesc,deliverTimeDesc
                 StringBuilder descMidSb = new StringBuilder();
-                if(StringTool.isNotEmpty(newHouseListDos.getDevelopers())){
+                if (StringTool.isNotEmpty(newHouseListDos.getDevelopers())) {
                     descMidSb.append(newHouseListDos.getDevelopers());
                     descMidSb.append("建");
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getPropertyType())){
-                    descMidSb .append(newHouseListDos.getPropertyType());
-                    descMidSb .append(",");
-                }else if(StringTool.isNotEmpty(descMidSb.toString())){
-                    descMidSb .append(",");
+                if (StringTool.isNotEmpty(newHouseListDos.getPropertyType())) {
+                    descMidSb.append(newHouseListDos.getPropertyType());
+                    descMidSb.append(",");
+                } else if (StringTool.isNotEmpty(descMidSb.toString())) {
+                    descMidSb.append(",");
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getOpenedTimeDesc())){
+                if (StringTool.isNotEmpty(newHouseListDos.getOpenedTimeDesc())) {
                     descMidSb.append(newHouseListDos.getOpenedTimeDesc());
-                    descMidSb .append(",");
+                    descMidSb.append(",");
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getDeliverTimeDesc())){
+                if (StringTool.isNotEmpty(newHouseListDos.getDeliverTimeDesc())) {
                     descMidSb.append(newHouseListDos.getDeliverTimeDesc());
-                    descMidSb .append(",");
+                    descMidSb.append(",");
                 }
                 String descMidStr = "";
-                if(StringTool.isNotEmpty(descMidSb.toString())){
-                    descMidStr = descMidSb.substring(0,descMidSb.length()-1);
+                if (StringTool.isNotEmpty(descMidSb.toString())) {
+                    descMidStr = descMidSb.substring(0, descMidSb.length() - 1);
                 }
 
                 newHouseListDos.setDescMid(descMidStr);
@@ -442,6 +438,19 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
 
         return newHouseListVo;
+    }
+
+    private String getNewHouseRoomType(NewHouseLayoutCountDomain newHouseLayoutCountDomain) {
+        if (null != newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0) {
+            List<String> roomsType = new ArrayList<>();
+            for (int i = 0; i < newHouseLayoutCountDomain.getRooms().size(); i++) {
+                roomsType.add(newHouseLayoutCountDomain.getRooms().get(i).getRoom().toString());
+            }
+            String rooms = String.join(",", roomsType);
+            return rooms;
+        } else {
+            return "";
+        }
     }
 
     @Override

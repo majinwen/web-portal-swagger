@@ -10,6 +10,7 @@ import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsHomesRestService;
+import com.toutiao.app.service.plot.PlotsMarketService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
@@ -75,6 +76,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private FavoriteRestService favoriteRestService;
     @Autowired
     private PlotsHomesRestService plotsHomesRestService;
+    @Autowired
+    private PlotsMarketService plotsMarketService;
 
 
     /**
@@ -146,7 +149,15 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
 
             PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId, city);
+            PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotId);
 
+            PlotMarketDomain plotMarketDomain = null;
+            if (null != plotMarketDo) {
+                plotMarketDomain = new PlotMarketDomain();
+                org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                plotMarketDomain.setDistrictName(plotDetailsDo.getArea());
+                plotDetailsDo.setPlotMarketDomain(plotMarketDomain);
+            }
             plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
             plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
         } catch (Exception e) {
@@ -404,53 +415,63 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
         } else {
             searchResponse = plotEsDao.queryCommonPlotList(from, boolQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
-            if (searchResponse != null) {
-                SearchHit[] hits = searchResponse.getHits().getHits();
-
-                if (hits.length > 0) {
-                    for (SearchHit hit : hits) {
-                        commonMethod(hit, keyList, plotDetailsFewDoList, city, null);
-                    }
-                }
-            }
-            plotListDo.setPlotList(plotDetailsFewDoList);
-            plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
-            return plotListDo;
+//            if (searchResponse != null) {
+//                SearchHit[] hits = searchResponse.getHits().getHits();
+//
+//                if (hits.length > 0) {
+//                    for (SearchHit hit : hits) {
+//                        commonMethod(hit, keyList, plotDetailsFewDoList, city, null);
+//                    }
+//                }
+//            }
+//            plotListDo.setPlotList(plotDetailsFewDoList);
+//            plotListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
+//            return plotListDo;
         }
 
-        long oneKM_size = searchResponse.getHits().getTotalHits();
+//        long oneKM_size = searchResponse.getHits().getTotalHits();
+////        if (searchResponse != null) {
+//            int resLocationInfo = searchResponse.getHits().getHits().length;
+//            if (resLocationInfo == 10) {
+//                SearchHits hits = searchResponse.getHits();
+//                SearchHit[] searchHists = hits.getHits();
+//                for (SearchHit hit : searchHists) {
+//                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+//                }
+//            } else if (resLocationInfo < 10 && resLocationInfo > 0) {
+//                SearchHits hits = searchResponse.getHits();
+//                SearchHit[] searchHists = hits.getHits();
+//                for (SearchHit hit : searchHists) {
+//                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+//                }
+//                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+//                booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+//                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder, plotListDoQuery.getPageSize() - resLocationInfo, plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
+//                SearchHit[] hits1 = searchResponse1.getHits().getHits();
+//                for (SearchHit hit : hits1) {
+//                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+//                }
+//            } else if (resLocationInfo == 0) {
+//                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+//                booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
+//                Integer newFrom = (plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize();
+//                if (oneKM_size > 0) {
+//                    newFrom = (int) ((plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize() - (oneKM_size / plotListDoQuery.getPageSize() + 1) * plotListDoQuery.getPageSize());
+//                }
+//                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
+//                SearchHit[] hits1 = searchResponse1.getHits().getHits();
+//                for (SearchHit hit : hits1) {
+//                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+//                }
+//            }
+//        }
+
         if (searchResponse != null) {
-            int reslocationinfo = searchResponse.getHits().getHits().length;
-            if (reslocationinfo == 10) {
-                SearchHits hits = searchResponse.getHits();
-                SearchHit[] searchHists = hits.getHits();
-                for (SearchHit hit : searchHists) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
-                }
-            } else if (reslocationinfo < 10 && reslocationinfo > 0) {
-                SearchHits hits = searchResponse.getHits();
-                SearchHit[] searchHists = hits.getHits();
-                for (SearchHit hit : searchHists) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
-                }
-                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(0, booleanQueryBuilder, plotListDoQuery.getPageSize() - reslocationinfo, plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
-                SearchHit[] hits1 = searchResponse1.getHits().getHits();
-                for (SearchHit hit : hits1) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
-                }
-            } else if (reslocationinfo == 0) {
-                BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-                booleanQueryBuilder.must(QueryBuilders.termQuery("is_approve", 1));
-                Integer newFrom = (plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize();
-                if (oneKM_size > 0) {
-                    newFrom = (int) ((plotListDoQuery.getPageNum() - 1) * plotListDoQuery.getPageSize() - (oneKM_size / plotListDoQuery.getPageSize() + 1) * plotListDoQuery.getPageSize());
-                }
-                SearchResponse searchResponse1 = plotEsDao.queryCommonPlotList(newFrom, booleanQueryBuilder, plotListDoQuery.getPageSize(), plotListDoQuery.getKeyword(), city, plotListDoQuery.getSort());
-                SearchHit[] hits1 = searchResponse1.getHits().getHits();
-                for (SearchHit hit : hits1) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance());
+            SearchHit[] hits = searchResponse.getHits().getHits();
+
+            if (hits.length > 0) {
+                for (SearchHit hit : hits) {
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city, null, key);
                 }
             }
         }
@@ -467,7 +488,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @param key
      * @return
      */
-    public void commonMethod(SearchHit hit, List<String> key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance) {
+    public void commonMethod(SearchHit hit, List<String> key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance,String subwayLineId) {
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
@@ -491,6 +512,16 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
                 String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                 nearbyDistance = "距您" + distances;
+            }
+        }
+
+        //增加地铁线选择，地铁站选择不限
+        if(StringTool.isNotEmpty(subwayLineId)){
+            if(StringTool.isNotEmpty(plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId))){
+                trafficArr = plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId).toString().split("\\$");
+                if (trafficArr.length == 3) {
+                    nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                }
             }
         }
 

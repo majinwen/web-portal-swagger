@@ -201,6 +201,9 @@
         <if test="record.isMustRob != null">
             and user_subscribe_map->>'isMustRob' = cast(#{record.isMustRob,jdbcType=INTEGER} as text)
         </if>
+        <if test="record.topicType != null">
+            and user_subscribe_map->>'topicType' = cast(#{record.topicType,jdbcType=INTEGER} as text)
+        </if>
         limit 1
     </select>
 

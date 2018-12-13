@@ -10,10 +10,12 @@ import com.toutiao.app.service.invitation.impl.InvitationCodeServiceImpl;
 import com.toutiao.appV2.api.invitation.InvitationApi;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.appV2.model.invitation.*;
+import com.toutiao.web.apiimpl.authentication.User;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.dao.entity.invitation.InvitationCode;
 import com.toutiao.web.dao.entity.invitation.InviteHistory;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -51,9 +53,10 @@ public class InvitationApiController implements InvitationApi {
     private InviteHistoryService inviteHistoryService;
 
     @Override
-    public ResponseEntity<InvitationResponse> getInvitation(InvitationRequest invitationRequest) {
+    public ResponseEntity<InvitationResponse> getInvitation() {
         InvitationCodeDoQuery invitationCodeDoQuery = new InvitationCodeDoQuery();
-        BeanUtils.copyProperties(invitationRequest, invitationCodeDoQuery);
+        invitationCodeDoQuery.setUserId(UserBasic.getCurrent().getUserId());
+        invitationCodeDoQuery.setEquipmentNo(request.getHeader("deviceid"));
         InvitationCodeDo invitationCodeDo = invitationCodeService.getInvitation(invitationCodeDoQuery);
         InvitationResponse invitationResponse = new InvitationResponse();
         BeanUtils.copyProperties(invitationCodeDo, invitationResponse);
@@ -78,9 +81,18 @@ public class InvitationApiController implements InvitationApi {
         InviteHistory inviteHistory = new InviteHistory();
         BeanUtils.copyProperties(inviteHistoryRequest, inviteHistory);
         InvitationCode invitationValid = invitationCodeService.getInvitationValid(inviteHistoryRequest.getInvitationCode());
+
         if (invitationValid == null) {
             throw new BaseException(UserInterfaceErrorCodeEnum.INVITATION_CODE_NOT_EXITS);
         }
+        String userId = UserBasic.getCurrent().getUserId();
+
+        if (invitationValid.getUserId().equals(userId)) {
+            throw new BaseException(UserInterfaceErrorCodeEnum.INVITATION_CODE_ADD_YOURSELF);
+        }
+
+        inviteHistory.setUserId(userId);
+        inviteHistory.setEquipmentNo(request.getHeader("deviceid"));
         int i = inviteHistoryService.saveInviteHistory(inviteHistory);
         List<InviteHistory> inviteHistoryByCode = inviteHistoryService.getInviteHistoryByCode(inviteHistoryRequest.getInvitationCode());
         if (!CollectionUtils.isEmpty(inviteHistoryByCode)) {

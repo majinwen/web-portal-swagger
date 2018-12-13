@@ -59,19 +59,19 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
 //            searchSourceBuilder.sort(levelSort).sort(buildingSort);
 //        }else
         if("1".equals(sort)){
-            searchSourceBuilder.sort("totalPrice", SortOrder.ASC).sort(levelSort).sort(buildingSort);
+            searchSourceBuilder.sort("totalPrice", SortOrder.ASC);
         }else if("2".equals(sort)){
-            searchSourceBuilder.sort("totalPrice", SortOrder.DESC).sort(levelSort).sort(buildingSort);
+            searchSourceBuilder.sort("totalPrice", SortOrder.DESC);
         }else if("3".equals(sort)){
-            searchSourceBuilder.sort("average_price", SortOrder.ASC).sort(levelSort).sort(buildingSort);
+            searchSourceBuilder.sort("average_price", SortOrder.ASC);
         }else if("4".equals(sort)){
-            searchSourceBuilder.sort("average_price", SortOrder.DESC).sort(levelSort).sort(buildingSort);
-        }else{
-            if (null!=levelSort && null!=buildingSort)
-            {
-                searchSourceBuilder.sort(levelSort).sort(buildingSort);
-            }
+            searchSourceBuilder.sort("average_price", SortOrder.DESC);
         }
+        if (null!=levelSort && null!=buildingSort)
+        {
+            searchSourceBuilder.sort(levelSort).sort(buildingSort);
+        }
+
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;
         try {

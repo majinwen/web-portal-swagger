@@ -49,7 +49,7 @@ public interface InvitationApi {
 //        consumes = { "application/json" },
         method = RequestMethod.GET)
 
-    ResponseEntity<InvitationResponse> getInvitation(InvitationRequest invitationRequest);
+    ResponseEntity<InvitationResponse> getInvitation();
 
     @ApiOperation(value = "根据邀请码获取邀请记录列表", nickname = "getInviteHistoryList", notes = "根据邀请码获取邀请记录列表",
             response = GetInviteHistoryListResponse.class, tags={ "邀请码", })

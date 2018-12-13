@@ -6,7 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class NearBySellHouseQueryDo extends QueryDo{
+public class NearBySellHouseQueryDo extends QueryDo {
     /**
      * 区域Ids
      */
