@@ -98,7 +98,7 @@ public class ReportRestController implements ReportRestApi {
     }
 
     @Override
-    public ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList() {
+    public ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList(Integer pageNum, Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportAreaHotListResponse rsp = new ReportAreaHotListResponse();
         List<ReportAreaHot> data = reportCityService.selectReportAreaHotList(cityId);
@@ -112,18 +112,20 @@ public class ReportRestController implements ReportRestApi {
         ReportCityResponse reportCityResponse = new ReportCityResponse();
         reportCityResponse.setToday(DateUtil.getCurrStrDate());
         BeanUtils.copyProperties(reportCity, reportCityResponse);
-        reportCityResponse.setNewGuideAttention(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideAttention.class));
-        reportCityResponse.setNewGuideHot(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideHot.class));
-        reportCityResponse.setNewGuideSales(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideSales.class));
-        reportCityResponse.setNewGuidePopular(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuidePopular.class));
-        reportCityResponse.setNewPreferential(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewPreferential.class));
-        reportCityResponse.setEsfPlotHot(JSONArray.parseArray(reportCity.getEsfPlotHot(), ReportEsfProjHot.class));
-        reportCityResponse.setAreaHot(JSONArray.parseArray(reportCity.getAreaHot(), ReportAreaHot.class));
-        reportCityResponse.setZfPriceRange(JSONArray.parseArray(reportCity.getZfPriceRange(), ReportRentPriceDistrbution.class));
-        reportCityResponse.setEsfPriceRange(JSONArray.parseArray(reportCity.getEsfPriceRange(), ReportEsfTongbiDescription.class));
-        reportCityResponse.setEsfTeseJiangjia(JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTopicHouseTrend.class));
-        reportCityResponse.setEsfTeseJianlou(JSONArray.parseArray(reportCity.getEsfTeseJianlou(), ReportTopicHouseTrend.class));
-        reportCityResponse.setEsfTeseQiangshou(JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTopicHouseTrend.class));
+        reportCityResponse.setNewGuideAttention(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideAttentionResponse.class));
+        reportCityResponse.setNewGuideHot(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideHotResponse.class));
+        reportCityResponse.setNewGuideSales(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideSalesResponse.class));
+        reportCityResponse.setNewGuidePopular(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuidePopularResponse.class));
+        reportCityResponse.setNewPreferential(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewPreferentialResponse.class));
+        reportCityResponse.setEsfPlotHot(JSONArray.parseArray(reportCity.getEsfPlotHot(), ReportEsfProjHotResponse.class));
+        reportCityResponse.setAreaHot(JSONArray.parseArray(reportCity.getAreaHot(), ReportAreaHotResponse.class));
+        reportCityResponse.setZfPriceRange(JSONArray.parseArray(reportCity.getZfPriceRange(), ReportRentPriceDistrbutionResponse.class));
+        reportCityResponse.setEsfPriceRange(JSONArray.parseArray(reportCity.getEsfPriceRange(), ReportEsfTongbiDescriptionResponse.class));
+        reportCityResponse.setEsfTeseJiangjia(JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class));
+        reportCityResponse.setEsfTeseJianlou(JSONArray.parseArray(reportCity.getEsfTeseJianlou(), ReportTeSeJianLouRespose.class));
+        reportCityResponse.setEsfTeseQiangshou(JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class));
+        reportCityResponse.setNewPriceRange(JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class));
+        reportCityResponse.setEsfPriceFenbu(JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class));
         return reportCityResponse;
     }
 }

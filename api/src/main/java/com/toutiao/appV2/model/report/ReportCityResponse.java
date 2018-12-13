@@ -1,6 +1,5 @@
 package com.toutiao.appV2.model.report;
 
-import com.toutiao.app.dao.report.*;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -31,7 +30,7 @@ public class ReportCityResponse {
      * 二手房均价走势，近6个月数据
      */
     @ApiModelProperty(value = "二手房均价走势，近6个月数据")
-    private List<ReportPriceQuotations> esfPriceFenbu;
+    private List<ReportPriceQuotationsResponse> esfPriceFenbu;
 
     /**
      * 新房上月均价
@@ -49,7 +48,7 @@ public class ReportCityResponse {
      * 新房均价走势，近6个月数据
      */
     @ApiModelProperty(value = "新房均价走势，近6个月数据")
-    private List<ReportPriceQuotations> newPriceRange;
+    private List<ReportPriceQuotationsResponse> newPriceRange;
 
     /**
      * 月度分析
@@ -115,25 +114,25 @@ public class ReportCityResponse {
      * 二手房价格分布
      */
     @ApiModelProperty(value = "二手房价格分布")
-    private List<ReportEsfTongbiDescription> esfPriceRange;
+    private List<ReportEsfTongbiDescriptionResponse> esfPriceRange;
 
     /**
      * 二手房特色房源：捡漏房
      */
     @ApiModelProperty(value = "二手房特色房源：捡漏房")
-    private List<ReportTopicHouseTrend> esfTeseJianlou;
+    private List<ReportTeSeJianLouRespose> esfTeseJianlou;
 
     /**
      * 二手房特色房源：降价房
      */
     @ApiModelProperty(value = "二手房特色房源：降价房")
-    private List<ReportTopicHouseTrend> esfTeseJiangjia;
+    private List<ReportTeSeJiangJiaRespose> esfTeseJiangjia;
 
     /**
      * 二手房特色房源：抢手房
      */
     @ApiModelProperty(value = "二手房特色房源：抢手房")
-    private List<ReportTopicHouseTrend> esfTeseQiangshou;
+    private List<ReportTeSeQiangShouRespose> esfTeseQiangshou;
 
     /**
      * 租房整租数量
@@ -211,7 +210,7 @@ public class ReportCityResponse {
      * 租房价格分布
      */
     @ApiModelProperty(value = "租房价格分布")
-    private List<ReportRentPriceDistrbution> zfPriceRange;
+    private List<ReportRentPriceDistrbutionResponse> zfPriceRange;
 
     /**
      * 新房昨日均价
@@ -241,42 +240,42 @@ public class ReportCityResponse {
      * 新房指南人气榜
      */
     @ApiModelProperty(value = "新房指南人气榜")
-    private List<ReportNewGuidePopular> newGuidePopular;
+    private List<ReportNewGuidePopularResponse> newGuidePopular;
 
     /**
      * 新房指南销售榜
      */
     @ApiModelProperty(value = "新房指南销售榜")
-    private List<ReportNewGuideSales> newGuideSales;
+    private List<ReportNewGuideSalesResponse> newGuideSales;
 
     /**
      * 新房指南关注榜
      */
     @ApiModelProperty(value = "新房指南关注榜")
-    private List<ReportNewGuideAttention> newGuideAttention;
+    private List<ReportNewGuideAttentionResponse> newGuideAttention;
 
     /**
      * 新房指南热门楼盘榜
      */
     @ApiModelProperty(value = "新房指南热门楼盘榜")
-    private List<ReportNewGuideHot> newGuideHot;
+    private List<ReportNewGuideHotResponse> newGuideHot;
 
     /**
      * 优惠楼盘
      */
     @ApiModelProperty(value = "优惠楼盘")
-    private List<ReportNewPreferential> newPreferential;
+    private List<ReportNewPreferentialResponse> newPreferential;
 
     /**
      * 二手房热门小区
      */
     @ApiModelProperty(value = "二手房热门小区")
-    private List<ReportEsfProjHot> esfPlotHot;
+    private List<ReportEsfProjHotResponse> esfPlotHot;
     /**
      * 热门商圈
      */
     @ApiModelProperty(value = "热门商圈")
-    private List<ReportAreaHot> areaHot;
+    private List<ReportAreaHotResponse> areaHot;
 
     /**
      * 当前日期
