@@ -19,6 +19,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -114,6 +115,9 @@ public class UserbasicApiController implements UserbasicApi {
         if (StringTool.isNotBlank(userBasicDo)) {
             UserBasicResponse userBasicResponse = new UserBasicResponse();
             BeanUtils.copyProperties(userBasicDo, userBasicResponse);
+            if (StringUtils.isNotEmpty(userBasicDo.getUnionid())){
+                userBasicResponse.setIsWxBind(true);
+            }
             return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
         } else {
             throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
@@ -126,6 +130,9 @@ public class UserbasicApiController implements UserbasicApi {
         if (StringTool.isNotBlank(userBasicDo)) {
             UserBasicResponse userBasicResponse = new UserBasicResponse();
             BeanUtils.copyProperties(userBasicDo, userBasicResponse);
+            if (StringUtils.isNotEmpty(userBasicDo.getUnionid())){
+                userBasicResponse.setIsWxBind(true);
+            }
             return new ResponseEntity<UserBasicResponse>(userBasicResponse, HttpStatus.OK);
         } else {
             throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
