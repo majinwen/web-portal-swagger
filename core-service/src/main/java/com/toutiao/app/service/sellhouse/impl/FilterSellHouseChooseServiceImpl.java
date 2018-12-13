@@ -323,17 +323,16 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             }
         }
         //户型(室)
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getLayoutId())) {
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getLayoutId()) && sellHouseDoQuery.getLayoutId().length!=0) {
             Integer[] layoutId = sellHouseDoQuery.getLayoutId();
-//            booleanQueryBuilder.must();
-            booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
         }
 
 
         //朝向
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getForwardId())) {
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getForwardId()) && sellHouseDoQuery.getForwardId().length!=0) {
             Integer[] forwardId = sellHouseDoQuery.getForwardId();
-            booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("forward", forwardId)));
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("forward", forwardId));
         }
 
 

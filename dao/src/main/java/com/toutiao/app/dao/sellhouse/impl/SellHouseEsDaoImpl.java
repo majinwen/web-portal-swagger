@@ -333,7 +333,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
     public SearchResponse querySellHouse(BoolQueryBuilder boolQueryBuilder, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(boolQueryBuilder).size(0).aggregation(AggregationBuilders.terms("").field(""));
+        searchSourceBuilder.query(boolQueryBuilder).size(0);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;
         try {
