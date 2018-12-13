@@ -314,4 +314,9 @@ public class PlotDetailsDo {
      * 标签id
      */
     private List<Integer> recommendBuildTagsId;
+
+    /**
+     * 小区行情
+     */
+    private PlotMarketDomain plotMarketDomain;
 }

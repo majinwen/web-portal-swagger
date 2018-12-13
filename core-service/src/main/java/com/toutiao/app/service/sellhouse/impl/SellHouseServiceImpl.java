@@ -1223,6 +1223,13 @@ public class SellHouseServiceImpl implements SellHouseService {
                 String keys = "";
                 if (null != sellHouseDoQuery.getSubwayLineId() && sellHouseDoQuery.getSubwayLineId() > 0) {
                     keys += sellHouseDoQuery.getSubwayLineId().toString();
+                    //增加地铁线选择，地铁站选择不限
+                    if(StringTool.isNotEmpty(sellHousesSearchDo.getSubwayDistince().get(keys))){
+                        trafficArr = sellHousesSearchDo.getSubwayDistince().get(keys).toString().split("\\$");
+                        if (trafficArr.length == 3) {
+                            nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                        }
+                    }
                 }
 
                 if (StringTool.isNotEmpty(sellHouseDoQuery.getSubwayStationId()) && sellHouseDoQuery.getSubwayStationId().length > 0) {

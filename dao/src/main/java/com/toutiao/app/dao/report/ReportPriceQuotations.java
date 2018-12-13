@@ -1,13 +1,11 @@
 package com.toutiao.app.dao.report;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-@ApiModel(value = "房价行情/房价走势")
 public class ReportPriceQuotations {
 
     /**
@@ -23,9 +21,9 @@ public class ReportPriceQuotations {
     private Integer cityId;
 
     /**
-     * 0-新房，1-小区
+     * 0:新房 1:二手房
      */
-    @ApiModelProperty(value = "0-新房，1-小区")
+    @ApiModelProperty(value = "0:新房,1:二手房")
     private Short nOrE;
 
     /**

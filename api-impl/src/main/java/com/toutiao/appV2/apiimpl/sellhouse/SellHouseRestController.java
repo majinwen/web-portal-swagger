@@ -187,6 +187,7 @@ public class SellHouseRestController implements SellHouseRestApi {
             SellHouseSearchDomainResponse nearBySellHouseDomainResponse = new SellHouseSearchDomainResponse();
             NearBySellHouseQueryDo nearBySellHouseQueryDo = new NearBySellHouseQueryDo();
             BeanUtils.copyProperties(sellHouseRequest, nearBySellHouseQueryDo);
+            nearBySellHouseQueryDo.setDistance(5);
             NearBySellHouseDomain nearBySellHouseDomain = nearSellHouseRestService.getSellHouseByHouseIdAndLocation(nearBySellHouseQueryDo, CityUtils.getCity());
             BeanUtils.copyProperties(nearBySellHouseDomain, nearBySellHouseDomainResponse);
             log.info("返回结果集:{}", JSONUtil.stringfy(nearBySellHouseDomainResponse));

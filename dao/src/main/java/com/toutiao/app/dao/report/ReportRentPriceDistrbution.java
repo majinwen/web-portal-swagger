@@ -1,14 +1,11 @@
 package com.toutiao.app.dao.report;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "租房价格分布")
 public class ReportRentPriceDistrbution {
 
     /**

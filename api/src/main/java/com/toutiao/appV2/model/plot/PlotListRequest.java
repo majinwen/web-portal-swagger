@@ -51,7 +51,7 @@ public class PlotListRequest {
 
     @JsonProperty("forwardId")
     @ApiParam("朝向")
-    private List<Integer> forwardId;
+    private Integer[] forwardId;
 
     @JsonProperty("houseYearId")
     @ApiParam("楼龄[0-5]")
@@ -63,7 +63,7 @@ public class PlotListRequest {
 
     @JsonProperty("labelId")
     @ApiParam("标签")
-    private List<Integer> labelId;
+    private Integer[] labelId;
 
     @JsonProperty("lat")
     @ApiParam("维度")
@@ -71,7 +71,7 @@ public class PlotListRequest {
 
     @JsonProperty("layoutId")
     @ApiParam("居室")
-    private List<Integer> layoutId;
+    private Integer[] layoutId;
 
     @JsonProperty("lon")
     @ApiParam("经度")

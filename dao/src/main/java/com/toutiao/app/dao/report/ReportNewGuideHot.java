@@ -7,7 +7,6 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@ApiModel(value = "新房指南热门新盘")
 public class ReportNewGuideHot {
     /**
      * 楼盘Id
@@ -61,7 +60,7 @@ public class ReportNewGuideHot {
      * 价格
      */
     @ApiModelProperty(value = "价格")
-    private Double price;
+    private Double averagePrice;
 
     /**
      * 创建时间

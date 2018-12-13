@@ -1,15 +1,14 @@
 package com.toutiao.appV2.model.report;
 
 import com.toutiao.app.dao.report.*;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-@ApiModel(value = "数据报告")
 public class ReportCityResponse {
+
     /**
      * id
      */
@@ -29,9 +28,9 @@ public class ReportCityResponse {
     private String esfPriceHuanbi;
 
     /**
-     * 二手房价格趋势，近6个月数据
+     * 二手房均价走势，近6个月数据
      */
-    @ApiModelProperty(value = "二手房价格趋势，近6个月数据")
+    @ApiModelProperty(value = "二手房均价走势，近6个月数据")
     private List<ReportPriceQuotations> esfPriceFenbu;
 
     /**
@@ -47,9 +46,9 @@ public class ReportCityResponse {
     private String newPriceHuanbi;
 
     /**
-     * 新房价格趋势，近6个月数据
+     * 新房均价走势，近6个月数据
      */
-    @ApiModelProperty(value = "新房价格趋势，近6个月数据")
+    @ApiModelProperty(value = "新房均价走势，近6个月数据")
     private List<ReportPriceQuotations> newPriceRange;
 
     /**
@@ -278,4 +277,10 @@ public class ReportCityResponse {
      */
     @ApiModelProperty(value = "热门商圈")
     private List<ReportAreaHot> areaHot;
+
+    /**
+     * 当前日期
+     */
+    @ApiModelProperty(value = "当前日期")
+    private String today;
 }
