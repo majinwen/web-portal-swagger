@@ -218,7 +218,7 @@ public interface HomePageApi {
 
 
 
-    @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags={ "首页", })
+    @ApiOperation(value = "为您推荐房源", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags={ "首页推荐条件", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = SellHouseSearchDomainResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -228,11 +228,10 @@ public interface HomePageApi {
             produces = { "application/json" },
             //consumes = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request" ,required=true )  @Valid RecommendEsf5Request recommendEsf5Request);
 
 
-    @ApiOperation(value = "获取推荐小区", nickname = "getPlotByRecommendCondition", notes = "", response = PlotDetailsFewDoList.class, tags={ "首页", })
+    @ApiOperation(value = "获取推荐小区", nickname = "getPlotByRecommendCondition", notes = "", response = PlotDetailsFewDoList.class, tags={ "首页推荐条件", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = PlotDetailsFewDoList.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -241,11 +240,10 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/plot/getPlotByRecommendCondition",
             produces = { "application/json" },
             //consumes = "application/json",
-            method = RequestMethod.POST)
-    @ApiIgnore
-    ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+            method = RequestMethod.GET)
+    ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
 
-    @ApiOperation(value = "根据推荐条件获取一条新房数据", nickname = "getOneNewHouseByRecommendCondition", notes = "", response = NewHouseDetailResponse.class, tags={ "首页", })
+    @ApiOperation(value = "根据推荐条件获取一条新房数据", nickname = "getOneNewHouseByRecommendCondition", notes = "", response = NewHouseDetailResponse.class, tags={ "首页推荐条件", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NewHouseDetailResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -254,9 +252,8 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/newhouse/getOneNewHouseByRecommendCondition",
             produces = { "application/json" },
             //consumes = "application/json",
-            method = RequestMethod.POST )
-    @ApiIgnore
-    ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+            method = RequestMethod.GET )
+    ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 
 }

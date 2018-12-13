@@ -242,7 +242,7 @@ public class RestHomePageController implements HomePageApi {
     }
 
     @Override
-    public ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
         List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
@@ -251,16 +251,16 @@ public class RestHomePageController implements HomePageApi {
         PlotDetailsFewDoList plotDetailsFewDoList = new PlotDetailsFewDoList();
         plotDetailsFewDoList.setPlotDetailsFewDos(plotDetailsFewDos);
         plotDetailsFewDoList.setTotal(plotDetailsFewDos.size());
-        return new ResponseEntity<PlotDetailsFewDoList>(plotDetailsFewDoList, HttpStatus.OK);
+        return new ResponseEntity<>(plotDetailsFewDoList, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
         NewHouseDetailDo newHouseDetailDo = newHouseService.getOneNewHouseByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
-        return new ResponseEntity<NewHouseDetailResponse>(newHouseDetailResponse, HttpStatus.OK);
+        return new ResponseEntity<>(newHouseDetailResponse, HttpStatus.OK);
     }
 
 }

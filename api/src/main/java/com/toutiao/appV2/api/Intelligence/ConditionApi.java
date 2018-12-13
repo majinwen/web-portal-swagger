@@ -6,18 +6,14 @@
 package com.toutiao.appV2.api.Intelligence;
 
 
-import com.toutiao.app.api.chance.response.newhouse.NewHouseListDomainResponse;
 import com.toutiao.appV2.model.Intelligence.*;
 import com.toutiao.appV2.model.StringDataResponse;
-import com.toutiao.appV2.model.newhouse.NewHouseListRequest;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import springfox.documentation.annotations.ApiIgnore;
-
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
 
