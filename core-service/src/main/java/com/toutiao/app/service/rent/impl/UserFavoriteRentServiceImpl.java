@@ -168,10 +168,10 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                     for (Object communityBucket : communityBuckets) {
                         communityCount += (int)((ParsedStringTerms.ParsedBucket) communityBucket).getDocCount();
                     }
+                    subwayLineHouseDo.setCommunityCount(communityCount);
+                    subwayLineHouseDos.add(subwayLineHouseDo);
                 }
             }
-
-            subwayLineHouseDos.add(subwayLineHouseDo);
         }
         subwayLineHouseDomain.setSubwayLineHouseDos(subwayLineHouseDos);
 
