@@ -743,11 +743,10 @@ public class RentRestRestServiceImpl implements RentRestService {
     @Override
     public RentDetailsListDo rentGuessYouLike(RentGuessYourLikeQuery rentGuessYourLikeQuery, String city,Integer userId) {
         boolean isQueryEs = false;
+        boolean isUserQuery = false;
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
-        if (rentGuessYourLikeQuery.getRentType()!=null){
-            isQueryEs = true;
-        }
+
         if (userId != null) {
             RentFavoriteListDoQuery rentFavoriteListDoQuery = new RentFavoriteListDoQuery();
             rentFavoriteListDoQuery.setUserId(userId);
@@ -756,22 +755,46 @@ public class RentRestRestServiceImpl implements RentRestService {
             RentFavoriteDomain rentFavoriteDomain = rentFavoriteRestService.queryRentFavoriteListByUserId(rentFavoriteListDoQuery);
             if (rentFavoriteDomain.getData().size() > 0){
                 isQueryEs = true;
+                isUserQuery = true;
                 RentFavoriteDo rentFavoriteDo = rentFavoriteDomain.getData().get(rentFavoriteDomain.getData().size()-1);
                 RentDetailsDo  rentDetailsDo = rentRestRestService.queryRentDetailByHouseId(rentFavoriteDo.getHouseId(),city);
-                rentGuessYourLikeQuery.setAreaId(rentDetailsDo.getAreaId());
-                rentGuessYourLikeQuery.setRentType(rentDetailsDo.getRentType());
-                rentGuessYourLikeQuery.setTotalPrice(rentDetailsDo.getRentHousePrice());
-                rentGuessYourLikeQuery.setHall(rentDetailsDo.getHall());
-                rentGuessYourLikeQuery.setRoom(rentDetailsDo.getRoom());
+                boolQueryBuilder.must(termQuery("area_id", rentDetailsDo.getAreaId()));
+                boolQueryBuilder.must(termQuery("hall",rentDetailsDo.getHall()));
+                boolQueryBuilder.must(termQuery("room", rentDetailsDo.getRoom()));
+                boolQueryBuilder.must(termQuery("rent_type", rentDetailsDo.getRentType()));
+                boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rentDetailsDo.getRentHousePrice()+rentDetailsDo.getRentHousePrice()*0.3).lte(rentDetailsDo.getRentHousePrice()-rentDetailsDo.getRentHousePrice()*0.3));
             }
         }
 
-        if (isQueryEs){
-            boolQueryBuilder.must(termQuery("area_id", rentGuessYourLikeQuery.getAreaId()));
-            boolQueryBuilder.must(termQuery("hall", rentGuessYourLikeQuery.getHall()));
-            boolQueryBuilder.must(termQuery("room", rentGuessYourLikeQuery.getRoom()));
-            boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rentGuessYourLikeQuery.getTotalPrice()+rentGuessYourLikeQuery.getTotalPrice()*0.3).lte(rentGuessYourLikeQuery.getTotalPrice()-rentGuessYourLikeQuery.getTotalPrice()*0.3));
-        }else {
+        if (!isUserQuery){
+                if (rentGuessYourLikeQuery.getAreaId()!=null){
+                    boolQueryBuilder.must(termQuery("area_id", rentGuessYourLikeQuery.getAreaId()));
+                    isQueryEs = true;
+                }
+
+                if (rentGuessYourLikeQuery.getHall()!=null){
+                    boolQueryBuilder.must(termQuery("hall",rentGuessYourLikeQuery.getHall()));
+                    isQueryEs = true;
+                }
+
+                if (rentGuessYourLikeQuery.getRoom()!=null){
+                    boolQueryBuilder.must(termQuery("room", rentGuessYourLikeQuery.getRoom()));
+                    isQueryEs = true;
+                }
+
+                if (rentGuessYourLikeQuery.getRentType()!=null){
+                    boolQueryBuilder.must(termQuery("rent_type", rentGuessYourLikeQuery.getRentType()));
+                    isQueryEs = true;
+                }
+
+                if (rentGuessYourLikeQuery.getTotalPrice()!=null){
+                    Double rent_house_price = rentGuessYourLikeQuery.getTotalPrice();
+                    boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rent_house_price+rent_house_price*0.3).lte(rent_house_price-rent_house_price*0.3));
+                    isQueryEs = true;
+                }
+        }
+
+        if (!isQueryEs){
             Date date = new Date();
             String today =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
             Calendar cal=Calendar.getInstance();

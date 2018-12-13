@@ -3,7 +3,7 @@ package com.toutiao.app.domain.rent;
 import lombok.Data;
 
 /**
- * Created by 18710 on 2018/12/13.
+ * Created by chy on 2018/12/13.
  */
 @Data
 public class RentGuessYourLikeQuery {
@@ -25,7 +25,7 @@ public class RentGuessYourLikeQuery {
     /**
      * 出租价格
      */
-    private double totalPrice;
+    private Double totalPrice;
 
     /**
      * 商圈id

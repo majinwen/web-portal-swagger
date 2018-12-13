@@ -40,7 +40,7 @@ public class RentGuessYourLikeRequest {
     @JsonProperty("totalPrice")
     @ApiParam("出租价格")
     @ApiModelProperty("出租价格")
-    private double totalPrice;
+    private Double totalPrice;
 
     /**
      * 商圈id
