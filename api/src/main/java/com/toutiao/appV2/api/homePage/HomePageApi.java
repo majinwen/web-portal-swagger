@@ -199,9 +199,9 @@ public interface HomePageApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/homePage/recommendTopic/queryRecommendTopic",
             produces = { "application/json" },
-            method = RequestMethod.POST)
+            method = RequestMethod.GET)
     @ApiIgnore
-    ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest" ,required=true )  @Valid @RequestBody RecommendRequest recommendRequest);
+    ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest" ,required=true )  @Valid RecommendRequest recommendRequest);
 
 
     @ApiOperation(value = "首页top50", nickname = "top50", notes = "", response = HomePageTop50DoMap.class, tags={ "首页", })

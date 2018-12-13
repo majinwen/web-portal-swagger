@@ -215,7 +215,7 @@ public class RestHomePageController implements HomePageApi {
     }
 
     @Override
-    public ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest", required = true) @Valid @RequestBody RecommendRequest recommendRequest) {
+    public ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest", required = true) @Valid RecommendRequest recommendRequest) {
         RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
         BeanUtils.copyProperties(recommendRequest, recommendTopicDoQuery);
         RecommendTopicDomain recommendTopicDomain = recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
