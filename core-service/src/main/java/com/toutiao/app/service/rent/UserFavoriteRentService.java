@@ -4,7 +4,8 @@ package com.toutiao.app.service.rent;
  * Created by CuiShihao on 2018/12/11
  */
 
-import com.toutiao.app.domain.rent.RentHouseDoQuery;
+import com.toutiao.app.domain.rent.SubwayLineHouseDomain;
+import com.toutiao.app.domain.rent.UserFavoriteRentListDoQuery;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDomain;
 
 /**
@@ -14,8 +15,16 @@ public interface UserFavoriteRentService {
 
     /**
      * 根据定制条件获取租房列表
-     * @param rentHouseDoQuery
+     * @param userFavoriteRentListDoQuery
      * @return
      */
-    UserFavoriteRentListDomain queryRentListByUserFavorite(RentHouseDoQuery rentHouseDoQuery, String city);
+    UserFavoriteRentListDomain queryRentListByUserFavorite(UserFavoriteRentListDoQuery userFavoriteRentListDoQuery, String city);
+
+    /**
+     * 根据定制条件里的地铁线id获取对应的房源和小区数量
+     * @param userFavoriteRentListDoQuery
+     * @param city
+     * @return
+     */
+    SubwayLineHouseDomain querySubwayLineHouse(UserFavoriteRentListDoQuery userFavoriteRentListDoQuery, String city);
 }

@@ -1,6 +1,7 @@
 package com.toutiao.appV2.api.rent;
 
 import com.toutiao.appV2.model.rent.RentHouseRequest;
+import com.toutiao.appV2.model.rent.UserFavoriteRentListRequest;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListResponse;
 import com.toutiao.appV2.model.sellhouse.UserFavoriteConditionRequest;
 import io.swagger.annotations.*;
@@ -18,7 +19,7 @@ import javax.validation.Valid;
 
 @Api(value = "租房", description = "租房定制条件房源接口")
 public interface UserFavoriteRentApi {
-    @ApiOperation(value = "定制条件租房列表", nickname = "getNearRentByLocation", notes = "", response = UserFavoriteRentListResponse.class, tags={ "租房", })
+    @ApiOperation(value = "定制条件租房列表", nickname = "getRentHouseListByUserFavorite", notes = "", response = UserFavoriteRentListResponse.class, tags={ "租房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = UserFavoriteRentListResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -26,6 +27,17 @@ public interface UserFavoriteRentApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/rent/getRentByUserFavorite",
             produces = { "application/json" },
+            method = RequestMethod.POST)
+    ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "userFavoriteRentListRequest"  )  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
+
+    @ApiOperation(value = "根据地铁线获取相应的小区数量和房源数量", nickname = "getHouseCountBySubway", notes = "", response = UserFavoriteRentListResponse.class, tags={ "租房", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = UserFavoriteRentListResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/rent/getHouseCountBySubway",
+            produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "rentHouseRequest"  )  @Valid @RequestBody RentHouseRequest rentHouseRequest);
+    ResponseEntity<UserFavoriteRentListResponse> getHouseCountBySubway(@ApiParam(value = "userFavoriteRentListRequest"  )  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
 }
