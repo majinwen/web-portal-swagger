@@ -93,5 +93,6 @@ public class UserConditionSubscribeDetailDo {
      */
     private Integer isLowPrice;
 
-
+    //降价-1 捡漏-2 抢手-3
+    private Integer topicType;
 }
