@@ -157,7 +157,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                 String details = searchHit.getSourceAsString();
                 newHouseMapSearchBuildDo = JSON.parseObject(details,NewHouseMapSearchBuildDo.class);
                 if(newHouseMapSearchBuildDo.getAveragePrice() > 0){
-                    newHouseMapSearchBuildDo.setPriceDesc("均价"+new BigDecimal(String.valueOf(newHouseMapSearchBuildDo.getAveragePrice())).stripTrailingZeros().toPlainString()+"元/平");
+                    newHouseMapSearchBuildDo.setPriceDesc("均价"+new BigDecimal(String.valueOf(newHouseMapSearchBuildDo.getAveragePrice())).stripTrailingZeros().toPlainString()+"元/m²");
                 } else if(newHouseMapSearchBuildDo.getTotalPrice() > 0){
                     newHouseMapSearchBuildDo.setPriceDesc("总价"+new BigDecimal(String.valueOf(newHouseMapSearchBuildDo.getTotalPrice())).stripTrailingZeros().toPlainString()+"万/套");
                 } else {
