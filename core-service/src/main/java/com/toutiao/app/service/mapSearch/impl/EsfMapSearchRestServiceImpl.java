@@ -384,31 +384,19 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         SearchHit[] searchHists = hits.getHits();
         if(searchHists.length > 0){
             SearchHit communityHit = searchHists[0];
-            String community = communityHit.getSourceAsString();
-           // esfMapCommunityDo = JSON.parseObject(community, EsfMapCommunityDo.class);
+
             String districtName = communityHit.getSourceAsMap().get("area").toString();
             String bizcircleName = communityHit.getSourceAsMap().get("houseBusinessName").toString();
-           // esfMapCommunityDo.setDistrictName(districtName);
-          //  esfMapCommunityDo.setAreaName(bizcircleName);
 
+            esfMapCommunityDo.setCount((int)hits.totalHits);
             String description = districtName + " " +bizcircleName;
             if (StringTool.isNotEmpty(esfMapSearchDoQuery.getSubwayLineId()) && esfMapSearchDoQuery.getSubwayLineId() != 0) {
                 SearchResponse line = esfMapSearchEsDao.queryLinePoint(esfMapSearchDoQuery.getSubwayLineId(), city);
                 Map<String, Object> subwayMap = line.getHits().getHits()[0].getSourceAsMap();
                 description = "近" + subwayMap.get("line_name");
             }
-          //  esfMapCommunityDo.setDescription(description);
+           esfMapCommunityDo.setDescription(description);
 
-            String year = communityHit.getSourceAsMap().get("year").toString();
-          //  esfMapCommunityDo.setBuildYears(year);
-            String buildingImages = communityHit.getSourceAsMap().get("plotPhoto").toString();
-          //  esfMapCommunityDo.setBuildingImages(buildingImages);
-            String buildingStructure = communityHit.getSourceAsMap().get("buildCategoryName").toString();
-         //   esfMapCommunityDo.setBuildingStructure(buildingStructure);
-
-            String plotName = communityHit.getSourceAsMap().get("plotName").toString();
-         //   esfMapCommunityDo.setPloatName(plotName);
-         //   esfMapCommunityDo.setCount((int)hits.totalHits);
             Date date = new Date();
             for (SearchHit searchHit : searchHists) {
                 String details = "";

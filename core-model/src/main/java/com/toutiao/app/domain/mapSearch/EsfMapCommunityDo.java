@@ -76,23 +76,23 @@ public class EsfMapCommunityDo {
     @ApiModelProperty("社区id")
     private String plotId;
 
-    /**
-     * 社区ID
-     */
-    @ApiModelProperty("社区ID")
-    private Integer newcode;
+//    /**
+//     * 社区ID
+//     */
+//    @ApiModelProperty("社区ID")
+//    private Integer newcode;
 
-    /**
-     * 坐标 纬度
-     */
-    @ApiModelProperty("坐标 纬度")
-    private Double plotLatitude;
-
-    /**
-     * 坐标 经度
-     */
-    @ApiModelProperty("坐标 经度")
-    private Double plotLongitude;
+//    /**
+//     * 坐标 纬度
+//     */
+//    @ApiModelProperty("坐标 纬度")
+//    private Double plotLatitude;
+//
+//    /**
+//     * 坐标 经度
+//     */
+//    @ApiModelProperty("坐标 经度")
+//    private Double plotLongitude;
 
     /**
      * 房源数量
