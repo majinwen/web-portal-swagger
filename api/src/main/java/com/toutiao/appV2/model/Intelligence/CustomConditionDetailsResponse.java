@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.Intelligence;
 
 import com.toutiao.app.domain.newhouse.CustomConditionDetailsDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDistrictDo;
 import lombok.Data;
 
 import java.util.List;
@@ -14,6 +15,9 @@ import java.util.List;
 
 @Data
 public class CustomConditionDetailsResponse {
+
+
+   private List<CustomConditionDistrictDo> districtData;
 
    private List<CustomConditionDetailsDo> data;
 

@@ -14,6 +14,7 @@ import java.util.List;
 @Data
 public class CustomConditionDetailsDomain {
 
+    private List<CustomConditionDistrictDo> districtData;
 
     private List<CustomConditionDetailsDo> data;
 }

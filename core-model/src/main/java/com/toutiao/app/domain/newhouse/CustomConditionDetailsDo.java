@@ -52,4 +52,14 @@ public class CustomConditionDetailsDo {
      */
     private Integer houseCount;
 
+    /**
+     * 坐标 纬度
+     */
+    private Double latitude;
+
+    /**
+     * 坐标 经度
+     */
+    private Double longitude;
+
 }

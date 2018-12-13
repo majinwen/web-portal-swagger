@@ -123,5 +123,7 @@ public interface SellHouseEsDao {
 
     SearchResponse getAvgPriceByBizcircle(BoolQueryBuilder query, String city);
 
+    SearchResponse getAvgPriceByDistrict(BoolQueryBuilder query, String city);
+
 
 }

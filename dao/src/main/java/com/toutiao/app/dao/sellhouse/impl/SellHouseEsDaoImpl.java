@@ -418,4 +418,27 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
         return searchResponse;
     }
 
+
+    @Override
+    public SearchResponse getAvgPriceByDistrict(BoolQueryBuilder query, String city) {
+        Integer cityId = CityUtils.returnCityId(city);
+        query.must(QueryBuilders.termQuery("city_id", cityId));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getDbAvgPriceType(CityConstant.ABBREVIATION_QUANGUO));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query).aggregation(AggregationBuilders.terms("districtId").field("district_id")
+                .subAggregation(AggregationBuilders.terms("districtName").field("district_name"))
+                .subAggregation(AggregationBuilders.terms("latitude").field("district_latitude"))
+                .subAggregation(AggregationBuilders.terms("longitude").field("district_longitude")));
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
+
 }

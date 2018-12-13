@@ -12,6 +12,7 @@ import com.toutiao.app.domain.mapSearch.EsfMapSearchDo;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.newhouse.CustomConditionDetailsDo;
 import com.toutiao.app.domain.newhouse.CustomConditionDetailsDomain;
+import com.toutiao.app.domain.newhouse.CustomConditionDistrictDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotsHousesDomain;
@@ -38,6 +39,7 @@ import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.lucene.index.Term;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
@@ -51,7 +53,9 @@ import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.max.ParsedMax;
 import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
@@ -2179,6 +2183,7 @@ public class SellHouseServiceImpl implements SellHouseService {
     public CustomConditionDetailsDomain getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
         CustomConditionDetailsDomain customConditionDetailsDomain = new CustomConditionDetailsDomain();
         List<CustomConditionDetailsDo> customConditionDetailsDos = new ArrayList<>();
+        List<CustomConditionDistrictDo> customConditionDistrictDos = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
         boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
@@ -2235,10 +2240,45 @@ public class SellHouseServiceImpl implements SellHouseService {
                 for(SearchHit searchHit : searchHists){
                     conditionDetailsDo.setBizcircleName(searchHit.getSourceAsMap().get("bizcircle_name")==null?"":searchHit.getSourceAsMap().get("bizcircle_name").toString());
                     conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice")+"元/m²");
+                    String location =  searchHit.getSourceAsMap().get("bizcircle_location")==null?"":searchHit.getSourceAsMap().get("bizcircle_location").toString();
+                    if(StringTool.isNotEmpty(location)){
+                        String[] lat_lon = location.split(",");
+                        conditionDetailsDo.setLatitude(Double.valueOf(lat_lon[0]));
+                        conditionDetailsDo.setLongitude(Double.valueOf(lat_lon[1]));
+                    }
                 }
             }
             customConditionDetailsDos.add(conditionDetailsDo);
         }
+
+        BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
+        if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
+            boolQuery.must(termsQuery("district_id", userFavoriteConditionDoQuery.getDistrictId()));
+        }
+        SearchResponse avgPriceByDistrict = sellHouseEsDao.getAvgPriceByDistrict(boolQuery, city);
+        Terms districtTerms = avgPriceByDistrict.getAggregations().get("districtId");
+        List districtBucket = districtTerms.getBuckets();
+        for (Object bucket : districtBucket) {
+            CustomConditionDistrictDo customConditionDistrictDo = new CustomConditionDistrictDo();
+            customConditionDistrictDo.setDistrictId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));
+
+            Terms districtName = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("districtName");
+            if(districtName.getBuckets().size() > 0){
+                customConditionDistrictDo.setDistrictName(districtName.getBuckets().get(0).getKeyAsString());
+            }
+
+            Terms latitude = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("latitude");
+            if(latitude.getBuckets().size() > 0){
+                customConditionDistrictDo.setLatitude(latitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
+            }
+
+            Terms longitude = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("longitude");
+            if(longitude.getBuckets().size() > 0){
+                customConditionDistrictDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
+            }
+            customConditionDistrictDos.add(customConditionDistrictDo);
+        }
+        customConditionDetailsDomain.setDistrictData(customConditionDistrictDos);
         customConditionDetailsDomain.setData(customConditionDetailsDos);
         return customConditionDetailsDomain;
     }
