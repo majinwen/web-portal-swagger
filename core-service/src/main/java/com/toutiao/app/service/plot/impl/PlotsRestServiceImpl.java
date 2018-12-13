@@ -470,7 +470,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
             if (hits.length > 0) {
                 for (SearchHit hit : hits) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, null);
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city, null, key);
                 }
             }
         }
@@ -487,7 +487,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
      * @param key
      * @return
      */
-    public void commonMethod(SearchHit hit, List<String> key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance) {
+    public void commonMethod(SearchHit hit, List<String> key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance,String subwayLineId) {
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
@@ -511,6 +511,16 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
                 String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                 nearbyDistance = "距您" + distances;
+            }
+        }
+
+        //增加地铁线选择，地铁站选择不限
+        if(StringTool.isNotEmpty(subwayLineId)){
+            if(StringTool.isNotEmpty(plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId))){
+                trafficArr = plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId).toString().split("\\$");
+                if (trafficArr.length == 3) {
+                    nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                }
             }
         }
 
