@@ -1,6 +1,7 @@
 package com.toutiao.appV2.apiimpl.report;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.report.*;
 import com.toutiao.app.service.report.ReportCityService;
 import com.toutiao.appV2.api.report.ReportRestApi;
@@ -174,7 +175,11 @@ public class ReportRestController implements ReportRestApi {
         reportCityResponse.setZfPriceRange(JSONArray.parseArray(reportCity.getZfPriceRange(), ReportRentPriceDistrbutionResponse.class));
         reportCityResponse.setEsfPriceRange(JSONArray.parseArray(reportCity.getEsfPriceRange(), ReportEsfTongbiDescriptionResponse.class));
         reportCityResponse.setEsfTeseJiangjia(JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class));
-        reportCityResponse.setEsfTeseJianlou(JSONArray.parseArray(reportCity.getEsfTeseJianlou(), ReportTeSeJianLouRespose.class));
+        JSONObject jianolouJson = JSONObject.parseObject(reportCity.getEsfTeseJianlou());
+        ReportTeSeJianLouRespose reportTeSeJianLouRespose = new ReportTeSeJianLouRespose();
+        reportTeSeJianLouRespose.setHouseQuotationList(JSONArray.parseArray(jianolouJson.getString("lower_house_quotation"),LowerHouseQuotationResponse.class));
+        reportTeSeJianLouRespose.setEsfQuotationList(JSONArray.parseArray(jianolouJson.getString("esf_quotation"),EsfQuotationRespose.class));
+        reportCityResponse.setEsfTeseJianlou(reportTeSeJianLouRespose);
         reportCityResponse.setEsfTeseQiangshou(JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class));
         reportCityResponse.setNewPriceRange(JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class));
         reportCityResponse.setEsfPriceFenbu(JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class));
