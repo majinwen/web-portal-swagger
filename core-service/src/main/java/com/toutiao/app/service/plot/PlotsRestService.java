@@ -1,11 +1,10 @@
 package com.toutiao.app.service.plot;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
@@ -63,5 +62,11 @@ public interface PlotsRestService {
 
     List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
-
+    /**
+     * 获取折线信息
+     * @param newcode
+     * @param areaId
+     * @return
+     */
+    JSONArray getFoldLineInfo(String newcode, String areaId);
 }

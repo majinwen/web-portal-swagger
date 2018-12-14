@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.toutiao.web.dao.mapper.foldline.reportPipelineRecordEveryMonthMapper" >
-  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.foldline.reportPipelineRecordEveryMonth" >
+<mapper namespace="com.toutiao.web.dao.mapper.report.ReportPipelineRecordEveryMonthMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth" >
     <id column="id" property="id" jdbcType="INTEGER" />
     <result column="code" property="code" jdbcType="VARCHAR" />
     <result column="for_sale" property="forSale" jdbcType="INTEGER" />
@@ -10,9 +10,11 @@
     <result column="decrease_house" property="decreaseHouse" jdbcType="INTEGER" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="ring_ratio" property="ringRatio" jdbcType="NUMERIC" />
+    <result column="display_name" property="displayName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, code, for_sale, avg_price, increase_house, decrease_house, create_time, city_id
+    id, code, for_sale, avg_price, increase_house, decrease_house, create_time, city_id, ring_ratio, display_name
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -24,7 +26,7 @@
     delete from report_pipeline_record_everymonth
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.toutiao.app.domain.foldline.reportPipelineRecordEveryMonth" >
+  <insert id="insert" parameterType="com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth" >
     insert into report_pipeline_record_everymonth (id, code, for_sale, 
       avg_price, increase_house, decrease_house, 
       create_time, city_id)
@@ -32,7 +34,7 @@
       #{avgPrice,jdbcType=NUMERIC}, #{increaseHouse,jdbcType=INTEGER}, #{decreaseHouse,jdbcType=INTEGER}, 
       #{createTime,jdbcType=TIMESTAMP}, #{cityId,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.toutiao.app.domain.foldline.reportPipelineRecordEveryMonth" >
+  <insert id="insertSelective" parameterType="com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth" >
     insert into report_pipeline_record_everymonth
     <trim prefix="(" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -87,7 +89,7 @@
       </if>
     </trim>
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.domain.foldline.reportPipelineRecordEveryMonth" >
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth" >
     update report_pipeline_record_everymonth
     <set >
       <if test="code != null" >
@@ -114,7 +116,7 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.domain.foldline.reportPipelineRecordEveryMonth" >
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth" >
     update report_pipeline_record_everymonth
     set code = #{code,jdbcType=VARCHAR},
       for_sale = #{forSale,jdbcType=INTEGER},
@@ -125,4 +127,9 @@
       city_id = #{cityId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <select id="selectFoldLineAreaInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * FROM report_pipeline_record_everymonth
+    WHERE code = #{code,jdbcType=VARCHAR}
+    ORDER BY create_time DESC LIMIT 6 OFFSET 1
+  </select>
 </mapper>

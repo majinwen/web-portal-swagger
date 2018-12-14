@@ -1,11 +1,10 @@
-package com.toutiao.app.domain.foldline;
+package com.toutiao.app.dao.report;
 
 import lombok.Data;
 
-import java.math.BigDecimal;
 import java.util.Date;
 @Data
-public class reportPipelineRecordEveryMonth {
+public class ReportPipelineRecordEveryMonth {
     /**
      * 序号
      */
@@ -24,7 +23,7 @@ public class reportPipelineRecordEveryMonth {
     /**
      * 均价
      */
-    private BigDecimal avgPrice;
+    private Double avgPrice;
 
     /**
      * 本月新增房源
@@ -46,4 +45,13 @@ public class reportPipelineRecordEveryMonth {
      */
     private Integer cityId;
 
+    /**
+     * 环比
+     */
+    private Double ringRatio;
+
+    /**
+     * 名称
+     */
+    private String displayName;
 }

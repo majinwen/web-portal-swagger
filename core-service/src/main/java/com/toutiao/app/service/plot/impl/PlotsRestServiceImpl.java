@@ -1,9 +1,11 @@
 package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
+import com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.rent.RentNumListDo;
@@ -21,12 +23,12 @@ import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
+import com.toutiao.web.dao.mapper.report.ReportPipelineRecordEveryMonthMapper;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import com.toutiao.web.service.map.MapService;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
@@ -38,7 +40,6 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.sort.*;
 import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
@@ -78,6 +79,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private PlotsHomesRestService plotsHomesRestService;
     @Autowired
     private PlotsMarketService plotsMarketService;
+    @Autowired
+    private ReportPipelineRecordEveryMonthMapper reportPipelineRecordEveryMonthMapper;
 
 
     /**
@@ -712,6 +715,60 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
         }
         return list;
+    }
+
+    @Override
+    public JSONArray getFoldLineInfo(String newcode, String areaId) {
+        List<ReportPipelineRecordEveryMonth> newcodeInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineAreaInfo(newcode);
+        List<ReportPipelineRecordEveryMonth> areaInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineAreaInfo(areaId);
+        JSONArray jsonArray = new JSONArray();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
+        List newcodePrice = new ArrayList();
+        List areaPrice = new ArrayList();
+        List newcodeMonth = new ArrayList();
+        List areaMonth = new ArrayList();
+        List newcodeResponse = new ArrayList();
+        List areaResponse = new ArrayList();
+        String newcodeRindratio = "0%";
+        String areaRindratio = "0%";
+        String plotName = "";
+        String areaName = "";
+        if (null!=newcodeInfo&&newcodeInfo.size()>0){
+            for (ReportPipelineRecordEveryMonth newcodeEntity :newcodeInfo){
+                newcodePrice.add(newcodeEntity.getAvgPrice());
+                newcodeMonth.add(formatter.format(newcodeEntity.getCreateTime()));
+
+            }
+            newcodeRindratio = (newcodeInfo.get(0).getRingRatio())*100+"%";
+            plotName = newcodeInfo.get(0).getDisplayName();
+        }
+
+        if (null!=areaInfo&&areaInfo.size()>0){
+            for (ReportPipelineRecordEveryMonth areaEntity :areaInfo){
+                areaPrice.add(areaEntity.getAvgPrice());
+                areaMonth.add(formatter.format(areaEntity.getCreateTime()));
+
+            }
+            areaRindratio = (areaInfo.get(0).getRingRatio())*100+"%";
+            areaName = areaInfo.get(0).getDisplayName();
+        }
+
+        newcodeResponse.add(newcodePrice);
+        newcodeResponse.add(newcodeMonth);
+        newcodeResponse.add(newcodeRindratio);
+
+        areaResponse.add(areaPrice);
+        areaResponse.add(areaMonth);
+        areaResponse.add(areaRindratio);
+
+        Map newcodeMap = new HashMap();
+        Map areaMap = new HashMap();
+        newcodeMap.put(plotName,newcodeResponse);
+        areaMap.put(areaName,areaResponse);
+        jsonArray.add(JSON.toJSON(newcodeMap));
+        jsonArray.add(JSON.toJSON(areaMap));
+
+        return jsonArray;
     }
 
 
