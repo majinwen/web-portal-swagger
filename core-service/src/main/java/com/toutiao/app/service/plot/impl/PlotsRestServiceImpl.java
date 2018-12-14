@@ -734,9 +734,9 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     }
 
     @Override
-    public JSONArray getFoldLineInfo(String newcode, String areaId) {
+    public JSONArray getFoldLineInfo(String newcode, String districtId) {
         List<ReportPipelineRecordEveryMonth> newcodeInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineAreaInfo(newcode);
-        List<ReportPipelineRecordEveryMonth> areaInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineAreaInfo(areaId);
+        List<ReportPipelineRecordEveryMonth> areaInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineAreaInfo(districtId);
         JSONArray jsonArray = new JSONArray();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
         List newcodePrice = new ArrayList();

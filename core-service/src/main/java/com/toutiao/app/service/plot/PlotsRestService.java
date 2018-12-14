@@ -69,8 +69,8 @@ public interface PlotsRestService {
     /**
      * 获取折线信息
      * @param newcode
-     * @param areaId
+     * @param districtId
      * @return
      */
-    JSONArray getFoldLineInfo(String newcode, String areaId);
+    JSONArray getFoldLineInfo(String newcode, String districtId);
 }
