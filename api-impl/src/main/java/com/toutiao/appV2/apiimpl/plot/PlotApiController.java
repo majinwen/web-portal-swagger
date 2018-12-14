@@ -62,29 +62,26 @@ public class PlotApiController implements PlotApi {
     @Autowired
     private PlotsRestService appPlotService;
 
-    @org.springframework.beans.factory.annotation.Autowired
+    @Autowired
     public PlotApiController(ObjectMapper objectMapper, HttpServletRequest request) {
         this.objectMapper = objectMapper;
         this.request = request;
     }
 
     @Override
-    public ResponseEntity<PlotTrafficResponse> getAroundInfoByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId) throws InvocationTargetException, IllegalAccessException {
+    public ResponseEntity<PlotTrafficResponse> getAroundInfoByPlotId(@ApiParam(value = "plotId") @RequestParam(value = "plotId", required = false) Integer plotId) {
 
         PlotTrafficResponse plotTrafficResponse = new PlotTrafficResponse();
-        PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotId.get());
+        PlotTrafficDo plotTrafficDo = appPlotService.queryPlotDataInfo(plotId);
         BeanUtils.copyProperties(plotTrafficDo, plotTrafficResponse);
         return new ResponseEntity<PlotTrafficResponse>(plotTrafficResponse, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<PlotEsfListResponse> getEsfByPlotsIdAndRoom(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId, @ApiParam(value = "") @Valid @RequestParam(value = "room", required = false) Optional<Integer> room, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum, @ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Optional<Integer> pageSize) {
+    public ResponseEntity<PlotEsfListResponse> getEsfByPlotsIdAndRoom(@ApiParam(value = "plotId") @RequestParam(value = "plotId", required = false) Integer plotId, @ApiParam(value = "") @RequestParam(value = "room", required = false,defaultValue = "0") Integer room, @ApiParam(value = "pageNum") @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
 
-        Integer plotsId = plotId.get();
-        Integer roomQuery = room.get();
-        Integer pageNumQuery = pageNum.get();
-        Integer pageSizeQuery = pageSize.get();
-        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId, roomQuery, pageNumQuery, pageSizeQuery, CityUtils.getCity());
+
+        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotId, room, pageNum, pageSize, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(sellHouseDoList));
         List<PlotEsfResponse> plotEsfResponses = JSONObject.parseArray(json.toJSONString(), PlotEsfResponse.class);
         PlotEsfListResponse plotEsfListResponse = new PlotEsfListResponse();
@@ -106,10 +103,10 @@ public class PlotApiController implements PlotApi {
     }
 
     @Override
-    public ResponseEntity<PlotDetailsFewListResponse> getPlotAroundByLocation(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Optional<Double> lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Optional<Double> lon) {
+    public ResponseEntity<PlotDetailsFewListResponse> getPlotAroundByLocation(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Integer plotId, @ApiParam(value = "") @Valid @RequestParam(value = "lat", required = false) Double lat, @ApiParam(value = "") @Valid @RequestParam(value = "lon", required = false) Double lon) {
 
-        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(lat.get(),
-                lon.get(), plotId.get(), CityUtils.getCity());
+        List<PlotDetailsFewDo> plotDetailsFewDoList = appPlotService.queryAroundPlotByLocation(lat,
+                lon, plotId, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(plotDetailsFewDoList));
         List<PlotDetailsFewResponse> plotDetailsFewResponseList = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
         PlotDetailsFewListResponse plotDetailsFewListResponse = new PlotDetailsFewListResponse();
@@ -119,17 +116,17 @@ public class PlotApiController implements PlotApi {
     }
 
 //    @Override
-//    public ResponseEntity<PlotDetailsFewListResponse> getPlotByRecommendCondition(@ApiParam(value = "") @Valid @RequestParam(value = "districtId", required = false) Optional<List<String>> districtId, @ApiParam(value = "") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<String>> layoutId, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<Integer> userId, @ApiParam(value = "") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "") @Valid @RequestParam(value = "city", required = false) Optional<String> city, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum, @ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Optional<Integer> pageSize, @ApiParam(value = "") @Valid @RequestParam(value = "flag", required = false) Optional<Integer> flag) {
+//    public ResponseEntity<PlotDetailsFewListResponse> getPlotByRecommendCondition(@ApiParam(value = "") @Valid @RequestParam(value = "districtId", required = false) Optional<List<String>> districtId, @ApiParam(value = "") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<String>> layoutId, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Integer userId, @ApiParam(value = "") @Valid @RequestParam(value = "beginPrice", required = false) Double beginPrice, @ApiParam(value = "") @Valid @RequestParam(value = "endPrice", required = false) Double endPrice, @ApiParam(value = "") @Valid @RequestParam(value = "city", required = false) Optional<String> city, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Integer pageNum, @ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Integer pageSize, @ApiParam(value = "") @Valid @RequestParam(value = "flag", required = false) Integer flag) {
 //        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
-//        userFavoriteConditionDoQuery.setBeginPrice(beginPrice.get());
-//        userFavoriteConditionDoQuery.setCity(city.get());
-//        userFavoriteConditionDoQuery.setDistrictId((String[]) districtId.get().toArray());
-//        userFavoriteConditionDoQuery.setEndPrice(endPrice.get());
-//        userFavoriteConditionDoQuery.setFlag(flag.get());
-//        userFavoriteConditionDoQuery.setLayoutId((String[]) layoutId.get().toArray());
-//        userFavoriteConditionDoQuery.setPageNum(pageNum.get());
-//        userFavoriteConditionDoQuery.setPageSize(pageSize.get());
-//        userFavoriteConditionDoQuery.setUserId(userId.get());
+//        userFavoriteConditionDoQuery.setBeginPrice(beginPrice);
+//        userFavoriteConditionDoQuery.setCity(city);
+//        userFavoriteConditionDoQuery.setDistrictId((String[]) districtId.toArray());
+//        userFavoriteConditionDoQuery.setEndPrice(endPrice);
+//        userFavoriteConditionDoQuery.setFlag(flag);
+//        userFavoriteConditionDoQuery.setLayoutId((String[]) layoutId.toArray());
+//        userFavoriteConditionDoQuery.setPageNum(pageNum);
+//        userFavoriteConditionDoQuery.setPageSize(pageSize);
+//        userFavoriteConditionDoQuery.setUserId(userId);
 //        List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
 //        JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
 //        List<PlotDetailsFewResponse> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
@@ -194,9 +191,9 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<PlotsEsfRoomCountResponse> getPlotsEsfList
-            (@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId) {
+            (@ApiParam(value = "plotId") @Valid @RequestParam(value = "plotId", required = false) Integer plotId) {
 
-        PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotId.get(), CityUtils.getCity());
+        PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotId, CityUtils.getCity());
         PlotsEsfRoomCountResponse plotsEsfRoomCountResponse = new PlotsEsfRoomCountResponse();
         BeanUtils.copyProperties(plotsEsfRoomCountDomain, plotsEsfRoomCountResponse);
         return new ResponseEntity<PlotsEsfRoomCountResponse>(plotsEsfRoomCountResponse, HttpStatus.OK);
@@ -217,10 +214,10 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<RentDetailsListResponse> getRentListByPlotId
-            (@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId, @ApiParam(value = "") @Valid @RequestParam(value = "rentType", required = false) Optional<Integer> rentType, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum) {
+            (@ApiParam(value = "plotId") @Valid @RequestParam(value = "plotId", required = false) Integer plotId, @ApiParam(value = "rentType") @Valid @RequestParam(value = "rentType", required = false) Integer rentType, @ApiParam(value = "pageNum") @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
 
-        RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotId.get(),
-                rentType.get(), pageNum.get(), CityUtils.getCity());
+        RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotId,
+                rentType, pageNum, CityUtils.getCity());
         RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
         BeanUtils.copyProperties(rentDetailsListDo, rentDetailsListResponse);
         return new ResponseEntity<RentDetailsListResponse>(rentDetailsListResponse, HttpStatus.OK);
@@ -230,9 +227,9 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<RentNumListResponse> getRentNumByPlotId
-            (@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId) {
+            (@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Integer plotId) {
 
-        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotId.get(), CityUtils.getCity());
+        RentNumListDo rentNumListDo = appRentRestService.queryRentNumByPlotId(plotId, CityUtils.getCity());
         return new ResponseEntity<RentNumListResponse>(JSON.parseObject(JSON.toJSONString(rentNumListDo), RentNumListResponse.class), HttpStatus.OK);
 
 
