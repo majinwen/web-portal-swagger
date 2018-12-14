@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.plot;
 
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
@@ -319,4 +320,10 @@ public class PlotDetailsDo {
      * 小区行情
      */
     private PlotMarketDomain plotMarketDomain;
+
+    /**
+     * 小区别名
+     */
+    @JSONField(name = "rc_nickname")
+    private String rcNickname;
 }

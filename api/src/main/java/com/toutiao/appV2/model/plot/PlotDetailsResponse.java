@@ -121,5 +121,8 @@ public class PlotDetailsResponse {
 
     @ApiModelProperty("小区行情")
     private PlotMarketDomain plotMarketDomain;
+
+    @ApiModelProperty("小区别名")
+    private String rcNickname;
 }
 
