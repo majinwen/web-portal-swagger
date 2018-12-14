@@ -1,5 +1,6 @@
 package com.toutiao.app.dao.plot;
 
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -113,6 +114,13 @@ public interface PlotEsDao {
 //
 //
 //    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
+
+    /**
+     * 根据小区id查询小区信息
+     * @param boolQueryBuilder
+     * @return
+     */
+    SearchResponse queryPlotByPlotId(BoolQueryBuilder boolQueryBuilder, String city);
 
 
 }

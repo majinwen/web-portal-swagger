@@ -14,7 +14,7 @@ import org.springframework.validation.annotation.Validated;
 @Data
 public class NewHouseMapSearchRequest   {
   @JsonProperty("areaId")
-  private List<Integer> areaId = null;
+  private Integer[] areaId = null;
 
   @JsonProperty("beginArea")
   private double beginArea;
@@ -41,7 +41,7 @@ public class NewHouseMapSearchRequest   {
   private double endTotalPrice;
 
   @JsonProperty("forwardId")
-  private List<Integer> forwardId = null;
+  private Integer[] forwardId = null;
 
   @JsonProperty("groupType")
   private String groupType = null;
@@ -53,10 +53,10 @@ public class NewHouseMapSearchRequest   {
   private String keyword = null;
 
   @JsonProperty("labelId")
-  private List<Integer> labelId = null;
+  private Integer[] labelId = null;
 
   @JsonProperty("layoutId")
-  private List<Integer> layoutId = null;
+  private Integer[] layoutId = null;
 
   @JsonProperty("maxLatitude")
   private Double maxLatitude = null;
@@ -77,7 +77,7 @@ public class NewHouseMapSearchRequest   {
   private Integer pageSize = null;
 
   @JsonProperty("saleStatusId")
-  private List<Integer> saleStatusId = null;
+  private Integer[] saleStatusId = null;
 
   @JsonProperty("subwayLineId")
   private Integer subwayLineId = null;

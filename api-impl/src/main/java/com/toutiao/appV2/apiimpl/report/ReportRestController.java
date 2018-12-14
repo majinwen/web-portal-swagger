@@ -162,13 +162,13 @@ public class ReportRestController implements ReportRestApi {
 
     private ReportCityResponse turnToResponse(ReportCity reportCity) {
         ReportCityResponse reportCityResponse = new ReportCityResponse();
-        reportCityResponse.setToday(DateUtil.getCurrStrDate());
+        reportCityResponse.setToday(DateUtil.format(System.currentTimeMillis(), "yyyy.MM.dd"));
         BeanUtils.copyProperties(reportCity, reportCityResponse);
         reportCityResponse.setNewGuideAttention(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideAttentionResponse.class));
-        reportCityResponse.setNewGuideHot(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideHotResponse.class));
-        reportCityResponse.setNewGuideSales(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideSalesResponse.class));
-        reportCityResponse.setNewGuidePopular(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuidePopularResponse.class));
-        reportCityResponse.setNewPreferential(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewPreferentialResponse.class));
+        reportCityResponse.setNewGuideHot(JSONArray.parseArray(reportCity.getNewGuideHot(), ReportNewGuideHotResponse.class));
+        reportCityResponse.setNewGuideSales(JSONArray.parseArray(reportCity.getNewGuideSales(), ReportNewGuideSalesResponse.class));
+        reportCityResponse.setNewGuidePopular(JSONArray.parseArray(reportCity.getNewGuidePopular(), ReportNewGuidePopularResponse.class));
+        reportCityResponse.setNewPreferential(JSONArray.parseArray(reportCity.getNewPreferential(), ReportNewPreferentialResponse.class));
         reportCityResponse.setEsfPlotHot(JSONArray.parseArray(reportCity.getEsfPlotHot(), ReportEsfProjHotResponse.class));
         reportCityResponse.setAreaHot(JSONArray.parseArray(reportCity.getAreaHot(), ReportAreaHotResponse.class));
         reportCityResponse.setZfPriceRange(JSONArray.parseArray(reportCity.getZfPriceRange(), ReportRentPriceDistrbutionResponse.class));

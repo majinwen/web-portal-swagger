@@ -124,4 +124,12 @@ public interface SellHouseEsDao {
      */
     SearchResponse getGuessLikeSellHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize);
 
+    SearchResponse getEsfCustomConditionDetails(BoolQueryBuilder query, String city);
+
+
+
+    SearchResponse getAvgPriceByBizcircle(BoolQueryBuilder query, String city);
+
+    SearchResponse getAvgPriceByDistrict(BoolQueryBuilder query, String city);
+
 }

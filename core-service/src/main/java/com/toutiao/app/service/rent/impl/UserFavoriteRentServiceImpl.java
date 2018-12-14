@@ -53,8 +53,6 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
     @Autowired
     private RentMapSearchEsDao rentMapSearchEsDao;
 
-    @Autowired
-
     private static final String LAYOUT = "5";
 
     @Override

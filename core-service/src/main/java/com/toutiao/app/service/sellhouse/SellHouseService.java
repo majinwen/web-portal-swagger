@@ -2,6 +2,8 @@ package com.toutiao.app.service.sellhouse;
 
 
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDomain;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -121,4 +123,11 @@ public interface SellHouseService {
      * @return
      */
     SellHouseSearchDomain queryGuessLikeSellHouseList(SellHouseDoQuery sellHouseDoQuery, Integer userId, String city);
+
+    /**
+     * 定制条件分布结果
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    CustomConditionDetailsDomain getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 }

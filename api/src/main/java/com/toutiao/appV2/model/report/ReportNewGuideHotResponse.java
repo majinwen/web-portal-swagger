@@ -67,4 +67,10 @@ public class ReportNewGuideHotResponse {
 //    @ApiModelProperty(value = "创建时间")
 //    private Date createTime;
 
+    /**
+     * 图片地址
+     */
+    @ApiModelProperty(value = "图片地址")
+    private String imgPath;
+
 }

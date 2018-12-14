@@ -215,7 +215,7 @@ public class RestHomePageController implements HomePageApi {
     }
 
     @Override
-    public ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest", required = true) @Valid @RequestBody RecommendRequest recommendRequest) {
+    public ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest", required = true) @Valid RecommendRequest recommendRequest) {
         RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
         BeanUtils.copyProperties(recommendRequest, recommendTopicDoQuery);
         RecommendTopicDomain recommendTopicDomain = recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
@@ -231,36 +231,5 @@ public class RestHomePageController implements HomePageApi {
         return new ResponseEntity<HomePageTop50DoMap>(homePageTop50DoMap, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request", required = true) @Valid @RequestBody RecommendEsf5Request recommendEsf5Request) {
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
-        RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
-        BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
-        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
-        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
-        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
-        List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
-        List<PlotDetailsFewDo> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewDo.class);
-        PlotDetailsFewDoList plotDetailsFewDoList = new PlotDetailsFewDoList();
-        plotDetailsFewDoList.setPlotDetailsFewDos(plotDetailsFewDos);
-        plotDetailsFewDoList.setTotal(plotDetailsFewDos.size());
-        return new ResponseEntity<PlotDetailsFewDoList>(plotDetailsFewDoList, HttpStatus.OK);
-    }
-
-    @Override
-    public ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
-        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
-        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
-        NewHouseDetailDo newHouseDetailDo = newHouseService.getOneNewHouseByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
-        NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
-        return new ResponseEntity<NewHouseDetailResponse>(newHouseDetailResponse, HttpStatus.OK);
-    }
 
 }

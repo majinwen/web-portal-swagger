@@ -1,6 +1,8 @@
 package com.toutiao.appV2.api.sellhouse;
 
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.appV2.model.Intelligence.CustomConditionCountResponse;
+import com.toutiao.appV2.model.Intelligence.CustomConditionDetailsResponse;
 import com.toutiao.appV2.model.sellhouse.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -103,17 +105,17 @@ public interface SellHouseRestApi {
     @ApiIgnore
     ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SellHouseSearchDomainResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
-    @RequestMapping(value = "/rest/esf/getRecommendEsf5",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
-    @ApiIgnore
-    ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult);
+//    @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "OK", response = SellHouseSearchDomainResponse.class),
+//            @ApiResponse(code = 401, message = "Unauthorized"),
+//            @ApiResponse(code = 403, message = "Forbidden"),
+//            @ApiResponse(code = 404, message = "Not Found")})
+//    @RequestMapping(value = "/rest/esf/getRecommendEsf5",
+//            produces = {"application/json"},
+//            method = RequestMethod.GET)
+//    @ApiIgnore
+//    ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult);
 
     @ApiOperation(value = "猜你喜欢:二手房列表", nickname = "getGuessList", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
     @ApiResponses(value = {
@@ -171,5 +173,7 @@ public interface SellHouseRestApi {
             produces = {"application/json"},
             method = {RequestMethod.POST})
     ResponseEntity<SellHouseGuessLikeResponse> getGuessList(@ApiParam(value = "sellHouseGuessLikeRequest", required = true) @RequestBody SellHouseGuessLikeRequest sellHouseGuessLikeRequest);
+
+
 
 }

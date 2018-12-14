@@ -11,13 +11,13 @@ import lombok.Data;
 public class NewHouseGuessLikeRequest {
 
     @ApiModelProperty(value = "区域",name = "districtId")
-    private Integer districtId;
+    private Integer districtId = 0;
 
     @ApiModelProperty(value = "均价",name = "avgPrice")
-    private double avgPrice;
+    private double avgPrice = 0;
 
     @ApiModelProperty(value = "总价",name = "totalPrice")
-    private double totalPrice;
+    private double totalPrice = 0;
 
     @ApiModelProperty(value = "页数",name = "pageNum")
     private Integer pageNum = 1;

@@ -3,23 +3,20 @@ package com.toutiao.appV2.apiimpl.plot;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.api.chance.response.hotplot.HotPlotListResponse;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.domain.rent.RentNumListDo;
+import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.app.service.plot.*;
 import com.toutiao.app.service.rent.RentRestService;
-import com.toutiao.appV2.model.plot.*;
-import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.appV2.api.plot.PlotApi;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toutiao.appV2.model.plot.*;
 import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
-import io.swagger.annotations.*;
-import io.swagger.models.auth.In;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -30,12 +27,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:42:20.134Z")
 
@@ -122,26 +118,26 @@ public class PlotApiController implements PlotApi {
         return new ResponseEntity<PlotDetailsFewListResponse>(plotDetailsFewListResponse, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<PlotDetailsFewListResponse> getPlotByRecommendCondition(@ApiParam(value = "") @Valid @RequestParam(value = "districtId", required = false) Optional<List<String>> districtId, @ApiParam(value = "") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<String>> layoutId, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<Integer> userId, @ApiParam(value = "") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "") @Valid @RequestParam(value = "city", required = false) Optional<String> city, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum, @ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Optional<Integer> pageSize, @ApiParam(value = "") @Valid @RequestParam(value = "flag", required = false) Optional<Integer> flag) {
-        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
-        userFavoriteConditionDoQuery.setBeginPrice(beginPrice.get());
-        userFavoriteConditionDoQuery.setCity(city.get());
-        userFavoriteConditionDoQuery.setDistrictIds((String[]) districtId.get().toArray());
-        userFavoriteConditionDoQuery.setEndPrice(endPrice.get());
-        userFavoriteConditionDoQuery.setFlag(flag.get());
-        userFavoriteConditionDoQuery.setLayoutId((String[]) layoutId.get().toArray());
-        userFavoriteConditionDoQuery.setPageNum(pageNum.get());
-        userFavoriteConditionDoQuery.setPageSize(pageSize.get());
-        userFavoriteConditionDoQuery.setUserId(userId.get());
-        List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
-        List<PlotDetailsFewResponse> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
-        PlotDetailsFewListResponse plotDetailsFewListResponse = new PlotDetailsFewListResponse();
-        plotDetailsFewListResponse.setPlotDetailsFewResponseList(plotDetailsFewDos);
-        plotDetailsFewListResponse.setTotalNum(plotDetailsFewDos.size());
-        return new ResponseEntity<PlotDetailsFewListResponse>(plotDetailsFewListResponse, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<PlotDetailsFewListResponse> getPlotByRecommendCondition(@ApiParam(value = "") @Valid @RequestParam(value = "districtId", required = false) Optional<List<String>> districtId, @ApiParam(value = "") @Valid @RequestParam(value = "layoutId", required = false) Optional<List<String>> layoutId, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<Integer> userId, @ApiParam(value = "") @Valid @RequestParam(value = "beginPrice", required = false) Optional<Double> beginPrice, @ApiParam(value = "") @Valid @RequestParam(value = "endPrice", required = false) Optional<Double> endPrice, @ApiParam(value = "") @Valid @RequestParam(value = "city", required = false) Optional<String> city, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum, @ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Optional<Integer> pageSize, @ApiParam(value = "") @Valid @RequestParam(value = "flag", required = false) Optional<Integer> flag) {
+//        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+//        userFavoriteConditionDoQuery.setBeginPrice(beginPrice.get());
+//        userFavoriteConditionDoQuery.setCity(city.get());
+//        userFavoriteConditionDoQuery.setDistrictId((String[]) districtId.get().toArray());
+//        userFavoriteConditionDoQuery.setEndPrice(endPrice.get());
+//        userFavoriteConditionDoQuery.setFlag(flag.get());
+//        userFavoriteConditionDoQuery.setLayoutId((String[]) layoutId.get().toArray());
+//        userFavoriteConditionDoQuery.setPageNum(pageNum.get());
+//        userFavoriteConditionDoQuery.setPageSize(pageSize.get());
+//        userFavoriteConditionDoQuery.setUserId(userId.get());
+//        List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
+//        JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
+//        List<PlotDetailsFewResponse> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewResponse.class);
+//        PlotDetailsFewListResponse plotDetailsFewListResponse = new PlotDetailsFewListResponse();
+//        plotDetailsFewListResponse.setPlotDetailsFewResponseList(plotDetailsFewDos);
+//        plotDetailsFewListResponse.setTotalNum(plotDetailsFewDos.size());
+//        return new ResponseEntity<PlotDetailsFewListResponse>(plotDetailsFewListResponse, HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<PlotDetailsResponse> getPlotDetailByPlotId(@ApiParam(value = "plotId", required = true) @Valid @RequestParam(value = "plotId", required = true) Integer plotId) {
@@ -281,5 +277,10 @@ public class PlotApiController implements PlotApi {
         return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
     }
 
-
+    @Override
+    public ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "小区id", required = true) @Valid @RequestParam(value = "newcode") String newcode,
+                                                  @ApiParam(value = "区域id", required = true) @Valid @RequestParam(value = "districtId") String districtId){
+        JSONArray jsonArray = appPlotService.getFoldLineInfo(newcode,districtId);
+        return new ResponseEntity<String>(JSONObject.toJSONString(jsonArray), HttpStatus.OK);
+    }
 }
