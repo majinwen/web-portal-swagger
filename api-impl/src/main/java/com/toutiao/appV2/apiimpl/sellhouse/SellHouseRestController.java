@@ -309,18 +309,7 @@ public class SellHouseRestController implements SellHouseRestApi {
     }
 
 
-    @Override
-    public ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest userFavoriteConditionRequest) {
 
-        CustomConditionDetailsResponse conditionDetailsResponse = new CustomConditionDetailsResponse();
-        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
-        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
-
-        CustomConditionDetailsDomain conditionDetailsDomain = sellHouseService.getEsfCustomConditionDetails(userFavoriteConditionDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(conditionDetailsDomain, conditionDetailsResponse);
-
-        return new ResponseEntity<>(conditionDetailsResponse, HttpStatus.OK);
-    }
 
 
 }

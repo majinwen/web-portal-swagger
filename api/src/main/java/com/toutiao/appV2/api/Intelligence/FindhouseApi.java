@@ -23,33 +23,5 @@ import javax.validation.constraints.NotNull;
 @Api(value = "首页报告", description = "首页报告")
 public interface FindhouseApi {
 
-    @ApiOperation(value = "获取专属报告", nickname = "getHomePageReport", notes = "", response = IntelligenceResponse.class, tags={ "定制", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = IntelligenceResponse.class),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @ApiImplicitParams({
-    })
-    @RequestMapping(value = "/rest/findhouse/byHouseReport/getHomePageReport",
-        produces = "application/json",
-        method = RequestMethod.GET)
-    ResponseEntity<com.toutiao.appV2.model.Intelligence.IntelligenceResponse> getHomePageReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
-
-
-    @ApiOperation(value = "保存专属报告", nickname = "saveHomePageReport", notes = "", response = Integer.class, tags={ "定制", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = Integer.class),
-        @ApiResponse(code = 201, message = "Created"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
-    @ApiImplicitParams({
-    })
-    @RequestMapping(value = "/rest/findhouse/byHouseReport/saveHomePageReport",
-        produces = "application/json",
-        consumes = "application/json",
-        method = RequestMethod.POST)
-    ResponseEntity<StringDataResponse> saveHomePageReport(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 }

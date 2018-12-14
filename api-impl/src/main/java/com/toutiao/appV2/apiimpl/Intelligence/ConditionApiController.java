@@ -1,19 +1,37 @@
 package com.toutiao.appV2.apiimpl.Intelligence;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toutiao.app.domain.newhouse.CustomConditionCountDo;
-import com.toutiao.app.domain.newhouse.CustomConditionUserSampleDo;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.toutiao.app.domain.Intelligence.IntelligenceDo;
+import com.toutiao.app.domain.Intelligence.PriceRatioDo;
+import com.toutiao.app.domain.newhouse.*;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.sellhouse.RecommendEsf5DoQuery;
+import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
+import com.toutiao.app.service.Intelligence.HomePageReportService;
 import com.toutiao.app.service.homepage.HomePageRestService;
+import com.toutiao.app.service.newhouse.NewHouseRestService;
+import com.toutiao.app.service.plot.PlotsRestService;
+import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.appV2.api.Intelligence.ConditionApi;
-import com.toutiao.appV2.model.Intelligence.CustomConditionCountResponse;
-import com.toutiao.appV2.model.Intelligence.CustomConditionUserSampleResponse;
-import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
-import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionResponse;
+import com.toutiao.appV2.model.HomePage.NewHouseDetailResponse;
+import com.toutiao.appV2.model.HomePage.PlotDetailsFewDoList;
+import com.toutiao.appV2.model.HomePage.RecommendEsf5Request;
+import com.toutiao.appV2.model.HomePage.SellHouseSearchDomainResponse;
+import com.toutiao.appV2.model.Intelligence.*;
 import com.toutiao.appV2.model.StringDataResponse;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
+import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio;
+import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
+import com.toutiao.web.service.intelligence.IntelligenceFhResService;
+import com.toutiao.web.service.intelligence.IntelligenceFhTdService;
 import io.swagger.annotations.ApiParam;
+import org.postgresql.util.PGobject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -26,6 +44,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
 
@@ -40,6 +60,28 @@ public class ConditionApiController implements ConditionApi {
 
     @Autowired
     private HomePageRestService homePageRestService;
+
+    @Autowired
+    private PlotsRestService appPlotService;
+
+    @Autowired
+    private SellHouseService sellHouseService;
+
+    @Autowired
+    private NewHouseRestService newHouseService;
+
+    @Autowired
+    private IntelligenceFhTdService intelligenceFhTdService;
+    @Autowired
+    private HomePageReportService homePageReportService;
+
+    @Autowired
+    private IntelligenceFhResService intelligenceFhResService;
+    @Autowired
+    private IntelligenceFhPricetrendService intelligenceFhPricetrendService;
+
+    @Autowired
+    private PlotsRestService plotsRestService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public ConditionApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -90,4 +132,116 @@ public class ConditionApiController implements ConditionApi {
         return new ResponseEntity<>(customConditionCountResponse,HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request) {
+        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+        RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
+        BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+        return new ResponseEntity<>(sellHouseSearchDomainResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid com.toutiao.appV2.model.HomePage.UserFavoriteConditionRequest userFavoriteConditionRequest) {
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+        List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
+        List<PlotDetailsFewDo> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewDo.class);
+        PlotDetailsFewDoList plotDetailsFewDoList = new PlotDetailsFewDoList();
+        plotDetailsFewDoList.setPlotDetailsFewDos(plotDetailsFewDos);
+        plotDetailsFewDoList.setTotal(plotDetailsFewDos.size());
+        return new ResponseEntity<>(plotDetailsFewDoList, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid com.toutiao.appV2.model.HomePage.UserFavoriteConditionRequest userFavoriteConditionRequest) {
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+        NewHouseDetailDo newHouseDetailDo = newHouseService.getOneNewHouseByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
+        NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
+        return new ResponseEntity<>(newHouseDetailResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest userFavoriteConditionRequest) {
+
+        CustomConditionDetailsResponse conditionDetailsResponse = new CustomConditionDetailsResponse();
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+
+        CustomConditionDetailsDomain conditionDetailsDomain = sellHouseService.getEsfCustomConditionDetails(userFavoriteConditionDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(conditionDetailsDomain, conditionDetailsResponse);
+
+        return new ResponseEntity<>(conditionDetailsResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<IntelligenceResponse> getHomePageReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId) {
+        IntelligenceDo intelligenceDo = new IntelligenceDo();
+        com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio intelligenceFhTdRatio = new IntelligenceFhTdRatio();
+        com.toutiao.app.domain.Intelligence.PriceTrendDo fhpt = new com.toutiao.app.domain.Intelligence.PriceTrendDo();
+        com.toutiao.app.domain.Intelligence.PriceRatioDo fhtp = new PriceRatioDo();
+        fhtp.setRatio(intelligenceFhTdRatio);
+        IntelligenceResponse intelligenceResponse = new IntelligenceResponse();
+        if (StringTool.isNotBlank(reportId)) {
+
+            IntelligenceFhRes intelligenceFhRes = intelligenceFhResService.queryResById(Integer.valueOf(reportId));
+
+            if (StringTool.isNotBlank(intelligenceFhRes)) {
+
+                List list = JSONObject.parseArray(((PGobject) intelligenceFhRes.getFhResult()).getValue());
+                for (int i = 0; i < list.size(); i++) {
+                    if (StringTool.isNotEmpty(((JSONObject) list.get(i)).get("newcode"))) {
+                        String plotId = ((JSONObject) list.get(i)).get("newcode").toString();
+
+                        PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotByPlotId(plotId, CityUtils.getCity());
+                        ((JSONObject) list.get(i)).put("esfPrice", plotDetailsDo.getAvgPrice());
+                        ((JSONObject) list.get(i)).put("plotImage", plotDetailsDo.getPhoto().toString().replaceAll("[\\[\\]]", ""));
+
+                    }
+                }
+
+                intelligenceFhRes.setFhResult(JSONObject.toJSONString(list));
+
+
+                String datajson = list.toString();
+                fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+                fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+                intelligenceDo.setDatajson(datajson);
+                intelligenceDo.setTotalPrice(intelligenceFhRes.getTotalPrice());
+                if (StringTool.isNotEmpty(intelligenceFhRes.getLayoutArray())) {
+                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
+                } else {
+                    intelligenceDo.setLayout(intelligenceFhRes.getLayoutArray());
+                }
+
+                if (StringTool.isNotEmpty(intelligenceFhRes.getDistrictArray())) {
+                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
+                } else {
+                    intelligenceDo.setDistrict(intelligenceFhRes.getDistrictArray());
+                }
+
+                intelligenceDo.setCollectStatus(intelligenceFhRes.getCollectStatus());
+                intelligenceDo.setBackUrl(request.getRequestURI());
+            }
+        }
+        intelligenceDo.setFhpt(fhpt);
+        intelligenceDo.setFhtp(fhtp);
+        BeanUtils.copyProperties(intelligenceDo, intelligenceResponse);
+        intelligenceResponse.setFhpt(fhpt);
+        return new ResponseEntity<IntelligenceResponse>(intelligenceResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<StringDataResponse> saveHomePageReport(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+        Integer result = homePageReportService.saveHomePageReport(request, userFavoriteConditionDoQuery);
+        StringDataResponse stringDataResponse = new StringDataResponse();
+        stringDataResponse.setData(result.toString());
+        return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
+    }
 }

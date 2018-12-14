@@ -175,18 +175,5 @@ public interface SellHouseRestApi {
     ResponseEntity<SellHouseGuessLikeResponse> getGuessList(@ApiParam(value = "sellHouseGuessLikeRequest", required = true) @RequestBody SellHouseGuessLikeRequest sellHouseGuessLikeRequest);
 
 
-    @ApiOperation(value = "二手房定制条件筛选结果分布", nickname = "getEsfCustomConditionDetails", notes = "", response = CustomConditionCountResponse.class, tags={ "定制", })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = CustomConditionCountResponse.class),
-            @ApiResponse(code = 201, message = "Created"),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found") })
-    @ApiImplicitParams({
-    })
-    @RequestMapping(value = "/rest/esf/getEsfCustomConditionDetails",
-            produces = "application/json",
-            method = RequestMethod.GET)
-    ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 }
