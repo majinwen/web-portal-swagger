@@ -174,15 +174,25 @@ public class ReportRestController implements ReportRestApi {
         reportCityResponse.setAreaHot(JSONArray.parseArray(reportCity.getAreaHot(), ReportAreaHotResponse.class));
         reportCityResponse.setZfPriceRange(JSONArray.parseArray(reportCity.getZfPriceRange(), ReportRentPriceDistrbutionResponse.class));
         reportCityResponse.setEsfPriceRange(JSONArray.parseArray(reportCity.getEsfPriceRange(), ReportEsfTongbiDescriptionResponse.class));
+
+        //二手房特色房源：降价房
         reportCityResponse.setEsfTeseJiangjia(JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class));
+
+        //二手房特色房源：捡漏房
         JSONObject jianolouJson = JSONObject.parseObject(reportCity.getEsfTeseJianlou());
         ReportTeSeJianLouRespose reportTeSeJianLouRespose = new ReportTeSeJianLouRespose();
         reportTeSeJianLouRespose.setHouseQuotationList(JSONArray.parseArray(jianolouJson.getString("lower_house_quotation"),LowerHouseQuotationResponse.class));
         reportTeSeJianLouRespose.setEsfQuotationList(JSONArray.parseArray(jianolouJson.getString("esf_quotation"),EsfQuotationRespose.class));
         reportCityResponse.setEsfTeseJianlou(reportTeSeJianLouRespose);
+
+        //二手房特色房源：抢手房
         reportCityResponse.setEsfTeseQiangshou(JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class));
+
+        //新房价格趋势，近6个月数据
         reportCityResponse.setNewPriceRange(JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class));
-        reportCityResponse.setEsfPriceFenbu(JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class));
+
+        //二手房均价趋势，近6个月数据
+        reportCityResponse.setEsfPriceFenbu(JSONArray.parseArray(reportCity.getEsfPriceFenbu(), ReportPriceQuotationsResponse.class));
         return reportCityResponse;
     }
 }
