@@ -39,5 +39,12 @@ public interface NewHouseRestService {
     NewHouseDetailDo getOneNewHouseByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
 
-
+    /**
+     * 查询新房猜你喜欢
+     * @param newHouseDoQuery
+     * @param userId
+     * @param city
+     * @return
+     */
+    NewHouseListDomain queryGuessLikeNewHouseList(NewHouseDoQuery newHouseDoQuery, Integer userId, String city);
 }

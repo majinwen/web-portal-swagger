@@ -115,4 +115,13 @@ public interface SellHouseEsDao {
      * @return
      */
     SearchResponse getSimilarSellHouseList(BoolQueryBuilder query, String city, GeoDistanceSortBuilder geoDistanceSort);
+
+    /**
+     * 猜你喜欢
+     * @param booleanQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse getGuessLikeSellHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize);
+
 }

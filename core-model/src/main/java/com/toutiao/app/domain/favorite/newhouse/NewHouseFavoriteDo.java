@@ -90,6 +90,8 @@ public class NewHouseFavoriteDo {
 
     private String city;
 
+    private String districtName;
+
 
     public void setCityId(Integer cityId) {
         this.cityId = cityId;
