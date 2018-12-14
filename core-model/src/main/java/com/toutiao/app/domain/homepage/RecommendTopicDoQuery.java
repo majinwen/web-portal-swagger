@@ -25,6 +25,10 @@ public class RecommendTopicDoQuery {
      * 结束价格
      */
     private Double endPrice;
+    /**
+     * 户型
+     */
+    private String[] layoutId;
 
 
 }

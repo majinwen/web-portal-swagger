@@ -15,10 +15,14 @@ import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
+import org.elasticsearch.search.aggregations.metrics.cardinality.ParsedCardinality;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
+import org.elasticsearch.search.aggregations.metrics.max.ParsedMax;
 import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
+import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,7 +58,6 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
             return recommendTopicDomain;
         } else {
-           // BoolQueryBuilder bqb_plotTags = QueryBuilders.boolQuery();
             BoolQueryBuilder bqb_isCutPrice = QueryBuilders.boolQuery();
             BoolQueryBuilder bqb_isLowPrice = QueryBuilders.boolQuery();
             BoolQueryBuilder bqb_isMustRob = QueryBuilders.boolQuery();
@@ -73,10 +76,8 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             bqb_isMustRob.must(termQuery_isDel);
 
             //区域
-            TermsQueryBuilder termsQueryBuilderByAreaId = null;
             if (null != recommendTopicDoQuery.getDistrictId()) {
-                termsQueryBuilderByAreaId = QueryBuilders.termsQuery("areaId", recommendTopicDoQuery.getDistrictId());
-               // bqb_plotTags.must(termsQueryBuilderByAreaId);
+                TermsQueryBuilder termsQueryBuilderByAreaId = QueryBuilders.termsQuery("areaId", recommendTopicDoQuery.getDistrictId());
                 bqb_isCutPrice.must(termsQueryBuilderByAreaId);
                 bqb_isLowPrice.must(termsQueryBuilderByAreaId);
                 bqb_isMustRob.must(termsQueryBuilderByAreaId);
@@ -98,108 +99,8 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
                 bqb_isLowPrice.must(rangeQueryBuilder);
                 bqb_isCutPrice.must(rangeQueryBuilder);
-//                bqb_plotTags.must(rangeQueryBuilder);
                 bqb_isMustRob.must(rangeQueryBuilder);
             }
-
-            String flag = "";
-//            if ((recommendTopicDoQuery.getBeginPrice() != null && recommendTopicDoQuery.getEndPrice() != null)) {
-//                if (recommendTopicDoQuery.getEndPrice() <= PRICE) {//价格小于1000万，推荐首置，改善
-//                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-//                    bqb_plotTags.must(termQuery_isClaim);
-//                    bqb_plotTags.must(termQuery_isDel);
-//                    flag = "lower1000";
-//                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags, city);
-//                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery, recommendByRecommendBuildTags, flag);
-//                    recommendTopicDoList.addAll(list_buildTopic);
-//                } else if (recommendTopicDoQuery.getEndPrice() > PRICE) {//价格大于1000万，推荐豪宅，别墅
-//                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-//                    bqb_plotTags.must(termQuery_isClaim);
-//                    bqb_plotTags.must(termQuery_isDel);
-//                    flag = "higher1000";
-//                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags, city);
-//                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery, recommendByRecommendBuildTags, flag);
-//                    recommendTopicDoList.addAll(list_buildTopic);
-//                }
-//            } else if (recommendTopicDoQuery.getBeginPrice() != null && recommendTopicDoQuery.getEndPrice() == null) {
-//                if (recommendTopicDoQuery.getBeginPrice() <= PRICE) {//价格小于1000万，推荐首置，改善
-//
-//                    BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
-//                    bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-//
-//                    if (recommendTopicDoQuery.getDistrictId() != null) {
-//                        bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
-//                    }
-//                    bqb_plotTags_hzvsbs.must(termQuery_isDel);
-//                    bqb_plotTags_hzvsbs.must(termQuery_isClaim);
-//                    SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags_hzvsbs, city);
-//                    List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery, sp_BuildTags_hzvsbs, "higher1000");
-//                    recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
-//                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-//                    bqb_plotTags.must(termQuery_isClaim);
-//                    bqb_plotTags.must(termQuery_isDel);
-//                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags, city);
-//                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery, recommendByRecommendBuildTags, "lower1000");
-//                    recommendTopicDoList.addAll(list_buildTopic);
-//                } else if (recommendTopicDoQuery.getBeginPrice() > PRICE) {//价格大于1000万，推荐豪宅，别墅
-//                    flag = "higher1000";
-//                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-//                    bqb_plotTags.must(termQuery_isClaim);
-//                    bqb_plotTags.must(termQuery_isDel);
-//
-//                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags, city);
-//                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery, recommendByRecommendBuildTags, flag);
-//                    recommendTopicDoList.addAll(list_buildTopic);
-//                }
-//            } else if (recommendTopicDoQuery.getBeginPrice() == null && recommendTopicDoQuery.getEndPrice() != null) {
-//                if (recommendTopicDoQuery.getEndPrice() <= PRICE) {
-//                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-//                    flag = "lower1000";
-//                    bqb_plotTags.must(termQuery_isClaim);
-//                    bqb_plotTags.must(termQuery_isDel);
-//                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags, city);
-//                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery, recommendByRecommendBuildTags, flag);
-//                    recommendTopicDoList.addAll(list_buildTopic);
-//                } else if (recommendTopicDoQuery.getEndPrice() >= PRICE) {
-//                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-//                    bqb_plotTags.must(termQuery_isClaim);
-//                    bqb_plotTags.must(termQuery_isDel);
-//                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags, city);
-//                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery, recommendByRecommendBuildTags, "lower1000");
-//                    recommendTopicDoList.addAll(list_buildTopic);
-//                    BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
-//                    bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-//                    if (recommendTopicDoQuery.getDistrictId() != null) {
-//                        bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
-//                    }
-//
-//                    bqb_plotTags_hzvsbs.must(termQuery_isDel);
-//                    bqb_plotTags_hzvsbs.must(termQuery_isClaim);
-//                    SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags_hzvsbs, city);
-//                    List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery, sp_BuildTags_hzvsbs, "higher1000");
-//                    recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
-//
-//                }
-//            } else {
-//
-//                BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
-//                if (recommendTopicDoQuery.getDistrictId() != null) {
-//                    bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
-//                }
-//                bqb_plotTags_hzvsbs.must(termQuery_isClaim);
-//                bqb_plotTags_hzvsbs.must(termQuery_isDel);
-//                bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-//                SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags_hzvsbs, city);
-//                List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery, sp_BuildTags_hzvsbs, "higher1000");
-//                recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
-//                bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-//                bqb_plotTags.must(termQuery_isClaim);
-//                bqb_plotTags.must(termQuery_isDel);
-//                SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery, bqb_plotTags, city);
-//                List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery, recommendByRecommendBuildTags, "lower1000");
-//                recommendTopicDoList.addAll(list_buildTopic);
-//
-//            }
 
 
             SearchResponse sp_isCutPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isCutPrice, city);
@@ -225,33 +126,33 @@ public class RecommendRestServiceImpl implements RecommendRestService {
     public List<RecommendTopicDo> cleanEsData(RecommendTopicDoQuery recommendTopicDoQuery, SearchResponse searchResponse, String flag) {
         List<RecommendTopicDo> recommendTopicDoList = new ArrayList<>();
 
-        Terms areaIdBucket = searchResponse.getAggregations().get("areaIds");
-        if (null != areaIdBucket) {
-            if (areaIdBucket.getBuckets().size() > 0) {
-                int size = areaIdBucket.getBuckets().size();
-                for (int i = 0; i < size; i++) {
+//        Terms areaIdBucket = searchResponse.getAggregations().get("areaIds");
+//        if (null != areaIdBucket) {
+//            if (areaIdBucket.getBuckets().size() > 0) {
+//                int size = areaIdBucket.getBuckets().size();
+//                for (int i = 0; i < size; i++) {
+//
+//                    RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
+//                    Terms.Bucket bucket = areaIdBucket.getBuckets().get(i);
+//                    InternalCardinality internalCardinality = bucket.getAggregations().get("count");
+//                    recommendTopicDo.setCount((int) internalCardinality.getValue());
+//                    InternalMin lowestPrice = bucket.getAggregations().get("minPrice");
+//                    InternalMax highestPrice = bucket.getAggregations().get("maxPrice");
+//                    recommendTopicDo.setLowestPrice(lowestPrice.getValue());
+//                    recommendTopicDo.setHighestPrice(highestPrice.getValue());
+//                    recommendTopicDo.setDistrictId(bucket.getKeyAsString());
+//                    recommendTopicDo.setTopicType(flag);
+//                    recommendTopicDoList.add(recommendTopicDo);
+//                }
+//            }
 
-                    RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
-                    Terms.Bucket bucket = areaIdBucket.getBuckets().get(i);
-                    InternalCardinality internalCardinality = bucket.getAggregations().get("count");
-                    recommendTopicDo.setCount((int) internalCardinality.getValue());
-                    InternalMin lowestPrice = bucket.getAggregations().get("minPrice");
-                    InternalMax highestPrice = bucket.getAggregations().get("maxPrice");
-                    recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-                    recommendTopicDo.setHighestPrice(highestPrice.getValue());
-                    recommendTopicDo.setDistrictId(bucket.getKeyAsString());
-                    recommendTopicDo.setTopicType(flag);
-                    recommendTopicDoList.add(recommendTopicDo);
-                }
-            }
-
-        } else {
+//        } else {
             RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
-            InternalCardinality internalCardinality = searchResponse.getAggregations().get("count");
-            InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
-            InternalMax highestPrice = searchResponse.getAggregations().get("maxPrice");
-            LongTerms longTerms = searchResponse.getAggregations().get("areaIds");
-            if (internalCardinality.getValue() > 0) {
+            ParsedCardinality parsedCardinality = searchResponse.getAggregations().get("count");
+            ParsedMin lowestPrice = searchResponse.getAggregations().get("minPrice");
+            ParsedMax highestPrice = searchResponse.getAggregations().get("maxPrice");
+            ParsedLongTerms longTerms = searchResponse.getAggregations().get("areaIds");
+            if (parsedCardinality.getValue() > 0) {
                 if (longTerms.getBuckets().size() > 0) {
 
                     Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
@@ -270,7 +171,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                 }
                 recommendTopicDo.setLowestPrice(lowestPrice.getValue());
                 recommendTopicDo.setHighestPrice(highestPrice.getValue());
-                recommendTopicDo.setCount((int) internalCardinality.getValue());
+                recommendTopicDo.setCount((int) parsedCardinality.getValue());
 
                 recommendTopicDo.setTopicType(flag);
 
@@ -302,7 +203,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                 recommendTopicDoList.add(recommendTopicDo);
             }
 
-        }
+//        }
 
         return recommendTopicDoList;
     }

@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.Intelligence.IntelligenceDo;
 import com.toutiao.app.domain.Intelligence.PriceRatioDo;
+import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
+import com.toutiao.app.domain.homepage.RecommendTopicDomain;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
@@ -13,15 +15,14 @@ import com.toutiao.app.domain.sellhouse.RecommendEsf5DoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.Intelligence.HomePageReportService;
 import com.toutiao.app.service.homepage.HomePageRestService;
+import com.toutiao.app.service.homepage.RecommendRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.appV2.api.Intelligence.ConditionApi;
-import com.toutiao.appV2.model.HomePage.NewHouseDetailResponse;
-import com.toutiao.appV2.model.HomePage.PlotDetailsFewDoList;
-import com.toutiao.appV2.model.HomePage.RecommendEsf5Request;
-import com.toutiao.appV2.model.HomePage.SellHouseSearchDomainResponse;
+import com.toutiao.appV2.model.HomePage.*;
 import com.toutiao.appV2.model.Intelligence.*;
+import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -82,6 +83,9 @@ public class ConditionApiController implements ConditionApi {
 
     @Autowired
     private PlotsRestService plotsRestService;
+
+    @Autowired
+    private RecommendRestService recommendRestService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public ConditionApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -243,5 +247,13 @@ public class ConditionApiController implements ConditionApi {
         StringDataResponse stringDataResponse = new StringDataResponse();
         stringDataResponse.setData(result.toString());
         return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RecommendTopicDomain> getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
+        RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, recommendTopicDoQuery);
+        RecommendTopicDomain recommendTopicDomain = recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
+        return new ResponseEntity<>(recommendTopicDomain, HttpStatus.OK);
     }
 }
