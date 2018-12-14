@@ -15,11 +15,10 @@ import java.util.List;
 public class RentCustomConditionResponse {
 
 
-    @JsonProperty("rentCustomDo")
-    @ApiModelProperty("id与名称")
-    private RentCustomDo rentCustomDo = null;
-
-    @JsonProperty("rentCustomConditionDos")
-    @ApiModelProperty("房源统计")
-    private List<RentCustomConditionDo> rentCustomConditionDos = null;
+    @JsonProperty("rentCustomDos")
+    @ApiModelProperty("房源统计信息")
+    /**
+     * 房源统计信息
+     */
+    private List<RentCustomDo> rentCustomDos = null;
 }

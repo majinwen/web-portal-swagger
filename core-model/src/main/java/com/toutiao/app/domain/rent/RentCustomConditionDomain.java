@@ -11,12 +11,7 @@ import java.util.List;
 public class RentCustomConditionDomain {
 
     /**
-     * id与名称
+     * 房源统计信息
      */
-    private RentCustomDo rentCustomDo = null;
-
-    /**
-     * 房源统计
-     */
-    private List<RentCustomConditionDo> rentCustomConditionDos = null;
+    private List<RentCustomDo> rentCustomDos = null;
 }
