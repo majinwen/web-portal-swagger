@@ -9,6 +9,7 @@ import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
+import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDomain;
 import com.toutiao.app.service.plot.*;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.appV2.api.plot.PlotApi;
@@ -81,12 +82,12 @@ public class PlotApiController implements PlotApi {
     public ResponseEntity<PlotEsfListResponse> getEsfByPlotsIdAndRoom(@ApiParam(value = "plotId") @RequestParam(value = "plotId", required = false) Integer plotId, @ApiParam(value = "") @RequestParam(value = "room", required = false,defaultValue = "0") Integer room, @ApiParam(value = "pageNum") @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize) {
 
 
-        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotId, room, pageNum, pageSize, CityUtils.getCity());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(sellHouseDoList));
+        SellAndClaimHouseDetailsDomain esfByPlotsIdAndRoom = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotId, room, pageNum, pageSize, CityUtils.getCity());
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(esfByPlotsIdAndRoom.getData()));
         List<PlotEsfResponse> plotEsfResponses = JSONObject.parseArray(json.toJSONString(), PlotEsfResponse.class);
         PlotEsfListResponse plotEsfListResponse = new PlotEsfListResponse();
-        plotEsfListResponse.setPlotEsfResponseList(plotEsfResponses);
-        plotEsfListResponse.setTotalNum(plotEsfResponses.size());
+        plotEsfListResponse.setData(plotEsfResponses);
+        plotEsfListResponse.setTotalNum(esfByPlotsIdAndRoom.getTotalNum());
         return new ResponseEntity<PlotEsfListResponse>(plotEsfListResponse, HttpStatus.OK);
 
     }
