@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 @Api(value = "首页报告", description = "首页报告")
 public interface FindhouseApi {
 
-    @ApiOperation(value = "获取专属报告", nickname = "getHomePageReport", notes = "", response = IntelligenceResponse.class, tags={ "首页推荐条件", })
+    @ApiOperation(value = "获取专属报告", nickname = "getHomePageReport", notes = "", response = IntelligenceResponse.class, tags={ "定制", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = IntelligenceResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -37,7 +37,7 @@ public interface FindhouseApi {
     ResponseEntity<com.toutiao.appV2.model.Intelligence.IntelligenceResponse> getHomePageReport(@NotNull @ApiParam(value = "reportId", required = true) @Valid @RequestParam(value = "reportId", required = true) String reportId);
 
 
-    @ApiOperation(value = "保存专属报告", nickname = "saveHomePageReport", notes = "", response = Integer.class, tags={ "首页推荐条件", })
+    @ApiOperation(value = "保存专属报告", nickname = "saveHomePageReport", notes = "", response = Integer.class, tags={ "定制", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = Integer.class),
         @ApiResponse(code = 201, message = "Created"),

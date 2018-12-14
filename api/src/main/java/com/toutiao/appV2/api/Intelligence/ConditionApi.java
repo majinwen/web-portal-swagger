@@ -20,7 +20,7 @@ import javax.validation.Valid;
 @Api(value = "推荐条件", description = "推荐条件")
 public interface ConditionApi {
 
-    @ApiOperation(value = "删除推荐条件", nickname = "deleteRecommendCondition", notes = "", response = Integer.class, tags={ "首页推荐条件", })
+    @ApiOperation(value = "删除推荐条件", nickname = "deleteRecommendCondition", notes = "", response = Integer.class, tags={ "定制", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = Integer.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -34,7 +34,7 @@ public interface ConditionApi {
     ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "userId", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId,
                                                                 @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType);
 
-    @ApiOperation(value = "获取推荐条件", nickname = "getRecommendCondition", notes = "", response = UserFavoriteConditionResponse.class, tags={ "首页推荐条件", })
+    @ApiOperation(value = "获取推荐条件", nickname = "getRecommendCondition", notes = "", response = UserFavoriteConditionResponse.class, tags={ "定制", })
     @ApiResponses(value = { 
         @ApiResponse(code = 200, message = "OK", response = UserFavoriteConditionResponse.class),
         @ApiResponse(code = 401, message = "Unauthorized"),
@@ -50,7 +50,7 @@ public interface ConditionApi {
 
 
     @ApiOperation(value = "保存更新推荐条件", nickname = "getNewHouseList", notes = "",
-            response = CustomConditionUserSampleResponse.class, tags={ "首页推荐条件", })
+            response = CustomConditionUserSampleResponse.class, tags={ "定制", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = CustomConditionUserSampleResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -64,7 +64,7 @@ public interface ConditionApi {
 
 
 
-    @ApiOperation(value = "定制条件筛选结果数量", nickname = "getCustomCondition", notes = "", response = CustomConditionCountResponse.class, tags={ "首页推荐条件", })
+    @ApiOperation(value = "定制条件筛选结果数量", nickname = "getCustomCondition", notes = "", response = CustomConditionCountResponse.class, tags={ "定制", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = CustomConditionCountResponse.class),
             @ApiResponse(code = 201, message = "Created"),

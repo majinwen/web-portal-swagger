@@ -175,7 +175,7 @@ public interface SellHouseRestApi {
     ResponseEntity<SellHouseGuessLikeResponse> getGuessList(@ApiParam(value = "sellHouseGuessLikeRequest", required = true) @RequestBody SellHouseGuessLikeRequest sellHouseGuessLikeRequest);
 
 
-    @ApiOperation(value = "二手房定制条件筛选结果分布", nickname = "getEsfCustomConditionDetails", notes = "", response = CustomConditionCountResponse.class, tags={ "首页推荐条件", })
+    @ApiOperation(value = "二手房定制条件筛选结果分布", nickname = "getEsfCustomConditionDetails", notes = "", response = CustomConditionCountResponse.class, tags={ "定制", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = CustomConditionCountResponse.class),
             @ApiResponse(code = 201, message = "Created"),
