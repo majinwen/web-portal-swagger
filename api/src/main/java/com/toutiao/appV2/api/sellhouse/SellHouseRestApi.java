@@ -163,6 +163,17 @@ public interface SellHouseRestApi {
             method = {RequestMethod.POST})
     ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
+    @ApiOperation(value = "猜你喜欢:二手房列表", nickname = "getGuessList", notes = "", response = SellHouseGuessLikeResponse.class, tags = {"二手房",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = SellHouseGuessLikeResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/esf/getGuessList",
+            produces = {"application/json"},
+            method = {RequestMethod.POST})
+    ResponseEntity<SellHouseGuessLikeResponse> getGuessList(@ApiParam(value = "sellHouseGuessLikeRequest", required = true) @RequestBody SellHouseGuessLikeRequest sellHouseGuessLikeRequest);
+
 
     @ApiOperation(value = "二手房定制条件筛选结果分布", nickname = "getEsfCustomConditionDetails", notes = "", response = CustomConditionCountResponse.class, tags={ "首页推荐条件", })
     @ApiResponses(value = {

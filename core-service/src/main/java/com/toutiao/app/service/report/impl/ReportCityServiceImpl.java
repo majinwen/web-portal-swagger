@@ -1,5 +1,6 @@
 package com.toutiao.app.service.report.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.toutiao.app.dao.report.*;
 import com.toutiao.app.service.report.ReportCityService;
 import com.toutiao.web.dao.mapper.report.*;
@@ -39,37 +40,44 @@ public class ReportCityServiceImpl implements ReportCityService {
     }
 
     @Override
-    public List<ReportNewGuideAttention> selectReportNewGuideAttentionList(Integer cityId) {
+    public List<ReportNewGuideAttention> selectReportNewGuideAttentionList(Integer cityId,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         return reportNewGuideAttentionMapper.selectAll(cityId);
     }
 
     @Override
-    public List<ReportNewGuideHot> selectReportNewGuideHotList(Integer cityId) {
+    public List<ReportNewGuideHot> selectReportNewGuideHotList(Integer cityId,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         return reportNewGuideHotMapper.selectAll(cityId);
     }
 
     @Override
-    public List<ReportNewGuidePopular> selectReportNewGuidePopularList(Integer cityId) {
+    public List<ReportNewGuidePopular> selectReportNewGuidePopularList(Integer cityId,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         return reportNewGuidePopularMapper.selectAll(cityId);
     }
 
     @Override
-    public List<ReportNewGuideSales> selectReportNewGuideSalesList(Integer cityId) {
+    public List<ReportNewGuideSales> selectReportNewGuideSalesList(Integer cityId,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         return reportNewGuideSalesMapper.selectAll(cityId);
     }
 
     @Override
-    public List<ReportNewPreferential> selectReportNewPreferentialList(Integer cityId) {
+    public List<ReportNewPreferential> selectReportNewPreferentialList(Integer cityId,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         return reportNewPreferentialMapper.selectAll(cityId);
     }
 
     @Override
-    public List<ReportEsfProjHot> selectReportEsfProjHotList(Integer cityId) {
+    public List<ReportEsfProjHot> selectReportEsfProjHotList(Integer cityId,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         return reportEsfProjHotMapper.selectAll(cityId);
     }
 
     @Override
-    public List<ReportAreaHot> selectReportAreaHotList(Integer cityId) {
+    public List<ReportAreaHot> selectReportAreaHotList(Integer cityId,Integer pageNum,Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
         return reportAreaHotMapper.selectAll(cityId);
     }
 }

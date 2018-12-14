@@ -1,6 +1,7 @@
 package com.toutiao.appV2.apiimpl.newhouse;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.toutiao.app.api.chance.request.activity.NewHouseActivityRequest;
 import com.toutiao.app.api.chance.response.newhouse.NewHouseDetailResponse;
@@ -28,6 +29,8 @@ import com.toutiao.web.apiimpl.authentication.User;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.restmodel.NashResult;
+import com.toutiao.web.common.util.CookieUtils;
+import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -247,8 +250,31 @@ public class NewHouseApiController implements NewHouseApi {
         return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
     }
 
+    /**
+     * 获取新房猜你喜欢
+     * @param newHouseGuessLikeRequest
+     * @return
+     */
     @Override
-    public ResponseEntity<NewHouseListDomainResponse> getGuessList(NewHouseListRequest newHouseListRequest) {
-        return getNewHouseListDomainResponseResponseEntity(newHouseListRequest);
+    public ResponseEntity<NewHouseGuessLikeResponse> getGuessList(@RequestBody NewHouseGuessLikeRequest newHouseGuessLikeRequest) {
+
+        NewHouseGuessLikeResponse newHouseGuessLikeResponse = new NewHouseGuessLikeResponse();
+        NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
+        // 如果用户登录获取用户
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+
+        Integer userId = null;
+        if (null != user) {
+            UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+            userId = Integer.valueOf(userLoginResponse.getUserId());
+        }
+        BeanUtils.copyProperties(newHouseGuessLikeRequest, newHouseDoQuery);
+        NewHouseListDomain newHouseListDomain = newHouseService.queryGuessLikeNewHouseList(newHouseDoQuery, userId, CityUtils.getCity());
+
+        BeanUtils.copyProperties(newHouseListDomain, newHouseGuessLikeResponse);
+        newHouseGuessLikeResponse.setTotalNum(newHouseListDomain.getTotalCount());
+        log.info("返回结果集:{}", JSONUtil.stringfy(newHouseGuessLikeResponse));
+        return new ResponseEntity<>(newHouseGuessLikeResponse, HttpStatus.OK);
     }
+
 }

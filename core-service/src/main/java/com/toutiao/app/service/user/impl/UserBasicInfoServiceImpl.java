@@ -280,6 +280,9 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
             if (userBasicDo.getAvatar().indexOf("http:")==-1){
                 userBasicDo.setAvatar(headPicPath + "/" + userBasicDo.getAvatar());
             }
+            //unionid加密
+            String str = Com35Aes.encrypt(Com35Aes.KEYCODE, (userBasic.getUnionid()+RedisNameUtil.separativeSign+"加密").toString());
+            userBasicDo.setUnionid(str);
         }
         return userBasicDo;
     }
@@ -314,25 +317,18 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     }
 
     @Override
-    public UserBasicDo smallProgramLogin(String code, String iv, String rawData) {
+    public UserBasicDo smallProgramLogin(String code, String iv, String rawData) throws Exception{
         Map smallProgramInfo = getSmallProgramInfo(code);
         UserBasicDo userBasicDo = new UserBasicDo();
-        try {
-            //解密
-            String result  = AesCbcUtil.decrypt(rawData, String.valueOf(smallProgramInfo.get("sessionKey")), iv, "UTF-8");
-            if (null != result && result.length() > 0) {
-                JSONObject userInfoJSON = JSON.parseObject(result);
-                String unionId = String.valueOf(userInfoJSON.get("unionId"));
-                userBasicDo = weixinLogin(unionId,"0");
-                if (null!=userBasicDo.getUserId()&&userBasicDo.getUserId().length()>0){
-                    return userBasicDo;
-                }
-                //unionid加密
-                String str = Com35Aes.encrypt(Com35Aes.KEYCODE, (unionId+RedisNameUtil.separativeSign+"加密").toString());
-                userBasicDo.setUnionid(str);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        //解密
+        String result  = AesCbcUtil.decrypt(rawData, String.valueOf(smallProgramInfo.get("sessionKey")), iv, "UTF-8");
+        if (null != result && result.length() > 0) {
+            JSONObject userInfoJSON = JSON.parseObject(result);
+            String unionId = String.valueOf(userInfoJSON.get("unionId"));
+            userBasicDo = weixinLogin(unionId,"0");
+            //unionid加密
+            String str = Com35Aes.encrypt(Com35Aes.KEYCODE, (unionId+RedisNameUtil.separativeSign+"加密").toString());
+            userBasicDo.setUnionid(str);
         }
         return userBasicDo;
     }

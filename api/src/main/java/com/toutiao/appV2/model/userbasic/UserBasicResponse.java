@@ -27,7 +27,7 @@ public class UserBasicResponse   {
   @JsonProperty("userOnlySign")
   private String userOnlySign = null;
 
-  @JsonProperty("unionid")
-  private String unionid;
+  @JsonProperty("isWxBind")
+  private Boolean isWxBind = false;
 }
 

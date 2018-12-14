@@ -2,6 +2,7 @@ package com.toutiao.app.dao.rent;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.context.annotation.Configuration;
 
 /**
@@ -22,9 +23,9 @@ public interface UserFavoriteRentEsDao {
 
     /**
      * 根据定制条件里的地铁线id获取对应的房源和小区数量
-     * @param boolQueryBuilder
+     * @param searchSourceBuilder
      * @param city
      * @return
      */
-    SearchResponse querySubwayLineHouse(BoolQueryBuilder boolQueryBuilder, String city);
+    SearchResponse querySubwayLineHouse(SearchSourceBuilder searchSourceBuilder, String city);
 }

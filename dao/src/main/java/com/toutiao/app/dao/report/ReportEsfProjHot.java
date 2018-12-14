@@ -45,14 +45,14 @@ public class ReportEsfProjHot {
     private Integer hosueCount;
 
     /**
-     * 城市名称
-     */
-    @ApiModelProperty(value = "城市名称")
-    private String cityName;
-
-    /**
      * 更新时间
      */
     @ApiModelProperty(value = "更新时间")
     private Date time;
+
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
 }

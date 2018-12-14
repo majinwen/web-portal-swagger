@@ -14,6 +14,9 @@ public class PlotMarketDomain {
     @ApiModelProperty(value = "区域id", name = "districtId")
     private Integer districtId;
 
+    @ApiModelProperty(value = "区域名称", name = "districtName")
+    private String districtName;
+
     @ApiModelProperty(value = "30天访问热度排名", name = "visit30Sort")
     private Integer visit30Sort;
 

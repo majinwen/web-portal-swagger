@@ -7,13 +7,16 @@ import com.toutiao.appV2.api.report.ReportRestApi;
 import com.toutiao.appV2.model.report.*;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.city.CityUtils;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,70 +41,119 @@ public class ReportRestController implements ReportRestApi {
     }
 
     @Override
-    public ResponseEntity<ReportNewGuideAttentionListResponse> selectReportNewGuideAttentionList() {
+    public ResponseEntity<ReportNewGuideAttentionListResponse> selectReportNewGuideAttentionList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                                                 @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewGuideAttentionListResponse rsp = new ReportNewGuideAttentionListResponse();
-        List<ReportNewGuideAttention> data = reportCityService.selectReportNewGuideAttentionList(cityId);
+        List<ReportNewGuideAttention> list = reportCityService.selectReportNewGuideAttentionList(cityId, pageNum, pageSize);
+        List<ReportNewGuideAttentionResponse> data = new ArrayList<>();
+        for (ReportNewGuideAttention reportNewGuideAttention:list) {
+            ReportNewGuideAttentionResponse reportNewGuideAttentionResponse = new ReportNewGuideAttentionResponse();
+            BeanUtils.copyProperties(reportNewGuideAttention, reportNewGuideAttentionResponse);
+            data.add(reportNewGuideAttentionResponse);
+        }
         rsp.setData(data);
         rsp.setTotalCount(data.size());
         return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ReportNewGuideHotListResponse> selectReportNewGuideHotList() {
+    public ResponseEntity<ReportNewGuideHotListResponse> selectReportNewGuideHotList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                                     @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewGuideHotListResponse rsp = new ReportNewGuideHotListResponse();
-        List<ReportNewGuideHot> data = reportCityService.selectReportNewGuideHotList(cityId);
+        List<ReportNewGuideHot> list = reportCityService.selectReportNewGuideHotList(cityId, pageNum, pageSize);
+        List<ReportNewGuideHotResponse> data = new ArrayList<>();
+        for (ReportNewGuideHot reportNewGuideHot:list) {
+            ReportNewGuideHotResponse reportNewGuideHotResponse = new ReportNewGuideHotResponse();
+            BeanUtils.copyProperties(reportNewGuideHot, reportNewGuideHotResponse);
+            data.add(reportNewGuideHotResponse);
+        }
         rsp.setData(data);
         rsp.setTotalCount(data.size());
         return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ReportNewGuidePopularListResponse> selectReportNewGuidePopularList() {
+    public ResponseEntity<ReportNewGuidePopularListResponse> selectReportNewGuidePopularList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewGuidePopularListResponse rsp = new ReportNewGuidePopularListResponse();
-        List<ReportNewGuidePopular> data = reportCityService.selectReportNewGuidePopularList(cityId);
+        List<ReportNewGuidePopular> list = reportCityService.selectReportNewGuidePopularList(cityId, pageNum, pageSize);
+        List<ReportNewGuidePopularResponse> data = new ArrayList<>();
+        for (ReportNewGuidePopular reportNewGuidePopular:list) {
+            ReportNewGuidePopularResponse reportNewGuidePopularResponse = new ReportNewGuidePopularResponse();
+            BeanUtils.copyProperties(reportNewGuidePopular, reportNewGuidePopularResponse);
+            data.add(reportNewGuidePopularResponse);
+        }
         rsp.setData(data);
         rsp.setTotalCount(data.size());
         return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ReportNewGuideSalesListResponse> selectReportNewGuideSalesList() {
+    public ResponseEntity<ReportNewGuideSalesListResponse> selectReportNewGuideSalesList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                                         @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewGuideSalesListResponse rsp = new ReportNewGuideSalesListResponse();
-        List<ReportNewGuideSales> data = reportCityService.selectReportNewGuideSalesList(cityId);
+        List<ReportNewGuideSales> list = reportCityService.selectReportNewGuideSalesList(cityId, pageNum, pageSize);
+        List<ReportNewGuideSalesResponse> data = new ArrayList<>();
+        for (ReportNewGuideSales reportNewGuideSales:list) {
+            ReportNewGuideSalesResponse reportNewGuideSalesResponse = new ReportNewGuideSalesResponse();
+            BeanUtils.copyProperties(reportNewGuideSales, reportNewGuideSalesResponse);
+            data.add(reportNewGuideSalesResponse);
+        }
         rsp.setData(data);
         rsp.setTotalCount(data.size());
         return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ReportNewPreferentialListResponse> selectReportNewPreferentialList() {
+    public ResponseEntity<ReportNewPreferentialListResponse> selectReportNewPreferentialList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewPreferentialListResponse rsp = new ReportNewPreferentialListResponse();
-        List<ReportNewPreferential> data = reportCityService.selectReportNewPreferentialList(cityId);
+        List<ReportNewPreferential> list = reportCityService.selectReportNewPreferentialList(cityId, pageNum, pageSize);
+        List<ReportNewPreferentialResponse> data = new ArrayList<>();
+        for (ReportNewPreferential reportNewPreferential:list) {
+            ReportNewPreferentialResponse reportNewPreferentialResponse = new ReportNewPreferentialResponse();
+            BeanUtils.copyProperties(reportNewPreferential, reportNewPreferentialResponse);
+            data.add(reportNewPreferentialResponse);
+        }
         rsp.setData(data);
         rsp.setTotalCount(data.size());
         return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ReportEsfProjHotListResponse> selectReportEsfProjHotList() {
+    public ResponseEntity<ReportEsfProjHotListResponse> selectReportEsfProjHotList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                                   @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportEsfProjHotListResponse rsp = new ReportEsfProjHotListResponse();
-        List<ReportEsfProjHot> data = reportCityService.selectReportEsfProjHotList(cityId);
+        List<ReportEsfProjHot> list = reportCityService.selectReportEsfProjHotList(cityId, pageNum, pageSize);
+        List<ReportEsfProjHotResponse> data = new ArrayList<>();
+        for (ReportEsfProjHot reportEsfProjHot:list) {
+            ReportEsfProjHotResponse reportEsfProjHotResponse = new ReportEsfProjHotResponse();
+            BeanUtils.copyProperties(reportEsfProjHot, reportEsfProjHotResponse);
+            data.add(reportEsfProjHotResponse);
+        }
         rsp.setData(data);
         rsp.setTotalCount(data.size());
         return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList(Integer pageNum, Integer pageSize) {
+    public ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportAreaHotListResponse rsp = new ReportAreaHotListResponse();
-        List<ReportAreaHot> data = reportCityService.selectReportAreaHotList(cityId);
+        List<ReportAreaHot> list = reportCityService.selectReportAreaHotList(cityId, pageNum, pageSize);
+        List<ReportAreaHotResponse> data = new ArrayList<>();
+        for (ReportAreaHot reportAreaHot:list) {
+            ReportAreaHotResponse reportAreaHotResponse = new ReportAreaHotResponse();
+            BeanUtils.copyProperties(reportAreaHot, reportAreaHotResponse);
+            data.add(reportAreaHotResponse);
+        }
         rsp.setData(data);
         rsp.setTotalCount(data.size());
         return new ResponseEntity<>(rsp, HttpStatus.OK);

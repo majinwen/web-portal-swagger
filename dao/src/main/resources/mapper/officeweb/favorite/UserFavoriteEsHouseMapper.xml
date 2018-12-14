@@ -47,7 +47,9 @@
       house_title AS houseTitle,
       price_increase_decline AS priceIncreaseDecline,
       is_claim AS isClaim,
-      city_id AS cityId
+      city_id AS cityId,
+      hall,
+      area_name AS areaName
      FROM user_favorite_eshouse
     WHERE user_id = #{userId} AND is_del = 0 ORDER BY create_time DESC
   </select>

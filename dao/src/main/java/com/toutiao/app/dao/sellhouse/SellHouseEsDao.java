@@ -116,6 +116,13 @@ public interface SellHouseEsDao {
      */
     SearchResponse getSimilarSellHouseList(BoolQueryBuilder query, String city, GeoDistanceSortBuilder geoDistanceSort);
 
+    /**
+     * 猜你喜欢
+     * @param booleanQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse getGuessLikeSellHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize);
 
     SearchResponse getEsfCustomConditionDetails(BoolQueryBuilder query, String city);
 
@@ -124,6 +131,5 @@ public interface SellHouseEsDao {
     SearchResponse getAvgPriceByBizcircle(BoolQueryBuilder query, String city);
 
     SearchResponse getAvgPriceByDistrict(BoolQueryBuilder query, String city);
-
 
 }
