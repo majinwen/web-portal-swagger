@@ -5,6 +5,7 @@ import com.toutiao.app.dao.report.*;
 import com.toutiao.app.service.report.ReportCityService;
 import com.toutiao.web.dao.mapper.report.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,9 @@ public class ReportCityServiceImpl implements ReportCityService {
     @Autowired
     private ReportAreaHotMapper reportAreaHotMapper;
 
+    @Value("${qiniu.img_domain}")
+    private String qinniuImg;
+
     /**
      * 根据城市ID查询最新一条数据
      *
@@ -36,7 +40,24 @@ public class ReportCityServiceImpl implements ReportCityService {
      * @return
      */
     public ReportCity selectReportCityByCityId(Integer cityId) {
-        return reportCityMapper.selectOne(cityId);
+        ReportCity reportCity = reportCityMapper.selectOne(cityId);
+        reportCity.setNewGuideAttention(getImgPath(reportCity.getNewGuideAttention()));
+        reportCity.setNewGuideHot(getImgPath(reportCity.getNewGuideHot()));
+        reportCity.setNewGuideSales(getImgPath(reportCity.getNewGuideSales()));
+        reportCity.setNewGuidePopular(getImgPath(reportCity.getNewGuidePopular()));
+        return reportCity;
+    }
+
+    /**
+     * 处理数据报告中的图片访问路径
+     * @param jsonStr
+     * @return
+     */
+    private String getImgPath(String jsonStr) {
+        String s1 = jsonStr.replaceAll(" +","");
+        String pattern = "(\"img_path\":\")([^\"]+)(\")";
+        String s2 = s1.replaceAll(pattern,"$1"+qinniuImg+"/$2-dongfangdi400x300$3");
+        return s2;
     }
 
     @Override
