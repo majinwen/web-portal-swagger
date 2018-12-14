@@ -45,10 +45,10 @@ public class ReportTeSeJiangJiaRespose {
 //    private Integer lowerHouseAvgPrice;
 
     /**
-     * 降价房均价
+     * 降价房降价幅度
      */
-    @ApiModelProperty(value = "降价房均价(幅度？)")
-    private Integer price;
+    @ApiModelProperty(value = "降价房降价幅度")
+    private Integer ratio;
 
     /**
      * 创建时间
@@ -71,12 +71,12 @@ public class ReportTeSeJiangJiaRespose {
     /**
      * 每日行情描述
      */
-    @ApiModelProperty(value = "每日行情描述")
-    private String desc;
+//    @ApiModelProperty(value = "每日行情描述")
+//    private String desc;
 
     /**
      * 每日行情左侧标题
      */
-    @ApiModelProperty(value = "每日行情左侧标题")
-    private String title;
+//    @ApiModelProperty(value = "每日行情左侧标题")
+//    private String title;
 }
