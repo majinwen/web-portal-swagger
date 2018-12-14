@@ -21,9 +21,6 @@ public class PlotDetailsResponse {
     @ApiModelProperty("空气质量")
     private String airQuality = null;
 
-    @ApiModelProperty("区域名称districtName")
-    private String area = null;
-
     @ApiModelProperty("占地面积")
     private Double areaSize = null;
 
@@ -104,9 +101,6 @@ public class PlotDetailsResponse {
     @ApiModelProperty("总户数")
     private String sumHousehold = null;
 
-    @ApiModelProperty("商圈areaName")
-    private String tradingArea = null;
-
     @ApiModelProperty("水费")
     private Double waterFee = null;
 
@@ -124,5 +118,17 @@ public class PlotDetailsResponse {
 
     @ApiModelProperty("小区别名")
     private String rcNickname;
+
+    @ApiModelProperty("区域ID")
+    private String areaId;
+
+    @ApiModelProperty("区域名称")
+    private String area;
+
+    @ApiModelProperty("商圈ID")
+    private String tradingAreaId;
+
+    @ApiModelProperty("商圈名称")
+    private String tradingArea;
 }
 
