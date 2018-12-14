@@ -401,32 +401,28 @@ public class MessagePushServiceImpl implements MessagePushService {
     public List<HomeMessageDo> getHomeMessageNew(String userId) {
         ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
 
-            List<MessagePush> houseActivity = new ArrayList<>();
-            List<MessagePush>  listRenewal = new  ArrayList<>();
-            if (StringTool.isNotEmpty(userId)) {
-                 houseActivity = messagePushMapper.selectHouseActivity(Integer.valueOf(userId));
-                 listRenewal = messagePushMapper.selectListRenewal(Integer.valueOf(userId));
-            }
-
+        List<MessagePush> houseActivity = new ArrayList<>();
+        List<MessagePush> listRenewal = new ArrayList<>();
+        if (StringTool.isNotEmpty(userId)) {
+            houseActivity = messagePushMapper.selectHouseActivity(Integer.valueOf(userId));
+            listRenewal = messagePushMapper.selectListRenewal(Integer.valueOf(userId));
+        }
         List<MessagePushDo> houseActivityDos = ToutiaoBeanUtils.copyPropertiesToList(houseActivity, MessagePushDo.class);
+        getMessageContent(userId, homeMessageDos, houseActivityDos, 3);
 
+        List<MessagePushDo> listRenewalDos = ToutiaoBeanUtils.copyPropertiesToList(listRenewal, MessagePushDo.class);
+        getMessageContent(userId, homeMessageDos, listRenewalDos, 6);
+        return homeMessageDos;
+    }
+
+    private void getMessageContent(String userId, ArrayList<HomeMessageDo> homeMessageDos, List<MessagePushDo> houseActivityDos, int i) {
         if (houseActivityDos.size() > 0) {
             Integer houseActivityContentYype = houseActivityDos.get(0).getContentType();
             String[] messageContent = getMessageContent(houseActivityDos.get(0), houseActivityContentYype);
             HomeMessageDo homeMessageDo = new HomeMessageDo();
             homeMessageDo.setContentType(houseActivityContentYype);
 
-            switch (houseActivityContentYype) {
-                case 12:
-                    homeMessageDo.setMessageContent("您关注的租房价格变动" + messageContent[0]);
-                    break;
-                case 5:
-                    homeMessageDo.setMessageContent(messageContent[0]);
-                    break;
-                default:
-                    homeMessageDo.setMessageContent(houseActivityDos.get(0).getMessageTheme().getString("messageTitle") + messageContent[0]);
-            }
-
+            homeMessageDo.setMessageContent(messageContent[0]);
             homeMessageDo.setBoldMessageContent(messageContent[1]);
             homeMessageDo.setCreateTime(houseActivityDos.get(0).getCreateTime().getTime());
 
@@ -446,49 +442,12 @@ public class MessagePushServiceImpl implements MessagePushService {
             homeMessageDos.add(homeMessageDo);
         } else {
             HomeMessageDo homeMessageDo = new HomeMessageDo();
-            homeMessageDo.setContentType(3);
+            homeMessageDo.setContentType(i);
             homeMessageDo.setBoldMessageContent("");
             homeMessageDo.setMessageContent("");
             homeMessageDo.setUnReadCount(0);
             homeMessageDos.add(homeMessageDo);
         }
-
-
-        List<MessagePushDo> listRenewalDos = ToutiaoBeanUtils.copyPropertiesToList(listRenewal, MessagePushDo.class);
-        if (listRenewalDos.size() > 0) {
-            Integer listRenewalDosContentYype = listRenewalDos.get(0).getContentType();
-            String[] messageContent2 = getMessageContent(listRenewalDos.get(0), listRenewalDosContentYype);
-            HomeMessageDo homeMessageDo2 = new HomeMessageDo();
-            homeMessageDo2.setContentType(listRenewalDosContentYype);
-            homeMessageDo2.setMessageContent(messageContent2[0]);
-            homeMessageDo2.setBoldMessageContent(messageContent2[1]);
-            homeMessageDo2.setCreateTime(listRenewalDos.get(0).getCreateTime().getTime());
-
-            //查询一段时间内消息未读数量
-            MessagePushExample countExample1 = new MessagePushExample();
-            MessagePushExample.Criteria countCriteria1 = countExample1.createCriteria();
-            if (StringTool.isNotEmpty(userId)) {
-                countCriteria1.andUserIdEqualTo(Integer.valueOf(userId));
-            }
-            countCriteria1.andIsReadEqualTo((short) 0);
-            countCriteria1.andPushTypeEqualTo(1);
-            countCriteria1.andContentTypeEqualTo(listRenewalDosContentYype);
-            int unreadCount1 = messagePushMapper.countByExample(countExample1);
-            if (StringTool.isNotEmpty(messageContent2[0])) {
-                homeMessageDo2.setUnReadCount(unreadCount1);
-            }
-            homeMessageDos.add(homeMessageDo2);
-        } else {
-            HomeMessageDo homeMessageDo = new HomeMessageDo();
-            homeMessageDo.setContentType(6);
-            homeMessageDo.setBoldMessageContent("");
-            homeMessageDo.setMessageContent("");
-            homeMessageDo.setUnReadCount(0);
-            homeMessageDos.add(homeMessageDo);
-        }
-
-
-        return homeMessageDos;
     }
 
    /* @Override
@@ -695,7 +654,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         } else if (contentType.equals(FAVORITEVILLAGEESF) || contentType.equals(FAVORITEVILLAGERENT)
                 || contentType.equals(ESFSHELVES) || contentType.equals(RENTSHELVES)) {
             blodMessageContent.append(mcJson.get("messageContent"));
-            messageContent = blodMessageContent;
+            messageContent.append(YOURFAVORITE).append(SPACE).append(blodMessageContent);
         } else if (contentType.equals(RENTCHANGEPRICE)) {
             blodMessageContent.append(mcJson.get("buildingName")).append(mcJson.get("rentTypeName"));
             Integer room = (Integer) mcJson.get("room");
@@ -710,7 +669,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             } else {
                 blodMessageContent.append(SPACE).append(DROP).append(mcJson.get("money")).append(RENTUNITPRICE);
             }
-            messageContent = blodMessageContent;
+            messageContent.append(YOURFAVORITE).append(SPACE).append(blodMessageContent);
         }
         contentArr[0] = messageContent.toString();
         contentArr[1] = blodMessageContent.toString();
