@@ -3,23 +3,21 @@ package com.toutiao.appV2.apiimpl.plot;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.toutiao.app.api.chance.response.hotplot.HotPlotListResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.domain.rent.RentNumListDo;
+import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.app.service.plot.*;
 import com.toutiao.app.service.rent.RentRestService;
-import com.toutiao.appV2.model.plot.*;
-import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.appV2.api.plot.PlotApi;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.toutiao.appV2.model.plot.*;
 import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
-import io.swagger.annotations.*;
-import io.swagger.models.auth.In;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -30,12 +28,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
-import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:42:20.134Z")
 
@@ -281,5 +278,10 @@ public class PlotApiController implements PlotApi {
         return new ResponseEntity<PlotListResponse>(JSON.parseObject(JSON.toJSONString(plotListDo), PlotListResponse.class), HttpStatus.OK);
     }
 
-
+    @Override
+    public ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "小区id", required = true) @Valid @RequestParam(value = "newcode") String newcode,
+                                                  @ApiParam(value = "区域id", required = true) @Valid @RequestParam(value = "areaId") String areaId){
+        JSONArray jsonArray = appPlotService.getFoldLineInfo(newcode,areaId);
+        return new ResponseEntity<String>(JSONObject.toJSONString(jsonArray), HttpStatus.OK);
+    }
 }

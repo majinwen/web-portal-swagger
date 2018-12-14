@@ -7,7 +7,6 @@ package com.toutiao.appV2.api.plot;
 
 import com.toutiao.appV2.model.plot.*;
 import io.swagger.annotations.*;
-import io.swagger.models.auth.In;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -192,5 +191,16 @@ public interface PlotApi {
             method = RequestMethod.GET)
     @ApiIgnore
     ResponseEntity<PlotListResponse> getGuessList(PlotListRequest plotListRequest);
+
+    @ApiOperation(value = "折线图", nickname = "getFoldLineInfo", notes = "", response = String.class, tags = {"小区",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = String.class)})
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/plot/getFoldLineInfo",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "newcode") @Valid @RequestParam(value = "newcode", required = true) String newcode,
+                                           @ApiParam(value = "areaId") @Valid @RequestParam(value = "areaId", required = true) String areaId);
 
 }
