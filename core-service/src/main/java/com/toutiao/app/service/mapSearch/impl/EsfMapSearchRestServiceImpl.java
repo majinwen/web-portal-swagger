@@ -144,16 +144,17 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
         nf.setRoundingMode(RoundingMode.UP);
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
-//        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-//        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
         SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
 
         long esfCount = searchSellHouse.getHits().totalHits;
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
         GeoPoint topRight = new GeoPoint(esfMapSearchDoQuery.getMaxLatitude(), esfMapSearchDoQuery.getMaxLongitude());
         GeoPoint bottomLeft = new GeoPoint(esfMapSearchDoQuery.getMinLatitude(), esfMapSearchDoQuery.getMinLongitude());
         GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("district_location").setCornersOGC(bottomLeft, topRight);
-        boolQueryBuilder.must(geoBoundingBoxQueryBuilder);
-        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByDistrict(boolQueryBuilder, city);
+        builder.must(geoBoundingBoxQueryBuilder);
+        SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByDistrict(builder, city);
         long searchCount = searchResponse.getHits().totalHits;
         Terms terms = searchResponse.getAggregations().get("houseCount");
         List buckets = terms.getBuckets();
