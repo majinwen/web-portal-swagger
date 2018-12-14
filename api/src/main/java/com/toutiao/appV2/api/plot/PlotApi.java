@@ -45,7 +45,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getEsfByPlotsIdAndRoom",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<PlotEsfListResponse> getEsfByPlotsIdAndRoom(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId, @ApiParam(value = "") @Valid @RequestParam(value = "room", required = false) Optional<Integer> room, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum, @ApiParam(value = "") @Valid @RequestParam(value = "pageSize", required = false) Optional<Integer> pageSize);
 
 
@@ -125,7 +124,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getPlotsEsfList",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<PlotsEsfRoomCountResponse> getPlotsEsfList(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId);
 
 
@@ -149,7 +147,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getRentOfPlotByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<RentDetailsListResponse> getRentListByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId, @ApiParam(value = "") @Valid @RequestParam(value = "rentType", required = false) Optional<Integer> rentType, @ApiParam(value = "") @Valid @RequestParam(value = "pageNum", required = false) Optional<Integer> pageNum);
 
 
@@ -161,7 +158,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/queryRentNumByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<RentNumListResponse> getRentNumByPlotId(@ApiParam(value = "") @Valid @RequestParam(value = "plotId", required = false) Optional<Integer> plotId);
 
 
