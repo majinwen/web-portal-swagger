@@ -61,6 +61,10 @@ public class SellHouseFavoriteDo {
 
     private  String forward;
 
+    private Integer hall;
+
+    private String areaName;
+
     /**
      * 价格涨降标志
      */

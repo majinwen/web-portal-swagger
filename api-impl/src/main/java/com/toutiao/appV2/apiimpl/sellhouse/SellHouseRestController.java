@@ -2,6 +2,7 @@ package com.toutiao.appV2.apiimpl.sellhouse;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
@@ -11,8 +12,10 @@ import com.toutiao.appV2.api.sellhouse.SellHouseRestApi;
 import com.toutiao.appV2.model.plot.PlotDetailsResponse;
 import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.appV2.model.sellhouse.*;
+import com.toutiao.appV2.model.userbasic.UserLoginResponse;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -117,8 +120,33 @@ public class SellHouseRestController implements SellHouseRestApi {
         return getSimilarSellHouse(sellHouseRequest);
     }
 
+    /**
+     * 二手房猜你喜欢
+     * @param sellHouseGuessLikeRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<SellHouseGuessLikeResponse> getGuessList(@RequestBody SellHouseGuessLikeRequest sellHouseGuessLikeRequest) {
 
+        SellHouseGuessLikeResponse sellHouseGuessLikeResponse = new SellHouseGuessLikeResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        // 如果用户登录获取用户
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
 
+        Integer userId = null;
+        if (null != user) {
+            UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+            userId = Integer.valueOf(userLoginResponse.getUserId());
+        }
+        BeanUtils.copyProperties(sellHouseGuessLikeRequest, sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.queryGuessLikeSellHouseList(sellHouseDoQuery, userId,CityUtils.getCity());
+
+        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseGuessLikeResponse);
+        sellHouseGuessLikeResponse.setTotalNum(sellHouseSearchDomain.getTotalNum());
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseGuessLikeResponse));
+        return new ResponseEntity<>(sellHouseGuessLikeResponse, HttpStatus.OK);
+
+    }
 
 
     private ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest) {

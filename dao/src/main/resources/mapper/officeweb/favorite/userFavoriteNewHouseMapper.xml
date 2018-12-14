@@ -42,7 +42,8 @@
       building_title_img AS buildingTitleImg,
       status AS  status,
       total_price AS totalPrice,
-      city_id AS cityId
+      city_id AS cityId,
+      district_name AS districtName
      FROM user_favorite_newhouse
     WHERE user_id = #{userId} AND is_del = 0 ORDER BY create_time DESC
   </select>

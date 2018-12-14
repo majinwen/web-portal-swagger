@@ -357,6 +357,28 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
         return searchresponse;
     }
 
+    /**
+     * 猜你喜欢
+     *
+     * @param booleanQueryBuilder
+     * @param city
+     * @return
+     */
+    @Override
+    public SearchResponse getGuessLikeSellHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchresponse;
+    }
+
     @Override
     public SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize, FieldSortBuilder sortFile, String city) {
 
