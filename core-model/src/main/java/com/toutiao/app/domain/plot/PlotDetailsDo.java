@@ -326,4 +326,12 @@ public class PlotDetailsDo {
      */
     @JSONField(name = "rc_nickname")
     private String rcNickname;
+    /**
+     * 上架房源
+     */
+    private Integer increaseHouse;
+    /**
+     * 下架房源
+     */
+    private Integer decreaseHouse;
 }
