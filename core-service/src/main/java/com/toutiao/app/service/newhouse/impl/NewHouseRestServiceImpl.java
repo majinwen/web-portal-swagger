@@ -559,51 +559,116 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
     @Override
     public NewHouseListDomain queryGuessLikeNewHouseList(NewHouseDoQuery newHouseDoQuery, Integer userId, String city) {
 
-        if (null != userId) {
-            NewHouseFavoriteListDoQuery newHouseFavoriteListDoQuery = new NewHouseFavoriteListDoQuery();
-            newHouseFavoriteListDoQuery.setUserId(userId);
-            List<NewHouseFavoriteDo> houseFavoriteDoList = userFavoriteNewHouseMapper.selectNewHouseFavoriteByUserId(newHouseFavoriteListDoQuery);
-
-            if (null != houseFavoriteDoList && houseFavoriteDoList.size() > 0) {
-                NewHouseFavoriteDo newHouseFavoriteDo = houseFavoriteDoList.get(0);
-                newHouseDoQuery.setDistrictName(newHouseFavoriteDo.getDistrictName());
-                newHouseDoQuery.setAvgPrice(newHouseFavoriteDo.getAveragePrice().doubleValue());
-                newHouseDoQuery.setTotalPrice(newHouseFavoriteDo.getTotalPrice().doubleValue());
-            }
-        }
 
         NewHouseListDomain newHouseListVo = new NewHouseListDomain();
         List<NewHouseListDo> newHouseListDoList = new ArrayList<>();
-        BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+        List<SearchHit> searchHitList = new ArrayList<>();
+        int totalCount = 0;
+        // 无用户行为取价格不为空，且电话不为空，且户型不为空
+        if ((null == userId && (newHouseDoQuery.getDistrictId() == 0 && newHouseDoQuery.getAvgPrice() == 0 && newHouseDoQuery.getTotalPrice() == 0)) ||
+                (null != userId && (newHouseDoQuery.getDistrictId() == 0 && newHouseDoQuery.getAvgPrice() == 0 && newHouseDoQuery.getTotalPrice() == 0)
+                        && (userFavoriteNewHouseMapper.selectFavoriteNewHouseByUserId(Integer.valueOf(userId)) == 0))) {
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
-        booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{0, 1, 5, 6}));
-        booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
-        booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
-        booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
-        if (null != newHouseDoQuery.getDistrictName() && !"".equals(newHouseDoQuery.getDistrictName())) {
-            booleanQueryBuilder.must(
-                    QueryBuilders.disMaxQuery().add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getDistrictName()).analyzer("ik_smart")).tieBreaker(0.3f));
-        } else if (null != newHouseDoQuery.getDistrictId() && newHouseDoQuery.getDistrictId() > 0) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("district_id", newHouseDoQuery.getDistrictId()));
+            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{1, 5}));
+            booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+            booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
+            booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(0.0)));
+            booleanQueryBuilder.must(existsQuery("saletelphone"));
+            booleanQueryBuilder.mustNot(termQuery("saletelphone", ""));
+
+            SearchResponse searchResponse = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize());
+
+            SearchHits hits = searchResponse.getHits();
+            SearchHit[] searchHists = hits.getHits();
+            totalCount += (int) searchResponse.getHits().getTotalHits();
+            if (searchHists.length > 0) {
+                searchHitList.addAll(Arrays.asList(searchHists));
+            }
+
+        } else {
+
+            if (null != userId) {
+                NewHouseFavoriteListDoQuery newHouseFavoriteListDoQuery = new NewHouseFavoriteListDoQuery();
+                newHouseFavoriteListDoQuery.setUserId(userId);
+                List<NewHouseFavoriteDo> houseFavoriteDoList = userFavoriteNewHouseMapper.selectNewHouseFavoriteByUserId(newHouseFavoriteListDoQuery);
+
+                if (null != houseFavoriteDoList && houseFavoriteDoList.size() > 0) {
+                    NewHouseFavoriteDo newHouseFavoriteDo = houseFavoriteDoList.get(0);
+                    newHouseDoQuery.setDistrictName(newHouseFavoriteDo.getDistrictName());
+                    newHouseDoQuery.setAvgPrice(newHouseFavoriteDo.getAveragePrice().doubleValue());
+                    newHouseDoQuery.setTotalPrice(newHouseFavoriteDo.getTotalPrice().doubleValue());
+                }
+            }
+
+
+            BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
+
+            booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{1, 5}));
+            booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+            booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
+            booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
+            if (null != newHouseDoQuery.getDistrictName() && !"".equals(newHouseDoQuery.getDistrictName())) {
+                booleanQueryBuilder.must(
+                        QueryBuilders.disMaxQuery().add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getDistrictName()).analyzer("ik_smart")).tieBreaker(0.3f));
+            } else if (null != newHouseDoQuery.getDistrictId() && newHouseDoQuery.getDistrictId() > 0) {
+                booleanQueryBuilder.must(QueryBuilders.termQuery("district_id", newHouseDoQuery.getDistrictId()));
+            }
+
+            if (newHouseDoQuery.getAvgPrice() > 0) {
+                double beginPrice = newHouseDoQuery.getAvgPrice() - (newHouseDoQuery.getAvgPrice() * 0.3);
+                double endPrice = newHouseDoQuery.getAvgPrice() + (newHouseDoQuery.getAvgPrice() * 0.3);
+                booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(beginPrice).lte(endPrice)));
+            } else if (newHouseDoQuery.getTotalPrice() > 0) {
+                double beginTotalPrice = newHouseDoQuery.getTotalPrice() - (newHouseDoQuery.getTotalPrice() * 0.3);
+                double endTotalPrice = newHouseDoQuery.getTotalPrice() + (newHouseDoQuery.getTotalPrice() * 0.3);
+                booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(beginTotalPrice).lte(endTotalPrice)));
+            }
+
+            SearchResponse searchResponseT1 = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize());
+
+            SearchHits hitsT1 = searchResponseT1.getHits();
+            SearchHit[] searchHistsT1 = hitsT1.getHits();
+            int totalHitsT1 = (int) searchResponseT1.getHits().getTotalHits();
+            totalCount += totalHitsT1;
+            if (searchHistsT1.length > 0) {
+                searchHitList.addAll(Arrays.asList(searchHistsT1));
+            }
+
+            //当T1条件分页结果不足每页大小,查询T2条件并补充
+            if (searchHitList.size() < newHouseDoQuery.getPageSize()) {
+                BoolQueryBuilder boolQueryBuilderT2 = QueryBuilders.boolQuery();
+                //获取pageNum和pageSize
+                int pageNum_T1 = totalHitsT1 / newHouseDoQuery.getPageSize();
+                int pageNum_T2 = newHouseDoQuery.getPageNum() - pageNum_T1;
+                int pageSize_T2 = newHouseDoQuery.getPageSize();
+                if (pageNum_T2 == 1) {
+                    pageSize_T2 = newHouseDoQuery.getPageSize() - totalHitsT1 % newHouseDoQuery.getPageSize();
+                }
+                boolQueryBuilderT2.must(termsQuery("sale_status_id", new int[]{1, 5}));
+                boolQueryBuilderT2.must(termQuery("is_approve", IS_APPROVE));
+                boolQueryBuilderT2.must(termQuery("is_del", IS_DEL));
+                boolQueryBuilderT2.must(termsQuery("property_type_id", new int[]{1, 2}));
+                boolQueryBuilderT2.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(0.0)));
+                boolQueryBuilderT2.must(existsQuery("saletelphone"));
+                boolQueryBuilderT2.mustNot(termQuery("saletelphone", ""));
+
+                SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize());
+
+
+                SearchHit[] hitsT2 = searchResponseT2.getHits().getHits();
+                int totalHits_T2 = (int) searchResponseT2.getHits().getTotalHits();
+                totalCount += totalHits_T2;
+                if (hitsT2.length > 0) {
+                    searchHitList.addAll(Arrays.asList(hitsT2));
+                }
+
+            }
         }
 
-        if (newHouseDoQuery.getAvgPrice() > 0) {
-            double beginPrice = newHouseDoQuery.getAvgPrice() - (newHouseDoQuery.getAvgPrice() * 0.3);
-            double endPrice = newHouseDoQuery.getAvgPrice() + (newHouseDoQuery.getAvgPrice() * 0.3);
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(beginPrice).lte(endPrice)));
-        } else if (newHouseDoQuery.getTotalPrice() > 0) {
-            double beginTotalPrice = newHouseDoQuery.getTotalPrice()- (newHouseDoQuery.getTotalPrice() * 0.3);
-            double endTotalPrice = newHouseDoQuery.getTotalPrice() + (newHouseDoQuery.getTotalPrice() * 0.3);
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(beginTotalPrice).lte(endTotalPrice)));
-        }
-
-
-        SearchResponse searchResponse = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize());
-
-        SearchHits hits = searchResponse.getHits();
-        SearchHit[] searchHists = hits.getHits();
-        if (searchHists.length > 0) {
-            for (SearchHit searchHit : searchHists) {
+        if (searchHitList.size() > 0) {
+            for (SearchHit searchHit : searchHitList) {
                 String details = "";
                 details = searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
@@ -680,51 +745,51 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 //descHigh : 位于 districtName ringRoad环 buildingAddress
                 StringBuilder descHigh = new StringBuilder();
                 descHigh.append("位于");
-                if(StringTool.isNotEmpty(newHouseListDos.getDistrictName())){
+                if (StringTool.isNotEmpty(newHouseListDos.getDistrictName())) {
                     descHigh.append(newHouseListDos.getDistrictName());
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getRingRoad())){
+                if (StringTool.isNotEmpty(newHouseListDos.getRingRoad())) {
                     descHigh.append(newHouseListDos.getRingRoad());
                     descHigh.append("环");
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getBuildingAddress())){
+                if (StringTool.isNotEmpty(newHouseListDos.getBuildingAddress())) {
                     descHigh.append(newHouseListDos.getBuildingAddress());
                 }
-                newHouseListDos.setDescHigh(descHigh.toString().equals("位于")?"":descHigh.toString());
+                newHouseListDos.setDescHigh(descHigh.toString().equals("位于") ? "" : descHigh.toString());
 
                 //descMid : 位于 developers建propertyType,openedTimeDesc,deliverTimeDesc
                 StringBuilder descMidSb = new StringBuilder();
-                if(StringTool.isNotEmpty(newHouseListDos.getDevelopers())){
+                if (StringTool.isNotEmpty(newHouseListDos.getDevelopers())) {
                     descMidSb.append(newHouseListDos.getDevelopers());
                     descMidSb.append("建");
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getPropertyType())){
-                    descMidSb .append(newHouseListDos.getPropertyType());
-                    descMidSb .append(",");
-                }else if(StringTool.isNotEmpty(descMidSb.toString())){
-                    descMidSb .append(",");
+                if (StringTool.isNotEmpty(newHouseListDos.getPropertyType())) {
+                    descMidSb.append(newHouseListDos.getPropertyType());
+                    descMidSb.append(",");
+                } else if (StringTool.isNotEmpty(descMidSb.toString())) {
+                    descMidSb.append(",");
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getOpenedTimeDesc())){
+                if (StringTool.isNotEmpty(newHouseListDos.getOpenedTimeDesc())) {
                     descMidSb.append(newHouseListDos.getOpenedTimeDesc());
-                    descMidSb .append(",");
+                    descMidSb.append(",");
                 }
-                if(StringTool.isNotEmpty(newHouseListDos.getDeliverTimeDesc())){
+                if (StringTool.isNotEmpty(newHouseListDos.getDeliverTimeDesc())) {
                     descMidSb.append(newHouseListDos.getDeliverTimeDesc());
-                    descMidSb .append(",");
+                    descMidSb.append(",");
                 }
                 String descMidStr = "";
-                if(StringTool.isNotEmpty(descMidSb.toString())){
-                    descMidStr = descMidSb.substring(0,descMidSb.length()-1);
+                if (StringTool.isNotEmpty(descMidSb.toString())) {
+                    descMidStr = descMidSb.substring(0, descMidSb.length() - 1);
                 }
                 newHouseListDos.setDescMid(descMidStr);
                 newHouseListDoList.add(newHouseListDos);
             }
 
             newHouseListVo.setData(newHouseListDoList);
-            newHouseListVo.setTotalCount(hits.getTotalHits());
+            newHouseListVo.setTotalCount(totalCount);
         } else {
             newHouseListVo.setData(newHouseListDoList);
-            newHouseListVo.setTotalCount(hits.getTotalHits());
+            newHouseListVo.setTotalCount(totalCount);
         }
         return newHouseListVo;
     }
