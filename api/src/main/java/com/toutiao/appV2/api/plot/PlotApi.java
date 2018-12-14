@@ -16,7 +16,6 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.Optional;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:42:20.134Z")
@@ -202,6 +201,6 @@ public interface PlotApi {
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "newcode") @Valid @RequestParam(value = "newcode", required = true) String newcode,
-                                           @ApiParam(value = "areaId") @Valid @RequestParam(value = "areaId", required = true) String areaId);
+                                           @ApiParam(value = "districtId") @Valid @RequestParam(value = "districtId", required = true) String districtId);
 
 }

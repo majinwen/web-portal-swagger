@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
@@ -280,8 +279,8 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "小区id", required = true) @Valid @RequestParam(value = "newcode") String newcode,
-                                                  @ApiParam(value = "区域id", required = true) @Valid @RequestParam(value = "areaId") String areaId){
-        JSONArray jsonArray = appPlotService.getFoldLineInfo(newcode,areaId);
+                                                  @ApiParam(value = "区域id", required = true) @Valid @RequestParam(value = "districtId") String districtId){
+        JSONArray jsonArray = appPlotService.getFoldLineInfo(newcode,districtId);
         return new ResponseEntity<String>(JSONObject.toJSONString(jsonArray), HttpStatus.OK);
     }
 }
