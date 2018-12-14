@@ -37,4 +37,19 @@ public class NewHouseDoQuery extends QueryDo {
      */
     private String sort;
 
+    /**
+     * 均价
+     */
+    private double avgPrice;
+
+    /**
+     * 总价
+     */
+    private double totalPrice;
+
+    /**
+     * 区域名称
+     */
+    private String districtName;
+
 }

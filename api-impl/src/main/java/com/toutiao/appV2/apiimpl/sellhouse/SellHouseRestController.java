@@ -2,17 +2,22 @@ package com.toutiao.appV2.apiimpl.sellhouse;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDomain;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.appV2.api.sellhouse.SellHouseRestApi;
+import com.toutiao.appV2.model.Intelligence.CustomConditionDetailsResponse;
 import com.toutiao.appV2.model.plot.PlotDetailsResponse;
 import com.toutiao.appV2.model.plot.PlotsHousesDomain;
 import com.toutiao.appV2.model.sellhouse.*;
+import com.toutiao.appV2.model.userbasic.UserLoginResponse;
 import com.toutiao.web.common.constant.syserror.SellHouseInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.JSONUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -117,8 +122,33 @@ public class SellHouseRestController implements SellHouseRestApi {
         return getSimilarSellHouse(sellHouseRequest);
     }
 
+    /**
+     * 二手房猜你喜欢
+     * @param sellHouseGuessLikeRequest
+     * @return
+     */
+    @Override
+    public ResponseEntity<SellHouseGuessLikeResponse> getGuessList(@RequestBody SellHouseGuessLikeRequest sellHouseGuessLikeRequest) {
 
+        SellHouseGuessLikeResponse sellHouseGuessLikeResponse = new SellHouseGuessLikeResponse();
+        SellHouseDoQuery sellHouseDoQuery = new SellHouseDoQuery();
+        // 如果用户登录获取用户
+        String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
 
+        Integer userId = null;
+        if (null != user) {
+            UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+            userId = Integer.valueOf(userLoginResponse.getUserId());
+        }
+        BeanUtils.copyProperties(sellHouseGuessLikeRequest, sellHouseDoQuery);
+        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.queryGuessLikeSellHouseList(sellHouseDoQuery, userId,CityUtils.getCity());
+
+        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseGuessLikeResponse);
+        sellHouseGuessLikeResponse.setTotalNum(sellHouseSearchDomain.getTotalNum());
+        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseGuessLikeResponse));
+        return new ResponseEntity<>(sellHouseGuessLikeResponse, HttpStatus.OK);
+
+    }
 
 
     private ResponseEntity<SellHouseSearchDomainResponse> getSimilarSellHouse(@ApiParam(value = "sellHouseRequest", required = true) @Valid SellHouseRequest sellHouseRequest) {
@@ -244,22 +274,22 @@ public class SellHouseRestController implements SellHouseRestApi {
         return new ResponseEntity<SellHouseBeSureToSnatchResponse>(sellHouseBeSureToSnatchResponses, HttpStatus.OK);
     }
 
-    /**
-     * 获取推荐房源5条
-     *
-     * @param recommendEsf5Request
-     * @return
-     */
-    @Override
-    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult) {
-        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
-        RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
-        BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
-        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
-        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
-        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
-    }
+//    /**
+//     * 获取推荐房源5条
+//     *
+//     * @param recommendEsf5Request
+//     * @return
+//     */
+//    @Override
+//    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "recommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request, BindingResult bindingResult) {
+//        SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
+//        RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
+//        BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
+//        SellHouseSearchDomain sellHouseSearchDomain = sellHouseService.getRecommendEsf5(recommendEsf5DoQuery, CityUtils.getCity());
+//        BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
+//        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
+//        return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+//    }
 
     /**
      * 猜你喜欢:二手房列表
@@ -276,6 +306,20 @@ public class SellHouseRestController implements SellHouseRestApi {
         BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseSearchDomainResponse));
         return new ResponseEntity<SellHouseSearchDomainResponse>(sellHouseSearchDomainResponse, HttpStatus.OK);
+    }
+
+
+    @Override
+    public ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest userFavoriteConditionRequest) {
+
+        CustomConditionDetailsResponse conditionDetailsResponse = new CustomConditionDetailsResponse();
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+
+        CustomConditionDetailsDomain conditionDetailsDomain = sellHouseService.getEsfCustomConditionDetails(userFavoriteConditionDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(conditionDetailsDomain, conditionDetailsResponse);
+
+        return new ResponseEntity<>(conditionDetailsResponse, HttpStatus.OK);
     }
 
 

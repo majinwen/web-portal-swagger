@@ -484,7 +484,19 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         if(StringTool.isNotEmpty(rentMapSearchDoQuery.getKeyword())){
             searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(sort);
         }else{
-            searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            //searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+
+            if ("1".equals(rentMapSearchDoQuery.getSort())) {
+                searchSourceBuilder.query(query).sort("update_time", SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else if ("3".equals(rentMapSearchDoQuery.getSort())) {
+                searchSourceBuilder.query(query).sort("rent_house_price", SortOrder.ASC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else if ("4".equals(rentMapSearchDoQuery.getSort())) {
+                searchSourceBuilder.query(query).sort("rent_house_price", SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else if ("6".equals(rentMapSearchDoQuery.getSort())) {
+                searchSourceBuilder.query(query).sort("house_area", SortOrder.DESC).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            } else {
+                searchSourceBuilder.query(query).sort("sortingScore", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
+            }
         }
 
         SearchResponse rentMapSearch = rentMapSearchEsDao.getRentMapSearch(searchSourceBuilder, city);

@@ -40,4 +40,9 @@ public class UserFavoriteCondition {
      */
     private Integer cityId;
 
+    /**
+     * 定制类型（0:二手房,1:租房）
+     */
+    private Integer conditionType;
+
 }

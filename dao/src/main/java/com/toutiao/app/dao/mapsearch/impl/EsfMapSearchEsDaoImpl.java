@@ -52,10 +52,10 @@ public class EsfMapSearchEsDaoImpl implements EsfMapSearchEsDao {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(0)
                 .aggregation(AggregationBuilders.terms("houseCount").field("district_id").size(200)
-                    .subAggregation(AggregationBuilders.terms("districtName").field("district_name"))
-                    .subAggregation(AggregationBuilders.terms("districtAvgPrice").field("district_avgprice"))
-                    .subAggregation(AggregationBuilders.terms("districtLatitude").field("district_latitude"))
-                    .subAggregation(AggregationBuilders.terms("districtLongitude").field("district_longitude")));
+                        .subAggregation(AggregationBuilders.terms("districtName").field("district_name"))
+                        .subAggregation(AggregationBuilders.terms("districtAvgPrice").field("district_avgprice"))
+                        .subAggregation(AggregationBuilders.terms("districtLatitude").field("district_latitude"))
+                        .subAggregation(AggregationBuilders.terms("districtLongitude").field("district_longitude")));
 
         searchRequest.source(searchSourceBuilder);
 

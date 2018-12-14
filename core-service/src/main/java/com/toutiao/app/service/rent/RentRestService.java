@@ -63,6 +63,14 @@ public interface RentRestService {
     RentDetailsListDo getRentHouseSearchList(RentHouseDoQuery rentHouseDoQuery, String city);
 
     /**
+     * 租房猜你喜欢
+     * @param rentGuessYourLikeQuery
+     * @return
+     */
+    RentDetailsListDo rentGuessYouLike(RentGuessYourLikeQuery rentGuessYourLikeQuery, String city,Integer userId);
+
+
+    /**
      * 相似好房
      * @param rentHouseDoQuery
      * @param city

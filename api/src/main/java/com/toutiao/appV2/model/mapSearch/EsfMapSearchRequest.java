@@ -121,5 +121,9 @@ public class EsfMapSearchRequest   {
   @JsonProperty("sort")
   @ApiParam("排序字段")
   private String sort;
+
+  @JsonProperty("customDistrictId")
+  @ApiParam("定制区域id")
+  private Integer[] customDistrictId;
 }
 

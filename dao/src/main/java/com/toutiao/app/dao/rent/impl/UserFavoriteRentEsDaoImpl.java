@@ -51,19 +51,15 @@ public class UserFavoriteRentEsDaoImpl implements UserFavoriteRentEsDao {
     }
 
     @Override
-    public SearchResponse querySubwayLineHouse(BoolQueryBuilder boolQueryBuilder, String city) {
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentType(city));
-        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(boolQueryBuilder).size(0)
-                .aggregation(AggregationBuilders.terms("subwayLine").field("subway_line_id").size(1000)
-                    .subAggregation(AggregationBuilders.terms("community").field("zufang_id")));
+    public SearchResponse querySubwayLineHouse(SearchSourceBuilder searchSourceBuilder, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentHouseIndex(city)).types(ElasticCityUtils.getRentHouseType(city));
         searchRequest.source(searchSourceBuilder);
-        SearchResponse searchResponse = null;
+        SearchResponse search = null;
         try {
-            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return searchResponse;
+        return search;
     }
 }

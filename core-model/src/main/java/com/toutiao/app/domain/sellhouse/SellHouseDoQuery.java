@@ -73,4 +73,6 @@ public class SellHouseDoQuery extends QueryDo {
      */
     private String houseId;
 
+    private String areaName;
+
 }

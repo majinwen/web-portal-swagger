@@ -67,7 +67,7 @@
     <if test="totalPrice!=null">
       AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
     </if>
-    and periodic_time BETWEEN  now() - interval '14 month' AND now()
+    and periodic_time BETWEEN  now() - interval '20 month' AND now()
     ORDER BY periodic_time DESC
   </select>
 
@@ -86,7 +86,7 @@
     <if test="totalPrice!=null">
       AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
     </if>
-    and periodic_time BETWEEN  now() - interval '14 month' AND now()
+    and periodic_time BETWEEN  now() - interval '20 month' AND now()
   </select>
 
   <select id="queryLowPriceTrend" parameterType="java.lang.Integer" resultMap="BaseResultMap">
@@ -95,7 +95,7 @@
     <if test="totalPrice!=null">
       AND <![CDATA[ #{totalPrice}>= min_total_price AND #{totalPrice}< max_total_price]]>
     </if>
-    and periodic_time BETWEEN  now() - interval '13 month' AND now()
+    and periodic_time BETWEEN  now() - interval '20 month' AND now()
     ORDER BY periodic_time asc
   </select>
 

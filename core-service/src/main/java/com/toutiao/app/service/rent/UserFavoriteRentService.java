@@ -4,7 +4,7 @@ package com.toutiao.app.service.rent;
  * Created by CuiShihao on 2018/12/11
  */
 
-import com.toutiao.app.domain.rent.SubwayLineHouseDomain;
+import com.toutiao.app.domain.rent.RentCustomConditionDomain;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDoQuery;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDomain;
 
@@ -26,5 +26,5 @@ public interface UserFavoriteRentService {
      * @param city
      * @return
      */
-    SubwayLineHouseDomain querySubwayLineHouse(UserFavoriteRentListDoQuery userFavoriteRentListDoQuery, String city);
+    RentCustomConditionDomain querySubwayLineHouse(UserFavoriteRentListDoQuery userFavoriteRentListDoQuery, String city);
 }

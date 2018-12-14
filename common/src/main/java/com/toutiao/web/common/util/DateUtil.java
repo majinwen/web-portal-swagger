@@ -171,6 +171,20 @@ public class DateUtil {
 		Date date = new Date(calender.getTime().getTime());
 		return new SimpleDateFormat("yyyyMMdd").format(date);
 	}
+
+	/**
+	 * 获取前七天日期
+	 *
+	 * @param currDate
+	 * @return StringDate
+	 */
+	public static String beforeSevenDate(String currDate) {
+		Calendar calender = Calendar.getInstance();
+		calender.setTime(parseDate(currDate, datetimePattern));
+		calender.add(Calendar.DATE, -7);
+		Date date = new Date(calender.getTime().getTime());
+		return new SimpleDateFormat(datetimePattern).format(date);
+	}
 	
 	/**
 	 * 获取后一天日期
