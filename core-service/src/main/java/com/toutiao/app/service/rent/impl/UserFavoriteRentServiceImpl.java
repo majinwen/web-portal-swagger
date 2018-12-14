@@ -21,11 +21,9 @@ import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.BucketOrder;
-import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude;
-import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.bucket.terms.*;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -193,7 +191,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 //对地铁站做聚合
                 searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("subway_station_id")
                         .subAggregation(AggregationBuilders.terms("community").field("zufang_id"))
-                        .order(BucketOrder.key(true)).size(1000).includeExclude(includeExclude));
+                        .order(BucketOrder.key(true)).size(1000).includeExclude(includeExclude)).sort("sortingScore", SortOrder.DESC);
                 BoolQueryBuilder subwayStation = QueryBuilders.boolQuery();
                 subwayStation.must(QueryBuilders.termQuery("line_id",subwayLineId));
                 SearchResponse subwayStationinfo = rentMapSearchEsDao.getSubwayStationinfo(subwayStation, city);
@@ -252,7 +250,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
             //获取区县id
             Integer districtId = rentHouseDoQuery.getDistrictId()[0];
             searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("district_id")
-                    .subAggregation(AggregationBuilders.terms("community").field("zufang_id")).size(200));
+                    .subAggregation(AggregationBuilders.terms("community").field("zufang_id")).size(200)).sort("sortingScore", SortOrder.DESC);
             SearchResponse searchResponse = userFavoriteRentEsDao.querySubwayLineHouse(searchSourceBuilder, city);
             if (null!=searchResponse) {
                 Terms ID = searchResponse.getAggregations().get("id");
