@@ -138,6 +138,21 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         return  searchresponse;
     }
 
+    @Override
+    public SearchResponse getGuessLikeNewHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchRequest.source(searchSourceBuilder.query(booleanQueryBuilder).sort("create_time",SortOrder.DESC).from((pageNum-1)*pageSize).size(pageSize));
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  searchresponse;
+    }
+
 
 //    @Override
 //    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {

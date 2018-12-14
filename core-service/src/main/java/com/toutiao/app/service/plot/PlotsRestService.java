@@ -62,6 +62,10 @@ public interface PlotsRestService {
 
     List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
+
+    PlotDetailsDo queryPlotByPlotId(String PlotId, String city);
+
+
     /**
      * 获取折线信息
      * @param newcode

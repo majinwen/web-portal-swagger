@@ -194,4 +194,7 @@ public class NewHouseDetailResponse {
 
     @ApiModelProperty(value = "优惠活动")
     private List<ActivityInfoDo> activityInfo;
+
+    @ApiModelProperty(value = "户型")
+    private String roomType;
 }

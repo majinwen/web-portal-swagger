@@ -130,7 +130,6 @@
     <include refid="Base_Column_List"/>
     from report_area_hot
     where city_id = #{cityId,jdbcType=INTEGER}
-    order by id desc
-    limit 20
+    order by id asc
   </select>
 </mapper>

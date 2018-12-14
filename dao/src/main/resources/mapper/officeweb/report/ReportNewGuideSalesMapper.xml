@@ -21,7 +21,6 @@
     <include refid="Base_Column_List"/>
     from report_new_guide_sales
     where city_id = #{cityId,jdbcType=INTEGER}
-    order by id desc
-    limit 20
+    order by create_time asc
   </select>
 </mapper>

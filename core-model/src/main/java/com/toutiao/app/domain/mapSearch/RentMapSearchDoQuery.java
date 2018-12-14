@@ -70,4 +70,9 @@ public class RentMapSearchDoQuery  extends QueryDo {
      */
     private Integer newcode;
 
+    /**
+     * 排序
+     */
+    private String sort;
+
 }

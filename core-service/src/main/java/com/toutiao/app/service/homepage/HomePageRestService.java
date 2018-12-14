@@ -1,9 +1,7 @@
 package com.toutiao.app.service.homepage;
 
 import com.toutiao.app.domain.homepage.*;
-import com.toutiao.app.domain.newhouse.NewHouseListDomain;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.toutiao.app.domain.newhouse.*;
 
 import java.util.List;
 import java.util.Map;
@@ -77,24 +75,31 @@ public interface HomePageRestService {
      * 保存推荐条件
      * @return
      */
-    Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
+    CustomConditionUserSampleDo saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
     /**
      * 获取推荐条件
      */
-    UserFavoriteConditionDo getRecommendCondition(Integer userId, String city);
+    UserFavoriteConditionDo getRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
     /**
      * 更新推荐条件
      * @param userFavoriteConditionDoQuery
      * @return
      */
-    Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
+    CustomConditionUserSampleDo updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
     /**
      * 删除推荐条件
      * @param userId
      * @return
      */
-    Integer deleteRecommendCondition (Integer userId, Integer cityId);
+    Integer deleteRecommendCondition (Integer userId, Integer conditionType, Integer cityId);
+
+    /**
+     * 条件筛选数量
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    CustomConditionCountDo getCustomCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 }

@@ -1,6 +1,8 @@
 package com.toutiao.app.dao.sellhouse.impl;
 
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
+import com.toutiao.web.common.constant.city.CityConstant;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
@@ -357,6 +359,28 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
         return searchresponse;
     }
 
+    /**
+     * 猜你喜欢
+     *
+     * @param booleanQueryBuilder
+     * @param city
+     * @return
+     */
+    @Override
+    public SearchResponse getGuessLikeSellHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC).sort("extraTagsCount", SortOrder.DESC);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchresponse;
+    }
+
     @Override
     public SearchResponse getBeSureToSnatchList(BoolQueryBuilder booleanQueryBuilder, Integer pageNum, Integer pageSize, FieldSortBuilder sortFile, String city) {
 
@@ -372,6 +396,71 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
         }
 
         return searchresponse;
+    }
+
+
+    @Override
+    public SearchResponse getEsfCustomConditionDetails(BoolQueryBuilder query, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query).size(0)
+                .aggregation(AggregationBuilders.terms("areaName").field("houseBusinessNameId").size(20).order(BucketOrder.count(false))
+                        .subAggregation(AggregationBuilders.min("houseMinArea").field("buildArea"))
+                        .subAggregation(AggregationBuilders.max("houseMaxArea").field("buildArea"))
+                        .subAggregation(AggregationBuilders.terms("buildCount").field("newcode").size(1000)));
+
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return searchresponse;
+    }
+
+    @Override
+    public SearchResponse getAvgPriceByBizcircle(BoolQueryBuilder query, String city) {
+        Integer cityId = CityUtils.returnCityId(city);
+        query.must(QueryBuilders.termQuery("city_id", cityId));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getDbAvgPriceType(CityConstant.ABBREVIATION_QUANGUO));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return searchResponse;
+    }
+
+
+    @Override
+    public SearchResponse getAvgPriceByDistrict(BoolQueryBuilder query, String city) {
+        Integer cityId = CityUtils.returnCityId(city);
+        query.must(QueryBuilders.termQuery("city_id", cityId));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getDbAvgPriceIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getDbAvgPriceType(CityConstant.ABBREVIATION_QUANGUO));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(query).aggregation(AggregationBuilders.terms("districtId").field("district_id")
+                .subAggregation(AggregationBuilders.terms("districtName").field("district_name"))
+                .subAggregation(AggregationBuilders.terms("latitude").field("district_latitude"))
+                .subAggregation(AggregationBuilders.terms("longitude").field("district_longitude")));
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
     }
 
 }

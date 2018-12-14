@@ -1,6 +1,5 @@
 package com.toutiao.appV2.model.report;
 
-import com.toutiao.app.dao.report.ReportAreaHot;
 import lombok.Data;
 
 import java.util.List;
@@ -8,7 +7,7 @@ import java.util.List;
 @Data
 public class ReportAreaHotListResponse {
 
-    private List<ReportAreaHot> data;
+    private List<ReportAreaHotResponse> data;
 
     private Integer totalCount;
 }

@@ -158,6 +158,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             if (null != plotMarketDo) {
                 plotMarketDomain = new PlotMarketDomain();
                 org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                plotMarketDomain.setDistrictName(plotDetailsDo.getArea());
                 plotDetailsDo.setPlotMarketDomain(plotMarketDomain);
             }
             plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
@@ -675,8 +676,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         BoolQueryBuilder bqb = QueryBuilders.boolQuery();
         //组装条件
         //区域
-        if (null != userFavoriteConditionDoQuery.getDistrictIds() && userFavoriteConditionDoQuery.getDistrictIds().length > 0) {
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictIds()));
+        if (null != userFavoriteConditionDoQuery.getDistrictId() && userFavoriteConditionDoQuery.getDistrictId().length > 0) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
         }
         //户型
         if (null != userFavoriteConditionDoQuery.getLayoutId() && userFavoriteConditionDoQuery.getLayoutId().length > 0) {
@@ -715,6 +716,21 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
         }
         return list;
+    }
+
+    @Override
+    public PlotDetailsDo queryPlotByPlotId(String PlotId, String city) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("id",PlotId));
+
+        SearchResponse searchResponse = plotEsDao.queryPlotByPlotId(boolQueryBuilder, city);
+        PlotDetailsDo plotDetailsDo = new PlotDetailsDo();
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if (hits.length>0){
+            String sourceAsString = hits[0].getSourceAsString();
+            plotDetailsDo = JSON.parseObject(sourceAsString, PlotDetailsDo.class);
+        }
+        return plotDetailsDo;
     }
 
     @Override

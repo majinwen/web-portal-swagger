@@ -33,6 +33,8 @@ public interface NewHouseEsDao {
 
     SearchResponse getBuildCount(BoolQueryBuilder  boolQueryBuilder ,String city);
 
+    SearchResponse getGuessLikeNewHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize);
+
 //    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 //
 //

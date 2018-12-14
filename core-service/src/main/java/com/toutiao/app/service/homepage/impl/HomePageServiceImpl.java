@@ -3,13 +3,12 @@ package com.toutiao.app.service.homepage.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.homepage.HomePageEsDao;
+import com.toutiao.app.dao.rent.RentEsDao;
+import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.favorite.UserFavoriteCondition;
 import com.toutiao.app.domain.homepage.*;
-import com.toutiao.app.domain.newhouse.NewHouseDoQuery;
-import com.toutiao.app.domain.newhouse.NewHouseListDomain;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
@@ -33,10 +32,16 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.postgresql.util.PGobject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
+
+import static org.elasticsearch.index.query.QueryBuilders.idsQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
 public class HomePageServiceImpl implements HomePageRestService {
@@ -63,6 +68,12 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private SellHouseService sellHouseService;
+
+    @Autowired
+    private SellHouseEsDao sellHouseEsDao;
+
+    @Autowired
+    private RentEsDao rentEsDao;
     /**
      * @return 获取二手房5条
      */
@@ -549,13 +560,14 @@ public class HomePageServiceImpl implements HomePageRestService {
     }
 
     @Override
-    public Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
-
-        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery.getUserId(), city);
-        Integer result = 0;
+    public CustomConditionUserSampleDo saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        SearchResponse houseCount = null;
+        UserFavoriteConditionDo recommendCondition = homePageRestService.getRecommendCondition(userFavoriteConditionDoQuery, city);
+        CustomConditionUserSampleDo conditionUserSampleDo = new CustomConditionUserSampleDo();
         if (StringTool.isNotEmpty(recommendCondition.getUserId())){
-            result = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery, city);
-            return result;
+            conditionUserSampleDo = homePageRestService.updateRecommendCondition(userFavoriteConditionDoQuery, city);
+            return conditionUserSampleDo;
         }
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
         userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
@@ -564,14 +576,63 @@ public class HomePageServiceImpl implements HomePageRestService {
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
         userFavoriteCondition.setCityId(CityUtils.returnCityId(city));
-        result = userFavoriteConditionMapper.insertSelective(userFavoriteCondition);
-        return result;
+        userFavoriteCondition.setConditionType(userFavoriteConditionDoQuery.getConditionType());
+        int result = userFavoriteConditionMapper.insertSelective(userFavoriteCondition);
+        if(result>0){
+            conditionUserSampleDo.setData("保存推荐条件成功");
+        }
+        CustomConditionCountDo customCondition = getCustomCondition(userFavoriteConditionDoQuery, city);
+        if(userFavoriteConditionDoQuery.getConditionType()==0){
+            //用户样本
+
+            boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+            houseCount = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
+            long totalHits = houseCount.getHits().totalHits;
+            int userCount = (int)(totalHits * 0.6 * (new Random().nextInt(3)+3) * 12 * ((new Random().nextInt(2)+2)));
+            conditionUserSampleDo.setUserCount(userCount);
+
+            double userRatio = 0.0;
+            if(userFavoriteConditionDoQuery.getEndPrice()<400.0){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*1.2/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()>=400 && userFavoriteConditionDoQuery.getEndPrice()<800){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*1.0/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()>=800 && userFavoriteConditionDoQuery.getEndPrice()<1500){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*0.8/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()==0){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*0.5/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }
+            conditionUserSampleDo.setUserRatio(userRatio+"%");
+        }else if (userFavoriteConditionDoQuery.getConditionType()==1){
+            boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType", "3"));
+            houseCount = rentEsDao.queryRentList(boolQueryBuilder,0,0,city);
+            long totalHits = houseCount.getHits().totalHits;
+            int userCount = (int)(totalHits * 0.6 * (new Random().nextInt(3)+3) * 12 * ((new Random().nextInt(2)+2)));
+            conditionUserSampleDo.setUserCount(userCount);
+
+            double userRatio = 0.0;
+            if(userFavoriteConditionDoQuery.getEndPrice()<2000.0){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*1.5/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()>=2000 && userFavoriteConditionDoQuery.getEndPrice()<8000){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*1.0/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()>=8000 && userFavoriteConditionDoQuery.getEndPrice()<15000){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*0.8/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()==0){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*0.5/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }
+            conditionUserSampleDo.setUserRatio(userRatio+"%");
+        }
+
+        return conditionUserSampleDo;
     }
 
     @Override
-    public UserFavoriteConditionDo getRecommendCondition(Integer userId, String city) {
+    public UserFavoriteConditionDo getRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
         UserFavoriteConditionDo userFavoriteConditionDo = new UserFavoriteConditionDo();
-        UserFavoriteCondition recommendCondition = userFavoriteConditionMapper.getRecommendCondition(userId, CityUtils.returnCityId(city));
+        UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
+        userFavoriteCondition.setCityId(CityUtils.returnCityId(city));
+        BeanUtils.copyProperties(userFavoriteConditionDoQuery,userFavoriteCondition);
+        UserFavoriteCondition recommendCondition = userFavoriteConditionMapper.getRecommendCondition(userFavoriteCondition);
         if (StringTool.isNotEmpty(recommendCondition)&&StringTool.isNotEmpty(recommendCondition.getCondition())){
             JSONObject jsonObject = JSON.parseObject(((PGobject) recommendCondition.getCondition()).getValue());
             userFavoriteConditionDo = JSON.parseObject(JSON.toJSONString(jsonObject), UserFavoriteConditionDo.class);
@@ -581,20 +642,138 @@ public class HomePageServiceImpl implements HomePageRestService {
     }
 
     @Override
-    public Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+    public CustomConditionUserSampleDo updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        SearchResponse houseCount = null;
+        CustomConditionUserSampleDo conditionUserSampleDo = new CustomConditionUserSampleDo();
         UserFavoriteCondition userFavoriteCondition = new UserFavoriteCondition();
         userFavoriteCondition.setCondition(JSON.toJSONString(userFavoriteConditionDoQuery));
         userFavoriteCondition.setUpdateTime(new Date());
         userFavoriteCondition.setUserId(userFavoriteConditionDoQuery.getUserId());
         userFavoriteCondition.setCityId(CityUtils.returnCityId(city));
+        userFavoriteCondition.setConditionType(userFavoriteConditionDoQuery.getConditionType());
         int result = userFavoriteConditionMapper.updateRecommendCondition(userFavoriteCondition);
+        if(result>0){
+            conditionUserSampleDo.setData("更新推荐条件成功");
+        }
+        CustomConditionCountDo customCondition = getCustomCondition(userFavoriteConditionDoQuery, city);
+        if(userFavoriteConditionDoQuery.getConditionType()==0){
+            //用户样本
+
+            boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+            houseCount = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
+            long totalHits = houseCount.getHits().totalHits;
+            int userCount = (int)(totalHits * 0.6 * (new Random().nextInt(3)+3) * 12 * ((new Random().nextInt(2)+2)));
+            double userRatio = 0.0;
+            if(userFavoriteConditionDoQuery.getEndPrice()<400.0){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*1.2/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()>=400 && userFavoriteConditionDoQuery.getEndPrice()<800){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*1.0/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()>=800 && userFavoriteConditionDoQuery.getEndPrice()<1500){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*0.8/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()==0){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*0.5/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }
+            conditionUserSampleDo.setUserRatio(userRatio+"%");
+            conditionUserSampleDo.setUserCount(userCount);
+        }else if (userFavoriteConditionDoQuery.getConditionType()==1){
+            boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType", "3"));
+            houseCount = rentEsDao.queryRentList(boolQueryBuilder,0,0,city);
+            long totalHits = houseCount.getHits().totalHits;
+            int userCount = (int)(totalHits * 0.6 * (new Random().nextInt(3)+3) * 12 * ((new Random().nextInt(2)+2)));
+
+            double userRatio = 0.0;
+            if(userFavoriteConditionDoQuery.getEndPrice()<2000.0){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*1.5/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()>=2000 && userFavoriteConditionDoQuery.getEndPrice()<8000){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*1.0/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()>=8000 && userFavoriteConditionDoQuery.getEndPrice()<15000){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*0.8/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }else if (userFavoriteConditionDoQuery.getEndPrice()==0){
+                userRatio = new BigDecimal(customCondition.getCustomCount()*0.5/customCondition.getTotalCount()).setScale(3, RoundingMode.UP).doubleValue();
+            }
+            conditionUserSampleDo.setUserRatio(userRatio+"%");
+            conditionUserSampleDo.setUserCount(userCount);
+        }
+
+        return conditionUserSampleDo;
+    }
+
+    @Override
+    public Integer deleteRecommendCondition(Integer userId, Integer conditionType, Integer cityId) {
+
+        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId ,conditionType, cityId);
         return result;
     }
 
     @Override
-    public Integer deleteRecommendCondition(Integer userId, Integer cityId) {
+    public CustomConditionCountDo getCustomCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        CustomConditionCountDo customConditionCountDo = new CustomConditionCountDo();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        BoolQueryBuilder builder = QueryBuilders.boolQuery();
 
-        int result = userFavoriteConditionMapper.deleteRecommendCondition(userId ,cityId);
-        return result;
+        SearchResponse houseCount = null;
+        SearchResponse searchResponse = null;
+        //预算
+
+
+        if(userFavoriteConditionDoQuery.getConditionType()==0){
+            //二手房
+            String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
+            boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
+                boolQueryBuilder.must(termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
+            }
+            if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+            }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+            }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
+            }
+
+            searchResponse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
+            builder.must(QueryBuilders.termQuery("isDel", "0"));
+            builder.must(QueryBuilders.termQuery("is_claim", "0"));
+            houseCount = sellHouseEsDao.querySellHouse(builder, city);
+        }else if(userFavoriteConditionDoQuery.getConditionType()==1){
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getRentType()) && userFavoriteConditionDoQuery.getRentType()!=0){
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",userFavoriteConditionDoQuery.getRentType()));
+                String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
+                if(userFavoriteConditionDoQuery.getRentType()==1){
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", layoutId));
+                }else if(userFavoriteConditionDoQuery.getRentType()==2){
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", layoutId));
+                }
+            }
+//            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds()) && userFavoriteConditionDoQuery.getDistrictIds().length!=0){
+//                boolQueryBuilder.must(termsQuery("area_id", userFavoriteConditionDoQuery.getDistrictIds()));
+//            }
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getSubwayLineId()) && userFavoriteConditionDoQuery.getSubwayLineId().length!=0){
+                boolQueryBuilder.must(QueryBuilders.termsQuery("subway_line_id",userFavoriteConditionDoQuery.getSubwayLineId()));
+            }
+
+            if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+            }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+            }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_pricex").lte(userFavoriteConditionDoQuery.getEndPrice()));
+            }
+
+            searchResponse = rentEsDao.queryRentList(boolQueryBuilder,0,0,city);
+            builder.must(QueryBuilders.termQuery("rentHouseType", "3"));
+            houseCount = rentEsDao.queryRentList(builder,0,0,city);
+        }
+
+
+        long customCount = searchResponse.getHits().totalHits;
+        long totalCount = houseCount.getHits().totalHits;
+        customConditionCountDo.setCustomCount((int)customCount);
+        customConditionCountDo.setTotalCount((int)totalCount);
+
+        customConditionCountDo.setDesc("已从"+totalCount+"套房源中筛选出"+customCount+"套");
+        return customConditionCountDo;
     }
 }

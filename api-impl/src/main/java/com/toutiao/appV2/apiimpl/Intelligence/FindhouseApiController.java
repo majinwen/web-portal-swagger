@@ -8,12 +8,14 @@ import com.toutiao.app.domain.Intelligence.PriceTrendDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.service.Intelligence.HomePageReportService;
+import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.appV2.api.Intelligence.FindhouseApi;
 import com.toutiao.appV2.model.Intelligence.IntelligenceResponse;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdRatio;
 import com.toutiao.web.service.intelligence.IntelligenceFhPricetrendService;
@@ -58,8 +60,10 @@ public class FindhouseApiController implements FindhouseApi {
     private IntelligenceFhResService intelligenceFhResService;
     @Autowired
     private IntelligenceFhPricetrendService intelligenceFhPricetrendService;
+//    @Autowired
+//    private PlotService plotService;
     @Autowired
-    private PlotService plotService;
+    private PlotsRestService plotsRestService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public FindhouseApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -86,7 +90,7 @@ public class FindhouseApiController implements FindhouseApi {
                     if (StringTool.isNotEmpty(((JSONObject) list.get(i)).get("newcode"))) {
                         String plotId = ((JSONObject) list.get(i)).get("newcode").toString();
 
-                        PlotDetailsDo plotDetailsDo = plotService.queryPlotByPlotId(plotId);
+                        PlotDetailsDo plotDetailsDo = plotsRestService.queryPlotByPlotId(plotId, CityUtils.getCity());
                         ((JSONObject) list.get(i)).put("esfPrice", plotDetailsDo.getAvgPrice());
                         ((JSONObject) list.get(i)).put("plotImage", plotDetailsDo.getPhoto().toString().replaceAll("[\\[\\]]", ""));
 
@@ -120,6 +124,7 @@ public class FindhouseApiController implements FindhouseApi {
         intelligenceDo.setFhpt(fhpt);
         intelligenceDo.setFhtp(fhtp);
         BeanUtils.copyProperties(intelligenceDo, intelligenceResponse);
+        intelligenceResponse.setFhpt(fhpt);
         return new ResponseEntity<IntelligenceResponse>(intelligenceResponse, HttpStatus.OK);
     }
 
@@ -129,7 +134,7 @@ public class FindhouseApiController implements FindhouseApi {
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
         Integer result = homePageReportService.saveHomePageReport(request, userFavoriteConditionDoQuery);
         StringDataResponse stringDataResponse = new StringDataResponse();
-        stringDataResponse.setData("保存首页找房报告成功");
+        stringDataResponse.setData(result.toString());
         return new ResponseEntity<StringDataResponse>(stringDataResponse, HttpStatus.OK);
     }
 

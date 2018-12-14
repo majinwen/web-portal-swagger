@@ -197,62 +197,62 @@ public class SuggestRestController implements SuggestRestApi {
         if (searchConditionRequest.getType() == 1) {
             HouseSubject houseSubject = new HouseSubject();
             houseSubject.setText("低密度");
-            houseSubject.setUrl("labelId=[8]");
+            houseSubject.setUrl("labelId=8");
             houseSubjectList.add(houseSubject);
             HouseSubject houseSubject1 = new HouseSubject();
             houseSubject1.setText("近地铁");
-            houseSubject1.setUrl("labelId=[1]");
+            houseSubject1.setUrl("labelId=1");
             houseSubjectList.add(houseSubject1);
             HouseSubject houseSubject2 = new HouseSubject();
             houseSubject2.setText("500强房企");
-            houseSubject2.setUrl("labelId=[9]");
+            houseSubject2.setUrl("labelId=9");
             houseSubjectList.add(houseSubject2);
         } else if (searchConditionRequest.getType() == 3) {
             HouseSubject houseSubject = new HouseSubject();
             houseSubject.setText("地铁房");
-            houseSubject.setUrl("labelId=[0]");
+            houseSubject.setUrl("labelId=0");
             houseSubjectList.add(houseSubject);
             HouseSubject houseSubject1 = new HouseSubject();
             houseSubject1.setText("独立阳台");
-            houseSubject1.setUrl("labelId=[4]");
+            houseSubject1.setUrl("labelId=4");
             houseSubjectList.add(houseSubject1);
             HouseSubject houseSubject2 = new HouseSubject();
             houseSubject2.setText("独立卫生间");
-            houseSubject2.setUrl("labelId=[5]");
+            houseSubject2.setUrl("labelId=5");
             houseSubjectList.add(houseSubject2);
         } else if (searchConditionRequest.getType() == 4) {
             HouseSubject houseSubject = new HouseSubject();
             houseSubject.setText("近地铁");
-            houseSubject.setUrl("labelId=[0]");
+            houseSubject.setUrl("labelId=0");
             houseSubjectList.add(houseSubject);
             HouseSubject houseSubject1 = new HouseSubject();
             houseSubject1.setText("top50社区");
-            houseSubject1.setUrl("labelId=[1]");
+            houseSubject1.setUrl("labelId=1");
             houseSubjectList.add(houseSubject1);
             HouseSubject houseSubject2 = new HouseSubject();
             houseSubject2.setText("首次置业");
-            houseSubject2.setUrl("labelId=[2]");
+            houseSubject2.setUrl("labelId=2");
             houseSubjectList.add(houseSubject2);
             HouseSubject houseSubject3 = new HouseSubject();
             houseSubject3.setText("换房升级");
-            houseSubject3.setUrl("labelId=[3]");
+            houseSubject3.setUrl("labelId=3");
             houseSubjectList.add(houseSubject3);
             HouseSubject houseSubject4 = new HouseSubject();
             houseSubject4.setText("豪宅社区");
-            houseSubject4.setUrl("labelId=[4]");
+            houseSubject4.setUrl("labelId=4");
             houseSubjectList.add(houseSubject4);
             HouseSubject houseSubject5 = new HouseSubject();
             houseSubject5.setText("别墅社区");
-            houseSubject5.setUrl("labelId=[5]");
+            houseSubject5.setUrl("labelId=5");
             houseSubjectList.add(houseSubject5);
             HouseSubject houseSubject6 = new HouseSubject();
             houseSubject6.setText("公园社区");
-            houseSubject6.setUrl("labelId=[6]");
+            houseSubject6.setUrl("labelId=6");
             houseSubjectList.add(houseSubject6);
         } else {
             HouseSubject houseSubject = new HouseSubject();
             houseSubject.setText("地铁房");
-            houseSubject.setUrl("labelId=[1]");
+            houseSubject.setUrl("labelId=1");
             houseSubjectList.add(houseSubject);
             HouseSubject houseSubject1 = new HouseSubject();
             houseSubject1.setText("降价房");
@@ -285,7 +285,7 @@ public class SuggestRestController implements SuggestRestApi {
         }
         CityAllInfoMap cityAllInfoMap = new CityAllInfoMap();
         Map<String, Object> res = cityService.getCityAllInfo(cityId);
-        cityAllInfoMap.setVersion(4);
+        cityAllInfoMap.setVersion(5);
         cityAllInfoMap.setCityAllInfos(res);
         return new ResponseEntity<CityAllInfoMap>(cityAllInfoMap, HttpStatus.OK);
     }

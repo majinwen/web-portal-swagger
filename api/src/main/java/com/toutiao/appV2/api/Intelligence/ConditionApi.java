@@ -6,8 +6,7 @@
 package com.toutiao.appV2.api.Intelligence;
 
 
-import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
-import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionResponse;
+import com.toutiao.appV2.model.Intelligence.*;
 import com.toutiao.appV2.model.StringDataResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -15,13 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import springfox.documentation.annotations.ApiIgnore;
-
 import javax.validation.Valid;
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
 
 @Api(value = "推荐条件", description = "推荐条件")
-@RequestMapping(value = "/rest/")
 public interface ConditionApi {
 
     @ApiOperation(value = "删除推荐条件", nickname = "deleteRecommendCondition", notes = "", response = Integer.class, tags={ "首页推荐条件", })
@@ -35,8 +31,8 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/homePage/deleteRecommendCondition",
         produces = "application/json",
         method = RequestMethod.GET)
-    @ApiIgnore
-    ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
+    ResponseEntity<StringDataResponse> deleteRecommendCondition(@ApiParam(value = "userId", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId,
+                                                                @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType);
 
     @ApiOperation(value = "获取推荐条件", nickname = "getRecommendCondition", notes = "", response = UserFavoriteConditionResponse.class, tags={ "首页推荐条件", })
     @ApiResponses(value = { 
@@ -49,24 +45,39 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/homePage/getRecommendCondition",
         produces = "application/json",
         method = RequestMethod.GET)
-    @ApiIgnore
-    ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "用户id", required = true) @Valid @RequestParam(value = "用户id", required = true) Integer userId);
+    ResponseEntity<UserFavoriteConditionResponse> getRecommendCondition(@ApiParam(value = "userId", required = true) @Valid @RequestParam(value = "userId", required = true) Integer userId,
+                                                                        @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType);
 
 
-    @ApiOperation(value = "保存更新推荐条件", nickname = "saveRecommendCondition", notes = "", response = Integer.class, tags={ "首页推荐条件", })
-    @ApiResponses(value = { 
-        @ApiResponse(code = 200, message = "OK", response = Integer.class),
-        @ApiResponse(code = 201, message = "Created"),
-        @ApiResponse(code = 401, message = "Unauthorized"),
-        @ApiResponse(code = 403, message = "Forbidden"),
-        @ApiResponse(code = 404, message = "Not Found") })
+    @ApiOperation(value = "保存更新推荐条件", nickname = "getNewHouseList", notes = "",
+            response = CustomConditionUserSampleResponse.class, tags={ "首页推荐条件", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CustomConditionUserSampleResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/homePage/saveRecommendCondition",
+            produces = { "application/json" },
+//            consumes = { "application/json" },
+            method = {RequestMethod.POST})
+    ResponseEntity<CustomConditionUserSampleResponse> saveRecommendCondition(@RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+
+
+
+    @ApiOperation(value = "定制条件筛选结果数量", nickname = "getCustomCondition", notes = "", response = CustomConditionCountResponse.class, tags={ "首页推荐条件", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CustomConditionCountResponse.class),
+            @ApiResponse(code = 201, message = "Created"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/rest/homePage/saveRecommendCondition",
-        produces = "application/json", 
-        consumes = "application/json",
-        method = RequestMethod.POST)
-    @ApiIgnore
-    ResponseEntity<StringDataResponse> saveRecommendCondition(@ApiParam(value = "推荐条件", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+    @RequestMapping(value = "/rest/homePage/getCustomCondition",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+
+
 
 }

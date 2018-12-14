@@ -8,11 +8,11 @@
     <result column="newcode" property="newcode" jdbcType="INTEGER" />
     <result column="average_price" property="averagePrice" jdbcType="NUMERIC" />
     <result column="hosue_count" property="hosueCount" jdbcType="INTEGER" />
-    <result column="city_name" property="cityName" jdbcType="VARCHAR" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, city_id, projname, newcode, average_price, hosue_count, city_name, time
+    id, city_id, newcode, projname, average_price, hosue_count, time, sort
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -130,7 +130,6 @@
     <include refid="Base_Column_List"/>
     from report_esf_proj_hot
     where city_id = #{cityId,jdbcType=INTEGER}
-    order by id desc
-    limit 20
+    order by sort asc
   </select>
 </mapper>
