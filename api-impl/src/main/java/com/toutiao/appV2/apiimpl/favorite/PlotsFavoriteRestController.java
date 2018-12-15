@@ -22,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,6 +33,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
+@Validated
 public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
 
     private final HttpServletRequest request;

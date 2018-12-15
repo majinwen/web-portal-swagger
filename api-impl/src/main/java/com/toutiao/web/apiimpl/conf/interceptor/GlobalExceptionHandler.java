@@ -1,7 +1,6 @@
 package com.toutiao.web.apiimpl.conf.interceptor;
 
 import com.toutiao.web.common.exceptions.BaseException;
-import com.toutiao.web.common.restmodel.NashResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -84,9 +84,14 @@ public class GlobalExceptionHandler extends AbstractErrorController {
     public ResponseEntity<Map> handleValidationException(HttpServletRequest request, HttpServletResponse response, ConstraintViolationException ex) {
         logger.error("异常:" + request.getRequestURI(), ex);
         Map map = new HashMap(2);
-        map.put("code", 1);
-        map.put("message", "违反约束异常");
-        return new ResponseEntity<Map>(map, HttpStatus.INTERNAL_SERVER_ERROR);
+        StringBuilder builder = new StringBuilder();
+        Set<ConstraintViolation<?>> constraintViolations = ex.getConstraintViolations();
+        for (ConstraintViolation constraintViolation : constraintViolations) {
+            builder.append(constraintViolation.getMessage() + "--");
+        }
+        map.put("code", 40001);
+        map.put("message", builder.toString());
+        return new ResponseEntity<Map>(map, HttpStatus.BAD_REQUEST);
 //        if(isRestful(request)){
 //            response.setStatus(Integer.valueOf(HttpStatus.OK.toString()));
 //            return NashResult.Fail(HttpStatus.BAD_REQUEST.toString(),"找不到接口地址",getExceptionDetail(ex));
