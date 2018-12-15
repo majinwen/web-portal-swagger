@@ -14,6 +14,7 @@ import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
@@ -23,6 +24,7 @@ import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
 import org.elasticsearch.search.aggregations.metrics.max.ParsedMax;
 import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
 import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
+import org.elasticsearch.search.aggregations.metrics.tophits.ParsedTopHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -66,12 +68,18 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             TermQueryBuilder termQuery_isDel = QueryBuilders.termQuery("isDel", 0);
             TermQueryBuilder termQuery_isClaim = QueryBuilders.termQuery("is_claim", 0);
             bqb_isCutPrice.must(QueryBuilders.termQuery("isCutPrice", 1));
+            bqb_isCutPrice.must(QueryBuilders.termQuery("isNew",1));
+            bqb_isCutPrice.must(QueryBuilders.termsQuery("layout",recommendTopicDoQuery.getLayoutId()));
             bqb_isCutPrice.must(termQuery_isClaim);
             bqb_isCutPrice.must(termQuery_isDel);
             bqb_isLowPrice.must(QueryBuilders.termQuery("isLowPrice", 1));
+            bqb_isLowPrice.must(QueryBuilders.termQuery("isNew",1));
+            bqb_isLowPrice.must(QueryBuilders.termsQuery("layout",recommendTopicDoQuery.getLayoutId()));
             bqb_isLowPrice.must(termQuery_isClaim);
             bqb_isLowPrice.must(termQuery_isDel);
             bqb_isMustRob.must(QueryBuilders.termQuery("isMustRob", 1));
+            bqb_isMustRob.must(QueryBuilders.termQuery("isNew",1));
+            bqb_isMustRob.must(QueryBuilders.termsQuery("layout",recommendTopicDoQuery.getLayoutId()));
             bqb_isMustRob.must(termQuery_isClaim);
             bqb_isMustRob.must(termQuery_isDel);
 
@@ -157,12 +165,20 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
                     Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
                     StringBuffer areaIds = new StringBuffer();
+                    StringBuffer areaNames = new StringBuffer();
                     while (areaIdBucketIt.hasNext()) {
 
                         Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
+                        ParsedTopHits parsedTopHits = areaIdsBucket.getAggregations().get("areaName");
+                        for (SearchHit hit : parsedTopHits.getHits().getHits()) {
+                           // homePageTop50Do.setDistrictName((String) hit.getSourceAsMap().get("area"));
+                            areaNames = areaNames.append((String) hit.getSourceAsMap().get("area")+",");
+                        }
+
                         areaIds = areaIds.append(areaIdsBucket.getKeyAsString() + ",");
                     }
                     recommendTopicDo.setDistrictId(areaIds.substring(0, areaIds.length() - 1));
+                    recommendTopicDo.setDistrictName(areaNames.substring(0, areaNames.length() - 1));
                 } else {
                     recommendTopicDo.setDistrictId("");
                 }

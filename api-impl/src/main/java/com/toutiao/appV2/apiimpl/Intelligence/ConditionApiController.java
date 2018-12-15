@@ -250,7 +250,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<RecommendTopicDomain> getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<RecommendTopicDomain>  getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
         RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, recommendTopicDoQuery);
         RecommendTopicDomain recommendTopicDomain = recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
