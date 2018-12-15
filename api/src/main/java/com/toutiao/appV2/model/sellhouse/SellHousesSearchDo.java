@@ -399,4 +399,10 @@ public class SellHousesSearchDo {
 
     @ApiModelProperty(value = "逛逛第二行弹幕", name = "houseBarrageSecondList")
     private List<String> houseBarrageSecondList;
+
+    @ApiModelProperty(value = "总的楼层数", name = "totalFloor")
+    private Integer totalFloor;
+
+    @ApiModelProperty(value = "房源所在层（高/低/中）", name = "floor")
+    private String floor;
 }
