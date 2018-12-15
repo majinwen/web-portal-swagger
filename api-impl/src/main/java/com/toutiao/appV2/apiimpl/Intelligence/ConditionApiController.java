@@ -136,7 +136,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "userFavoriteConditionRequest", required = true)  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "userFavoriteConditionRequest", required = true)  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
 
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
@@ -147,7 +147,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request", required = true) @Valid RecommendEsf5Request recommendEsf5Request) {
+    public ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request", required = true) @Valid @RequestBody RecommendEsf5Request recommendEsf5Request) {
         SellHouseSearchDomainResponse sellHouseSearchDomainResponse = new SellHouseSearchDomainResponse();
         RecommendEsf5DoQuery recommendEsf5DoQuery = new RecommendEsf5DoQuery();
         BeanUtils.copyProperties(recommendEsf5Request, recommendEsf5DoQuery);
@@ -157,7 +157,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid com.toutiao.appV2.model.HomePage.UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
         List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
@@ -170,17 +170,17 @@ public class ConditionApiController implements ConditionApi {
     }
 
 
-    @Override
-    public ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid com.toutiao.appV2.model.HomePage.UserFavoriteConditionRequest userFavoriteConditionRequest) {
-        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
-        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
-        NewHouseDetailDo newHouseDetailDo = newHouseService.getOneNewHouseByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
-        NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
-        return new ResponseEntity<>(newHouseDetailResponse, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid com.toutiao.appV2.model.HomePage.UserFavoriteConditionRequest userFavoriteConditionRequest) {
+//        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+//        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+//        NewHouseDetailDo newHouseDetailDo = newHouseService.getOneNewHouseByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
+//        NewHouseDetailResponse newHouseDetailResponse = JSON.parseObject(JSON.toJSONString(newHouseDetailDo), NewHouseDetailResponse.class);
+//        return new ResponseEntity<>(newHouseDetailResponse, HttpStatus.OK);
+//    }
 
     @Override
-    public ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
 
         CustomConditionDetailsResponse conditionDetailsResponse = new CustomConditionDetailsResponse();
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
@@ -260,7 +260,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<RecommendTopicDomain>  getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<RecommendTopicDomain>  getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
         RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, recommendTopicDoQuery);
         RecommendTopicDomain recommendTopicDomain = recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
@@ -268,7 +268,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
 
@@ -280,7 +280,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@Valid UserFavoriteRentListRequest userFavoriteRentListRequest) {
+    public ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "userFavoriteRentListRequest", required = true) @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest) {
         UserFavoriteRentListDoQuery userFavoriteRentListDoQuery = new UserFavoriteRentListDoQuery();
         BeanUtils.copyProperties(userFavoriteRentListRequest, userFavoriteRentListDoQuery);
 
@@ -293,7 +293,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<RentCustomConditionResponse> getHouseCountBySubway(@Valid UserFavoriteRentListRequest userFavoriteRentListRequest) {
+    public ResponseEntity<RentCustomConditionResponse> getHouseCountBySubway(@ApiParam(value = "userFavoriteRentListRequest", required = true) @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest) {
         UserFavoriteRentListDoQuery userFavoriteRentListDoQuery = new UserFavoriteRentListDoQuery();
         BeanUtils.copyProperties(userFavoriteRentListRequest, userFavoriteRentListDoQuery);
         RentCustomConditionDomain rentCustomConditionDomain = userFavoriteRentService.querySubwayLineHouse(userFavoriteRentListDoQuery, CityUtils.getCity());

@@ -85,8 +85,8 @@ public interface ConditionApi {
     })
     @RequestMapping(value = "/rest/homePage/getCustomCondition",
             produces = "application/json",
-            method = RequestMethod.GET)
-    ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+            method = RequestMethod.POST)
+    ResponseEntity<CustomConditionCountResponse> getCustomCondition(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
     @ApiOperation(value = "为您推荐房源", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags={ "定制", })
     @ApiResponses(value = {
@@ -97,8 +97,8 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/esf/getRecommendEsf5",
             produces = { "application/json" },
             //consumes = "application/json",
-            method = RequestMethod.GET)
-    ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request" ,required=true )  @Valid RecommendEsf5Request recommendEsf5Request);
+            method = RequestMethod.POST)
+    ResponseEntity<SellHouseSearchDomainResponse> getRecommendEsf5(@ApiParam(value = "RecommendEsf5Request" ,required=true )  @Valid @RequestBody RecommendEsf5Request recommendEsf5Request);
 
     @ApiOperation(value = "获取推荐小区", nickname = "getPlotByRecommendCondition", notes = "", response = PlotDetailsFewDoList.class, tags={ "定制", })
     @ApiResponses(value = {
@@ -108,22 +108,21 @@ public interface ConditionApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/plot/getPlotByRecommendCondition",
             produces = { "application/json" },
-            //consumes = "application/json",
-            method = RequestMethod.GET)
-    ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid com.toutiao.appV2.model.HomePage.UserFavoriteConditionRequest userFavoriteConditionRequest);
+            method = RequestMethod.POST)
+    ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
-    @ApiOperation(value = "根据推荐条件获取一条新房数据", nickname = "getOneNewHouseByRecommendCondition", notes = "", response = NewHouseDetailResponse.class, tags={ "定制", })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = NewHouseDetailResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/newhouse/getOneNewHouseByRecommendCondition",
-            produces = { "application/json" },
-            //consumes = "application/json",
-            method = RequestMethod.GET )
-    @ApiIgnore
-    ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid com.toutiao.appV2.model.HomePage.UserFavoriteConditionRequest userFavoriteConditionRequest);
+//    @ApiOperation(value = "根据推荐条件获取一条新房数据", nickname = "getOneNewHouseByRecommendCondition", notes = "", response = NewHouseDetailResponse.class, tags={ "定制", })
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "OK", response = NewHouseDetailResponse.class),
+//            @ApiResponse(code = 401, message = "Unauthorized"),
+//            @ApiResponse(code = 403, message = "Forbidden"),
+//            @ApiResponse(code = 404, message = "Not Found") })
+//    @RequestMapping(value = "/rest/newhouse/getOneNewHouseByRecommendCondition",
+//            produces = { "application/json" },
+//            //consumes = "application/json",
+//            method = RequestMethod.GET )
+//    @ApiIgnore
+//    ResponseEntity<NewHouseDetailResponse> getOneNewHouseByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid com.toutiao.appV2.model.HomePage.UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 
     @ApiOperation(value = "二手房定制条件筛选结果分布", nickname = "getEsfCustomConditionDetails", notes = "", response = CustomConditionCountResponse.class, tags={ "定制", })
@@ -137,8 +136,8 @@ public interface ConditionApi {
     })
     @RequestMapping(value = "/rest/esf/getEsfCustomConditionDetails",
             produces = "application/json",
-            method = RequestMethod.GET)
-    ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest userFavoriteConditionRequest);
+            method = RequestMethod.POST)
+    ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
     @ApiOperation(value = "获取专属报告", nickname = "getHomePageReport", notes = "", response = IntelligenceResponse.class, tags={ "定制", })
     @ApiResponses(value = {
@@ -178,8 +177,8 @@ public interface ConditionApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/esf/getRecommendTopic",
             produces = { "application/json" },
-            method = RequestMethod.GET)
-    ResponseEntity<RecommendTopicDomain> getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest" ,required=true )  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+            method = RequestMethod.POST)
+    ResponseEntity<RecommendTopicDomain> getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 
 
@@ -191,8 +190,8 @@ public interface ConditionApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/newhouse/getCustomNewHouseRecommend",
             produces = { "application/json" },
-            method = RequestMethod.GET )
-    ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+            method = RequestMethod.POST )
+    ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true)  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 
     @ApiOperation(value = "定制条件租房列表", nickname = "getRentHouseListByUserFavorite", notes = "", response = UserFavoriteRentListResponse.class, tags={ "定制", })
@@ -203,8 +202,8 @@ public interface ConditionApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/rent/getRentByUserFavorite",
             produces = { "application/json" },
-            method = RequestMethod.GET)
-    ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "userFavoriteRentListRequest"  )  @Valid UserFavoriteRentListRequest userFavoriteRentListRequest);
+            method = RequestMethod.POST)
+    ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "userFavoriteRentListRequest" ,required=true)  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
 
     @ApiOperation(value = "根据地铁线获取相应的小区数量和房源数量", nickname = "getHouseCountBySubway", notes = "", response = RentCustomConditionResponse.class, tags={ "定制", })
     @ApiResponses(value = {
@@ -214,7 +213,7 @@ public interface ConditionApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/rent/getHouseCountByCondition",
             produces = { "application/json" },
-            method = RequestMethod.GET)
-    ResponseEntity<RentCustomConditionResponse> getHouseCountBySubway(@ApiParam(value = "userFavoriteRentListRequest"  )  @Valid UserFavoriteRentListRequest userFavoriteRentListRequest);
+            method = RequestMethod.POST)
+    ResponseEntity<RentCustomConditionResponse> getHouseCountBySubway(@ApiParam(value = "userFavoriteRentListRequest")  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
 
 }
