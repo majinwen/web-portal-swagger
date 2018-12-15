@@ -176,7 +176,6 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/esf/getRecommendTopic",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<RecommendTopicDomain> getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest" ,required=true )  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 
@@ -190,7 +189,6 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/newhouse/getCustomNewHouseRecommend",
             produces = { "application/json" },
             method = RequestMethod.GET )
-    @ApiIgnore
     ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 
