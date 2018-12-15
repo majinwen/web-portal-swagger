@@ -65,7 +65,8 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
                 .aggregation(AggregationBuilders.cardinality("count").field("houseId"))
                 .aggregation(AggregationBuilders.min("minPrice").field("houseTotalPrices"))
                 .aggregation(AggregationBuilders.max("maxPrice").field("houseTotalPrices"))
-                .aggregation(AggregationBuilders.terms("areaIds").field("areaId"));
+                .aggregation(AggregationBuilders.terms("areaIds").field("areaId")
+                        .subAggregation(AggregationBuilders.topHits("areaName").size(1).fetchSource(new String[]{"area"},null)));
 
         searchRequest.source(searchSourceBuilder);
 

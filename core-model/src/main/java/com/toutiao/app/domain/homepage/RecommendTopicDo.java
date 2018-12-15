@@ -20,6 +20,11 @@ public class RecommendTopicDo {
     @ApiModelProperty("区域id")
     private String districtId;
     /**
+     * 区域name
+     */
+    @ApiModelProperty("区域name")
+    private String districtName;
+    /**
      * 主题类型
      */
     @ApiModelProperty("主题类型")

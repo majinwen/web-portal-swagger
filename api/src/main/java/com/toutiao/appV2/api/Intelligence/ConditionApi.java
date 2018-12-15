@@ -6,11 +6,10 @@
 package com.toutiao.appV2.api.Intelligence;
 
 
-import com.toutiao.appV2.model.HomePage.NewHouseDetailResponse;
-import com.toutiao.appV2.model.HomePage.PlotDetailsFewDoList;
-import com.toutiao.appV2.model.HomePage.RecommendEsf5Request;
-import com.toutiao.appV2.model.HomePage.SellHouseSearchDomainResponse;
+import com.toutiao.app.domain.homepage.RecommendTopicDomain;
+import com.toutiao.appV2.model.HomePage.*;
 import com.toutiao.appV2.model.Intelligence.*;
+import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.StringDataResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -166,5 +165,31 @@ public interface ConditionApi {
             consumes = "application/json",
             method = RequestMethod.POST)
     ResponseEntity<StringDataResponse> saveHomePageReport(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+
+
+    @ApiOperation(value = "定制房源榜单", nickname = "getRecommendTopic", notes = "", response = RecommendTopicDomain.class, tags={ "定制", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = RecommendTopicDomain.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/esf/getRecommendTopic",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<RecommendTopicDomain> getRecommendTopic(@ApiParam(value = "userFavoriteConditionRequest" ,required=true )  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+
+
+
+    @ApiOperation(value = "获取目标市场新房推荐", nickname = "getCustomNewHouseRecommend", notes = "", response = NewHouseDetailResponse.class, tags={ "定制", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = NewHouseDetailResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/newhouse/getCustomNewHouseRecommend",
+            produces = { "application/json" },
+            method = RequestMethod.GET )
+    ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+
 
 }
