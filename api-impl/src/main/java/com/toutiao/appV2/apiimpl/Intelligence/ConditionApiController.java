@@ -11,6 +11,9 @@ import com.toutiao.app.domain.homepage.RecommendTopicDomain;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
+import com.toutiao.app.domain.rent.RentCustomConditionDomain;
+import com.toutiao.app.domain.rent.UserFavoriteRentListDoQuery;
+import com.toutiao.app.domain.rent.UserFavoriteRentListDomain;
 import com.toutiao.app.domain.sellhouse.RecommendEsf5DoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseSearchDomain;
 import com.toutiao.app.service.Intelligence.HomePageReportService;
@@ -18,12 +21,16 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.homepage.RecommendRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
+import com.toutiao.app.service.rent.UserFavoriteRentService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.appV2.api.Intelligence.ConditionApi;
 import com.toutiao.appV2.model.HomePage.*;
 import com.toutiao.appV2.model.Intelligence.*;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.StringDataResponse;
+import com.toutiao.appV2.model.rent.RentCustomConditionResponse;
+import com.toutiao.appV2.model.rent.UserFavoriteRentListRequest;
+import com.toutiao.appV2.model.rent.UserFavoriteRentListResponse;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhRes;
@@ -86,6 +93,9 @@ public class ConditionApiController implements ConditionApi {
 
     @Autowired
     private RecommendRestService recommendRestService;
+
+    @Autowired
+    private UserFavoriteRentService userFavoriteRentService;
 
     @org.springframework.beans.factory.annotation.Autowired
     public ConditionApiController(ObjectMapper objectMapper, HttpServletRequest request) {
@@ -268,4 +278,29 @@ public class ConditionApiController implements ConditionApi {
 
         return new ResponseEntity<>(newHouseCustomConditionResponse, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@Valid UserFavoriteRentListRequest userFavoriteRentListRequest) {
+        UserFavoriteRentListDoQuery userFavoriteRentListDoQuery = new UserFavoriteRentListDoQuery();
+        BeanUtils.copyProperties(userFavoriteRentListRequest, userFavoriteRentListDoQuery);
+
+        UserFavoriteRentListDomain userFavoriteRentListDomain = userFavoriteRentService.queryRentListByUserFavorite(userFavoriteRentListDoQuery, CityUtils.getCity());
+
+        UserFavoriteRentListResponse userFavoriteRentListResponse = new UserFavoriteRentListResponse();
+        BeanUtils.copyProperties(userFavoriteRentListDomain, userFavoriteRentListResponse);
+
+        return new ResponseEntity<>(userFavoriteRentListResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<RentCustomConditionResponse> getHouseCountBySubway(@Valid UserFavoriteRentListRequest userFavoriteRentListRequest) {
+        UserFavoriteRentListDoQuery userFavoriteRentListDoQuery = new UserFavoriteRentListDoQuery();
+        BeanUtils.copyProperties(userFavoriteRentListRequest, userFavoriteRentListDoQuery);
+        RentCustomConditionDomain rentCustomConditionDomain = userFavoriteRentService.querySubwayLineHouse(userFavoriteRentListDoQuery, CityUtils.getCity());
+        RentCustomConditionResponse rentCustomConditionResponse = new RentCustomConditionResponse();
+        BeanUtils.copyProperties(rentCustomConditionDomain, rentCustomConditionResponse);
+
+        return new ResponseEntity<>(rentCustomConditionResponse, HttpStatus.OK);
+    }
+
 }
