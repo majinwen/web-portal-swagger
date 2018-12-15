@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.mapsearch.RentMapSearchEsDao;
 import com.toutiao.app.dao.rent.UserFavoriteRentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.mapSearch.SubwayStationDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.mapSearch.RentMapSearchRestService;
@@ -219,6 +220,22 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 rentCustomDo.setId(subwayLineId);
                 //设置地铁线名称
                 SubwayLineDo subwayLineDo = subwayLineService.selectLineInfoByLineId(subwayLineId);
+                BoolQueryBuilder builder = QueryBuilders.boolQuery();
+                builder.must(QueryBuilders.termQuery("line_id",subwayLineId));
+                SearchResponse sr = rentMapSearchEsDao.getSubwayStationinfo(builder,city);
+                SearchHit[] hits = sr.getHits().getHits();
+                List<SubwayStationDo> subwayStationDos = new ArrayList<>();
+                if(hits.length>0){
+                    for(SearchHit hit : hits){
+                        SubwayStationDo subwayStationDo = new SubwayStationDo();
+                        subwayStationDo.setStationId((Integer) hit.getSourceAsMap().get("station_id"));
+                        subwayStationDo.setStationName((String) hit.getSourceAsMap().get("station_name"));
+                        subwayStationDo.setLatitude((Double) hit.getSourceAsMap().get("latitude"));
+                        subwayStationDo.setLongitude((Double) hit.getSourceAsMap().get("longitude"));
+                        subwayStationDos.add(subwayStationDo);
+                    }
+                }
+                rentCustomDo.setSubwayStations(subwayStationDos);
                 rentCustomDo.setName(subwayLineDo.getSubwayName());
                 rentCustomDos.add(rentCustomDo);
             }
@@ -239,7 +256,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 boolQueryBuilder.must(QueryBuilders.termQuery("district_id", districtId));
 
-                searchSourceBuilder.query(boolQueryBuilder);
+                searchSourceBuilder.query(boolQueryBuilder).size(20);
                 searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("area_id")
                         .subAggregation(AggregationBuilders.terms("community").field("zufang_id")).size(200)).sort("sortingScore", SortOrder.DESC);
                 SearchResponse searchResponse = userFavoriteRentEsDao.querySubwayLineHouse(searchSourceBuilder, city);

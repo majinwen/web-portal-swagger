@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.rent;
 
+import com.toutiao.app.domain.mapSearch.SubwayStationDo;
 import lombok.Data;
 
 import java.util.List;
@@ -24,4 +25,6 @@ public class RentCustomDo {
      * 房源统计
      */
     private List<RentCustomConditionDo> rentCustomConditionDos = null;
+
+    private List<SubwayStationDo> subwayStations = null;
 }
