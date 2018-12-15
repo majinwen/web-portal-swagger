@@ -215,10 +215,14 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<RentDetailsListResponse> getRentListByPlotId
-            (@ApiParam(value = "plotId") @Valid @RequestParam(value = "plotId", required = false) Integer plotId, @ApiParam(value = "rentType") @Valid @RequestParam(value = "rentType", required = false) Integer rentType, @ApiParam(value = "pageNum") @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum) {
+            (@ApiParam(value = "plotId") @RequestParam(value = "plotId", required = false) Integer plotId,
+             @ApiParam(value = "rentType") @RequestParam(value = "rentType", required = false) Integer rentType,
+             @ApiParam(value = "pageNum") @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize
+            ) {
 
         RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotId,
-                rentType, pageNum, CityUtils.getCity());
+                rentType, pageNum, pageSize, CityUtils.getCity());
         RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
         BeanUtils.copyProperties(rentDetailsListDo, rentDetailsListResponse);
         return new ResponseEntity<RentDetailsListResponse>(rentDetailsListResponse, HttpStatus.OK);

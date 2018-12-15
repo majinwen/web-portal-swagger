@@ -144,7 +144,7 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getRentOfPlotByPlotId",
             produces = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<RentDetailsListResponse> getRentListByPlotId(@ApiParam(value = "plotId") @Valid @RequestParam(value = "plotId", required = false) Integer plotId, @ApiParam(value = "rentType") @Valid @RequestParam(value = "rentType", required = false) Integer rentType, @ApiParam(value = "pageNum") @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum);
+    ResponseEntity<RentDetailsListResponse> getRentListByPlotId(@ApiParam(value = "plotId") @Valid @RequestParam(value = "plotId", required = false) Integer plotId, @ApiParam(value = "rentType") @Valid @RequestParam(value = "rentType", required = false) Integer rentType, @ApiParam(value = "pageNum") @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,@ApiParam(value = "pageSize") @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize);
 
 
     @ApiOperation(value = "查询小区下出租房的个数", nickname = "getRentNumByPlotId", notes = "", response = RentNumListResponse.class, tags = {"小区",})

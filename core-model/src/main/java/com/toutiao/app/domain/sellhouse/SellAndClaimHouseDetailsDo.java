@@ -449,7 +449,7 @@ public class SellAndClaimHouseDetailsDo {
      */
     private Integer isDefaultImage = 0;
 
-    private List<HouseSubject> sellHouseSubjectList;
+    private List<HouseSubject> houseSubjectList;
 
     private String companyIcon;
 

@@ -200,7 +200,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
                 HouseSubject sellHouseSubject = new HouseSubject("本户型平均成交时间为" + avgDealCycle + "天", "");
                 houseSubjectList.add(sellHouseSubject);
             }
-            sellHouseDo.setSellHouseSubjectList(houseSubjectList);
+            sellHouseDo.setHouseSubjectList(houseSubjectList);
             sellHouseDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
             sellHouseDo.setAgentBaseDo(agentBaseDo);
             sellHouseDoList.add(sellHouseDo);

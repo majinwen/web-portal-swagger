@@ -203,7 +203,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public RentDetailsListDo queryRentListByPlotId(Integer plotId, Integer rentType, Integer pageNum, String city) {
+    public RentDetailsListDo queryRentListByPlotId(Integer plotId, Integer rentType, Integer pageNum, Integer pageSize,String city) {
         Date date = new Date();
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> list = new ArrayList<>();
@@ -216,7 +216,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(QueryBuilders.termQuery("rent_type", rentType));
         }
         Integer from = (pageNum - 1) * 10;
-        SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder, from, city);
+        SearchResponse searchResponse = rentEsDao.queryRentListByPlotId(boolQueryBuilder, from,pageSize, city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length > 0) {
             for (SearchHit hit : hits) {
@@ -240,7 +240,11 @@ public class RentRestRestServiceImpl implements RentRestService {
                     agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
                 }
                 rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
-
+                //设置房源公司图标
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if (!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)) {
+                    rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
 
                 list.add(rentDetailsFewDo);
             }

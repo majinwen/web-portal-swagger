@@ -211,8 +211,8 @@ public class PlotEsfResponse {
     @ApiModelProperty("各个类型数量")
     private Map<String, Map<String, Integer>> typeCounts;
 
-    @ApiModelProperty(value = "专题列表", name = "sellHouseSubjectList")
-    private List<HouseSubject> sellHouseSubjectList;
+    @ApiModelProperty(value = "专题列表", name = "houseSubjectList")
+    private List<HouseSubject> houseSubjectList;
 
     @ApiModelProperty(value = "公司图标", name = "companyIcon")
     private String companyIcon;
