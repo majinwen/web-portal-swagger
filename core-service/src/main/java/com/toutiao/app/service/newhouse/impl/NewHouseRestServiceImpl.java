@@ -101,6 +101,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             details = searchHit.getSourceAsString();
         }
         if (StringUtils.isNotEmpty(details)) {
+            newHouseDetailDo = JSON.parseObject(details, NewHouseDetailDo.class);
             try {
 
                 UserBasic userBasic = UserBasic.getCurrent();
@@ -115,7 +116,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 logger.info("用户未登录");
                 newHouseDetailDo.setIsFavorite(Boolean.FALSE);
             }
-            newHouseDetailDo = JSON.parseObject(details, NewHouseDetailDo.class);
 
             String[] img = newHouseDetailDo.getBuildingImgs().get(0).split(",");
             newHouseDetailDo.setBuildingImg(img);
