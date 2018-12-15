@@ -53,6 +53,14 @@ public class ReportNewGuideAttentionResponse {
 //    @ApiModelProperty(value = "城市Id")
 //    private Integer cityId;
 
+    public void setAveragePrice(Double averagePrice) {
+        String doubleStr = averagePrice.toString();
+        if(doubleStr.contains(".")){
+            doubleStr = doubleStr.substring(0,doubleStr.indexOf(".")+1);
+        }
+        this.averagePrice = Double.parseDouble(doubleStr);
+    }
+
     /**
      * 价格
      */

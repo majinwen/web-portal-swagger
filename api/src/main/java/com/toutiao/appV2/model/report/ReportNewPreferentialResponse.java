@@ -31,6 +31,14 @@ public class ReportNewPreferentialResponse {
     @ApiModelProperty(value = "优惠价格(万元)")
     private Double offPrice;
 
+    public void setOffPrice(Double offPrice) {
+        String doubleStr = offPrice.toString();
+        if(doubleStr.contains(".")){
+            doubleStr = doubleStr.substring(0,doubleStr.indexOf(".")+1);
+        }
+        this.offPrice = Double.parseDouble(doubleStr);
+    }
+
     /**
      * 均价
      */
