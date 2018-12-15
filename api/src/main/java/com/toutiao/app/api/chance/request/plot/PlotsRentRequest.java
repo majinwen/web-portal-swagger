@@ -21,4 +21,5 @@ public class PlotsRentRequest {
      * 当前页
      */
     private Integer pageNum=1;
+    private Integer pageSize=10;
 }

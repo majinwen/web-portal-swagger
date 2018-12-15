@@ -341,7 +341,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
             if (rentHouseDoQuery.getJlo().equals("0")) {
                 boolQueryBuilder.must(rangeQuery("jrent_layout").gt(0));
             } else {
-                String[] roommore = new String[]{"5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
                 String[] room = rentHouseDoQuery.getJlo().split(",");
 
                 boolean roomflag = Arrays.asList(room).contains(LAYOUT);
@@ -355,7 +355,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
 
         } else if (StringTool.isNotBlank(rentHouseDoQuery.getElo()) && StringTool.isNotBlank(rentHouseDoQuery.getJlo())) {
             BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
-            String[] roommore = new String[]{"5", "6", "7", "8", "9", "10", "11", "12", "13", "14"};
+            String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
             if (rentHouseDoQuery.getJlo().equals("0") && rentHouseDoQuery.getElo().equals("0")) {
                 boolQueryBuilder1.should(rangeQuery("erent_layout").gt(0));
                 boolQueryBuilder1.should(rangeQuery("jrent_layout").gt(0));

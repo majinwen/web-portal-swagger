@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ReportEsfProjHotResponse {
+public class ReportEsfProjHotResponse implements Comparable<ReportEsfProjHotResponse>{
 
     /**
      * ID
@@ -38,6 +38,14 @@ public class ReportEsfProjHotResponse {
     @ApiModelProperty(value = "均价")
     private Double averagePrice;
 
+    public void setAveragePrice(Double averagePrice) {
+        String doubleStr = averagePrice.toString();
+        if(doubleStr.contains(".")){
+            doubleStr = doubleStr.substring(0,doubleStr.indexOf(".")+1);
+        }
+        this.averagePrice = Double.parseDouble(doubleStr);
+    }
+
     /**
      * 挂牌量
      */
@@ -63,4 +71,8 @@ public class ReportEsfProjHotResponse {
     private Integer sort;
 
 
+    @Override
+    public int compareTo(ReportEsfProjHotResponse o) {
+        return this.getSort()-o.getSort();
+    }
 }

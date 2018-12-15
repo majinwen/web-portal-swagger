@@ -35,11 +35,11 @@ public class RentEsDaoImpl implements RentEsDao {
 
 
     @Override
-    public SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder, Integer from, String city) {
+    public SearchResponse queryRentListByPlotId(BoolQueryBuilder booleanQueryBuilder, Integer from, Integer size,String city) {
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentIndex(city)).types(ElasticCityUtils.getRentHouseType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(booleanQueryBuilder).sort("sortingScore", SortOrder.DESC).from(from);
+        searchSourceBuilder.query(booleanQueryBuilder).sort("sortingScore", SortOrder.DESC).from(from).size(size);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {

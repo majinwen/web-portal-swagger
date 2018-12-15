@@ -44,7 +44,7 @@ public interface PlotsRestService {
     /**
      * 获取交通配套
      */
-    PlotTrafficDo queryPlotDataInfo(Integer plotId) throws InvocationTargetException, IllegalAccessException;
+    PlotTrafficDo queryPlotDataInfo(Integer plotId);
 
 //    /**
 //     * 小区收藏列表

@@ -120,7 +120,7 @@ public class ReportCityResponse {
      * 二手房特色房源：捡漏房
      */
     @ApiModelProperty(value = "二手房特色房源：捡漏房")
-    private List<ReportTeSeJianLouRespose> esfTeseJianlou;
+    private ReportTeSeJianLouRespose esfTeseJianlou;
 
     /**
      * 二手房特色房源：降价房

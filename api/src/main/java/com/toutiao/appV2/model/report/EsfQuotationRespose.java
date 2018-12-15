@@ -3,10 +3,8 @@ package com.toutiao.appV2.model.report;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
-
 @Data
-public class ReportTeSeQiangShouRespose {
+public class EsfQuotationRespose {
 
     /**
      * 主键ID
@@ -35,14 +33,14 @@ public class ReportTeSeQiangShouRespose {
     /**
      * 抢手房数量
      */
-    @ApiModelProperty(value = "抢手房数量")
-    private Integer count;
+//    @ApiModelProperty(value = "抢手房数量")
+//    private Integer robHouseCount;
 
     /**
-     * 捡漏房均价
+     * 二手房均价
      */
-//    @ApiModelProperty(value = "捡漏房均价")
-//    private Integer lowerHouseAvgPrice;
+    @ApiModelProperty(value = "二手房均价")
+    private Integer price;
 
     /**
      * 降价房均价

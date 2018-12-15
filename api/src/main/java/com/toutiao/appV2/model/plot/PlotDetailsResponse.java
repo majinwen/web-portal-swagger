@@ -130,5 +130,11 @@ public class PlotDetailsResponse {
 
     @ApiModelProperty("商圈名称")
     private String tradingArea;
+
+    @ApiModelProperty("上架房源")
+    private Integer increaseHouse;
+
+    @ApiModelProperty("下架房源")
+    private Integer decreaseHouse;
 }
 

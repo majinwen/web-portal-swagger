@@ -39,7 +39,7 @@ public class PlotsRentRestController {
     @ResponseBody
     public RentDetailsListResponse getRentListByPlotId(@Validated PlotsRentRequest plotsRentRequest){
         RentDetailsListDo rentDetailsListDo = appRentRestService.queryRentListByPlotId(plotsRentRequest.getPlotId(),
-                plotsRentRequest.getRentType(), plotsRentRequest.getPageNum(),CityUtils.getCity());
+                plotsRentRequest.getRentType(), plotsRentRequest.getPageNum(),plotsRentRequest.getPageSize(),CityUtils.getCity());
         RentDetailsListResponse rentDetailsListResponse = new RentDetailsListResponse();
 
         BeanUtils.copyProperties(rentDetailsListDo,rentDetailsListResponse);
