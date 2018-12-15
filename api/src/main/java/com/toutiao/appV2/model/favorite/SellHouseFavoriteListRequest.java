@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class SellHouseFavoriteListRequest {
 
     @ApiModelProperty(value = "用户id", name = "userId", required = true)
-    @NotNull(message = "用户id不能为空")
+//    @NotNull(message = "用户id不能为空")
     private Integer userId;
 
     @ApiModelProperty(value = "当前页", name = "userId")

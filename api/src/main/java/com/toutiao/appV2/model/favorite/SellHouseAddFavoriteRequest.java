@@ -59,6 +59,7 @@ public class SellHouseAddFavoriteRequest extends FavoriteBaseRequest {
     private Short status = 0;
 
     @ApiModelProperty(value = "经纪公司图标", name = "companyIcon")
+    @NotNull(message = "缺少经纪公司图标")
     private String companyIcon;
 
 
