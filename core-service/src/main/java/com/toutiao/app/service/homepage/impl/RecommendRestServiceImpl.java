@@ -171,7 +171,6 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                         Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
                         ParsedTopHits parsedTopHits = areaIdsBucket.getAggregations().get("areaName");
                         for (SearchHit hit : parsedTopHits.getHits().getHits()) {
-                           // homePageTop50Do.setDistrictName((String) hit.getSourceAsMap().get("area"));
                             areaNames = areaNames.append((String) hit.getSourceAsMap().get("area")+",");
                         }
 
