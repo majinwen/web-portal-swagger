@@ -7,6 +7,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -143,6 +144,22 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchRequest.source(searchSourceBuilder.query(booleanQueryBuilder).sort("create_time",SortOrder.DESC).from((pageNum-1)*pageSize).size(pageSize));
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  searchresponse;
+    }
+
+    @Override
+    public SearchResponse getNewHouseCustomList(FunctionScoreQueryBuilder builder, Integer pageNum, Integer pageSize, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(builder).size(pageSize);
+        searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;
         try {
             searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);

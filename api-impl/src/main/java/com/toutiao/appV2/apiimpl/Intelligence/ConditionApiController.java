@@ -256,4 +256,16 @@ public class ConditionApiController implements ConditionApi {
         RecommendTopicDomain recommendTopicDomain = recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
         return new ResponseEntity<>(recommendTopicDomain, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid UserFavoriteConditionRequest userFavoriteConditionRequest) {
+        UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
+        BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
+
+        NewHouseCustomConditionDomain newHouseCustomConditionDomain = newHouseService.getNewHouseCustomList(userFavoriteConditionDoQuery, CityUtils.getCity());
+        NewHouseCustomConditionResponse newHouseCustomConditionResponse = new NewHouseCustomConditionResponse();
+        BeanUtils.copyProperties(newHouseCustomConditionDomain, newHouseCustomConditionResponse);
+
+        return new ResponseEntity<>(newHouseCustomConditionResponse, HttpStatus.OK);
+    }
 }

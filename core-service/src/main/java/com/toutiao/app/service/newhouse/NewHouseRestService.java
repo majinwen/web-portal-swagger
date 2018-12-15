@@ -47,4 +47,11 @@ public interface NewHouseRestService {
      * @return
      */
     NewHouseListDomain queryGuessLikeNewHouseList(NewHouseDoQuery newHouseDoQuery, Integer userId, String city);
+
+    /**
+     * 目标市场新房推荐
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    NewHouseCustomConditionDomain getNewHouseCustomList(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 }
