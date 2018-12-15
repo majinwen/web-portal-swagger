@@ -54,4 +54,12 @@ public class ReportAreaHotResponse {
      */
     @ApiModelProperty(value = "房子数量")
     private Integer houseCount;
+
+    public void setAveragePrice(Double averagePrice) {
+        String doubleStr = averagePrice.toString();
+        if(doubleStr.contains(".")){
+            doubleStr = doubleStr.substring(0,doubleStr.indexOf(".")+1);
+        }
+        this.averagePrice = Double.parseDouble(doubleStr);
+    }
 }

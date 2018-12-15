@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -192,7 +193,9 @@ public class ReportRestController implements ReportRestApi {
         reportCityResponse.setNewPriceRange(JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class));
 
         //二手房均价趋势，近6个月数据
-        reportCityResponse.setEsfPriceFenbu(JSONArray.parseArray(reportCity.getEsfPriceFenbu(), ReportPriceQuotationsResponse.class));
+        List<ReportPriceQuotationsResponse> esfPriceFenbu = JSONArray.parseArray(reportCity.getEsfPriceFenbu(), ReportPriceQuotationsResponse.class);
+        Collections.sort(esfPriceFenbu);
+        reportCityResponse.setEsfPriceFenbu(esfPriceFenbu);
         return reportCityResponse;
     }
 }

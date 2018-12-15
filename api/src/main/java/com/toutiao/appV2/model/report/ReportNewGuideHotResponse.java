@@ -73,4 +73,12 @@ public class ReportNewGuideHotResponse {
     @ApiModelProperty(value = "图片地址")
     private String imgPath;
 
+    public void setAveragePrice(Double averagePrice) {
+        String doubleStr = averagePrice.toString();
+        if(doubleStr.contains(".")){
+            doubleStr = doubleStr.substring(0,doubleStr.indexOf(".")+1);
+        }
+        this.averagePrice = Double.parseDouble(doubleStr);
+    }
+
 }

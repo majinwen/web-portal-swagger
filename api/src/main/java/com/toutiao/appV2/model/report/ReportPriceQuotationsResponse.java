@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class ReportPriceQuotationsResponse {
+public class ReportPriceQuotationsResponse implements Comparable<ReportPriceQuotationsResponse>{
 
     /**
      * 主键ID
@@ -41,6 +41,11 @@ public class ReportPriceQuotationsResponse {
      */
     @ApiModelProperty(value = "均价(单位：元/㎡)")
     private Integer price;
+
+    @Override
+    public int compareTo(ReportPriceQuotationsResponse o) {
+        return this.getMonth()-o.getMonth();
+    }
 
     /**
      * 记录时间
