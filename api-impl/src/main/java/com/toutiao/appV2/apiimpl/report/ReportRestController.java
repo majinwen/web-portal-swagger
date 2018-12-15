@@ -215,8 +215,6 @@ public class ReportRestController implements ReportRestApi {
         Collections.sort(esfQuotationResposeList);
         reportTeSeJianLouRespose.setEsfQuotationList(esfQuotationResposeList);
 
-
-
         reportCityResponse.setEsfTeseJianlou(reportTeSeJianLouRespose);
 
         //二手房特色房源：抢手房
