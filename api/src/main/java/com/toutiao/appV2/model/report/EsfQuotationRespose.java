@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class EsfQuotationRespose {
+public class EsfQuotationRespose implements Comparable<EsfQuotationRespose>{
 
     /**
      * 主键ID
@@ -77,4 +77,15 @@ public class EsfQuotationRespose {
      */
 //    @ApiModelProperty(value = "每日行情左侧标题")
 //    private String title;
+
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
+
+    @Override
+    public int compareTo(EsfQuotationRespose o) {
+        return this.getSort()-o.getSort();
+    }
 }

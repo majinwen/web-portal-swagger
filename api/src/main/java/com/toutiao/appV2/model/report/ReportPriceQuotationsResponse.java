@@ -42,11 +42,6 @@ public class ReportPriceQuotationsResponse implements Comparable<ReportPriceQuot
     @ApiModelProperty(value = "均价(单位：元/㎡)")
     private Integer price;
 
-    @Override
-    public int compareTo(ReportPriceQuotationsResponse o) {
-        return this.getMonth()-o.getMonth();
-    }
-
     /**
      * 记录时间
      */
@@ -64,4 +59,15 @@ public class ReportPriceQuotationsResponse implements Comparable<ReportPriceQuot
      */
 //    @ApiModelProperty(value = "数据来源")
 //    private String source;
+
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
+
+    @Override
+    public int compareTo(ReportPriceQuotationsResponse o) {
+        return this.getSort()-o.getSort();
+    }
 }

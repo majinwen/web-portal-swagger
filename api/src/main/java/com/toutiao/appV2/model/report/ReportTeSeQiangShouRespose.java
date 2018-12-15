@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class ReportTeSeQiangShouRespose {
+public class ReportTeSeQiangShouRespose implements Comparable<ReportTeSeQiangShouRespose> {
 
     /**
      * 主键ID
@@ -79,4 +79,16 @@ public class ReportTeSeQiangShouRespose {
      */
 //    @ApiModelProperty(value = "每日行情左侧标题")
 //    private String title;
+
+    /**
+     * 排序
+     */
+    @ApiModelProperty(value = "排序")
+    private Integer sort;
+
+    @Override
+    public int compareTo(ReportTeSeQiangShouRespose o) {
+        return this.getSort()-o.getSort();
+    }
+
 }
