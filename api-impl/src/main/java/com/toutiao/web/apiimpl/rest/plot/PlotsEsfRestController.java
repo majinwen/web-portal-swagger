@@ -10,6 +10,7 @@ import com.toutiao.app.api.chance.response.plot.PlotEsfResponse;
 import com.toutiao.app.api.chance.response.plot.PlotsEsfRoomCountResponse;
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
 import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
+import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDomain;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.web.common.assertUtils.First;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -50,12 +51,12 @@ public class PlotsEsfRestController {
         Integer room = plotsEsfRequest.getRoom();
         Integer pageNum = plotsEsfRequest.getPageNum();
         Integer pageSize = plotsEsfRequest.getPageSize();
-        List<SellAndClaimHouseDetailsDo> sellHouseDoList = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId,room,pageNum,pageSize,CityUtils.getCity());
-        JSONArray json = JSONArray.parseArray(JSON.toJSONString(sellHouseDoList));
+        SellAndClaimHouseDetailsDomain esfByPlotsIdAndRoom = plotsEsfRestService.getEsfByPlotsIdAndRoom(plotsId, room, pageNum, pageSize, CityUtils.getCity());
+        JSONArray json = JSONArray.parseArray(JSON.toJSONString(esfByPlotsIdAndRoom.getData()));
         List<PlotEsfResponse> plotEsfResponses = JSONObject.parseArray(json.toJSONString(),PlotEsfResponse.class);
         PlotEsfListResponse plotEsfListResponse = new PlotEsfListResponse();
         plotEsfListResponse.setPlotEsfResponseList(plotEsfResponses);
-        plotEsfListResponse.setTotalNum(plotEsfResponses.size());
+        plotEsfListResponse.setTotalNum(esfByPlotsIdAndRoom.getTotalNum());
         return plotEsfListResponse;
     }
 
