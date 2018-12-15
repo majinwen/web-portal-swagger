@@ -16,7 +16,7 @@ public class RecommendTopicDoQuery {
     /**
      * 区域id
      */
-    private Integer[] districtId;
+    private String[] districtId;
     /**
      * 起始价格
      */
@@ -25,6 +25,10 @@ public class RecommendTopicDoQuery {
      * 结束价格
      */
     private Double endPrice;
+    /**
+     * 户型
+     */
+    private String[] layoutId;
 
 
 }

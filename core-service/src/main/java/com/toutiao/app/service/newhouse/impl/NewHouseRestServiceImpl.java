@@ -30,9 +30,12 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
@@ -98,6 +101,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             details = searchHit.getSourceAsString();
         }
         if (StringUtils.isNotEmpty(details)) {
+            newHouseDetailDo = JSON.parseObject(details, NewHouseDetailDo.class);
             try {
 
                 UserBasic userBasic = UserBasic.getCurrent();
@@ -112,7 +116,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 logger.info("用户未登录");
                 newHouseDetailDo.setIsFavorite(Boolean.FALSE);
             }
-            newHouseDetailDo = JSON.parseObject(details, NewHouseDetailDo.class);
 
             String[] img = newHouseDetailDo.getBuildingImgs().get(0).split(",");
             newHouseDetailDo.setBuildingImg(img);
@@ -792,6 +795,58 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             newHouseListVo.setTotalCount(totalCount);
         }
         return newHouseListVo;
+    }
+
+
+    @Override
+    public NewHouseCustomConditionDomain getNewHouseCustomList(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        //NewHouseCustomConditionDo newHouseCustomConditionDo = new NewHouseCustomConditionDo();
+        List<NewHouseCustomConditionDo> newHouseCustomConditionDos = new ArrayList<>();
+        NewHouseCustomConditionDomain newHouseCustomConditionDomain = new NewHouseCustomConditionDomain();
+        BoolQueryBuilder builder =QueryBuilders.boolQuery();
+        if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
+            builder.must(QueryBuilders.termsQuery("district_id",userFavoriteConditionDoQuery.getDistrictId()));
+        }
+        builder.must(termQuery("is_approve", IS_APPROVE));
+        builder.must(termQuery("is_del", IS_DEL));
+        builder.must(termsQuery("property_type_id", new int[]{1, 2}));
+
+        FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[4];
+        QueryBuilder total_price_filter = QueryBuilders.rangeQuery("total_price").gt(0);
+        filterFunctionBuilders[0] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(total_price_filter, ScoreFunctionBuilders.weightFactorFunction(3));
+        QueryBuilder average_price_filter = QueryBuilders.rangeQuery("average_price").gt(0);
+        filterFunctionBuilders[1] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(average_price_filter, ScoreFunctionBuilders.weightFactorFunction(2));
+        QueryBuilder saleTelPhone = QueryBuilders.existsQuery("saletelphone");
+        filterFunctionBuilders[2] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(saleTelPhone, ScoreFunctionBuilders.weightFactorFunction(3));
+        QueryBuilder phone = QueryBuilders.termQuery("saletelphone","");
+        filterFunctionBuilders[3] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(phone, ScoreFunctionBuilders.weightFactorFunction(0));
+
+        FunctionScoreQueryBuilder query = QueryBuilders.functionScoreQuery(builder,filterFunctionBuilders);
+
+        SearchResponse searchResponse = newHouseEsDao.getNewHouseCustomList(query, userFavoriteConditionDoQuery.getPageNum(), userFavoriteConditionDoQuery.getPageSize(), city);
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        if(searchHists.length>0){
+            for(SearchHit searchHit : searchHists){
+                String  details = searchHit.getSourceAsString();
+                NewHouseCustomConditionDo newHouseCustomConditionDo = JSON.parseObject(details, NewHouseCustomConditionDo.class);
+                if(StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getTotalPrice())){
+                    newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getTotalPrice()+"万/套");
+                }else if (StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getAveragePrice())){
+                    newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getAveragePrice()+"元/m²");
+                }else {
+                    newHouseCustomConditionDo.setPriceDesc("售价待定");
+                }
+                //新房图片处理
+                if (!Objects.equals(newHouseCustomConditionDo.getBuildingTitleImg(), "") && !newHouseCustomConditionDo.getBuildingTitleImg().startsWith("http")) {
+                    newHouseCustomConditionDo.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseCustomConditionDo.getBuildingTitleImg() + "-dongfangdi1200x900");
+                }
+                newHouseCustomConditionDos.add(newHouseCustomConditionDo);
+            }
+        }
+        newHouseCustomConditionDomain.setData(newHouseCustomConditionDos);
+
+        return newHouseCustomConditionDomain;
     }
 
 

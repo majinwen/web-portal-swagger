@@ -16,7 +16,7 @@ public class FavoriteBaseRequest {
     private String districtName;
 
     @ApiModelProperty(value = "商圈", name = "areaName", required = true)
-    @NotNull(message = "商圈不能为空")
+//    @NotNull(message = "商圈不能为空")
     private String areaName;
 
     @ApiModelProperty(value = "标签", name = "tags", required = true)

@@ -735,20 +735,20 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
     @Override
     public JSONArray getFoldLineInfo(String newcode, String districtId) {
-        List<ReportPipelineRecordEveryMonth> newcodeInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineAreaInfo(newcode);
-        List<ReportPipelineRecordEveryMonth> areaInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineAreaInfo(districtId);
+        List<ReportPipelineRecordEveryMonth> newcodeInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineDistrictInfo(newcode);
+        List<ReportPipelineRecordEveryMonth> districtInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineDistrictInfo(districtId);
         JSONArray jsonArray = new JSONArray();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
         List newcodePrice = new ArrayList();
-        List areaPrice = new ArrayList();
+        List districtPrice = new ArrayList();
         List newcodeMonth = new ArrayList();
-        List areaMonth = new ArrayList();
-        List newcodeResponse = new ArrayList();
-        List areaResponse = new ArrayList();
+        List districtMonth = new ArrayList();
+        Map newcodeResponse = new HashMap();
+        Map districtResponse = new HashMap();
         String newcodeRindratio = "0%";
-        String areaRindratio = "0%";
+        String districtRindratio = "0%";
         String plotName = "";
-        String areaName = "";
+        String districtName = "";
         if (null!=newcodeInfo&&newcodeInfo.size()>0){
             for (ReportPipelineRecordEveryMonth newcodeEntity :newcodeInfo){
                 newcodePrice.add(newcodeEntity.getAvgPrice());
@@ -757,32 +757,35 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
             newcodeRindratio = (newcodeInfo.get(0).getRingRatio())*100+"%";
             plotName = newcodeInfo.get(0).getDisplayName();
+            Collections.reverse(newcodePrice);
+            Collections.reverse(newcodeMonth);
         }
 
-        if (null!=areaInfo&&areaInfo.size()>0){
-            for (ReportPipelineRecordEveryMonth areaEntity :areaInfo){
-                areaPrice.add(areaEntity.getAvgPrice());
-                areaMonth.add(formatter.format(areaEntity.getCreateTime()));
-
+        if (null!=districtInfo&&districtInfo.size()>0){
+            for (ReportPipelineRecordEveryMonth districtEntity :districtInfo){
+                districtPrice.add(districtEntity.getAvgPrice());
+                districtMonth.add(formatter.format(districtEntity.getCreateTime()));
             }
-            areaRindratio = (areaInfo.get(0).getRingRatio())*100+"%";
-            areaName = areaInfo.get(0).getDisplayName();
+            districtRindratio = (districtInfo.get(0).getRingRatio())*100+"%";
+            districtName = districtInfo.get(0).getDisplayName();
+            Collections.reverse(districtPrice);
+            Collections.reverse(districtMonth);
         }
 
-        newcodeResponse.add(newcodePrice);
-        newcodeResponse.add(newcodeMonth);
-        newcodeResponse.add(newcodeRindratio);
 
-        areaResponse.add(areaPrice);
-        areaResponse.add(areaMonth);
-        areaResponse.add(areaRindratio);
+        newcodeResponse.put("name",plotName);
+        newcodeResponse.put("price",newcodePrice);
+        newcodeResponse.put("date",newcodeMonth);
+        newcodeResponse.put("rindRatio",newcodeRindratio);
 
-        Map newcodeMap = new HashMap();
-        Map areaMap = new HashMap();
-        newcodeMap.put(plotName,newcodeResponse);
-        areaMap.put(areaName,areaResponse);
-        jsonArray.add(JSON.toJSON(newcodeMap));
-        jsonArray.add(JSON.toJSON(areaMap));
+
+        districtResponse.put("name",districtName);
+        districtResponse.put("price",districtPrice);
+        districtResponse.put("date",districtMonth);
+        districtResponse.put("rindRatio",districtRindratio);
+
+        jsonArray.add(JSON.toJSON(newcodeResponse));
+        jsonArray.add(JSON.toJSON(districtResponse));
 
         return jsonArray;
     }

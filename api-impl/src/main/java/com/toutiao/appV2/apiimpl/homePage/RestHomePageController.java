@@ -214,13 +214,13 @@ public class RestHomePageController implements HomePageApi {
         return new ResponseEntity<HomePageNearPlotResponse>(homePageNearPlotResponse, HttpStatus.OK);
     }
 
-    @Override
-    public ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest", required = true) @Valid RecommendRequest recommendRequest) {
-        RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
-        BeanUtils.copyProperties(recommendRequest, recommendTopicDoQuery);
-        RecommendTopicDomain recommendTopicDomain = recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
-        return new ResponseEntity<RecommendTopicDomain>(recommendTopicDomain, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest", required = true) @Valid RecommendRequest recommendRequest) {
+//        RecommendTopicDoQuery recommendTopicDoQuery = new RecommendTopicDoQuery();
+//        BeanUtils.copyProperties(recommendRequest, recommendTopicDoQuery);
+//        RecommendTopicDomain recommendTopicDomain = recommendRestService.getRecommendTopic(recommendTopicDoQuery, CityUtils.getCity());
+//        return new ResponseEntity<RecommendTopicDomain>(recommendTopicDomain, HttpStatus.OK);
+//    }
 
     @Override
     public ResponseEntity<HomePageTop50DoMap> top50() {

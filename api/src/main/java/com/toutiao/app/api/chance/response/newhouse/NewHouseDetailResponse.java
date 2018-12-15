@@ -197,4 +197,7 @@ public class NewHouseDetailResponse {
 
     @ApiModelProperty(value = "户型")
     private String roomType;
+
+    @ApiModelProperty(value = "是否收藏")
+    private Boolean isFavorite;
 }

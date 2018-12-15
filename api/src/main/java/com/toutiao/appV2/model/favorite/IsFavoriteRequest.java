@@ -18,7 +18,7 @@ public class IsFavoriteRequest {
     private String houseId;
 
     @ApiModelProperty(value = "用户id", name = "userId", required = true)
-    @NotNull(message = "缺少用户id")
+//    @NotNull(message = "缺少用户id")
     private Integer userId;
 
 }

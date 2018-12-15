@@ -18,6 +18,6 @@ public class NewHouseIsFavoriteRequest {
     private Integer buildingId;
 
     @ApiModelProperty(value = "用户id", name = "userId", required = true)
-    @NotNull(message = "用户id不能为空")
+//    @NotNull(message = "用户id不能为空")
     private Integer userId;
 }

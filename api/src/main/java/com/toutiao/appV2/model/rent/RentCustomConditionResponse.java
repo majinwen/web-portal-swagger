@@ -1,7 +1,6 @@
 package com.toutiao.appV2.model.rent;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.toutiao.app.domain.rent.RentCustomConditionDo;
 import com.toutiao.app.domain.rent.RentCustomDo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -21,4 +20,11 @@ public class RentCustomConditionResponse {
      * 房源统计信息
      */
     private List<RentCustomDo> rentCustomDos = null;
+
+    @JsonProperty("description")
+    @ApiModelProperty("搜索结果描述")
+    /**
+     * 搜索结果描述
+     */
+    private String description;
 }

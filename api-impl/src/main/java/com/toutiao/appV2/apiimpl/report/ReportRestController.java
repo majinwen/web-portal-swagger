@@ -9,6 +9,7 @@ import com.toutiao.appV2.model.report.*;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.ApiParam;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -166,36 +168,74 @@ public class ReportRestController implements ReportRestApi {
         ReportCityResponse reportCityResponse = new ReportCityResponse();
         reportCityResponse.setToday(DateUtil.format(System.currentTimeMillis(), "yyyy.MM.dd"));
         BeanUtils.copyProperties(reportCity, reportCityResponse);
+
+        //新房指南关注榜
         reportCityResponse.setNewGuideAttention(JSONArray.parseArray(reportCity.getNewGuideAttention(), ReportNewGuideAttentionResponse.class));
+
+        //新房指南热门楼盘榜
         reportCityResponse.setNewGuideHot(JSONArray.parseArray(reportCity.getNewGuideHot(), ReportNewGuideHotResponse.class));
+
+        //新房指南销售榜
         reportCityResponse.setNewGuideSales(JSONArray.parseArray(reportCity.getNewGuideSales(), ReportNewGuideSalesResponse.class));
+
+        //新房指南人气榜
         reportCityResponse.setNewGuidePopular(JSONArray.parseArray(reportCity.getNewGuidePopular(), ReportNewGuidePopularResponse.class));
+
+        //优惠楼盘
         reportCityResponse.setNewPreferential(JSONArray.parseArray(reportCity.getNewPreferential(), ReportNewPreferentialResponse.class));
-        reportCityResponse.setEsfPlotHot(JSONArray.parseArray(reportCity.getEsfPlotHot(), ReportEsfProjHotResponse.class));
+
+        //二手房热门小区
+        List<ReportEsfProjHotResponse> reportEsfProjHotResponseList = JSONArray.parseArray(reportCity.getEsfPlotHot(), ReportEsfProjHotResponse.class);
+        Collections.sort(reportEsfProjHotResponseList);
+        reportCityResponse.setEsfPlotHot(reportEsfProjHotResponseList);
+
+        //热门商圈
         reportCityResponse.setAreaHot(JSONArray.parseArray(reportCity.getAreaHot(), ReportAreaHotResponse.class));
+
+        //租房价格分布
         reportCityResponse.setZfPriceRange(JSONArray.parseArray(reportCity.getZfPriceRange(), ReportRentPriceDistrbutionResponse.class));
+
+        //二手房价格分布
         reportCityResponse.setEsfPriceRange(JSONArray.parseArray(reportCity.getEsfPriceRange(), ReportEsfTongbiDescriptionResponse.class));
 
         //二手房特色房源：降价房
-        reportCityResponse.setEsfTeseJiangjia(JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class));
+        List<ReportTeSeJiangJiaRespose> teSeJiangjiaResposeList = JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class);
+        Collections.sort(teSeJiangjiaResposeList);
+        reportCityResponse.setEsfTeseJiangjia(teSeJiangjiaResposeList);
 
         //二手房特色房源：捡漏房
         JSONObject jianolouJson = JSONObject.parseObject(reportCity.getEsfTeseJianlou());
         ReportTeSeJianLouRespose reportTeSeJianLouRespose = new ReportTeSeJianLouRespose();
-        reportTeSeJianLouRespose.setHouseQuotationList(JSONArray.parseArray(jianolouJson.getString("lower_house_quotation"),LowerHouseQuotationResponse.class));
-        reportTeSeJianLouRespose.setEsfQuotationList(JSONArray.parseArray(jianolouJson.getString("esf_quotation"),EsfQuotationRespose.class));
+        //捡漏房日均价
+        List<LowerHouseQuotationResponse> lowerHouseQuotationResponseList = JSONArray.parseArray(jianolouJson.getString("lower_house_quotation"),LowerHouseQuotationResponse.class);
+        Collections.sort(lowerHouseQuotationResponseList);
+        reportTeSeJianLouRespose.setHouseQuotationList(lowerHouseQuotationResponseList);
+        //二手房日均价
+        List<EsfQuotationRespose> esfQuotationResposeList = JSONArray.parseArray(jianolouJson.getString("esf_quotation"),EsfQuotationRespose.class);
+        Collections.sort(esfQuotationResposeList);
+        reportTeSeJianLouRespose.setEsfQuotationList(esfQuotationResposeList);
+
+
+
         reportCityResponse.setEsfTeseJianlou(reportTeSeJianLouRespose);
 
         //二手房特色房源：抢手房
-        reportCityResponse.setEsfTeseQiangshou(JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class));
+        List<ReportTeSeQiangShouRespose> teSeQiangShouResposeList = JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class);
+        Collections.sort(teSeQiangShouResposeList);
+        reportCityResponse.setEsfTeseQiangshou(teSeQiangShouResposeList);
+
 
         //新房价格趋势，近6个月数据
-        reportCityResponse.setNewPriceRange(JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class));
+        List<ReportPriceQuotationsResponse> newPriceRange = JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class);
+        Collections.sort(newPriceRange);
+        reportCityResponse.setNewPriceRange(newPriceRange);
 
         //二手房均价趋势，近6个月数据
         List<ReportPriceQuotationsResponse> esfPriceFenbu = JSONArray.parseArray(reportCity.getEsfPriceFenbu(), ReportPriceQuotationsResponse.class);
         Collections.sort(esfPriceFenbu);
         reportCityResponse.setEsfPriceFenbu(esfPriceFenbu);
+
         return reportCityResponse;
     }
+
 }

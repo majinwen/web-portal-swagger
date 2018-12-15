@@ -2,6 +2,7 @@ package com.toutiao.app.dao.newhouse;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
 public interface NewHouseEsDao {
@@ -41,4 +42,5 @@ public interface NewHouseEsDao {
 //    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
+    SearchResponse getNewHouseCustomList(FunctionScoreQueryBuilder builder, Integer pageNum, Integer pageSize, String city);
 }

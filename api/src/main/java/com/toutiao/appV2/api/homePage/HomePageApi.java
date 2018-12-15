@@ -191,17 +191,17 @@ public interface HomePageApi {
     ResponseEntity<HomePageNearPlotResponse> plotSpecialPage(@ApiParam(value = "NearHouseSpecialPageRequest" ,required=true )  @Valid @RequestBody NearHouseSpecialPageRequest nearHouseSpecialPageRequest);
 
 
-    @ApiOperation(value = "推荐专题", nickname = "queryRecommendTopic", notes = "", response = RecommendTopicDomain.class, tags={ "首页", })
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = RecommendTopicDomain.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/homePage/recommendTopic/queryRecommendTopic",
-            produces = { "application/json" },
-            method = RequestMethod.GET)
-    @ApiIgnore
-    ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest" ,required=true )  @Valid RecommendRequest recommendRequest);
+//    @ApiOperation(value = "推荐专题", nickname = "queryRecommendTopic", notes = "", response = RecommendTopicDomain.class, tags={ "首页", })
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "OK", response = RecommendTopicDomain.class),
+//            @ApiResponse(code = 401, message = "Unauthorized"),
+//            @ApiResponse(code = 403, message = "Forbidden"),
+//            @ApiResponse(code = 404, message = "Not Found") })
+//    @RequestMapping(value = "/rest/homePage/recommendTopic/queryRecommendTopic",
+//            produces = { "application/json" },
+//            method = RequestMethod.GET)
+//    @ApiIgnore
+//    ResponseEntity<RecommendTopicDomain> queryRecommendTopic(@ApiParam(value = "RecommendRequest" ,required=true )  @Valid RecommendRequest recommendRequest);
 
 
     @ApiOperation(value = "首页top50", nickname = "top50", notes = "", response = HomePageTop50DoMap.class, tags={ "首页", })

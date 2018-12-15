@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.mapsearch.RentMapSearchEsDao;
 import com.toutiao.app.dao.rent.UserFavoriteRentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.mapSearch.SubwayStationDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.mapSearch.RentMapSearchRestService;
@@ -71,8 +72,8 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
         SearchHit[] searchHits = searchResponse.getHits().getHits();
 
         if (searchHits.length > 0) {
-            List<String> imgs = new ArrayList<>();
             for (SearchHit searchHit : searchHits) {
+                List<String> imgs = new ArrayList<>();
                 String sourceAsString = searchHit.getSourceAsString();
                 UserFavoriteRentDetailDo userFavoriteRentDetailDo = JSON.parseObject(sourceAsString, UserFavoriteRentDetailDo.class);
 
@@ -145,13 +146,18 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
     public RentCustomConditionDomain querySubwayLineHouse(UserFavoriteRentListDoQuery rentHouseDoQuery, String city) {
         RentCustomConditionDomain rentCustomConditionDomain = new RentCustomConditionDomain();
         List<RentCustomDo> rentCustomDos = new ArrayList<>();
+        String description = "";
 
         //根据地铁线查询
         if (null != rentHouseDoQuery.getSubwayLineId()) {
+            //地铁线信息
+            StringBuffer subwayLineInfo = new StringBuffer();
             //添加筛选条件
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder = getUserFavoriteRentBoolQueryBuilder(rentHouseDoQuery);
             boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType", "3"));//目前只展示导入的房源
+            Integer totalHouseCount = 0;
+            Integer totalCommunityCount = 0;
             for (int i = 0; i < rentHouseDoQuery.getSubwayLineId().length; i++) {
                 List newList = new ArrayList();
                 RentCustomDo rentCustomDo = new RentCustomDo();
@@ -198,12 +204,15 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                         int id = Integer.parseInt(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsString());
                         rentMapSearchDo.setId(id);
                         //房源数量
-                        rentMapSearchDo.setHouseCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                        Integer houseCount = (int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount();
+                        rentMapSearchDo.setHouseCount(houseCount);
                         rentMapSearchDo.setDesc(rentMapSearchDo.getHouseCount() + "套");
+                        totalHouseCount += houseCount;
                         //楼盘数量
                         Terms communityTerm = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("community");
                         Integer communityCount = communityTerm.getBuckets().size();
                         rentMapSearchDo.setCommunityCount(communityCount);
+                        totalCommunityCount += communityCount;
                         //地铁站信息
                         Map subwayInfo = rentMapSearchRestService.getSubwayInfo(id, CityUtils.returnCityId(city));
                         //名称
@@ -219,13 +228,38 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 rentCustomDo.setId(subwayLineId);
                 //设置地铁线名称
                 SubwayLineDo subwayLineDo = subwayLineService.selectLineInfoByLineId(subwayLineId);
-                rentCustomDo.setName(subwayLineDo.getSubwayName());
+                String subwayLineName = subwayLineDo.getSubwayName();
+                subwayLineInfo.append(subwayLineName).append("，");
+                BoolQueryBuilder builder = QueryBuilders.boolQuery();
+                builder.must(QueryBuilders.termQuery("line_id",subwayLineId));
+                SearchResponse sr = rentMapSearchEsDao.getSubwayStationinfo(builder,city);
+                SearchHit[] hits = sr.getHits().getHits();
+                List<SubwayStationDo> subwayStationDos = new ArrayList<>();
+                if(hits.length>0){
+                    for(SearchHit hit : hits){
+                        SubwayStationDo subwayStationDo = new SubwayStationDo();
+                        subwayStationDo.setStationId((Integer) hit.getSourceAsMap().get("station_id"));
+                        subwayStationDo.setStationName((String) hit.getSourceAsMap().get("station_name"));
+                        subwayStationDo.setLatitude((Double) hit.getSourceAsMap().get("latitude"));
+                        subwayStationDo.setLongitude((Double) hit.getSourceAsMap().get("longitude"));
+                        subwayStationDos.add(subwayStationDo);
+                    }
+                }
+                rentCustomDo.setSubwayStations(subwayStationDos);
+                rentCustomDo.setName(subwayLineName);
                 rentCustomDos.add(rentCustomDo);
             }
+            subwayLineInfo.deleteCharAt(subwayLineInfo.length() - 1);
+            description = "为您找到地铁" + subwayLineInfo + "附近的小区" + totalCommunityCount + "个，" + "房源" + totalHouseCount + "个";
             rentCustomConditionDomain.setRentCustomDos(rentCustomDos);
+            rentCustomConditionDomain.setDescription(description);
         }
         //根据区县查询
         if (null != rentHouseDoQuery.getDistrictId()) {
+            Integer totalHouseCount = 0;
+            Integer totalCommunityCount = 0;
+            //区县信息
+            StringBuffer districtInfo = new StringBuffer();
             for (int i = 0; i < rentHouseDoQuery.getDistrictId().length; i++){
                 //添加筛选条件
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -239,7 +273,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
                 boolQueryBuilder.must(QueryBuilders.termQuery("district_id", districtId));
 
-                searchSourceBuilder.query(boolQueryBuilder);
+                searchSourceBuilder.query(boolQueryBuilder).size(20);
                 searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("area_id")
                         .subAggregation(AggregationBuilders.terms("community").field("zufang_id")).size(200)).sort("sortingScore", SortOrder.DESC);
                 SearchResponse searchResponse = userFavoriteRentEsDao.querySubwayLineHouse(searchSourceBuilder, city);
@@ -251,12 +285,15 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                         int id = Integer.parseInt(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsString());
                         rentMapSearchDo.setId(id);
                         //房源数量
-                        rentMapSearchDo.setHouseCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
+                        Integer houseCount = (int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount();
+                        rentMapSearchDo.setHouseCount(houseCount);
                         rentMapSearchDo.setDesc(rentMapSearchDo.getHouseCount() + "套");
+                        totalHouseCount += houseCount;
                         //楼盘数量
                         Terms communityTerm = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("community");
                         Integer communityCount = communityTerm.getBuckets().size();
                         rentMapSearchDo.setCommunityCount(communityCount);
+                        totalCommunityCount += communityCount;
                         //商圈信息
                         Map areaMap = rentMapSearchRestService.getDistanceAndAreainfo(id, 2);
                         //商圈名称
@@ -272,11 +309,16 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 rentCustomDo.setId(districtId);
                 //区县名称
                 Map districtMap = rentMapSearchRestService.getDistanceAndAreainfo(districtId, 1);
-                rentCustomDo.setName((String) districtMap.get("name"));
+                String name = (String) districtMap.get("name");
+                rentCustomDo.setName(name);
                 rentCustomDo.setRentCustomConditionDos(rentCustomConditionDos);
                 rentCustomDos.add(rentCustomDo);
+                districtInfo.append(name).append("，");
             }
+            districtInfo.deleteCharAt(districtInfo.length() - 1);
+            description = "为您找到区县" + districtInfo + "范围内的小区" + totalCommunityCount + "个，" + "房源" + totalHouseCount + "个";
             rentCustomConditionDomain.setRentCustomDos(rentCustomDos);
+            rentCustomConditionDomain.setDescription(description);
         }
         return rentCustomConditionDomain;
     }

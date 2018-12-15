@@ -136,5 +136,8 @@ public class PlotDetailsResponse {
 
     @ApiModelProperty("下架房源")
     private Integer decreaseHouse;
+
+    @ApiModelProperty(value = "是否收藏")
+    private Boolean isFavorite;
 }
 
