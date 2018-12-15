@@ -252,6 +252,9 @@ public class RentRestRestServiceImpl implements RentRestService {
             rentDetailsListDo.setTotalCount((int) searchResponse.getHits().getTotalHits());
 //        } else {
 //            throw new BaseException(PlotsInterfaceErrorCodeEnum.PLOTS_RENT_NOT_FOUND, "小区没有出租房源信息");
+        } else {
+            rentDetailsListDo.setRentDetailsList(list);
+            rentDetailsListDo.setTotalCount(0);
         }
         return rentDetailsListDo;
     }
