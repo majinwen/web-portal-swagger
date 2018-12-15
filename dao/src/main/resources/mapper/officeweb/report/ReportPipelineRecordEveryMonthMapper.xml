@@ -127,7 +127,7 @@
       city_id = #{cityId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectFoldLineAreaInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectFoldLineDistrictInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
     SELECT * FROM report_pipeline_record_everymonth
     WHERE code = #{code,jdbcType=VARCHAR}
     ORDER BY create_time DESC LIMIT 6 OFFSET 1
