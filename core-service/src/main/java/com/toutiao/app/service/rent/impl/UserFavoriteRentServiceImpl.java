@@ -71,8 +71,8 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
         SearchHit[] searchHits = searchResponse.getHits().getHits();
 
         if (searchHits.length > 0) {
-            List<String> imgs = new ArrayList<>();
             for (SearchHit searchHit : searchHits) {
+                List<String> imgs = new ArrayList<>();
                 String sourceAsString = searchHit.getSourceAsString();
                 UserFavoriteRentDetailDo userFavoriteRentDetailDo = JSON.parseObject(sourceAsString, UserFavoriteRentDetailDo.class);
 
