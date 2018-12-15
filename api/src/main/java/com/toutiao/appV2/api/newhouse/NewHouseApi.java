@@ -105,7 +105,7 @@ public interface NewHouseApi {
     ResponseEntity<GetNewHouseDynamicResponse> getNewHouseDynamicByNewCode(NewHouseDynamicRequest newHouseDynamicRequest);
 
 
-    @ApiOperation(value = "获取新房列表页", nickname = "getNewHouseList", notes = "获取新房列表页",
+    @ApiOperation(value = "获取新房列表页", nickname = "getNewHouseListGet", notes = "获取新房列表页",
             response = NewHouseListDomainResponse.class, tags={ "新房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NewHouseListDomainResponse.class),
@@ -118,7 +118,7 @@ public interface NewHouseApi {
             method = {RequestMethod.GET})
     ResponseEntity<NewHouseListDomainResponse> getNewHouseListGet(NewHouseListRequest newHouseListRequest);
 
-    @ApiOperation(value = "获取新房列表页", nickname = "getNewHouseList", notes = "获取新房列表页",
+    @ApiOperation(value = "获取新房列表页", nickname = "getNewHouseListPost", notes = "获取新房列表页",
             response = NewHouseListDomainResponse.class, tags={ "新房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NewHouseListDomainResponse.class),

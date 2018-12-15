@@ -57,7 +57,7 @@ public interface ConditionApi {
                                                                         @ApiParam(value = "conditionType", required = true) @Valid @RequestParam(value = "conditionType", required = true) Integer conditionType);
 
 
-    @ApiOperation(value = "保存更新推荐条件", nickname = "getNewHouseList", notes = "",
+    @ApiOperation(value = "保存更新推荐条件", nickname = "saveRecommendCondition", notes = "",
             response = CustomConditionUserSampleResponse.class, tags={ "定制", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = CustomConditionUserSampleResponse.class),
