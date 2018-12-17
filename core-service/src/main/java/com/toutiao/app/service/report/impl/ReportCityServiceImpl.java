@@ -63,25 +63,41 @@ public class ReportCityServiceImpl implements ReportCityService {
     @Override
     public List<ReportNewGuideAttention> selectReportNewGuideAttentionList(Integer cityId,Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        return reportNewGuideAttentionMapper.selectAll(cityId);
+        List<ReportNewGuideAttention> list = reportNewGuideAttentionMapper.selectAll(cityId);
+        for (ReportNewGuideAttention report : list){
+            report.setImgPath(qinniuImg+"/"+report.getImgPath()+"-dongfangdi400x300");
+        }
+        return list;
     }
 
     @Override
     public List<ReportNewGuideHot> selectReportNewGuideHotList(Integer cityId,Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        return reportNewGuideHotMapper.selectAll(cityId);
+        List<ReportNewGuideHot> list = reportNewGuideHotMapper.selectAll(cityId);
+        for (ReportNewGuideHot report : list){
+            report.setImgPath(qinniuImg+"/"+report.getImgPath()+"-dongfangdi400x300");
+        }
+        return list;
     }
 
     @Override
     public List<ReportNewGuidePopular> selectReportNewGuidePopularList(Integer cityId,Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        return reportNewGuidePopularMapper.selectAll(cityId);
+        List<ReportNewGuidePopular> list = reportNewGuidePopularMapper.selectAll(cityId);
+        for (ReportNewGuidePopular report : list){
+            report.setImgPath(qinniuImg+"/"+report.getImgPath()+"-dongfangdi400x300");
+        }
+        return list;
     }
 
     @Override
     public List<ReportNewGuideSales> selectReportNewGuideSalesList(Integer cityId,Integer pageNum,Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        return reportNewGuideSalesMapper.selectAll(cityId);
+        List<ReportNewGuideSales> list = reportNewGuideSalesMapper.selectAll(cityId);
+        for (ReportNewGuideSales report : list){
+            report.setImgPath(qinniuImg+"/"+report.getImgPath()+"-dongfangdi400x300");
+        }
+        return list;
     }
 
     @Override
