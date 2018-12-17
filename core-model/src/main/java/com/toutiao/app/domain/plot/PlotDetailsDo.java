@@ -334,4 +334,9 @@ public class PlotDetailsDo {
      * 下架房源
      */
     private Integer decreaseHouse;
+
+    /**
+     * 标题图
+     */
+    private String titlePhoto;
 }
