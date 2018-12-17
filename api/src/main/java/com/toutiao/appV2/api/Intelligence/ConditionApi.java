@@ -190,8 +190,8 @@ public interface ConditionApi {
             @ApiResponse(code = 404, message = "Not Found") })
     @RequestMapping(value = "/rest/newhouse/getCustomNewHouseRecommend",
             produces = { "application/json" },
-            method = RequestMethod.POST )
-    ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true)  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+            method = RequestMethod.GET )
+    ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true)  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 
     @ApiOperation(value = "定制条件租房列表", nickname = "getRentHouseListByUserFavorite", notes = "", response = UserFavoriteRentListResponse.class, tags={ "定制", })
