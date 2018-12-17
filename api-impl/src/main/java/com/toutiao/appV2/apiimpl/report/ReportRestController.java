@@ -46,7 +46,7 @@ public class ReportRestController implements ReportRestApi {
 
     @Override
     public ResponseEntity<ReportNewGuideAttentionListResponse> selectReportNewGuideAttentionList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                                                                 @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                                                                 @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewGuideAttentionListResponse rsp = new ReportNewGuideAttentionListResponse();
         List<ReportNewGuideAttention> list = reportCityService.selectReportNewGuideAttentionList(cityId, pageNum, pageSize);
@@ -63,7 +63,7 @@ public class ReportRestController implements ReportRestApi {
 
     @Override
     public ResponseEntity<ReportNewGuideHotListResponse> selectReportNewGuideHotList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                                                     @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                                                     @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewGuideHotListResponse rsp = new ReportNewGuideHotListResponse();
         List<ReportNewGuideHot> list = reportCityService.selectReportNewGuideHotList(cityId, pageNum, pageSize);
@@ -80,7 +80,7 @@ public class ReportRestController implements ReportRestApi {
 
     @Override
     public ResponseEntity<ReportNewGuidePopularListResponse> selectReportNewGuidePopularList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewGuidePopularListResponse rsp = new ReportNewGuidePopularListResponse();
         List<ReportNewGuidePopular> list = reportCityService.selectReportNewGuidePopularList(cityId, pageNum, pageSize);
@@ -97,7 +97,7 @@ public class ReportRestController implements ReportRestApi {
 
     @Override
     public ResponseEntity<ReportNewGuideSalesListResponse> selectReportNewGuideSalesList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                                                         @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                                                         @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewGuideSalesListResponse rsp = new ReportNewGuideSalesListResponse();
         List<ReportNewGuideSales> list = reportCityService.selectReportNewGuideSalesList(cityId, pageNum, pageSize);
@@ -114,7 +114,7 @@ public class ReportRestController implements ReportRestApi {
 
     @Override
     public ResponseEntity<ReportNewPreferentialListResponse> selectReportNewPreferentialList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportNewPreferentialListResponse rsp = new ReportNewPreferentialListResponse();
         List<ReportNewPreferential> list = reportCityService.selectReportNewPreferentialList(cityId, pageNum, pageSize);
@@ -131,7 +131,7 @@ public class ReportRestController implements ReportRestApi {
 
     @Override
     public ResponseEntity<ReportEsfProjHotListResponse> selectReportEsfProjHotList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                                                   @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                                                   @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportEsfProjHotListResponse rsp = new ReportEsfProjHotListResponse();
         List<ReportEsfProjHot> list = reportCityService.selectReportEsfProjHotList(cityId, pageNum, pageSize);
@@ -148,7 +148,7 @@ public class ReportRestController implements ReportRestApi {
 
     @Override
     public ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize) {
+                                                                             @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportAreaHotListResponse rsp = new ReportAreaHotListResponse();
         List<ReportAreaHot> list = reportCityService.selectReportAreaHotList(cityId, pageNum, pageSize);
@@ -214,8 +214,6 @@ public class ReportRestController implements ReportRestApi {
         List<EsfQuotationRespose> esfQuotationResposeList = JSONArray.parseArray(jianolouJson.getString("esf_quotation"),EsfQuotationRespose.class);
         Collections.sort(esfQuotationResposeList);
         reportTeSeJianLouRespose.setEsfQuotationList(esfQuotationResposeList);
-
-
 
         reportCityResponse.setEsfTeseJianlou(reportTeSeJianLouRespose);
 

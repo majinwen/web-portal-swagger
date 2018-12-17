@@ -13,7 +13,7 @@ public class UserFavoriteRentListDomain {
     /**
      * 出租房源详情
      */
-    private List<UserFavoriteRentDetailDo> favoriteRentDetails = null;
+    private List<UserFavoriteRentDetailDo> data = null;
 
     /**
      * 总数

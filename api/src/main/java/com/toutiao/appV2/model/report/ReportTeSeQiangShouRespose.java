@@ -88,7 +88,7 @@ public class ReportTeSeQiangShouRespose implements Comparable<ReportTeSeQiangSho
 
     @Override
     public int compareTo(ReportTeSeQiangShouRespose o) {
-        return this.getSort()-o.getSort();
+        return o.getSort()-this.getSort();
     }
 
 }

@@ -29,6 +29,19 @@ public class RecommendTopicDo {
      */
     @ApiModelProperty("主题类型")
     private String topicType;
+
+    /**
+     * 主题名称
+     */
+    @ApiModelProperty("主题类型")
+    private String topicName;
+
+    /**
+     * 主题图片
+     */
+    @ApiModelProperty("主题类型")
+    private String topicImg;
+
     /**
      * 数量
      */
