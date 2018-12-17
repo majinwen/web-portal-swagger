@@ -11,6 +11,7 @@ import com.toutiao.appV2.model.HomePage.*;
 import com.toutiao.appV2.model.Intelligence.*;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.StringDataResponse;
+import com.toutiao.appV2.model.plot.PlotListResponse;
 import com.toutiao.appV2.model.rent.RentCustomConditionResponse;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListRequest;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListResponse;
@@ -109,7 +110,7 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/plot/getPlotByRecommendCondition",
             produces = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<PlotListResponse> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true )  @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
 //    @ApiOperation(value = "根据推荐条件获取一条新房数据", nickname = "getOneNewHouseByRecommendCondition", notes = "", response = NewHouseDetailResponse.class, tags={ "定制", })
 //    @ApiResponses(value = {
