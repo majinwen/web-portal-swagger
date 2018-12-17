@@ -10,7 +10,6 @@ import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
 import com.toutiao.app.domain.newhouse.*;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
-import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.rent.RentCustomConditionDomain;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDoQuery;
 import com.toutiao.app.domain.rent.UserFavoriteRentListDomain;
@@ -28,6 +27,8 @@ import com.toutiao.appV2.model.HomePage.*;
 import com.toutiao.appV2.model.Intelligence.*;
 import com.toutiao.appV2.model.Intelligence.UserFavoriteConditionRequest;
 import com.toutiao.appV2.model.StringDataResponse;
+import com.toutiao.appV2.model.plot.PlotDetailsFewDo;
+import com.toutiao.appV2.model.plot.PlotListResponse;
 import com.toutiao.appV2.model.rent.RentCustomConditionResponse;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListRequest;
 import com.toutiao.appV2.model.rent.UserFavoriteRentListResponse;
@@ -157,15 +158,15 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<PlotDetailsFewDoList> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<PlotListResponse> getPlotByRecommendCondition(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
         List<PlotDetailsDo> restlt = appPlotService.getPlotByRecommendCondition(userFavoriteConditionDoQuery, CityUtils.getCity());
         JSONArray json = JSONArray.parseArray(JSON.toJSONString(restlt));
         List<PlotDetailsFewDo> plotDetailsFewDos = JSONObject.parseArray(json.toJSONString(), PlotDetailsFewDo.class);
-        PlotDetailsFewDoList plotDetailsFewDoList = new PlotDetailsFewDoList();
-        plotDetailsFewDoList.setPlotDetailsFewDos(plotDetailsFewDos);
-        plotDetailsFewDoList.setTotal(plotDetailsFewDos.size());
+        PlotListResponse plotDetailsFewDoList = new PlotListResponse();
+        plotDetailsFewDoList.setPlotList(plotDetailsFewDos);
+        plotDetailsFewDoList.setTotalCount(plotDetailsFewDos.size());
         return new ResponseEntity<>(plotDetailsFewDoList, HttpStatus.OK);
     }
 

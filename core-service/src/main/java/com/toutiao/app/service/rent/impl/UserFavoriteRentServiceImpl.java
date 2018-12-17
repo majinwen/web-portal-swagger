@@ -135,7 +135,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 fullHouseBarrage(userFavoriteRentDetailDo);
                 userFavoriteRentDetailDos.add(userFavoriteRentDetailDo);
             }
-            userFavoriteRentListDomain.setFavoriteRentDetails(userFavoriteRentDetailDos);
+            userFavoriteRentListDomain.setData(userFavoriteRentDetailDos);
             userFavoriteRentListDomain.setTotalCount((int) searchResponse.getHits().getTotalHits());
         }
 

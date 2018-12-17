@@ -14,10 +14,10 @@ import java.util.List;
 @Data
 public class UserFavoriteRentListResponse {
 
-    @JsonProperty("rentDetailsList")
+    @JsonProperty("data")
     @Valid
     @ApiModelProperty("出租房源详情")
-    private List<UserFavoriteRentDetailDo> favoriteRentDetails = null;
+    private List<UserFavoriteRentDetailDo> data = null;
 
     @JsonProperty("totalCount")
     @ApiModelProperty("总数")
