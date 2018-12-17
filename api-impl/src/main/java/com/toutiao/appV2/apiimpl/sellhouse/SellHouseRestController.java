@@ -91,8 +91,12 @@ public class SellHouseRestController implements SellHouseRestApi {
         PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
         SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId(), CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseByHouse, sellHouseDetailsResponse);
-        BeanUtils.copyProperties(sellHouseByHouse.getPlotDetailsDo(), plotInfo);
-        BeanUtils.copyProperties(sellHouseByHouse.getPlotDetailsDo().getPlotsHousesDomain(),plotsHousesDomain);
+        if (null != sellHouseByHouse.getPlotDetailsDo()) {
+            BeanUtils.copyProperties(sellHouseByHouse.getPlotDetailsDo(), plotInfo);
+            if (null != sellHouseByHouse.getPlotDetailsDo().getPlotsHousesDomain()) {
+                BeanUtils.copyProperties(sellHouseByHouse.getPlotDetailsDo().getPlotsHousesDomain(),plotsHousesDomain);
+            }
+        }
         plotInfo.setPlotsHousesDomain(plotsHousesDomain);
         sellHouseDetailsResponse.setPlotInfo(plotInfo);
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseDetailsResponse));

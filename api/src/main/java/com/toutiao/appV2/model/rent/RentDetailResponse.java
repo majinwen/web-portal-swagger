@@ -153,6 +153,9 @@ public class RentDetailResponse {
     @ApiModelProperty("租金(元/月)")
     private Double rentHousePrice = null;
 
+    @ApiModelProperty("出租房源标签(1-采光好，2-近地铁，3-首次出租，4-独立阳台，5-独立卫生间，6-集中供暖，7-可注册办公，8-开放式厨房，9-免佣金，10-免押金，11-可月付，12-有电梯，13-电子锁，14-随时看房)")
+    private Integer[] rentHouseTagsId;
+
     @JsonProperty("rentHouseTagsName")
     @Valid
     @ApiModelProperty("出租房源标签名称")
