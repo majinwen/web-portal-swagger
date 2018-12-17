@@ -28,7 +28,7 @@ public class RecommendTopicDo {
      * 主题类型
      */
     @ApiModelProperty("主题类型")
-    private String topicType;
+    private Integer topicType;
 
     /**
      * 主题名称
