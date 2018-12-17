@@ -157,7 +157,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
-    @ApiIgnore
     ResponseEntity<IsAttendeActivityResponse> isAttendedActivity(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
 
     @ApiOperation(value = "我的活动列表", nickname = "queryActivityMsg", notes = "查询活动信息",
@@ -227,7 +226,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.POST)
-    @ApiIgnore
     ResponseEntity<StringDataResponse> saveUserActivityMsg(@Validated(First.class) NewHouseActivityRequest newHouseActivityRequest);
 
     @ApiOperation(value = "猜你喜欢:获取新房列表页", nickname = "getGuessList", notes = "获取新房列表页",
