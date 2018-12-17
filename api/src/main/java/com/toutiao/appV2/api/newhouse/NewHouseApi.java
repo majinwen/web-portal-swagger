@@ -211,7 +211,6 @@ public interface NewHouseApi {
             produces = { "application/json" },
 //            consumes = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<UserInfoActivityResponse> queryUserMsg(@Validated(Second.class) NewHouseActivityRequest newHouseActivityRequest);
 
     @ApiOperation(value = "提交活动表单", nickname = "saveUserActivityMsg", notes = "提交活动表单",
