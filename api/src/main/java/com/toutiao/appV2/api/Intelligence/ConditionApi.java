@@ -183,9 +183,9 @@ public interface ConditionApi {
 
 
 
-    @ApiOperation(value = "获取目标市场新房推荐", nickname = "getCustomNewHouseRecommend", notes = "", response = NewHouseDetailResponse.class, tags={ "定制", })
+    @ApiOperation(value = "获取目标市场新房推荐", nickname = "getCustomNewHouseRecommend", notes = "", response = NewHouseCustomConditionResponse.class, tags={ "定制", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = NewHouseDetailResponse.class),
+            @ApiResponse(code = 200, message = "OK", response = NewHouseCustomConditionResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
