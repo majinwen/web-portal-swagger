@@ -68,18 +68,18 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             TermQueryBuilder termQuery_isDel = QueryBuilders.termQuery("isDel", 0);
             TermQueryBuilder termQuery_isClaim = QueryBuilders.termQuery("is_claim", 0);
             bqb_isCutPrice.must(QueryBuilders.termQuery("isCutPrice", 1));
-            bqb_isCutPrice.must(QueryBuilders.termQuery("isNew",1));
-            bqb_isCutPrice.must(QueryBuilders.termsQuery("layout",recommendTopicDoQuery.getLayoutId()));
+            bqb_isCutPrice.must(QueryBuilders.termQuery("isNew", 1));
+            bqb_isCutPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
             bqb_isCutPrice.must(termQuery_isClaim);
             bqb_isCutPrice.must(termQuery_isDel);
             bqb_isLowPrice.must(QueryBuilders.termQuery("isLowPrice", 1));
-            bqb_isLowPrice.must(QueryBuilders.termQuery("isNew",1));
-            bqb_isLowPrice.must(QueryBuilders.termsQuery("layout",recommendTopicDoQuery.getLayoutId()));
+            bqb_isLowPrice.must(QueryBuilders.termQuery("isNew", 1));
+            bqb_isLowPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
             bqb_isLowPrice.must(termQuery_isClaim);
             bqb_isLowPrice.must(termQuery_isDel);
             bqb_isMustRob.must(QueryBuilders.termQuery("isMustRob", 1));
-            bqb_isMustRob.must(QueryBuilders.termQuery("isNew",1));
-            bqb_isMustRob.must(QueryBuilders.termsQuery("layout",recommendTopicDoQuery.getLayoutId()));
+            bqb_isMustRob.must(QueryBuilders.termQuery("isNew", 1));
+            bqb_isMustRob.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
             bqb_isMustRob.must(termQuery_isClaim);
             bqb_isMustRob.must(termQuery_isDel);
 
@@ -155,38 +155,38 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 //            }
 
 //        } else {
-            RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
-            ParsedCardinality parsedCardinality = searchResponse.getAggregations().get("count");
-            ParsedMin lowestPrice = searchResponse.getAggregations().get("minPrice");
-            ParsedMax highestPrice = searchResponse.getAggregations().get("maxPrice");
-            ParsedLongTerms longTerms = searchResponse.getAggregations().get("areaIds");
-            if (parsedCardinality.getValue() > 0) {
-                if (longTerms.getBuckets().size() > 0) {
+        RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
+        ParsedCardinality parsedCardinality = searchResponse.getAggregations().get("count");
+        ParsedMin lowestPrice = searchResponse.getAggregations().get("minPrice");
+        ParsedMax highestPrice = searchResponse.getAggregations().get("maxPrice");
+        ParsedLongTerms longTerms = searchResponse.getAggregations().get("areaIds");
+        if (parsedCardinality.getValue() > 0) {
+            if (longTerms.getBuckets().size() > 0) {
 
-                    Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
-                    StringBuffer areaIds = new StringBuffer();
-                    StringBuffer areaNames = new StringBuffer();
-                    while (areaIdBucketIt.hasNext()) {
+                Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
+                StringBuffer areaIds = new StringBuffer();
+                StringBuffer areaNames = new StringBuffer();
+                while (areaIdBucketIt.hasNext()) {
 
-                        Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
-                        ParsedTopHits parsedTopHits = areaIdsBucket.getAggregations().get("areaName");
-                        for (SearchHit hit : parsedTopHits.getHits().getHits()) {
-                            areaNames = areaNames.append((String) hit.getSourceAsMap().get("area")+",");
-                        }
-
-                        areaIds = areaIds.append(areaIdsBucket.getKeyAsString() + ",");
+                    Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
+                    ParsedTopHits parsedTopHits = areaIdsBucket.getAggregations().get("areaName");
+                    for (SearchHit hit : parsedTopHits.getHits().getHits()) {
+                        areaNames = areaNames.append((String) hit.getSourceAsMap().get("area") + ",");
                     }
-                    recommendTopicDo.setDistrictId(areaIds.substring(0, areaIds.length() - 1));
-                    recommendTopicDo.setDistrictName(areaNames.substring(0, areaNames.length() - 1));
-                } else {
-                    recommendTopicDo.setDistrictId("");
+
+                    areaIds = areaIds.append(areaIdsBucket.getKeyAsString() + ",");
                 }
-                if (StringTool.isEmpty(recommendTopicDoQuery.getDistrictId())) {
-                    recommendTopicDo.setDistrictId("");
-                }
-                recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-                recommendTopicDo.setHighestPrice(highestPrice.getValue());
-                recommendTopicDo.setCount((int) parsedCardinality.getValue());
+                recommendTopicDo.setDistrictId(areaIds.substring(0, areaIds.length() - 1));
+                recommendTopicDo.setDistrictName(areaNames.substring(0, areaNames.length() - 1));
+            } else {
+                recommendTopicDo.setDistrictId("");
+            }
+            if (StringTool.isEmpty(recommendTopicDoQuery.getDistrictId())) {
+                recommendTopicDo.setDistrictId("");
+            }
+            recommendTopicDo.setLowestPrice(lowestPrice.getValue());
+            recommendTopicDo.setHighestPrice(highestPrice.getValue());
+            recommendTopicDo.setCount((int) parsedCardinality.getValue());
 
 //                recommendTopicDo.setTopicType(flag);
 
@@ -204,33 +204,33 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     recommendTopicDo.setTopicType(1);
                 }
 
-                try {
-                    UserBasic current = UserBasic.getCurrent();
-                    UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
-                    userConditionSubscribeDetailDo.setDistrictId(recommendTopicDo.getDistrictId());
-                    userConditionSubscribeDetailDo.setBeginPrice(recommendTopicDo.getLowestPrice().intValue());
-                    userConditionSubscribeDetailDo.setEndPrice(recommendTopicDo.getHighestPrice().intValue());
-                    if (Objects.equals(flag, "isLowPrice")) {
-                        userConditionSubscribeDetailDo.setTopicType(3);
-                    } else if (Objects.equals(flag, "isMustRob")) {
-                        userConditionSubscribeDetailDo.setTopicType(2);
-                    } else if (Objects.equals(flag, "isCutPrice")) {
-                        userConditionSubscribeDetailDo.setTopicType(1);
-                    }
-                    UserSubscribe userSubscribe = subscribeService.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo,
-                            Integer.parseInt(current.getUserId()), CityUtils.getCity());
-                    if (userSubscribe != null) {
-                        recommendTopicDo.setIsSubscribe(1);
-                    } else {
-                        recommendTopicDo.setIsSubscribe(0);
-                    }
-                } catch (BaseException e) {
+            try {
+                UserBasic current = UserBasic.getCurrent();
+                UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
+                userConditionSubscribeDetailDo.setDistrictId(recommendTopicDo.getDistrictId());
+                userConditionSubscribeDetailDo.setBeginPrice(recommendTopicDo.getLowestPrice().intValue());
+                userConditionSubscribeDetailDo.setEndPrice(recommendTopicDo.getHighestPrice().intValue());
+                if (Objects.equals(flag, "isLowPrice")) {
+                    userConditionSubscribeDetailDo.setTopicType(3);
+                } else if (Objects.equals(flag, "isMustRob")) {
+                    userConditionSubscribeDetailDo.setTopicType(2);
+                } else if (Objects.equals(flag, "isCutPrice")) {
+                    userConditionSubscribeDetailDo.setTopicType(1);
+                }
+                UserSubscribe userSubscribe = subscribeService.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo,
+                        Integer.parseInt(current.getUserId()), CityUtils.getCity());
+                if (userSubscribe != null) {
+                    recommendTopicDo.setIsSubscribe(userSubscribe.getId());
+                } else {
                     recommendTopicDo.setIsSubscribe(0);
                 }
-
-
-                recommendTopicDoList.add(recommendTopicDo);
+            } catch (BaseException e) {
+                recommendTopicDo.setIsSubscribe(0);
             }
+
+
+            recommendTopicDoList.add(recommendTopicDo);
+        }
 
 //        }
 

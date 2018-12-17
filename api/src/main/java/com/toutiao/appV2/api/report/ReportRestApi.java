@@ -55,7 +55,6 @@ public interface ReportRestApi {
     @RequestMapping(value = "/rest/report/selectReportNewGuidePopularList",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<ReportNewGuidePopularListResponse> selectReportNewGuidePopularList(Integer pageNum, Integer pageSize);
 
     @ApiOperation(value = "数据报告:新房指南销售榜", nickname = "selectReportNewGuideSalesList", notes = "", response = ReportNewGuideSalesListResponse.class, tags = {"数据报告",})
