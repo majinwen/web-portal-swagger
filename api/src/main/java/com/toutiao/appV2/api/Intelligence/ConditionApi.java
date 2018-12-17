@@ -191,7 +191,7 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/newhouse/getCustomNewHouseRecommend",
             produces = { "application/json" },
             method = RequestMethod.GET )
-    ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "UserFavoriteConditionRequest" ,required=true)  @Valid UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<NewHouseCustomConditionResponse> getCustomNewHouseRecommend(@ApiParam(value = "newHouseCustomConditionResquest" ,required=true)  @Valid NewHouseCustomConditionResquest newHouseCustomConditionResquest);
 
 
     @ApiOperation(value = "定制条件租房列表", nickname = "getRentHouseListByUserFavorite", notes = "", response = UserFavoriteRentListResponse.class, tags={ "定制", })
