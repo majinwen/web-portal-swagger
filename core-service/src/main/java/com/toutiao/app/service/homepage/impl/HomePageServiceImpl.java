@@ -738,20 +738,32 @@ public class HomePageServiceImpl implements HomePageRestService {
             builder.must(QueryBuilders.termQuery("is_claim", "0"));
             houseCount = sellHouseEsDao.querySellHouse(builder, city);
         }else if(userFavoriteConditionDoQuery.getConditionType()==1){
-            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getRentType()) && userFavoriteConditionDoQuery.getRentType()!=0){
-                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",userFavoriteConditionDoQuery.getRentType()));
-                String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
-                if(layoutId.length > 0){
-                    if(userFavoriteConditionDoQuery.getRentType()==1){
-                        boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", layoutId));
-                    }else if(userFavoriteConditionDoQuery.getRentType()==2){
-                        boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", layoutId));
-                    }
-                }
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getElo())){
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",1));
+                String[] room = userFavoriteConditionDoQuery.getElo().split(",");
+                boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", room));
+            }else if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getJlo())){
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",2));
+                String[] room = userFavoriteConditionDoQuery.getJlo().split(",");
+                boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", room));
             }
-//            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds()) && userFavoriteConditionDoQuery.getDistrictIds().length!=0){
-//                boolQueryBuilder.must(termsQuery("area_id", userFavoriteConditionDoQuery.getDistrictIds()));
+
+
+
+//            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getRentType()) && userFavoriteConditionDoQuery.getRentType()!=0){
+//                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",userFavoriteConditionDoQuery.getRentType()));
+//                String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
+//                if(layoutId.length > 0){
+//                    if(userFavoriteConditionDoQuery.getRentType()==1){
+//                        boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", layoutId));
+//                    }else if(userFavoriteConditionDoQuery.getRentType()==2){
+//                        boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", layoutId));
+//                    }
+//                }
 //            }
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
+                boolQueryBuilder.must(termsQuery("district_id", userFavoriteConditionDoQuery.getDistrictId()));
+            }
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getSubwayLineId()) && userFavoriteConditionDoQuery.getSubwayLineId().length!=0){
                 boolQueryBuilder.must(QueryBuilders.termsQuery("subway_line_id",userFavoriteConditionDoQuery.getSubwayLineId()));
             }

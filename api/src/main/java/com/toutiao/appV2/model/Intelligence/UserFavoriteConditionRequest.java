@@ -3,6 +3,7 @@ package com.toutiao.appV2.model.Intelligence;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.toutiao.web.common.assertUtils.First;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import io.swagger.models.auth.In;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -60,13 +61,21 @@ public class UserFavoriteConditionRequest   {
   @JsonProperty("subwayLineId")
   private String[] subwayLineId;
 
-  @ApiModelProperty(name = "rentType", value = "租房类型(1:整租，2:合租)")
-  @JsonProperty("rentType")
-  private Integer rentType;
+//  @ApiModelProperty(name = "rentType", value = "租房类型(1:整租，2:合租)")
+//  @JsonProperty("rentType")
+//  private Integer rentType;
 
   @ApiModelProperty(name = "conditionType", value = "定制条件类型(0:二手房,1:租房)")
   @JsonProperty("conditionType")
   private Integer conditionType;
+
+  @JsonProperty("elo")
+  @ApiParam("整租户型")
+  private String elo;
+
+  @JsonProperty("jlo")
+  @ApiParam("合租户型")
+  private String jlo;
 
 
 }
