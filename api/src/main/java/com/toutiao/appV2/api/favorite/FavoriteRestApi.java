@@ -74,4 +74,17 @@ public interface FavoriteRestApi {
             method = RequestMethod.GET)
     ResponseEntity<FavoriteHouseCountResponse> queryFavoriteHouseCount();
 
+    @ApiOperation(value = "查询收藏房源Id", nickname = "queryFavoriteId", notes = "查询收藏房源Id", tags = {"收藏",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/favorite/queryFavoriteId",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    @ApiIgnore
+    ResponseEntity<FavoriteIdResponse> queryFavoriteId(@RequestParam(value = "type") Integer type);
+
+
 }

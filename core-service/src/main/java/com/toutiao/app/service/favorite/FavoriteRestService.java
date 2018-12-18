@@ -120,4 +120,6 @@ public interface FavoriteRestService {
     Integer addFavoriteHouse(CancelFavoriteHouseDto cancelFavoriteHouseDto);
 
     FavoriteHouseCountDto queryFavoriteHouseCount(Integer userId);
+
+    FavoriteIdDo queryFavoriteId(Integer type);
 }
