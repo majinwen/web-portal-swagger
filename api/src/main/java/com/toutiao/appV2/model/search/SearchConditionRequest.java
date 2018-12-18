@@ -28,6 +28,6 @@ public class SearchConditionRequest {
      * 站点类型
      */
     @ApiModelProperty(value = "站点类型(0APP 1WAP)")
-    private Integer siteType;
+    private Integer siteType = 0;
 
 }
