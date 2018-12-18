@@ -41,6 +41,18 @@ public class EsfMapHouseDo {
     private Integer isMainLayout;
 
     /**
+     * 是否成交户型(0-否，1-是)
+     */
+    @ApiModelProperty(value = "是否成交户型(0-否，1-是)", name = "isDealLayout")
+    private Integer isDealLayout;
+
+    /**
+     * 平均成交天数
+     */
+    @ApiModelProperty(value = "平均成交天数", name = "avgDealCycle")
+    private Integer avgDealCycle;
+
+    /**
      * 是否是top50小区房源(0-否，1-是)
      */
     @ApiModelProperty(value = "是否是top50小区房源(0-否，1-是)", name = "isCommunityTopHouse")
@@ -63,6 +75,18 @@ public class EsfMapHouseDo {
      */
     @ApiModelProperty(value = "是否逢出必抢房(0-否，1-是)", name = "isMustRob")
     private Integer isMustRob;
+
+    /**
+     * 是否同户型小区均价最低(0-否，1-是)
+     */
+    @ApiModelProperty(value = "是否同户型小区均价最低(0-否，1-是)", name = "isLowest")
+    private Integer isLowest;
+
+    /**
+     * 是否新导入房源(0-否，1-是)
+     */
+    @ApiModelProperty(value = "是否新导入房源(0-否，1-是)", name = "isNew")
+    private Integer isNew;
 
     /**
      * 室
@@ -234,4 +258,11 @@ public class EsfMapHouseDo {
     @ApiModelProperty(value = "小区id", name = "newcode")
     @ChangeName("buildingId")
     private Integer newcode;
+
+    /**
+     * 同小区同户型范围内做低价排名
+     */
+    @ApiModelProperty(value = "同小区同户型范围内做低价排名", name = "rankInLowCommunityLayout")
+    private Integer rankInLowCommunityLayout;
+
 }

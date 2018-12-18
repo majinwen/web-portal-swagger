@@ -741,10 +741,12 @@ public class HomePageServiceImpl implements HomePageRestService {
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getRentType()) && userFavoriteConditionDoQuery.getRentType()!=0){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",userFavoriteConditionDoQuery.getRentType()));
                 String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
-                if(userFavoriteConditionDoQuery.getRentType()==1){
-                    boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", layoutId));
-                }else if(userFavoriteConditionDoQuery.getRentType()==2){
-                    boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", layoutId));
+                if(layoutId.length > 0){
+                    if(userFavoriteConditionDoQuery.getRentType()==1){
+                        boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", layoutId));
+                    }else if(userFavoriteConditionDoQuery.getRentType()==2){
+                        boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", layoutId));
+                    }
                 }
             }
 //            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds()) && userFavoriteConditionDoQuery.getDistrictIds().length!=0){

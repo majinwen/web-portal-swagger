@@ -188,18 +188,21 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             recommendTopicDo.setHighestPrice(highestPrice.getValue());
             recommendTopicDo.setCount((int) parsedCardinality.getValue());
 
-            recommendTopicDo.setTopicType(flag);
+//                recommendTopicDo.setTopicType(flag);
 
-            if (Objects.equals(flag, "isLowPrice")) {
-                recommendTopicDo.setTopicName("捡漏房源榜");
-                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou.png");
-            } else if (Objects.equals(flag, "isMustRob")) {
-                recommendTopicDo.setTopicName("抢手房源榜");
-                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou.png");
-            } else if (Objects.equals(flag, "isCutPrice")) {
-                recommendTopicDo.setTopicName("降价房源榜");
-                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia.png");
-            }
+                if(Objects.equals(flag, "isLowPrice")){
+                    recommendTopicDo.setTopicName("捡漏房源榜");
+                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
+                    recommendTopicDo.setTopicType(2);
+                }else if(Objects.equals(flag, "isMustRob")){
+                    recommendTopicDo.setTopicName("抢手房源榜");
+                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
+                    recommendTopicDo.setTopicType(3);
+                }else if(Objects.equals(flag, "isCutPrice")){
+                    recommendTopicDo.setTopicName("降价房源榜");
+                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
+                    recommendTopicDo.setTopicType(1);
+                }
 
             try {
                 UserBasic current = UserBasic.getCurrent();

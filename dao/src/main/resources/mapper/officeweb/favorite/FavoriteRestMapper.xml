@@ -241,5 +241,20 @@
             ( SELECT ARRAY_AGG ( ufv.building_id ) AS plot_ids FROM user_favorite_village AS ufv WHERE ufv.user_id = #{userId} AND ufv.is_del = 0 ) AS D
     </select>
 
+    <select id="queryFavoriteId" resultType="com.toutiao.app.domain.favorite.FavoriteIdDo">
+        <if test="type != null and type == 1">
+            SELECT "max" ( ID ) AS maxId,"min" ( ID ) AS minId FROM	"user_favorite_newhouse"
+        </if>
+        <if test="type != null and type == 2">
+            SELECT "max" ( ID ) AS maxId,"min" ( ID ) AS minId FROM	"user_favorite_eshouse"
+        </if>
+        <if test="type != null and type == 3">
+            SELECT "max" ( ID ) AS maxId,"min" ( ID ) AS minId FROM	"user_favorite_village"
+        </if>
+        <if test="type != null and type == 4">
+            SELECT "max" ( ID ) AS maxId,"min" ( ID ) AS minId FROM	"user_favorite_rent"
+        </if>
+    </select>
+
 
 </mapper>
