@@ -811,8 +811,6 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         builder.must(termQuery("is_del", IS_DEL));
         builder.must(termsQuery("property_type_id", new int[]{1, 2}));
 
-//        builder.must(QueryBuilders.boolQuery().should(rangeQuery("total_price").gt(0)));
-//        builder.must(QueryBuilders.boolQuery().should(rangeQuery("average_price").gt(0)));
         builder.must(existsQuery("saletelphone"));
         builder.must(QueryBuilders.boolQuery().should(rangeQuery("total_price").gt(0)).should(rangeQuery("average_price").gt(0)));
 
