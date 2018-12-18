@@ -761,9 +761,9 @@ public class HomePageServiceImpl implements HomePageRestService {
 //                    }
 //                }
 //            }
-//            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictIds()) && userFavoriteConditionDoQuery.getDistrictIds().length!=0){
-//                boolQueryBuilder.must(termsQuery("area_id", userFavoriteConditionDoQuery.getDistrictIds()));
-//            }
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
+                boolQueryBuilder.must(termsQuery("district_id", userFavoriteConditionDoQuery.getDistrictId()));
+            }
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getSubwayLineId()) && userFavoriteConditionDoQuery.getSubwayLineId().length!=0){
                 boolQueryBuilder.must(QueryBuilders.termsQuery("subway_line_id",userFavoriteConditionDoQuery.getSubwayLineId()));
             }
