@@ -2657,7 +2657,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if(searchHists.length > 0){
                     for(SearchHit searchHit : searchHists){
                         conditionDetailsDo.setBizcircleName(searchHit.getSourceAsMap().get("bizcircle_name")==null?"":searchHit.getSourceAsMap().get("bizcircle_name").toString());
-                        conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice")+"元/m²");
+                        conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
                         String location =  searchHit.getSourceAsMap().get("bizcircle_location")==null?"":searchHit.getSourceAsMap().get("bizcircle_location").toString();
                         if(StringTool.isNotEmpty(location)){
                             String[] lat_lon = location.split(",");
