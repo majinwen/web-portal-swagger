@@ -8,7 +8,9 @@ import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * RentDetailResponse
@@ -215,6 +217,9 @@ public class RentDetailResponse {
 
     @ApiModelProperty(value = "公司图标", name = "companyIcon")
     private String companyIcon;
+
+    @ApiModelProperty(value = "地铁信息", name = "地铁信息")
+    private HashMap nearbySubway;
 
 }
 
