@@ -8,8 +8,11 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.script.Script;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.ScriptSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -155,10 +158,12 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     }
 
     @Override
-    public SearchResponse getNewHouseCustomList(FunctionScoreQueryBuilder builder, Integer pageNum, Integer pageSize, String city) {
+    public SearchResponse getNewHouseCustomList(BoolQueryBuilder builder, Integer pageNum, Integer pageSize, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(builder).size(pageSize);
+        Script script = new Script("Math.random()");
+        ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+        searchSourceBuilder.query(builder).size(pageSize).sort(scrip);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;
         try {

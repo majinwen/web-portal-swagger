@@ -811,19 +811,25 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         builder.must(termQuery("is_del", IS_DEL));
         builder.must(termsQuery("property_type_id", new int[]{1, 2}));
 
-        FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[4];
-        QueryBuilder total_price_filter = QueryBuilders.rangeQuery("total_price").gt(0);
-        filterFunctionBuilders[0] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(total_price_filter, ScoreFunctionBuilders.weightFactorFunction(3));
-        QueryBuilder average_price_filter = QueryBuilders.rangeQuery("average_price").gt(0);
-        filterFunctionBuilders[1] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(average_price_filter, ScoreFunctionBuilders.weightFactorFunction(2));
-        QueryBuilder saleTelPhone = QueryBuilders.existsQuery("saletelphone");
-        filterFunctionBuilders[2] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(saleTelPhone, ScoreFunctionBuilders.weightFactorFunction(3));
-        QueryBuilder phone = QueryBuilders.termQuery("saletelphone","");
-        filterFunctionBuilders[3] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(phone, ScoreFunctionBuilders.weightFactorFunction(0));
+        builder.must(existsQuery("saletelphone"));
+        builder.must(QueryBuilders.boolQuery().should(rangeQuery("total_price").gt(0)).should(rangeQuery("average_price").gt(0)));
 
-        FunctionScoreQueryBuilder query = QueryBuilders.functionScoreQuery(builder,filterFunctionBuilders);
+//        FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[4];
+//        QueryBuilder total_price_filter = QueryBuilders.rangeQuery("total_price").gt(0);
+//        filterFunctionBuilders[0] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(total_price_filter, ScoreFunctionBuilders.weightFactorFunction(3));
+//        QueryBuilder average_price_filter = QueryBuilders.rangeQuery("average_price").gt(0);
+//        filterFunctionBuilders[1] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(average_price_filter, ScoreFunctionBuilders.weightFactorFunction(2));
+//        QueryBuilder saleTelPhone = QueryBuilders.existsQuery("saletelphone");
+//        filterFunctionBuilders[2] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(saleTelPhone, ScoreFunctionBuilders.weightFactorFunction(3));
+//        QueryBuilder phone = QueryBuilders.termQuery("saletelphone","");
+//        filterFunctionBuilders[3] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(phone, ScoreFunctionBuilders.weightFactorFunction(0));
+//
+//        FunctionScoreQueryBuilder query = QueryBuilders.functionScoreQuery(builder,filterFunctionBuilders);
 
-        SearchResponse searchResponse = newHouseEsDao.getNewHouseCustomList(query, userFavoriteConditionDoQuery.getPageNum(), userFavoriteConditionDoQuery.getPageSize(), city);
+
+
+
+        SearchResponse searchResponse = newHouseEsDao.getNewHouseCustomList(builder, userFavoriteConditionDoQuery.getPageNum(), userFavoriteConditionDoQuery.getPageSize(), city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if(searchHists.length>0){

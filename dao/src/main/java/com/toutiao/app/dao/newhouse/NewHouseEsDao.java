@@ -42,5 +42,5 @@ public interface NewHouseEsDao {
 //    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
-    SearchResponse getNewHouseCustomList(FunctionScoreQueryBuilder builder, Integer pageNum, Integer pageSize, String city);
+    SearchResponse getNewHouseCustomList(BoolQueryBuilder builder, Integer pageNum, Integer pageSize, String city);
 }
