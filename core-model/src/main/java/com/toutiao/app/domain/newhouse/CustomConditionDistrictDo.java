@@ -2,6 +2,8 @@ package com.toutiao.app.domain.newhouse;
 
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @ClassName CustomConditionDistrictDo
  * @Author jiangweilong
@@ -19,5 +21,7 @@ public class CustomConditionDistrictDo {
     private Double latitude;
 
     private Double longitude;
+
+    private List<CustomConditionDetailsDo> data;
 
 }

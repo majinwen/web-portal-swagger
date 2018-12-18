@@ -19,15 +19,17 @@ public class CustomConditionDetailsResponse {
 
 //   private List<CustomConditionDistrictDo> districtData;
 
-   private Integer districtId;
+//   private Integer districtId;
+//
+//   private String districtName;
+//
+//   private Double latitude;
+//
+//   private Double longitude;
+//
+//
+//   private List<CustomConditionDetailsDo> data;
 
-   private String districtName;
-
-   private Double latitude;
-
-   private Double longitude;
-
-
-   private List<CustomConditionDetailsDo> data;
+   private List<CustomConditionDistrictDo> data;
 
 }

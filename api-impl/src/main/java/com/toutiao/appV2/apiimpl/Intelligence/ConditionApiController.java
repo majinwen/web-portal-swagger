@@ -182,15 +182,14 @@ public class ConditionApiController implements ConditionApi {
 //    }
 
     @Override
-    public ResponseEntity<List<CustomConditionDetailsResponse>> getEsfCustomConditionDetails(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
 
-        List<CustomConditionDetailsResponse> conditionDetailsResponse = new ArrayList<>();
+        CustomConditionDetailsResponse conditionDetailsResponse = new CustomConditionDetailsResponse();
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
 
-        List<CustomConditionDetailsDomain> conditionDetailsDomain = sellHouseService.getEsfCustomConditionDetails(userFavoriteConditionDoQuery, CityUtils.getCity());
-
-        conditionDetailsResponse = JSONObject.parseArray(JSON.toJSONString(conditionDetailsDomain),CustomConditionDetailsResponse.class);
+        CustomConditionDetailsDomain conditionDetailsDomain = sellHouseService.getEsfCustomConditionDetails(userFavoriteConditionDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(conditionDetailsDomain, conditionDetailsResponse);
         return new ResponseEntity<>(conditionDetailsResponse, HttpStatus.OK);
     }
 

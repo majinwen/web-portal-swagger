@@ -139,7 +139,7 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/esf/getEsfCustomConditionDetails",
             produces = "application/json",
             method = RequestMethod.POST)
-    ResponseEntity<List<CustomConditionDetailsResponse>> getEsfCustomConditionDetails(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
     @ApiOperation(value = "获取专属报告", nickname = "getHomePageReport", notes = "", response = IntelligenceResponse.class, tags={ "定制", })
     @ApiResponses(value = {

@@ -2572,9 +2572,9 @@ public class SellHouseServiceImpl implements SellHouseService {
 
 
     @Override
-    public List<CustomConditionDetailsDomain> getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
-        List<CustomConditionDetailsDomain> customConditionDetailsDomainList = new ArrayList<>();
-
+    public CustomConditionDetailsDomain getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
+        CustomConditionDetailsDomain customConditionDetailsDomain = new CustomConditionDetailsDomain();
+        List<CustomConditionDistrictDo> customConditionDistrictDos = new ArrayList<>();
 
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
@@ -2584,22 +2584,22 @@ public class SellHouseServiceImpl implements SellHouseService {
         Terms districtTerms = avgPriceByDistrict.getAggregations().get("districtId");
         List districtBucket = districtTerms.getBuckets();
         for (Object bucket : districtBucket) {
-            CustomConditionDetailsDomain customConditionDetailsDomain = new CustomConditionDetailsDomain();
-            customConditionDetailsDomain.setDistrictId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));
+            CustomConditionDistrictDo customConditionDistrictDo = new CustomConditionDistrictDo();
+            customConditionDistrictDo.setDistrictId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));
 
             Terms districtName = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("districtName");
             if(districtName.getBuckets().size() > 0){
-                customConditionDetailsDomain.setDistrictName(districtName.getBuckets().get(0).getKeyAsString());
+                customConditionDistrictDo.setDistrictName(districtName.getBuckets().get(0).getKeyAsString());
             }
 
             Terms latitude = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("latitude");
             if(latitude.getBuckets().size() > 0){
-                customConditionDetailsDomain.setLatitude(latitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
+                customConditionDistrictDo.setLatitude(latitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
             }
 
             Terms longitude = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("longitude");
             if(longitude.getBuckets().size() > 0){
-                customConditionDetailsDomain.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
+                customConditionDistrictDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
             }
             //房源
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -2617,7 +2617,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
             }
 
-            boolQueryBuilder.must(termQuery("areaId", customConditionDetailsDomain.getDistrictId()));
+            boolQueryBuilder.must(termQuery("areaId", customConditionDistrictDo.getDistrictId()));
 
             SearchResponse searchResponse = sellHouseEsDao.getEsfCustomConditionDetails(boolQueryBuilder, city);
             Terms terms = searchResponse.getAggregations().get("areaName");
@@ -2669,11 +2669,12 @@ public class SellHouseServiceImpl implements SellHouseService {
                 customConditionDetailsDoList.add(conditionDetailsDo);
 
         }
-            customConditionDetailsDomain.setData(customConditionDetailsDoList);
-            customConditionDetailsDomainList.add(customConditionDetailsDomain);
+            customConditionDistrictDo.setData(customConditionDetailsDoList);
+            customConditionDistrictDos.add(customConditionDistrictDo);
 
         }
-        return customConditionDetailsDomainList;
+        customConditionDetailsDomain.setData(customConditionDistrictDos);
+        return customConditionDetailsDomain;
     }
 
 }
