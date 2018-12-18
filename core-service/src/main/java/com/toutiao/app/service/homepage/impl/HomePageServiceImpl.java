@@ -738,12 +738,14 @@ public class HomePageServiceImpl implements HomePageRestService {
             builder.must(QueryBuilders.termQuery("is_claim", "0"));
             houseCount = sellHouseEsDao.querySellHouse(builder, city);
         }else if(userFavoriteConditionDoQuery.getConditionType()==1){
-            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getElo()) && userFavoriteConditionDoQuery.getElo().length!=0){
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getElo())){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",1));
-                boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", userFavoriteConditionDoQuery.getElo()));
-            }else if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getJlo()) && userFavoriteConditionDoQuery.getJlo().length!=0){
+                String[] room = userFavoriteConditionDoQuery.getElo().split(",");
+                boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", room));
+            }else if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getJlo())){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",2));
-                boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", userFavoriteConditionDoQuery.getJlo()));
+                String[] room = userFavoriteConditionDoQuery.getJlo().split(",");
+                boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", room));
             }
 
 

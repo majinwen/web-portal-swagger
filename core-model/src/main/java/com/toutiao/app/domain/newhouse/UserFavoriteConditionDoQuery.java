@@ -1,6 +1,5 @@
 package com.toutiao.app.domain.newhouse;
 
-import com.toutiao.app.domain.QueryDo;
 import lombok.Data;
 
 @Data
@@ -62,10 +61,10 @@ public class UserFavoriteConditionDoQuery{
     /**
      * 整租户型
      */
-    private String[] elo;
+    private String elo;
 
     /**
      * 合租户型
      */
-    private String[] jlo;
+    private String jlo;
 }

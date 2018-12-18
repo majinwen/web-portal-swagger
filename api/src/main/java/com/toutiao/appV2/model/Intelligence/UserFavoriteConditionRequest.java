@@ -71,11 +71,11 @@ public class UserFavoriteConditionRequest   {
 
   @JsonProperty("elo")
   @ApiParam("整租户型")
-  private String[] elo;
+  private String elo;
 
   @JsonProperty("jlo")
   @ApiParam("合租户型")
-  private String[] jlo;
+  private String jlo;
 
 
 }
