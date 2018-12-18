@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 
@@ -67,6 +68,7 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getCityAllInfo",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<CityAllInfoMap> getCityAllInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
                                                   @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
@@ -81,6 +83,7 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getCityDistrictInfo",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<CityDiscrictInfoMap> getCityDistrictInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
                                                             @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
@@ -95,6 +98,7 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getCityConditionInfo",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<CityConditionInfoMap> getCityConditionInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
                                                     @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
@@ -109,6 +113,7 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getCityCircleInfo",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<CityCircleInfoMap> getCityCircleInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
                                                     @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
@@ -124,6 +129,7 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getCityParkInfo",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<CityParkInfoMap> getCityParkInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
                                                     @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
@@ -137,6 +143,7 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getCityPidsInfo",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<CityPidsInfoMap> getCityPidsInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
                                                     @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
@@ -151,6 +158,7 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getCitySubwaysInfo",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<CitySubwayInfoMap> getCitySubwaysInfo(@ApiParam(value = "cityId", required = false) @Valid @RequestParam(value = "cityId",required = false,defaultValue = "0") Integer cityId,
                                                     @ApiParam(value = "cityDomain", required = false) @Valid @RequestParam(value = "cityDomain",required = false,defaultValue = "") String cityDomain);
 
@@ -166,6 +174,7 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getWapCity",
             produces = { "application/json" },
             method = RequestMethod.GET)
+    @ApiIgnore
     ResponseEntity<WapCityList> getWapCity();
 
 

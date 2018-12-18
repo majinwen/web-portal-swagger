@@ -24,4 +24,10 @@ public class SearchConditionRequest {
     @ApiModelProperty(value = "类型(0首页 1新房 2二手房 3租房 4小区)")
     private Integer type;
 
+    /**
+     * 站点类型
+     */
+    @ApiModelProperty(value = "站点类型(0APP 1WAP)")
+    private Integer siteType;
+
 }
