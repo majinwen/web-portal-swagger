@@ -54,6 +54,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
@@ -181,15 +182,15 @@ public class ConditionApiController implements ConditionApi {
 //    }
 
     @Override
-    public ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
+    public ResponseEntity<List<CustomConditionDetailsResponse>> getEsfCustomConditionDetails(@ApiParam(value = "UserFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest) {
 
-        CustomConditionDetailsResponse conditionDetailsResponse = new CustomConditionDetailsResponse();
+        List<CustomConditionDetailsResponse> conditionDetailsResponse = new ArrayList<>();
         UserFavoriteConditionDoQuery userFavoriteConditionDoQuery = new UserFavoriteConditionDoQuery();
         BeanUtils.copyProperties(userFavoriteConditionRequest, userFavoriteConditionDoQuery);
 
-        CustomConditionDetailsDomain conditionDetailsDomain = sellHouseService.getEsfCustomConditionDetails(userFavoriteConditionDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(conditionDetailsDomain, conditionDetailsResponse);
+        List<CustomConditionDetailsDomain> conditionDetailsDomain = sellHouseService.getEsfCustomConditionDetails(userFavoriteConditionDoQuery, CityUtils.getCity());
 
+        conditionDetailsResponse = JSONObject.parseArray(JSON.toJSONString(conditionDetailsDomain),CustomConditionDetailsResponse.class);
         return new ResponseEntity<>(conditionDetailsResponse, HttpStatus.OK);
     }
 

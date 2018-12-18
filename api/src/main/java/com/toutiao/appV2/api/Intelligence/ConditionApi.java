@@ -25,6 +25,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-16T10:50:01.627Z")
 
@@ -138,7 +139,7 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/esf/getEsfCustomConditionDetails",
             produces = "application/json",
             method = RequestMethod.POST)
-    ResponseEntity<CustomConditionDetailsResponse> getEsfCustomConditionDetails(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
+    ResponseEntity<List<CustomConditionDetailsResponse>> getEsfCustomConditionDetails(@ApiParam(value = "userFavoriteConditionRequest", required = true) @Valid @RequestBody UserFavoriteConditionRequest userFavoriteConditionRequest);
 
     @ApiOperation(value = "获取专属报告", nickname = "getHomePageReport", notes = "", response = IntelligenceResponse.class, tags={ "定制", })
     @ApiResponses(value = {

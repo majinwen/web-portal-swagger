@@ -129,5 +129,5 @@ public interface SellHouseService {
      * @param userFavoriteConditionDoQuery
      * @return
      */
-    CustomConditionDetailsDomain getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
+    List<CustomConditionDetailsDomain> getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 }
