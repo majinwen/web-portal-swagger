@@ -172,5 +172,15 @@ public class FavoriteRestController implements FavoriteRestApi {
 
         return new ResponseEntity<>(favoriteHouseCountResponse, HttpStatus.OK);
     }
+
+    @Override
+    public ResponseEntity<FavoriteIdResponse> queryFavoriteId(@RequestParam(value = "type") Integer type) {
+        FavoriteIdResponse favoriteIdResponse = new FavoriteIdResponse();
+        FavoriteIdDo favoriteIdDo = favoriteRestService.queryFavoriteId(type);
+        if (null != favoriteIdDo) {
+            BeanUtils.copyProperties(favoriteIdDo, favoriteIdResponse);
+        }
+        return new ResponseEntity<>(favoriteIdResponse, HttpStatus.OK);
+    }
 }
 

@@ -561,4 +561,9 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
     public FavoriteHouseCountDto queryFavoriteHouseCount(Integer userId) {
         return favoriteRestMapper.queryFavoriteHouseCount(userId);
     }
+
+    @Override
+    public FavoriteIdDo queryFavoriteId(Integer type) {
+        return favoriteRestMapper.queryFavoriteId(type);
+    }
 }
