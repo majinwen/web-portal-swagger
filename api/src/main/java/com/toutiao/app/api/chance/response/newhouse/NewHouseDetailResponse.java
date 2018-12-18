@@ -200,4 +200,7 @@ public class NewHouseDetailResponse {
 
     @ApiModelProperty(value = "是否收藏")
     private Boolean isFavorite;
+
+    @ApiModelProperty(value = "最近地铁信息")
+    private  String roundStation;
 }
