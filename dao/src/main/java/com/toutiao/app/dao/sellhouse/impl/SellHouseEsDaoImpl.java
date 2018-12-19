@@ -394,6 +394,10 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
     public SearchResponse getGuessLikeSellHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+
+        if (pageNum <= 0) {
+            pageNum = 1;
+        }
         searchSourceBuilder.query(booleanQueryBuilder).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC).sort("extraTagsCount", SortOrder.DESC);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;

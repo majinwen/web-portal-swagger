@@ -2068,19 +2068,20 @@ public class SellHouseServiceImpl implements SellHouseService {
         int totalCount = 0;
         // 如果用户登录，取用户收藏房源查询，如果未登录，客户端传用户浏览房源，如果无用户行为，取七天新上，标签数量排序，状态为待售
 
-        if ((null == userId && (sellHouseDoQuery.getTotalPrice() == 0 && sellHouseDoQuery.getAreaId() == null && sellHouseDoQuery.getLayoutId() == null && sellHouseDoQuery.getHall() == 0)) ||
-                (null != userId && (sellHouseDoQuery.getTotalPrice() == 0 && sellHouseDoQuery.getAreaId() == null && sellHouseDoQuery.getLayoutId() == null && sellHouseDoQuery.getHall() == 0))
+        if ((null == userId && (sellHouseDoQuery.getTotalPrice() == 0 && sellHouseDoQuery.getAreaId().length == 0 && sellHouseDoQuery.getLayoutId().length == 0 && sellHouseDoQuery.getHall() == 0)) ||
+                (null != userId && (sellHouseDoQuery.getTotalPrice() == 0 && sellHouseDoQuery.getAreaId().length == 0 && sellHouseDoQuery.getLayoutId().length == 0 && sellHouseDoQuery.getHall() == 0))
                         && (userFavoriteEsHouseMapper.selectEsHouseFavoriteByUserId(Integer.valueOf(userId)) == 0)) {
 
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(termQuery("is_claim", 0));
             boolQueryBuilder.must(termQuery("isDel", 0));
+            boolQueryBuilder.must(termQuery("isNew", 1));
 
-            Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
-            String day = dateFormat.format(date);
-            String sevenDayBefore = DateUtil.beforeSevenDate(day);
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
+//            Date date = new Date();
+//            SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
+//            String day = dateFormat.format(date);
+//            String sevenDayBefore = DateUtil.beforeSevenDate(day);
+//            boolQueryBuilder.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
 
             SearchResponse searchResponse = sellHouseEsDao.getGuessLikeSellHouseList(boolQueryBuilder, city, sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize());
 
@@ -2165,12 +2166,13 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 boolQueryBuilderT2.must(termQuery("is_claim", 0));
                 boolQueryBuilderT2.must(termQuery("isDel", 0));
-
-                Date date = new Date();
-                SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
-                String day = dateFormat.format(date);
-                String sevenDayBefore = DateUtil.beforeSevenDate(day);
-                boolQueryBuilderT2.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
+                boolQueryBuilderT2.must(termQuery("isNew", 1));
+//
+//                Date date = new Date();
+//                SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
+//                String day = dateFormat.format(date);
+//                String sevenDayBefore = DateUtil.beforeSevenDate(day);
+//                boolQueryBuilderT2.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
 
                 SearchResponse searchResponseT2 = sellHouseEsDao.getGuessLikeSellHouseList(boolQueryBuilderT2, city, pageNum_T2, pageSize_T2);
 
