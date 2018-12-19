@@ -146,6 +146,9 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
     public SearchResponse getGuessLikeNewHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        if (pageNum <= 0) {
+            pageNum = 1;
+        }
         searchRequest.source(searchSourceBuilder.query(booleanQueryBuilder).sort("create_time",SortOrder.DESC).from((pageNum-1)*pageSize).size(pageSize));
         SearchResponse searchresponse = null;
         try {

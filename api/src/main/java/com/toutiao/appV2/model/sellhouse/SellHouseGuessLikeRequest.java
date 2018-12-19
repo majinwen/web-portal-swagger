@@ -13,10 +13,10 @@ public class SellHouseGuessLikeRequest {
     private double totalPrice = 0;
 
     @ApiModelProperty(value = "商圈id", name = "areaId")
-    private Integer[] areaId = null;
+    private Integer[] areaId;
 
     @ApiModelProperty(value = "居室", name = "layoutId")
-    private  Integer [] layoutId = null;
+    private  Integer [] layoutId;
 
     @ApiModelProperty(value = "厅", name = "hall")
     private Integer hall = 0;
