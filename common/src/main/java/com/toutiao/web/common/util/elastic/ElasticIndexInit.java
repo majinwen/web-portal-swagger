@@ -152,7 +152,7 @@ public class ElasticIndexInit implements CommandLineRunner {
 
                 esMap.put(ESIndexConstant.CLAIM_RENT_INDEX,claimRentIndex+"_"+city[i]);
 
-                esMap.put(ESIndexConstant.AGENT_INDEX,agentIndex+"_"+city[i]);
+//                esMap.put(ESIndexConstant.AGENT_INDEX,agentIndex+"_"+city[i]);
 
                 esMap.put(ESIndexConstant.ENGINES_INDEX,enginesIndex+"_"+city[i]);
 
@@ -169,7 +169,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                     esMap.put(ESIndexConstant.RENT_TYPE,rentType);
                     esMap.put(ESIndexConstant.CLAIM_ESF_TYPE,claimEsfType);
                     esMap.put(ESIndexConstant.CLAIM_RENT_TYPE,claimRentType);
-                    esMap.put(ESIndexConstant.AGENT_TYPE,agentType);
+                    //esMap.put(ESIndexConstant.AGENT_TYPE,agentType);
                     esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType);
                     esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType);
                     esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType);
@@ -182,7 +182,7 @@ public class ElasticIndexInit implements CommandLineRunner {
                     esMap.put(ESIndexConstant.RENT_TYPE,rentType+"_"+city[i]);
                     esMap.put(ESIndexConstant.CLAIM_ESF_TYPE,claimEsfType+"_"+city[i]);
                     esMap.put(ESIndexConstant.CLAIM_RENT_TYPE,claimRentType+"_"+city[i]);
-                    esMap.put(ESIndexConstant.AGENT_TYPE,agentType+"_"+city[i]);
+                    //esMap.put(ESIndexConstant.AGENT_TYPE,agentType+"_"+city[i]);
                     esMap.put(ESIndexConstant.ENGINES_TYPE,enginesType+"_"+city[i]);
                     esMap.put(ESIndexConstant.SCOPE_TYPE,scopeType+"_"+city[i]);
                     esMap.put(ESIndexConstant.AREA_ROOM_TYPE,areaRoomType+"_"+city[i]);
@@ -200,6 +200,8 @@ public class ElasticIndexInit implements CommandLineRunner {
         map.put(ESIndexConstant.SUBWAY_HOUSE_PRICE_TYPE,subwayHousePriceType);
         map.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_INDEX,dbAvgPriceIndex);
         map.put(ESIndexConstant.DISTRICT_BIZCIRCLE_AVERAGE_PRICE_TYPE,dbAvgPriceType);
+        map.put(ESIndexConstant.AGENT_INDEX,agentIndex);
+        map.put(ESIndexConstant.AGENT_TYPE,agentType);
 
         esIndexMaps.put(CityConstant.ABBREVIATION_QUANGUO,map);
     }

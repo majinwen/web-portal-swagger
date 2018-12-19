@@ -123,4 +123,12 @@ public interface PlotEsDao {
     SearchResponse queryPlotByPlotId(BoolQueryBuilder boolQueryBuilder, String city);
 
 
+    /**
+     * 小区综述
+     * @param boolQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse getReviewById(BoolQueryBuilder boolQueryBuilder, String city);
+
 }
