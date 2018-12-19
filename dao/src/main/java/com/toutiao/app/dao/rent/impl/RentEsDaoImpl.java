@@ -184,13 +184,33 @@ public class RentEsDaoImpl implements RentEsDao {
         if ((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)) {
             //searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
             if ("1".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("update_time", SortOrder.DESC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("update_time", SortOrder.DESC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("update_time", SortOrder.DESC);
+                }
+
             } else if ("3".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price", SortOrder.ASC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price", SortOrder.ASC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price", SortOrder.ASC);
+                }
+
             } else if ("4".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price", SortOrder.DESC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price", SortOrder.DESC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("rent_house_price", SortOrder.DESC);
+                }
+
             } else if ("6".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("house_area", SortOrder.DESC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("house_area", SortOrder.DESC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("house_area", SortOrder.DESC);
+                }
+
             } else {
                 if (StringTool.isNotEmpty(geoDistanceSort)) {
                     searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
