@@ -69,17 +69,23 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             TermQueryBuilder termQuery_isClaim = QueryBuilders.termQuery("is_claim", 0);
             bqb_isCutPrice.must(QueryBuilders.termQuery("isCutPrice", 1));
             bqb_isCutPrice.must(QueryBuilders.termQuery("isNew", 1));
-            bqb_isCutPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
+                bqb_isCutPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            }
             bqb_isCutPrice.must(termQuery_isClaim);
             bqb_isCutPrice.must(termQuery_isDel);
             bqb_isLowPrice.must(QueryBuilders.termQuery("isLowPrice", 1));
             bqb_isLowPrice.must(QueryBuilders.termQuery("isNew", 1));
-            bqb_isLowPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
+                bqb_isLowPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            }
             bqb_isLowPrice.must(termQuery_isClaim);
             bqb_isLowPrice.must(termQuery_isDel);
             bqb_isMustRob.must(QueryBuilders.termQuery("isMustRob", 1));
             bqb_isMustRob.must(QueryBuilders.termQuery("isNew", 1));
-            bqb_isMustRob.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
+                bqb_isMustRob.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            }
             bqb_isMustRob.must(termQuery_isClaim);
             bqb_isMustRob.must(termQuery_isDel);
 
