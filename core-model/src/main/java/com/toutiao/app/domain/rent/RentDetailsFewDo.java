@@ -48,6 +48,11 @@ public class RentDetailsFewDo {
     @ApiModelProperty("商圈名称")
     private String areaName;
     /**
+     * 商圈id
+     */
+    @ApiModelProperty("商圈id")
+    private Integer areaId;
+    /**
      * 区域名称
      */
     @ApiModelProperty("区域名称")
