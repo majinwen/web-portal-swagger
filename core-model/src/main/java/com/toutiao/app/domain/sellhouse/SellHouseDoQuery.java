@@ -58,4 +58,21 @@ public class SellHouseDoQuery extends QueryDo {
      */
     private Integer isMustRob;
 
+    /**
+     * 房源总价
+     */
+    private double totalPrice;
+
+    /**
+     * 厅
+     */
+    private Integer hall;
+
+    /**
+     * 房源id
+     */
+    private String houseId;
+
+    private String areaName;
+
 }

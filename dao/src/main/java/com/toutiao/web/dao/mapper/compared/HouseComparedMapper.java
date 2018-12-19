@@ -21,7 +21,7 @@ public interface HouseComparedMapper {
 
     int updateByPrimaryKey(HouseCompared record);
 
-    HouseCompared selectByUserIdAndHouseId(@Param("userId")Integer userId, @Param("houseId")String houseId);
+    HouseCompared selectByUserIdAndHouseId(@Param("userId")Integer userId, @Param("houseId")String houseId, @Param("cityId")Integer cityId);
 
-    List<HouseCompared> selectByUserId(@Param("userId")Integer userId);
+    List<HouseCompared> selectByUserId(@Param("userId")Integer userId, @Param("cityId")Integer cityId);
 }

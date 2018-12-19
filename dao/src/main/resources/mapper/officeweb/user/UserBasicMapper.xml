@@ -16,10 +16,12 @@
     <result column="identifier" property="identifier" jdbcType="VARCHAR" />
     <result column="rong_cloud_token" property="rongCloudToken" jdbcType="VARCHAR" />
     <result column="user_only_sign" property="userOnlySign" jdbcType="VARCHAR" />
+    <result column="user_call_name" property="userCallName" jdbcType="VARCHAR" />
+    <result column="union_id" property="unionid" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
     user_id, user_name, user_pwd, phone, avatar, create_time, login_time, update_time, 
-    user_status, register_source, identity_type, identifier, rong_cloud_token, user_only_sign
+    user_status, register_source, identity_type, identifier, rong_cloud_token, user_only_sign,user_call_name,union_id
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -35,7 +37,9 @@
     from user_basic
     where phone = #{phone,jdbcType=VARCHAR}
     and user_status = #{userStatus,jdbcType=SMALLINT}
-    and identity_type = #{identityType,jdbcType=SMALLINT}
+    <if test="identityType != null" >
+      and identity_type = #{identityType,jdbcType=SMALLINT}
+    </if>
     and identifier = #{identifier,jdbcType=VARCHAR}
   </select>
 
@@ -45,6 +49,20 @@
     from user_basic
     where phone =  #{phone,jdbcType=VARCHAR}
   </select>
+
+  <select id="getUserFavoriteCount" resultType="Integer" parameterType="java.lang.Integer" >
+    select
+    (select count(*) from user_favorite_newhouse WHERE is_del = 0 and user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_rent WHERE is_del = 0 and user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_village WHERE is_del = 0 and user_id = #{userId,jdbcType=INTEGER})
+    +(select count(*) from user_favorite_eshouse WHERE is_del = 0 and user_id = #{userId,jdbcType=INTEGER})
+    as sum_count
+  </select>
+
+  <select id="getUserSubscribeCount" resultType="Integer"  parameterType="java.lang.Integer" >
+    SELECT count(*) FROM user_subscribe WHERE user_id = #{userId,jdbcType=INTEGER} and subscribe_type in (0,3)
+  </select>
+
 
 
   <select id="selectUserBasicByRcId" resultMap="BaseResultMap" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" >
@@ -63,12 +81,12 @@
       phone, avatar, create_time, 
       login_time, update_time, user_status, 
       register_source, identity_type, identifier, 
-      rong_cloud_token, user_only_sign)
+      rong_cloud_token, user_only_sign,user_call_name)
     values (#{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userPwd,jdbcType=VARCHAR}, 
       #{phone,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{loginTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=SMALLINT}, 
       #{registerSource,jdbcType=SMALLINT}, #{identityType,jdbcType=SMALLINT}, #{identifier,jdbcType=VARCHAR}, 
-      #{rongCloudToken,jdbcType=VARCHAR}, #{userOnlySign,jdbcType=VARCHAR})
+      #{rongCloudToken,jdbcType=VARCHAR}, #{userOnlySign,jdbcType=VARCHAR}, #{userCallName,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.web.dao.entity.officeweb.user.UserBasic" useGeneratedKeys="true" keyProperty="userId" keyColumn="user_id">
     insert into user_basic
@@ -115,6 +133,12 @@
       <if test="userOnlySign != null" >
         user_only_sign,
       </if>
+      <if test="userCallName != null" >
+        user_call_name,
+      </if>
+      <if test="unionid != null" >
+        union_id,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="userId != null" >
@@ -158,6 +182,12 @@
       </if>
       <if test="userOnlySign != null" >
         #{userOnlySign,jdbcType=VARCHAR},
+      </if>
+      <if test="userCallName != null" >
+        #{userCallName,jdbcType=VARCHAR},
+      </if>
+      <if test="unionid != null" >
+        #{unionid,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -203,6 +233,12 @@
       <if test="userOnlySign != null" >
         user_only_sign = #{userOnlySign,jdbcType=VARCHAR},
       </if>
+      <if test="userCallName != null" >
+        user_call_name = #{userCallName,jdbcType=VARCHAR},
+      </if>
+      <if test="unionid != null" >
+        union_id = #{unionid,jdbcType=VARCHAR},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
@@ -220,7 +256,17 @@
       identity_type = #{identityType,jdbcType=SMALLINT},
       identifier = #{identifier,jdbcType=VARCHAR},
       rong_cloud_token = #{rongCloudToken,jdbcType=VARCHAR},
-      user_only_sign = #{userOnlySign,jdbcType=VARCHAR}
+      user_only_sign = #{userOnlySign,jdbcType=VARCHAR},
+      user_call_name = #{userCallName,jdbcType=VARCHAR}
     where user_id = #{userId,jdbcType=VARCHAR}
   </update>
+  <update id="unbindweixin"  parameterType="java.lang.String">
+    UPDATE user_basic
+    SET union_id = NULL
+    WHERE user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <select id="getUserBasicByunionId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT * FROM user_basic
+    WHERE union_id = #{unionId,jdbcType=VARCHAR}
+  </select>
 </mapper>

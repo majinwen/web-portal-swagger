@@ -19,7 +19,7 @@ public class UserBasicDoQuery {
     /**
      * 登录方式
      */
-    private Short identityType;
+    private short identityType;
 
     /**
      * 图形验证码
@@ -31,4 +31,16 @@ public class UserBasicDoQuery {
 
     private String title;
 
+    /**
+     * 微信id
+     */
+    private String unionid;
+    /**
+     * 头像
+     */
+    private String avatar;
+    /**
+     * 1:app微信,2:web微信,3:微信小程序
+     */
+    private String type;
 }

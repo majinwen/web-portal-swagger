@@ -10,5 +10,5 @@ public interface HouseBusinessAndRoomService {
     /**
      * 获取商圈+户型
      */
-    HouseBusinessAndRoomDomain getHouseBusinessAndRoomHouses(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery);
+    HouseBusinessAndRoomDomain getHouseBusinessAndRoomHouses(HouseBusinessAndRoomDoQuery houseBusinessAndRoomDoQuery, String city);
 }

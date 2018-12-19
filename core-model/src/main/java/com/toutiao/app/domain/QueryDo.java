@@ -54,7 +54,7 @@ public class QueryDo {
     /**
      * 商圈id
      */
-    private Integer areaId;
+    private Integer[] areaId;
 
 
     /**
@@ -65,7 +65,7 @@ public class QueryDo {
     /**
      * 地铁站id
      */
-    private Integer subwayStationId;
+    private Integer[] subwayStationId;
 
     /**
      * 关键字
@@ -88,4 +88,14 @@ public class QueryDo {
      */
 
     private  Integer cityId;
+
+    /**
+     * 起始总价
+     */
+    private double beginTotalPrice;
+
+    /**
+     * 结束总价
+     */
+    private double endTotalPrice;
 }

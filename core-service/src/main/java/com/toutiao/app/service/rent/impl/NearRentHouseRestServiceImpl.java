@@ -17,7 +17,8 @@ import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
 import org.elasticsearch.common.lucene.search.function.FieldValueFactorFunction;
-import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
+//import org.elasticsearch.common.lucene.search.function.FiltersFunctionScoreQuery;
+import org.elasticsearch.common.lucene.search.function.FunctionScoreQuery;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
@@ -49,7 +50,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
     private AgentService agentService;
 
     @Override
-    public RentDetailsListDo queryNearHouseByLocation(NearHouseListDoQuery nearHouseListDoQuery) {
+    public RentDetailsListDo queryNearHouseByLocation(NearHouseListDoQuery nearHouseListDoQuery, String city) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -66,21 +67,21 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
                 .modifier(FieldValueFactorFunction.Modifier.RECIPROCAL).missing(10);
 
         //坐标
-        Map<String,Double> map = new HashMap<>();
-        map.put("lat",nearHouseListDoQuery.getLat());
-        map.put("lon",nearHouseListDoQuery.getLon());
-        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
-
+//        Map<String,Double> map = new HashMap<>();
+//        map.put("lat",nearHouseListDoQuery.getLat());
+//        map.put("lon",nearHouseListDoQuery.getLon());
+//        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
+        double[] json = new double[]{nearHouseListDoQuery.getLon(), nearHouseListDoQuery.getLat()};
         //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
         GaussDecayFunctionBuilder functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",json,"4km","1km" ,0.4);
 
         //获取5km内的所有出租房源(函数得分进行加法运算,查询得分和函数得分进行加法运算)
-        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor).scoreMode(FiltersFunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
+        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
 
         FunctionScoreQueryBuilder query = null;
 
         if (StringUtil.isNotNullString(nearHouseListDoQuery.getKeyword())) {
-            List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(nearHouseListDoQuery.getKeyword());
+            List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(nearHouseListDoQuery.getKeyword(),city);
             FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()+1];
             if (StringUtil.isNotNullString(AreaMap.getAreas(nearHouseListDoQuery.getKeyword()))) {
                 for(int i=0 ;i<searchKeyword.size();i++){
@@ -107,14 +108,14 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 
             filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
 
-            query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FiltersFunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
+            query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
         }else{
-            query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder,functionBuilder).scoreMode(FiltersFunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
+            query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder,functionBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
         }
 
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryNearRentHouse(query, (nearHouseListDoQuery.getPageNum() - 1) * 10);
+        SearchResponse searchResponse = rentEsDao.queryNearRentHouse(query, (nearHouseListDoQuery.getPageNum() - 1) * 10, city);
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length>0){
             for (SearchHit hit:hits){
@@ -137,12 +138,12 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
 
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if(StringTool.isNotEmpty(rentDetailsFewDo.getUserId())){
-                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString());
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
 
                 }else{
-                    agentBaseDo.setAgentCompany(hit.getSource().get("brokerage_agency").toString());
-                    agentBaseDo.setAgentName(hit.getSource().get("estate_agent").toString());
-                    agentBaseDo.setDisplayPhone(hit.getSource().get("phone").toString());
+                    agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency")==null?"":hit.getSourceAsMap().get("brokerage_agency").toString());
+                    agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent")==null?"":hit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone")==null?"":hit.getSourceAsMap().get("phone").toString());
                     agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto")==null?"":hit.getSourceAsMap().get("agent_headphoto").toString());
 
                 }
@@ -161,8 +162,8 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
      * @return
      */
     @Override
-    public List<String> getAnalyzeByKeyWords(String keywords) {
-        List<String> strings = sellHouseKeywordEsDao.filterKeyWords(keywords);
+    public List<String> getAnalyzeByKeyWords(String keywords, String city) {
+        List<String> strings = sellHouseKeywordEsDao.filterKeyWords(keywords,city);
         return strings;
     }
 
@@ -217,7 +218,7 @@ public class NearRentHouseRestServiceImpl implements NearRentHouseRestService {
         }
         //地铁站id
         if (StringTool.isNotEmpty(nearHouseListDoQuery.getSubwayStationId())){
-            boolQueryBuilder.must(termsQuery("subway_station_id", new int[]{nearHouseListDoQuery.getSubwayStationId()}));
+            boolQueryBuilder.must(termsQuery("subway_station_id", nearHouseListDoQuery.getSubwayStationId()));
         }
         //租金
         if (nearHouseListDoQuery.getBeginPrice()!=0 &&nearHouseListDoQuery.getEndPrice()!=0){

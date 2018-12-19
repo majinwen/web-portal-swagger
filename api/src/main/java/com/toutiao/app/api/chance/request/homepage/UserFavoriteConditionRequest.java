@@ -28,5 +28,22 @@ public class UserFavoriteConditionRequest {
      * 户型id
      */
     private String[] layoutId;
+    /**
+     * 城市
+     */
+    private String city;
+    /**
+     * 当前页
+     */
+    private Integer pageNum = 1;
+
+    /**
+     * 每页大小
+     */
+    private Integer pageSize = 10;
+    /**
+     * 是否有预设条件(0:无,1:有 默认0)
+     */
+    private Integer flag = 0;
 }
 

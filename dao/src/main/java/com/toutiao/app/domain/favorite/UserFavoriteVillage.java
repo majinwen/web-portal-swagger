@@ -52,4 +52,9 @@ public class UserFavoriteVillage {
      */
     private Short status;
 
+    /**
+     * 城市
+     */
+    private Integer cityId;
+
 }

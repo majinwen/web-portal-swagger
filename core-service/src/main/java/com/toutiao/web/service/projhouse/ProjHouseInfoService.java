@@ -23,6 +23,6 @@ public interface ProjHouseInfoService {
 
     List queryIndexProjHouse();
 
-    Map queryAgentByHouseId(Integer houseId);
+//    Map queryAgentByHouseId(Integer houseId);
 
 }

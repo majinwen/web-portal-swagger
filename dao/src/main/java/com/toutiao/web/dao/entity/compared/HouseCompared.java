@@ -1,65 +1,30 @@
 package com.toutiao.web.dao.entity.compared;
 
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
 import java.util.Date;
 
+@Data
 public class HouseCompared {
+    @ApiModelProperty(value = "对比id")
     private Integer id;
 
+    @ApiModelProperty(value = "用户id")
     private Integer userId;
 
+    @ApiModelProperty(value = "二手房房源id")
     private String houseId;
 
+    @ApiModelProperty(value = "房源状态是否是下架，0未下架，1下架")
     private Short houseStatus;
 
+    @ApiModelProperty(value = "创建时间")
     private Date createTime;
 
+    @ApiModelProperty(value = "是否删除(0-未删除，1-已删除)")
     private Short isDel;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public String getHouseId() {
-        return houseId;
-    }
-
-    public void setHouseId(String houseId) {
-        this.houseId = houseId == null ? null : houseId.trim();
-    }
-
-    public Short getHouseStatus() {
-        return houseStatus;
-    }
-
-    public void setHouseStatus(Short houseStatus) {
-        this.houseStatus = houseStatus;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Short getIsDel() {
-        return isDel;
-    }
-
-    public void setIsDel(Short isDel) {
-        this.isDel = isDel;
-    }
+    @ApiModelProperty(value = "城市代码")
+    private Integer cityId;
 }

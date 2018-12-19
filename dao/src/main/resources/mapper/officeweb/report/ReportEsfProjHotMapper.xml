@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.report.ReportEsfProjHotMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.dao.report.ReportEsfProjHot" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="projname" property="projname" jdbcType="VARCHAR" />
+    <result column="newcode" property="newcode" jdbcType="INTEGER" />
+    <result column="average_price" property="averagePrice" jdbcType="NUMERIC" />
+    <result column="hosue_count" property="hosueCount" jdbcType="INTEGER" />
+    <result column="time" property="time" jdbcType="TIMESTAMP" />
+    <result column="sort" property="sort" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, city_id, newcode, projname, average_price, hosue_count, time, sort
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from report_esf_proj_hot
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from report_esf_proj_hot
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.toutiao.app.dao.report.ReportEsfProjHot" >
+    insert into report_esf_proj_hot (id, city_id, projname, 
+      newcode, average_price, hosue_count, 
+      city_name, time)
+    values (#{id,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{projname,jdbcType=VARCHAR}, 
+      #{newcode,jdbcType=INTEGER}, #{averagePrice,jdbcType=NUMERIC}, #{hosueCount,jdbcType=INTEGER}, 
+      #{cityName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.app.dao.report.ReportEsfProjHot" >
+    insert into report_esf_proj_hot
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="cityId != null" >
+        city_id,
+      </if>
+      <if test="projname != null" >
+        projname,
+      </if>
+      <if test="newcode != null" >
+        newcode,
+      </if>
+      <if test="averagePrice != null" >
+        average_price,
+      </if>
+      <if test="hosueCount != null" >
+        hosue_count,
+      </if>
+      <if test="cityName != null" >
+        city_name,
+      </if>
+      <if test="time != null" >
+        time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cityId != null" >
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="projname != null" >
+        #{projname,jdbcType=VARCHAR},
+      </if>
+      <if test="newcode != null" >
+        #{newcode,jdbcType=INTEGER},
+      </if>
+      <if test="averagePrice != null" >
+        #{averagePrice,jdbcType=NUMERIC},
+      </if>
+      <if test="hosueCount != null" >
+        #{hosueCount,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null" >
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        #{time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.toutiao.app.dao.report.ReportEsfProjHot" >
+    update report_esf_proj_hot
+    <set >
+      <if test="cityId != null" >
+        city_id = #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="projname != null" >
+        projname = #{projname,jdbcType=VARCHAR},
+      </if>
+      <if test="newcode != null" >
+        newcode = #{newcode,jdbcType=INTEGER},
+      </if>
+      <if test="averagePrice != null" >
+        average_price = #{averagePrice,jdbcType=NUMERIC},
+      </if>
+      <if test="hosueCount != null" >
+        hosue_count = #{hosueCount,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null" >
+        city_name = #{cityName,jdbcType=VARCHAR},
+      </if>
+      <if test="time != null" >
+        time = #{time,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.toutiao.app.dao.report.ReportEsfProjHot" >
+    update report_esf_proj_hot
+    set city_id = #{cityId,jdbcType=INTEGER},
+      projname = #{projname,jdbcType=VARCHAR},
+      newcode = #{newcode,jdbcType=INTEGER},
+      average_price = #{averagePrice,jdbcType=NUMERIC},
+      hosue_count = #{hosueCount,jdbcType=INTEGER},
+      city_name = #{cityName,jdbcType=VARCHAR},
+      time = #{time,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from report_esf_proj_hot
+    where city_id = #{cityId,jdbcType=INTEGER}
+    order by sort asc
+  </select>
+</mapper>

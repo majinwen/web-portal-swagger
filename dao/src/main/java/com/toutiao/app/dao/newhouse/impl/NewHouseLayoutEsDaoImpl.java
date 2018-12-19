@@ -1,29 +1,27 @@
 package com.toutiao.app.dao.newhouse.impl;
 
 import com.toutiao.app.dao.newhouse.NewHouseLayoutEsDao;
-import com.toutiao.web.common.util.ESClientTools;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
-import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.elasticsearch.search.aggregations.BucketOrder;
+import org.elasticsearch.search.aggregations.support.ValueType;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
 
 
     @Autowired
-    private ESClientTools esClientTools;
-    @Value("${tt.newhouse.index}")
-    private String newHouseIndex;//索引名称
-    @Value("${tt.newhouse.type}")
-    private String newHouseType;//索引类型
-    @Value("${tt.newlayout.type}")
-    private String layoutType;//子类索引类型
+    private RestHighLevelClient restHighLevelClient;
 
     /**
      * 根据新房id获取该id下所有的户型以及数量
@@ -31,11 +29,19 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
      * @return
      */
     @Override
-    public SearchResponse getLayoutCountByNewHouseId(BoolQueryBuilder booleanQueryBuilder) {
-        TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = client.prepareSearch(newHouseIndex).setTypes(layoutType).setQuery(booleanQueryBuilder)
-                .addAggregation(AggregationBuilders.terms("roomCount").field("room").order(Terms.Order.term(true)))
-                .execute().actionGet();
+    public SearchResponse getLayoutCountByNewHouseId(BoolQueryBuilder booleanQueryBuilder, String city) {
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).aggregation(AggregationBuilders.terms("roomCount").field("room").order(BucketOrder.count(true)));
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return searchresponse;
     }
 
@@ -45,12 +51,23 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
      * @return
      */
     @Override
-    public SearchResponse getLayoutListByNewHouseIdAndRoomCount(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getLayoutListByNewHouseIdAndRoomCount(BoolQueryBuilder booleanQueryBuilder, String city) {
 
-        TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = client.prepareSearch(newHouseIndex).setTypes(layoutType)
-                .setQuery(booleanQueryBuilder).setSize(1000)
-                .execute().actionGet();
+//        TransportClient client = esClientTools.init();
+//        SearchResponse searchresponse = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseChildType(city))
+//                .setQuery(booleanQueryBuilder).setSize(1000)
+//                .execute().actionGet();
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).size(1000);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return searchresponse;
     }
 
@@ -60,15 +77,22 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
      * @return
      */
     @Override
-    public SearchResponse getLayoutPriceByNewHouseId(BoolQueryBuilder booleanQueryBuilder) {
+    public SearchResponse getLayoutPriceByNewHouseId(BoolQueryBuilder booleanQueryBuilder, String city) {
 
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(newHouseIndex).setTypes(layoutType);
-        SearchResponse searchResponse = srb.setQuery(booleanQueryBuilder).setSize(0)
-                .addAggregation(AggregationBuilders.min("minPrice").field("total_price"))
-                .addAggregation(AggregationBuilders.max("maxPrice").field("total_price"))
-                .execute().actionGet();
 
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder).size(0)
+                .aggregation(AggregationBuilders.min("minPrice").field("total_price"))
+                .aggregation(AggregationBuilders.max("maxPrice").field("total_price"));
+
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest,RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return searchResponse;
     }
 }

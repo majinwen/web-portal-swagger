@@ -1,56 +1,56 @@
 package com.toutiao.app.dao.agenthouse.impl;
 
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
-import com.toutiao.web.common.util.ESClientTools;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
+import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 
 @Service
 public class AgentHouseEsDaoImpl implements AgentHouseEsDao{
 
+
     @Autowired
-    private ESClientTools esClientTools;
-    @Value("${tt.esf.agent.index}")
-    private String agentIndex;
-    @Value("${tt.esf.agent.type}")
-    private String agentType;
-    @Value("${tt.zufang.agent.index}")
-    private String agentRentIndex;
-    @Value("${tt.zufang.agent.type}")
-    private String agentRentType;
+    private RestHighLevelClient restHighLevelClient;
 
-    @Value("${tt.agent.index}")
-    private String agentBaseIndex;
-    @Value("${tt.agent.type}")
-    private String agentBaseType;
+//    @Override
+//    public SearchResponse getAgentHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
+//
+//        TransportClient client = esClientTools.init();
+//        SearchResponse searchResponse = client.prepareSearch(agentIndex).setTypes(agentType).setQuery(booleanQueryBuilder)
+//                .execute().actionGet();
+//        return searchResponse;
+//    }
 
-    @Override
-    public SearchResponse getAgentHouseByHouseId(BoolQueryBuilder booleanQueryBuilder) {
-
-        TransportClient client = esClientTools.init();
-        SearchResponse searchResponse = client.prepareSearch(agentIndex).setTypes(agentType).setQuery(booleanQueryBuilder)
-                .execute().actionGet();
-        return searchResponse;
-    }
+//    @Override
+//    public SearchResponse getAgentRentByRentId(BoolQueryBuilder booleanQueryBuilder) {
+//        TransportClient client = esClientTools.init();
+//        SearchResponse searchResponse = client.prepareSearch(agentRentIndex).setTypes(agentRentType).setQuery(booleanQueryBuilder)
+//                .execute().actionGet();
+//        return searchResponse;
+//    }
 
     @Override
-    public SearchResponse getAgentRentByRentId(BoolQueryBuilder booleanQueryBuilder) {
-        TransportClient client = esClientTools.init();
-        SearchResponse searchResponse = client.prepareSearch(agentRentIndex).setTypes(agentRentType).setQuery(booleanQueryBuilder)
-                .execute().actionGet();
-        return searchResponse;
-    }
+    public SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder, String city) {
 
-    @Override
-    public SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder) {
-        TransportClient client = esClientTools.init();
-        SearchResponse searchResponse = client.prepareSearch(agentBaseIndex).setTypes(agentBaseType).setQuery(booleanQueryBuilder)
-                .execute().actionGet();
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getAgentIndex(city)).types(ElasticCityUtils.getAgentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(booleanQueryBuilder);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return searchResponse;
     }
 

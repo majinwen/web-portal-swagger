@@ -1,6 +1,8 @@
 package com.toutiao.app.domain.plot;
 
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
 
@@ -12,35 +14,42 @@ public class PlotDetailsDo {
     /**
      * 小区编号
      */
+    @ChangeName("buildingId")
     private Integer id;
     /**
      * 小区名称/楼盘名称
      */
+    @ChangeName("buildingName")
     private String rc;
     /**
      * 别名
      */
+    @ChangeName("buildingNickName")
     private String alias;
     /**
      * 小区照片
      */
-    private List<String> photo;
-    private String[] photos;
+    @ChangeName("buildingImages")
+    private String[] photo;
     /**
      * 区域编号
      */
+    @ChangeName("districtId")
     private String areaId;
     /**
      * 区域
      */
+    @ChangeName("districtName")
     private String area;
     /**
      * 商圈编号
      */
+    @ChangeName("areaId")
     private String tradingAreaId;
     /**
      * 商圈
      */
+    @ChangeName("areaName")
     private String tradingArea;
     /**
      * 地址
@@ -53,22 +62,27 @@ public class PlotDetailsDo {
     /**
      * 地铁站编号
      */
+    @ChangeName("subwayStationId")
     private  List<String> metroStationId;
     /**
      * 地铁站
      */
+    @ChangeName("subwayStationName")
     private List<String> metroStation;
     /**
      * 地铁站与小区的距离
      */
+    @ChangeName("nearbyStationsDistance")
     private Map metroWithPlotsDistance;
     /**
      * 地铁线路编号
      */
+    @ChangeName("subwayLineId")
     private List<String> subwayLineId;
     /**
      * 地铁线路
      */
+    @ChangeName("subwayLineName")
     private List<String> subwayLine;
     /**
      * 交通信息
@@ -77,10 +91,12 @@ public class PlotDetailsDo {
     /**
      * 标签编号
      */
+    @ChangeName("tagsId")
     private List<String> labelId;
     /**
      * 标签
      */
+    @ChangeName("tags")
     private List<String> label;
     /**
      * 待售房源
@@ -89,14 +105,17 @@ public class PlotDetailsDo {
     /**
      * 均价
      */
+    @ChangeName("averagePrice")
     private Double avgPrice;
     /**
      * 总价
      */
+    @ChangeName("totalPrice")
     private Double sumPrice;
     /**
      * 建成年代
      */
+    @ChangeName("buildYears")
     private String abbreviatedAge;
     /**
      * 楼龄
@@ -137,6 +156,7 @@ public class PlotDetailsDo {
     /**
      * 车位配比
      */
+    @ChangeName("parkRatio")
     private String carPositionRatio;
     /**
      * 停车费
@@ -165,10 +185,12 @@ public class PlotDetailsDo {
     /**
      * 物业类型
      */
+    @ChangeName("propertyTypeId")
     private String propertyType;
     /**
      * 物业类型名称
      */
+    @ChangeName("propertyType")
     private String propertyTypeName;
     /**
      * 产权年限
@@ -284,4 +306,37 @@ public class PlotDetailsDo {
      * 二手房，租房信息
      */
     private PlotsHousesDomain plotsHousesDomain;
+
+    /**
+     * 标签名称
+     */
+    private List<String> recommendBuildTagsName;
+    /**
+     * 标签id
+     */
+    private List<Integer> recommendBuildTagsId;
+
+    /**
+     * 小区行情
+     */
+    private PlotMarketDomain plotMarketDomain;
+
+    /**
+     * 小区别名
+     */
+    @JSONField(name = "rc_nickname")
+    private String rcNickname;
+    /**
+     * 上架房源
+     */
+    private Integer increaseHouse;
+    /**
+     * 下架房源
+     */
+    private Integer decreaseHouse;
+
+    /**
+     * 标题图
+     */
+    private String titlePhoto;
 }

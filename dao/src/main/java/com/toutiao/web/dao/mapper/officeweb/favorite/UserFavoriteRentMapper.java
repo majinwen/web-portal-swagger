@@ -2,6 +2,7 @@ package com.toutiao.web.dao.mapper.officeweb.favorite;
 
 import com.toutiao.app.domain.favorite.DeleteRentFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.UserFavoriteRent;
+import com.toutiao.app.domain.favorite.UserFavoriteRentDoQuery;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteDo;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteListDoQuery;
 import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
@@ -18,6 +19,8 @@ public interface UserFavoriteRentMapper extends BaseDao {
     int insert(UserFavoriteRent record);
 
     int insertSelective(UserFavoriteRent record);
+
+    Integer insertRentHouseSelective(UserFavoriteRentDoQuery userFavoriteRentDoQuery);
 
     UserFavoriteRent selectByPrimaryKey(Integer id);
 

@@ -10,10 +10,8 @@ import com.toutiao.app.domain.user.UserBasicDoQuery;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.app.service.user.UserLoginService;
 import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
-import com.toutiao.web.common.restmodel.InvokeResult;
 import com.toutiao.web.common.restmodel.NashResult;
 import com.toutiao.web.common.util.*;
-import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +35,7 @@ public class UserRegisterRestController {
 
     @RequestMapping(value = "/userVerifyCodeLogin", method = RequestMethod.POST)
     @ResponseBody
-    public NashResult userVerifyCodeLogin(@Validated @RequestBody UserVerifyCodeRequest loginRequest,
+    public UserLoginResponse userVerifyCodeLogin(@Validated @RequestBody UserVerifyCodeRequest loginRequest,
                                           HttpServletRequest request, HttpServletResponse response) {
 
         UserBasicDoQuery userBasicDoQuery = new UserBasicDoQuery();
@@ -47,15 +45,12 @@ public class UserRegisterRestController {
 
         if(StringTool.isNotBlank(userBasicDo)){
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
-//            userLoginResponse.setUserNickName(userLoginResponse.getUserName().substring(0,3)+"****"+userLoginResponse.getUserName().substring(8,11));
             try {
-                //setCookieAndCache(loginRequest.getUserName(),request,response);
                 setCookieAndCache(loginRequest.getUserPhone(),userLoginResponse,request,response);
             } catch (Exception e) {
-                NashResult.Fail("30099","用户cookie数据存储失败！");
             }
         }
-        return NashResult.build(userLoginResponse);
+        return userLoginResponse;
 
     }
 
@@ -85,21 +80,18 @@ public class UserRegisterRestController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/getUserCache")
+    @RequestMapping(value = "/getUserCache", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getUserCache(HttpServletRequest request, HttpServletResponse response) {
+    public UserLoginResponse getUserCache(HttpServletRequest request, HttpServletResponse response) {
 
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
         UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
         if(null != userLoginResponse){
             UserBasicDo userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
             BeanUtils.copyProperties(userBasic,userLoginResponse);
-            //userLoginResponse.setUserNickName(userLoginResponse.getUserName().substring(0,3)+"****"+userLoginResponse.getUserName().substring(8,11));
-            return NashResult.build(userLoginResponse);
         }else {
             Integer ss = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
-            return NashResult.Fail(ss.toString(),"用户未登陆");
         }
-
+        return userLoginResponse;
     }
 }

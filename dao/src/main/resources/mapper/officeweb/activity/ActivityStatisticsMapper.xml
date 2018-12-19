@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.activity.ActivityStatisticsMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.domain.activity.ActivityStatistics" >
+    <result column="id" property="id" jdbcType="INTEGER" />
+    <result column="activity_grand_total" property="activityGrandTotal" jdbcType="INTEGER" />
+    <result column="yesterday_activity_total" property="yesterdayActivityTotal" jdbcType="INTEGER" />
+    <result column="statistical_date" property="statisticalDate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, activity_grand_total, yesterday_activity_total, statistical_date
+  </sql>
+
+
+  <insert id="insert" parameterType="com.toutiao.app.domain.activity.ActivityStatistics" >
+    insert into activity_statistics (id, activity_grand_total, yesterday_activity_total, 
+      statistical_date)
+    values (#{id,jdbcType=INTEGER}, #{activityGrandTotal,jdbcType=INTEGER}, #{yesterdayActivityTotal,jdbcType=INTEGER}, 
+      #{statisticalDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.toutiao.app.domain.activity.ActivityStatistics" >
+    insert into activity_statistics
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="activityGrandTotal != null" >
+        activity_grand_total,
+      </if>
+      <if test="yesterdayActivityTotal != null" >
+        yesterday_activity_total,
+      </if>
+      <if test="statisticalDate != null" >
+        statistical_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="activityGrandTotal != null" >
+        #{activityGrandTotal,jdbcType=INTEGER},
+      </if>
+      <if test="yesterdayActivityTotal != null" >
+        #{yesterdayActivityTotal,jdbcType=INTEGER},
+      </if>
+      <if test="statisticalDate != null" >
+        #{statisticalDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectActivityCount" resultType="com.toutiao.app.domain.activity.ActivityStatistics" >
+    select
+    id AS Id,
+    activity_grand_total AS activityGrandTotal,
+    yesterday_activity_total AS yesterdayActivityTotal,
+    statistical_date AS statisticalDate
+    from activity_statistics
+
+  </select>
+
+
+  <update id="updateActivityStatistics" parameterType="java.lang.Integer">
+    update activity_statistics
+    set activity_grand_total = #{cumulativeNo,jdbcType=INTEGER},
+    yesterday_activity_total = #{randomNo,jdbcType=INTEGER},
+    statistical_date = now()
+  </update>
+
+  <update id="updateActivityGrandTotal" parameterType="java.lang.Integer">
+    update activity_statistics
+    set activity_grand_total = #{cumulativeNo,jdbcType=INTEGER}
+  </update>
+
+</mapper>

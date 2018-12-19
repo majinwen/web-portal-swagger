@@ -10,13 +10,13 @@ public class RecommendEsf5DoQuery extends QueryDo {
      */
     private Integer[] districtIds;
 
-    /**
-     * 排序字段
-     */
-    private String sortFile;
+//    /**
+//     * 排序字段
+//     */
+//    private String sortFile;
 
     /**
      * 排序
      */
-    private Integer sort;
+    private String sort;
 }

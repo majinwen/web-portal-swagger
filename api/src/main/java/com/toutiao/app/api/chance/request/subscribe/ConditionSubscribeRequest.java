@@ -1,6 +1,7 @@
 package com.toutiao.app.api.chance.request.subscribe;
 
 import lombok.Data;
+import org.springframework.validation.annotation.Validated;
 
 /**
  * Created by IntelliJ Idea
@@ -9,6 +10,9 @@ import lombok.Data;
  * Time:   18:26
  * Theme:
  */
+@Validated
+@javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-14T08:31:23.634Z")
+
 @Data
 public class ConditionSubscribeRequest {
 

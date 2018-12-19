@@ -1,6 +1,7 @@
 package com.toutiao.app.service.plot;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 
@@ -14,7 +15,7 @@ public interface PlotsRestService {
      * @param plotId
      * @return
      */
-    PlotDetailsDo queryPlotDetailByPlotId(Integer plotId);
+    PlotDetailsDo queryPlotDetailByPlotId(Integer plotId, String city);
 
 
     /**
@@ -23,43 +24,53 @@ public interface PlotsRestService {
      * @param lon
      * @return
      */
-    List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId);
+    List<PlotDetailsFewDo> queryAroundPlotByLocation(Double lat, Double lon, Integer plotId, String city);
 
     /**
      * 获取小区列表
      * @param plotListDoQuery
      * @return
      */
-    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery);
+    PlotListDo queryPlotListByRequirement(PlotListDoQuery plotListDoQuery, String city);
 
     /**
      * 获取小区列表含坐标
      * @param plotListDoQuery
      * @return
      */
-    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
+//    List<PlotDetailsFewDo> queryPlotListByRequirementWithLocation(PlotListDoQuery plotListDoQuery);
 
 
     /**
      * 获取交通配套
      */
-    PlotTrafficDo queryPlotDataInfo(Integer plotId) throws InvocationTargetException, IllegalAccessException;
+    PlotTrafficDo queryPlotDataInfo(Integer plotId);
 
-    /**
-     * 小区收藏列表
-     * @param list
-     * @return
-     */
-    PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum, Integer size);
+//    /**
+//     * 小区收藏列表
+//     * @param list
+//     * @return
+//     */
+//    PlotFavoriteListDo queryPlotListByPlotIdList(List list, Integer pageNum, Integer size);
 
     /**
      * 小区top50查询
      */
 
-    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery);
+    List<PlotTop50Do> getPlotTop50List(PlotTop50ListDoQuery plotTop50ListDoQuery,String city);
 
 
-    List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+    List<PlotDetailsDo> getPlotByRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
 
+    PlotDetailsDo queryPlotByPlotId(String PlotId, String city);
+
+
+    /**
+     * 获取折线信息
+     * @param newcode
+     * @param districtId
+     * @return
+     */
+    JSONArray getFoldLineInfo(String newcode, String districtId);
 }

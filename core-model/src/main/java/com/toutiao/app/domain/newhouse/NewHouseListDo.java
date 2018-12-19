@@ -1,6 +1,8 @@
 package com.toutiao.app.domain.newhouse;
 
+import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.web.common.assertUtils.ChangeName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -9,175 +11,125 @@ import java.util.Map;
 @Data
 public class NewHouseListDo  {
 
-    /**
-     * 最小面积
-     */
+    @ApiModelProperty(value = "最小面积")
     private Double houseMinArea;
 
-    /**
-     * 最大面积
-     */
+    @ApiModelProperty(value = "最大面积")
     private  Double houseMaxArea;
 
-    /**
-     * 楼盘名称
-     */
-    @ChangeName("buildingName")
+    @ApiModelProperty(value = "楼盘名称")
     private String buildingName;
 
-    /**
-     * 楼盘id
-     */
-    @ChangeName("buildingId")
+    @ApiModelProperty(value = "楼盘id")
     private  Integer buildingNameId;
 
-    /**
-     * 区域名字
-     */
+    @ApiModelProperty(value = "区域名称")
     private  String  districtName;
 
-    /**
-     * 区域id
-     */
+    @ApiModelProperty(value = "区域id")
     private Integer districtId;
 
-    /**
-     * 地铁信息
-     */
-    @ChangeName("nearBySubway")
+    @ApiModelProperty(value = "地铁信息")
     private  String roundStation;
 
-    /**
-     * 最近交房
-     */
-
+    @ApiModelProperty(value = "最近交房")
     private  String deliverTime;
 
-    /**
-     * 车位配比
-     */
-    @ChangeName("parkRatio")
+    @ApiModelProperty(value = "车位配比")
     private String parkRadio;
 
-    /**
-     * 均价
-     */
+    @ApiModelProperty(value = "均价")
     private Double averagePrice;
 
-    /**
-     * 销售状态
-     */
-    @ChangeName("saleStatus")
+    @ApiModelProperty(value = "销售状态")
     private  String  saleStatusName;
 
-    /**
-     * 大楼标题图
-     */
+    @ApiModelProperty(value = "楼盘标题图")
     private  String buildingTitleImg;
 
-    /**
-     * 户型总数
-     */
+    @ApiModelProperty(value = "户型总数")
     private  long roomTotalCount;
 
-    /**
-     * 户型类型
-     */
+    @ApiModelProperty(value = "户型类型")
     private String roomType;
 
-    /**
-     * 新房收藏数量
-     */
-    @ChangeName("favoriteCount")
+    @ApiModelProperty(value = "新房收藏数量")
     private Integer newHouseFavorite;
 
-
-    /**
-     *总价
-     */
-    @ChangeName("totalPrice")
+    @ApiModelProperty(value = "总价")
     private Double  totalPrice;
 
-
-    /**
-     * 类别
-     */
+    @ApiModelProperty(value = "类别")
     private  String propertyType;
 
-
-    /**
-     *  桥
-     */
+    @ApiModelProperty(value = "桥")
     private  String  ringRoadName;
 
-    /**
-     * 附近地铁信息
-     */
+    @ApiModelProperty(value = "附近地铁")
     private Map nearbysubway;
-    /**
-     * 房源与地铁站的距离
-     */
+
+    @ApiModelProperty(value = "房源与地铁站的距离")
     private String subwayDistanceInfo;
 
-    @ChangeName("tags")
+    @ApiModelProperty(value = "楼盘标签")
     private  String [] buildingTags;
 
-    /**
-     *  小区所属环线
-     */
+    @ApiModelProperty(value = "小区所属环线")
     private  Integer  ringRoad;
 
-    /**
-     * 推荐理由
-     */
+    @ApiModelProperty(value = "推荐理由")
     private String buildingFeature;
 
-    /**
-     * 建筑类别
-     */
+    @ApiModelProperty(value = "建筑类别")
     private String  buildingType;
-    /**
-     * 户型最低价格
-     */
+
+    @ApiModelProperty(value = "户型最低价格")
     private Double houseMinPrice;
-    /**
-     * 户型最大价格
-     */
+
+    @ApiModelProperty(value = "户型最大价格")
     private Double houseMaxPrice;
 
-    /**
-     * 开发商
-     */
+    @ApiModelProperty(value = "开发商")
     private  String  developers;
 
-    /**
-     * 物业管理公司
-     */
+    @ApiModelProperty(value = "物业管理公司")
     private  String propertymanage;
 
-    /**
-     * 开盘时间
-     */
+    @ApiModelProperty(value = "开盘时间")
     private  String openedTime;
 
-    /**
-     * 开盘时间描述
-     */
+    @ApiModelProperty(value = "开盘时间描述")
     private String openedTimeDesc;
 
-    /**
-     * 交付时间描述
-     */
+    @ApiModelProperty(value = "交付时间描述")
     private String deliverTimeDesc;
 
-    /**
-     * 楼盘动态
-     */
+    @ApiModelProperty(value = "楼盘动态")
     private List<NewHouseDynamicDo> newHouseDynamic;
-    /**
-     * 地址
-     */
-    @ChangeName("houseAddress")
+
+    @ApiModelProperty(value = "地址")
     private  String buildingAddress;
+
+    @ApiModelProperty(value = "新房动态数量")
+    private Long dynamicTotal;
+
+    @ApiModelProperty(value = "安全电话")
+
+    private String saletelphone;
+    @ApiModelProperty(value = "是否参与活动(0:未参与,1:参与)")
+    private Integer isActive;
+
+    @ApiModelProperty(value = "优惠活动")
+    private List<ActivityInfoDo> activityInfo;
+
+    @ApiModelProperty(value = "标签列表")
+    private List<HouseLable> houseLabelList;
+
+    @ApiModelProperty(value = "描述（高位）")
+    private  String descHigh;
+
+    @ApiModelProperty(value = "描述（中位）")
+    private  String descMid;
+
 
 }

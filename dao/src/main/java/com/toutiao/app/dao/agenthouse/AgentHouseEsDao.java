@@ -5,21 +5,21 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 
 public interface AgentHouseEsDao {
 
-    /**
-     * 根据房源id获取认领房源经纪人信息
-     * @param booleanQueryBuilder
-     * @return
-     */
-    SearchResponse getAgentHouseByHouseId(BoolQueryBuilder booleanQueryBuilder);
+//    /**
+//     * 根据房源id获取认领房源经纪人信息
+//     * @param booleanQueryBuilder
+//     * @return
+//     */
+//    SearchResponse getAgentHouseByHouseId(BoolQueryBuilder booleanQueryBuilder);
 
-    SearchResponse getAgentRentByRentId(BoolQueryBuilder booleanQueryBuilder);
+//    SearchResponse getAgentRentByRentId(BoolQueryBuilder booleanQueryBuilder);
 
     /**
      * 获取经纪人信息根据userid
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
 

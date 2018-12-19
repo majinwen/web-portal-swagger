@@ -5,9 +5,11 @@ import com.toutiao.app.domain.favorite.PlotsAddFavoriteDoQuery;
 import com.toutiao.app.domain.favorite.UserFavoriteVillage;
 import com.toutiao.app.domain.plot.PlotFavoriteListDoQuery;
 import com.toutiao.web.dao.BaseDao;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface UserFavoriteVillageMapper extends BaseDao {
     int deleteByPrimaryKey(Integer id);
 

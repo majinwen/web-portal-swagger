@@ -4,6 +4,9 @@ package com.toutiao.web.apiimpl.impl.Intelligence;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.api.chance.response.user.UserLoginResponse;
+import com.toutiao.app.domain.Intelligence.PriceRatioDo;
+import com.toutiao.app.domain.Intelligence.PriceTrendDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.user.UserBasicDo;
 import com.toutiao.app.service.user.UserBasicInfoService;
 import com.toutiao.web.common.restmodel.NashResult;
@@ -21,7 +24,10 @@ import org.postgresql.util.PGobject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -271,20 +277,25 @@ public class IntelligenceFindHouseController {
                         if(StringTool.isNotEmpty(((JSONObject) list.get(i)).get("newcode"))){
                             String plotId = ((JSONObject) list.get(i)).get("newcode").toString();
 
-                            Map plotMap = plotService.queryPlotByPlotId(plotId);
-                            ((JSONObject) list.get(i)).put("esfPrice",plotMap.get("avgPrice"));
-                            ((JSONObject) list.get(i)).put("plotImage",plotMap.get("photo").toString().replaceAll("[\\[\\]]",""));
+//                            Map plotMap = plotService.queryPlotByPlotId(plotId);
+//                            ((JSONObject) list.get(i)).put("esfPrice",plotMap.get("avgPrice"));
+//                            ((JSONObject) list.get(i)).put("plotImage",plotMap.get("photo").toString().replaceAll("[\\[\\]]",""));
+                            PlotDetailsDo plotDetailsDo = plotService.queryPlotByPlotId(plotId);
+                            ((JSONObject) list.get(i)).put("esfPrice", plotDetailsDo.getAvgPrice());
+                            ((JSONObject) list.get(i)).put("plotImage", plotDetailsDo.getPhoto().toString().replaceAll("[\\[\\]]", ""));
 
                         }
                     }
                     intelligenceFhRes.setFhResult(JSONObject.toJSONString(list));
-                    Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
-                    Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+//                    Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+                    PriceTrendDo fhpt = intelligenceFhPricetrendService.queryPriceTrend(intelligenceFhRes.getTotalPrice());
+//                    Map<String, Object> fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
+                    PriceRatioDo fhtp = intelligenceFhTdService.queryTd(intelligenceFhRes.getTotalPrice());
                     model.addAttribute("fhpt", fhpt);
-                    model.addAttribute("trend", JSON.toJSON(fhtp.getOrDefault("trend", new ArrayList<String>())).toString());
+                    model.addAttribute("trend", JSON.toJSON(fhtp.getTrend().toString()));
 //                    String datajson = ((PGobject) intelligenceFhRes.getFhResult()).getValue();
                     String datajson = list.toString();
-                    model.addAttribute("ptlists", JSON.toJSON(fhpt.getOrDefault("ptlists", new ArrayList<String>())).toString());
+                    model.addAttribute("ptlists", JSON.toJSON(fhpt.getPtlists().toString()));
                     model.addAttribute("datajson", datajson);
                     model.addAttribute("fhtp", fhtp);
                     model.addAttribute("reportId", reportId);
@@ -312,7 +323,8 @@ public class IntelligenceFindHouseController {
 
         Integer totalPrice = 500;
 //        Integer totalPrice = intelligenceQuery.getPreconcTotal();
-        Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+//        Map<String, Object> fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
+        PriceTrendDo fhpt = intelligenceFhPricetrendService.queryPriceTrend(totalPrice);
         return NashResult.build(fhpt);
     }
 
@@ -328,7 +340,8 @@ public class IntelligenceFindHouseController {
 
         Integer totalPrice = 500;
 //        Integer totalPrice = intelligenceQuery.getPreconcTotal();
-        Map<String, Object> fhtp = intelligenceFhTdService.queryTd(totalPrice);
+//        Map<String, Object> fhtp = intelligenceFhTdService.queryTd(totalPrice);
+        PriceRatioDo fhtp = intelligenceFhTdService.queryTd(totalPrice);
         return NashResult.build(fhtp);
     }
 

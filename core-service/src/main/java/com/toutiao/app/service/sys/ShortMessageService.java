@@ -1,6 +1,6 @@
 package com.toutiao.app.service.sys;
 
-import com.toutiao.web.common.restmodel.InvokeResult;
+import com.toutiao.app.domain.activity.UserNewBuildingActivity;
 import com.toutiao.web.common.restmodel.NashResult;
 
 /**
@@ -10,5 +10,16 @@ public interface ShortMessageService {
 
 
 
-    NashResult sendVerifyCode(String phone);
+    String sendVerifyCode(String phone, Integer type);
+
+    /**
+     * 发送优惠活动短信信息
+     * @param userPhone
+     * @param userNewBuildingActivity
+     * @return
+     */
+    NashResult sendSmsByActivity(String userPhone, UserNewBuildingActivity userNewBuildingActivity);
+
+
+
 }

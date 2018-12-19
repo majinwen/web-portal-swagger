@@ -7,7 +7,7 @@ import java.util.List;
 @Data
 public class SellHouseDomain {
 
-    private List<SellHouseDo> sellHouseList;
+    private List<SellHouseDo> data;
 
-    private Integer total;
+    private Integer totalNum;
 }

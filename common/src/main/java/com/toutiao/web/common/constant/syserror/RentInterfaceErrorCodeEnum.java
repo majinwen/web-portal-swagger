@@ -18,6 +18,7 @@ public enum RentInterfaceErrorCodeEnum implements IntBaseType {
     RENT_FAVORITE_NOT_FOUND("租房收藏列表为空",70603),
     RENT_FAVORITE_ADD_REPEAT("添加租房收藏重复",70604),
     RENT_FAVORITE_ADD_ERROR("添加租房收藏重复",70605),
+    RENT_FAVORITE_DELETE_ERROR("删除租房收藏失败",70606),
     RENT_DETAILS_NOT_FOUND("租房详情未找到",70201);
 
     /**

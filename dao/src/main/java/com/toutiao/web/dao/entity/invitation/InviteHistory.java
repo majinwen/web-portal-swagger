@@ -1,5 +1,6 @@
 package com.toutiao.web.dao.entity.invitation;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.Date;
@@ -11,9 +12,7 @@ public class InviteHistory {
      */
     private Integer id;
 
-    /**
-     * 邀请码
-     */
+    @ApiModelProperty(value = "邀请码")
     private Integer invitationCode;
 
     /**
@@ -26,23 +25,15 @@ public class InviteHistory {
      */
     private Date createTime;
 
-    /**
-     * 是否有效
-     */
+    @ApiModelProperty(value = "是否有效", hidden = true)
     private Short isValid;
 
-    /**
-     * 支付时间
-     */
+    @ApiModelProperty(value = "设备号", hidden = true)
     private Date payTime;
 
-    /**
-     * 设备号
-     */
+    @ApiModelProperty(value = "设备号")
     private String equipmentNo;
 
-    /**
-     * 用户手机号
-     */
+    @ApiModelProperty(value = "用户手机号")
     private String phone;
 }

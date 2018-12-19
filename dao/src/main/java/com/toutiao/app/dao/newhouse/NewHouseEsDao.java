@@ -2,6 +2,7 @@ package com.toutiao.app.dao.newhouse;
 
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 
 public interface NewHouseEsDao {
@@ -11,7 +12,7 @@ public interface NewHouseEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder, String city);
 
 
     /**
@@ -21,19 +22,25 @@ public interface NewHouseEsDao {
      * @param pageSize
      * @return
      */
-    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort );
+    SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort, String city, String sort);
 
 
 
-    SearchResponse getDynamicByNewCode(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize);
+    SearchResponse getDynamicByNewCode(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize, String city);
 
 
-    SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder  boolQueryBuilder);
-
-    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder  boolQueryBuilder ,String city);
 
 
-    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getBuildCount(BoolQueryBuilder  boolQueryBuilder ,String city);
+
+    SearchResponse getGuessLikeNewHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize);
+
+//    SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
+//
+//
+//    SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder, String city);
 
 
+    SearchResponse getNewHouseCustomList(BoolQueryBuilder builder, Integer pageNum, Integer pageSize, String city);
 }

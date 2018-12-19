@@ -14,6 +14,7 @@ import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.slf4j.Logger;
@@ -50,8 +51,8 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
 
     private static final Logger logger = LoggerFactory.getLogger(NearbyPlotsRestServiceImpl.class);
 
-    @Value("${plot.child.type}")
-    private String childType;
+//    @Value("${plot.child.type}")
+//    private String childType;
     @Autowired
     private NearbyPlotsEsDao nearbyPlotsEsDao;
     @Autowired
@@ -66,7 +67,7 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
      * @return
      */
     @Override
-    public PlotDetailsFewDomain queryNearbyPlotsListByUserCoordinate(NearbyPlotsDoQuery nearbyPlotsDoQuery) {
+    public PlotDetailsFewDomain queryNearbyPlotsListByUserCoordinate(NearbyPlotsDoQuery nearbyPlotsDoQuery, String city) {
         List<PlotDetailsFewDo> plotDetailsFewDoList = new ArrayList<>();
         PlotDetailsFewDomain plotDetailsFewDomain = new PlotDetailsFewDomain();
         //小区筛选条件
@@ -86,7 +87,7 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
             pageNum = nearbyPlotsDoQuery.getPageNum();
         }
         SearchResponse searchResponse = nearbyPlotsEsDao.queryNearbyPlotsListByUserCoordinate(geoDistanceQueryBuilder,sort,boolQueryBuilder,
-                nearbyPlotsDoQuery.getKeyword(), pageNum,nearbyPlotsDoQuery.getPageSize());
+                nearbyPlotsDoQuery.getKeyword(), pageNum,nearbyPlotsDoQuery.getPageSize(),city);
 
         long nearbyPlotsTotal = searchResponse.getHits().totalHits;
 
@@ -103,20 +104,20 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
             plotDetailsFewDo.setMetroWithPlotsDistance(null);
             //二手房总数
             try {
-                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId());
+                PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryPlotsEsfByPlotsId(plotDetailsFewDo.getId(),CityUtils.getCity());
                 plotDetailsFewDo.setSellHouseTotalNum(Math.toIntExact(plotsEsfRoomCountDomain.getTotalCount()));
             }catch (BaseException e){
-                logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
+                //logger.error("获取小区下二手房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
                 if (e.getCode()==50301){
                     plotDetailsFewDo.setSellHouseTotalNum(0);
                 }
             }
             //租房总数
             try {
-                RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId());
+                RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotDetailsFewDo.getId(), CityUtils.getCity());
                 plotDetailsFewDo.setRentTotalNum(rentNumListDo.getTotalNum());
             }catch (BaseException e){
-                logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
+                //logger.error("获取小区下租房数量异常 "+plotDetailsFewDo.getId()+"={}",e.getCode());
                 if (e.getCode()==50401){
                     plotDetailsFewDo.setRentTotalNum(0);
                 }
@@ -208,14 +209,14 @@ public class NearbyPlotsRestServiceImpl implements NearbyPlotsRestService {
         }
         //房源面积大小
         if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("sellhouse", QueryBuilders.rangeQuery("houseArea")
                     .gte(nearbyPlotsDoQuery.getBeginArea()).lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
 
         }else if(nearbyPlotsDoQuery.getBeginArea()==0 && nearbyPlotsDoQuery.getEndArea()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("sellhouse", QueryBuilders.rangeQuery("houseArea")
                     .lte(nearbyPlotsDoQuery.getEndArea()), ScoreMode.None));
         }else if(nearbyPlotsDoQuery.getBeginArea()!=0 && nearbyPlotsDoQuery.getEndArea()==0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(childType, QueryBuilders.rangeQuery("houseArea")
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery("sellhouse", QueryBuilders.rangeQuery("houseArea")
                     .gte(nearbyPlotsDoQuery.getBeginArea()), ScoreMode.None));
         }
 

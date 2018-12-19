@@ -197,6 +197,7 @@
                             <span>
                                 <#if agent['agent_name']?exists&&agent['agent_name']!=''>${agent['agent_name']}</#if>
                                 <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                                <#if rentHouse['companyCard']?exists && rentHouse['companyCard'] != ''><i class="agent-business-card imagePreviewAgentCompany"><img src="${staticurl}/images/global/yingyezhizhao.png"></i></#if>
                             </span>
                             <em><#if agent['of_company']?exists&&agent['of_company']!=''> ${agent['of_company']}</em></#if>
                         </p>
@@ -235,6 +236,7 @@
                             <span>
                                 ${rentHouse['estate_agent']}
                                 <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''><i class="agent-business-card imagePreviewAgent"><img src="${staticurl}/images/global/shenfenrenzheng.png"></i></#if>
+                                <#if rentHouse['companyCard']?exists && rentHouse['companyCard'] != ''><i class="agent-business-card imagePreviewAgentCompany"><img src="${staticurl}/images/global/yingyezhizhao.png"></i></#if>
                             </span>
                             <em>${rentHouse['brokerage_agency']}</em>
                         </p>
@@ -362,6 +364,18 @@
         </#if>
     </div>
 </div>
+<div class="agent-card-company-prev">
+    <div class="agent-card-content">
+        <i id="closeAgentCompany"><img width="100%" src="${staticurl}/images/global/agent-card-close.png"/></i>
+    <#if rentHouse['agentBusinessCard']?exists && rentHouse['agentBusinessCard'] != ''>
+        <#if rentHouse['agentBusinessCard']?index_of('http') gt -1>
+            <img src="${rentHouse.agentBusinessCard}"/>
+        <#else >
+            <img src="${qiniuimage}/${rentHouse.agentBusinessCard}-agent200x300"/>
+        </#if>
+    </#if>
+    </div>
+</div>
 <!-------- photoswipe -------->
 <script src="${staticurl}/js/fastclick.js?v=${staticversion}"></script>
 <script src="${staticurl}/js/default-touch.js?v=${staticversion}"></script>
@@ -408,10 +422,16 @@
     $(function () {
         $('.imagePreviewAgent').on('click', function() {
             $('.agent-card-prev').show()
-        })
+        });
         $('#closeAgent').on('click', function() {
             $('.agent-card-prev').hide()
-        })
+        });
+        $('.imagePreviewAgentCompany').on('click', function() {
+            $('.agent-card-company-prev').show()
+        });
+        $('#closeAgentCompany').on('click', function() {
+            $('.agent-card-company-prev').hide()
+        });
         var text = $("tilePlotDesc").find("p").text();
         if (text.indexOf(",") == 0) {
             var s = text.substring(1);
@@ -472,6 +492,19 @@
             'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
             'location' : '${rentHouse.location}'
         });
+        var bdwlogger = new window.Tracker();
+        bdwlogger.logger('出租房源认领统计',{
+            '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
+            '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
+            '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 0>小区名称<#else >${rentHouse.zufang_name}</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
+            '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
+            '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
+            '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡</#if>',
+            '户型' : '<#if rentHouse.room?exists>${rentHouse.room}室</#if><#if rentHouse.hall?exists>${rentHouse.hall}厅</#if>',
+            '发布公司' : '<#if rentHouse.brokerage_agency?exists>${rentHouse.brokerage_agency}</#if>',
+            'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
+            'location' : '${rentHouse.location}'
+        });
         </#if>
     </#if>
 
@@ -488,6 +521,19 @@
             'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
             'location' : '${rentHouse.location}'
         });
+    var bdwlogger = new window.Tracker();
+    bdwlogger.logger('出租房源认领统计',{
+        '区域' : '<#if rentHouse.district_name?exists && rentHouse.district_name!=''>${rentHouse.district_name}</#if>',
+        '商圈' : '<#if rentHouse.area_name?exists && rentHouse.area_name!=''>${rentHouse.area_name}</#if>',
+        '<#if rentHouse.rent_sign?exists && rentHouse.rent_sign == 0>小区名称<#else >${rentHouse.zufang_name}</#if>' : '<#if rentHouse.zufang_name?exists&& rentHouse.zufang_name!=''>${rentHouse.zufang_name}</#if>',
+        '出租方式' : '<#if rentHouse.rent_sign_name?exists>${rentHouse.rent_sign_name}</#if>',
+        '租金' : '<#if rentHouse.rent_house_price?exists && (rentHouse.rent_house_price!=0)>${rentHouse.rent_house_price}</#if>元',
+        '面积' : '<#if rentHouse.house_area?exists && rentHouse.house_area!=0>${rentHouse.house_area}㎡</#if>',
+        '户型' : '<#if rentHouse.room?exists>${rentHouse.room}室</#if><#if rentHouse.hall?exists>${rentHouse.hall}厅</#if>',
+        '发布公司' : '<#if rentHouse.brokerage_agency?exists>${rentHouse.brokerage_agency}</#if>',
+        'ID' : '<#if rentHouse.house_id?exists>${rentHouse.house_id}</#if>',
+        'location' : '${rentHouse.location}'
+    });
     </#if>
 
 
