@@ -657,7 +657,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 boolQueryBuilderT2.must(existsQuery("saletelphone"));
                 boolQueryBuilderT2.mustNot(termQuery("saletelphone", ""));
 
-                SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize());
+                SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, pageNum_T2, pageSize_T2);
 
 
                 SearchHit[] hitsT2 = searchResponseT2.getHits().getHits();
