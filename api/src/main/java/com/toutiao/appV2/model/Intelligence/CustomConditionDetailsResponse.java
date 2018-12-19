@@ -17,8 +17,19 @@ import java.util.List;
 public class CustomConditionDetailsResponse {
 
 
-   private List<CustomConditionDistrictDo> districtData;
+//   private List<CustomConditionDistrictDo> districtData;
 
-   private List<CustomConditionDetailsDo> data;
+//   private Integer districtId;
+//
+//   private String districtName;
+//
+//   private Double latitude;
+//
+//   private Double longitude;
+//
+//
+//   private List<CustomConditionDetailsDo> data;
+
+   private List<CustomConditionDistrictDo> data;
 
 }

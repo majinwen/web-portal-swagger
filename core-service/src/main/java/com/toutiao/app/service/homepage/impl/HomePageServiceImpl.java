@@ -721,7 +721,9 @@ public class HomePageServiceImpl implements HomePageRestService {
         if(userFavoriteConditionDoQuery.getConditionType()==0){
             //二手房
             String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
-            boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+            if (layoutId.length > 0){
+                boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+            }
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
                 boolQueryBuilder.must(termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
             }

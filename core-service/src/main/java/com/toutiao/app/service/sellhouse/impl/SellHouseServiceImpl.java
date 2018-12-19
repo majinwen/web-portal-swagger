@@ -73,6 +73,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
@@ -113,11 +114,11 @@ public class SellHouseServiceImpl implements SellHouseService {
         Date date = new Date();
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         if ("FS".equals(houseId.substring(0, 2))) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("claimHouseId", houseId));
+            booleanQueryBuilder.must(termQuery("claimHouseId", houseId));
         } else {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseId", houseId));
+            booleanQueryBuilder.must(termQuery("houseId", houseId));
         }
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        booleanQueryBuilder.must(termQuery("isDel", 0));
         SearchResponse searchResponse = sellHouseEsDao.getSellHouseByHouseId(booleanQueryBuilder, city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
@@ -241,7 +242,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 
             String details = "";
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termQuery("id", plotId));
+            boolQueryBuilder.must(termQuery("id", plotId));
             SearchResponse plotSearchResponse = plotEsDao.queryPlotDetail(boolQueryBuilder, city);
             SearchHit[] plotHits = plotSearchResponse.getHits().getHits();
 
@@ -264,7 +265,7 @@ public class SellHouseServiceImpl implements SellHouseService {
     @Override
     public List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseIds) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        boolQueryBuilder.must(termQuery("isDel", 0));
 //        if(houseIds.indexOf("FS")>-1){
 //            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
 //        }else {
@@ -287,7 +288,7 @@ public class SellHouseServiceImpl implements SellHouseService {
     @Override
     public List<MessageSellHouseDo> querySellHouseByHouseIdNew(String[] houseIds, String city) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        boolQueryBuilder.must(termQuery("isDel", 0));
 //        if(houseIds.indexOf("FS")>-1){
 //            boolQueryBuilder.must(QueryBuilders.termQuery("claimHouseId",houseIds));
 //        }else {
@@ -363,8 +364,8 @@ public class SellHouseServiceImpl implements SellHouseService {
 //        boolQueryBuilder.should(queryBuilderOfMonth);
 
         BoolQueryBuilder queryBuilderOfWeek = QueryBuilders.boolQuery();
-        queryBuilderOfWeek.must(QueryBuilders.termQuery("is_claim", 0));
-        queryBuilderOfWeek.must(QueryBuilders.termQuery("isNew", 1));
+        queryBuilderOfWeek.must(termQuery("is_claim", 0));
+        queryBuilderOfWeek.must(termQuery("isNew", 1));
         queryBuilderOfWeek.must(QueryBuilders.termsQuery("isDel", "0"));
 
 //        queryBuilderOfWeek.must(QueryBuilders.boolQuery().must(QueryBuilders.rangeQuery("import_time").gt(pastDateOfWeek).lte(nowDate)));
@@ -469,8 +470,8 @@ public class SellHouseServiceImpl implements SellHouseService {
             return sellHouseNoCondition;
         }
 
-        boolQueryBuilderT1.must(QueryBuilders.termQuery("isDel", 0));
-        boolQueryBuilderT1.must(QueryBuilders.termQuery("is_claim", 0));
+        boolQueryBuilderT1.must(termQuery("isDel", 0));
+        boolQueryBuilderT1.must(termQuery("is_claim", 0));
 
         //区域
         if (ArrayUtils.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId())) {
@@ -591,8 +592,8 @@ public class SellHouseServiceImpl implements SellHouseService {
             if (pageNum_T2 == 1) {
                 pageSize_T2 = userFavoriteConditionDoQuery.getPageSize() - totalHits_T1 % userFavoriteConditionDoQuery.getPageSize();
             }
-            boolQueryBuilderT2.must(QueryBuilders.termQuery("is_claim", 0));
-            boolQueryBuilderT2.must(QueryBuilders.termQuery("isDel", 0));
+            boolQueryBuilderT2.must(termQuery("is_claim", 0));
+            boolQueryBuilderT2.must(termQuery("isDel", 0));
 
             //只符合价格条件的房源
             //价格
@@ -680,8 +681,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if (pageNum_T3 == 1) {
                     pageSize_T3 = userFavoriteConditionDoQuery.getPageSize() - (totalHits_T2 + totalHits_T1) % userFavoriteConditionDoQuery.getPageSize();
                 }
-                boolQueryBuilderT3.must(QueryBuilders.termQuery("is_claim", 0));
-                boolQueryBuilderT3.must(QueryBuilders.termQuery("isDel", 0));
+                boolQueryBuilderT3.must(termQuery("is_claim", 0));
+                boolQueryBuilderT3.must(termQuery("isDel", 0));
                 //展示全部房源 即所有条件为不限
 
                 //使用functionnscore增加isNew为1的房源分数
@@ -748,8 +749,8 @@ public class SellHouseServiceImpl implements SellHouseService {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         //默认条件
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        boolQueryBuilder.must(termQuery("is_claim", 0));
+        boolQueryBuilder.must(termQuery("isDel", 0));
 
         //使用functionnscore增加isNew为1的房源分数
         ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.fieldValueFactorFunction("isNew").modifier(FieldValueFactorFunction.Modifier.LN1P).factor(1).setWeight(1);
@@ -871,7 +872,7 @@ public class SellHouseServiceImpl implements SellHouseService {
         SellHouseDomain sellHouseDomain = new SellHouseDomain();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", 1));
+        boolQueryBuilder.must(termQuery("is_claim", 1));
         boolQueryBuilder.must(QueryBuilders.rangeQuery("isRecommend").gt(0));
         FunctionScoreQueryBuilder query = getQuery(sellHouseDoQuery, boolQueryBuilder, city);
         SearchResponse searchResponse = sellHouseEsDao.getRecommendSellHouse(query, sellHouseDoQuery.getUid(),
@@ -951,7 +952,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 
         //过滤为删除
         booleanQueryBuilder.must(QueryBuilders.termsQuery("isDel", "0"));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+        booleanQueryBuilder.must(termQuery("is_claim", "0"));
 //        booleanQueryBuilder.mustNot(QueryBuilders.termsQuery("is_parent_claim", "1"));
 
         FunctionScoreQueryBuilder query = null;
@@ -1336,8 +1337,8 @@ public class SellHouseServiceImpl implements SellHouseService {
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
         //过滤为删除
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+        booleanQueryBuilder.must(termQuery("isDel", "0"));
+        booleanQueryBuilder.must(termQuery("is_claim", "0"));
         //商圈id
         if (StringTool.isNotEmpty(sellHouseDoQuery.getAreaId()) && sellHouseDoQuery.getAreaId().length != 0) {
             booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId", sellHouseDoQuery.getAreaId()));
@@ -1349,11 +1350,11 @@ public class SellHouseServiceImpl implements SellHouseService {
         }
         //厅
         if (StringTool.isNotEmpty(sellHouseDoQuery.getHall()) && sellHouseDoQuery.getHall()!=0) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("hall", sellHouseDoQuery.getHall()));
+            booleanQueryBuilder.must(termQuery("hall", sellHouseDoQuery.getHall()));
         }
 
         if (StringTool.isNotEmpty(sellHouseDoQuery.getHouseId())) {
-            booleanQueryBuilder.mustNot(QueryBuilders.termQuery("houseId", sellHouseDoQuery.getHouseId()));
+            booleanQueryBuilder.mustNot(termQuery("houseId", sellHouseDoQuery.getHouseId()));
         }
 
         if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getTotalPrice())){
@@ -1683,12 +1684,12 @@ public class SellHouseServiceImpl implements SellHouseService {
         FieldSortBuilder sortFile = null;
         Integer subscribeId = -1;
         if (null != sellHouseBeSureToSnatchDoQuery.getIsNew()) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", 1));
+            booleanQueryBuilder.must(termQuery("isNew", 1));
         }
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", 1));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
+        booleanQueryBuilder.must(termQuery("isMustRob", 1));
+        booleanQueryBuilder.must(termQuery("is_claim", 0));
 //        booleanQueryBuilder.must(QueryBuilders.termQuery("status",0));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+        booleanQueryBuilder.must(termQuery("isDel", 0));
 
         if (null != sellHouseBeSureToSnatchDoQuery.getSortFile() && null != sellHouseBeSureToSnatchDoQuery.getSort()) {
             if (sellHouseBeSureToSnatchDoQuery.getSort().equals(1)) {
@@ -2072,8 +2073,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                         && (userFavoriteEsHouseMapper.selectEsHouseFavoriteByUserId(Integer.valueOf(userId)) == 0)) {
 
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-            boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
-            boolQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
+            boolQueryBuilder.must(termQuery("is_claim", 0));
+            boolQueryBuilder.must(termQuery("isDel", 0));
 
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
@@ -2113,8 +2114,8 @@ public class SellHouseServiceImpl implements SellHouseService {
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
             //过滤为删除
-            booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-            booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
+            booleanQueryBuilder.must(termQuery("isDel", "0"));
+            booleanQueryBuilder.must(termQuery("is_claim", "0"));
 
             //商圈
             if (null != sellHouseDoQuery.getAreaName() && !"".equals(sellHouseDoQuery.getAreaName())) {
@@ -2132,7 +2133,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 
             //厅
             if (StringTool.isNotEmpty(sellHouseDoQuery.getHall()) && sellHouseDoQuery.getHall() != 0) {
-                booleanQueryBuilder.must(QueryBuilders.termQuery("hall", sellHouseDoQuery.getHall()));
+                booleanQueryBuilder.must(termQuery("hall", sellHouseDoQuery.getHall()));
             }
 
             // 总价浮动30
@@ -2162,8 +2163,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if (pageNum_T2 == 1) {
                     pageSize_T2 = sellHouseDoQuery.getPageSize() - totalHits_T1 % sellHouseDoQuery.getPageSize();
                 }
-                boolQueryBuilderT2.must(QueryBuilders.termQuery("is_claim", 0));
-                boolQueryBuilderT2.must(QueryBuilders.termQuery("isDel", 0));
+                boolQueryBuilderT2.must(termQuery("is_claim", 0));
+                boolQueryBuilderT2.must(termQuery("isDel", 0));
 
                 Date date = new Date();
                 SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
@@ -2426,6 +2427,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 
     }
 
+
     private List<SellHouseDo> getResultFromSearchHitList(String city, List<SellHouseDo> list, List<SearchHit> searchHitList) {
         for (SearchHit hit : searchHitList) {
             String details = hit.getSourceAsString();
@@ -2569,78 +2571,10 @@ public class SellHouseServiceImpl implements SellHouseService {
     }
 
 
-
     @Override
     public CustomConditionDetailsDomain getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city) {
         CustomConditionDetailsDomain customConditionDetailsDomain = new CustomConditionDetailsDomain();
-        List<CustomConditionDetailsDo> customConditionDetailsDos = new ArrayList<>();
         List<CustomConditionDistrictDo> customConditionDistrictDos = new ArrayList<>();
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
-        String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
-        if(layoutId.length > 0){
-            boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
-        }
-        if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
-        }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
-        }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
-        }
-        if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
-            boolQueryBuilder.must(termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
-        }
-
-        SearchResponse searchResponse = sellHouseEsDao.getEsfCustomConditionDetails(boolQueryBuilder, city);
-        //long searchCount = searchResponse.getHits().totalHits;
-        Terms terms = searchResponse.getAggregations().get("areaName");
-        List buckets = terms.getBuckets();
-        for (Object bucket : buckets){
-            CustomConditionDetailsDo conditionDetailsDo = new CustomConditionDetailsDo();
-            conditionDetailsDo.setBizcircleId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());
-            conditionDetailsDo.setHouseCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
-            ParsedMin houseMinArea = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("houseMinArea");
-
-            Double minArea = houseMinArea.getValue();
-            if (null!=minArea) {
-                conditionDetailsDo.setHouseMinArea( new BigDecimal(minArea).setScale(1, RoundingMode.UP).doubleValue());
-            }
-            ParsedMax houseMaxArea = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("houseMaxArea");
-            Double maxArea = houseMaxArea.getValue();
-            if (null!=maxArea) {
-                conditionDetailsDo.setHouseMaxArea(new BigDecimal(maxArea).setScale(1, RoundingMode.UP).doubleValue());
-            }
-
-            conditionDetailsDo.setHouseAreaDesc(conditionDetailsDo.getHouseMinArea()+"-"+conditionDetailsDo.getHouseMaxArea()+"m²");
-            Terms buildCount = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("buildCount");
-            if(buildCount.getBuckets().size() > 0){
-                conditionDetailsDo.setBuildCount(buildCount.getBuckets().size());
-            }else{
-                conditionDetailsDo.setBuildCount(0);
-            }
-
-
-            BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-            boolQuery.must(QueryBuilders.termQuery("bizcircle_id",conditionDetailsDo.getBizcircleId()));
-            SearchResponse avgPriceByBizcircle = sellHouseEsDao.getAvgPriceByBizcircle(boolQuery, city);
-            SearchHits layoutHits = avgPriceByBizcircle.getHits();
-            SearchHit[] searchHists = layoutHits.getHits();
-            if(searchHists.length > 0){
-                for(SearchHit searchHit : searchHists){
-                    conditionDetailsDo.setBizcircleName(searchHit.getSourceAsMap().get("bizcircle_name")==null?"":searchHit.getSourceAsMap().get("bizcircle_name").toString());
-                    conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
-                    String location =  searchHit.getSourceAsMap().get("bizcircle_location")==null?"":searchHit.getSourceAsMap().get("bizcircle_location").toString();
-                    if(StringTool.isNotEmpty(location)){
-                        String[] lat_lon = location.split(",");
-                        conditionDetailsDo.setLatitude(Double.valueOf(lat_lon[0]));
-                        conditionDetailsDo.setLongitude(Double.valueOf(lat_lon[1]));
-                    }
-                }
-            }
-            customConditionDetailsDos.add(conditionDetailsDo);
-        }
 
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
@@ -2667,10 +2601,79 @@ public class SellHouseServiceImpl implements SellHouseService {
             if(longitude.getBuckets().size() > 0){
                 customConditionDistrictDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
             }
-            customConditionDistrictDos.add(customConditionDistrictDo);
+            //房源
+            BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+            boolQueryBuilder.must(termQuery("isDel", "0"));
+            boolQueryBuilder.must(termQuery("is_claim", "0"));
+            String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
+            if(layoutId.length > 0){
+                boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+            }
+            if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
+            }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
+            }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
+            }
+
+            boolQueryBuilder.must(termQuery("areaId", customConditionDistrictDo.getDistrictId()));
+
+            SearchResponse searchResponse = sellHouseEsDao.getEsfCustomConditionDetails(boolQueryBuilder, city);
+            Terms terms = searchResponse.getAggregations().get("areaName");
+            List buckets = terms.getBuckets();
+            List<CustomConditionDetailsDo> customConditionDetailsDoList = new ArrayList<>();
+            for (Object obhectBucket : buckets){
+
+                CustomConditionDetailsDo conditionDetailsDo = new CustomConditionDetailsDo();
+                conditionDetailsDo.setBizcircleId(((ParsedLongTerms.ParsedBucket) obhectBucket).getKeyAsNumber().intValue());
+                conditionDetailsDo.setHouseCount((int) ((ParsedLongTerms.ParsedBucket) obhectBucket).getDocCount());
+                ParsedMin houseMinArea = ((ParsedLongTerms.ParsedBucket) obhectBucket).getAggregations().get("houseMinArea");
+
+                Double minArea = houseMinArea.getValue();
+                if (null!=minArea) {
+                    conditionDetailsDo.setHouseMinArea( new BigDecimal(minArea).setScale(1, RoundingMode.UP).doubleValue());
+                }
+                ParsedMax houseMaxArea = ((ParsedLongTerms.ParsedBucket) obhectBucket).getAggregations().get("houseMaxArea");
+                Double maxArea = houseMaxArea.getValue();
+                if (null!=maxArea) {
+                    conditionDetailsDo.setHouseMaxArea(new BigDecimal(maxArea).setScale(1, RoundingMode.UP).doubleValue());
+                }
+
+                conditionDetailsDo.setHouseAreaDesc(conditionDetailsDo.getHouseMinArea()+"-"+conditionDetailsDo.getHouseMaxArea()+"m²");
+                Terms buildCount = ((ParsedLongTerms.ParsedBucket) obhectBucket).getAggregations().get("buildCount");
+                if(buildCount.getBuckets().size() > 0){
+                    conditionDetailsDo.setBuildCount(buildCount.getBuckets().size());
+                }else{
+                    conditionDetailsDo.setBuildCount(0);
+                }
+
+
+                BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+                queryBuilder.must(QueryBuilders.termQuery("bizcircle_id",conditionDetailsDo.getBizcircleId()));
+                SearchResponse avgPriceByBizcircle = sellHouseEsDao.getAvgPriceByBizcircle(queryBuilder, city);
+                SearchHits layoutHits = avgPriceByBizcircle.getHits();
+                SearchHit[] searchHists = layoutHits.getHits();
+                if(searchHists.length > 0){
+                    for(SearchHit searchHit : searchHists){
+                        conditionDetailsDo.setBizcircleName(searchHit.getSourceAsMap().get("bizcircle_name")==null?"":searchHit.getSourceAsMap().get("bizcircle_name").toString());
+                        conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
+                        String location =  searchHit.getSourceAsMap().get("bizcircle_location")==null?"":searchHit.getSourceAsMap().get("bizcircle_location").toString();
+                        if(StringTool.isNotEmpty(location)){
+                            String[] lat_lon = location.split(",");
+                            conditionDetailsDo.setLatitude(Double.valueOf(lat_lon[0]));
+                            conditionDetailsDo.setLongitude(Double.valueOf(lat_lon[1]));
+                        }
+                    }
+                }
+                customConditionDetailsDoList.add(conditionDetailsDo);
+
         }
-        customConditionDetailsDomain.setDistrictData(customConditionDistrictDos);
-        customConditionDetailsDomain.setData(customConditionDetailsDos);
+            customConditionDistrictDo.setData(customConditionDetailsDoList);
+            customConditionDistrictDos.add(customConditionDistrictDo);
+
+        }
+        customConditionDetailsDomain.setData(customConditionDistrictDos);
         return customConditionDetailsDomain;
     }
 

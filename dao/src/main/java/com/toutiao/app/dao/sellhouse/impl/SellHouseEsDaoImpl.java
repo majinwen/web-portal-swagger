@@ -131,15 +131,39 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
         if ((null != keyword && !"".equals(keyword)) || (null != distance && distance > 0)) {
             //   searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
             if ("1".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("updateTimeSort", SortOrder.DESC);
+                }
             } else if ("3".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.ASC);
+                }
+
             } else if ("4".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseTotalPrices", SortOrder.DESC);
+                }
+
             } else if ("5".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("houseUnitCost", SortOrder.ASC);
+                }
+
             } else if ("6".equals(sort)) {
-                searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("buildArea", SortOrder.DESC).sort(geoDistanceSort);
+                if (null != geoDistanceSort) {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("buildArea", SortOrder.DESC).sort(geoDistanceSort);
+                } else {
+                    searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("buildArea", SortOrder.DESC);
+                }
+
             } else {
                 if (geoDistanceSort != null) {
                     searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort(geoDistanceSort);
