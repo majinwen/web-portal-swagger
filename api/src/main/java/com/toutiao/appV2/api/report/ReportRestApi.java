@@ -24,6 +24,17 @@ public interface ReportRestApi {
             method = RequestMethod.GET)
     ResponseEntity<ReportCityResponse> selectReportCity();
 
+    @ApiOperation(value = "获取首页数据报告数据", nickname = "selectReportCityForHP", notes = "", response = ReportCityForHPResponse.class, tags = {"数据报告",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = ReportCityForHPResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/report/selectReportCityForHP",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<ReportCityForHPResponse> selectReportCityForHP();
+
     @ApiOperation(value = "数据报告:新房指南关注榜", nickname = "selectReportNewGuideAttentionList", notes = "", response = ReportNewGuideAttentionListResponse.class, tags = {"数据报告",})
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = ReportNewGuideAttentionListResponse.class),

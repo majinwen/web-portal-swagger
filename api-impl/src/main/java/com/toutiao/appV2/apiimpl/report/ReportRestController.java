@@ -43,6 +43,16 @@ public class ReportRestController implements ReportRestApi {
     }
 
     @Override
+    public ResponseEntity<ReportCityForHPResponse> selectReportCityForHP() {
+        Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
+        ReportCity reportCity = reportCityService.selectReportCityByCityId(cityId);
+        ReportCityResponse reportCityResponse = turnToResponse(reportCity);
+        ReportCityForHPResponse reportCityForHPResponse = new ReportCityForHPResponse();
+        BeanUtils.copyProperties(reportCityResponse,reportCityForHPResponse);
+        return new ResponseEntity<>(reportCityForHPResponse, HttpStatus.OK);
+    }
+
+    @Override
     public ResponseEntity<ReportNewGuideAttentionListResponse> selectReportNewGuideAttentionList(@ApiParam(value = "pageNum") @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
                                                                                                  @ApiParam(value = "pageSize") @RequestParam(value = "pageSize", defaultValue = "20") Integer pageSize) {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
