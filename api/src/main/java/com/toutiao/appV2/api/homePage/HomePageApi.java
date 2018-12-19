@@ -109,7 +109,6 @@ public interface HomePageApi {
     @RequestMapping(value = "/rest/homePage/getHomePageNewHouse",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<HomePageNewHouseResponseList> getHomePageNewHouse();
 
 
