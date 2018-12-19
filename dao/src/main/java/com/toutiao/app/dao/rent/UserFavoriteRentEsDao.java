@@ -28,4 +28,12 @@ public interface UserFavoriteRentEsDao {
      * @return
      */
     SearchResponse querySubwayLineHouse(SearchSourceBuilder searchSourceBuilder, String city);
+
+    /**
+     * 获取地铁站信息
+     * @param boolQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse getSubwayStationinfo(BoolQueryBuilder boolQueryBuilder, String city);
 }

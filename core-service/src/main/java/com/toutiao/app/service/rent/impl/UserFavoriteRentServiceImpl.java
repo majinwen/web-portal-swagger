@@ -192,9 +192,9 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 }
 
                 //对地铁站做聚合
-                searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("subway_station_id")
-                        .subAggregation(AggregationBuilders.terms("community").field("zufang_id"))
-                        .order(BucketOrder.key(true)).size(1000).includeExclude(includeExclude)).sort("sortingScore", SortOrder.DESC);
+                searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("subway_station_id").order(BucketOrder.count(false))
+                        .size(1000).includeExclude(includeExclude).subAggregation(AggregationBuilders.terms("community").field("zufang_id").size(1000)))
+                        .sort("sortingScore", SortOrder.DESC);
                 SearchResponse searchResponse = userFavoriteRentEsDao.querySubwayLineHouse(searchSourceBuilder, city);
                 if (null!=searchResponse) {
                     Terms ID = searchResponse.getAggregations().get("id");
@@ -232,7 +232,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 subwayLineInfo.append(subwayLineName).append("，");
                 BoolQueryBuilder builder = QueryBuilders.boolQuery();
                 builder.must(QueryBuilders.termQuery("line_id",subwayLineId));
-                SearchResponse sr = rentMapSearchEsDao.getSubwayStationinfo(builder,city);
+                SearchResponse sr = userFavoriteRentEsDao.getSubwayStationinfo(builder,city);
                 SearchHit[] hits = sr.getHits().getHits();
                 List<SubwayStationDo> subwayStationDos = new ArrayList<>();
                 if(hits.length>0){

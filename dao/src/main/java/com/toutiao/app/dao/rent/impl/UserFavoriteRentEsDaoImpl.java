@@ -1,12 +1,15 @@
 package com.toutiao.app.dao.rent.impl;
 
 import com.toutiao.app.dao.rent.UserFavoriteRentEsDao;
+import com.toutiao.web.common.constant.city.CityConstant;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -53,6 +56,24 @@ public class UserFavoriteRentEsDaoImpl implements UserFavoriteRentEsDao {
     @Override
     public SearchResponse querySubwayLineHouse(SearchSourceBuilder searchSourceBuilder, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentHouseIndex(city)).types(ElasticCityUtils.getRentHouseType(city));
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = null;
+        try {
+            search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return search;
+    }
+
+    @Override
+    public SearchResponse getSubwayStationinfo(BoolQueryBuilder boolQueryBuilder, String city) {
+        Integer cityId = CityUtils.returnCityId(city);
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getSubwayHousePriceIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getSubwayHousePriceType(CityConstant.ABBREVIATION_QUANGUO));
+        boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).size(100).sort("station_id", SortOrder.ASC);
         searchRequest.source(searchSourceBuilder);
         SearchResponse search = null;
         try {

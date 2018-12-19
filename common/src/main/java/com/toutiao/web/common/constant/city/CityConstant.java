@@ -17,8 +17,8 @@ public class CityConstant {
     public static final String ABBREVIATION_SHANGHAI = "sh";
 
     public static final String ABBREVIATION_TIANJIN = "tj";
-
     public static final String ABBREVIATION_QUANGUO = "all";
+
 
     public static final String ABBREVIATION_SUZHOU = "suzhou";
 
