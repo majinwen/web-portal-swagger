@@ -2075,12 +2075,13 @@ public class SellHouseServiceImpl implements SellHouseService {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(termQuery("is_claim", 0));
             boolQueryBuilder.must(termQuery("isDel", 0));
+            boolQueryBuilder.must(termQuery("isNew", 1));
 
-            Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
-            String day = dateFormat.format(date);
-            String sevenDayBefore = DateUtil.beforeSevenDate(day);
-            boolQueryBuilder.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
+//            Date date = new Date();
+//            SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
+//            String day = dateFormat.format(date);
+//            String sevenDayBefore = DateUtil.beforeSevenDate(day);
+//            boolQueryBuilder.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
 
             SearchResponse searchResponse = sellHouseEsDao.getGuessLikeSellHouseList(boolQueryBuilder, city, sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize());
 
@@ -2165,12 +2166,13 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 boolQueryBuilderT2.must(termQuery("is_claim", 0));
                 boolQueryBuilderT2.must(termQuery("isDel", 0));
-
-                Date date = new Date();
-                SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
-                String day = dateFormat.format(date);
-                String sevenDayBefore = DateUtil.beforeSevenDate(day);
-                boolQueryBuilderT2.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
+                boolQueryBuilderT2.must(termQuery("isNew", 1));
+//
+//                Date date = new Date();
+//                SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
+//                String day = dateFormat.format(date);
+//                String sevenDayBefore = DateUtil.beforeSevenDate(day);
+//                boolQueryBuilderT2.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
 
                 SearchResponse searchResponseT2 = sellHouseEsDao.getGuessLikeSellHouseList(boolQueryBuilderT2, city, pageNum_T2, pageSize_T2);
 
