@@ -98,7 +98,7 @@ public interface HomePageApi {
 //    ResponseEntity<HomePageMustBuyList> getHomePageLowerPrice();
 
 
-    @ApiOperation(value = "首页获取新房5条", nickname = "getHomePageNewHouse", notes = "", response = HomePageNewHouseResponseList.class, tags={ "首页", })
+    @ApiOperation(value = "首页获取新房5条", nickname = "getHomePageNewHouse", notes = "", response = HomePageNewHouseResponseList.class, tags={ "新房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = HomePageNewHouseResponseList.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
