@@ -149,7 +149,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
         String description = "";
 
         //根据地铁线查询
-        if (null != rentHouseDoQuery.getSubwayLineId()) {
+        if (null != rentHouseDoQuery.getSubwayLineId() && rentHouseDoQuery.getSubwayLineId().length!=0) {
             //地铁线信息
             StringBuffer subwayLineInfo = new StringBuffer();
             //添加筛选条件
@@ -255,7 +255,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
             rentCustomConditionDomain.setDescription(description);
         }
         //根据区县查询
-        if (null != rentHouseDoQuery.getDistrictId()) {
+        if (null != rentHouseDoQuery.getDistrictId() && rentHouseDoQuery.getDistrictId().length!=0) {
             Integer totalHouseCount = 0;
             Integer totalCommunityCount = 0;
             //区县信息
@@ -314,6 +314,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                 rentCustomDo.setRentCustomConditionDos(rentCustomConditionDos);
                 rentCustomDos.add(rentCustomDo);
                 districtInfo.append(name).append("，");
+
             }
             districtInfo.deleteCharAt(districtInfo.length() - 1);
             description = "为您找到区县" + districtInfo + "范围内的小区" + totalCommunityCount + "个，" + "房源" + totalHouseCount + "个";
