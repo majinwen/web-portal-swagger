@@ -1422,10 +1422,10 @@ public class RentRestRestServiceImpl implements RentRestService {
                 distance = Integer.valueOf(time) * 60 * 3.0 / 1000;
             }
             if(StringTool.isNotEmpty(trafficType)&&"2".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 680.0 / 1000;
+                distance = Integer.valueOf(time) * 60 * 300.0 / 1000;
             }
             if(StringTool.isNotEmpty(trafficType)&&"3".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 1000.0 / 1000;
+                distance = Integer.valueOf(time) * 60 * 500.0 / 1000;
             }
 
             if (distance>0){
