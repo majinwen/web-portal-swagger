@@ -294,7 +294,7 @@ public class ConditionApiController implements ConditionApi {
     }
 
     @Override
-    public ResponseEntity<RentCustomConditionResponse> getHouseCountBySubway(@ApiParam(value = "userFavoriteRentListRequest", required = true) @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest) {
+    public ResponseEntity<RentCustomConditionResponse> getHouseCountByCondition(@ApiParam(value = "userFavoriteRentListRequest", required = true) @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest) {
         UserFavoriteRentListDoQuery userFavoriteRentListDoQuery = new UserFavoriteRentListDoQuery();
         BeanUtils.copyProperties(userFavoriteRentListRequest, userFavoriteRentListDoQuery);
         RentCustomConditionDomain rentCustomConditionDomain = userFavoriteRentService.querySubwayLineHouse(userFavoriteRentListDoQuery, CityUtils.getCity());

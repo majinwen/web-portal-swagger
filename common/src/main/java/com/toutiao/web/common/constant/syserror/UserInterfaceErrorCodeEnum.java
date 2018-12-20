@@ -19,7 +19,7 @@ public enum UserInterfaceErrorCodeEnum implements IntBaseType {
     VERIFY_TOO_FAST("短信验证码发送过于频繁或已超出限制",30008),
     ILLEGAL_PHONE("非法手机号",30009),
     USER_NO_BIND_WX("用户未绑定微信",30010),
-    INVITATION_CODE_ADD_YOURSELF("您不能邀请自己哦!!!",30011);
+    INVITATION_CODE_ADD_YOURSELF("邀请人不能是自己！",30011);
 
 
     private String desc;

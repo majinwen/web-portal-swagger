@@ -2356,6 +2356,18 @@ public class SellHouseServiceImpl implements SellHouseService {
                         houseSubjectList.add(sellHouseSubject);
                     }
                 }
+
+                String traffic = sellHousesSearchDo.getTraffic();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    if (i < 1000) {
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                    } else if (i < 2000) {
+                        DecimalFormat df = new DecimalFormat("0.0");
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    }
+                }
                 sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
                 //增加地铁与房子之间的距离
@@ -2607,8 +2619,9 @@ public class SellHouseServiceImpl implements SellHouseService {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(termQuery("isDel", "0"));
             boolQueryBuilder.must(termQuery("is_claim", "0"));
-            String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
-            if(layoutId.length > 0){
+
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId()) && userFavoriteConditionDoQuery.getLayoutId().length!=0){
+                String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
                 boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
             if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
