@@ -1,5 +1,6 @@
 package com.toutiao.appV2.apiimpl.report;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.report.*;
@@ -7,6 +8,7 @@ import com.toutiao.app.service.report.ReportCityService;
 import com.toutiao.appV2.api.report.ReportRestApi;
 import com.toutiao.appV2.model.report.*;
 import com.toutiao.web.common.util.DateUtil;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.BeanUtils;
@@ -46,9 +48,9 @@ public class ReportRestController implements ReportRestApi {
     public ResponseEntity<ReportCityForHPResponse> selectReportCityForHP() {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportCity reportCity = reportCityService.selectReportCityByCityId(cityId);
-        ReportCityResponse reportCityResponse = turnToResponse(reportCity);
         ReportCityForHPResponse reportCityForHPResponse = new ReportCityForHPResponse();
-        BeanUtils.copyProperties(reportCityResponse,reportCityForHPResponse);
+        BeanUtils.copyProperties(reportCity, reportCityForHPResponse);
+        reportCityForHPResponse.setToday(DateUtil.format(System.currentTimeMillis(), "yyyy.MM.dd"));
         return new ResponseEntity<>(reportCityForHPResponse, HttpStatus.OK);
     }
 
@@ -59,7 +61,7 @@ public class ReportRestController implements ReportRestApi {
         ReportNewGuideAttentionListResponse rsp = new ReportNewGuideAttentionListResponse();
         List<ReportNewGuideAttention> list = reportCityService.selectReportNewGuideAttentionList(cityId, pageNum, pageSize);
         List<ReportNewGuideAttentionResponse> data = new ArrayList<>();
-        for (ReportNewGuideAttention reportNewGuideAttention:list) {
+        for (ReportNewGuideAttention reportNewGuideAttention : list) {
             ReportNewGuideAttentionResponse reportNewGuideAttentionResponse = new ReportNewGuideAttentionResponse();
             BeanUtils.copyProperties(reportNewGuideAttention, reportNewGuideAttentionResponse);
             data.add(reportNewGuideAttentionResponse);
@@ -76,7 +78,7 @@ public class ReportRestController implements ReportRestApi {
         ReportNewGuideHotListResponse rsp = new ReportNewGuideHotListResponse();
         List<ReportNewGuideHot> list = reportCityService.selectReportNewGuideHotList(cityId, pageNum, pageSize);
         List<ReportNewGuideHotResponse> data = new ArrayList<>();
-        for (ReportNewGuideHot reportNewGuideHot:list) {
+        for (ReportNewGuideHot reportNewGuideHot : list) {
             ReportNewGuideHotResponse reportNewGuideHotResponse = new ReportNewGuideHotResponse();
             BeanUtils.copyProperties(reportNewGuideHot, reportNewGuideHotResponse);
             data.add(reportNewGuideHotResponse);
@@ -93,7 +95,7 @@ public class ReportRestController implements ReportRestApi {
         ReportNewGuidePopularListResponse rsp = new ReportNewGuidePopularListResponse();
         List<ReportNewGuidePopular> list = reportCityService.selectReportNewGuidePopularList(cityId, pageNum, pageSize);
         List<ReportNewGuidePopularResponse> data = new ArrayList<>();
-        for (ReportNewGuidePopular reportNewGuidePopular:list) {
+        for (ReportNewGuidePopular reportNewGuidePopular : list) {
             ReportNewGuidePopularResponse reportNewGuidePopularResponse = new ReportNewGuidePopularResponse();
             BeanUtils.copyProperties(reportNewGuidePopular, reportNewGuidePopularResponse);
             data.add(reportNewGuidePopularResponse);
@@ -110,7 +112,7 @@ public class ReportRestController implements ReportRestApi {
         ReportNewGuideSalesListResponse rsp = new ReportNewGuideSalesListResponse();
         List<ReportNewGuideSales> list = reportCityService.selectReportNewGuideSalesList(cityId, pageNum, pageSize);
         List<ReportNewGuideSalesResponse> data = new ArrayList<>();
-        for (ReportNewGuideSales reportNewGuideSales:list) {
+        for (ReportNewGuideSales reportNewGuideSales : list) {
             ReportNewGuideSalesResponse reportNewGuideSalesResponse = new ReportNewGuideSalesResponse();
             BeanUtils.copyProperties(reportNewGuideSales, reportNewGuideSalesResponse);
             data.add(reportNewGuideSalesResponse);
@@ -127,7 +129,7 @@ public class ReportRestController implements ReportRestApi {
         ReportNewPreferentialListResponse rsp = new ReportNewPreferentialListResponse();
         List<ReportNewPreferential> list = reportCityService.selectReportNewPreferentialList(cityId, pageNum, pageSize);
         List<ReportNewPreferentialResponse> data = new ArrayList<>();
-        for (ReportNewPreferential reportNewPreferential:list) {
+        for (ReportNewPreferential reportNewPreferential : list) {
             ReportNewPreferentialResponse reportNewPreferentialResponse = new ReportNewPreferentialResponse();
             BeanUtils.copyProperties(reportNewPreferential, reportNewPreferentialResponse);
             data.add(reportNewPreferentialResponse);
@@ -144,7 +146,7 @@ public class ReportRestController implements ReportRestApi {
         ReportEsfProjHotListResponse rsp = new ReportEsfProjHotListResponse();
         List<ReportEsfProjHot> list = reportCityService.selectReportEsfProjHotList(cityId, pageNum, pageSize);
         List<ReportEsfProjHotResponse> data = new ArrayList<>();
-        for (ReportEsfProjHot reportEsfProjHot:list) {
+        for (ReportEsfProjHot reportEsfProjHot : list) {
             ReportEsfProjHotResponse reportEsfProjHotResponse = new ReportEsfProjHotResponse();
             BeanUtils.copyProperties(reportEsfProjHot, reportEsfProjHotResponse);
             data.add(reportEsfProjHotResponse);
@@ -161,7 +163,7 @@ public class ReportRestController implements ReportRestApi {
         ReportAreaHotListResponse rsp = new ReportAreaHotListResponse();
         List<ReportAreaHot> list = reportCityService.selectReportAreaHotList(cityId, pageNum, pageSize);
         List<ReportAreaHotResponse> data = new ArrayList<>();
-        for (ReportAreaHot reportAreaHot:list) {
+        for (ReportAreaHot reportAreaHot : list) {
             ReportAreaHotResponse reportAreaHotResponse = new ReportAreaHotResponse();
             BeanUtils.copyProperties(reportAreaHot, reportAreaHotResponse);
             data.add(reportAreaHotResponse);
@@ -194,7 +196,9 @@ public class ReportRestController implements ReportRestApi {
 
         //二手房热门小区
         List<ReportEsfProjHotResponse> reportEsfProjHotResponseList = JSONArray.parseArray(reportCity.getEsfPlotHot(), ReportEsfProjHotResponse.class);
-        Collections.sort(reportEsfProjHotResponseList);
+        if(StringTool.isNotEmptyList(reportEsfProjHotResponseList)){
+            Collections.sort(reportEsfProjHotResponseList);
+        }
         reportCityResponse.setEsfPlotHot(reportEsfProjHotResponseList);
 
         //热门商圈
@@ -208,37 +212,62 @@ public class ReportRestController implements ReportRestApi {
 
         //二手房特色房源：降价房
         List<ReportTeSeJiangJiaRespose> teSeJiangjiaResposeList = JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class);
-        Collections.sort(teSeJiangjiaResposeList);
+        if(StringTool.isNotEmptyList(teSeJiangjiaResposeList)){
+            Collections.sort(teSeJiangjiaResposeList);
+        }
         reportCityResponse.setEsfTeseJiangjia(teSeJiangjiaResposeList);
 
         //二手房特色房源：捡漏房
-        JSONObject jianolouJson = JSONObject.parseObject(reportCity.getEsfTeseJianlou());
+        Object jsonObject = JSON.parse(reportCity.getEsfTeseJianlou());
+        JSONObject jianolouJson;
+        if (jsonObject instanceof JSONObject) {
+            jianolouJson = (JSONObject) jsonObject;
+        } else {
+            jianolouJson = new JSONObject();
+        }
         ReportTeSeJianLouRespose reportTeSeJianLouRespose = new ReportTeSeJianLouRespose();
         //捡漏房日均价
-        List<LowerHouseQuotationResponse> lowerHouseQuotationResponseList = JSONArray.parseArray(jianolouJson.getString("lower_house_quotation"),LowerHouseQuotationResponse.class);
-        Collections.sort(lowerHouseQuotationResponseList);
+        if (StringTool.isEmpty(jianolouJson.getString("lower_house_quotation"))) {
+            jianolouJson.put("lower_house_quotation", "[]");
+        }
+        List<LowerHouseQuotationResponse> lowerHouseQuotationResponseList = JSONArray.parseArray(jianolouJson.getString("lower_house_quotation"), LowerHouseQuotationResponse.class);
+        if (StringTool.isNotEmptyList(lowerHouseQuotationResponseList)) {
+            Collections.sort(lowerHouseQuotationResponseList);
+        }
         reportTeSeJianLouRespose.setHouseQuotationList(lowerHouseQuotationResponseList);
-        //二手房日均价
-        List<EsfQuotationRespose> esfQuotationResposeList = JSONArray.parseArray(jianolouJson.getString("esf_quotation"),EsfQuotationRespose.class);
-        Collections.sort(esfQuotationResposeList);
-        reportTeSeJianLouRespose.setEsfQuotationList(esfQuotationResposeList);
 
+
+        //二手房日均价
+        if (StringTool.isEmpty(jianolouJson.getString("esf_quotation"))) {
+            jianolouJson.put("esf_quotation", "[]");
+        }
+        List<EsfQuotationRespose> esfQuotationResposeList = JSONArray.parseArray(jianolouJson.getString("esf_quotation"), EsfQuotationRespose.class);
+        if (StringTool.isNotEmptyList(esfQuotationResposeList)) {
+            Collections.sort(esfQuotationResposeList);
+        }
+        reportTeSeJianLouRespose.setEsfQuotationList(esfQuotationResposeList);
         reportCityResponse.setEsfTeseJianlou(reportTeSeJianLouRespose);
 
         //二手房特色房源：抢手房
         List<ReportTeSeQiangShouRespose> teSeQiangShouResposeList = JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class);
-        Collections.sort(teSeQiangShouResposeList);
+        if(StringTool.isNotEmptyList(teSeQiangShouResposeList)){
+            Collections.sort(teSeQiangShouResposeList);
+        }
         reportCityResponse.setEsfTeseQiangshou(teSeQiangShouResposeList);
 
 
         //新房价格趋势，近6个月数据
         List<ReportPriceQuotationsResponse> newPriceRange = JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class);
-        Collections.sort(newPriceRange);
+        if(StringTool.isNotEmptyList(newPriceRange)){
+            Collections.sort(newPriceRange);
+        }
         reportCityResponse.setNewPriceRange(newPriceRange);
 
         //二手房均价趋势，近6个月数据
         List<ReportPriceQuotationsResponse> esfPriceFenbu = JSONArray.parseArray(reportCity.getEsfPriceFenbu(), ReportPriceQuotationsResponse.class);
-        Collections.sort(esfPriceFenbu);
+        if(StringTool.isNotEmptyList(esfPriceFenbu)){
+            Collections.sort(esfPriceFenbu);
+        }
         reportCityResponse.setEsfPriceFenbu(esfPriceFenbu);
 
         return reportCityResponse;
