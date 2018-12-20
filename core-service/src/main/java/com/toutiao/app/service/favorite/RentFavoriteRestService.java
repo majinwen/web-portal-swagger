@@ -9,9 +9,10 @@ import com.toutiao.app.domain.favorite.sellhouse.SellHouseFavoriteListDoQuery;
 public interface RentFavoriteRestService {
 
     /**
-     * 二手房收藏列表
+     * 租房收藏列表
      * @param rentFavoriteListDoQuery
      * @return
      */
     RentFavoriteDomain queryRentFavoriteListByUserId(RentFavoriteListDoQuery rentFavoriteListDoQuery);
+    RentFavoriteDomain guessULikeRentByUserId(RentFavoriteListDoQuery rentFavoriteListDoQuery);
 }

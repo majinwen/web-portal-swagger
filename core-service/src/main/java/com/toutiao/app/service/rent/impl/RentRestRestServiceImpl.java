@@ -759,17 +759,32 @@ public class RentRestRestServiceImpl implements RentRestService {
             rentFavoriteListDoQuery.setUserId(userId);
             rentFavoriteListDoQuery.setSize(10);
             rentFavoriteListDoQuery.setPageNum(1);
-            RentFavoriteDomain rentFavoriteDomain = rentFavoriteRestService.queryRentFavoriteListByUserId(rentFavoriteListDoQuery);
+
+            RentFavoriteDomain rentFavoriteDomain = rentFavoriteRestService.guessULikeRentByUserId(rentFavoriteListDoQuery);
             if (rentFavoriteDomain.getData().size() > 0){
                 isQueryEs = true;
                 isUserQuery = true;
                 RentFavoriteDo rentFavoriteDo = rentFavoriteDomain.getData().get(rentFavoriteDomain.getData().size()-1);
                 RentDetailsDo  rentDetailsDo = rentRestRestService.queryRentDetailByHouseId(rentFavoriteDo.getHouseId(),city);
-                boolQueryBuilder.must(termQuery("area_id", rentDetailsDo.getAreaId()));
-                boolQueryBuilder.must(termQuery("hall",rentDetailsDo.getHall()));
-                boolQueryBuilder.must(termQuery("room", rentDetailsDo.getRoom()));
-                boolQueryBuilder.must(termQuery("rent_type", rentDetailsDo.getRentType()));
-                boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rentDetailsDo.getRentHousePrice()+rentDetailsDo.getRentHousePrice()*0.3).lte(rentDetailsDo.getRentHousePrice()-rentDetailsDo.getRentHousePrice()*0.3));
+
+                if (rentDetailsDo.getAreaId()!=null){
+                    boolQueryBuilder.must(termQuery("area_id", rentDetailsDo.getAreaId()));
+                }
+
+                if (rentDetailsDo.getHall()!=null){
+                    boolQueryBuilder.must(termQuery("hall",rentDetailsDo.getHall()));
+                }
+
+                if (rentDetailsDo.getRoom()!=null){
+                    boolQueryBuilder.must(termQuery("room", rentDetailsDo.getRoom()));
+                }
+                if (rentDetailsDo.getRentType()!=null){
+                    boolQueryBuilder.must(termQuery("rent_type", rentDetailsDo.getRentType()));
+                }
+
+                if (rentDetailsDo.getRentHousePrice()!=null){
+                    boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rentDetailsDo.getRentHousePrice()+rentDetailsDo.getRentHousePrice()*0.3).lte(rentDetailsDo.getRentHousePrice()-rentDetailsDo.getRentHousePrice()*0.3));
+                }
             }
         }
 
