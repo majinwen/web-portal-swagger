@@ -43,11 +43,11 @@ public class AgentHouseEsDaoImpl implements AgentHouseEsDao{
 
     @Override
     public SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder, String city) {
-        Integer cityId = CityUtils.returnCityId(city);
+       // Integer cityId = CityUtils.returnCityId(city);
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getAgentIndex(CityConstant.ABBREVIATION_QUANGUO))
                 .types(ElasticCityUtils.getAgentType(CityConstant.ABBREVIATION_QUANGUO));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        booleanQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
+//        booleanQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
         searchSourceBuilder.query(booleanQueryBuilder);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
