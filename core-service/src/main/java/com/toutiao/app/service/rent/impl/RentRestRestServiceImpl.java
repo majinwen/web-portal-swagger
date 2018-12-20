@@ -993,23 +993,7 @@ public class RentRestRestServiceImpl implements RentRestService {
         BoolQueryBuilder booleanQueryBuilder = getCommuteRecommendRentBoolQueryBuilder(boolQueryBuilder, rentHouseDoQuery);
         boolQueryBuilder.must(QueryBuilders.termQuery("rentHouseType", "3"));//目前只展示导入的房源
         FunctionScoreQueryBuilder query = null;
-        //设置基础分(录入优先展示)(录入:1,导入1/3)
-        FieldValueFactorFunctionBuilder fieldValueFactor = ScoreFunctionBuilders.fieldValueFactorFunction("rentHouseTypeId")
-                .modifier(FieldValueFactorFunction.Modifier.RECIPROCAL).missing(10);
 
-        //坐标
-//        Map<String,Double> map = new HashMap<>();
-//        map.put("lat",rentHouseDoQuery.getLat());
-//        map.put("lon",rentHouseDoQuery.getLon());
-//        JSONObject json = JSONObject.parseObject(JSON.toJSONString(map));
-
-        GaussDecayFunctionBuilder functionBuilder = null;
-        if(StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance()!=0){
-            double[] location =new double[]{rentHouseDoQuery.getLon(),rentHouseDoQuery.getLat()};
-            //设置高斯函数(要保证5km内录入的排在导入的前面,录入房源的最低分需要大于导入的最高分)
-            functionBuilder = ScoreFunctionBuilders.gaussDecayFunction("location",location,"4km","1km" ,0.4);
-
-        }
 
         //根据坐标计算距离
         GeoDistanceSortBuilder sort = null;
@@ -1019,60 +1003,9 @@ public class RentRestRestServiceImpl implements RentRestService {
             sort.geoDistance(GeoDistance.ARC);
         }
 
-        //获取5km内的所有出租房源(函数得分进行加法运算,查询得分和函数得分进行乘法运算)
-        FunctionScoreQueryBuilder functionScoreQueryBuilder = QueryBuilders.functionScoreQuery(booleanQueryBuilder, fieldValueFactor).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
-
-
-        if (StringUtil.isNotNullString(rentHouseDoQuery.getKeyword())) {
-            List<String> searchKeyword = nearRentHouseRestService.getAnalyzeByKeyWords(rentHouseDoQuery.getKeyword(), city);
-            FunctionScoreQueryBuilder.FilterFunctionBuilder[] filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[0];
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance()!=0) {
-                filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size() + 1];
-            } else {
-                filterFunctionBuilders = new FunctionScoreQueryBuilder.FilterFunctionBuilder[searchKeyword.size()];
-            }
-            if (StringUtil.isNotNullString(AreaMap.getAreas(rentHouseDoQuery.getKeyword()))) {
-                int searchAreasSize = searchKeyword.size();
-                for (int i = 0; i < searchKeyword.size(); i++) {
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchAreasSize - i);
-                    QueryBuilder filter = QueryBuilders.termsQuery("area_name", searchKeyword.get(i));
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            } else if (StringUtil.isNotNullString(DistrictMap.getDistricts(rentHouseDoQuery.getKeyword()))) {
-                int searchDistrictsSize = searchKeyword.size();
-                for (int i = 0; i < searchKeyword.size(); i++) {
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchDistrictsSize - i);
-                    QueryBuilder filter = QueryBuilders.termsQuery("district_name", searchKeyword.get(i));
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            } else {
-                int searchTermSize = searchKeyword.size();
-                for (int i = 0; i < searchKeyword.size(); i++) {
-                    ScoreFunctionBuilder scoreFunctionBuilder = ScoreFunctionBuilders.weightFactorFunction(searchTermSize - i);
-                    QueryBuilder filter = QueryBuilders.termsQuery("zufang_name_search", searchKeyword.get(i));
-                    filterFunctionBuilders[i] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(filter, scoreFunctionBuilder);
-                }
-            }
-
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance()!=0) {
-                filterFunctionBuilders[searchKeyword.size()] = new FunctionScoreQueryBuilder.FilterFunctionBuilder(functionBuilder);
-                query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
-            } else {
-                query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, filterFunctionBuilders).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
-            }
-
-
-        } else {
-            if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance())&& rentHouseDoQuery.getDistance()!=0) {
-                query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder, functionBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
-            } else {
-                query = QueryBuilders.functionScoreQuery(functionScoreQueryBuilder).scoreMode(FunctionScoreQuery.ScoreMode.SUM).boostMode(CombineFunction.SUM);
-            }
-        }
-
         RentDetailsListDo rentDetailsListDo = new RentDetailsListDo();
         List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
-        SearchResponse searchResponse = rentEsDao.queryCommuteRentSearchList(query, rentHouseDoQuery.getDistance(),rentHouseDoQuery.getKeyword(),rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort,rentHouseDoQuery.getSort());
+        SearchResponse searchResponse = rentEsDao.queryCommuteRentSearchList(booleanQueryBuilder,rentHouseDoQuery.getPageNum(), rentHouseDoQuery.getPageSize(), city, sort,rentHouseDoQuery.getSort());
         SearchHit[] hits = searchResponse.getHits().getHits();
         if (hits.length > 0) {
             List<String> imgs = new ArrayList<>();
@@ -1080,11 +1013,11 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String sourceAsString = hit.getSourceAsString();
                 Double location = 0.0;
                 if(null!=hit.getSortValues()&&hit.getSortValues().length>0){
-                    location = (Double) hit.getSortValues()[0];
+                    location = (Double) hit.getSortValues()[1];
                 }
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                 if(StringTool.isNotEmpty(location)&&location>0){
-                    BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                    BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[1]);
                     String distance = geoDis.setScale(2, BigDecimal.ROUND_CEILING)+DistanceUnit.KILOMETERS.toString();
                     rentDetailsFewDo.setNearbyDistance(distance);
                     String time = "";
@@ -1133,13 +1066,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 if (null != rentHouseDoQuery.getSubwayLineId()) {
                     keys += rentHouseDoQuery.getSubwayLineId().toString();
                 }
-//                if (null != rentHouseDoQuery.getSubwayStationId()) {
-//                    keys += "$" + rentHouseDoQuery.getSubwayStationId();
-//                }
-//                if (!"".equals(keys) && null != rentDetailsFewDo.getNearbySubway()) {
-//                    rentDetails
-// ewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
-//                }
+
                 if (null != rentHouseDoQuery.getSubwayStationId() && rentHouseDoQuery.getSubwayStationId().length !=0) {
                     Map<Integer,String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
