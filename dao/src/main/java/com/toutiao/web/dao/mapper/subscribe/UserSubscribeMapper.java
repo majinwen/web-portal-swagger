@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface UserSubscribeMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(@Param(value = "id") Integer id);
 
     int insert(UserSubscribe record);
 
@@ -28,6 +28,11 @@ public interface UserSubscribeMapper {
 
     List<UserSubscribe> selectConditionSubscribeByUserId(@Param("userId")Integer userId);
 
-    UserSubscribe selectConditionSubscribeByUserSubscribeMap(@Param(value = "record")UserConditionSubscribeDetailDo userConditionSubscribeDetailDo, @Param(value = "userId")Integer userId);
+    UserSubscribe selectConditionSubscribeByUserSubscribeMap(@Param(value = "record")UserConditionSubscribeDetailDo userConditionSubscribeDetailDo,
+                                                             @Param(value = "userId")Integer userId, @Param(value = "cityId")Integer cityId);
+
+    List<UserSubscribe> getSubscribeListForT3(@Param("userId") Integer userId,
+                                              @Param("cityId") Integer cityId,
+                                              @Param("subscribeType") Integer subscribeType);
 
 }

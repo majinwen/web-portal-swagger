@@ -16,7 +16,7 @@ public interface RentHouseService {
 
     Map queryHouseByparentId(RentHouseQuery rentHouseQuery);
 
-    Map queryAgentByHouseId(String houseId);
+   // Map queryAgentByHouseId(String houseId);
 
 //    String queryHouseNumByparentId(Integer parentId);
 

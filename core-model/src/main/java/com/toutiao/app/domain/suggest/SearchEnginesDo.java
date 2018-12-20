@@ -58,4 +58,12 @@ public class SearchEnginesDo {
      * 城市id
      */
     private Integer cityId;
+    /**
+     * 经度
+     */
+    private Double longitude;
+    /**
+     * 维度
+     */
+    private Double latitude;
 }

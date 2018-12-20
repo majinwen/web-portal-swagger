@@ -1,3 +1,4 @@
+/*
 package com.toutiao.web.apiimpl.rest.invitation;
 
 import com.toutiao.app.domain.invitation.InvitationCodeDo;
@@ -22,12 +23,14 @@ public class InvitationController {
     @Autowired
     private InvitationCodeServiceImpl invitationCodeService;
 
-    /**
+    */
+/**
      * 获取邀请码
      *
      * @param invitationRequest
      * @return
-     */
+     *//*
+
     @RequestMapping(value = "/getInvitation", method = RequestMethod.GET)
     @ResponseBody
     public NashResult getInvitation(InvitationRequest invitationRequest) {
@@ -39,18 +42,21 @@ public class InvitationController {
         return NashResult.build(invitationResponse);
     }
 
-    /**
+    */
+/**
      * 获取验证码信息
      *
      * @param getInviteHistoryRequest
      * @return
-     */
+     *//*
+
     @RequestMapping(value = "/getCodeInfo", method = RequestMethod.GET)
     @ResponseBody
-    public NashResult getCodeInfoList(GetInviteHistoryRequest getInviteHistoryRequest) {
+    public NashResult getCodeInfo(GetInviteHistoryRequest getInviteHistoryRequest) {
         List<InvitationCodeDo> invitationCodeDos = invitationCodeService.getCodeInfo(getInviteHistoryRequest.getCode(),
                 getInviteHistoryRequest.getPageSize(), getInviteHistoryRequest.getPageNum());
         return NashResult.build(invitationCodeDos);
     }
 
 }
+*/

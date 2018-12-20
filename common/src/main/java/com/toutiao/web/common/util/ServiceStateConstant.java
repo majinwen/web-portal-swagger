@@ -8,6 +8,10 @@ public class ServiceStateConstant {
      */
     public static final String ALIYUN_SHORT_MESSAGE_LOGIN_REGISTER = "LOGIN_REGISTER";
     /**
+     * 短信业务扩展字段————账号注册/登录微信绑定
+     */
+    public static final String ALIYUN_SHORT_MESSAGE_BIND_WX_REGISTER = "BIND_REGISTER";
+    /**
      * 用户基本信息有效性 1,有效 0，无效
      */
     public static final Short USER_BASIC_STATUS = 1;

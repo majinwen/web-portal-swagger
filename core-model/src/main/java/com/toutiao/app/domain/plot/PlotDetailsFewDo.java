@@ -145,4 +145,18 @@ public class PlotDetailsFewDo {
      * 房源与地铁站的距离
      */
     private String subwayDistanceInfo;
+    /**
+     * 标题图
+     */
+    private String titlePhoto;
+
+    /**
+     * 附近距离
+     */
+    private String nearbyDistance;
+
+    /**
+     * 建筑类型
+     */
+    private String buildingStructure;
 }

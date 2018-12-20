@@ -111,7 +111,7 @@ public class PlotDetailsResponse {
     /**
      * 物业费
      */
-    private Double propertyFee;
+    private String propertyFee;
     /**
      * 物业类型
      */

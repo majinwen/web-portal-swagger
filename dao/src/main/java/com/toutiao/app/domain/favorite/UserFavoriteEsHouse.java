@@ -57,4 +57,9 @@ public class UserFavoriteEsHouse {
      * 认领标志
      */
     private Integer isClaim;
+
+    /**
+     * 城市
+     */
+    private Integer cityId;
 }

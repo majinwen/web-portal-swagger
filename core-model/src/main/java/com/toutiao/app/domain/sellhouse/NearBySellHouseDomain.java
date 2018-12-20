@@ -7,9 +7,9 @@ import java.util.List;
 public class NearBySellHouseDomain {
 
 
-    private List<NearBySellHousesDo> nearBySellHousesDos;
+    private List<NearBySellHousesDo> data;
 
-    private long totalCount;
+    private long totalNum;
 
 
 }

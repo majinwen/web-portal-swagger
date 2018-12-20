@@ -11,6 +11,8 @@ import java.util.List;
 public interface MessagePushMapper {
     int countByExample(MessagePushExample example);
 
+
+
     int deleteByExample(MessagePushExample example);
 
     int deleteByPrimaryKey(Integer id);
@@ -30,5 +32,9 @@ public interface MessagePushMapper {
     int updateByPrimaryKeySelective(MessagePush record);
 
     int updateByPrimaryKey(MessagePush record);
+
+    List<MessagePush> selectHouseActivity(Integer userId);
+
+    List<MessagePush> selectListRenewal(Integer userId);
 
 }

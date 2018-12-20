@@ -4,17 +4,27 @@ import com.toutiao.app.dao.homepage.RecommendEsDao;
 import com.toutiao.app.domain.homepage.RecommendTopicDo;
 import com.toutiao.app.domain.homepage.RecommendTopicDoQuery;
 import com.toutiao.app.domain.homepage.RecommendTopicDomain;
-import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDo;
+import com.toutiao.app.domain.subscribe.UserConditionSubscribeDetailDo;
 import com.toutiao.app.service.homepage.RecommendRestService;
+import com.toutiao.app.service.subscribe.SubscribeService;
+import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.city.CityUtils;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
+import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.*;
-import org.elasticsearch.search.aggregations.Aggregation;
-import org.elasticsearch.search.aggregations.bucket.filter.InternalFilter;
+import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.bucket.terms.LongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.aggregations.metrics.cardinality.InternalCardinality;
+import org.elasticsearch.search.aggregations.metrics.cardinality.ParsedCardinality;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
+import org.elasticsearch.search.aggregations.metrics.max.ParsedMax;
 import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
+import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
+import org.elasticsearch.search.aggregations.metrics.tophits.ParsedTopHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,44 +44,54 @@ public class RecommendRestServiceImpl implements RecommendRestService {
     @Autowired
     private RecommendEsDao recommendEsDao;
 
+    @Autowired
+    private SubscribeService subscribeService;
+
     public static final double PRICE = 1000d;
-    private static final int[] SHOUZHI_VS_GAISHAN = {2,3};
-    private static final int[] HAOZHAI_VS_BIESHU = {4,5};
+    private static final int[] SHOUZHI_VS_GAISHAN = {2, 3};
+    private static final int[] HAOZHAI_VS_BIESHU = {4, 5};
 
     @Override
-    public RecommendTopicDomain getRecommendTopic(RecommendTopicDoQuery recommendTopicDoQuery) {
+    public RecommendTopicDomain getRecommendTopic(RecommendTopicDoQuery recommendTopicDoQuery, String city) {
         RecommendTopicDomain recommendTopicDomain = new RecommendTopicDomain();
         List<RecommendTopicDo> recommendTopicDoList = new ArrayList<>();
-//        if(recommendTopicDoQuery.getDistrictId()!=null || (recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()!=null)
-//                ||recommendTopicDoQuery.getBeginPrice()!=null||recommendTopicDoQuery.getEndPrice()!=null){
-        if(recommendTopicDoQuery.getDistrictId()==null && recommendTopicDoQuery.getBeginPrice()==null && recommendTopicDoQuery.getEndPrice()==null){
+        if (recommendTopicDoQuery.getDistrictId() == null && recommendTopicDoQuery.getBeginPrice() == null && recommendTopicDoQuery.getEndPrice() == null) {
             recommendTopicDomain.setData(recommendTopicDoList);
 
             return recommendTopicDomain;
-        }else {
-            BoolQueryBuilder bqb_plotTags = QueryBuilders.boolQuery();
+        } else {
             BoolQueryBuilder bqb_isCutPrice = QueryBuilders.boolQuery();
             BoolQueryBuilder bqb_isLowPrice = QueryBuilders.boolQuery();
             BoolQueryBuilder bqb_isMustRob = QueryBuilders.boolQuery();
 
 
-            TermQueryBuilder termQuery_isDel= QueryBuilders.termQuery("isDel",0);
-            TermQueryBuilder termQuery_isClaim= QueryBuilders.termQuery("is_claim",0);
-            bqb_isCutPrice.must(QueryBuilders.termQuery("isCutPrice",1));
+            TermQueryBuilder termQuery_isDel = QueryBuilders.termQuery("isDel", 0);
+            TermQueryBuilder termQuery_isClaim = QueryBuilders.termQuery("is_claim", 0);
+            bqb_isCutPrice.must(QueryBuilders.termQuery("isCutPrice", 1));
+            bqb_isCutPrice.must(QueryBuilders.termQuery("isNew", 1));
+            if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
+                bqb_isCutPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            }
             bqb_isCutPrice.must(termQuery_isClaim);
             bqb_isCutPrice.must(termQuery_isDel);
-            bqb_isLowPrice.must(QueryBuilders.termQuery("isLowPrice",1));
+            bqb_isLowPrice.must(QueryBuilders.termQuery("isLowPrice", 1));
+            bqb_isLowPrice.must(QueryBuilders.termQuery("isNew", 1));
+            if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
+                bqb_isLowPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            }
             bqb_isLowPrice.must(termQuery_isClaim);
             bqb_isLowPrice.must(termQuery_isDel);
-            bqb_isMustRob.must(QueryBuilders.termQuery("isMustRob",1));
+            bqb_isMustRob.must(QueryBuilders.termQuery("isMustRob", 1));
+            bqb_isMustRob.must(QueryBuilders.termQuery("isNew", 1));
+            if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
+                bqb_isMustRob.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
+            }
             bqb_isMustRob.must(termQuery_isClaim);
             bqb_isMustRob.must(termQuery_isDel);
 
             //区域
-            TermsQueryBuilder termsQueryBuilderByAreaId = null;
-            if(null!=recommendTopicDoQuery.getDistrictId()){
-                termsQueryBuilderByAreaId = QueryBuilders.termsQuery("areaId", recommendTopicDoQuery.getDistrictId());
-                bqb_plotTags.must(termsQueryBuilderByAreaId);
+            if (null != recommendTopicDoQuery.getDistrictId()) {
+                TermsQueryBuilder termsQueryBuilderByAreaId = QueryBuilders.termsQuery("areaId", recommendTopicDoQuery.getDistrictId());
                 bqb_isCutPrice.must(termsQueryBuilderByAreaId);
                 bqb_isLowPrice.must(termsQueryBuilderByAreaId);
                 bqb_isMustRob.must(termsQueryBuilderByAreaId);
@@ -80,209 +100,148 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
             //价格
             RangeQueryBuilder rangeQueryBuilder = null;
-            if(recommendTopicDoQuery.getBeginPrice()==null && recommendTopicDoQuery.getEndPrice()==null){
+            if (recommendTopicDoQuery.getBeginPrice() == null && recommendTopicDoQuery.getEndPrice() == null) {
 
-            }else{
-                if (recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()!=null) {
+            } else {
+                if (recommendTopicDoQuery.getBeginPrice() != null && recommendTopicDoQuery.getEndPrice() != null) {
                     rangeQueryBuilder = QueryBuilders.rangeQuery("houseTotalPrices").gte(recommendTopicDoQuery.getBeginPrice()).lte(recommendTopicDoQuery.getEndPrice());
-                }else if(recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()==null){
+                } else if (recommendTopicDoQuery.getBeginPrice() != null && recommendTopicDoQuery.getEndPrice() == null) {
                     rangeQueryBuilder = QueryBuilders.rangeQuery("houseTotalPrices").gte(recommendTopicDoQuery.getBeginPrice());
-                }else if(recommendTopicDoQuery.getBeginPrice()==null && recommendTopicDoQuery.getEndPrice()!=null){
+                } else if (recommendTopicDoQuery.getBeginPrice() == null && recommendTopicDoQuery.getEndPrice() != null) {
                     rangeQueryBuilder = QueryBuilders.rangeQuery("houseTotalPrices").lte(recommendTopicDoQuery.getEndPrice());
                 }
 
                 bqb_isLowPrice.must(rangeQueryBuilder);
                 bqb_isCutPrice.must(rangeQueryBuilder);
-                bqb_plotTags.must(rangeQueryBuilder);
                 bqb_isMustRob.must(rangeQueryBuilder);
             }
 
-            String flag = "";
-            if((recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()!=null)){
-                if(recommendTopicDoQuery.getEndPrice() <= PRICE){//价格小于1000万，推荐首置，改善
-                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-                    bqb_plotTags.must(termQuery_isClaim);
-                    bqb_plotTags.must(termQuery_isDel);
-                    flag = "lower1000";
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
-                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
-                    recommendTopicDoList.addAll(list_buildTopic);
-                }else if(recommendTopicDoQuery.getEndPrice() > PRICE){//价格大于1000万，推荐豪宅，别墅
-                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-                    bqb_plotTags.must(termQuery_isClaim);
-                    bqb_plotTags.must(termQuery_isDel);
-                    flag = "higher1000";
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
-                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
-                    recommendTopicDoList.addAll(list_buildTopic);
-                }
-            }else if(recommendTopicDoQuery.getBeginPrice()!=null && recommendTopicDoQuery.getEndPrice()==null){
-                if(recommendTopicDoQuery.getBeginPrice() <= PRICE){//价格小于1000万，推荐首置，改善
 
-                    BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
-                    bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-
-                    if(recommendTopicDoQuery.getDistrictId()!=null){
-                        bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
-                    }
-                    bqb_plotTags_hzvsbs.must(termQuery_isDel);
-                    bqb_plotTags_hzvsbs.must(termQuery_isClaim);
-                    SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
-                    List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery,sp_BuildTags_hzvsbs,"higher1000");
-                    recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
-                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-                    bqb_plotTags.must(termQuery_isClaim);
-                    bqb_plotTags.must(termQuery_isDel);
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
-                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,"lower1000");
-                    recommendTopicDoList.addAll(list_buildTopic);
-                }else if(recommendTopicDoQuery.getBeginPrice() > PRICE){//价格大于1000万，推荐豪宅，别墅
-                    flag = "higher1000";
-                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-                    bqb_plotTags.must(termQuery_isClaim);
-                    bqb_plotTags.must(termQuery_isDel);
-
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
-                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
-                    recommendTopicDoList.addAll(list_buildTopic);
-                }
-            }else if(recommendTopicDoQuery.getBeginPrice()==null && recommendTopicDoQuery.getEndPrice()!=null){
-                if(recommendTopicDoQuery.getEndPrice() <= PRICE){
-                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-                    flag = "lower1000";
-                    bqb_plotTags.must(termQuery_isClaim);
-                    bqb_plotTags.must(termQuery_isDel);
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
-                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
-                    recommendTopicDoList.addAll(list_buildTopic);
-                }else if(recommendTopicDoQuery.getEndPrice() >= PRICE){
-                    bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-                    bqb_plotTags.must(termQuery_isClaim);
-                    bqb_plotTags.must(termQuery_isDel);
-                    SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
-                    List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,"lower1000");
-                    recommendTopicDoList.addAll(list_buildTopic);
-                    BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
-                    bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-                    if(recommendTopicDoQuery.getDistrictId()!=null){
-                        bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
-                    }
-
-                    bqb_plotTags_hzvsbs.must(termQuery_isDel);
-                    bqb_plotTags_hzvsbs.must(termQuery_isClaim);
-                    SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
-                    List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery,sp_BuildTags_hzvsbs,"higher1000");
-                    recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
-
-                }
-            }else {
-
-                BoolQueryBuilder bqb_plotTags_hzvsbs = QueryBuilders.boolQuery();
-                if(recommendTopicDoQuery.getDistrictId()!=null){
-                    bqb_plotTags_hzvsbs.must(termsQueryBuilderByAreaId);
-                }
-                bqb_plotTags_hzvsbs.must(termQuery_isClaim);
-                bqb_plotTags_hzvsbs.must(termQuery_isDel);
-                bqb_plotTags_hzvsbs.must(QueryBuilders.termsQuery("recommendBuildTagsId", HAOZHAI_VS_BIESHU));
-                SearchResponse sp_BuildTags_hzvsbs = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags_hzvsbs);
-                List<RecommendTopicDo> list_buildTopic_hzvsbs = cleanEsData(recommendTopicDoQuery,sp_BuildTags_hzvsbs,"higher1000");
-                recommendTopicDoList.addAll(list_buildTopic_hzvsbs);
-                bqb_plotTags.must(QueryBuilders.termsQuery("recommendBuildTagsId", SHOUZHI_VS_GAISHAN));
-                bqb_plotTags.must(termQuery_isClaim);
-                bqb_plotTags.must(termQuery_isDel);
-                SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
-                List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,"lower1000");
-                recommendTopicDoList.addAll(list_buildTopic);
-
-            }
-
-
-            SearchResponse sp_isCutPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isCutPrice);
-            List<RecommendTopicDo> list_isCutPrice= cleanEsData(recommendTopicDoQuery,sp_isCutPrice,"isCutPrice");
+            SearchResponse sp_isCutPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isCutPrice, city);
+            List<RecommendTopicDo> list_isCutPrice = cleanEsData(recommendTopicDoQuery, sp_isCutPrice, "isCutPrice");
             recommendTopicDoList.addAll(list_isCutPrice);
 
-            SearchResponse sp_isMustRob = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isMustRob);
-            List<RecommendTopicDo> list_isMustRob= cleanEsData(recommendTopicDoQuery,sp_isMustRob,"isMustRob");
+            SearchResponse sp_isMustRob = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isMustRob, city);
+            List<RecommendTopicDo> list_isMustRob = cleanEsData(recommendTopicDoQuery, sp_isMustRob, "isMustRob");
             recommendTopicDoList.addAll(list_isMustRob);
 
-            SearchResponse sp_isLowPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery,bqb_isLowPrice);
-            List<RecommendTopicDo> list_isLowPrice= cleanEsData(recommendTopicDoQuery,sp_isLowPrice,"isLowPrice");
+            SearchResponse sp_isLowPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isLowPrice, city);
+            List<RecommendTopicDo> list_isLowPrice = cleanEsData(recommendTopicDoQuery, sp_isLowPrice, "isLowPrice");
             recommendTopicDoList.addAll(list_isLowPrice);
-
-//        SearchResponse recommendByRecommendBuildTags = recommendEsDao.getRecommendByRecommendBuildTags(recommendTopicDoQuery,bqb_plotTags);
-//        List<RecommendTopicDo> list_buildTopic = cleanEsData(recommendTopicDoQuery,recommendByRecommendBuildTags,flag);
-//        recommendTopicDoList.addAll(list_buildTopic);
-
         }
 
         recommendTopicDomain.setData(recommendTopicDoList);
-
 
 
         return recommendTopicDomain;
     }
 
 
-
-
-        public List<RecommendTopicDo> cleanEsData(RecommendTopicDoQuery recommendTopicDoQuery,SearchResponse searchResponse, String flag){
+    public List<RecommendTopicDo> cleanEsData(RecommendTopicDoQuery recommendTopicDoQuery, SearchResponse searchResponse, String flag) {
         List<RecommendTopicDo> recommendTopicDoList = new ArrayList<>();
 
-        Terms areaIdBucket = searchResponse.getAggregations().get("areaId");
-        if(null != areaIdBucket){
-            if(areaIdBucket.getBuckets().size()>0){
-                int size = areaIdBucket.getBuckets().size();
-                for(int i=0; i<size; i++){
+//        Terms areaIdBucket = searchResponse.getAggregations().get("areaIds");
+//        if (null != areaIdBucket) {
+//            if (areaIdBucket.getBuckets().size() > 0) {
+//                int size = areaIdBucket.getBuckets().size();
+//                for (int i = 0; i < size; i++) {
+//
+//                    RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
+//                    Terms.Bucket bucket = areaIdBucket.getBuckets().get(i);
+//                    InternalCardinality internalCardinality = bucket.getAggregations().get("count");
+//                    recommendTopicDo.setCount((int) internalCardinality.getValue());
+//                    InternalMin lowestPrice = bucket.getAggregations().get("minPrice");
+//                    InternalMax highestPrice = bucket.getAggregations().get("maxPrice");
+//                    recommendTopicDo.setLowestPrice(lowestPrice.getValue());
+//                    recommendTopicDo.setHighestPrice(highestPrice.getValue());
+//                    recommendTopicDo.setDistrictId(bucket.getKeyAsString());
+//                    recommendTopicDo.setTopicType(flag);
+//                    recommendTopicDoList.add(recommendTopicDo);
+//                }
+//            }
 
-                    RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
-                    Terms.Bucket bucket = areaIdBucket.getBuckets().get(i);
-                    InternalCardinality internalCardinality = bucket.getAggregations().get("count");
-                    recommendTopicDo.setCount((int)internalCardinality.getValue());
-                    InternalMin lowestPrice = bucket.getAggregations().get("minPrice");
-                    InternalMax highestPrice = bucket.getAggregations().get("maxPrice");
-                    recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-                    recommendTopicDo.setHighestPrice(highestPrice.getValue());
-                    recommendTopicDo.setDistrictId(bucket.getKeyAsString());
-                    recommendTopicDo.setTopicType(flag);
-                    recommendTopicDoList.add(recommendTopicDo);
-                }
-            }
+//        } else {
+        RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
+        ParsedCardinality parsedCardinality = searchResponse.getAggregations().get("count");
+        ParsedMin lowestPrice = searchResponse.getAggregations().get("minPrice");
+        ParsedMax highestPrice = searchResponse.getAggregations().get("maxPrice");
+        ParsedLongTerms longTerms = searchResponse.getAggregations().get("areaIds");
+        if (parsedCardinality.getValue() > 0) {
+            if (longTerms.getBuckets().size() > 0) {
 
-        }else{
-            RecommendTopicDo recommendTopicDo = new RecommendTopicDo();
-            InternalCardinality internalCardinality = searchResponse.getAggregations().get("count");
-            InternalMin lowestPrice = searchResponse.getAggregations().get("minPrice");
-            InternalMax highestPrice = searchResponse.getAggregations().get("maxPrice");
-            LongTerms longTerms = searchResponse.getAggregations().get("areaIds");
-            if(internalCardinality.getValue()>0){
-                if(longTerms.getBuckets().size()> 0){
+                Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
+                StringBuffer areaIds = new StringBuffer();
+                StringBuffer areaNames = new StringBuffer();
+                while (areaIdBucketIt.hasNext()) {
 
-                    Iterator areaIdBucketIt = longTerms.getBuckets().iterator();
-                    StringBuffer areaIds = new StringBuffer();
-                    while(areaIdBucketIt.hasNext()) {
-
-                        Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
-                        areaIds = areaIds.append(areaIdsBucket.getKeyAsString()+",");
+                    Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
+                    ParsedTopHits parsedTopHits = areaIdsBucket.getAggregations().get("areaName");
+                    for (SearchHit hit : parsedTopHits.getHits().getHits()) {
+                        areaNames = areaNames.append((String) hit.getSourceAsMap().get("area") + ",");
                     }
-                    recommendTopicDo.setDistrictId(areaIds.substring(0,areaIds.length()-1));
-                }else{
-                    recommendTopicDo.setDistrictId("");
+
+                    areaIds = areaIds.append(areaIdsBucket.getKeyAsString() + ",");
+                }
+                recommendTopicDo.setDistrictId(areaIds.substring(0, areaIds.length() - 1));
+                recommendTopicDo.setDistrictName(areaNames.substring(0, areaNames.length() - 1));
+            } else {
+                recommendTopicDo.setDistrictId("");
+            }
+            if (StringTool.isEmpty(recommendTopicDoQuery.getDistrictId())) {
+                recommendTopicDo.setDistrictId("");
+            }
+            recommendTopicDo.setLowestPrice(lowestPrice.getValue());
+            recommendTopicDo.setHighestPrice(highestPrice.getValue());
+            recommendTopicDo.setCount((int) parsedCardinality.getValue());
+
+//                recommendTopicDo.setTopicType(flag);
+
+                if(Objects.equals(flag, "isLowPrice")){
+                    recommendTopicDo.setTopicName("捡漏房源榜");
+                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
+                    recommendTopicDo.setTopicType(2);
+                }else if(Objects.equals(flag, "isMustRob")){
+                    recommendTopicDo.setTopicName("抢手房源榜");
+                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
+                    recommendTopicDo.setTopicType(3);
+                }else if(Objects.equals(flag, "isCutPrice")){
+                    recommendTopicDo.setTopicName("降价房源榜");
+                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
+                    recommendTopicDo.setTopicType(1);
                 }
 
-                recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-                recommendTopicDo.setHighestPrice(highestPrice.getValue());
-                recommendTopicDo.setCount((int)internalCardinality.getValue());
-
-                recommendTopicDo.setTopicType(flag);
-                recommendTopicDoList.add(recommendTopicDo);
+            try {
+                UserBasic current = UserBasic.getCurrent();
+                UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
+                userConditionSubscribeDetailDo.setDistrictId(recommendTopicDo.getDistrictId());
+                userConditionSubscribeDetailDo.setBeginPrice(recommendTopicDo.getLowestPrice().intValue());
+                userConditionSubscribeDetailDo.setEndPrice(recommendTopicDo.getHighestPrice().intValue());
+                if (Objects.equals(flag, "isLowPrice")) {
+                    userConditionSubscribeDetailDo.setTopicType(3);
+                } else if (Objects.equals(flag, "isMustRob")) {
+                    userConditionSubscribeDetailDo.setTopicType(2);
+                } else if (Objects.equals(flag, "isCutPrice")) {
+                    userConditionSubscribeDetailDo.setTopicType(1);
+                }
+                UserSubscribe userSubscribe = subscribeService.selectConditionSubscribeByUserSubscribeMap(userConditionSubscribeDetailDo,
+                        Integer.parseInt(current.getUserId()), CityUtils.getCity());
+                if (userSubscribe != null) {
+                    recommendTopicDo.setIsSubscribe(userSubscribe.getId());
+                } else {
+                    recommendTopicDo.setIsSubscribe(0);
+                }
+            } catch (BaseException e) {
+                recommendTopicDo.setIsSubscribe(0);
             }
 
+
+            recommendTopicDoList.add(recommendTopicDo);
         }
+
+//        }
 
         return recommendTopicDoList;
     }
-
-
 
 
     /**

@@ -87,4 +87,15 @@ public class UserBasicDo {
      */
     private String imageCode;
 
+    /**
+     * 用户称呼名
+     */
+    private String userCallName;
+
+    /**
+     * 微信账号
+     */
+    private String unionid;
+
+
 }

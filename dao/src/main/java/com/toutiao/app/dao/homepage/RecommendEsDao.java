@@ -34,12 +34,12 @@ public interface RecommendEsDao {
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getRecommendByRecommendBuildTags(RecommendTopicDoQuery recommendTopicDoQuery,BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getRecommendByRecommendBuildTags(RecommendTopicDoQuery recommendTopicDoQuery,BoolQueryBuilder boolQueryBuilder, String city);
 
     /**
      * 根据房源标签查询
      * @param boolQueryBuilder
      * @return
      */
-    SearchResponse getRecommendByRecommendHouseTags(RecommendTopicDoQuery recommendTopicDoQuery,BoolQueryBuilder boolQueryBuilder);
+    SearchResponse getRecommendByRecommendHouseTags(RecommendTopicDoQuery recommendTopicDoQuery,BoolQueryBuilder boolQueryBuilder, String city);
 }

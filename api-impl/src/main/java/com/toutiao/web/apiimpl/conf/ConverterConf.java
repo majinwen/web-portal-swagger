@@ -22,17 +22,18 @@ import java.util.List;
 public class ConverterConf {
     /**
      * 配置 ResponseBody 格式化 json
+     *
      * @return
      */
     @Bean
-    public HttpMessageConverters fastJsonHttpMessageConverters(){
+    public HttpMessageConverters fastJsonHttpMessageConverters() {
         //1.需要定义一个convert转换消息的对象;
         FastJsonHttpMessageConverter fastJsonHttpMessageConverter = new FastJsonHttpMessageConverter();
         //2:添加fastJson的配置信息;
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.WriteMapNullValue,SerializerFeature.WriteNullStringAsEmpty,SerializerFeature.PrettyFormat,SerializerFeature.WriteNullListAsEmpty,SerializerFeature.WriteNullNumberAsZero);
+        fastJsonConfig.setSerializerFeatures(SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.PrettyFormat, SerializerFeature.WriteNullListAsEmpty, SerializerFeature.WriteNullNumberAsZero);
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        fastJsonConfig.getSerializeConfig().put(Date.class,new DateSerializer());
+        fastJsonConfig.getSerializeConfig().put(Date.class, new DateSerializer());
         //5:自定义返回key
         NameRespFilter nameRespFilter = new NameRespFilter();
         ValueRespFilter valueRespFilter = new ValueRespFilter();

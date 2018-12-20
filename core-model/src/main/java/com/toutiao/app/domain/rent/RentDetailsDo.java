@@ -1,8 +1,13 @@
 package com.toutiao.app.domain.rent;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
+import com.toutiao.app.domain.plot.PlotDetailsDo;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +143,7 @@ public class RentDetailsDo {
      */
     private String nearestSubway;
     /**
-     * 出租房源标签(1-采光好，2-地铁近，3-首次出租，4-独立阳台，5-独立卫生间，6-集中供暖，7-可注册办公)
+     * 出租房源标签(1-采光好，2-近地铁，3-首次出租，4-独立阳台，5-独立卫生间，6-集中供暖，7-可注册办公，8-开放式厨房，9-免佣金，10-免押金，11-可月付，12-有电梯，13-电子锁，14-随时看房)
      */
     private Integer[] rentHouseTagsId;
     /**
@@ -199,10 +204,23 @@ public class RentDetailsDo {
      * 更新时间
      */
     private String upStringTime;
+
     /**
      * 发版时间
      */
     private String publishTime;
+
+
+    public void setPublishTime(String publishTime) {
+        this.publishTime = publishTime;
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            Date date = format.parse(publishTime);
+            this.publishTime = format.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
     /**
      * 发布状态
      */
@@ -250,5 +268,30 @@ public class RentDetailsDo {
      * 名片
      */
     private String agentBusinessCard;
+
+    /**
+     * 经济公司营业执照
+     */
+    private String companyCard;
+
+    /**
+     * 房源导入时间
+     */
+    private String importTime;
+
+    /**
+     * 是否显示默认图片标志
+     */
+    private Integer isDefaultImage = 0;
+
+    /**
+     * 公司图标
+     */
+    private String companyIcon;
+
+    /**
+     * 小区信息
+     */
+    private PlotDetailsDo plotDetailsDo;
 
 }

@@ -22,6 +22,7 @@ public class BaseException extends RuntimeException {
     public <T extends IntBaseType> BaseException(T exceptionEnum) {
 
         super(exceptionEnum.getDesc());
+        this.setMsg(exceptionEnum.getDesc());
         this.setCode(exceptionEnum.getValue());
     }
 

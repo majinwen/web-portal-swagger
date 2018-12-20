@@ -24,4 +24,18 @@ public class UserFavoriteConditionDo {
      * 户型id
      */
     private String[] layoutId;
+    /**
+     * 城市
+     */
+    private String city;
+
+    /**
+     * 定制类型
+     */
+    private Integer conditionType = null;
+
+    /**
+     * 租房类型1整租2合租
+     */
+    private Integer rentType = null;
 }

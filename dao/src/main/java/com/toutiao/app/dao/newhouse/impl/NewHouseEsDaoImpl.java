@@ -1,127 +1,200 @@
 package com.toutiao.app.dao.newhouse.impl;
+
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
-import com.toutiao.web.common.util.ESClientTools;
-import org.elasticsearch.action.search.SearchRequestBuilder;
+import org.elasticsearch.action.search.SearchRequest;
+import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.functionscore.FunctionScoreQueryBuilder;
+import org.elasticsearch.script.Script;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
+import org.elasticsearch.search.sort.ScriptSortBuilder;
+import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class NewHouseEsDaoImpl implements NewHouseEsDao {
-    @Autowired
-    private ESClientTools esClientTools;
-    @Value("${tt.newhouse.index}")
-    private String newhouseIndex;//索引名称
-    @Value("${tt.newhouse.type}")
-    private String newhouseType;//索引类型
-    @Value("${tt.newlayout.type}")
-    private String layoutType;//子类索引类型
-    @Value("${distance}")
-    private Double distance;
 
-    //房源动态索引
-    @Value("${tt.dynamic.index}")
-    private String houseDynamicIndex;
-    @Value("${tt.dynamic.type}")
-    private  String dynamicType;
-    @Value("${tt.search.engines}")
-    private String searchEnginesIndex ;
-    @Value("${tt.search.engines.type}")
-    private String searchEnginesType;
+
+    @Autowired
+    private RestHighLevelClient restHighLevelClient;
 
 
     @Override
-    public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder) {
-        TransportClient client = esClientTools.init();
-        //查询详情
-        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                .setQuery(boolQueryBuilder)
-                .execute().actionGet();
+    public SearchResponse getNewHouseBulid(BoolQueryBuilder boolQueryBuilder, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city));
+        searchRequest.types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchRequest.source(searchSourceBuilder);
+
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return  searchresponse;
     }
 
 
 
     @Override
-    public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,FieldSortBuilder buildingSort ) {
-        TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = new SearchResponse();
+    public SearchResponse getNewHouseList(BoolQueryBuilder  boolQueryBuilder, Integer pageNum,Integer pageSize,FieldSortBuilder levelSort,
+                                          FieldSortBuilder buildingSort, String city, String sort) {
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder)
+                /* .fetchSource(new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
+                                 "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
+                                 "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
+                         null)*/.from((pageNum-1)*pageSize).size(pageSize);
+
+//        if (null!=levelSort && null!=buildingSort && "0".equals(sort)){//默认排序
+//            searchSourceBuilder.sort(levelSort).sort(buildingSort);
+//        }else
+        if("1".equals(sort)){
+            searchSourceBuilder.sort("totalPrice", SortOrder.ASC);
+        }else if("2".equals(sort)){
+            searchSourceBuilder.sort("totalPrice", SortOrder.DESC);
+        }else if("3".equals(sort)){
+            searchSourceBuilder.sort("average_price", SortOrder.ASC);
+        }else if("4".equals(sort)){
+            searchSourceBuilder.sort("average_price", SortOrder.DESC);
+        }
         if (null!=levelSort && null!=buildingSort)
         {
-            searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(boolQueryBuilder).addSort(levelSort).addSort(buildingSort)/*.setFetchSource(
-                            new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                    "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
-                                    "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
-                            null)*/
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
-                    .execute().actionGet();
-        }
-        else
-        {
-            searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                    .setQuery(boolQueryBuilder)/*.setFetchSource(
-                            new String[]{"building_name_id","building_name","average_price","building_tags","activity_desc","city_id",
-                                    "district_id","district_name","area_id","area_name","building_title_img","sale_status_name","property_type",
-                                    "location","house_min_area","house_max_area","nearbysubway","total_price","roundstation","deliver_time","park_radio","ringRoadName"},
-                            null)*/
-                    .setFrom((pageNum-1)*pageSize)
-                    .setSize(pageSize)
-                    .execute().actionGet();
+            searchSourceBuilder.sort(levelSort).sort(buildingSort);
         }
 
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-       return searchresponse;
+        return searchresponse;
     }
 
     @Override
-    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize) {
-        TransportClient client = esClientTools.init();
-        SearchResponse searchresponse = new SearchResponse();
-        searchresponse= client.prepareSearch(houseDynamicIndex).setTypes(dynamicType)
-                .setQuery(boolQueryBuilder).addSort("create_time",SortOrder.DESC).setFetchSource(
+    public SearchResponse getDynamicByNewCode(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String city) {
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHosueDynamicIndex(city)).types(ElasticCityUtils.getNewHosueDynamicType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).sort("create_time",SortOrder.DESC)
+                .fetchSource(
                         new String[]{"title","time","link_url","detail","newcode","create_time","type","is_del"},null
-                )
-                .setFrom((pageNum-1)*pageSize)
-                .setSize(pageSize)
-                .execute().actionGet();
+                ).from((pageNum-1)*pageSize).size(pageSize);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return  searchresponse;
 
     }
 
     @Override
-    public SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder boolQueryBuilder) {
-        TransportClient client = esClientTools.init();
-        //查询
-        SearchResponse searchresponse = client.prepareSearch(newhouseIndex).setTypes(newhouseType)
-                .setQuery(boolQueryBuilder).setSize(1)
-                .execute().actionGet();
+    public SearchResponse getOneNewHouseByRecommendCondition(BoolQueryBuilder boolQueryBuilder, String city) {
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city));
+        searchRequest.types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchRequest.source(searchSourceBuilder.query(boolQueryBuilder));
+
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return  searchresponse;
+    }
+
+    @Override
+    public SearchResponse getBuildCount(BoolQueryBuilder boolQueryBuilder, String city) {
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchRequest.source(searchSourceBuilder.query(boolQueryBuilder));
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  searchresponse;
+    }
+
+    @Override
+    public SearchResponse getGuessLikeNewHouseList(BoolQueryBuilder booleanQueryBuilder, String city, Integer pageNum, Integer pageSize) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        if (pageNum <= 0) {
+            pageNum = 1;
+        }
+        searchRequest.source(searchSourceBuilder.query(booleanQueryBuilder).sort("create_time",SortOrder.DESC).from((pageNum-1)*pageSize).size(pageSize));
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return  searchresponse;
+    }
+
+    @Override
+    public SearchResponse getNewHouseCustomList(BoolQueryBuilder builder, Integer pageNum, Integer pageSize, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        Script script = new Script("Math.random()");
+        ScriptSortBuilder scrip = SortBuilders.scriptSort(script, ScriptSortBuilder.ScriptSortType.NUMBER);
+        searchSourceBuilder.query(builder).size(pageSize).sort(scrip);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchresponse = null;
+        try {
+            searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return  searchresponse;
     }
 
 
-    @Override
-    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder) {
-
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(newhouseIndex).setTypes(newhouseType);
-        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
-        return searchresponse;
-    }
-
-    @Override
-    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder) {
-
-        TransportClient client = esClientTools.init();
-        SearchRequestBuilder srb = client.prepareSearch(searchEnginesIndex).setTypes(searchEnginesType);
-        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
-        return searchresponse;
-    }
+//    @Override
+//    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {
+//
+//        TransportClient client = esClientTools.init();
+//        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getNewHouseIndex(city)).setTypes(ElasticCityUtils.getNewHouseParentType(city));
+//        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+//        return searchresponse;
+//    }
+//
+//    @Override
+//    public SearchResponse getPlotByNickNameKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {
+//
+//        TransportClient client = esClientTools.init();
+//        SearchRequestBuilder srb = client.prepareSearch(ElasticCityUtils.getSearchEnginesIndex(city)).setTypes(ElasticCityUtils.getSearchEnginesType(city));
+//        SearchResponse searchresponse=srb.setQuery(booleanQueryBuilder).execute().actionGet();
+//        return searchresponse;
+//    }
 
 }

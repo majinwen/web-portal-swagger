@@ -1,10 +1,7 @@
 package com.toutiao.app.service.plot;
 
 import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
-import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
-import com.toutiao.app.domain.sellhouse.SellHouseDo;
-
-import java.util.List;
+import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDomain;
 
 
 /**
@@ -14,24 +11,27 @@ public interface PlotsEsfRestService {
 
     /**
      * 根据小区id获取小区房源数量
+     *
      * @param plotsId
      * @return
      */
-    PlotsEsfRoomCountDomain queryPlotsEsfByPlotsId(Integer plotsId);
+    PlotsEsfRoomCountDomain queryPlotsEsfByPlotsId(Integer plotsId, String city);
 
     /**
      * 根据小区id，户型查询房源列表
+     *
      * @param plotsId
      * @param room
      * @return
      */
-    List<SellAndClaimHouseDetailsDo> getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize);
+    SellAndClaimHouseDetailsDomain getEsfByPlotsIdAndRoom(Integer plotsId, Integer room, Integer pageNum, Integer pageSize, String city);
 
 
     /**
      * 根据小区id获取小区房源数量
+     *
      * @param plotsId
      * @return
      */
-    PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId);
+    PlotsEsfRoomCountDomain queryHouseCountByPlotsId(Integer plotsId, String city);
 }

@@ -1,6 +1,5 @@
 package com.toutiao.app.service.plot.impl;
 
-import com.toutiao.app.domain.hotplot.SearchHotProj;
 import com.toutiao.app.domain.hotplot.SearchHotProjDo;
 import com.toutiao.app.domain.hotplot.SearchHotProjDomain;
 import com.toutiao.app.service.plot.HotPlotsRestService;
@@ -30,12 +29,13 @@ public class HotPlotsRestServiceImpl implements HotPlotsRestService {
      * @return
      */
     @Override
-    public SearchHotProjDomain getHotPlotsByCityId(String city) {
-
-        Integer cityId = Integer.valueOf(city);//暂时写死
-        List<SearchHotProjDo> searchHotProjs = searchHotProjMapper.queryHotPlotsByCityId(cityId);
+    public SearchHotProjDomain getHotPlotsByCityId(Integer houseType, String city) {
         SearchHotProjDomain searchHotProjDomain = new SearchHotProjDomain();
-        searchHotProjDomain.setData(searchHotProjs);
+        if(!"".equals(city)){
+            Integer cityId = Integer.valueOf(city);//暂时写死
+            List<SearchHotProjDo> searchHotProjs = searchHotProjMapper.queryHotPlotsByCityId(houseType, cityId);
+            searchHotProjDomain.setData(searchHotProjs);
+        }
         return searchHotProjDomain;
     }
 }

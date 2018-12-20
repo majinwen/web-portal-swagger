@@ -15,7 +15,5 @@ import java.util.Map;
 @Data
 public class RecommendTopicDomain {
 
-
-//    private Map<String,Map<String,RecommendTopicDo>> data;
     private List<RecommendTopicDo> data;
 }

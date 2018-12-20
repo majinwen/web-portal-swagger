@@ -43,26 +43,37 @@ public class HomePageController {
      * @param model
      * @return
      */
-    @RequestMapping(value={"{citypath}"})
-    public String index(@PathVariable("citypath")String citypath, Model model, VillageRequest villageRequest){
-        Date data = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String tradeQuotations = redisSession.getValue("TradeQuotations");
-        JSONObject jsonObject = JSONObject.parseObject(tradeQuotations);
-        model.addAttribute("TradeQuotations",jsonObject);
-        NewHouseQuery newHouseQuery=new NewHouseQuery();
-        newHouseQuery.setSort(0);
-//        newHouseQuery.setPageNum(1);
-//        newHouseQuery.setPageSize(5);
-        Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
-        List villageList = plotService.findVillageByConditions(villageRequest);
-        List esfList = projHouseInfoService.queryIndexProjHouse();
-        model.addAttribute("villageList", villageList);
-        model.addAttribute("newbuilds",builds);
-        model.addAttribute("user","asds");
-        model.addAttribute("currentTime",sdf.format(data));
-        model.addAttribute("esfList",esfList);
-        return "index";
+//    @RequestMapping(value={"{citypath}"})
+//    public String index(@PathVariable("citypath")String citypath, Model model, VillageRequest villageRequest){
+//        Date data = new Date();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String tradeQuotations = redisSession.getValue("TradeQuotations");
+//        JSONObject jsonObject = JSONObject.parseObject(tradeQuotations);
+//        model.addAttribute("TradeQuotations",jsonObject);
+//        NewHouseQuery newHouseQuery=new NewHouseQuery();
+//        newHouseQuery.setSort(0);
+////        newHouseQuery.setPageNum(1);
+////        newHouseQuery.setPageSize(5);
+//        Map<String,Object> builds = newHouseService.getNewHouse(newHouseQuery);
+//        List villageList = plotService.findVillageByConditions(villageRequest);
+//        List esfList = projHouseInfoService.queryIndexProjHouse();
+//        model.addAttribute("villageList", villageList);
+//        model.addAttribute("newbuilds",builds);
+//        model.addAttribute("user","asds");
+//        model.addAttribute("currentTime",sdf.format(data));
+//        model.addAttribute("esfList",esfList);
+//        return "index";
+//
+//    }
 
-    }
+//
+//    @RequestMapping(value = "/getRedisCityForJson")
+//    @ResponseBody
+//    public NashResult getRedisCityForJson(){
+//        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+//        String cityCode = CityUtils.getCity();
+//        String TradeQuotations = "TradeQuotations_"+cityCode;
+//        JSONObject res =  JSONObject.parseObject(redis.getValue(TradeQuotations));
+//        return NashResult.build(res);
+//    }
 }

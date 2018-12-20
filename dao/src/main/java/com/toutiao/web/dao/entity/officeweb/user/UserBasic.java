@@ -1,6 +1,8 @@
 package com.toutiao.web.dao.entity.officeweb.user;
 
 import com.alibaba.fastjson.JSON;
+import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import lombok.Data;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -81,6 +83,17 @@ public class UserBasic {
      */
     private String userOnlySign;
 
+    /**
+     * 用户称呼
+     */
+    private String userCallName;
+
+    /**
+     * 微信账号
+     */
+    private String unionid;
+
+
 
     public static UserBasic getCurrent() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -88,7 +101,7 @@ public class UserBasic {
         String userJson = (String) request.getAttribute("userLogin");
         UserBasic user = new UserBasic();
         if (userJson.equals("请登录")) {
-            user = null;
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN);
         } else {
             user = JSON.parseObject(userJson, UserBasic.class);
         }

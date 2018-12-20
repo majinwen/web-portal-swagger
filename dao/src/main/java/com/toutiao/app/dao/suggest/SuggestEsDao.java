@@ -9,12 +9,12 @@ public interface SuggestEsDao {
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse getAreaAndDistrictSuggest(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getAreaAndDistrictSuggest(BoolQueryBuilder booleanQueryBuilder, String city);
 
     /**
      * 获取房源联想词
      * @param booleanQueryBuilder
      * @return
      */
-    SearchResponse getKeywordSuggest(BoolQueryBuilder booleanQueryBuilder);
+    SearchResponse getKeywordSuggest(BoolQueryBuilder booleanQueryBuilder, String city);
 }

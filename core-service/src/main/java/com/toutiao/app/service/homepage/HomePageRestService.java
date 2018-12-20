@@ -1,9 +1,7 @@
 package com.toutiao.app.service.homepage;
 
 import com.toutiao.app.domain.homepage.*;
-import com.toutiao.app.domain.newhouse.NewHouseListDomain;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDo;
-import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
+import com.toutiao.app.domain.newhouse.*;
 
 import java.util.List;
 import java.util.Map;
@@ -20,38 +18,38 @@ public interface HomePageRestService {
     /**
      * 获取新房五条
      */
-    NewHouseListDomain getHomePageNewHouse();
+    NewHouseListDomain getHomePageNewHouse(String city);
 
     /**
      * 获取首页主题房
      */
-    HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery);
+//    HomeThemeHouseListDo getHomeThemeHouse(HomeThemeHouseDoQuery homeThemeHouseDoQuery);
 
     /**
      * 首页附近小区
      */
-    HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery);
+    HomePageNearPlotListDo getHomePageNearPlot(NearHouseDoQuery nearHouseDoQuery,String city);
 
     /**
      * 首页附近二手房
      * @param nearHouseDoQuery
      * @return
      */
-    HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery);
+    HomePageNearEsfListDo getHomePageNearEsf(NearHouseDoQuery nearHouseDoQuery, String city);
 
     /**
      * 专题着陆页-附近小区
      * @param nearHouseSpecialPageDoQuery
      * @return
      */
-    HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
+    HomePageNearPlotDo getPlotSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city);
 
     /**
      * 专题着陆页-附近二手房
      * @param nearHouseSpecialPageDoQuery
      * @return
      */
-    HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery);
+    HomePageNearEsfListDo getEsfSpecialPage(NearHouseSpecialPageDoQuery nearHouseSpecialPageDoQuery, String city);
 
     /**
      * 首页获取不买亏二手房8条
@@ -77,24 +75,31 @@ public interface HomePageRestService {
      * 保存推荐条件
      * @return
      */
-    Integer saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+    CustomConditionUserSampleDo saveRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
     /**
      * 获取推荐条件
      */
-    UserFavoriteConditionDo getRecommendCondition(Integer userId);
+    UserFavoriteConditionDo getRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
     /**
      * 更新推荐条件
      * @param userFavoriteConditionDoQuery
      * @return
      */
-    Integer updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery);
+    CustomConditionUserSampleDo updateRecommendCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
     /**
      * 删除推荐条件
      * @param userId
      * @return
      */
-    Integer deleteRecommendCondition (Integer userId);
+    Integer deleteRecommendCondition (Integer userId, Integer conditionType, Integer cityId);
+
+    /**
+     * 条件筛选数量
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    CustomConditionCountDo getCustomCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 }

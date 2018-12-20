@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.toutiao.web.dao.mapper.report.ReportNewGuideAttentionMapper" >
+  <resultMap id="BaseResultMap" type="com.toutiao.app.dao.report.ReportNewGuideAttention" >
+    <result column="newcode" property="newcode" jdbcType="INTEGER" />
+    <result column="projname" property="projname" jdbcType="VARCHAR" />
+    <result column="district_id" property="districtId" jdbcType="INTEGER" />
+    <result column="district_name" property="districtName" jdbcType="VARCHAR" />
+    <result column="area_id" property="areaId" jdbcType="INTEGER" />
+    <result column="area_name" property="areaName" jdbcType="VARCHAR" />
+    <result column="livindate" property="livindate" jdbcType="VARCHAR" />
+    <result column="city_id" property="cityId" jdbcType="INTEGER" />
+    <result column="average_price" property="averagePrice" jdbcType="NUMERIC" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="img_path" property="imgPath" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List">
+        newcode, projname, district_id, district_name, area_id, area_name, livindate, city_id, average_price, create_time, img_path
+    </sql>
+  <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
+    select
+    <include refid="Base_Column_List"/>
+    from report_new_guide_attention
+    where city_id = #{cityId,jdbcType=INTEGER}
+    order by create_time asc
+  </select>
+</mapper>

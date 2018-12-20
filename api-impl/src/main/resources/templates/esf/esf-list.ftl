@@ -357,7 +357,7 @@
         }
 
         var url = document.referrer;
-        zhuge.track('进入二手房列表页',{'导航名称':'二手房','页面来源URL':url});
+        zhuge.track('wap-进入二手房列表',{'导航名称':'二手房','页面来源URL':url});
         if(url.indexOf("/xiaoqu")>0){
             zhuge.track('小区-进入二手房列表页',{'导航名称':'二手房','页面来源URL':url})
         }
@@ -395,7 +395,7 @@
      */
     $("#result-section").on('click','li',function () {
         var link = $(this);
-        zhuge.track('二手房-点击列表二手房', {
+        zhuge.track('wap-二手房列表-点击进入二手房', {
             "楼盘名称":link.find('img').attr('alt'),
             "总价":link.find('div.cont-block-price').find('em').text(),
             "单价":link.find('div.cont-block-price').find('span').text(),

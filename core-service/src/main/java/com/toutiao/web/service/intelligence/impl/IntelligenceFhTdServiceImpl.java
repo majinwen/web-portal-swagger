@@ -1,6 +1,7 @@
 package com.toutiao.web.service.intelligence.impl;
 
 
+import com.toutiao.app.domain.Intelligence.PriceRatioDo;
 import com.toutiao.web.dao.entity.officeweb.IntelligenceFhTd;
 import com.toutiao.web.dao.mapper.officeweb.IntelligenceFhTdMapper;
 import com.toutiao.web.domain.intelligenceFh.IntelligenceFhTdDo;
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
@@ -30,7 +29,8 @@ public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
      * @return
      */
     @Override
-    public Map<String,Object> queryTd(Integer totalPrice) {
+    public PriceRatioDo queryTd(Integer totalPrice) {
+        PriceRatioDo priceRatioDo = new PriceRatioDo();
 
         List<IntelligenceFhTd> lists = intelligenceFhTdMapper.queryTd(totalPrice);
 
@@ -49,7 +49,6 @@ public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
         intelligenceFhTdRatio.setMaxVolumeRatio(String.format("%.2f",maxratio)+"%");
         intelligenceFhTdRatio.setAverageVolume(String.valueOf((int)Math.ceil(average)));
         intelligenceFhTdRatio.setAverageVolumeRatio(String.format("%.2f",averageratio)+"%");
-        Map<String,Object> result = new HashMap<>();
 
         List<IntelligenceFhTdDo> intelligenceFhTdDos = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
@@ -63,9 +62,12 @@ public class IntelligenceFhTdServiceImpl implements IntelligenceFhTdService {
                 e.printStackTrace();
             }
         }
-        result.put("ratio",intelligenceFhTdRatio);
-        result.put("trend",intelligenceFhTdDos);
-        result.put("searchPrice",totalPrice);
-        return result;
+//        result.put("ratio",intelligenceFhTdRatio);
+//        result.put("trend",intelligenceFhTdDos);
+//        result.put("searchPrice",totalPrice);
+        priceRatioDo.setRatio(intelligenceFhTdRatio);
+        priceRatioDo.setTrend(intelligenceFhTdDos);
+        priceRatioDo.setSearchPrice(totalPrice);
+        return priceRatioDo;
     }
 }

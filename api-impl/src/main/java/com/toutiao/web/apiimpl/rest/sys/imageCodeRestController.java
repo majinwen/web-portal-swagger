@@ -64,7 +64,7 @@ public class imageCodeRestController {
 
 
     // 验证验证码是否正确
-    @RequestMapping("/getCode")
+    @RequestMapping(value = "/getCode", method = RequestMethod.GET)
     public void validateImageCode(HttpServletRequest request,HttpServletResponse response,String pageCode) {
         String info = "";
         try {

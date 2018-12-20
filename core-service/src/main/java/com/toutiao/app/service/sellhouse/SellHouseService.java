@@ -2,8 +2,13 @@ package com.toutiao.app.service.sellhouse;
 
 
 import com.toutiao.app.domain.message.MessageSellHouseDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDo;
+import com.toutiao.app.domain.newhouse.CustomConditionDetailsDomain;
+import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.sellhouse.*;
+import com.toutiao.web.common.util.city.CityUtils;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -14,7 +19,7 @@ public interface SellHouseService {
      * @param houseId
      * @return
      */
-    SellHouseDetailsDo getSellHouseByHouseId(String houseId);
+    SellHouseDetailsDo getSellHouseByHouseId(String houseId,String city);
 
     /**
      * 二手房房源详情消息推送
@@ -24,25 +29,51 @@ public interface SellHouseService {
     List<MessageSellHouseDo> querySellHouseByHouseId(String[] houseId);
 
     /**
-     * 认领二手房房源经纪人
+     * 二手房房源详情消息推送
      * @param houseId
+     * @param city
      * @return
      */
-    AgentsBySellHouseDo getAgentByHouseId(Integer houseId);
+    List<MessageSellHouseDo> querySellHouseByHouseIdNew(String[] houseId, String city);
+
+//    /**
+//     * 认领二手房房源经纪人
+//     * @param houseId
+//     * @return
+//     */
+//    AgentsBySellHouseDo getAgentByHouseId(Integer houseId);
 
     /**
      * 条件查询二手房房源
      * @param sellHouseQueryDo
+     * @param city
      * @return
      */
-    SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getSellHouseByChoose(SellHouseDoQuery sellHouseQueryDo, String city);
+
+    /**
+     * 条件查询二手房房源V1
+     * @param userFavoriteConditionDoQuery
+     * @param city
+     * @return
+     */
+    SellHouseDomain getSellHouseByChooseV1(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
+
+    /**
+     * 条件查询二手房房源(无预设条件)
+     * @param userFavoriteConditionDoQuery
+     * @param city
+     * @return
+     */
+    SellHouseDomain getSellHouseNoCondition(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 
     /**
      * 查询二手房推荐房源
      * @param sellHouseQueryDo
+     * @param city
      * @return
      */
-    SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseQueryDo);
+    SellHouseDomain getRecommendSellHouse(SellHouseDoQuery sellHouseQueryDo, String city);
 
 
     /**
@@ -50,16 +81,23 @@ public interface SellHouseService {
      * @param sellHouseDoQuery
      * @return
      */
-    SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery);
-
+    SellHouseSearchDomain getSellHouseList(SellHouseDoQuery sellHouseDoQuery,String city);
 
 
     /**
-     *
+     * 二手房相似好房
+     * @param sellHouseDoQuery
+     * @return
+     */
+    SellHouseSearchDomain getSimilarSellHouseList(SellHouseDoQuery sellHouseDoQuery,String city);
+
+
+    /**
+     * 缝出必抢专题页
      * @param sellHouseBeSureToSnatchDoQuery
      * @return
      */
-    SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery);
+    SellHouseBeSureToSnatchDomain getBeSureToSnatchList(SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery, String city);
 
     /**
      * 推荐房源
@@ -67,5 +105,29 @@ public interface SellHouseService {
      * @param recommendEsf5DoQuery
      * @return
      */
-    SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery);
+    SellHouseSearchDomain getRecommendEsf5(RecommendEsf5DoQuery recommendEsf5DoQuery, String city);
+
+    /**
+     * 二手房判断是否上传默认图
+     * @param importTime
+     * @param today
+     * @param image
+     * @return
+     */
+    int isDefaultImage(String importTime, Date today, String image);
+
+    /**
+     * 二手房猜你喜欢
+     * @param sellHouseDoQuery
+     * @param userId
+     * @return
+     */
+    SellHouseSearchDomain queryGuessLikeSellHouseList(SellHouseDoQuery sellHouseDoQuery, Integer userId, String city);
+
+    /**
+     * 定制条件分布结果
+     * @param userFavoriteConditionDoQuery
+     * @return
+     */
+    CustomConditionDetailsDomain getEsfCustomConditionDetails(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
 }
