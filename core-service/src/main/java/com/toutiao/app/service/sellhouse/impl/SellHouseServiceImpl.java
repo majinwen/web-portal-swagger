@@ -2607,8 +2607,9 @@ public class SellHouseServiceImpl implements SellHouseService {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(termQuery("isDel", "0"));
             boolQueryBuilder.must(termQuery("is_claim", "0"));
-            String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
-            if(layoutId.length > 0){
+
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId()) && userFavoriteConditionDoQuery.getLayoutId().length!=0){
+                String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
                 boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
             if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
