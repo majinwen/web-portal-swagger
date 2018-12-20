@@ -29,6 +29,8 @@ public interface UserFavoriteEsHouseMapper extends BaseDao {
 
     Integer selectEsHouseFavoriteByUserId(Integer userId);
 
+    Integer selectEsHouseFavoriteByUserIdAndCityId(@Param("userId") Integer userId, @Param("cityId") Integer cityId);
+
     Integer isEsfFavoriteByHouseIdAndUserId(@Param("houseId") String houseId,@Param("userId") Integer userId);
 
     Integer updateEsfFavoriteByEsfIdAndUserId(DeleteEsfFavoriteDo deleteEsfFavoriteDo);
@@ -39,6 +41,8 @@ public interface UserFavoriteEsHouseMapper extends BaseDao {
      * @return
      */
     List<SellHouseFavoriteDo> selectSellHouseFavoriteByUserId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery);
+
+    List<SellHouseFavoriteDo> selectSellHouseFavoriteByUserIdAndCityId(SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery);
 
     /**
      * 比对列表

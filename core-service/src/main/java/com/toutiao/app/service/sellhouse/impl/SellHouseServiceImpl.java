@@ -2070,7 +2070,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 
         if ((null == userId && (sellHouseDoQuery.getTotalPrice() == 0 && sellHouseDoQuery.getAreaId().length == 0 && sellHouseDoQuery.getLayoutId().length == 0 && sellHouseDoQuery.getHall() == 0)) ||
                 (null != userId && (sellHouseDoQuery.getTotalPrice() == 0 && sellHouseDoQuery.getAreaId().length == 0 && sellHouseDoQuery.getLayoutId().length == 0 && sellHouseDoQuery.getHall() == 0))
-                        && (userFavoriteEsHouseMapper.selectEsHouseFavoriteByUserId(Integer.valueOf(userId)) == 0)) {
+                        && (userFavoriteEsHouseMapper.selectEsHouseFavoriteByUserIdAndCityId(Integer.valueOf(userId), CityUtils.returnCityId(city)) == 0)) {
 
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(termQuery("is_claim", 0));
@@ -2097,7 +2097,8 @@ public class SellHouseServiceImpl implements SellHouseService {
             if (null != userId) {
                 SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery = new SellHouseFavoriteListDoQuery();
                 sellHouseFavoriteListDoQuery.setUserId(userId);
-                List<SellHouseFavoriteDo> sellHouseFavoriteDoList = userFavoriteEsHouseMapper.selectSellHouseFavoriteByUserId(sellHouseFavoriteListDoQuery);
+                sellHouseFavoriteListDoQuery.setCityId(CityUtils.returnCityId(city));
+                List<SellHouseFavoriteDo> sellHouseFavoriteDoList = userFavoriteEsHouseMapper.selectSellHouseFavoriteByUserIdAndCityId(sellHouseFavoriteListDoQuery);
 
                 if (null != sellHouseFavoriteDoList && sellHouseFavoriteDoList.size() > 0) {
                     SellHouseFavoriteDo sellHouseFavoriteDo = sellHouseFavoriteDoList.get(0);
