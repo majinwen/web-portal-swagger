@@ -1034,16 +1034,16 @@ public class RentRestRestServiceImpl implements RentRestService {
                     String time = "";
                     String trafficType = rentHouseDoQuery.getTrafficType();
                     if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"0".equals(trafficType)){
-                        time = String.valueOf(Math.ceil(location * 1000 / 1.2 / 60)).replace("0","").replace(".","");
+                        time = String.valueOf(Math.ceil(location * 1000 / 1.2 / 60)).replace(".0","");
                     }
                     if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"1".equals(trafficType)){
-                        time = String.valueOf(Math.ceil(location * 1000 / 3 / 60)).replace("0","").replace(".","");
+                        time = String.valueOf(Math.ceil(location * 1000 / 3 / 60)).replace(".0","");
                     }
                     if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"2".equals(trafficType)){
-                        time = String.valueOf(Math.ceil(location * 1000 / 680)).replace("0","").replace(".","");
+                        time = String.valueOf(Math.ceil(location * 1000 / 680)).replace(".0","");
                     }
                     if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"3".equals(trafficType)){
-                        time = String.valueOf(Math.ceil(location * 1000 /1000)).replace("0","").replace(".","");
+                        time = String.valueOf(Math.ceil(location * 1000 /1000)).replace(".0","");
                     }
                     rentDetailsFewDo.setTime(time);
                 }
