@@ -1416,22 +1416,22 @@ public class RentRestRestServiceImpl implements RentRestService {
             String trafficType = rentHouseDoQuery.getTrafficType();
             Double distance = 0.0;
             if(StringTool.isNotEmpty(trafficType)&&"0".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 1.2 / 1000;
+                distance = Integer.valueOf(time) * 60 * 1.2 / 100;
             }
             if(StringTool.isNotEmpty(trafficType)&&"1".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 3.0 / 1000;
+                distance = Integer.valueOf(time) * 60 * 3.0 / 100;
             }
             if(StringTool.isNotEmpty(trafficType)&&"2".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 300.0 / 1000;
+                distance = Integer.valueOf(time) * 60 * 300.0 / 100;
             }
             if(StringTool.isNotEmpty(trafficType)&&"3".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 500.0 / 1000;
+                distance = Integer.valueOf(time) * 60 * 500.0 / 100;
             }
 
             if (distance>0){
                 GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
                         .point(rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon())
-                        .distance(distance, DistanceUnit.KILOMETERS);
+                        .distance(distance, DistanceUnit.METERS);
                 boolQueryBuilder.must(location);
             }
         }
