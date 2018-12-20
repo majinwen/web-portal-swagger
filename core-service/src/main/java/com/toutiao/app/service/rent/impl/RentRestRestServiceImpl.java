@@ -1034,16 +1034,16 @@ public class RentRestRestServiceImpl implements RentRestService {
                     String time = "";
                     String trafficType = rentHouseDoQuery.getTrafficType();
                     if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"0".equals(trafficType)){
-                        time = String.valueOf(Math.ceil(location * 1000 / 1.2 / 60)).replace(".0","");
+                        time = String.valueOf(Math.ceil(location * 1000 / 1.2 /60)).replace(".0","");
                     }
                     if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"1".equals(trafficType)){
-                        time = String.valueOf(Math.ceil(location * 1000 / 3 / 60)).replace(".0","");
+                        time = String.valueOf(Math.ceil(location * 1000 / 3 /60)).replace(".0","");
                     }
                     if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"2".equals(trafficType)){
                         time = String.valueOf(Math.ceil(location * 1000 / 300)).replace(".0","");
                     }
                     if(StringTool.isNotEmpty(rentHouseDoQuery.getTrafficType())&&"3".equals(trafficType)){
-                        time = String.valueOf(Math.ceil(location * 1000 /500)).replace(".0","");
+                        time = String.valueOf(Math.ceil(location * 1000 /600)).replace(".0","");
                     }
                     rentDetailsFewDo.setTime(time);
                 }
@@ -1416,22 +1416,22 @@ public class RentRestRestServiceImpl implements RentRestService {
             String trafficType = rentHouseDoQuery.getTrafficType();
             Double distance = 0.0;
             if(StringTool.isNotEmpty(trafficType)&&"0".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 1.2 / 100;
+                distance = Integer.valueOf(time)* 60 * 1.2 /1000;
             }
             if(StringTool.isNotEmpty(trafficType)&&"1".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 3.0 / 100;
+                distance = Integer.valueOf(time)* 60 * 3.0/1000;
             }
             if(StringTool.isNotEmpty(trafficType)&&"2".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 300.0 / 100;
+                distance = Integer.valueOf(time) * 300.0/1000;
             }
             if(StringTool.isNotEmpty(trafficType)&&"3".equals(trafficType)){
-                distance = Integer.valueOf(time) * 60 * 500.0 / 100;
+                distance = Integer.valueOf(time) * 600.0/1000;
             }
 
             if (distance>0){
                 GeoDistanceQueryBuilder location = QueryBuilders.geoDistanceQuery("location")
                         .point(rentHouseDoQuery.getLat(), rentHouseDoQuery.getLon())
-                        .distance(distance, DistanceUnit.METERS);
+                        .distance(distance, DistanceUnit.KILOMETERS);
                 boolQueryBuilder.must(location);
             }
         }
