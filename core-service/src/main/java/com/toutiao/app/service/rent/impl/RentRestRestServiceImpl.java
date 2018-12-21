@@ -811,7 +811,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
                 if (rentGuessYourLikeQuery.getTotalPrice()!=null){
                     Double rent_house_price = rentGuessYourLikeQuery.getTotalPrice();
-                    boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rent_house_price+rent_house_price*0.3).lte(rent_house_price-rent_house_price*0.3));
+                    boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rent_house_price-rent_house_price*0.3).lte(rent_house_price+rent_house_price*0.3));
                     isQueryEs = true;
                 }
 
