@@ -26,7 +26,6 @@ public interface LowerPriceSellHouseRestApi {
     @RequestMapping(value = "/rest/esf/lowerPrice/getLowerPriceShellHouse",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<MustBuyShellHouseResponse> getLowerPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Valid MustBuyShellHouseRequest mustBuyShellHouseRequest, BindingResult bindingResult);
 
 

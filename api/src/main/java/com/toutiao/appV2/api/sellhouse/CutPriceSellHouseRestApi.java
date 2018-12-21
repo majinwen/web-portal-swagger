@@ -26,7 +26,6 @@ public interface CutPriceSellHouseRestApi {
     @RequestMapping(value = "/rest/esf/cutPrice/getCutPriceShellHouse",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<MustBuyShellHouseResponse> getCutPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Valid MustBuyShellHouseRequest mustBuyShellHouseRequest, BindingResult bindingResult);
 
 
