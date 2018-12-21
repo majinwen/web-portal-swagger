@@ -177,10 +177,10 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
                     ParsedTopHits parsedTopHits = areaIdsBucket.getAggregations().get("areaName");
                     for (SearchHit hit : parsedTopHits.getHits().getHits()) {
-                        areaNames = areaNames.append((String) hit.getSourceAsMap().get("area") + ",");
+                        areaNames = areaNames.append((String) hit.getSourceAsMap().get("area") + " ");
                     }
 
-                    areaIds = areaIds.append(areaIdsBucket.getKeyAsString() + ",");
+                    areaIds = areaIds.append(areaIdsBucket.getKeyAsString() + " ");
                 }
                 recommendTopicDo.setDistrictId(areaIds.substring(0, areaIds.length() - 1));
                 recommendTopicDo.setDistrictName(areaNames.substring(0, areaNames.length() - 1));
