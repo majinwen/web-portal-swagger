@@ -827,6 +827,23 @@ public class RentRestRestServiceImpl implements RentRestService {
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                 String nearbyDistance = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
                 rentDetailsFewDo.setNearbyDistance(nearbyDistance);
+                rentRestRestService.fullHouseBarrage(rentDetailsFewDo);
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
+
+                } else {
+                    agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent") == null ? "" : hit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency") == null ? "" : hit.getSourceAsMap().get("brokerage_agency").toString());
+                    agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
+                }
+                rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
+                //设置公司图标
+                String AgentCompany = agentBaseDo.getAgentCompany();
+                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                    rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                }
                 rentDetailsFewDos.add(rentDetailsFewDo);
             }
 
@@ -847,6 +864,23 @@ public class RentRestRestServiceImpl implements RentRestService {
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
                     String nearbyDistance = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
                     rentDetailsFewDo.setNearbyDistance(nearbyDistance);
+                    rentRestRestService.fullHouseBarrage(rentDetailsFewDo);
+                    AgentBaseDo agentBaseDo = new AgentBaseDo();
+                    if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
+
+                    } else {
+                        agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent") == null ? "" : hit.getSourceAsMap().get("estate_agent").toString());
+                        agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency") == null ? "" : hit.getSourceAsMap().get("brokerage_agency").toString());
+                        agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
+                        agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
+                    }
+                    rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
+                    //设置公司图标
+                    String AgentCompany = agentBaseDo.getAgentCompany();
+                    if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                        rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
+                    }
                     rentDetailsFewDos.add(rentDetailsFewDo);
                 }
             }

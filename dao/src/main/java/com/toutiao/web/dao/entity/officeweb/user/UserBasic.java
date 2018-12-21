@@ -94,7 +94,6 @@ public class UserBasic {
     private String unionid;
 
 
-
     public static UserBasic getCurrent() {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
@@ -110,7 +109,11 @@ public class UserBasic {
     }
 
     public static boolean isLogin() {
-        return Objects.nonNull(UserBasic.getCurrent());
+        try {
+            return Objects.nonNull(UserBasic.getCurrent());
+        } catch (BaseException ex) {
+            return Boolean.FALSE;
+        }
     }
 
 }
