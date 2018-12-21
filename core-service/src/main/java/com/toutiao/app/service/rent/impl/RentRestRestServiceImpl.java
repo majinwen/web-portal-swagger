@@ -811,23 +811,26 @@ public class RentRestRestServiceImpl implements RentRestService {
 
                 if (rentGuessYourLikeQuery.getTotalPrice()!=null){
                     Double rent_house_price = rentGuessYourLikeQuery.getTotalPrice();
-                    boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rent_house_price+rent_house_price*0.3).lte(rent_house_price-rent_house_price*0.3));
+                    boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rent_house_price-rent_house_price*0.3).lte(rent_house_price+rent_house_price*0.3));
                     isQueryEs = true;
                 }
 
 
         }
 
-        List<RentDetailsFewDo> rentDetailsFewDos = new ArrayList<>();
+        List<RentDetailsFewDo> rentDetailsFewDos =  new ArrayList<>();
         SearchResponse searchResponse = rentEsDao.guessYoourLikeRent(boolQueryBuilder, city, rentGuessYourLikeQuery.getPageNum(),rentGuessYourLikeQuery.getPageSize());
         SearchHit[]  hits = searchResponse.getHits().getHits();
-        if (hits.length > 0) {
+
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                String nearbyDistance = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
+                rentDetailsFewDo.setNearbyDistance(nearbyDistance);
                 rentDetailsFewDos.add(rentDetailsFewDo);
             }
-        }else {
+
+            int pageSizeResidue = 10 - hits.length;
             BoolQueryBuilder boolQueryBuilder7Day = QueryBuilders.boolQuery();
                 Date date = new Date();
                 String today =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(date);
@@ -836,16 +839,18 @@ public class RentRestRestServiceImpl implements RentRestService {
                 Date sevenDaysAgo=cal.getTime();
                 String sevenDaysAgoChar =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sevenDaysAgo);
                 boolQueryBuilder7Day.must(rangeQuery("update_time").lte(today).gte(sevenDaysAgoChar));
-            SearchResponse searchResponse7Day = rentEsDao.guessYoourLikeRent(boolQueryBuilder7Day, city, rentGuessYourLikeQuery.getPageNum(),rentGuessYourLikeQuery.getPageSize());
+            SearchResponse searchResponse7Day = rentEsDao.guessYoourLikeRent(boolQueryBuilder7Day, city, rentGuessYourLikeQuery.getPageNum(),pageSizeResidue);
             SearchHit[]  hits7Day = searchResponse7Day.getHits().getHits();
             if (hits7Day.length > 0){
                 for (SearchHit hit : hits7Day) {
                     String sourceAsString = hit.getSourceAsString();
                     RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
+                    String nearbyDistance = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
+                    rentDetailsFewDo.setNearbyDistance(nearbyDistance);
                     rentDetailsFewDos.add(rentDetailsFewDo);
                 }
             }
-        }
+
         rentDetailsListDo.setRentDetailsList(rentDetailsFewDos);
         rentDetailsListDo.setTotalCount(rentDetailsFewDos.size());
         return rentDetailsListDo;

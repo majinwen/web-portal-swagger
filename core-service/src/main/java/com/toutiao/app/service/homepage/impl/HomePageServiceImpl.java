@@ -734,7 +734,8 @@ public class HomePageServiceImpl implements HomePageRestService {
             }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
             }
-
+            boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
             searchResponse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
             builder.must(QueryBuilders.termQuery("isDel", "0"));
             builder.must(QueryBuilders.termQuery("is_claim", "0"));
