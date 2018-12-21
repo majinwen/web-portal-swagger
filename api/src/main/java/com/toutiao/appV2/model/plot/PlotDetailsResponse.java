@@ -139,5 +139,8 @@ public class PlotDetailsResponse {
 
     @ApiModelProperty(value = "是否收藏")
     private Boolean isFavorite;
+
+    @ApiModelProperty(value = "小区标题图")
+    private String titlePhoto;
 }
 

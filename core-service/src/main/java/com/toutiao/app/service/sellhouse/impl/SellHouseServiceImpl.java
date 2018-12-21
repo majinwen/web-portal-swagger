@@ -256,6 +256,15 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
                 plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
+
+                if (plotDetailsDo.getPhoto().length > 0) {
+                    String titlePhoto = plotDetailsDo.getPhoto()[0];
+                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    }
+                    plotDetailsDo.setTitlePhoto(titlePhoto);
+                }
+
                 sellHouseDetailsDo.setPlotDetailsDo(plotDetailsDo);
             }
         }

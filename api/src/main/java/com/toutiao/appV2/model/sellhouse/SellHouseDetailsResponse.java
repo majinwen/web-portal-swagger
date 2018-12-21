@@ -90,9 +90,9 @@ public class SellHouseDetailsResponse {
     /**
      * 小区图片
      */
-    @ApiModelProperty(value = "小区图片", name = "plotPhoto")
-    //@ChangeName("buildingImages")
-    private String plotPhoto;
+//    @ApiModelProperty(value = "小区图片", name = "plotPhoto")
+//    //@ChangeName("buildingImages")
+//    private String plotPhoto;
     /**
      * 地铁站id
      */

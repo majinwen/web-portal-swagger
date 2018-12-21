@@ -75,8 +75,8 @@ public class SellHouseDetailsDo {
     /**
      * 小区图片
      */
-    @ChangeName("buildingImages")
-    private String plotPhoto;
+//    @ChangeName("buildingImages")
+//    private String plotPhoto;
     /**
      * 地铁站id
      */
