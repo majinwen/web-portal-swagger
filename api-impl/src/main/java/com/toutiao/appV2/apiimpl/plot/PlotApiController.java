@@ -285,4 +285,14 @@ public class PlotApiController implements PlotApi {
         JSONArray jsonArray = appPlotService.getFoldLineInfo(newcode,districtId);
         return new ResponseEntity<String>(JSONObject.toJSONString(jsonArray), HttpStatus.OK);
     }
+
+
+    @Override
+    public ResponseEntity<CommunityReviewResponse> getReviewById(@ApiParam(value = "plotId", required = true) @Valid @RequestParam(value = "plotId", required = true) Integer plotId) {
+
+        CommunityReviewResponse cummunityReviewResponse = new CommunityReviewResponse();
+        CommunityReviewDo communityReviewDo = appPlotService.getReviewById(plotId, CityUtils.getCity());
+        cummunityReviewResponse.setData(communityReviewDo);
+        return new ResponseEntity<>(cummunityReviewResponse, HttpStatus.OK);
+    }
 }

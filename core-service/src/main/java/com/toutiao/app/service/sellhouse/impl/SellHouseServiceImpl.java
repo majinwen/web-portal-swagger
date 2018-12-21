@@ -2070,7 +2070,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 
         if ((null == userId && (sellHouseDoQuery.getTotalPrice() == 0 && sellHouseDoQuery.getAreaId().length == 0 && sellHouseDoQuery.getLayoutId().length == 0 && sellHouseDoQuery.getHall() == 0)) ||
                 (null != userId && (sellHouseDoQuery.getTotalPrice() == 0 && sellHouseDoQuery.getAreaId().length == 0 && sellHouseDoQuery.getLayoutId().length == 0 && sellHouseDoQuery.getHall() == 0))
-                        && (userFavoriteEsHouseMapper.selectEsHouseFavoriteByUserId(Integer.valueOf(userId)) == 0)) {
+                        && (userFavoriteEsHouseMapper.selectEsHouseFavoriteByUserIdAndCityId(Integer.valueOf(userId), CityUtils.returnCityId(city)) == 0)) {
 
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(termQuery("is_claim", 0));
@@ -2097,7 +2097,8 @@ public class SellHouseServiceImpl implements SellHouseService {
             if (null != userId) {
                 SellHouseFavoriteListDoQuery sellHouseFavoriteListDoQuery = new SellHouseFavoriteListDoQuery();
                 sellHouseFavoriteListDoQuery.setUserId(userId);
-                List<SellHouseFavoriteDo> sellHouseFavoriteDoList = userFavoriteEsHouseMapper.selectSellHouseFavoriteByUserId(sellHouseFavoriteListDoQuery);
+                sellHouseFavoriteListDoQuery.setCityId(CityUtils.returnCityId(city));
+                List<SellHouseFavoriteDo> sellHouseFavoriteDoList = userFavoriteEsHouseMapper.selectSellHouseFavoriteByUserIdAndCityId(sellHouseFavoriteListDoQuery);
 
                 if (null != sellHouseFavoriteDoList && sellHouseFavoriteDoList.size() > 0) {
                     SellHouseFavoriteDo sellHouseFavoriteDo = sellHouseFavoriteDoList.get(0);
@@ -2356,6 +2357,18 @@ public class SellHouseServiceImpl implements SellHouseService {
                         houseSubjectList.add(sellHouseSubject);
                     }
                 }
+
+                String traffic = sellHousesSearchDo.getTraffic();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    if (i < 1000) {
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                    } else if (i < 2000) {
+                        DecimalFormat df = new DecimalFormat("0.0");
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    }
+                }
                 sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
                 //增加地铁与房子之间的距离
@@ -2607,8 +2620,9 @@ public class SellHouseServiceImpl implements SellHouseService {
             BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
             boolQueryBuilder.must(termQuery("isDel", "0"));
             boolQueryBuilder.must(termQuery("is_claim", "0"));
-            String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
-            if(layoutId.length > 0){
+
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId()) && userFavoriteConditionDoQuery.getLayoutId().length!=0){
+                String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
                 boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
             if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){

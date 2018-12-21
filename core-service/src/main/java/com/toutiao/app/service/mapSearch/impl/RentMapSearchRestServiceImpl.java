@@ -702,6 +702,26 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         return map;
     }
 
+    @Override
+    public Map getSubwayLineInfo(Integer id, Integer city_id) {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("line_id",id));
+        boolQueryBuilder.must(QueryBuilders.termQuery("city_id",city_id));
+        searchSourceBuilder.query(boolQueryBuilder).size(1);
+        Map map = new HashMap();
+        SearchResponse subwayInfo = rentMapSearchEsDao.getSubwayInfo(searchSourceBuilder);
+        if (null!=subwayInfo){
+            SearchHit[] hits = subwayInfo.getHits().getHits();
+            if (ArrayUtils.isNotEmpty(hits)){
+                Map<String, Object> sourceAsMap = hits[0].getSourceAsMap();
+                String line_name = (String) sourceAsMap.get("line_name");
+                map.put("name",line_name);
+            }
+        }
+        return map;
+    }
+
 
     public BoolQueryBuilder getBoolQueryBuilder(RentMapSearchDoQuery rentMapSearchDoQuery) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();

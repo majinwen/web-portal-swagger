@@ -18,6 +18,7 @@ import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -31,6 +32,56 @@ public class RentFavoriteRestServiceImpl implements RentFavoriteRestService {
     @Autowired
     private RentRestService rentRestService;
 
+    public RentFavoriteDomain guessULikeRentByUserId(RentFavoriteListDoQuery rentFavoriteListDoQuery) {
+        RentFavoriteDomain rentFavoriteDomain = new RentFavoriteDomain();
+        Date date = new Date();
+        rentFavoriteListDoQuery.setFrom((rentFavoriteListDoQuery.getPageNum()-1)*rentFavoriteListDoQuery.getSize());
+
+        List<RentFavoriteDo> rentFavoriteDos = userFavoriteRentMapper.selectRentFavoritesByUserId(rentFavoriteListDoQuery);
+
+        for(int i=0; i< rentFavoriteDos.size(); i++){
+            BoolQueryBuilder booleanQueryBuilder = new BoolQueryBuilder();
+
+            booleanQueryBuilder.must(QueryBuilders.termQuery("_id", rentFavoriteDos.get(i).getHouseId()));
+            SearchResponse searchResponse = rentEsDao.queryRentByRentId(booleanQueryBuilder, rentFavoriteDos.get(i).getCity());
+            SearchHits hits = searchResponse.getHits();
+            SearchHit[] searchHists = hits.getHits();
+
+            if (searchHists.length>0){
+
+                for (SearchHit searchHit : searchHists) {
+
+                    //判断3天内导入，且无图片，默认上显示默认图
+                    String importTime = "";
+                    if (StringTool.isNotEmpty(searchHit.getSourceAsMap().get("create_time"))){
+                        importTime = searchHit.getSourceAsMap().get("create_time").toString();
+                    }
+                    String housePhotoTitle = "";
+                    if (StringTool.isNotEmpty(searchHit.getSourceAsMap().get("house_title_img"))){
+                        housePhotoTitle = searchHit.getSourceAsMap().get("house_title_img").toString();
+                    }
+
+                    int isDefault = rentRestService.isDefaultImage(importTime ,date, housePhotoTitle);
+                    if(isDefault==1){
+                        rentFavoriteDos.get(i).setIsDefaultImage(1);
+                    }
+                    rentFavoriteDos.get(i).setHousePhotoTitle(housePhotoTitle);
+                }
+            }
+        }
+
+
+        if(null!=rentFavoriteDos && rentFavoriteDos.size()>0){
+            rentFavoriteDomain.setData(rentFavoriteDos);
+            int rentFavourite = userFavoriteRentMapper.selectRentFavoriteByUserId(rentFavoriteListDoQuery.getUserId());
+            rentFavoriteDomain.setTotalNum(Long.valueOf(rentFavourite));
+
+        }else{
+            List<RentFavoriteDo> rentFavoriteDos1 = new ArrayList<>();
+            rentFavoriteDomain.setData(rentFavoriteDos1);
+        }
+        return rentFavoriteDomain;
+    }
 
     @Override
     public RentFavoriteDomain queryRentFavoriteListByUserId(RentFavoriteListDoQuery rentFavoriteListDoQuery) {

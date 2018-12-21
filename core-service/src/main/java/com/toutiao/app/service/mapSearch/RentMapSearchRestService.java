@@ -38,4 +38,12 @@ public interface RentMapSearchRestService {
      */
     Map getSubwayInfo(Integer id,Integer city_id);
 
+    /**
+     * 获取地铁线id获取地铁站名称
+     * @param id
+     * @param city_id
+     * @return
+     */
+    Map getSubwayLineInfo(Integer id,Integer city_id);
+
 }

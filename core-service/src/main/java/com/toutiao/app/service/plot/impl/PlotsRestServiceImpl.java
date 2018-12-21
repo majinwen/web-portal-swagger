@@ -38,6 +38,7 @@ import org.elasticsearch.index.query.GeoDistanceQueryBuilder;
 import org.elasticsearch.index.query.Operator;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.join.query.JoinQueryBuilders;
+import org.elasticsearch.join.query.ParentIdQueryBuilder;
 import org.elasticsearch.script.Script;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.sort.*;
@@ -54,6 +55,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
+import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class PlotsRestServiceImpl implements PlotsRestService {
@@ -800,5 +802,20 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         return jsonArray;
     }
 
+    @Override
+    public CommunityReviewDo getReviewById(Integer plotId, String city) {
+        CommunityReviewDo communityReviewDo = new CommunityReviewDo();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(new ParentIdQueryBuilder("review",plotId.toString()));
+
+        SearchResponse searchResponse = plotEsDao.getReviewById(boolQueryBuilder,city);
+
+        SearchHit[] hits = searchResponse.getHits().getHits();
+        if (hits.length>0){
+            String sourceAsString = hits[0].getSourceAsString();
+            communityReviewDo = JSON.parseObject(sourceAsString, CommunityReviewDo.class);
+        }
+        return communityReviewDo;
+    }
 
 }

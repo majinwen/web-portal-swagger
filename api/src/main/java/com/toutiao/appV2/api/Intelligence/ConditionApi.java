@@ -207,7 +207,7 @@ public interface ConditionApi {
             method = RequestMethod.POST)
     ResponseEntity<UserFavoriteRentListResponse> getRentHouseListByUserFavorite(@ApiParam(value = "userFavoriteRentListRequest" ,required=true)  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
 
-    @ApiOperation(value = "根据地铁线获取相应的小区数量和房源数量", nickname = "getHouseCountBySubway", notes = "", response = RentCustomConditionResponse.class, tags={ "定制", })
+    @ApiOperation(value = "根据地铁线获取相应的小区数量和房源数量", nickname = "getHouseCountByCondition", notes = "", response = RentCustomConditionResponse.class, tags={ "定制", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = RentCustomConditionResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
@@ -216,6 +216,6 @@ public interface ConditionApi {
     @RequestMapping(value = "/rest/rent/getHouseCountByCondition",
             produces = { "application/json" },
             method = RequestMethod.POST)
-    ResponseEntity<RentCustomConditionResponse> getHouseCountBySubway(@ApiParam(value = "userFavoriteRentListRequest")  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
+    ResponseEntity<RentCustomConditionResponse> getHouseCountByCondition(@ApiParam(value = "userFavoriteRentListRequest")  @Valid @RequestBody UserFavoriteRentListRequest userFavoriteRentListRequest);
 
 }
