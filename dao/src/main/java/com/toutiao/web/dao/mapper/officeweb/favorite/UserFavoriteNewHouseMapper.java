@@ -6,6 +6,7 @@ import com.toutiao.app.domain.favorite.UserFavoriteNewHouse;
 import com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteDo;
 import com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteListDoQuery;
 import com.toutiao.web.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -28,6 +29,8 @@ public interface UserFavoriteNewHouseMapper extends BaseDao {
 
     Integer selectFavoriteNewHouseByUserId(Integer userId);
 
+    Integer selectFavoriteNewHouseByUserIdAndCityId(@Param("userId") Integer userId, @Param("cityId") Integer cityId);
+
     int  cancelNewHouseFavoriteByUserIdAndHouseId(UserFavoriteNewHouse userFavoriteNewHouse);
 
     Integer getNewHouseIsFavorite(NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery);
@@ -43,4 +46,6 @@ public interface UserFavoriteNewHouseMapper extends BaseDao {
      * @return
      */
     List<NewHouseFavoriteDo> selectNewHouseFavoriteByUserId(NewHouseFavoriteListDoQuery newHouseFavoriteListDoQuery);
+
+    List<NewHouseFavoriteDo> selectNewHouseFavoriteByUserIdAndCityId(NewHouseFavoriteListDoQuery newHouseFavoriteListDoQuery);
 }

@@ -17,6 +17,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
@@ -570,7 +571,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         // 无用户行为取价格不为空，且电话不为空，且户型不为空
         if ((null == userId && (newHouseDoQuery.getDistrictId() == 0 && newHouseDoQuery.getAvgPrice() == 0 && newHouseDoQuery.getTotalPrice() == 0)) ||
                 (null != userId && (newHouseDoQuery.getDistrictId() == 0 && newHouseDoQuery.getAvgPrice() == 0 && newHouseDoQuery.getTotalPrice() == 0)
-                        && (userFavoriteNewHouseMapper.selectFavoriteNewHouseByUserId(Integer.valueOf(userId)) == 0))) {
+                        && (userFavoriteNewHouseMapper.selectFavoriteNewHouseByUserIdAndCityId(Integer.valueOf(userId), CityUtils.returnCityId(city)) == 0))) {
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{1, 5}));
@@ -595,7 +596,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             if (null != userId) {
                 NewHouseFavoriteListDoQuery newHouseFavoriteListDoQuery = new NewHouseFavoriteListDoQuery();
                 newHouseFavoriteListDoQuery.setUserId(userId);
-                List<NewHouseFavoriteDo> houseFavoriteDoList = userFavoriteNewHouseMapper.selectNewHouseFavoriteByUserId(newHouseFavoriteListDoQuery);
+                newHouseFavoriteListDoQuery.setCityId(CityUtils.returnCityId(city));
+                List<NewHouseFavoriteDo> houseFavoriteDoList = userFavoriteNewHouseMapper.selectNewHouseFavoriteByUserIdAndCityId(newHouseFavoriteListDoQuery);
 
                 if (null != houseFavoriteDoList && houseFavoriteDoList.size() > 0) {
                     NewHouseFavoriteDo newHouseFavoriteDo = houseFavoriteDoList.get(0);
@@ -657,7 +659,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 boolQueryBuilderT2.must(existsQuery("saletelphone"));
                 boolQueryBuilderT2.mustNot(termQuery("saletelphone", ""));
 
-                SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, pageNum_T2, pageSize_T2);
+                SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(boolQueryBuilderT2, city, pageNum_T2, pageSize_T2);
 
 
                 SearchHit[] hitsT2 = searchResponseT2.getHits().getHits();

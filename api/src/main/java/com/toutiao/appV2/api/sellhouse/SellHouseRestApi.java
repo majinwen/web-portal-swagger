@@ -102,7 +102,6 @@ public interface SellHouseRestApi {
     @RequestMapping(value = "/rest/esf/getBeSureToSnatchList",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult);
 
 //    @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
