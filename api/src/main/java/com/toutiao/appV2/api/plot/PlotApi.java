@@ -5,6 +5,7 @@
  */
 package com.toutiao.appV2.api.plot;
 
+import com.toutiao.app.domain.plot.PlotsThemeDoQuery;
 import com.toutiao.appV2.model.plot.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -132,7 +133,7 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getPlotsTheme",
             produces = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotListRequest") @Valid PlotListRequest plotListRequest);
+    ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotListRequest") @Valid PlotsThemeDoQuery plotListRequest);
 
 
     @ApiOperation(value = "查询小区下出租房", nickname = "getRentListByPlotId", notes = "", response = RentDetailsListResponse.class, tags = {"小区",})
