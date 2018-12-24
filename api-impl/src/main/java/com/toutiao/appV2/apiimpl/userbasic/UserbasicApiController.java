@@ -170,6 +170,9 @@ public class UserbasicApiController implements UserbasicApi {
 
         if (StringTool.isNotBlank(userBasicDo)) {
             BeanUtils.copyProperties(userBasicDo, userLoginResponse);
+            if (null == userLoginResponse.getIsWxBind()){
+                userLoginResponse.setIsWxBind(false);
+            }
             try {
                 if (StringTool.isNotEmpty(userBasicDoQuery.getUnionid())){
                     setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response, 1);
@@ -358,6 +361,9 @@ public class UserbasicApiController implements UserbasicApi {
         UserBasicDo userBasicDo = userBasicInfoService.weixinLogin(wxUserLoginRequest.getUnionid(),wxUserLoginRequest.getType());
         if (StringTool.isNotEmpty(userBasicDo.getUserId())){
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
+            if (null == userLoginResponse.getIsWxBind()){
+                userLoginResponse.setIsWxBind(false);
+            }
             // 设置登录会员的cookie信息
             StringBuilder sb = new StringBuilder();
             String userJson = JSON.toJSONString(userLoginResponse);
@@ -376,9 +382,9 @@ public class UserbasicApiController implements UserbasicApi {
     }
 
     @Override
-    public ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code",required = true) @Valid @RequestParam(value = "code") String code, @ApiParam(value = "type(0:web,1:小程序)",required = true) @Valid @RequestParam(value = "type") String type){
+    public ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code",required = true) @Valid @RequestParam(value = "code") String code){
         WXUserBasicResponse wxUserBasicResponse = new WXUserBasicResponse();
-        WXUserBasicDo wxUserBasicDo = userBasicInfoService.queryWXUserBasic(code, type, request, response);
+        WXUserBasicDo wxUserBasicDo = userBasicInfoService.queryWXUserBasic(code, request, response);
         BeanUtils.copyProperties(wxUserBasicResponse,wxUserBasicDo);
         return new ResponseEntity<WXUserBasicResponse>(wxUserBasicResponse, HttpStatus.OK);
     }

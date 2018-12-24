@@ -59,7 +59,7 @@ public interface UserBasicInfoService {
     /**
      * 获取微信信息
      */
-    WXUserBasicDo queryWXUserBasic(String code, String type, HttpServletRequest request, HttpServletResponse response);
+    WXUserBasicDo queryWXUserBasic(String code, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 微信登录

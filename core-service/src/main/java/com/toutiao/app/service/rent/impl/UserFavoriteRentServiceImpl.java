@@ -6,7 +6,6 @@ import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.mapSearch.RentMapSearchRestService;
-import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.UserFavoriteRentService;
 import com.toutiao.web.common.constant.company.CompanyIconEnum;
 import com.toutiao.web.common.util.DateUtil;
@@ -15,7 +14,8 @@ import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
@@ -42,8 +42,6 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
 
     @Autowired
     private RentMapSearchRestService rentMapSearchRestService;
-
-    @Autowired
 
     private static final String LAYOUT = "5";
 

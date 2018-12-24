@@ -97,5 +97,9 @@ public class UserBasicDo {
      */
     private String unionid;
 
+    /**
+     * 是否绑定微信
+     */
+    private Boolean isWxBind;
 
 }

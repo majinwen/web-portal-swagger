@@ -216,7 +216,7 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
     }
 
     @Override
-    public WXUserBasicDo queryWXUserBasic(String code, String type, HttpServletRequest request, HttpServletResponse response) {
+    public WXUserBasicDo queryWXUserBasic(String code, HttpServletRequest request, HttpServletResponse response) {
         WXUserBasicDo wxUserBasicDo = new WXUserBasicDo();
         String tokenInfo = "";
         String userInfo = "";
@@ -283,6 +283,7 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
             //unionid加密
             String str = Com35Aes.encrypt(Com35Aes.KEYCODE, (userBasic.getUnionid()+RedisNameUtil.separativeSign+"加密").toString());
             userBasicDo.setUnionid(str);
+            userBasicDo.setIsWxBind(true);
         }
         return userBasicDo;
     }
