@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
-import java.util.Map;
 
 @Data
 public class SellHouseThemeDo {
@@ -38,7 +37,6 @@ public class SellHouseThemeDo {
     @ApiModelProperty(value = "房源标题图片", name = "housePhotoTitle")
     private String housePhotoTitle;
 
-
     /**
      * 室
      */
@@ -50,8 +48,6 @@ public class SellHouseThemeDo {
      */
     @ApiModelProperty(value = "厅", name = "hall")
     private Integer hall;
-
-
 
     /**
      * 在同商圈同户型范围内做低价排名
@@ -155,24 +151,17 @@ public class SellHouseThemeDo {
     @ApiModelProperty(value = "房源均价", name = "houseUnitCost")
     private Double houseUnitCost;
 
-
     /**
      * 平均成交天数
      */
     @ApiModelProperty(value = "平均成交天数", name = "avgDealCycle")
     private Integer avgDealCycle;
 
-
-
     /**
-     * 各个类型数量
+     * 小区专题标签
      */
-    @ApiModelProperty(value = "各个类型数量", name = "typeCounts")
-    private Map<Integer,Map<String,Integer>> typeCounts;
-
+    @ApiModelProperty(value = "小区专题标签", name = "recommendBuildTagsName")
     private List recommendBuildTagsName;
-
-    private List recommendBuildTagsId;
 
     /**
      * 房源导入时间
