@@ -28,5 +28,8 @@ public class UserLoginResponse {
 
     @JsonProperty("unionid")
     private String unionid=null;
+
+    @JsonProperty("isWxBind")
+    private Boolean isWxBind = null;
 }
 
