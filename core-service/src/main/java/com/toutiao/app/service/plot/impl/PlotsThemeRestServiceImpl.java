@@ -2,11 +2,9 @@ package com.toutiao.app.service.plot.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.plot.PlotsThemeEsDao;
-import com.toutiao.app.domain.plot.PlotsEsfRoomCountDomain;
-import com.toutiao.app.domain.plot.PlotsThemeDo;
-import com.toutiao.app.domain.plot.PlotsThemeDoQuery;
-import com.toutiao.app.domain.plot.PlotsThemeDomain;
+import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
+import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -19,10 +17,13 @@ import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.metrics.max.InternalMax;
+import org.elasticsearch.search.aggregations.metrics.max.Max;
 import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
+import org.elasticsearch.search.aggregations.metrics.min.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +38,9 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
     private PlotsThemeEsDao plotsThemeEsDao;
     @Autowired
     private PlotsEsfRestService plotsEsfRestService;
+
+    @Autowired
+    private  PlotsRestService plotsRestService;
 
     /**
      * 获取小区主题数据
@@ -87,12 +91,33 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
                 PlotsThemeDo plotsThemeDo = JSON.parseObject(details, PlotsThemeDo.class);
+                String nearbyDistance = StringTool.nullToString(plotsThemeDo.getArea()) + " " + StringTool.nullToString(plotsThemeDo.getTradingArea());
+                String traffic = plotsThemeDo.getTrafficInformation();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    DecimalFormat df = new DecimalFormat("0.0");
+                    nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+         /*           if (i < 1000) {
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                    } else {
+                        DecimalFormat df = new DecimalFormat("0.0");
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    }*/
+                }
+                plotsThemeDo.setTrafficInformation(nearbyDistance);
+
+                //推荐理由
+                CommunityReviewDo communityReviewDo = plotsRestService.getReviewById(plotsThemeDo.getId(),city);
+
+                plotsThemeDo.setRecommendReason(communityReviewDo);
 
                 //查询小区房源最大最小面积
-                SearchResponse searchResponse= plotsThemeEsDao.getHouseAreaByPlotId(plotsThemeDo.getId(),city);
+                SearchResponse searchResponse= plotsThemeEsDao.getHouseMaxAndMinArea(plotsThemeDo.getId(),city);
                 Map aggMap =searchResponse.getAggregations().asMap();
-                InternalMin minHouse = (InternalMin) aggMap.get("minHouse");
-                InternalMax maxHouse = (InternalMax) aggMap.get("maxHouse");
+                Max maxHouse = (Max) aggMap.get("max");
+                Min minHouse = (Min) aggMap.get("min");
+
 
                 plotsThemeDo.setHouseMaxArea(maxHouse.getValue());
                 plotsThemeDo.setHouseMinArea(minHouse.getValue());

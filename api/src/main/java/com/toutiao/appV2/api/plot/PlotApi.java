@@ -133,7 +133,7 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getPlotsTheme",
             produces = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotListRequest") @Valid PlotsThemeDoQuery plotListRequest);
+    ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotsThemeRequest") @Valid PlotsThemeRequest plotsThemeRequest);
 
 
     @ApiOperation(value = "查询小区下出租房", nickname = "getRentListByPlotId", notes = "", response = RentDetailsListResponse.class, tags = {"小区",})

@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
+import com.toutiao.app.dao.plot.impl.PlotEsDaoImpl;
 import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
 import com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
@@ -817,5 +818,6 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
         return communityReviewDo;
     }
+
 
 }

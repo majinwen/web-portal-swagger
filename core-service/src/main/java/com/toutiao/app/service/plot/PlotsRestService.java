@@ -83,4 +83,6 @@ public interface PlotsRestService {
     CommunityReviewDo getReviewById(Integer plotId, String city);
 
 
+
+
 }

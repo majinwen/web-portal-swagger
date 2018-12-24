@@ -202,7 +202,9 @@ public class PlotApiController implements PlotApi {
     }
 
     @Override
-    public ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotListRequest") @Valid PlotsThemeDoQuery plotsThemeDoQuery) {
+    public ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotsThemeRequest") @Valid PlotsThemeRequest plotsThemeRequest) {
+        PlotsThemeDoQuery plotsThemeDoQuery = new PlotsThemeDoQuery();
+        BeanUtils.copyProperties(plotsThemeRequest,plotsThemeDoQuery);
         PlotsThemeDomain plotsThemeDos = plotsThemeRestService.getPlotsThemeList(plotsThemeDoQuery, CityUtils.getCity());
         PlotsThemeResponse plotsThemeResponse = new PlotsThemeResponse();
         BeanUtils.copyProperties(plotsThemeDos, plotsThemeResponse);

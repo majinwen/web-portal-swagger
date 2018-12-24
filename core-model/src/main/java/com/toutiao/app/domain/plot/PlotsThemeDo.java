@@ -3,6 +3,7 @@ package com.toutiao.app.domain.plot;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -58,6 +59,11 @@ public class PlotsThemeDo {
      * 坐标
      */
     private String location;
+
+    /**
+     * 绿化率
+     */
+    private String avgGreening;
 
     /**
      * 地铁站编号
@@ -163,5 +169,16 @@ public class PlotsThemeDo {
      * 最大面积
      */
     private  Double houseMaxArea;
+
+    /**
+     * 车位配比
+     */
+    private String carPositionRatio;
+
+    /**
+     * 推荐理由
+     */
+    private CommunityReviewDo recommendReason;
+
 
 }

@@ -64,4 +64,23 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
         }
         return searchResponse;
     }
+
+    @Override
+    public SearchResponse getHouseMaxAndMinArea(Integer plotId, String city) {
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.must(QueryBuilders.termQuery("plotId", plotId));
+        SearchResponse searchResponse = null;
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder
+                .aggregation(AggregationBuilders.max("max").field("sellHouseArea"))
+                .aggregation(AggregationBuilders.min("min").field("sellHouseArea"));
+        searchRequest.source(searchSourceBuilder);
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
 }
