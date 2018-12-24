@@ -9,7 +9,9 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -59,7 +61,9 @@ public class SellHouseThemeEsDaoImpl implements SellHouseThemeEsDao {
     public SearchResponse getCutPriceShellHouse(BoolQueryBuilder query, Integer pageNum, Integer pageSize, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize)
+                .fetchSource(new String[]{"plotName","initialPrice","houseTotalPrices","room","hall","buildArea","import_time",
+                        "priceFloat","houseId","housePhotoTitle"}, null).sort("priceFloat", SortOrder.DESC);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {
