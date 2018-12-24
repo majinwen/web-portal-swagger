@@ -187,7 +187,7 @@ public interface UserbasicApi {
             produces = "application/json",
             method = RequestMethod.GET)
     @ApiIgnore
-    ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code") @Valid @RequestParam(value = "code") String code, @ApiParam(value = "type") @Valid @RequestParam(value = "type") String type);
+    ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code") @Valid @RequestParam(value = "code") String code);
 
 
     @ApiOperation(value = "小程序登录", nickname = "smallProgramLogin", notes = "", tags={ "用户基本信息", })

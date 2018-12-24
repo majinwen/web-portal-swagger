@@ -12,6 +12,7 @@ import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.compared.HouseCompared;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.mapper.officeweb.user.UserBasicMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,6 +164,9 @@ public class UserLoginServiceImpl implements UserLoginService {
         }
 
         ubd.setAvatar(headPicPath + "/" + ubd.getAvatar());
+        if(StringUtils.isNotEmpty(ubd.getUnionid())){
+            ubd.setIsWxBind(true);
+        }
         return ubd;
     }
 
@@ -295,6 +299,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         if (ubd.getAvatar().indexOf("http:")==-1){
             ubd.setAvatar(headPicPath + "/" + ubd.getAvatar());
         }
+        ubd.setIsWxBind(true);
         return ubd;
     }
 
