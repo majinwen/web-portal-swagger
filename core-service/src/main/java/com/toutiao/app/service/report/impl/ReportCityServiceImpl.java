@@ -74,7 +74,7 @@ public class ReportCityServiceImpl implements ReportCityService {
     public List<ReportNewGuideAttention> selectReportNewGuideAttentionList(Integer cityId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ReportNewGuideAttention> list = reportNewGuideAttentionMapper.selectAll(cityId);
-        if (StringTool.isNotEmptyList(list)) {
+        if (StringTool.isEmpty(list)) {
             throw new BaseException(CityReportErrorCodeEnum.NO_RECORD);//查询结果为空
         }
         for (ReportNewGuideAttention report : list) {
@@ -87,7 +87,7 @@ public class ReportCityServiceImpl implements ReportCityService {
     public List<ReportNewGuideHot> selectReportNewGuideHotList(Integer cityId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ReportNewGuideHot> list = reportNewGuideHotMapper.selectAll(cityId);
-        if (StringTool.isNotEmptyList(list)) {
+        if (StringTool.isEmpty(list)) {
             throw new BaseException(CityReportErrorCodeEnum.NO_RECORD);//查询结果为空
         }
         for (ReportNewGuideHot report : list) {
@@ -100,7 +100,7 @@ public class ReportCityServiceImpl implements ReportCityService {
     public List<ReportNewGuidePopular> selectReportNewGuidePopularList(Integer cityId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ReportNewGuidePopular> list = reportNewGuidePopularMapper.selectAll(cityId);
-        if (StringTool.isNotEmptyList(list)) {
+        if (StringTool.isEmpty(list)) {
             throw new BaseException(CityReportErrorCodeEnum.NO_RECORD);//查询结果为空
         }
         for (ReportNewGuidePopular report : list) {
@@ -113,7 +113,7 @@ public class ReportCityServiceImpl implements ReportCityService {
     public List<ReportNewGuideSales> selectReportNewGuideSalesList(Integer cityId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ReportNewGuideSales> list = reportNewGuideSalesMapper.selectAll(cityId);
-        if (StringTool.isNotEmptyList(list)) {
+        if (StringTool.isEmpty(list)) {
             throw new BaseException(CityReportErrorCodeEnum.NO_RECORD);//查询结果为空
         }
         for (ReportNewGuideSales report : list) {
@@ -126,7 +126,7 @@ public class ReportCityServiceImpl implements ReportCityService {
     public List<ReportNewPreferential> selectReportNewPreferentialList(Integer cityId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ReportNewPreferential> list = reportNewPreferentialMapper.selectAll(cityId);
-        if (StringTool.isNotEmptyList(list)) {
+        if (StringTool.isEmpty(list)) {
             throw new BaseException(CityReportErrorCodeEnum.NO_RECORD);//查询结果为空
         }
         return list;
@@ -136,7 +136,7 @@ public class ReportCityServiceImpl implements ReportCityService {
     public List<ReportEsfProjHot> selectReportEsfProjHotList(Integer cityId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ReportEsfProjHot> list = reportEsfProjHotMapper.selectAll(cityId);
-        if (StringTool.isNotEmptyList(list)) {
+        if (StringTool.isEmpty(list)) {
             throw new BaseException(CityReportErrorCodeEnum.NO_RECORD);//查询结果为空
         }
         return list;
@@ -146,7 +146,7 @@ public class ReportCityServiceImpl implements ReportCityService {
     public List<ReportAreaHot> selectReportAreaHotList(Integer cityId, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<ReportAreaHot> list = reportAreaHotMapper.selectAll(cityId);
-        if (StringTool.isNotEmptyList(list)) {
+        if (StringTool.isEmpty(list)) {
             throw new BaseException(CityReportErrorCodeEnum.NO_RECORD);//查询结果为空
         }
         return list;

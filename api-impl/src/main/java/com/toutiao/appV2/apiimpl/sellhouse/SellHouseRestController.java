@@ -100,7 +100,7 @@ public class SellHouseRestController implements SellHouseRestApi {
         plotInfo.setPlotsHousesDomain(plotsHousesDomain);
         sellHouseDetailsResponse.setPlotInfo(plotInfo);
         log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseDetailsResponse));
-        return new ResponseEntity<SellHouseDetailsResponse>(sellHouseDetailsResponse, HttpStatus.OK);
+        return new ResponseEntity<>(sellHouseDetailsResponse, HttpStatus.OK);
     }
 
 
