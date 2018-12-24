@@ -132,7 +132,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getPlotsTheme",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotListRequest") @Valid PlotListRequest plotListRequest);
 
 
@@ -177,7 +176,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getTop50List",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<PlotTop50ListResponse> getTop50List(@ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Integer districtId, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize);
 
     @ApiOperation(value = "猜你喜欢:小区列表", nickname = "getGuessList", notes = "", response = PlotListResponse.class, tags = {"小区",})
