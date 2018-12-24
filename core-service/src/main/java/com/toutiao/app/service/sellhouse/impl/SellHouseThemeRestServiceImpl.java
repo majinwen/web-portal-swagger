@@ -130,12 +130,12 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 if(isDefault==1){
                     sellHouseThemeDo.setIsDefaultImage(1);
                 }
-                AgentBaseDo agentBaseDo = getAgentByUserId(sellHouseThemeDo,searchHit);
-
-
-                //sellHouseThemeDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
-
-                sellHouseThemeDo.setAgentBaseDo(agentBaseDo);
+//                AgentBaseDo agentBaseDo = getAgentByUserId(sellHouseThemeDo,searchHit);
+//
+//
+//                //sellHouseThemeDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
+//
+//                sellHouseThemeDo.setAgentBaseDo(agentBaseDo);
                 sellHouseThemeDoList.add(sellHouseThemeDo);
             }
         }
@@ -164,30 +164,30 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
      * @param searchHit
      * @return
      */
-    public AgentBaseDo getAgentByUserId(SellHouseThemeDo sellHouseThemeDo,SearchHit searchHit){
-        AgentBaseDo agentBaseDo = new AgentBaseDo();
-        if (sellHouseThemeDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseThemeDo.getUserId())) {
-            agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseThemeDo.getUserId().toString(), "");
-            //认领状态取认领数据
-            sellHouseThemeDo.setHouseId(searchHit.getSourceAsMap().get("claimHouseId").toString());
-            sellHouseThemeDo.setHouseTitle(searchHit.getSourceAsMap().get("claimHouseTitle").toString());
-            List<String> tags = (List<String>) searchHit.getSourceAsMap().get("claimTagsName");
-            String[] tagsName = new String[tags.size()];
-            tags.toArray(tagsName);
-            sellHouseThemeDo.setTagsName(tagsName);
-            sellHouseThemeDo.setHousePhotoTitle(searchHit.getSourceAsMap().get("claimHousePhotoTitle").toString());
-        }else if(sellHouseThemeDo.getIsClaim() == 0){
-            if(StringUtil.isNotNullString(sellHouseThemeDo.getProjExpertUserId())){
-                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseThemeDo.getProjExpertUserId(), "");
-            }else {
-                agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
-                agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
-                agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
-                agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
-            }
-        }
-        return agentBaseDo;
-    }
+//    public AgentBaseDo getAgentByUserId(SellHouseThemeDo sellHouseThemeDo,SearchHit searchHit){
+//        AgentBaseDo agentBaseDo = new AgentBaseDo();
+//        if (sellHouseThemeDo.getIsClaim() == 1 && StringTool.isNotEmpty(sellHouseThemeDo.getUserId())) {
+//            agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseThemeDo.getUserId().toString(), "");
+//            //认领状态取认领数据
+//            sellHouseThemeDo.setHouseId(searchHit.getSourceAsMap().get("claimHouseId").toString());
+//            sellHouseThemeDo.setHouseTitle(searchHit.getSourceAsMap().get("claimHouseTitle").toString());
+//            List<String> tags = (List<String>) searchHit.getSourceAsMap().get("claimTagsName");
+//            String[] tagsName = new String[tags.size()];
+//            tags.toArray(tagsName);
+//            sellHouseThemeDo.setTagsName(tagsName);
+//            sellHouseThemeDo.setHousePhotoTitle(searchHit.getSourceAsMap().get("claimHousePhotoTitle").toString());
+//        }else if(sellHouseThemeDo.getIsClaim() == 0){
+//            if(StringUtil.isNotNullString(sellHouseThemeDo.getProjExpertUserId())){
+//                agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseThemeDo.getProjExpertUserId(), "");
+//            }else {
+//                agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone")==null?"":searchHit.getSourceAsMap().get("houseProxyPhone").toString());
+//                agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName")==null?"":searchHit.getSourceAsMap().get("houseProxyName").toString());
+//                agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany")==null?"":searchHit.getSourceAsMap().get("ofCompany").toString());
+//                agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto")==null?"":searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+//            }
+//        }
+//        return agentBaseDo;
+//    }
 
 
     /**
