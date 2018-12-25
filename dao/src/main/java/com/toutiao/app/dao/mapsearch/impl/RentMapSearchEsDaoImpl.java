@@ -39,6 +39,7 @@ public class RentMapSearchEsDaoImpl  implements RentMapSearchEsDao {
     @Override
     public SearchResponse getRentMapSearch(SearchSourceBuilder searchSourceBuilder, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentHouseIndex(city)).types(ElasticCityUtils.getRentHouseType(city));
+        searchSourceBuilder.size(0);
         searchRequest.source(searchSourceBuilder);
         SearchResponse search = null;
         try {
@@ -97,6 +98,21 @@ public class RentMapSearchEsDaoImpl  implements RentMapSearchEsDao {
         boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).size(100).sort("sorting", SortOrder.ASC);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = null;
+        try {
+            search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return search;
+    }
+
+    @Override
+    public SearchResponse queryDistrictOrAreaRentCount(BoolQueryBuilder boolQueryBuilder, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentHouseIndex(city)).types(ElasticCityUtils.getRentHouseType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder);
         searchRequest.source(searchSourceBuilder);
         SearchResponse search = null;
         try {
