@@ -224,5 +224,12 @@ public class PlotsThemeDo   {
    */
   @ApiModelProperty("推荐理由")
   private CommunityReviewDo recommendReason;
+
+
+  /**
+   * 容积率
+   */
+  @ApiModelProperty("容积率")
+  private Double dimension;
 }
 

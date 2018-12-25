@@ -181,4 +181,10 @@ public class PlotsThemeDo {
     private CommunityReviewDo recommendReason;
 
 
+    /**
+     * 容积率
+     */
+    private Double dimension;
+
+
 }

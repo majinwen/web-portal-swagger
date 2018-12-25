@@ -2,12 +2,14 @@ package com.toutiao.app.dao.plot.impl;
 
 import com.toutiao.app.dao.plot.PlotsThemeEsDao;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
+import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.join.query.JoinQueryBuilders;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -68,11 +70,11 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
     @Override
     public SearchResponse getHouseMaxAndMinArea(Integer plotId, String city) {
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
-        boolQueryBuilder.must(QueryBuilders.termQuery("plotId", plotId));
+        boolQueryBuilder.must(JoinQueryBuilders.hasParentQuery(ElasticCityUtils.VILLAGES_PARENT_NAME,QueryBuilders.termQuery("id",plotId),false));
         SearchResponse searchResponse = null;
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder
+        searchSourceBuilder.query(boolQueryBuilder)
                 .aggregation(AggregationBuilders.max("max").field("sellHouseArea"))
                 .aggregation(AggregationBuilders.min("min").field("sellHouseArea"));
         searchRequest.source(searchSourceBuilder);
