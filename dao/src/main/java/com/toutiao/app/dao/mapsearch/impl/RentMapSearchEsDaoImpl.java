@@ -39,6 +39,7 @@ public class RentMapSearchEsDaoImpl  implements RentMapSearchEsDao {
     @Override
     public SearchResponse getRentMapSearch(SearchSourceBuilder searchSourceBuilder, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentHouseIndex(city)).types(ElasticCityUtils.getRentHouseType(city));
+        searchSourceBuilder.size(0);
         searchRequest.source(searchSourceBuilder);
         SearchResponse search = null;
         try {
