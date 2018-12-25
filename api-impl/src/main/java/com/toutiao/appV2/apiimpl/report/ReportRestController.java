@@ -180,6 +180,18 @@ public class ReportRestController implements ReportRestApi {
         return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
+    /**
+     * 查询举报统计
+     * @return
+     */
+    @Override
+    public ResponseEntity<ReportStatisticsResponse> queryReportStatistics() {
+        ReportStatisticsResponse response = new ReportStatisticsResponse();
+        ReportStatisticsDo reportStatisticsDo = reportCityService.queryReportStatistics(CityUtils.returnCityId(CityUtils.getCity()));
+        BeanUtils.copyProperties(reportStatisticsDo, response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     private ReportCityResponse turnToResponse(ReportCity reportCity) {
         ReportCityResponse reportCityResponse = new ReportCityResponse();
