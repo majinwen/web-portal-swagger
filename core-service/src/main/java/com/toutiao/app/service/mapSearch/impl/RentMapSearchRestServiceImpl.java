@@ -243,7 +243,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         }
         if (groupTypeId == 3) {
             //聚合
-            searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
+            searchSourceBuilder.size(0).aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
                     .subAggregation(AggregationBuilders.terms("zufangName").field("zufang_name"))
                     .subAggregation(AggregationBuilders.terms("lon").field("longitude"))
                     .subAggregation(AggregationBuilders.terms("lat").field("latitude")));
