@@ -131,4 +131,13 @@ public interface PlotEsDao {
      */
     SearchResponse getReviewById(BoolQueryBuilder boolQueryBuilder, String city);
 
+
+    /**
+     * 根据小区id查询标签
+     * @param boolQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse queryTagsById(BoolQueryBuilder boolQueryBuilder, String city);
+
 }
