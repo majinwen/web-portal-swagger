@@ -408,7 +408,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             listRenewal = messagePushMapper.selectListRenewal(Integer.valueOf(userId));
         }
         List<MessagePushDo> houseActivityDos = ToutiaoBeanUtils.copyPropertiesToList(houseActivity, MessagePushDo.class);
-        getMessageContent(userId, homeMessageDos, houseActivityDos, 3);
+        getMessageContent(userId, homeMessageDos, houseActivityDos, 5);
 
         List<MessagePushDo> listRenewalDos = ToutiaoBeanUtils.copyPropertiesToList(listRenewal, MessagePushDo.class);
         getMessageContent(userId, homeMessageDos, listRenewalDos, 6);
@@ -420,7 +420,8 @@ public class MessagePushServiceImpl implements MessagePushService {
             Integer houseActivityContentYype = houseActivityDos.get(0).getContentType();
             String[] messageContent = getMessageContent(houseActivityDos.get(0), houseActivityContentYype);
             HomeMessageDo homeMessageDo = new HomeMessageDo();
-            homeMessageDo.setContentType(houseActivityContentYype);
+            //首页统一使用 5和6区分房源类和专题类
+            homeMessageDo.setContentType(i);
 
             homeMessageDo.setMessageContent(messageContent[0]);
             homeMessageDo.setBoldMessageContent(messageContent[1]);
