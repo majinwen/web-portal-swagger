@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.plot.PlotsThemeEsDao;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.rent.RentNumListDo;
+import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
@@ -31,6 +32,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * 小区主题落地页服务层实现类
@@ -47,6 +49,9 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 
     @Autowired
     private PlotsRestService plotsRestService;
+
+    @Autowired
+    private CommunityRestService communityRestService;
 
     /**
      * 获取小区主题数据
@@ -140,20 +145,26 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 List<String> tagsName = new ArrayList<>();
                 List<String> recommendTags = (List<String>) searchHit.getSourceAsMap().get("recommendBuildTagsName");
                 List<String> label = (List<String>) searchHit.getSourceAsMap().get("label");
-                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotList");
+//                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotListtHotList");
                 if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
                     tagsName.addAll(recommendTags);
                 }
-                if(StringTool.isNotEmpty(districtHotList) && districtHotList.size() > 0){
-                    tagsName.addAll(districtHotList);
-                }
+//                if(StringTool.isNotEmpty(districtHotList) && districtHotList.size() > 0){
+//                    tagsName.addAll(districtHotList);
+//                }
                 if(StringTool.isNotEmpty(label) && label.size() > 0){
                     tagsName.addAll(label);
                 }
                 String tagName = StringUtils.join(tagsName, " ");
                 plotsThemeDo.setTagsName(tagName.trim());
-
-
+                if (plotsThemeDo.getPhoto().length > 0) {
+                    String titlePhoto = plotsThemeDo.getPhoto()[0];
+                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    }
+                    plotsThemeDo.setTitlePhoto(titlePhoto);
+                }
+                plotsThemeDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 plotsThemeDos.add(plotsThemeDo);
             }
         }

@@ -35,12 +35,12 @@ public class PlotsThemeDo   {
   @ChangeName("buildingName")
   private String rc;
 
-  /**
-   * 小区照片
-   */
-  @ChangeName("buildingImages")
-  @ApiModelProperty("小区照片buildingImages")
-  private String[] photo;
+//  /**
+//   * 小区照片
+//   */
+//  @ChangeName("buildingImages")
+//  @ApiModelProperty("小区照片buildingImages")
+//  private String[] photo;
 
   /**
    * 区域编号
@@ -237,5 +237,20 @@ public class PlotsThemeDo   {
    */
   @ApiModelProperty("容积率")
   private Double dimension;
+
+  /**
+   * 标签名称
+   */
+  private String tagsName;
+
+  /**
+   * 各个类型数量
+   */
+  private Map<Integer,Map<String,Integer>> typeCounts;
+
+  /**
+   * 标题图
+   */
+  private String titlePhoto;
 }
 

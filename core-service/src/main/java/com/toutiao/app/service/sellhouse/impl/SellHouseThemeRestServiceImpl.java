@@ -186,13 +186,13 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                         List<String> tagsName = new ArrayList<>();
                         List<String> recommendTags = (List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName");
                         List<String> label = (List<String>) tagsHits.getSourceAsMap().get("label");
-                        List<String> districtHotList = (List<String>) tagsHits.getSourceAsMap().get("districtHotList");
+//                        List<String> districtHotList = (List<String>) tagsHits.getSourceAsMap().get("districtHotList");
                         if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
                             tagsName.addAll(recommendTags);
                         }
-                        if(StringTool.isNotEmpty(districtHotList) && districtHotList.size() > 0){
-                            tagsName.addAll(districtHotList);
-                        }
+//                        if(StringTool.isNotEmpty(districtHotList) && districtHotList.size() > 0){
+//                            tagsName.addAll(districtHotList);
+//                        }
                         if(StringTool.isNotEmpty(label) && label.size() > 0){
                             tagsName.addAll(label);
                         }

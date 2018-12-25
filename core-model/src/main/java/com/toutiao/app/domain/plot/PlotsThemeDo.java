@@ -195,5 +195,15 @@ public class PlotsThemeDo {
      */
     private String tagsName;
 
+    /**
+     * 各个类型数量
+     */
+    private Map<Integer,Map<String,Integer>> typeCounts;
+
+    /**
+     * 标题图
+     */
+    private String titlePhoto;
+
 
 }
