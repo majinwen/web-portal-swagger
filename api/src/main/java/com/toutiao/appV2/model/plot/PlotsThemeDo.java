@@ -230,5 +230,12 @@ public class PlotsThemeDo   {
    */
   @ApiModelProperty("租房个数")
   private Integer rentCount;
+
+
+  /**
+   * 容积率
+   */
+  @ApiModelProperty("容积率")
+  private Double dimension;
 }
 
