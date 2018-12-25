@@ -3,9 +3,12 @@ package com.toutiao.app.service.plot.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.plot.PlotsThemeEsDao;
 import com.toutiao.app.domain.plot.*;
+import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
+import com.toutiao.app.service.rent.RentRestService;
+import com.toutiao.app.service.rent.impl.RentRestRestServiceImpl;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
@@ -38,9 +41,11 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
     private PlotsThemeEsDao plotsThemeEsDao;
     @Autowired
     private PlotsEsfRestService plotsEsfRestService;
+    @Autowired
+    private RentRestService rentRestService;
 
     @Autowired
-    private  PlotsRestService plotsRestService;
+    private PlotsRestService plotsRestService;
 
     /**
      * 获取小区主题数据
@@ -64,14 +69,14 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
             }
         }
 
-        if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME,QueryBuilders.rangeQuery("total_price")
+        if (plotsThemeDoQuery.getBeginPrice() != 0 && plotsThemeDoQuery.getEndPrice() != 0) {
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME, QueryBuilders.rangeQuery("total_price")
                     .gte(plotsThemeDoQuery.getBeginPrice()).lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
-        }else if(plotsThemeDoQuery.getBeginPrice()!=0 && plotsThemeDoQuery.getEndPrice()==0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME,QueryBuilders.rangeQuery("total_price")
+        } else if (plotsThemeDoQuery.getBeginPrice() != 0 && plotsThemeDoQuery.getEndPrice() == 0) {
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME, QueryBuilders.rangeQuery("total_price")
                     .gte(plotsThemeDoQuery.getBeginPrice()), ScoreMode.None));
-        }else if(plotsThemeDoQuery.getBeginPrice()==0 && plotsThemeDoQuery.getEndPrice()!=0){
-            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME,QueryBuilders.rangeQuery("total_price")
+        } else if (plotsThemeDoQuery.getBeginPrice() == 0 && plotsThemeDoQuery.getEndPrice() != 0) {
+            boolQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.VILLAGES_CHILD_NAME, QueryBuilders.rangeQuery("total_price")
                     .lte(plotsThemeDoQuery.getEndPrice()), ScoreMode.None));
         }
 
@@ -108,13 +113,13 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 plotsThemeDo.setTrafficInformation(nearbyDistance);
 
                 //推荐理由
-                CommunityReviewDo communityReviewDo = plotsRestService.getReviewById(plotsThemeDo.getId(),city);
+                CommunityReviewDo communityReviewDo = plotsRestService.getReviewById(plotsThemeDo.getId(), city);
 
                 plotsThemeDo.setRecommendReason(communityReviewDo);
 
                 //查询小区房源最大最小面积
-                SearchResponse searchResponse= plotsThemeEsDao.getHouseMaxAndMinArea(plotsThemeDo.getId(),city);
-                Map aggMap =searchResponse.getAggregations().asMap();
+                SearchResponse searchResponse = plotsThemeEsDao.getHouseMaxAndMinArea(plotsThemeDo.getId(), city);
+                Map aggMap = searchResponse.getAggregations().asMap();
                 Max maxHouse = (Max) aggMap.get("max");
                 Min minHouse = (Min) aggMap.get("min");
 
@@ -124,11 +129,19 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 //二手房房源数量
                 PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotsThemeDo.getId(), city);
 
-                if(plotsEsfRoomCountDomain.getTotalCount()!= null){
+                if (plotsEsfRoomCountDomain.getTotalCount() != null) {
                     plotsThemeDo.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
-                }else{
+                } else {
                     plotsThemeDo.setHouseCount(0);
                 }
+                //租房房源数量
+                RentNumListDo rentNumListDo = rentRestService.queryRentNumByPlotId(plotsThemeDo.getId(), city);
+                if (rentNumListDo != null) {
+                    plotsThemeDo.setRentCount(rentNumListDo.getTotalNum());
+                } else {
+                    plotsThemeDo.setRentCount(0);
+                }
+
                 plotsThemeDos.add(plotsThemeDo);
             }
         }
