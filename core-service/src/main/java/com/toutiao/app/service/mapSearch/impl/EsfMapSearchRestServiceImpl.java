@@ -493,6 +493,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     houseSubjectList.add(houseSubject);
                 }
 
+                //2.总价低于小区/商圈同户型xx万
                 String lowPriceStr = "";
                 double totalAbsoluteWithBizcircle = esfMapHouseDo.getTotalAbsoluteWithBizcircle();
                 double totalAbsoluteWithCommunity = esfMapHouseDo.getTotalAbsoluteWithCommunity();
@@ -532,6 +533,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     houseSubjectList.add(sellHouseSubject);
                 }
 
+                //5.商圈N大XX社区主力户型
                 String communityLableStr = "";
                 List tagNameList = esfMapHouseDo.getRecommendBuildTagsName();
                 String areaName = esfMapHouseDo.getArea();
@@ -1019,6 +1021,14 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                 esfMapHouseDo.setHouseLableList(houseLableList);
                 //设置房源专题
                 List<HouseSubject> houseSubjectList = new ArrayList<>();
+
+                //1.同户型小区均价最低
+                if(esfMapHouseDo.getIsLowest() == 1){
+                    HouseSubject houseSubject = new HouseSubject("小区同户型总价最低","");
+                    houseSubjectList.add(houseSubject);
+                }
+
+                //2.总价低于小区/商圈同户型xx万
                 String lowPriceStr = "";
                 double totalAbsoluteWithBizcircle = esfMapHouseDo.getTotalAbsoluteWithBizcircle();
                 double totalAbsoluteWithCommunity = esfMapHouseDo.getTotalAbsoluteWithCommunity();
@@ -1042,6 +1052,23 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     houseSubjectList.add(sellHouseSubject);
                 }
 
+                //3.降/涨X万
+                double priceFloat = esfMapHouseDo.getPriceFloat();
+                if (esfMapHouseDo.getIsCutPrice() == 1 && priceFloat > 0) {
+                    HouseSubject sellHouseSubject = new HouseSubject();
+                    sellHouseSubject.setText("降" + priceFloat + "万");
+                    sellHouseSubject.setUrl("http://www.baidu.com");
+                    houseSubjectList.add(sellHouseSubject);
+                }
+
+                //4.平均成交天数
+                Integer avgDealCycle = esfMapHouseDo.getAvgDealCycle();
+                if (esfMapHouseDo.getIsDealLayout() == 1 && avgDealCycle > 0) {
+                    HouseSubject sellHouseSubject = new HouseSubject("本户型平均成交时间为" + avgDealCycle + "天", "");
+                    houseSubjectList.add(sellHouseSubject);
+                }
+
+                //5.商圈N大XX社区主力户型
                 String communityLableStr = "";
                 List tagNameList = esfMapHouseDo.getRecommendBuildTagsName();
                 String areaName = esfMapHouseDo.getArea();
@@ -1072,13 +1099,24 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     houseSubjectList.add(sellHouseSubject);
                 }
 
-
-                double priceFloat = esfMapHouseDo.getPriceFloat();
-                if(esfMapHouseDo.getIsCutPrice() == 1 && priceFloat>0){
+                //6同商圈同户型范围内做低价排名
+                Integer rankInLowCommunityLayout = esfMapHouseDo.getRankInLowCommunityLayout();
+                if (rankInLowCommunityLayout > 0) {
                     HouseSubject sellHouseSubject = new HouseSubject();
-                    sellHouseSubject.setText("降"+priceFloat+"万");
-                    sellHouseSubject.setUrl("http://www.baidu.com");
+                    sellHouseSubject.setText(esfMapHouseDo.getHouseBusinessName()+esfMapHouseDo.getRoom()+"居室低总价榜NO."+rankInLowCommunityLayout);
+                    sellHouseSubject.setUrl("");
                     houseSubjectList.add(sellHouseSubject);
+                }
+
+                //tagsName
+                String[] tagsNameArray = esfMapHouseDo.getTagsName();
+                if (tagsNameArray.length > 0) {
+                    for (String tagsName : tagsNameArray) {
+                        HouseSubject sellHouseSubject = new HouseSubject();
+                        sellHouseSubject.setText(tagsName);
+                        sellHouseSubject.setUrl("http://www.baidu.com");
+                        houseSubjectList.add(sellHouseSubject);
+                    }
                 }
 
                 esfMapHouseDo.setHouseSubjectList(houseSubjectList);
