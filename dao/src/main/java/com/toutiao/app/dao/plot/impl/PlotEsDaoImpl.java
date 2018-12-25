@@ -248,6 +248,22 @@ public class PlotEsDaoImpl implements PlotEsDao {
         return searchResponse;
     }
 
+    @Override
+    public SearchResponse queryTagsById(BoolQueryBuilder boolQueryBuilder, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).fetchSource(new String[]{"recommendBuildTagsName","label","districtHotList"}, null);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse searchResponse = null;
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return searchResponse;
+    }
+
 
 //    @Override
 //    public SearchResponse getPlotByKeyWord(BoolQueryBuilder booleanQueryBuilder, String city) {

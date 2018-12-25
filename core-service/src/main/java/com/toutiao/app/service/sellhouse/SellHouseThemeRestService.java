@@ -1,8 +1,7 @@
 package com.toutiao.app.service.sellhouse;
 
 
-import com.toutiao.app.domain.sellhouse.SellHouseThemeDoQuery;
-import com.toutiao.app.domain.sellhouse.SellHouseThemeDomain;
+import com.toutiao.app.domain.sellhouse.*;
 
 public interface SellHouseThemeRestService {
 
@@ -12,7 +11,7 @@ public interface SellHouseThemeRestService {
      * @param city
      * @return
      */
-    SellHouseThemeDomain getCutPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city);
+    CutPriceSellHouseThemeDomain getCutPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city);
 
     /**
      * 捡漏房
@@ -20,7 +19,7 @@ public interface SellHouseThemeRestService {
      * @param city
      * @return
      */
-    SellHouseThemeDomain getLowPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city);
+    LowPriceSellHouseThemeDomain getLowPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city);
 
 
     /**
@@ -29,7 +28,7 @@ public interface SellHouseThemeRestService {
      * @param city
      * @return
      */
-    SellHouseThemeDomain getBeSureToSnatchShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city);
+    HotSellHouseThemeDomain getBeSureToSnatchShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city);
 
 
 //    /**

@@ -1,20 +1,21 @@
 package com.toutiao.app.service.sellhouse.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseThemeEsDao;
-import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
-import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.sellhouse.SellHouseThemeRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
-import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
@@ -37,7 +38,10 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
     private SubscribeService subscribeService;
 
     @Autowired
-    private AgentService agentService;
+    private PlotEsDao plotEsDao;
+//
+//    @Autowired
+//    private AgentService agentService;
 
     @Autowired
     private SellHouseService sellHouseService;
@@ -45,52 +49,76 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
 
     @Override
-    public SellHouseThemeDomain getCutPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city) {
-        SellHouseThemeDomain sellHouseThemeDomain = new SellHouseThemeDomain();
+    public CutPriceSellHouseThemeDomain getCutPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city) {
+//        CutPriceSellHouseThemeDomain cutPriceSellHouseThemeDomain = new CutPriceSellHouseThemeDomain();
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseTheme(sellHouseThemeDoQuery);
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
-
         Integer pageNum = sellHouseThemeDoQuery.getPageNum();
         Integer pageSize = sellHouseThemeDoQuery.getPageSize();
 
         SearchResponse cpSellHouse = sellHouseThemeEsDao.getCutPriceShellHouse(booleanQueryBuilder, pageNum, pageSize, city);
 
-        sellHouseThemeDomain = getSellHouseTheme(sellHouseThemeDoQuery,cpSellHouse,1);
+        CutPriceSellHouseThemeDomain cutPriceSellHouseThemeDomain = getCutPriceSellHouseTheme(cpSellHouse);
 
-
-        return sellHouseThemeDomain;
+        if (!UserBasic.isLogin()) {
+            cutPriceSellHouseThemeDomain.setSubscribeId(-1);
+        } else {
+            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery,1);
+            if (userSubscribe != null) {
+                cutPriceSellHouseThemeDomain.setSubscribeId(userSubscribe.getId());
+            } else {
+                cutPriceSellHouseThemeDomain.setSubscribeId(-1);
+            }
+        }
+        return cutPriceSellHouseThemeDomain;
     }
 
     @Override
-    public SellHouseThemeDomain getLowPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city) {
+    public LowPriceSellHouseThemeDomain getLowPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city) {
 
-        SellHouseThemeDomain sellHouseThemeDomain = new SellHouseThemeDomain();
+        //LowPriceSellHouseThemeDomain lowPriceSellHouseThemeDomain = new LowPriceSellHouseThemeDomain();
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseTheme(sellHouseThemeDoQuery);
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
-
         Integer pageNum = sellHouseThemeDoQuery.getPageNum();
         Integer pageSize = sellHouseThemeDoQuery.getPageSize();
         SearchResponse lowPriceShellHouse = sellHouseThemeEsDao.getLowPriceShellHouse(booleanQueryBuilder, pageNum, pageSize, city);
-        sellHouseThemeDomain = getSellHouseTheme(sellHouseThemeDoQuery,lowPriceShellHouse,2);
-
-        return sellHouseThemeDomain;
+        LowPriceSellHouseThemeDomain lowPriceSellHouseThemeDomain = getLowPriceSellHouseTheme(lowPriceShellHouse);
+        if (!UserBasic.isLogin()) {
+            lowPriceSellHouseThemeDomain.setSubscribeId(-1);
+        } else {
+            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery,2);
+            if (userSubscribe != null) {
+                lowPriceSellHouseThemeDomain.setSubscribeId(userSubscribe.getId());
+            } else {
+                lowPriceSellHouseThemeDomain.setSubscribeId(-1);
+            }
+        }
+        return lowPriceSellHouseThemeDomain;
     }
 
     @Override
-    public SellHouseThemeDomain getBeSureToSnatchShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city) {
-        SellHouseThemeDomain sellHouseThemeDomain = new SellHouseThemeDomain();
+    public HotSellHouseThemeDomain getBeSureToSnatchShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city) {
+        //HotSellHouseThemeDomain hotSellHouseThemeDomain = new HotSellHouseThemeDomain();
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseTheme(sellHouseThemeDoQuery);
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", 1));
-
         Integer pageNum = sellHouseThemeDoQuery.getPageNum();
         Integer pageSize = sellHouseThemeDoQuery.getPageSize();
         SearchResponse beSureToSnatchShellHouse = sellHouseThemeEsDao.getBeSureToSnatchShellHouse(booleanQueryBuilder, pageNum, pageSize, city);
-        sellHouseThemeDomain = getSellHouseTheme(sellHouseThemeDoQuery,beSureToSnatchShellHouse,3);
-
-        return sellHouseThemeDomain;
+        HotSellHouseThemeDomain hotSellHouseThemeDomain = getHotSellHouseTheme(beSureToSnatchShellHouse);
+        if (!UserBasic.isLogin()) {
+            hotSellHouseThemeDomain.setSubscribeId(-1);
+        } else {
+            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery,3);
+            if (userSubscribe != null) {
+                hotSellHouseThemeDomain.setSubscribeId(userSubscribe.getId());
+            } else {
+                hotSellHouseThemeDomain.setSubscribeId(-1);
+            }
+        }
+        return hotSellHouseThemeDomain;
     }
 
 //    @Override
@@ -108,52 +136,112 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
     /**
      * 专题数据
-     * @param sellHouseThemeDoQuery
      * @param cpSellHouse
      * @return
      */
-    public SellHouseThemeDomain getSellHouseTheme(SellHouseThemeDoQuery sellHouseThemeDoQuery,SearchResponse cpSellHouse, Integer topicType){
+    public CutPriceSellHouseThemeDomain getCutPriceSellHouseTheme(SearchResponse cpSellHouse){
 
-        SellHouseThemeDomain sellHouseThemeDomain = new SellHouseThemeDomain();
+        CutPriceSellHouseThemeDomain cutPrice = new CutPriceSellHouseThemeDomain();
         SearchHits hits = cpSellHouse.getHits();
         SearchHit[] searchHists = hits.getHits();
-        List<SellHouseThemeDo> sellHouseThemeDoList = new ArrayList<>();
+        List<CutPriceSellHouseThemeDo> cutPriceSellHouseThemeDoList = new ArrayList<>();
         if (searchHists.length > 0) {
             Date date = new Date();
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
-                SellHouseThemeDo sellHouseThemeDo = JSON.parseObject(details, SellHouseThemeDo.class);
-
+                CutPriceSellHouseThemeDo cutPriceSellHouseThemeDo = JSON.parseObject(details, CutPriceSellHouseThemeDo.class);
                 //判断3天内导入，且无图片，默认上显示默认图
-                String importTime = sellHouseThemeDo.getImportTime();
-                int isDefault = sellHouseService.isDefaultImage(importTime ,date, sellHouseThemeDo.getHousePhotoTitle());
+                String importTime = cutPriceSellHouseThemeDo.getImportTime();
+                int isDefault = sellHouseService.isDefaultImage(importTime ,date, cutPriceSellHouseThemeDo.getHousePhotoTitle());
                 if(isDefault==1){
-                    sellHouseThemeDo.setIsDefaultImage(1);
+                    cutPriceSellHouseThemeDo.setIsDefaultImage(1);
                 }
-//                AgentBaseDo agentBaseDo = getAgentByUserId(sellHouseThemeDo,searchHit);
-//
-//
-//                //sellHouseThemeDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
-//
-//                sellHouseThemeDo.setAgentBaseDo(agentBaseDo);
-                sellHouseThemeDoList.add(sellHouseThemeDo);
+                cutPriceSellHouseThemeDoList.add(cutPriceSellHouseThemeDo);
             }
         }
-        if (!UserBasic.isLogin()) {
-            sellHouseThemeDomain.setSubscribeId(-1);
-        } else {
-            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery,topicType);
-            if (userSubscribe != null) {
-                sellHouseThemeDomain.setSubscribeId(userSubscribe.getId());
-            } else {
-                sellHouseThemeDomain.setSubscribeId(-1);
+        cutPrice.setData(cutPriceSellHouseThemeDoList);
+        cutPrice.setTotalCount(hits.totalHits);
+        return cutPrice;
+    }
+
+
+    public HotSellHouseThemeDomain getHotSellHouseTheme(SearchResponse cpSellHouse){
+
+        HotSellHouseThemeDomain hot = new HotSellHouseThemeDomain();
+        SearchHits hits = cpSellHouse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        List<HotSellHouseThemeDo> houseThemeDoList = new ArrayList<>();
+        if (searchHists.length > 0) {
+            Date date = new Date();
+            for (SearchHit searchHit : searchHists) {
+                String details = searchHit.getSourceAsString();
+                HotSellHouseThemeDo hotSellHouseThemeDo = JSON.parseObject(details, HotSellHouseThemeDo.class);
+                if(StringTool.isNotEmpty(hotSellHouseThemeDo.getNewcode())){
+                    BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+                    boolQueryBuilder.must(QueryBuilders.termQuery("id",hotSellHouseThemeDo.getNewcode().toString()));
+                    SearchResponse communityRes = plotEsDao.queryTagsById(boolQueryBuilder, CityUtils.getCity());
+                    SearchHits communityHit = communityRes.getHits();
+                    SearchHit[] communityHits = communityHit.getHits();
+                    for (SearchHit  tagsHits: communityHits){
+                        List<String> tagsName = new ArrayList<>();
+                        List<String> recommendTags = (List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName");
+                        List<String> label = (List<String>) tagsHits.getSourceAsMap().get("label");
+                        List<String> districtHotList = (List<String>) tagsHits.getSourceAsMap().get("districtHotList");
+                        if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
+                            tagsName.addAll(recommendTags);
+                        }
+                        if(StringTool.isNotEmpty(districtHotList) && districtHotList.size() > 0){
+                            tagsName.addAll(districtHotList);
+                        }
+                        if(StringTool.isNotEmpty(label) && label.size() > 0){
+                            tagsName.addAll(label);
+                        }
+                        String tagName = StringUtils.join(tagsName, " ");
+                        hotSellHouseThemeDo.setTagsName(tagName.trim());
+                    }
+                }
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = hotSellHouseThemeDo.getImportTime();
+                int isDefault = sellHouseService.isDefaultImage(importTime ,date, hotSellHouseThemeDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    hotSellHouseThemeDo.setIsDefaultImage(1);
+                }
+                houseThemeDoList.add(hotSellHouseThemeDo);
             }
         }
-        sellHouseThemeDomain.setData(sellHouseThemeDoList);
-        sellHouseThemeDomain.setTotalCount(hits.totalHits);
+
+        hot.setData(houseThemeDoList);
+        hot.setTotalCount(hits.totalHits);
+        return hot;
+    }
 
 
-        return sellHouseThemeDomain;
+
+
+    public LowPriceSellHouseThemeDomain getLowPriceSellHouseTheme(SearchResponse cpSellHouse){
+
+        LowPriceSellHouseThemeDomain lowPrice = new LowPriceSellHouseThemeDomain();
+        SearchHits hits = cpSellHouse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        List<LowPriceSellHouseThemeDo> lowPriceSellHouseThemeDoList = new ArrayList<>();
+        if (searchHists.length > 0) {
+            Date date = new Date();
+            for (SearchHit searchHit : searchHists) {
+                String details = searchHit.getSourceAsString();
+                LowPriceSellHouseThemeDo lowPriceSellHouseThemeDo = JSON.parseObject(details, LowPriceSellHouseThemeDo.class);
+                //判断3天内导入，且无图片，默认上显示默认图
+                String importTime = lowPriceSellHouseThemeDo.getImportTime();
+                int isDefault = sellHouseService.isDefaultImage(importTime ,date, lowPriceSellHouseThemeDo.getHousePhotoTitle());
+                if(isDefault==1){
+                    lowPriceSellHouseThemeDo.setIsDefaultImage(1);
+                }
+                lowPriceSellHouseThemeDoList.add(lowPriceSellHouseThemeDo);
+            }
+        }
+
+        lowPrice.setData(lowPriceSellHouseThemeDoList);
+        lowPrice.setTotalCount(hits.totalHits);
+        return lowPrice;
     }
 
 
@@ -199,14 +287,6 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
         booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
-
-//        if(sellHouseThemeDoQuery.getThemeType()==1){
-//            booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
-//        }else if (sellHouseThemeDoQuery.getThemeType()==2){
-//            booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 2));
-//        }else if (sellHouseThemeDoQuery.getThemeType()==3){
-//            booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", 3));
-//        }
 
         if (StringTool.isNotEmpty(sellHouseThemeDoQuery.getIsNew())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", sellHouseThemeDoQuery.getIsNew()));

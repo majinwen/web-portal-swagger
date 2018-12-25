@@ -11,7 +11,6 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -63,7 +62,9 @@ public class SellHouseThemeEsDaoImpl implements SellHouseThemeEsDao {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize)
                 .fetchSource(new String[]{"plotName","initialPrice","houseTotalPrices","room","hall","buildArea","import_time",
-                        "priceFloat","houseId","housePhotoTitle"}, null).sort("priceFloat", SortOrder.DESC);
+                        "priceFloat","houseId","housePhotoTitle"}, null)
+                .sort("priceFloatRatio", SortOrder.DESC)
+                .sort("updateTimeSort", SortOrder.DESC);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {
@@ -80,7 +81,10 @@ public class SellHouseThemeEsDaoImpl implements SellHouseThemeEsDao {
     public SearchResponse getLowPriceShellHouse(BoolQueryBuilder query, Integer pageNum, Integer pageSize, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("saveMoney", SortOrder.DESC)
+                .fetchSource(new String[]{"plotName","houseTotalPrices","room","hall","buildArea",
+                        "saveMoney","houseId","housePhotoTitle","avgRelativeWithCommunity","avgAbsoluteWithCommunity",
+                "avgAbsoluteWithBizcircle","avgRelativeWithBizcircle","avgAbsoluteWithDistrict","avgRelativeWithDistrict"}, null);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {
@@ -96,7 +100,9 @@ public class SellHouseThemeEsDaoImpl implements SellHouseThemeEsDao {
     public SearchResponse getBeSureToSnatchShellHouse(BoolQueryBuilder query, Integer pageNum, Integer pageSize, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize);
+        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("perRoomPrice", SortOrder.ASC)
+                .fetchSource(new String[]{"plotName","houseTotalPrices","room","hall","buildArea",
+                        "avgDealCycle","hotStarCount","houseId","newcode"}, null);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {

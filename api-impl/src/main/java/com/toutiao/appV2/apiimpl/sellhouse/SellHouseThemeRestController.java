@@ -43,32 +43,32 @@ public class SellHouseThemeRestController implements SellHouseThemeRestApi {
      * @return
      */
     @Override
-    public ResponseEntity<SellHouseThemeResponse> getCutPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Valid SellHouseThemeRequest sellHouseThemeRequest) {
-        SellHouseThemeResponse sellHouseThemeResponse = new SellHouseThemeResponse();
+    public ResponseEntity<CutPriceSellHouseThemeResponse> getCutPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Valid SellHouseThemeRequest sellHouseThemeRequest) {
+        CutPriceSellHouseThemeResponse cutPriceSellHouseTheme = new CutPriceSellHouseThemeResponse();
         SellHouseThemeDoQuery sellHouseThemeDoQuery = new SellHouseThemeDoQuery();
         BeanUtils.copyProperties(sellHouseThemeRequest, sellHouseThemeDoQuery);
-        SellHouseThemeDomain cutPriceShellHouse = sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(cutPriceShellHouse, sellHouseThemeResponse);
-        return new ResponseEntity<>(sellHouseThemeResponse, HttpStatus.OK);
+        CutPriceSellHouseThemeDomain cutPriceShellHouse = sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(cutPriceShellHouse, cutPriceSellHouseTheme);
+        return new ResponseEntity<>(cutPriceSellHouseTheme, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<SellHouseThemeResponse> getLowerPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Valid SellHouseThemeRequest sellHouseThemeRequest) {
-        SellHouseThemeResponse sellHouseThemeResponse = new SellHouseThemeResponse();
+    public ResponseEntity<LowPriceSellHouseThemeResponse> getLowerPriceShellHouse(@ApiParam(value = "mustBuyShellHouseRequest", required = true) @Valid SellHouseThemeRequest sellHouseThemeRequest) {
+        LowPriceSellHouseThemeResponse lowPriceSellHouseTheme = new LowPriceSellHouseThemeResponse();
         SellHouseThemeDoQuery sellHouseThemeDoQuery = new SellHouseThemeDoQuery();
         BeanUtils.copyProperties(sellHouseThemeRequest, sellHouseThemeDoQuery);
-        SellHouseThemeDomain lowPriceShellHouse = sellHouseThemeRestService.getLowPriceShellHouse(sellHouseThemeDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(lowPriceShellHouse, sellHouseThemeResponse);
-        return new ResponseEntity<>(sellHouseThemeResponse, HttpStatus.OK);
+        LowPriceSellHouseThemeDomain lowPriceShellHouse = sellHouseThemeRestService.getLowPriceShellHouse(sellHouseThemeDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(lowPriceShellHouse, lowPriceSellHouseTheme);
+        return new ResponseEntity<>(lowPriceSellHouseTheme, HttpStatus.OK);
     }
 
     @Override
-    public ResponseEntity<SellHouseThemeResponse> getBeSureToSnatchShellHouse(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseThemeRequest sellHouseThemeRequest) {
-        SellHouseThemeResponse sellHouseThemeResponse = new SellHouseThemeResponse();
+    public ResponseEntity<HotSellHouseThemeResponse> getBeSureToSnatchShellHouse(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseThemeRequest sellHouseThemeRequest) {
+        HotSellHouseThemeResponse hotSellHouseTheme = new HotSellHouseThemeResponse();
         SellHouseThemeDoQuery sellHouseThemeDoQuery = new SellHouseThemeDoQuery();
         BeanUtils.copyProperties(sellHouseThemeRequest, sellHouseThemeDoQuery);
-        SellHouseThemeDomain beSureToSnatchShellHouse = sellHouseThemeRestService.getBeSureToSnatchShellHouse(sellHouseThemeDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(beSureToSnatchShellHouse, sellHouseThemeResponse);
-        return new ResponseEntity<>(sellHouseThemeResponse, HttpStatus.OK);
+        HotSellHouseThemeDomain hotSellHouseThemeDomain = sellHouseThemeRestService.getBeSureToSnatchShellHouse(sellHouseThemeDoQuery, CityUtils.getCity());
+        BeanUtils.copyProperties(hotSellHouseThemeDomain, hotSellHouseTheme);
+        return new ResponseEntity<>(hotSellHouseTheme, HttpStatus.OK);
     }
 }
