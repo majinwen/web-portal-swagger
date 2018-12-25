@@ -284,7 +284,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         int id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
                         rentMapSearchDo.setId(id);
                         //数量
-                        Integer count = queryDistrictOrAreaRentCount(id, city, 1);
+                        Integer count = queryDistrictOrAreaRentCount(id, city, 2);
                         rentMapSearchDo.setCount(count);
                         rentMapSearchDo.setDesc(count+"套");
                         Map distanceAndAreainfo = getDistanceAndAreainfo(id, 2);
