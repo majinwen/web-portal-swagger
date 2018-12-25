@@ -10,7 +10,6 @@ import com.toutiao.appV2.model.mapSearch.RentMapSearchDoRequest;
 import com.toutiao.appV2.model.mapSearch.RentMapSearchDomainResponse;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -30,7 +29,6 @@ public interface RentMapSearchApi {
     })
     @RequestMapping(value = "/rest/map/rent/search",
         produces = "application/json",
-
         method = RequestMethod.GET)
     ResponseEntity<RentMapSearchDomainResponse> mapRentSearch(@ApiParam(value = "rentMapSearchDoRequest", required = true) @Valid RentMapSearchDoRequest rentMapSearchDoRequest);
 

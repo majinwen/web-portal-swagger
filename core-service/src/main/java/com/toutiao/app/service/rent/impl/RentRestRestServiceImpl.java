@@ -649,7 +649,12 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
 
                 if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
-                    BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                    BigDecimal geoDis;
+                    if (rentHouseDoQuery.getSort().equals("0")) {
+                        geoDis = new BigDecimal((Double) hit.getSortValues()[0]);
+                    } else {
+                        geoDis = new BigDecimal((Double) hit.getSortValues()[1]);
+                    }
                     String distances= geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                     nearbyDistance = "距您" + distances;
                 }
