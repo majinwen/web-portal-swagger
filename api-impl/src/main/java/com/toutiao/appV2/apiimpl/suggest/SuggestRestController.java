@@ -104,73 +104,63 @@ public class SuggestRestController implements SuggestRestApi {
 
     @Override
     public ResponseEntity<SuggestResultResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                SuggestResultDo suggestResultDo = suggestService.suggest_v2(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
-                SuggestResultResponse suggestResultResponse = new SuggestResultResponse();
-                List<SearchEnginesResponse> searchEnginesResponseList = new ArrayList<>();
-                if (suggestResultDo.getSuggestResultList().size() > 0) {
-                    for (SuggestListDo suggestListDo : suggestResultDo.getSuggestResultList()) {
-                        //搜索结果无商圈信息
-                        SearchScopeDo searchScope = suggestListDo.getSearchScope();
-                        if (searchScope == null && suggestListDo.getSearchEnginesList() != null) {
-                            if (suggestListDo.getSearchEnginesList().size() > 0) {
-                                for (SearchEnginesDo searchEnginesDo : suggestListDo.getSearchEnginesList()) {
-                                    SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
-                                    BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
-                                    searchEnginesResponse.setIsArea(0);
-                                    searchEnginesResponseList.add(searchEnginesResponse);
-                                }
-                            }
-                        } else if (searchScope != null) {
-                            SearchEnginesResponse searchScopeResponse = new SearchEnginesResponse();
-                            searchScopeResponse.setSearchName(searchScope.getSearchName());
-                            searchScopeResponse.setAreaId(searchScope.getSearchId());
-                            searchScopeResponse.setCityId(searchScope.getCityId());
-                            searchScopeResponse.setIsArea(searchScope.getLocationTypeSings());
-                            searchScopeResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
-                            searchEnginesResponseList.add(searchScopeResponse);
-                            Integer listSize = suggestListDo.getSearchEnginesList().size();
-                            if (listSize > 0) {
-                                if (listSize > 2) {
-                                    listSize = listSize - 1;
-                                }
-                                for (int i = 0; i < listSize; i++) {
-                                    SearchEnginesDo searchEnginesDo = suggestListDo.getSearchEnginesList().get(i);
-                                    SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
-                                    BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
-                                    searchEnginesResponse.setIsArea(0);
-                                    searchEnginesResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
-                                    List searchNickname = searchEnginesDo.getSearchNickname();
-                                    String nickname = "";
-                                    if (searchNickname != null && searchNickname.size() > 0) {
-                                        for (int j = 0; j < searchNickname.size(); j++) {
-                                            nickname += searchNickname.get(j).toString() + "·";
-                                        }
-                                    }
-                                    if (nickname.endsWith("·")) {
-                                        nickname = nickname.substring(0, nickname.length() - 1);
-                                    }
-                                    searchEnginesResponse.setSearchNickname(nickname);
-                                    searchEnginesResponseList.add(searchEnginesResponse);
-                                }
-                            }
+        SuggestResultDo suggestResultDo = suggestService.suggest_v2(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
+        SuggestResultResponse suggestResultResponse = new SuggestResultResponse();
+        List<SearchEnginesResponse> searchEnginesResponseList = new ArrayList<>();
+        if (suggestResultDo.getSuggestResultList().size() > 0) {
+            for (SuggestListDo suggestListDo : suggestResultDo.getSuggestResultList()) {
+                //搜索结果无商圈信息
+                SearchScopeDo searchScope = suggestListDo.getSearchScope();
+                if (searchScope == null && suggestListDo.getSearchEnginesList() != null) {
+                    if (suggestListDo.getSearchEnginesList().size() > 0) {
+                        for (SearchEnginesDo searchEnginesDo : suggestListDo.getSearchEnginesList()) {
+                            SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
+                            BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
+                            searchEnginesResponse.setIsArea(0);
+                            searchEnginesResponseList.add(searchEnginesResponse);
                         }
                     }
-
+                } else if (searchScope != null) {
+                    SearchEnginesResponse searchScopeResponse = new SearchEnginesResponse();
+                    searchScopeResponse.setSearchName(searchScope.getSearchName());
+                    searchScopeResponse.setAreaId(searchScope.getSearchId());
+                    searchScopeResponse.setCityId(searchScope.getCityId());
+                    searchScopeResponse.setIsArea(searchScope.getLocationTypeSings());
+                    searchScopeResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
+                    searchEnginesResponseList.add(searchScopeResponse);
+                    Integer listSize = suggestListDo.getSearchEnginesList().size();
+                    if (listSize > 0) {
+                        if (listSize > 2) {
+                            listSize = listSize - 1;
+                        }
+                        for (int i = 0; i < listSize; i++) {
+                            SearchEnginesDo searchEnginesDo = suggestListDo.getSearchEnginesList().get(i);
+                            SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
+                            BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
+                            searchEnginesResponse.setIsArea(0);
+                            searchEnginesResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
+                            List searchNickname = searchEnginesDo.getSearchNickname();
+                            String nickname = "";
+                            if (searchNickname != null && searchNickname.size() > 0) {
+                                for (int j = 0; j < searchNickname.size(); j++) {
+                                    nickname += searchNickname.get(j).toString() + "·";
+                                }
+                            }
+                            if (nickname.endsWith("·")) {
+                                nickname = nickname.substring(0, nickname.length() - 1);
+                            }
+                            searchEnginesResponse.setSearchNickname(nickname);
+                            searchEnginesResponseList.add(searchEnginesResponse);
+                        }
+                    }
                 }
-                suggestResultResponse.setSearchEnginesList(searchEnginesResponseList);
-                suggestResultResponse.setTotalCount(searchEnginesResponseList.size());
-                //SuggestResultResponse suggestResultResponse = JSON.parseObject(JSON.toJSONString(suggestResultDo), SuggestResultResponse.class);
-                return new ResponseEntity<SuggestResultResponse>(suggestResultResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<SuggestResultResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        }
 
-        return new ResponseEntity<SuggestResultResponse>(HttpStatus.NOT_IMPLEMENTED);
+        }
+        suggestResultResponse.setSearchEnginesList(searchEnginesResponseList);
+        suggestResultResponse.setTotalCount(searchEnginesResponseList.size());
+        //SuggestResultResponse suggestResultResponse = JSON.parseObject(JSON.toJSONString(suggestResultDo), SuggestResultResponse.class);
+        return new ResponseEntity<SuggestResultResponse>(suggestResultResponse, HttpStatus.OK);
     }
 
     @Override
@@ -328,7 +318,7 @@ public class SuggestRestController implements SuggestRestApi {
                 houseSubject3.setText("抢手房");
                 houseSubject3.setUrl("isMustRob=1");
                 houseSubjectList.add(houseSubject3);
-            }else {
+            } else {
                 HouseSubject houseSubject = new HouseSubject();
                 houseSubject.setText("地铁房");
                 houseSubject.setUrl("labelId=1");

@@ -225,6 +225,12 @@ public class PlotsThemeDo   {
   @ApiModelProperty("推荐理由")
   private CommunityReviewDo recommendReason;
 
+  /**
+   * 租房个数
+   */
+  @ApiModelProperty("租房个数")
+  private Integer rentCount;
+
 
   /**
    * 容积率

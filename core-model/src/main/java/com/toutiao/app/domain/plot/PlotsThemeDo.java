@@ -180,6 +180,10 @@ public class PlotsThemeDo {
      */
     private CommunityReviewDo recommendReason;
 
+    /**
+     * 租房个数
+     */
+    private Integer rentCount;
 
     /**
      * 容积率
