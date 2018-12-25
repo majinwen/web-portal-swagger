@@ -513,7 +513,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
 
 
-        if (StringTool.isNotEmpty(distance)) {
+        if (StringTool.isNotEmpty(distance) && distance > 0) {
             if (hit.getSortValues().length == 3) {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
                 String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
