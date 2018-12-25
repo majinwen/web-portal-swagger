@@ -31,8 +31,8 @@ public class SellHouseThemeRequest {
     @ApiModelProperty(value = "数量", name = "pageSize")
     private Integer pageSize;
 
-    @ApiModelProperty(value = "主题类型", name = "themeType")
-    private Integer themeType;
+//    @ApiModelProperty(value = "主题类型", name = "themeType")
+//    private Integer themeType;
 }
 
 
