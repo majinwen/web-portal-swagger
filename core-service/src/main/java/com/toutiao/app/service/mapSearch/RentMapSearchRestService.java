@@ -48,11 +48,12 @@ public interface RentMapSearchRestService {
 
     /**
      * 查询区域或商圈下小区的个数
+     * @param rentMapSearchDoQuery
      * @param id
      * @param cityId
      * @param type
      * @return
      */
-    Integer queryDistrictOrAreaRentCount(Integer id, String cityId, Integer type);
+    Integer queryDistrictOrAreaRentCount(RentMapSearchDoQuery rentMapSearchDoQuery, Integer id, String cityId, Integer type);
 
 }
