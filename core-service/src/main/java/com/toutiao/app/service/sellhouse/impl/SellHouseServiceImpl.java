@@ -1236,6 +1236,55 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 sellHousesSearchDo.setHouseSubjectList(houseSubjectList);
 
+                List<HouseColorLable> houseColorLableList = new ArrayList<>();
+
+                if (isMustRob == 1) {
+                    houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", "http://www.baidu.com"));
+                }
+
+                if (isLowPrice == 1) {
+                    houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", "http://www.baidu.com"));
+                }
+
+                if (isCutPrice == 1) {
+                    houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价房", "http://www.baidu.com"));
+                }
+
+                if (recommendBuildTagNameList.size() > 0 && StringTool.isNotEmpty(typeCountsMap)) {
+                    if (recommendBuildTagNameList.contains("豪宅")) {
+                        communityLableStr = areaName + typeCountsMap.get(4).get(sellHousesSearchDo.getAreaId()) + "大豪宅社区主力户型";
+                        houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                    }
+                    if (recommendBuildTagNameList.contains("别墅")) {
+                        communityLableStr = areaName + typeCountsMap.get(5).get(sellHousesSearchDo.getAreaId()) + "大别墅社区主力户型";
+                        houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                    }
+                    if (recommendBuildTagNameList.contains("首次置业")) {
+                        communityLableStr = areaName + typeCountsMap.get(2).get(sellHousesSearchDo.getAreaId()) + "大首置社区主力户型";
+                        houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                    }
+                    if (recommendBuildTagNameList.contains("换房升级")) {
+                        communityLableStr = areaName + typeCountsMap.get(3).get(sellHousesSearchDo.getAreaId()) + "大换房社区主力户型";
+                        houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                    }
+                    if (recommendBuildTagNameList.contains("近公园")) {
+//                    communityLableStr = "近公园社区主力户型";
+                        communityLableStr = "近公园";
+                        houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, "http://www.baidu.com"));
+                    }
+                }
+
+                if (sellHousesSearchDo.getIsCommunityTopHouse() == 1 ) {
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", "TOP50社区", "http://www.baidu.com"));
+                }
+
+                Integer rankLowInBizcircleLayout = sellHousesSearchDo.getRankLowInBizcircleLayout();
+                if (rankLowInBizcircleLayout > 0 &&  rankLowInBizcircleLayout<10){
+                    String text = sellHousesSearchDo.getHouseBusinessName()+"居室低总价榜NO."+rankLowInBizcircleLayout;
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
+                }
+                sellHousesSearchDo.setHouseColorLableList(houseColorLableList);
+
                 //增加地铁与房子之间的距离
                 String keys = "";
                 if (null != sellHouseDoQuery.getSubwayLineId() && sellHouseDoQuery.getSubwayLineId() > 0) {
@@ -2562,7 +2611,6 @@ public class SellHouseServiceImpl implements SellHouseService {
             Integer avgDealCycle = sellHouseDo.getAvgDealCycle();
             if (sellHouseDo.getIsDealLayout() == 1 && avgDealCycle > 0) {
                 houseBarrageFirstList.add("平均成交周期" + avgDealCycle + "天");
-//                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
                 titleTag = false;
             }
             if(titleTag){
