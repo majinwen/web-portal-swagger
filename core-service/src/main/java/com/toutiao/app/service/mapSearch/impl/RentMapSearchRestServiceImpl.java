@@ -87,7 +87,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             totalNum = (int)rentMapSearchNum.getHits().getTotalHits();
         }
         List newList = new ArrayList();
-        Hashtable<String, RentMapSearchDo> allStationDict = new Hashtable<>();
+        Map<String, RentMapSearchDo> allStationDict = new LinkedHashMap<>();
         //groupTypeId 1：区县，2：商圈，3：社区
         Integer groupTypeId = null != MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) ? MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) : 0;
 
@@ -250,7 +250,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         }
 
         SearchResponse rentMapSearch = rentMapSearchEsDao.getRentMapSearch(searchSourceBuilder, city);
-        Hashtable<String, RentMapSearchDo> stationDict = new Hashtable<>();
+        Map<String, RentMapSearchDo> stationDict = new LinkedHashMap<>();
 
         List<RentMapSearchDo> list = new ArrayList<>();
         Integer totalHits = 0;
@@ -348,11 +348,18 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                 }
 
                 if(groupTypeId==6){
-                    for(int i=0;i<newList.size();i++){
-                        if(stationDict.containsKey(newList.get(i))){
-                            list.add(stationDict.get(newList.get(i)));
+//                    for(int i=1;i<=newList.size();i++){
+//                        if(stationDict.containsKey(newList.get(i))){
+//                            list.add(stationDict.get(newList.get(i)));
+//                        }else{
+//                            list.add(allStationDict.get(newList.get(i)));
+//                        }
+//                    }
+                    for (String key : allStationDict.keySet()) {
+                        if(stationDict.containsKey(key)){
+                            list.add(stationDict.get(key));
                         }else{
-                            list.add(allStationDict.get(newList.get(i)));
+                            list.add(allStationDict.get(key));
                         }
                     }
                 }
