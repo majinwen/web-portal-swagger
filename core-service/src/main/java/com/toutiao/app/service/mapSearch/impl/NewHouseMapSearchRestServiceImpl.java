@@ -76,7 +76,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
             NewHouseMapSearchDistrictDo newHouseMapSearchDistrictDo = new NewHouseMapSearchDistrictDo();
             Integer districtId = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
             newHouseMapSearchDistrictDo.setId(districtId);
-            Integer districtCount = queryDistiictNewHouseCount(districtId, city);
+            Integer districtCount = queryDistiictNewHouseCount(newHouseMapSearchDoQuery,districtId, city);
             newHouseMapSearchDistrictDo.setCount(districtCount);
             newHouseMapSearchDistrictDo.setDesc(districtCount+"个");
             BoolQueryBuilder builder = new BoolQueryBuilder();
@@ -221,8 +221,8 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
     }
 
     @Override
-    public Integer queryDistiictNewHouseCount(Integer districtId, String city) {
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+    public Integer queryDistiictNewHouseCount(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, Integer districtId, String city) {
+        BoolQueryBuilder boolQueryBuilder = filterNewHouseChoose(newHouseMapSearchDoQuery);
         boolQueryBuilder.must(termQuery("is_approve", 1));
         boolQueryBuilder.must(termQuery("is_del", 0));
         boolQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));

@@ -268,7 +268,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         Integer id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
                         rentMapSearchDo.setId(id);
                         //数量
-                        Integer count = queryDistrictOrAreaRentCount(id, city, 1);
+                        Integer count = queryDistrictOrAreaRentCount(rentMapSearchDoQuery,id, city, 1);
                         rentMapSearchDo.setCount(count);
                         rentMapSearchDo.setDesc(count+"套");
                         Map distanceAndAreainfo = getDistanceAndAreainfo(id, 1);
@@ -284,7 +284,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         int id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
                         rentMapSearchDo.setId(id);
                         //数量
-                        Integer count = queryDistrictOrAreaRentCount(id, city, 1);
+                        Integer count = queryDistrictOrAreaRentCount(rentMapSearchDoQuery,id, city, 1);
                         rentMapSearchDo.setCount(count);
                         rentMapSearchDo.setDesc(count+"套");
                         Map distanceAndAreainfo = getDistanceAndAreainfo(id, 2);
@@ -924,8 +924,8 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
     }
 
     @Override
-    public Integer queryDistrictOrAreaRentCount(Integer id, String cityId, Integer type){
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+    public Integer queryDistrictOrAreaRentCount(RentMapSearchDoQuery rentMapSearchDoQuery, Integer id, String cityId, Integer type){
+        BoolQueryBuilder boolQueryBuilder = getBoolQueryBuilder(rentMapSearchDoQuery);
         boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
         if(type==1){
             boolQueryBuilder.must(QueryBuilders.termQuery("district_id",id));
