@@ -304,7 +304,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                     builder.must(QueryBuilders.termQuery("building_tags_id", longs[i]));
                 }
             }
-            builder.must(builder);
+            boolQueryBuilder.must(builder);
         }
 
         //户型
