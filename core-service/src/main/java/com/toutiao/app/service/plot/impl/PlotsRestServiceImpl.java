@@ -477,7 +477,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
             if (hits.length > 0) {
                 for (SearchHit hit : hits) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, null, key);
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance(), key);
                 }
             }
         }
@@ -513,9 +513,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
 
 
-        if (StringTool.isNotEmpty(distance)) {
+        if (StringTool.isNotEmpty(distance) && distance > 0) {
             if (hit.getSortValues().length == 3) {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
+                String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                nearbyDistance = "距您" + distances;
+            }else if(hit.getSortValues().length == 2){
+                BigDecimal geoDis= new BigDecimal((Double) hit.getSortValues()[1]);
                 String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                 nearbyDistance = "距您" + distances;
             }

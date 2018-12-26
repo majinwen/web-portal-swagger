@@ -9,12 +9,9 @@ import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.service.mapSearch.NewHouseMapSearchRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.constant.house.HouseLableEnum;
-import com.toutiao.web.common.constant.map.MapGroupConstant;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
-import com.toutiao.web.common.util.mapSearch.MapGroupUtil;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
@@ -77,9 +74,11 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         for (Object bucket : buckets){
 
             NewHouseMapSearchDistrictDo newHouseMapSearchDistrictDo = new NewHouseMapSearchDistrictDo();
-            newHouseMapSearchDistrictDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());
-            newHouseMapSearchDistrictDo.setCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
-            newHouseMapSearchDistrictDo.setDesc(newHouseMapSearchDistrictDo.getCount()+"个");
+            Integer districtId = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
+            newHouseMapSearchDistrictDo.setId(districtId);
+            Integer districtCount = queryDistiictNewHouseCount(newHouseMapSearchDoQuery,districtId, city);
+            newHouseMapSearchDistrictDo.setCount(districtCount);
+            newHouseMapSearchDistrictDo.setDesc(districtCount+"个");
             BoolQueryBuilder builder = new BoolQueryBuilder();
             builder.must(termQuery("district_id", newHouseMapSearchDistrictDo.getId()));
             SearchResponse newHouseMapByDbAvgPrice = newHouseMapSearchEsDao.getNewHouseMapByDbAvgPrice(builder, city);
@@ -221,6 +220,18 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         return newHouseMapSearchBuildDomain;
     }
 
+    @Override
+    public Integer queryDistiictNewHouseCount(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, Integer districtId, String city) {
+        BoolQueryBuilder boolQueryBuilder = filterNewHouseChoose(newHouseMapSearchDoQuery);
+        boolQueryBuilder.must(termQuery("is_approve", 1));
+        boolQueryBuilder.must(termQuery("is_del", 0));
+        boolQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
+        boolQueryBuilder.must(termQuery("district_id",districtId));
+        SearchResponse response = newHouseMapSearchEsDao.queryDistiictNewHouseCount(boolQueryBuilder, city);
+        long totalHits = response.getHits().getTotalHits();
+        return Integer.valueOf((int) totalHits);
+    }
+
 
     public BoolQueryBuilder filterNewHouseChoose(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery){
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
@@ -326,4 +337,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         return boolQueryBuilder;
 
     }
+
+
+
 }

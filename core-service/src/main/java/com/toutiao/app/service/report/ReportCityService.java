@@ -64,4 +64,10 @@ public interface ReportCityService {
      */
     List<ReportAreaHot> selectReportAreaHotList(Integer cityId,Integer pageNum,Integer pageSize);
 
+    /**
+     * 查询举报统计
+     * @param cityId
+     * @return
+     */
+    ReportStatisticsDo queryReportStatistics(Integer cityId);
 }

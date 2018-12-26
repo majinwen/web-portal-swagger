@@ -206,7 +206,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 //公司图标
                 String AgentCompany = sellHouseDetailsDo.getOfCompany();
-                if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
+                if (!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)) {
                     sellHouseDetailsDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                 }
             }
@@ -506,7 +506,7 @@ public class SellHouseServiceImpl implements SellHouseService {
         SearchResponse sellHouseByConditionT1 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT1, userFavoriteConditionDoQuery.getPageNum(), userFavoriteConditionDoQuery.getPageSize(), city);
         SearchHit[] hitsT1 = sellHouseByConditionT1.getHits().getHits();
         List<SearchHit> searchHitList = new ArrayList<>();
-        if(hitsT1.length > 0){
+        if (hitsT1.length > 0) {
             searchHitList.addAll(Arrays.asList(hitsT1));
         }
         int totalHits_T1 = (int) sellHouseByConditionT1.getHits().getTotalHits();
@@ -645,7 +645,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             SearchResponse sellHouseByConditionT2 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT2, pageNum_T2, pageSize_T2, city);
             SearchHit[] hitsT2 = sellHouseByConditionT2.getHits().getHits();
             int totalHits_T2 = (int) sellHouseByConditionT2.getHits().getTotalHits();
-            if(hitsT2.length > 0){
+            if (hitsT2.length > 0) {
                 searchHitList.addAll(Arrays.asList(hitsT2));
             }
 //            if (hitsT2.length > 0) {
@@ -701,7 +701,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 SearchResponse sellHouseByConditionT3 = sellHouseEsDao.getSellHouseByCondition(functionScoreQueryBuilderT3, pageNum_T3, pageSize_T3, city);
                 SearchHit[] hitsT3 = sellHouseByConditionT3.getHits().getHits();
                 int totalHits_T3 = (int) sellHouseByConditionT3.getHits().getTotalHits();
-                if(hitsT3.length > 0){
+                if (hitsT3.length > 0) {
                     searchHitList.addAll(Arrays.asList(hitsT3));
                 }
 //                if (hitsT3.length > 0) {
@@ -853,7 +853,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             list = getResultFromSearchHitList(city, list, searchHitList);
             sellHouseDomain.setData(list);
 //            sellHouseDomain.setTotalNum((int) sellHouseNoCondition.getHits().getTotalHits());
-            sellHouseDomain.setTotalNum((int)sellHouseNoCondition.getHits().getTotalHits());
+            sellHouseDomain.setTotalNum((int) sellHouseNoCondition.getHits().getTotalHits());
         }
 
         return sellHouseDomain;
@@ -1065,9 +1065,13 @@ public class SellHouseServiceImpl implements SellHouseService {
                         nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                     }
                 }
-
                 if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
-                    BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
+                    BigDecimal geoDis;
+                    if (sellHouseDoQuery.getSort().equals("0")) {
+                        geoDis = new BigDecimal((Double) searchHit.getSortValues()[0]);
+                    } else {
+                        geoDis = new BigDecimal((Double) searchHit.getSortValues()[1]);
+                    }
                     String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
 //                    sellHousesSearchDo.setNearbyDistance(distance);
                     nearbyDistance = "距您" + distances;
@@ -1138,8 +1142,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 List<HouseSubject> houseSubjectList = new ArrayList<>();
 
                 //1.同户型小区均价最低
-                if(sellHousesSearchDo.getIsLowest() == 1){
-                    HouseSubject houseSubject = new HouseSubject("小区同户型总价最低","");
+                if (sellHousesSearchDo.getIsLowest() == 1) {
+                    HouseSubject houseSubject = new HouseSubject("小区同户型总价最低", "");
                     houseSubjectList.add(houseSubject);
                 }
 
@@ -1219,7 +1223,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 Integer rankInLowCommunityLayout = sellHousesSearchDo.getRankInLowCommunityLayout();
                 if (rankInLowCommunityLayout > 0) {
                     HouseSubject sellHouseSubject = new HouseSubject();
-                    sellHouseSubject.setText(sellHousesSearchDo.getHouseBusinessName()+sellHousesSearchDo.getRoom()+"居室低总价榜NO."+rankInLowCommunityLayout);
+                    sellHouseSubject.setText(sellHousesSearchDo.getHouseBusinessName() + sellHousesSearchDo.getRoom() + "居室低总价榜NO." + rankInLowCommunityLayout);
                     sellHouseSubject.setUrl("");
                     houseSubjectList.add(sellHouseSubject);
                 }
@@ -1290,7 +1294,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if (null != sellHouseDoQuery.getSubwayLineId() && sellHouseDoQuery.getSubwayLineId() > 0) {
                     keys += sellHouseDoQuery.getSubwayLineId().toString();
                     //增加地铁线选择，地铁站选择不限
-                    if(StringTool.isNotEmpty(sellHousesSearchDo.getSubwayDistince().get(keys))){
+                    if (StringTool.isNotEmpty(sellHousesSearchDo.getSubwayDistince().get(keys))) {
                         trafficArr = sellHousesSearchDo.getSubwayDistince().get(keys).toString().split("\\$");
                         if (trafficArr.length == 3) {
                             nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
@@ -1326,11 +1330,11 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 //二手房弹幕第一行
                 List<String> houseBarrageFirstList = new ArrayList<>();
-                if (sellHousesSearchDo.getIsLowest() == 1 ){
+                if (sellHousesSearchDo.getIsLowest() == 1) {
                     houseBarrageFirstList.add("小区同户型总价最低");
                 }
                 boolean titleTag = true;
-                if(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()<0){
+                if (sellHousesSearchDo.getTotalAbsoluteWithBizcircle() < 0) {
 //                    String lowPriceStr = "总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万";
                     houseBarrageFirstList.add("总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万");
                     titleTag = false;
@@ -1347,7 +1351,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
                     titleTag = false;
                 }
-                if(titleTag){
+                if (titleTag) {
                     houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
                 }
                 sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
@@ -1355,17 +1359,17 @@ public class SellHouseServiceImpl implements SellHouseService {
                 //二手房弹幕第二行
                 List<String> houseBarrageSecondList = new ArrayList<>();
 
-                if(sellHousesSearchDo.getForwardName().contains("东") || sellHousesSearchDo.getForwardName().contains("南")){
+                if (sellHousesSearchDo.getForwardName().contains("东") || sellHousesSearchDo.getForwardName().contains("南")) {
                     houseBarrageSecondList.add("采光很好");
                 }
-                if(sellHousesSearchDo.getRankInLowCommunityLayout()>0){
-                    houseBarrageSecondList.add("小区同户型低总价榜NO."+sellHousesSearchDo.getRankInLowCommunityLayout());
+                if (sellHousesSearchDo.getRankInLowCommunityLayout() > 0) {
+                    houseBarrageSecondList.add("小区同户型低总价榜NO." + sellHousesSearchDo.getRankInLowCommunityLayout());
                 }
                 if (sellHousesSearchDo.getTotalAbsoluteWithCommunity() < 0) {
-                    houseBarrageSecondList.add( "总价低于小区同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithCommunity()) + "万");
+                    houseBarrageSecondList.add("总价低于小区同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithCommunity()) + "万");
                 }
 
-                for (String tag : sellHousesSearchDo.getTagsName()){
+                for (String tag : sellHousesSearchDo.getTagsName()) {
                     houseBarrageSecondList.add(tag);
                 }
 
@@ -1407,7 +1411,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             booleanQueryBuilder.must(QueryBuilders.constantScoreQuery(QueryBuilders.termsQuery("room", layoutId)));
         }
         //厅
-        if (StringTool.isNotEmpty(sellHouseDoQuery.getHall()) && sellHouseDoQuery.getHall()!=0) {
+        if (StringTool.isNotEmpty(sellHouseDoQuery.getHall()) && sellHouseDoQuery.getHall() != 0) {
             booleanQueryBuilder.must(termQuery("hall", sellHouseDoQuery.getHall()));
         }
 
@@ -1415,14 +1419,14 @@ public class SellHouseServiceImpl implements SellHouseService {
             booleanQueryBuilder.mustNot(termQuery("houseId", sellHouseDoQuery.getHouseId()));
         }
 
-        if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getTotalPrice())){
-            double beginPrice = sellHouseDoQuery.getTotalPrice()-(sellHouseDoQuery.getTotalPrice()*0.1);
-            double endPrice = sellHouseDoQuery.getTotalPrice()+(sellHouseDoQuery.getTotalPrice()*0.1);
+        if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getTotalPrice())) {
+            double beginPrice = sellHouseDoQuery.getTotalPrice() - (sellHouseDoQuery.getTotalPrice() * 0.1);
+            double endPrice = sellHouseDoQuery.getTotalPrice() + (sellHouseDoQuery.getTotalPrice() * 0.1);
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
         }
 
         GeoDistanceSortBuilder geoDistanceSort = null;
-        if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getLat()) && StringTool.isDoubleNotEmpty(sellHouseDoQuery.getLon()) ) {
+        if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getLat()) && StringTool.isDoubleNotEmpty(sellHouseDoQuery.getLon())) {
             geoDistanceSort = SortBuilders.geoDistanceSort("housePlotLocation", sellHouseDoQuery.getLat(), sellHouseDoQuery.getLon());
             geoDistanceSort.unit(DistanceUnit.KILOMETERS);
             geoDistanceSort.geoDistance(GeoDistance.ARC);
@@ -1431,10 +1435,10 @@ public class SellHouseServiceImpl implements SellHouseService {
 
         List<SellHousesSearchDo> sellHousesSearchDos = new ArrayList<>();
         ClaimSellHouseDo claimSellHouseDo = new ClaimSellHouseDo();
- //       SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query, sellHouseDoQuery.getDistance(),
+        //       SearchResponse searchResponse = sellHouseEsDao.getSellHouseList(query, sellHouseDoQuery.getDistance(),
 //                sellHouseDoQuery.getKeyword(), sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize(), city, geoDistanceSort, sellHouseDoQuery.getSort());
 
-        SearchResponse searchResponse = sellHouseEsDao.getSimilarSellHouseList(booleanQueryBuilder,city,geoDistanceSort);
+        SearchResponse searchResponse = sellHouseEsDao.getSimilarSellHouseList(booleanQueryBuilder, city, geoDistanceSort);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
         if (searchHists.length > 0) {
@@ -1446,9 +1450,9 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 String nearbyDistance = "";
 
-                if(sellHouseDoQuery.getBuildingId().equals(sellHousesSearchDo.getNewcode())){
+                if (sellHouseDoQuery.getBuildingId().equals(sellHousesSearchDo.getNewcode())) {
                     nearbyDistance = "小区同户型";
-                }else{
+                } else {
                     BigDecimal geoDis = new BigDecimal((Double) searchHit.getSortValues()[1]);
                     String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                     nearbyDistance = "距本房源" + distances;
@@ -1519,8 +1523,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 List<HouseSubject> houseSubjectList = new ArrayList<>();
 
                 //1.同户型小区均价最低
-                if(sellHousesSearchDo.getIsLowest() == 1){
-                    HouseSubject houseSubject = new HouseSubject("小区同户型总价最低","");
+                if (sellHousesSearchDo.getIsLowest() == 1) {
+                    HouseSubject houseSubject = new HouseSubject("小区同户型总价最低", "");
                     houseSubjectList.add(houseSubject);
                 }
 
@@ -1600,7 +1604,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 Integer rankInLowCommunityLayout = sellHousesSearchDo.getRankInLowCommunityLayout();
                 if (rankInLowCommunityLayout > 0) {
                     HouseSubject sellHouseSubject = new HouseSubject();
-                    sellHouseSubject.setText(sellHousesSearchDo.getHouseBusinessName()+sellHousesSearchDo.getRoom()+"居室低总价榜NO."+rankInLowCommunityLayout);
+                    sellHouseSubject.setText(sellHousesSearchDo.getHouseBusinessName() + sellHousesSearchDo.getRoom() + "居室低总价榜NO." + rankInLowCommunityLayout);
                     sellHouseSubject.setUrl("");
                     houseSubjectList.add(sellHouseSubject);
                 }
@@ -1624,18 +1628,17 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
 
 
-
                 if (StringTool.isNotEmpty(nearbyDistance)) {
                     sellHousesSearchDo.setNearbyDistance(nearbyDistance);
                 }
 
                 //二手房弹幕第一行
                 List<String> houseBarrageFirstList = new ArrayList<>();
-                if (sellHousesSearchDo.getIsLowest() == 1 ){
+                if (sellHousesSearchDo.getIsLowest() == 1) {
                     houseBarrageFirstList.add("小区同户型总价最低");
                 }
                 boolean titleTag = true;
-                if(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()<0){
+                if (sellHousesSearchDo.getTotalAbsoluteWithBizcircle() < 0) {
 //                    String lowPriceStr = "总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万";
                     houseBarrageFirstList.add("总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万");
                     titleTag = false;
@@ -1652,7 +1655,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
                     titleTag = false;
                 }
-                if(titleTag){
+                if (titleTag) {
                     houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
                 }
                 sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
@@ -1660,17 +1663,17 @@ public class SellHouseServiceImpl implements SellHouseService {
                 //二手房弹幕第二行
                 List<String> houseBarrageSecondList = new ArrayList<>();
 
-                if(sellHousesSearchDo.getForwardName().contains("东") || sellHousesSearchDo.getForwardName().contains("南")){
+                if (sellHousesSearchDo.getForwardName().contains("东") || sellHousesSearchDo.getForwardName().contains("南")) {
                     houseBarrageSecondList.add("采光很好");
                 }
-                if(sellHousesSearchDo.getRankInLowCommunityLayout()>0){
-                    houseBarrageSecondList.add("小区同户型低总价榜NO."+sellHousesSearchDo.getRankInLowCommunityLayout());
+                if (sellHousesSearchDo.getRankInLowCommunityLayout() > 0) {
+                    houseBarrageSecondList.add("小区同户型低总价榜NO." + sellHousesSearchDo.getRankInLowCommunityLayout());
                 }
                 if (sellHousesSearchDo.getTotalAbsoluteWithCommunity() < 0) {
-                    houseBarrageSecondList.add( "总价低于小区同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithCommunity()) + "万");
+                    houseBarrageSecondList.add("总价低于小区同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithCommunity()) + "万");
                 }
 
-                for (String tag : sellHousesSearchDo.getTagsName()){
+                for (String tag : sellHousesSearchDo.getTagsName()) {
                     houseBarrageSecondList.add(tag);
                 }
 
@@ -1848,7 +1851,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             sortFile = SortBuilders.fieldSort("houseTotalPrices").order(SortOrder.ASC);
         } else if ("6".equals(recommendEsf5DoQuery.getSort())) {
             sortFile = SortBuilders.fieldSort("buildArea").order(SortOrder.DESC);
-        }else{
+        } else {
             sortFile = SortBuilders.fieldSort("updateTimeSort").order(SortOrder.DESC);
         }
 
@@ -1932,8 +1935,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 List<HouseSubject> houseSubjectList = new ArrayList<>();
 
                 //1.同户型小区均价最低
-                if(sellHousesSearchDo.getIsLowest() == 1){
-                    HouseSubject houseSubject = new HouseSubject("小区同户型总价最低","");
+                if (sellHousesSearchDo.getIsLowest() == 1) {
+                    HouseSubject houseSubject = new HouseSubject("小区同户型总价最低", "");
                     houseSubjectList.add(houseSubject);
                 }
 
@@ -2013,7 +2016,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 Integer rankInLowCommunityLayout = sellHousesSearchDo.getRankInLowCommunityLayout();
                 if (rankInLowCommunityLayout > 0) {
                     HouseSubject sellHouseSubject = new HouseSubject();
-                    sellHouseSubject.setText(sellHousesSearchDo.getHouseBusinessName()+sellHousesSearchDo.getRoom()+"居室低总价榜NO."+rankInLowCommunityLayout);
+                    sellHouseSubject.setText(sellHousesSearchDo.getHouseBusinessName() + sellHousesSearchDo.getRoom() + "居室低总价榜NO." + rankInLowCommunityLayout);
                     sellHouseSubject.setUrl("");
                     houseSubjectList.add(sellHouseSubject);
                 }
@@ -2036,11 +2039,11 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 //二手房弹幕第一行
                 List<String> houseBarrageFirstList = new ArrayList<>();
-                if (sellHousesSearchDo.getIsLowest() == 1 ){
+                if (sellHousesSearchDo.getIsLowest() == 1) {
                     houseBarrageFirstList.add("小区同户型总价最低");
                 }
                 boolean titleTag = true;
-                if(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()<0){
+                if (sellHousesSearchDo.getTotalAbsoluteWithBizcircle() < 0) {
 //                    String lowPriceStr = "总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万";
                     houseBarrageFirstList.add("总价低于商圈同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithBizcircle()) + "万");
                     titleTag = false;
@@ -2057,7 +2060,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
                     titleTag = false;
                 }
-                if(titleTag){
+                if (titleTag) {
                     houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
                 }
                 sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
@@ -2065,17 +2068,17 @@ public class SellHouseServiceImpl implements SellHouseService {
                 //二手房弹幕第二行
                 List<String> houseBarrageSecondList = new ArrayList<>();
 
-                if(sellHousesSearchDo.getForwardName().contains("东") || sellHousesSearchDo.getForwardName().contains("南")){
+                if (sellHousesSearchDo.getForwardName().contains("东") || sellHousesSearchDo.getForwardName().contains("南")) {
                     houseBarrageSecondList.add("采光很好");
                 }
-                if(sellHousesSearchDo.getRankInLowCommunityLayout()>0){
-                    houseBarrageSecondList.add("小区同户型低总价榜NO."+sellHousesSearchDo.getRankInLowCommunityLayout());
+                if (sellHousesSearchDo.getRankInLowCommunityLayout() > 0) {
+                    houseBarrageSecondList.add("小区同户型低总价榜NO." + sellHousesSearchDo.getRankInLowCommunityLayout());
                 }
                 if (sellHousesSearchDo.getTotalAbsoluteWithCommunity() < 0) {
-                    houseBarrageSecondList.add( "总价低于小区同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithCommunity()) + "万");
+                    houseBarrageSecondList.add("总价低于小区同户型" + Math.abs(sellHousesSearchDo.getTotalAbsoluteWithCommunity()) + "万");
                 }
 
-                for (String tag : sellHousesSearchDo.getTagsName()){
+                for (String tag : sellHousesSearchDo.getTagsName()) {
                     houseBarrageSecondList.add(tag);
                 }
 
@@ -2581,24 +2584,24 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
             }
 
-            if (sellHouseDo.getIsCommunityTopHouse() == 1 ) {
+            if (sellHouseDo.getIsCommunityTopHouse() == 1) {
                 houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", "TOP50社区", "http://www.baidu.com"));
             }
 
             Integer rankLowInBizcircleLayout = sellHouseDo.getRankLowInBizcircleLayout();
-            if (rankLowInBizcircleLayout > 0 &&  rankLowInBizcircleLayout<10){
-                String text = sellHouseDo.getHouseBusinessName()+"居室低总价榜NO."+rankLowInBizcircleLayout;
+            if (rankLowInBizcircleLayout > 0 && rankLowInBizcircleLayout < 10) {
+                String text = sellHouseDo.getHouseBusinessName() + "居室低总价榜NO." + rankLowInBizcircleLayout;
                 houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
             }
             sellHouseDo.setHouseColorLableList(houseColorLableList);
 
             //二手房弹幕第一行
             List<String> houseBarrageFirstList = new ArrayList<>();
-            if (sellHouseDo.getIsLowest() == 1 ){
+            if (sellHouseDo.getIsLowest() == 1) {
                 houseBarrageFirstList.add("小区同户型总价最低");
             }
             boolean titleTag = true;
-            if(sellHouseDo.getTotalAbsoluteWithBizcircle()<0){
+            if (sellHouseDo.getTotalAbsoluteWithBizcircle() < 0) {
                 String lowPriceStr = "总价低于商圈同户型" + Math.abs(sellHouseDo.getTotalAbsoluteWithBizcircle()) + "万";
                 houseBarrageFirstList.add(lowPriceStr);
                 titleTag = false;
@@ -2613,7 +2616,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 houseBarrageFirstList.add("平均成交周期" + avgDealCycle + "天");
                 titleTag = false;
             }
-            if(titleTag){
+            if (titleTag) {
                 houseBarrageFirstList.add(sellHouseDo.getHouseTitle());
             }
             sellHouseDo.setHouseBarrageFirstList(houseBarrageFirstList);
@@ -2621,17 +2624,17 @@ public class SellHouseServiceImpl implements SellHouseService {
             //二手房弹幕第二行
             List<String> houseBarrageSecondList = new ArrayList<>();
 
-            if(sellHouseDo.getForwardName().contains("东") || sellHouseDo.getForwardName().contains("南")){
+            if (sellHouseDo.getForwardName().contains("东") || sellHouseDo.getForwardName().contains("南")) {
                 houseBarrageSecondList.add("采光很好");
             }
-            if(sellHouseDo.getRankInLowCommunityLayout()>0){
-                houseBarrageSecondList.add("小区同户型低总价榜NO."+sellHouseDo.getRankInLowCommunityLayout());
+            if (sellHouseDo.getRankInLowCommunityLayout() > 0) {
+                houseBarrageSecondList.add("小区同户型低总价榜NO." + sellHouseDo.getRankInLowCommunityLayout());
             }
             if (sellHouseDo.getTotalAbsoluteWithCommunity() < 0) {
-                houseBarrageSecondList.add( "总价低于小区同户型" + Math.abs(sellHouseDo.getTotalAbsoluteWithCommunity()) + "万");
+                houseBarrageSecondList.add("总价低于小区同户型" + Math.abs(sellHouseDo.getTotalAbsoluteWithCommunity()) + "万");
             }
 
-            for (String tag : sellHouseDo.getTagsName()){
+            for (String tag : sellHouseDo.getTagsName()) {
                 houseBarrageSecondList.add(tag);
             }
 
@@ -2649,7 +2652,7 @@ public class SellHouseServiceImpl implements SellHouseService {
         List<CustomConditionDistrictDo> customConditionDistrictDos = new ArrayList<>();
 
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
-        if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
+        if (StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length != 0) {
             boolQuery.must(termsQuery("district_id", userFavoriteConditionDoQuery.getDistrictId()));
         }
         SearchResponse avgPriceByDistrict = sellHouseEsDao.getAvgPriceByDistrict(boolQuery, city);
@@ -2660,17 +2663,17 @@ public class SellHouseServiceImpl implements SellHouseService {
             customConditionDistrictDo.setDistrictId(Integer.valueOf(((ParsedStringTerms.ParsedBucket) bucket).getKeyAsString()));
 
             Terms districtName = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("districtName");
-            if(districtName.getBuckets().size() > 0){
+            if (districtName.getBuckets().size() > 0) {
                 customConditionDistrictDo.setDistrictName(districtName.getBuckets().get(0).getKeyAsString());
             }
 
             Terms latitude = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("latitude");
-            if(latitude.getBuckets().size() > 0){
+            if (latitude.getBuckets().size() > 0) {
                 customConditionDistrictDo.setLatitude(latitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
             }
 
             Terms longitude = ((ParsedStringTerms.ParsedBucket) bucket).getAggregations().get("longitude");
-            if(longitude.getBuckets().size() > 0){
+            if (longitude.getBuckets().size() > 0) {
                 customConditionDistrictDo.setLongitude(longitude.getBuckets().get(0).getKeyAsNumber().doubleValue());
             }
             //房源
@@ -2678,15 +2681,15 @@ public class SellHouseServiceImpl implements SellHouseService {
             boolQueryBuilder.must(termQuery("isDel", "0"));
             boolQueryBuilder.must(termQuery("is_claim", "0"));
 
-            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId()) && userFavoriteConditionDoQuery.getLayoutId().length!=0){
+            if (StringTool.isNotEmpty(userFavoriteConditionDoQuery.getLayoutId()) && userFavoriteConditionDoQuery.getLayoutId().length != 0) {
                 String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
                 boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
             }
-            if(StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getEndPrice())) {
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()));
-            }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            } else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())) {
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
-            }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
+            } else if (StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())) {
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
             }
 
@@ -2696,7 +2699,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             Terms terms = searchResponse.getAggregations().get("areaName");
             List buckets = terms.getBuckets();
             List<CustomConditionDetailsDo> customConditionDetailsDoList = new ArrayList<>();
-            for (Object obhectBucket : buckets){
+            for (Object obhectBucket : buckets) {
 
                 CustomConditionDetailsDo conditionDetailsDo = new CustomConditionDetailsDo();
                 conditionDetailsDo.setBizcircleId(((ParsedLongTerms.ParsedBucket) obhectBucket).getKeyAsNumber().intValue());
@@ -2704,33 +2707,39 @@ public class SellHouseServiceImpl implements SellHouseService {
                 ParsedMin houseMinArea = ((ParsedLongTerms.ParsedBucket) obhectBucket).getAggregations().get("houseMinArea");
 
                 Double minArea = houseMinArea.getValue();
-                if (null!=minArea) {
-                    conditionDetailsDo.setHouseMinArea( new BigDecimal(minArea).setScale(1, RoundingMode.UP).doubleValue());
+                if (null != minArea) {
+                    conditionDetailsDo.setHouseMinArea(new BigDecimal(minArea).setScale(1, RoundingMode.UP).doubleValue());
                 }
                 ParsedMax houseMaxArea = ((ParsedLongTerms.ParsedBucket) obhectBucket).getAggregations().get("houseMaxArea");
                 Double maxArea = houseMaxArea.getValue();
-                if (null!=maxArea) {
+                if (null != maxArea) {
                     conditionDetailsDo.setHouseMaxArea(new BigDecimal(maxArea).setScale(1, RoundingMode.UP).doubleValue());
                 }
 
-                conditionDetailsDo.setHouseAreaDesc(conditionDetailsDo.getHouseMinArea()+"-"+conditionDetailsDo.getHouseMaxArea()+"m²");
+                conditionDetailsDo.setHouseAreaDesc(conditionDetailsDo.getHouseMinArea() + "-" + conditionDetailsDo.getHouseMaxArea() + "m²");
                 Terms buildCount = ((ParsedLongTerms.ParsedBucket) obhectBucket).getAggregations().get("buildCount");
-                if(buildCount.getBuckets().size() > 0){
+                if (buildCount.getBuckets().size() > 0) {
                     conditionDetailsDo.setBuildCount(buildCount.getBuckets().size());
-                }else{
+                } else {
                     conditionDetailsDo.setBuildCount(0);
                 }
 
 
                 BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
-                queryBuilder.must(QueryBuilders.termQuery("bizcircle_id",conditionDetailsDo.getBizcircleId()));
+                queryBuilder.must(QueryBuilders.termQuery("bizcircle_id", conditionDetailsDo.getBizcircleId()));
                 SearchResponse avgPriceByBizcircle = sellHouseEsDao.getAvgPriceByBizcircle(queryBuilder, city);
                 SearchHits layoutHits = avgPriceByBizcircle.getHits();
                 SearchHit[] searchHists = layoutHits.getHits();
                 if(searchHists.length > 0){
                     for(SearchHit searchHit : searchHists){
                         conditionDetailsDo.setBizcircleName(searchHit.getSourceAsMap().get("bizcircle_name")==null?"":searchHit.getSourceAsMap().get("bizcircle_name").toString());
-                        conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
+                        conditionDetailsDo.setAveragePrice("");
+                        if (searchHit.getSourceAsMap().get("bizcircle_avgprice") != null) {
+                            BigDecimal bigDecimal = new BigDecimal(searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
+                            Integer bizcircleAvgPrice = Integer.parseInt(bigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+                            conditionDetailsDo.setAveragePrice(String.valueOf(bizcircleAvgPrice));
+                        }
+//                        conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
                         String location =  searchHit.getSourceAsMap().get("bizcircle_location")==null?"":searchHit.getSourceAsMap().get("bizcircle_location").toString();
                         if(StringTool.isNotEmpty(location)){
                             String[] lat_lon = location.split(",");
@@ -2741,7 +2750,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 customConditionDetailsDoList.add(conditionDetailsDo);
 
-        }
+            }
             customConditionDistrictDo.setData(customConditionDetailsDoList);
             customConditionDistrictDos.add(customConditionDistrictDo);
 
