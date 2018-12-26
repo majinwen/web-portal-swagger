@@ -93,16 +93,16 @@ public interface SellHouseRestApi {
             method = {RequestMethod.POST})
     ResponseEntity<SellHouseSearchDomainResponse> getSellHouseListPost(@ApiParam(value = "sellHouseRequest", required = true) @Valid @RequestBody SellHouseRequest sellHouseRequest, BindingResult bindingResult);
 
-    @ApiOperation(value = "逢出必抢专题页", nickname = "getBeSureToSnatchList", notes = "", response = SellHouseBeSureToSnatchResponse.class, tags = {"二手房",})
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = SellHouseBeSureToSnatchResponse.class),
-            @ApiResponse(code = 401, message = "Unauthorized"),
-            @ApiResponse(code = 403, message = "Forbidden"),
-            @ApiResponse(code = 404, message = "Not Found")})
-    @RequestMapping(value = "/rest/esf/getBeSureToSnatchList",
-            produces = {"application/json"},
-            method = RequestMethod.GET)
-    ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult);
+//    @ApiOperation(value = "逢出必抢专题页", nickname = "getBeSureToSnatchList", notes = "", response = SellHouseBeSureToSnatchResponse.class, tags = {"二手房",})
+//    @ApiResponses(value = {
+//            @ApiResponse(code = 200, message = "OK", response = SellHouseBeSureToSnatchResponse.class),
+//            @ApiResponse(code = 401, message = "Unauthorized"),
+//            @ApiResponse(code = 403, message = "Forbidden"),
+//            @ApiResponse(code = 404, message = "Not Found")})
+//    @RequestMapping(value = "/rest/esf/getBeSureToSnatchList",
+//            produces = {"application/json"},
+//            method = RequestMethod.GET)
+//    ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult);
 
 //    @ApiOperation(value = "获取推荐房源5条", nickname = "getRecommendEsf5", notes = "", response = SellHouseSearchDomainResponse.class, tags = {"二手房",})
 //    @ApiResponses(value = {

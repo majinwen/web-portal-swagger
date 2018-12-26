@@ -106,4 +106,19 @@ public class RentMapSearchEsDaoImpl  implements RentMapSearchEsDao {
         }
         return search;
     }
+
+    @Override
+    public SearchResponse queryDistrictOrAreaRentCount(BoolQueryBuilder boolQueryBuilder, String city) {
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getRentHouseIndex(city)).types(ElasticCityUtils.getRentHouseType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder);
+        searchRequest.source(searchSourceBuilder);
+        SearchResponse search = null;
+        try {
+            search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return search;
+    }
 }

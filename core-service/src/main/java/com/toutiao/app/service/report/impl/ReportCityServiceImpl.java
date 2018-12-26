@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class ReportCityServiceImpl implements ReportCityService {
@@ -32,6 +34,8 @@ public class ReportCityServiceImpl implements ReportCityService {
     private ReportEsfProjHotMapper reportEsfProjHotMapper;
     @Autowired
     private ReportAreaHotMapper reportAreaHotMapper;
+    @Autowired
+    private ReportEsfGuideMapper reportEsfGuideMapper;
 
     @Value("${qiniu.img_domain}")
     private String qinniuImg;
@@ -150,5 +154,31 @@ public class ReportCityServiceImpl implements ReportCityService {
             throw new BaseException(CityReportErrorCodeEnum.NO_RECORD);//查询结果为空
         }
         return list;
+    }
+
+    /**
+     * 查询举报统计
+     *
+     * @param cityId
+     * @return
+     */
+    @Override
+    public ReportStatisticsDo queryReportStatistics(Integer cityId) {
+        ReportStatisticsDo reportStatisticsDo = new ReportStatisticsDo();
+        Integer temp = 0;
+        Integer temp1 = 0;
+        Integer count = reportEsfGuideMapper.queryReportEsfGuideByCityId(cityId);
+        if (null == count) {
+            count = 0;
+        }
+        Calendar calendar = Calendar.getInstance();
+        int m = calendar.get(Calendar.DAY_OF_YEAR);
+        temp = new Random((m + 6) * 3).nextInt(5);
+        temp1 = new Random((m + 6) * 2).nextInt(5);
+        reportStatisticsDo.setReportPeople(count + (temp == 0 ? 1 : temp));
+        reportStatisticsDo.setReportCount(count + (temp1 == 0 ? 1 : temp1));
+        reportStatisticsDo.setUnShelveCount(count);
+        reportStatisticsDo.setPayMoney(count * 1000);
+        return reportStatisticsDo;
     }
 }

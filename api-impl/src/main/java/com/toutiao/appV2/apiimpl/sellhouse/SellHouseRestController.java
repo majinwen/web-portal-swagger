@@ -267,16 +267,16 @@ public class SellHouseRestController implements SellHouseRestApi {
      * @param sellHouseBeSureToSnatchRequest
      * @return
      */
-    @Override
-    public ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult) {
-        SellHouseBeSureToSnatchResponse sellHouseBeSureToSnatchResponses = new SellHouseBeSureToSnatchResponse();
-        SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
-        BeanUtils.copyProperties(sellHouseBeSureToSnatchRequest, sellHouseBeSureToSnatchDoQuery);
-        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery, CityUtils.getCity());
-        BeanUtils.copyProperties(sellHouseBeSureToSnatchDos, sellHouseBeSureToSnatchResponses);
-        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseBeSureToSnatchResponses));
-        return new ResponseEntity<SellHouseBeSureToSnatchResponse>(sellHouseBeSureToSnatchResponses, HttpStatus.OK);
-    }
+//    @Override
+//    public ResponseEntity<SellHouseBeSureToSnatchResponse> getBeSureToSnatchList(@ApiParam(value = "sellHouseBeSureToSnatchRequest", required = true) @Valid SellHouseBeSureToSnatchRequest sellHouseBeSureToSnatchRequest, BindingResult bindingResult) {
+//        SellHouseBeSureToSnatchResponse sellHouseBeSureToSnatchResponses = new SellHouseBeSureToSnatchResponse();
+//        SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
+//        BeanUtils.copyProperties(sellHouseBeSureToSnatchRequest, sellHouseBeSureToSnatchDoQuery);
+//        SellHouseBeSureToSnatchDomain sellHouseBeSureToSnatchDos = sellHouseService.getBeSureToSnatchList(sellHouseBeSureToSnatchDoQuery, CityUtils.getCity());
+//        BeanUtils.copyProperties(sellHouseBeSureToSnatchDos, sellHouseBeSureToSnatchResponses);
+//        log.info("返回结果集:{}", JSONUtil.stringfy(sellHouseBeSureToSnatchResponses));
+//        return new ResponseEntity<SellHouseBeSureToSnatchResponse>(sellHouseBeSureToSnatchResponses, HttpStatus.OK);
+//    }
 
 //    /**
 //     * 获取推荐房源5条
