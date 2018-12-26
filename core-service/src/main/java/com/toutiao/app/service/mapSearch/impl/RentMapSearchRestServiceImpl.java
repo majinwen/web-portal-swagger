@@ -912,7 +912,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
         //标签
         if (StringTool.isNotEmpty(rentMapSearchDoQuery.getLabelId()) && rentMapSearchDoQuery.getLabelId().length!=0) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("rent_house_tags_id", rentMapSearchDoQuery.getLabelId()));
+            boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", rentMapSearchDoQuery.getLabelId()));
         }
 
         //面积
