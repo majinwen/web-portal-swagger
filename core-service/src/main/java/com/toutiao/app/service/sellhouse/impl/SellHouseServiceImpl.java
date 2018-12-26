@@ -2682,7 +2682,13 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if(searchHists.length > 0){
                     for(SearchHit searchHit : searchHists){
                         conditionDetailsDo.setBizcircleName(searchHit.getSourceAsMap().get("bizcircle_name")==null?"":searchHit.getSourceAsMap().get("bizcircle_name").toString());
-                        conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
+                        conditionDetailsDo.setAveragePrice("");
+                        if (searchHit.getSourceAsMap().get("bizcircle_avgprice") != null) {
+                            BigDecimal bigDecimal = new BigDecimal(Double.valueOf(searchHit.getSourceAsMap().get("bizcircle_avgprice").toString()));
+                            Integer bizcircleAvgPrice = Integer.parseInt(bigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+                            conditionDetailsDo.setAveragePrice(String.valueOf(bizcircleAvgPrice));
+                        }
+//                        conditionDetailsDo.setAveragePrice(searchHit.getSourceAsMap().get("bizcircle_avgprice")==null?"":searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
                         String location =  searchHit.getSourceAsMap().get("bizcircle_location")==null?"":searchHit.getSourceAsMap().get("bizcircle_location").toString();
                         if(StringTool.isNotEmpty(location)){
                             String[] lat_lon = location.split(",");
