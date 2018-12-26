@@ -2687,7 +2687,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                         conditionDetailsDo.setBizcircleName(searchHit.getSourceAsMap().get("bizcircle_name")==null?"":searchHit.getSourceAsMap().get("bizcircle_name").toString());
                         conditionDetailsDo.setAveragePrice("");
                         if (searchHit.getSourceAsMap().get("bizcircle_avgprice") != null) {
-                            BigDecimal bigDecimal = new BigDecimal(Double.valueOf(searchHit.getSourceAsMap().get("bizcircle_avgprice").toString()));
+                            BigDecimal bigDecimal = new BigDecimal(searchHit.getSourceAsMap().get("bizcircle_avgprice").toString());
                             Integer bizcircleAvgPrice = Integer.parseInt(bigDecimal.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
                             conditionDetailsDo.setAveragePrice(String.valueOf(bizcircleAvgPrice));
                         }
