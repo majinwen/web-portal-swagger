@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class ReportCityServiceImpl implements ReportCityService {
@@ -171,19 +172,11 @@ public class ReportCityServiceImpl implements ReportCityService {
             count = 0;
         }
         Calendar calendar = Calendar.getInstance();
-        int m = calendar.get(Calendar.DAY_OF_WEEK);
-
-        switch (m) {
-            case 1 : temp = 1;temp1 = 2;break;
-            case 2 : temp = 2;temp1 = 3;break;
-            case 3 : temp = 3;temp1 = 4;break;
-            case 4 : temp = 4;temp1 = 3;break;
-            case 5 : temp = 3;temp1 = 2;break;
-            case 6 : temp = 2;temp1 = 1;break;
-            case 7 : temp = 1;temp1 = 4;break;
-        }
-        reportStatisticsDo.setReportPeople(count + temp);
-        reportStatisticsDo.setReportCount(count + temp1);
+        int m = calendar.get(Calendar.DAY_OF_YEAR);
+        temp = new Random((m + 6) * 3).nextInt(5);
+        temp1 = new Random((m + 6) * 2).nextInt(5);
+        reportStatisticsDo.setReportPeople(count + (temp == 0 ? 1 : temp));
+        reportStatisticsDo.setReportCount(count + (temp1 == 0 ? 1 : temp1));
         reportStatisticsDo.setUnShelveCount(count);
         reportStatisticsDo.setPayMoney(count * 1000);
         return reportStatisticsDo;
