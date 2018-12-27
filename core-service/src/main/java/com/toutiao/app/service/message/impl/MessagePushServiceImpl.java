@@ -666,8 +666,8 @@ public class MessagePushServiceImpl implements MessagePushService {
      */
     private String dealDistrictName(String districtName, Integer cityId) {
         if (StringTool.isEmpty(districtName) || "[\"\"]".equals(districtName) || "[]".equals(districtName)) {
-            if (StringTool.isNotEmpty(CityUtils.retuenCityName(cityId))) {
-                return ALL + CityUtils.retuenCityName(cityId);
+            if (StringTool.isNotEmpty(CityUtils.returnCityName(cityId))) {
+                return ALL + CityUtils.returnCityName(cityId);
             } else {
                 return "";
             }
