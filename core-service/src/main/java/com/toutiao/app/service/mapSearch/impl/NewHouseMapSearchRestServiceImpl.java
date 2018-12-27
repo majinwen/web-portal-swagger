@@ -3,15 +3,18 @@ package com.toutiao.app.service.mapSearch.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.mapsearch.NewHouseMapSearchEsDao;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
+import com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery;
 import com.toutiao.app.domain.mapSearch.*;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.sellhouse.HouseLable;
+import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.mapSearch.NewHouseMapSearchRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.constant.house.HouseLableEnum;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
@@ -46,6 +49,8 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
     private NewHouseEsDao newHouseEsDao;
     @Autowired
     private NewHouseLayoutService newHouseLayoutService;
+    @Autowired
+    private FavoriteRestService favoriteRestService;
 
     @Override
     public NewHouseMapSearchDistrictDomain newHouseMapSearchByDistrict(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, String city) {
@@ -210,7 +215,14 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                 }
 
 
-
+                UserBasic userBasic = UserBasic.getCurrent();
+                if (StringTool.isNotEmpty(userBasic)) {
+                    NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+                    newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
+                    newHouseIsFavoriteDoQuery.setBuildingId(newHouseMapSearchBuildDo.getBuildingNameId());
+                    Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
+                    newHouseMapSearchBuildDo.setIsFavorite(isFavorite);
+                }
 
                 data.add(newHouseMapSearchBuildDo);
             }
