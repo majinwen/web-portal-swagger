@@ -16,6 +16,9 @@ public class SellHouseThemeDoQuery {
     @ApiModelProperty(value = "区域Ids", name = "districtIds")
     private Integer[] districtIds;
 
+    @ApiModelProperty(value = "商圈Ids", name = "areaIds")
+    private Integer[] areaIds;
+
     @ApiModelProperty(value = "起始价格", name = "beginPrice")
     private double beginPrice;
 
