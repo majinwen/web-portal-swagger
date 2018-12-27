@@ -328,9 +328,9 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             Integer[] layoutId = sellHouseDoQuery.getLayoutId();
 //            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
 
-            String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
-            if(Arrays.asList(layoutId).contains("5")){
-                String[] roomresult = (String[]) ArrayUtils.addAll(layoutId, roommore);
+            Integer[] roommore = new Integer[]{6, 7, 8, 9, 10, 11 ,12, 13, 14};
+            if(Arrays.asList(layoutId).contains(5)){
+                Integer[] roomresult = (Integer[]) ArrayUtils.addAll(layoutId, roommore);
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("room", roomresult));
             }else{
                 booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
