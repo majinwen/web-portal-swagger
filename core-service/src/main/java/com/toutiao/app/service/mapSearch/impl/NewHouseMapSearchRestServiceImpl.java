@@ -11,6 +11,7 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.mapSearch.NewHouseMapSearchRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.constant.house.HouseLableEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
@@ -25,6 +26,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,6 +45,9 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
  **/
 @Service
 public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestService {
+
+
+    private Logger logger = LoggerFactory.getLogger(NewHouseMapSearchRestServiceImpl.class);
 
     @Autowired
     private NewHouseMapSearchEsDao newHouseMapSearchEsDao;
@@ -214,14 +220,18 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                     newHouseMapSearchBuildDo.setRoomType("");
                 }
 
-
-                UserBasic userBasic = UserBasic.getCurrent();
-                if (StringTool.isNotEmpty(userBasic)) {
-                    NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
-                    newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
-                    newHouseIsFavoriteDoQuery.setBuildingId(newHouseMapSearchBuildDo.getBuildingNameId());
-                    Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
-                    newHouseMapSearchBuildDo.setIsFavorite(isFavorite);
+                try {
+                    UserBasic userBasic = UserBasic.getCurrent();
+                    if (StringTool.isNotEmpty(userBasic)) {
+                        NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+                        newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
+                        newHouseIsFavoriteDoQuery.setBuildingId(newHouseMapSearchBuildDo.getBuildingNameId());
+                        Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
+                        newHouseMapSearchBuildDo.setIsFavorite(isFavorite);
+                    }
+                } catch (BaseException e){
+                    logger.info("用户未登录");
+                    newHouseMapSearchBuildDo.setIsFavorite(Boolean.FALSE);
                 }
 
                 data.add(newHouseMapSearchBuildDo);
