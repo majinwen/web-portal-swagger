@@ -215,6 +215,6 @@ public interface SuggestRestApi {
     @RequestMapping(value = "/rest/getVersion",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<VersionResponse> getVersion(@ApiParam(value = "type", required = true) @Valid @RequestParam(value = "type",required = true) Integer type,
-                                                  @ApiParam(value = "version", required = true) @Valid @RequestParam(value = "version",required = true) Integer version);
+    ResponseEntity<VersionResponse> getVersion(@ApiParam(value = "安卓0，IOS1", required = true) @Valid @RequestParam(value = "type",required = true) Integer type,
+                                                  @ApiParam(value = "当前版本号", required = true) @Valid @RequestParam(value = "version",required = true) Integer version);
 }
