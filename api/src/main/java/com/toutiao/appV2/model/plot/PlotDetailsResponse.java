@@ -142,5 +142,11 @@ public class PlotDetailsResponse {
 
     @ApiModelProperty(value = "小区标题图")
     private String titlePhoto;
+
+    @ApiModelProperty(value = "小区均价浮动比率")
+    private Double averagePriceFloatRatio;
+
+    @ApiModelProperty(value = "上月成交二手房数量")
+    private Integer lastMonthsDeal;
 }
 
