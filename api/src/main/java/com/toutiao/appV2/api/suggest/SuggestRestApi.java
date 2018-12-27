@@ -212,9 +212,9 @@ public interface SuggestRestApi {
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
-    @RequestMapping(value = "/rest/getIsNewAppVersion",
+    @RequestMapping(value = "/rest/getVersion",
             produces = { "application/json" },
             method = RequestMethod.GET)
-    ResponseEntity<VersionResponse> getIsNewAppVersion(@ApiParam(value = "type", required = true) @Valid @RequestParam(value = "type",required = true) Integer type,
+    ResponseEntity<VersionResponse> getVersion(@ApiParam(value = "type", required = true) @Valid @RequestParam(value = "type",required = true) Integer type,
                                                   @ApiParam(value = "version", required = true) @Valid @RequestParam(value = "version",required = true) Integer version);
 }
