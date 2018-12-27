@@ -27,7 +27,13 @@ public class UserSubscribeDetailDo {
      * 商圈Id
      */
     @ApiModelProperty(value = "商圈Id", name = "areaId")
-    private Integer areaId;
+    private String areaId;
+
+    /**
+     * 商圈
+     */
+    @ApiModelProperty(value = "商圈", name = "areaName")
+    private String areaName;
     /**
      * 户型
      */
@@ -55,5 +61,5 @@ public class UserSubscribeDetailDo {
     private String titleImg;
 
     @ApiModelProperty(value = "居室", name ="layoutId")
-    private Integer[] layoutId;
+    private String layoutId;
 }

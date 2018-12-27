@@ -47,5 +47,5 @@ public class UserTopicSubscribeDetailDo {
      * 居室
      */
     @ApiModelProperty(value = "居室", name = "layoutId")
-    private Integer[] layoutId;
+    private String layoutId;
 }

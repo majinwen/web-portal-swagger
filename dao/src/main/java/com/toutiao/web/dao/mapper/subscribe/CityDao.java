@@ -40,6 +40,8 @@ public interface CityDao {
 
     String selectAreaName(Integer cityId);
 
+    String selectAreaNameArray(String[] areaId);
+
     String selectDistrictName(String[] districtId);
 
     City selectCityByDomain(@Param("cityDomain") String cityDomain);
