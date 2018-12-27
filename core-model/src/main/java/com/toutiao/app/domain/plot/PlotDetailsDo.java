@@ -339,4 +339,14 @@ public class PlotDetailsDo {
      * 标题图
      */
     private String titlePhoto;
+
+    /**
+     * 小区均价浮动比率
+     */
+    private Double averagePriceFloatRatio;
+
+    /**
+     * 上月成交二手房数量
+     */
+    private Integer lastMonthsDeal;
 }

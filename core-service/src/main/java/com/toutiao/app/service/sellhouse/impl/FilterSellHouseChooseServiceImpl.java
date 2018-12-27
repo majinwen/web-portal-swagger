@@ -10,6 +10,7 @@ import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
+import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -325,7 +326,15 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
         //户型(室)
         if (StringTool.isNotEmpty(sellHouseDoQuery.getLayoutId()) && sellHouseDoQuery.getLayoutId().length!=0) {
             Integer[] layoutId = sellHouseDoQuery.getLayoutId();
-            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+//            booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+
+            Integer[] roommore = new Integer[]{6, 7, 8, 9, 10, 11 ,12, 13, 14};
+            if(Arrays.asList(layoutId).contains(5)){
+                Integer[] roomresult = (Integer[]) ArrayUtils.addAll(layoutId, roommore);
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("room", roomresult));
+            }else{
+                booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+            }
         }
 
 

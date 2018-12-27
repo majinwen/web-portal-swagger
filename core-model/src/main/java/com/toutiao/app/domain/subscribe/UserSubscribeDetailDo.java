@@ -54,4 +54,6 @@ public class UserSubscribeDetailDo {
     @ApiModelProperty(value = "标题图", name = "titleImg")
     private String titleImg;
 
+    @ApiModelProperty(value = "居室", name ="layoutId")
+    private Integer[] layoutId;
 }
