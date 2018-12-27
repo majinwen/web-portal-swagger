@@ -19,6 +19,7 @@ import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper;
+import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -41,6 +42,7 @@ import java.math.RoundingMode;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.idsQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
@@ -74,6 +76,8 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private RentEsDao rentEsDao;
+
+    private static final String LAYOUT = "5";
     /**
      * @return 获取二手房5条
      */
@@ -741,14 +745,69 @@ public class HomePageServiceImpl implements HomePageRestService {
             builder.must(QueryBuilders.termQuery("is_claim", "0"));
             houseCount = sellHouseEsDao.querySellHouse(builder, city);
         }else if(userFavoriteConditionDoQuery.getConditionType()==1){
-            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getElo())){
-                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",1));
-                String[] room = userFavoriteConditionDoQuery.getElo().split(",");
-                boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", room));
-            }else if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getJlo())){
-                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",2));
-                String[] room = userFavoriteConditionDoQuery.getJlo().split(",");
-                boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", room));
+//            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getElo())){
+//                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",1));
+//                String[] room = userFavoriteConditionDoQuery.getElo().split(",");
+//                boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", room));
+//            }else if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getJlo())){
+//                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",2));
+//                String[] room = userFavoriteConditionDoQuery.getJlo().split(",");
+//                boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", room));
+//            }
+
+            if (StringTool.isNotBlank(userFavoriteConditionDoQuery.getElo()) && StringTool.isNotBlank(userFavoriteConditionDoQuery.getJlo())) {
+                BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                if (userFavoriteConditionDoQuery.getJlo().equals("0") && userFavoriteConditionDoQuery.getElo().equals("0")) {
+                    boolQueryBuilder1.should(rangeQuery("erent_layout").gt(0));
+                    boolQueryBuilder1.should(rangeQuery("jrent_layout").gt(0));
+                    boolQueryBuilder.must(boolQueryBuilder1);
+                } else if (userFavoriteConditionDoQuery.getElo().equals("0") && !userFavoriteConditionDoQuery.getJlo().equals("0")) {
+                    String[] jroom = userFavoriteConditionDoQuery.getJlo().split(",");
+                    boolQueryBuilder1.should(rangeQuery("erent_layout").gt(0));
+
+                    boolean jroomflag = Arrays.asList(jroom).contains(LAYOUT);
+                    if (jroomflag) {
+                        String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
+                        boolQueryBuilder1.should(termsQuery("jrent_layout", jroomresult));
+                    } else {
+                        boolQueryBuilder1.should(termsQuery("jrent_layout", jroom));
+                    }
+                    boolQueryBuilder.must(boolQueryBuilder1);
+                } else if (!userFavoriteConditionDoQuery.getElo().equals("0") && userFavoriteConditionDoQuery.getJlo().equals("0")) {
+                    String[] eroom = userFavoriteConditionDoQuery.getElo().split(",");
+                    boolQueryBuilder1.should(rangeQuery("jrent_layout").gt(0));
+
+                    boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
+                    if (eroomflag) {
+                        String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
+                        boolQueryBuilder1.should(termsQuery("erent_layout", eroomresult));
+                    } else {
+                        boolQueryBuilder1.should(termsQuery("erent_layout", eroom));
+                    }
+                    boolQueryBuilder.must(boolQueryBuilder1);
+                } else {
+                    String[] eroom = userFavoriteConditionDoQuery.getElo().split(",");
+                    String[] jroom = userFavoriteConditionDoQuery.getJlo().split(",");
+
+                    //String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
+                    boolean jroomflag = Arrays.asList(jroom).contains(LAYOUT);
+                    boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
+                    if (jroomflag) {
+                        String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
+                        boolQueryBuilder1.should(termsQuery("jrent_layout", jroomresult));
+                    } else {
+                        boolQueryBuilder1.should(termsQuery("jrent_layout", jroom));
+                    }
+                    if (eroomflag) {
+                        String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
+                        boolQueryBuilder1.should(termsQuery("erent_layout", eroomresult));
+                    } else {
+                        boolQueryBuilder1.should(termsQuery("erent_layout", eroom));
+                    }
+                    boolQueryBuilder.must(boolQueryBuilder1);
+                }
+
             }
 
 
