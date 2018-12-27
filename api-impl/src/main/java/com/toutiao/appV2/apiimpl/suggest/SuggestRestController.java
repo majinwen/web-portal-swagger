@@ -1,8 +1,5 @@
 package com.toutiao.appV2.apiimpl.suggest;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.houseCount.HouseCountDomain;
@@ -20,6 +17,7 @@ import com.toutiao.app.domain.suggest.SearchScopeDo;
 import com.toutiao.app.domain.suggest.SuggestListDo;
 import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.app.domain.suggest.SuggestResultDo;
+import com.toutiao.web.dao.entity.version.VersionVO;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
@@ -28,23 +26,21 @@ import com.toutiao.app.service.search.SearchConditionService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.CityService;
 import com.toutiao.app.service.suggest.SuggestService;
+import com.toutiao.app.service.version.VersionService;
 import com.toutiao.appV2.api.suggest.SuggestRestApi;
 import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
 import com.toutiao.appV2.model.houseCount.HouseCountRequest;
 import com.toutiao.appV2.model.houseCount.HouseCountResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
-import com.toutiao.appV2.model.search.SearchConditionResponse;
 import com.toutiao.appV2.model.subscribe.*;
 import com.toutiao.appV2.model.suggest.SearchEnginesResponse;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
 import com.toutiao.appV2.model.suggest.SuggestResultResponse;
+import com.toutiao.appV2.model.version.VersionResponse;
 import com.toutiao.web.common.util.city.CityUtils;
-import com.toutiao.web.dao.entity.search.SearchCondition;
 import com.toutiao.web.dao.entity.subscribe.City;
-import com.toutiao.web.dao.entity.subscribe.CityParkInfo;
 import com.toutiao.web.dao.entity.subscribe.SubwayLineData;
-import com.toutiao.web.domain.query.RentHouseQuery;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -101,6 +97,9 @@ public class SuggestRestController implements SuggestRestApi {
 
     @Autowired
     private PlotsRestService plotsRestService;
+
+    @Autowired
+    private VersionService versionService;
 
     @Override
     public ResponseEntity<SuggestResultResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest) {
@@ -507,6 +506,14 @@ public class SuggestRestController implements SuggestRestApi {
         HouseCountResponse houseCountResponse = new HouseCountResponse();
         BeanUtils.copyProperties(houseCountDomain, houseCountResponse);
         return new ResponseEntity<HouseCountResponse>(houseCountResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<VersionResponse> getIsNewAppVersion(Integer type, Integer version) {
+        VersionVO versionVO = versionService.getIsNewAppVersion(type, version);
+        VersionResponse versionResponse = new VersionResponse();
+        BeanUtils.copyProperties(versionVO, versionResponse);
+        return new ResponseEntity<VersionResponse>(versionResponse, HttpStatus.OK);
     }
 
 }
