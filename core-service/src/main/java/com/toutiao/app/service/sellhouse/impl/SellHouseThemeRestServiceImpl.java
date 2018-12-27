@@ -286,7 +286,11 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         if (StringTool.isNotEmpty(districtIds)) {
             booleanQueryBuilder.must(QueryBuilders.termsQuery("areaId", districtIds));
         }
-
+        //商圈
+        Integer[] areaIds = sellHouseThemeDoQuery.getAreaIds();
+        if (StringTool.isNotEmpty(areaIds)) {
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId", areaIds));
+        }
         //价格区间
         double beginPrice = sellHouseThemeDoQuery.getBeginPrice();
         double endPrice = sellHouseThemeDoQuery.getEndPrice();
