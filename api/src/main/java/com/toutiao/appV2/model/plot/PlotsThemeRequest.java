@@ -29,4 +29,12 @@ public class PlotsThemeRequest {
     @JsonProperty("districtIds")
     @ApiParam("区域ids")
     private Integer[] districtIds;
+
+    @JsonProperty("pageNum")
+    @ApiParam(value = "页码", defaultValue = "1")
+    private Integer pageNum = 1;
+
+    @JsonProperty("pageSize")
+    @ApiParam(value = "每页数量", defaultValue = "10")
+    private Integer pageSize=10;
 }
