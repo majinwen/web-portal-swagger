@@ -267,7 +267,7 @@ public class PlotEsDaoImpl implements PlotEsDao {
     public SearchResponse queryTagsById(BoolQueryBuilder boolQueryBuilder, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(boolQueryBuilder).fetchSource(new String[]{"recommendBuildTagsName","label","districtHotList"}, null);
+        searchSourceBuilder.query(boolQueryBuilder).fetchSource(new String[]{"recommendBuildTagsName","label","districtHotSort"}, null);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {

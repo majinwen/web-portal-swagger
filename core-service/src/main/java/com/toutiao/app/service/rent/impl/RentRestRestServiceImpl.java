@@ -1279,11 +1279,10 @@ public class RentRestRestServiceImpl implements RentRestService {
             boolQueryBuilder.must(QueryBuilders.rangeQuery("house_area").gte(rentHouseDoQuery.getBeginArea()));
 
         }
-//        //整租/合租
-//        if (StringTool.isNotEmpty(rentHouseDoQuery.getRentType())){
-//            String[] split = rentHouseDoQuery.getRentType().split(",");
-//            boolQueryBuilder.must(QueryBuilders.termsQuery("rent_type", split));
-//        }
+        //整租/合租
+        if (StringTool.isNotEmpty(rentHouseDoQuery.getRentType())){
+            boolQueryBuilder.must(QueryBuilders.termsQuery("rent_type", rentHouseDoQuery.getRentType()));
+        }
 //        //几居
 //        if (StringTool.isNotEmpty(rentHouseDoQuery.getLayoutId())){
 //            Integer[] split = rentHouseDoQuery.getLayoutId();

@@ -8,6 +8,7 @@ import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.ToutiaoBeanUtils;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.message.MessagePush;
 import com.toutiao.web.dao.entity.message.MessagePushExample;
 import com.toutiao.web.dao.mapper.message.MessagePushMapper;
@@ -21,26 +22,6 @@ import java.util.*;
 
 @Service
 public class MessagePushServiceImpl implements MessagePushService {
-    private static final Map<Integer, String> CITYID2NAME = new HashMap<>();
-    static {
-        CITYID2NAME.put(12, "北京");
-        CITYID2NAME.put(13, "上海");
-        CITYID2NAME.put(14, "天津");
-        CITYID2NAME.put(16, "广州");
-        CITYID2NAME.put(17, "深圳");
-        CITYID2NAME.put(26, "杭州");
-        CITYID2NAME.put(67, "苏州");
-    }
-    private static final Map<Integer, String> CITYID2ABBREVIATION = new HashMap<>();
-    static {
-        CITYID2ABBREVIATION.put(12, "bj");
-        CITYID2ABBREVIATION.put(13, "sh");
-        CITYID2ABBREVIATION.put(14, "tj");
-        CITYID2ABBREVIATION.put(16, "gz");
-        CITYID2ABBREVIATION.put(17, "sz");
-        CITYID2ABBREVIATION.put(26, "hz");
-        CITYID2ABBREVIATION.put(67, "suzhou");
-    }
 
     private static final Map<Integer, List<Integer>> TYPE2CONTENTTYPE = new HashMap<>();
     static {
@@ -224,9 +205,9 @@ public class MessagePushServiceImpl implements MessagePushService {
         }
         for (MessageSellHouseDo messageSellHouseDo : messageSellHouseDos) {
             String houseDetailUrl = null;
-            if (StringTool.isNotEmpty(CITYID2ABBREVIATION.get(cityId))) {
+            if (StringTool.isNotEmpty(CityUtils.retuenCityCode(cityId))) {
                 houseDetailUrl = String.format(appName + "/#/%s/details/secondHand?houseId=%s",
-                        CITYID2ABBREVIATION.get(cityId), messageSellHouseDo.getHouseId());
+                        CityUtils.retuenCityCode(cityId), messageSellHouseDo.getHouseId());
             }
             messageSellHouseDo.setHouseDetailUrl(houseDetailUrl);
 
@@ -306,7 +287,7 @@ public class MessagePushServiceImpl implements MessagePushService {
      */
     private void dealThemeDetailUrl(List<MessagePushDo> messagePushDos, HttpServletRequest request) {
         for (MessagePushDo messagePushDo : messagePushDos) {
-            String city = CITYID2ABBREVIATION.get(messagePushDo.getCityId());
+            String city = CityUtils.retuenCityCode(messagePushDo.getCityId());
             if (StringTool.isNotEmpty(city)) {
                 String themeDetailUrl = null;
                 Integer subscribeType = messagePushDo.getSubscribeType();
@@ -685,8 +666,8 @@ public class MessagePushServiceImpl implements MessagePushService {
      */
     private String dealDistrictName(String districtName, Integer cityId) {
         if (StringTool.isEmpty(districtName) || "[\"\"]".equals(districtName) || "[]".equals(districtName)) {
-            if (StringTool.isNotEmpty(CITYID2NAME.get(cityId))) {
-                return ALL + CITYID2NAME.get(cityId);
+            if (StringTool.isNotEmpty(CityUtils.returnCityName(cityId))) {
+                return ALL + CityUtils.returnCityName(cityId);
             } else {
                 return "";
             }
@@ -827,7 +808,7 @@ public class MessagePushServiceImpl implements MessagePushService {
         JSONObject jsonObject;
         if (isEsfType(messagePushDo.getContentType())) {
             List<MessageSellHouseDo> esHouseDos = sellHouseService.querySellHouseByHouseIdNew(new String[]{houseId},
-                    CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
+                    CityUtils.retuenCityCode(messagePushDo.getCityId()));
             Integer subscribeType = messagePushDo.getSubscribeType();
             if (esfInfo == null || "{}".equals(esfInfo.toString())){
                 //旧数据查不到，从Es表查询
@@ -868,7 +849,7 @@ public class MessagePushServiceImpl implements MessagePushService {
 //            }
             }
         } else {
-            RentDetailsDo rentDetailsDo = rentRestService.queryRentDetailByHouseId(houseId, CITYID2ABBREVIATION.get(messagePushDo.getCityId()));
+            RentDetailsDo rentDetailsDo = rentRestService.queryRentDetailByHouseId(houseId, CityUtils.retuenCityCode(messagePushDo.getCityId()));
             jsonObject = esfInfo.getJSONObject(houseId);
             if (rentDetailsDo.getHouseId() == null){
                 jsonObject.put("status", 1);
@@ -924,7 +905,7 @@ public class MessagePushServiceImpl implements MessagePushService {
 
     private String dealEsfDetailUrl(String houseId, Integer cityId, String hostUrl, Integer type) {
         String houseDetailUrl = null;
-        String cityCode = CITYID2ABBREVIATION.get(cityId);
+        String cityCode = CityUtils.retuenCityCode(cityId);
         if (StringTool.isNotEmpty(houseId) && StringTool.isNotEmpty(cityCode)) {
             if (type == 1) {
                 houseDetailUrl = String.format(hostUrl + "/%s/detail/second?id=%s",

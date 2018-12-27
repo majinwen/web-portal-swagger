@@ -183,21 +183,10 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                     SearchHits communityHit = communityRes.getHits();
                     SearchHit[] communityHits = communityHit.getHits();
                     for (SearchHit  tagsHits: communityHits){
-                        List<String> tagsName = new ArrayList<>();
-                        List<String> recommendTags = (List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName");
-                        List<String> label = (List<String>) tagsHits.getSourceAsMap().get("label");
-//                        List<String> districtHotList = (List<String>) tagsHits.getSourceAsMap().get("districtHotList");
-                        if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
-                            tagsName.addAll(recommendTags);
-                        }
-//                        if(StringTool.isNotEmpty(districtHotList) && districtHotList.size() > 0){
-//                            tagsName.addAll(districtHotList);
-//                        }
-                        if(StringTool.isNotEmpty(label) && label.size() > 0){
-                            tagsName.addAll(label);
-                        }
-                        String tagName = StringUtils.join(tagsName, " ");
-                        hotSellHouseThemeDo.setTagsName(tagName.trim());
+                        hotSellHouseThemeDo.setRecommendBuildTagsName((List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName"));
+                        hotSellHouseThemeDo.setLabel((List<String>) tagsHits.getSourceAsMap().get("label"));
+                        hotSellHouseThemeDo.setDistrictHotSort(Integer.valueOf(tagsHits.getSourceAsMap().get("districtHotSort")==null?"0":tagsHits.getSourceAsMap().get("districtHotSort").toString()));
+
                     }
                 }
                 //判断3天内导入，且无图片，默认上显示默认图

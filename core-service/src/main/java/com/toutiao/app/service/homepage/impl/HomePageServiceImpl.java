@@ -776,7 +776,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
             }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
-                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_pricex").lte(userFavoriteConditionDoQuery.getEndPrice()));
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").lte(userFavoriteConditionDoQuery.getEndPrice()));
             }
 
             searchResponse = rentEsDao.queryRentList(boolQueryBuilder,0,0,city);

@@ -145,7 +145,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 List<String> tagsName = new ArrayList<>();
                 List<String> recommendTags = (List<String>) searchHit.getSourceAsMap().get("recommendBuildTagsName");
                 List<String> label = (List<String>) searchHit.getSourceAsMap().get("label");
-//                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotListtHotList");
+//                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotSort");
                 if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
                     tagsName.addAll(recommendTags);
                 }
