@@ -726,7 +726,13 @@ public class HomePageServiceImpl implements HomePageRestService {
             //二手房
             String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
             if (layoutId.length > 0){
-                boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                if(Arrays.asList(layoutId).contains(LAYOUT)){
+                    String[] roomresult = (String[]) ArrayUtils.addAll(layoutId, roommore);
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("room", roomresult));
+                }else{
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+                }
             }
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
                 boolQueryBuilder.must(termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
@@ -745,15 +751,31 @@ public class HomePageServiceImpl implements HomePageRestService {
             builder.must(QueryBuilders.termQuery("is_claim", "0"));
             houseCount = sellHouseEsDao.querySellHouse(builder, city);
         }else if(userFavoriteConditionDoQuery.getConditionType()==1){
-//            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getElo())){
-//                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",1));
-//                String[] room = userFavoriteConditionDoQuery.getElo().split(",");
-//                boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", room));
-//            }else if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getJlo())){
-//                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",2));
-//                String[] room = userFavoriteConditionDoQuery.getJlo().split(",");
-//                boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", room));
-//            }
+            if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getElo())){
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",1));
+                String[] room = userFavoriteConditionDoQuery.getElo().split(",");
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                if(Arrays.asList(room).contains(LAYOUT)){
+                    String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", roomresult));
+                }else{
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", room));
+                }
+
+
+
+            }else if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getJlo())){
+                boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",2));
+                String[] room = userFavoriteConditionDoQuery.getJlo().split(",");
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                if(Arrays.asList(room).contains(LAYOUT)){
+                    String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", roomresult));
+                }else{
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", room));
+                }
+
+            }
 
             if (StringTool.isNotBlank(userFavoriteConditionDoQuery.getElo()) && StringTool.isNotBlank(userFavoriteConditionDoQuery.getJlo())) {
                 BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
