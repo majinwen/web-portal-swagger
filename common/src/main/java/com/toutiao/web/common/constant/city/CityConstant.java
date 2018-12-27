@@ -52,4 +52,25 @@ public class CityConstant {
 
     public static final Integer CODE_SHENZHEN = 17;//深圳
 
+
+    /**
+     * 城市名称
+     */
+    public static final String NAME_QUANGUO = "全国";
+
+    public static final String NAME_BEIJING = "北京";
+
+    public static final String NAME_SHANGHAI = "上海";
+
+    public static final String NAME_TIANJIN = "天津";
+
+    public static final String NAME_SUZHOU= "苏州";
+
+    public static final String NAME_HANGZHOU = "杭州";
+
+    public static final String NAME_GUANGZHOU= "广州";
+
+    public static final String NAME_SHENZHEN = "深圳";
+
+
 }
