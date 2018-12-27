@@ -663,12 +663,36 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             String sourceAsString = hit.getSourceAsString();
             PlotTop50Do plotTop50Do = JSON.parseObject(sourceAsString, PlotTop50Do.class);
 
-            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId(), CityUtils.getCity());
-            if (plotsEsfRoomCountDomain.getTotalCount() != null) {
-                plotTop50Do.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
-            } else {
-                plotTop50Do.setHouseCount(0);
+            String nearbyDistance = StringTool.nullToString(plotTop50Do.getArea()) + " " + StringTool.nullToString(plotTop50Do.getTradingArea());
+            String traffic = plotTop50Do.getTrafficInformation();
+            String[] trafficArr = traffic.split("\\$");
+            if (trafficArr.length == 3) {
+                DecimalFormat df = new DecimalFormat("0.0");
+                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
             }
+            plotTop50Do.setTrafficInformation(nearbyDistance);
+            if (plotTop50Do.getPhoto().length > 0) {
+                String titlePhoto = plotTop50Do.getPhoto()[0];
+                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                plotTop50Do.setTitlePhoto(titlePhoto);
+            }
+
+            //推荐理由
+            CommunityReviewDo communityReviewDo = plotsRestService.getReviewById(plotTop50Do.getId(), city);
+            plotTop50Do.setRecommendReason(communityReviewDo);
+
+            plotTop50Do.setRecommendBuildTagsName((List<String>) hit.getSourceAsMap().get("recommendBuildTagsName"));
+            plotTop50Do.setLabel((List<String>) hit.getSourceAsMap().get("label"));
+            plotTop50Do.setDistrictHotSort(Integer.valueOf(hit.getSourceAsMap().get("districtHotSort")==null?"0":hit.getSourceAsMap().get("districtHotSort").toString()));
+
+//            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId(), CityUtils.getCity());
+//            if (plotsEsfRoomCountDomain.getTotalCount() != null) {
+//                plotTop50Do.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
+//            } else {
+//                plotTop50Do.setHouseCount(0);
+//            }
 
             plotTop50Dos.add(plotTop50Do);
         }
