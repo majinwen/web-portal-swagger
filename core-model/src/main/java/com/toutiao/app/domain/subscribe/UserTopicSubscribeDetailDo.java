@@ -42,4 +42,10 @@ public class UserTopicSubscribeDetailDo {
      */
     @ApiModelProperty(value = "商圈名称", name = "areaName")
     private String areaName;
+
+    /**
+     * 居室
+     */
+    @ApiModelProperty(value = "居室", name = "layoutId")
+    private String layoutId;
 }

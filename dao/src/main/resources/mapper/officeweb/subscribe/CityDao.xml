@@ -275,6 +275,14 @@
         SELECT  area_name  from area where area_id=#{areaId}
     </select>
 
+    <select id="selectAreaNameArray" resultType="java.lang.String" parameterType="java.util.ArrayList">
+        SELECT array_to_string(ARRAY(SELECT unnest(array_agg(area_name))),',') as area_name FROM "area"
+        where area_id in
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            ${item}
+        </foreach>
+    </select>
+
     <select id="selectDistrictName" resultType="java.lang.String" parameterType="java.util.ArrayList">
         SELECT array_to_string(ARRAY(SELECT unnest(array_agg(district_name))),',') as district_name FROM "district"
         where district_id in

@@ -143,7 +143,7 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
     @Override
     public ResponseEntity<UserSubscribe> saveTopicSubscribe(@ApiParam(value = "userSubscribeDetailDo", required = true) @Valid @RequestBody UserTopicSubscribeDetailDo userSubscribeDetailDo) {
         //对区域id排序
-        userSubscribeDetailDo.setDistrictId(idsSort(userSubscribeDetailDo.getDistrictId()));
+//        userSubscribeDetailDo.setDistrictId(idsSort(userSubscribeDetailDo.getDistrictId()));
         UserBasic userBasic = UserBasic.getCurrent();
         UserSubscribe userSubscribe = new UserSubscribe();
         userSubscribe.setCreateTime(DateTime.now().toDate());

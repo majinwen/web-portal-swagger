@@ -509,7 +509,7 @@ public class SuggestRestController implements SuggestRestApi {
     }
 
     @Override
-    public ResponseEntity<VersionResponse> getIsNewAppVersion(Integer type, Integer version) {
+    public ResponseEntity<VersionResponse> getVersion(Integer type, Integer version) {
         VersionVO versionVO = versionService.getIsNewAppVersion(type, version);
         VersionResponse versionResponse = new VersionResponse();
         BeanUtils.copyProperties(versionVO, versionResponse);

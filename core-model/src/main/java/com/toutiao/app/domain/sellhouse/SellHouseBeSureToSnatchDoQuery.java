@@ -23,6 +23,11 @@ public class SellHouseBeSureToSnatchDoQuery {
      */
     private Integer[] districtIds;
 
+    /**
+     * 商圈Ids
+     */
+    private Integer[] areaId;
+
     private Integer pageNum;
 
     private Integer pageSize;

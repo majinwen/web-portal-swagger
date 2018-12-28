@@ -6,6 +6,8 @@ import com.toutiao.web.dao.mapper.version.VersionDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
+
 /**
  * Created by CuiShihao on 2018/12/27
  */
@@ -18,7 +20,7 @@ public class VersionServiceImpl implements VersionService {
     @Override
     public VersionVO getIsNewAppVersion(Integer type, Integer version) {
         VersionVO versionVO = versionDao.getIsNewAppVersion(type);
-        if (versionVO.getIsNew().equals(version)) {
+        if (Objects.equals(versionVO.getIsNew(), version)) {
             versionVO.setIsNew(0);
             versionVO.setUrl("");
         }

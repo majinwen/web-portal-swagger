@@ -92,6 +92,7 @@ public class SellHouseRestController implements SellHouseRestApi {
         PlotsHousesDomain plotsHousesDomain = new PlotsHousesDomain();
         SellHouseDetailsDo sellHouseByHouse = sellHouseService.getSellHouseByHouseId(sellHouseDerailsRequest.getHouseId(), CityUtils.getCity());
         BeanUtils.copyProperties(sellHouseByHouse, sellHouseDetailsResponse);
+        sellHouseDetailsResponse.setPlotNameAccurate(sellHouseDetailsResponse.getPlotName());
         if (null != sellHouseByHouse.getPlotDetailsDo()) {
             BeanUtils.copyProperties(sellHouseByHouse.getPlotDetailsDo(), plotInfo);
             if (null != sellHouseByHouse.getPlotDetailsDo().getPlotsHousesDomain()) {
