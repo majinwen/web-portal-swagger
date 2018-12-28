@@ -118,15 +118,15 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
 
             SearchResponse sp_isCutPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isCutPrice, city);
-            List<RecommendTopicDo> list_isCutPrice = cleanEsData(recommendTopicDoQuery, sp_isCutPrice, "isCutPrice");
+            List<RecommendTopicDo> list_isCutPrice = cleanEsData(recommendTopicDoQuery, sp_isCutPrice, "isCutPrice",city);
             recommendTopicDoList.addAll(list_isCutPrice);
 
             SearchResponse sp_isMustRob = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isMustRob, city);
-            List<RecommendTopicDo> list_isMustRob = cleanEsData(recommendTopicDoQuery, sp_isMustRob, "isMustRob");
+            List<RecommendTopicDo> list_isMustRob = cleanEsData(recommendTopicDoQuery, sp_isMustRob, "isMustRob",city);
             recommendTopicDoList.addAll(list_isMustRob);
 
             SearchResponse sp_isLowPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isLowPrice, city);
-            List<RecommendTopicDo> list_isLowPrice = cleanEsData(recommendTopicDoQuery, sp_isLowPrice, "isLowPrice");
+            List<RecommendTopicDo> list_isLowPrice = cleanEsData(recommendTopicDoQuery, sp_isLowPrice, "isLowPrice",city);
             recommendTopicDoList.addAll(list_isLowPrice);
         }
 
@@ -137,7 +137,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
     }
 
 
-    public List<RecommendTopicDo> cleanEsData(RecommendTopicDoQuery recommendTopicDoQuery, SearchResponse searchResponse, String flag) {
+    public List<RecommendTopicDo> cleanEsData(RecommendTopicDoQuery recommendTopicDoQuery, SearchResponse searchResponse, String flag, String city) {
         List<RecommendTopicDo> recommendTopicDoList = new ArrayList<>();
 
 //        Terms areaIdBucket = searchResponse.getAggregations().get("areaIds");
@@ -200,14 +200,18 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     recommendTopicDo.setTopicName("捡漏房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
                     recommendTopicDo.setTopicType(2);
+                    recommendTopicDo.setUrl("/"+city+"/topics/house/low");
                 }else if(Objects.equals(flag, "isMustRob")){
                     recommendTopicDo.setTopicName("抢手房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
                     recommendTopicDo.setTopicType(3);
+                    recommendTopicDo.setUrl("/"+city+"/topics/house/hot");
                 }else if(Objects.equals(flag, "isCutPrice")){
                     recommendTopicDo.setTopicName("降价房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
                     recommendTopicDo.setTopicType(1);
+                    recommendTopicDo.setUrl("/"+city+"/topics/house/reduction");
+
                 }
 
             try {
