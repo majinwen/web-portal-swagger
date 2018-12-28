@@ -307,9 +307,9 @@ public class SellHousesSearchDo {
     private Double totalRelativeWithDistrict;
 
     /**
-     * 涨降金融
+     * 累计涨降金融
      */
-    @ApiModelProperty(value = "涨降金融", name = "priceFloat")
+    @ApiModelProperty(value = "累计涨降金融", name = "priceFloat")
     private Double priceFloat;
     /**
      * 推荐标签id
@@ -403,5 +403,8 @@ public class SellHousesSearchDo {
 
     @ApiModelProperty(value = "房源所在层（高/低/中）", name = "floor")
     private String floor;
+
+    @ApiModelProperty(value = "初始价格", name = "initialPrice")
+    private Double initialPrice;
 
 }
