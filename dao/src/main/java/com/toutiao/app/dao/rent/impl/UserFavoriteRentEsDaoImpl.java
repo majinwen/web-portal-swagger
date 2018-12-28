@@ -73,7 +73,7 @@ public class UserFavoriteRentEsDaoImpl implements UserFavoriteRentEsDao {
                 .types(ElasticCityUtils.getSubwayHousePriceType(CityConstant.ABBREVIATION_QUANGUO));
         boolQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(boolQueryBuilder).size(100).sort("station_id", SortOrder.ASC);
+        searchSourceBuilder.query(boolQueryBuilder).size(100).sort("sorting", SortOrder.ASC);
         searchRequest.source(searchSourceBuilder);
         SearchResponse search = null;
         try {
