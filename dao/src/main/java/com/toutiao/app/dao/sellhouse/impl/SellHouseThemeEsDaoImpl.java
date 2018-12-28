@@ -102,7 +102,7 @@ public class SellHouseThemeEsDaoImpl implements SellHouseThemeEsDao {
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("cityRobRank", SortOrder.ASC)
                 .fetchSource(new String[]{"plotName","houseTotalPrices","room","hall","buildArea",
-                        "avgDealCycle","hotStarCount","houseId","newcode","housePhotoTitle"}, null);
+                        "avgDealCycle","hotStarCount","houseId","newcode","housePhotoTitle","area"}, null);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {
