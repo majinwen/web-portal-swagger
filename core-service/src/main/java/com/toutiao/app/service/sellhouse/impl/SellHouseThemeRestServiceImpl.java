@@ -9,6 +9,7 @@ import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.sellhouse.SellHouseThemeRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
@@ -156,6 +157,12 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 if(isDefault==1){
                     cutPriceSellHouseThemeDo.setIsDefaultImage(1);
                 }
+
+                String titlePhoto = cutPriceSellHouseThemeDo.getHousePhotoTitle();
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http://")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                cutPriceSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
                 cutPriceSellHouseThemeDoList.add(cutPriceSellHouseThemeDo);
             }
         }
@@ -195,6 +202,13 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 if(isDefault==1){
                     hotSellHouseThemeDo.setIsDefaultImage(1);
                 }
+
+                String titlePhoto = hotSellHouseThemeDo.getHousePhotoTitle();
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http://")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                hotSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
+
                 houseThemeDoList.add(hotSellHouseThemeDo);
             }
         }
@@ -224,6 +238,11 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 if(isDefault==1){
                     lowPriceSellHouseThemeDo.setIsDefaultImage(1);
                 }
+                String titlePhoto = lowPriceSellHouseThemeDo.getHousePhotoTitle();
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http://")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                lowPriceSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
                 lowPriceSellHouseThemeDoList.add(lowPriceSellHouseThemeDo);
             }
         }
