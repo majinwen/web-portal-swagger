@@ -148,5 +148,6 @@ public class PlotDetailsResponse {
 
     @ApiModelProperty(value = "上月成交二手房数量")
     private Integer lastMonthsDeal;
+
 }
 

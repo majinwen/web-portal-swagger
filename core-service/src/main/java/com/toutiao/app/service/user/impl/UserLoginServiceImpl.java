@@ -223,6 +223,9 @@ public class UserLoginServiceImpl implements UserLoginService {
                     userBasic.setLoginTime(new Date());
                     userBasic.setUnionid(unionid);
                     userBasic.setIdentityType(userBasicDo.getIdentityType());
+                    if(StringUtils.isNotEmpty(userBasicDo.getUserName())){
+                        userBasic.setUserName(userBasicDo.getUserName());
+                    }
 //                    userBasic.setRefreshToken(wxInfo[1]);
 //                           userBasic.setUserOnlySign(UUID.randomUUID().toString().replace("-", ""));
                         Date date = new Date();
@@ -245,7 +248,9 @@ public class UserLoginServiceImpl implements UserLoginService {
                     //注册新用户
                     UserBasic insertUserBasic = new UserBasic();
                     Date date = new Date();
-                    insertUserBasic.setUserName(userBasicDo.getUserPhone().substring(0, 2) + "*****" + userBasicDo.getUserPhone().substring(9, 11));
+                    if(StringUtils.isNotEmpty(userBasicDo.getUserName())){
+                        insertUserBasic.setUserName(userBasicDo.getUserName());
+                    }
                     insertUserBasic.setAvatar(userBasicDo.getAvatar());
                     insertUserBasic.setCreateTime(date);
                     insertUserBasic.setLoginTime(date);

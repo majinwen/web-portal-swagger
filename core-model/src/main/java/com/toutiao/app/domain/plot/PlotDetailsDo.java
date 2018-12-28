@@ -349,4 +349,5 @@ public class PlotDetailsDo {
      * 上月成交二手房数量
      */
     private Integer lastMonthsDeal;
+
 }
