@@ -87,6 +87,10 @@ public class SellHouseDetailsResponse {
     @ApiModelProperty(value = "小区名称", name = "plotName")
     //@ChangeName("buildingName")
     private String plotName;
+
+    @ApiModelProperty(value = "小区名称", name = "plotNameAccurate")
+    //@ChangeName("buildingName")
+    private String plotNameAccurate;
     /**
      * 小区图片
      */
