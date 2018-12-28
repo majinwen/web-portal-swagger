@@ -23,9 +23,7 @@ public class VersionServiceImpl implements VersionService {
         if (Objects.equals(versionVO.getVersion(), version)) {
             versionVO.setIsNew(0);
             versionVO.setUrl("");
-            return versionVO;
         }
-        versionVO.setVersion(version);
         return versionVO;
     }
 }
