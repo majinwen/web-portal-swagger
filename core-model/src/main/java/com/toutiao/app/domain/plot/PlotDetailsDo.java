@@ -350,8 +350,4 @@ public class PlotDetailsDo {
      */
     private Integer lastMonthsDeal;
 
-    /**
-     * 区域小区热度榜单排名
-     */
-    private Integer districtHotSort;
 }
