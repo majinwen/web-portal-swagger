@@ -506,9 +506,9 @@ public class SellHouseDetailsResponse {
     @ApiModelProperty(value = "与区县平均总价的相对值(百分比)", name = "totalRelativeWithDistrict")
     private Double totalRelativeWithDistrict;
     /**
-     * 涨降金额
+     * 累计涨降金额
      */
-    @ApiModelProperty(value = "涨降金额", name = "priceFloat")
+    @ApiModelProperty(value = "累计涨降金额", name = "priceFloat")
     private Double priceFloat;
 
     /**
@@ -581,4 +581,16 @@ public class SellHouseDetailsResponse {
 
     @ApiModelProperty(value = "小区信息", name = "plotInfo")
     private PlotDetailsResponse plotInfo;
+
+    @ApiModelProperty(value = "初始价格", name = "initialPrice")
+    private Double initialPrice;
+
+    @ApiModelProperty(value = "降价房排名表述", name = "houseCutLabel")
+    private String houseCutLabel;
+
+    @ApiModelProperty(value = "捡漏房排名表述", name = "houseLowerLabel")
+    private String houseLowerLabel;
+
+    @ApiModelProperty(value = "抢手房排名表述", name = "houseRobLabel")
+    private String houseRobLabel;
 }
