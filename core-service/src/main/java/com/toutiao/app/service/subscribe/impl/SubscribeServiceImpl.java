@@ -150,7 +150,7 @@ public class SubscribeServiceImpl implements SubscribeService {
                     userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));
                 }
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
-                    userSubscribeDetailDo.setDistrictName(cityDao.selectAreaName(userSubscribeDetailDo.getAreaId()));
+                    userSubscribeDetailDo.setAreaName(cityDao.selectAreaName(Integer.valueOf(userSubscribeDetailDo.getAreaId())));
                 }
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", userSubscribeDetailDo.getAreaId()));
@@ -198,6 +198,10 @@ public class SubscribeServiceImpl implements SubscribeService {
                 Integer[] intArrayFromStringArray = getIntArrayFromStringArray(userSubscribeDetailDo.getDistrictId().split(","));
                 sellHouseBeSureToSnatchDoQuery.setDistrictIds(intArrayFromStringArray);
             }
+            if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+                Integer[] intArrayFromStringArray = getIntArrayFromStringArray(userSubscribeDetailDo.getAreaId().split(","));
+                sellHouseBeSureToSnatchDoQuery.setAreaId(intArrayFromStringArray);
+            }
             if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
                 sellHouseBeSureToSnatchDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
@@ -211,6 +215,10 @@ public class SubscribeServiceImpl implements SubscribeService {
             if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
                 Integer[] intArrayFromStringArray = getIntArrayFromStringArray(userSubscribeDetailDo.getDistrictId().split(","));
                 mustBuyShellHouseDoQuery.setDistrictIds(intArrayFromStringArray);
+            }
+            if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+                Integer[] intArrayFromStringArray = getIntArrayFromStringArray(userSubscribeDetailDo.getAreaId().split(","));
+                mustBuyShellHouseDoQuery.setAreaId(intArrayFromStringArray);
             }
             if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
                 mustBuyShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
