@@ -17,6 +17,8 @@ import com.toutiao.app.domain.newhouse.CustomConditionDetailsDomain;
 import com.toutiao.app.domain.newhouse.CustomConditionDistrictDo;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
+import com.toutiao.app.domain.plot.PlotMarketDo;
+import com.toutiao.app.domain.plot.PlotMarketDomain;
 import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
@@ -24,6 +26,7 @@ import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsHomesRestService;
+import com.toutiao.app.service.plot.PlotsMarketService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.SubscribeService;
@@ -103,6 +106,8 @@ public class SellHouseServiceImpl implements SellHouseService {
     private PlotsHomesRestService plotsHomesRestService;
     @Autowired
     private UserFavoriteEsHouseMapper userFavoriteEsHouseMapper;
+    @Autowired
+    private PlotsMarketService plotsMarketService;
 
 
     @Override
@@ -253,6 +258,16 @@ public class SellHouseServiceImpl implements SellHouseService {
             if (StringUtils.isNotEmpty(details)) {
                 PlotDetailsDo plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
                 PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId, city);
+
+                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotId);
+
+                PlotMarketDomain plotMarketDomain = null;
+                if (null != plotMarketDo) {
+                    plotMarketDomain = new PlotMarketDomain();
+                    org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                    plotMarketDomain.setDistrictName(plotDetailsDo.getArea());
+                    plotDetailsDo.setPlotMarketDomain(plotMarketDomain);
+                }
 
                 plotsHousesDomain.setAvgPrice(plotDetailsDo.getAvgPrice());
                 plotDetailsDo.setPlotsHousesDomain(plotsHousesDomain);
@@ -2093,7 +2108,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 details = searchHit.getSourceAsString();
                 sellHousesSearchDo = JSON.parseObject(details, SellHousesSearchDo.class);
 
-                String nearbyDistance = "";
+                String nearbyDistance = StringTool.nullToString(sellHousesSearchDo.getArea()) + " " + StringTool.nullToString(sellHousesSearchDo.getHouseBusinessName());
 
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = sellHousesSearchDo.getImportTime();
@@ -2109,7 +2124,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                     sellHousesSearchDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
                 String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
-                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                if (null != titlePhoto && !Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
