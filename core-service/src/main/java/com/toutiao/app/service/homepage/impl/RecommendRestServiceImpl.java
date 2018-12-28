@@ -26,6 +26,7 @@ import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
 import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
 import org.elasticsearch.search.aggregations.metrics.tophits.ParsedTopHits;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,6 +47,9 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
     @Autowired
     private SubscribeService subscribeService;
+
+    @Value("${wap.domain.name}")
+    private String wapName;
 
     public static final double PRICE = 1000d;
     private static final int[] SHOUZHI_VS_GAISHAN = {2, 3};
@@ -200,17 +204,17 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     recommendTopicDo.setTopicName("捡漏房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
                     recommendTopicDo.setTopicType(2);
-                    recommendTopicDo.setUrl("/"+city+"/topics/house/low");
+                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/low");
                 }else if(Objects.equals(flag, "isMustRob")){
                     recommendTopicDo.setTopicName("抢手房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
                     recommendTopicDo.setTopicType(3);
-                    recommendTopicDo.setUrl("/"+city+"/topics/house/hot");
+                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/hot");
                 }else if(Objects.equals(flag, "isCutPrice")){
                     recommendTopicDo.setTopicName("降价房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
                     recommendTopicDo.setTopicType(1);
-                    recommendTopicDo.setUrl("/"+city+"/topics/house/reduction");
+                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/reduction");
 
                 }
 

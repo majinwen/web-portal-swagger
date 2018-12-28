@@ -17,4 +17,9 @@ public class VersionVO {
      * 版本对应的下载地址
      */
     private String url;
+
+    /**
+     * 最新的版本号
+     */
+    private Integer version;
 }
