@@ -14,4 +14,7 @@ public class VersionResponse {
 
     @ApiModelProperty(value = "版本对应的下载地址", name = "url")
     private String url;
+
+    @ApiModelProperty(value = "版本号", name = "version")
+    private Integer version;
 }
