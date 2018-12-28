@@ -40,5 +40,7 @@ public class UserVerifyCodeRequest   {
   @ApiModelProperty(value = "1:app微信,2:web微信,3:微信小程序",required = true)
   private String type = null;
 
+  @JsonProperty("userName")
+  private String userName;
 }
 
