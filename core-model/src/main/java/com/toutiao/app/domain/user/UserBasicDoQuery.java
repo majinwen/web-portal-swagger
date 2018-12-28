@@ -43,4 +43,6 @@ public class UserBasicDoQuery {
      * 1:app微信,2:web微信,3:微信小程序
      */
     private String type;
+
+    private String userName;
 }
