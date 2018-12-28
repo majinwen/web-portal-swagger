@@ -173,6 +173,10 @@ public class UserbasicApiController implements UserbasicApi {
             if (null == userLoginResponse.getIsWxBind()){
                 userLoginResponse.setIsWxBind(false);
             }
+            // 返回用户手机号
+            if (StringTool.isNotEmpty(userBasicDo.getPhone())) {
+                userLoginResponse.setUserPhone(userBasicDo.getPhone());
+            }
             try {
                 if (StringTool.isNotEmpty(userBasicDoQuery.getUnionid())){
                     setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response, 1);
@@ -364,6 +368,10 @@ public class UserbasicApiController implements UserbasicApi {
             if (null == userLoginResponse.getIsWxBind()){
                 userLoginResponse.setIsWxBind(false);
             }
+            // 返回用户手机号
+            if (StringTool.isNotEmpty(userBasicDo.getPhone())) {
+                userLoginResponse.setUserPhone(userBasicDo.getPhone());
+            }
             // 设置登录会员的cookie信息
             StringBuilder sb = new StringBuilder();
             String userJson = JSON.toJSONString(userLoginResponse);
@@ -400,6 +408,10 @@ public class UserbasicApiController implements UserbasicApi {
             userBasicDo = userBasicInfoService.smallProgramLogin(code,iv,rawData);
 
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
+            // 返回用户手机号
+            if (StringTool.isNotEmpty(userBasicDo.getPhone())) {
+                userLoginResponse.setUserPhone(userBasicDo.getPhone());
+            }
             if (null!=userBasicDo.getUserId()&&userBasicDo.getUserId().length()>0){
                 // 设置登录会员的cookie信息
                 StringBuilder sb = new StringBuilder();
