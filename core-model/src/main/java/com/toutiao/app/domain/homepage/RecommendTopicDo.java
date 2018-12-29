@@ -63,5 +63,9 @@ public class RecommendTopicDo {
     @ApiModelProperty("是否订阅")
     private Integer isSubscribe;
 
-
+    /**
+     * url
+     */
+    @ApiModelProperty("url")
+    private String url;
 }

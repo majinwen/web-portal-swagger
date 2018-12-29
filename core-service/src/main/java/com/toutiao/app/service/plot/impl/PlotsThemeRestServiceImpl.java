@@ -6,6 +6,7 @@ import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.rent.RentNumListDo;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
+import com.toutiao.app.service.plot.PlotsMarketService;
 import com.toutiao.app.service.plot.PlotsRestService;
 import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.app.service.rent.RentRestService;
@@ -52,6 +53,8 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 
     @Autowired
     private CommunityRestService communityRestService;
+    @Autowired
+    private PlotsMarketService plotsMarketService;
 
     /**
      * 获取小区主题数据
@@ -110,6 +113,16 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                     DecimalFormat df = new DecimalFormat("0.0");
                     nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                 }
+
+                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotsThemeDo.getId());
+
+                if (null != plotMarketDo) {
+                    PlotMarketDomain plotMarketDomain = new PlotMarketDomain();
+                    org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                    plotMarketDomain.setDistrictName(plotsThemeDo.getArea());
+                    plotsThemeDo.setPlotMarketDomain(plotMarketDomain);
+                }
+
                 plotsThemeDo.setTrafficInformation(nearbyDistance);
 
                 //推荐理由

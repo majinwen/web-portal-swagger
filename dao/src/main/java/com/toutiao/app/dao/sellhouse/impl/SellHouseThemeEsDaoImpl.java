@@ -63,7 +63,7 @@ public class SellHouseThemeEsDaoImpl implements SellHouseThemeEsDao {
         searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize)
                 .fetchSource(new String[]{"plotName","initialPrice","houseTotalPrices","room","hall","buildArea","import_time",
                         "priceFloat","houseId","housePhotoTitle"}, null)
-                .sort("priceFloatRatio", SortOrder.DESC)
+                .sort("cityCutRank", SortOrder.ASC)
                 .sort("updateTimeSort", SortOrder.DESC);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
@@ -81,10 +81,10 @@ public class SellHouseThemeEsDaoImpl implements SellHouseThemeEsDao {
     public SearchResponse getLowPriceShellHouse(BoolQueryBuilder query, Integer pageNum, Integer pageSize, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("saveMoney", SortOrder.DESC)
+        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("cityLowerRank", SortOrder.ASC)
                 .fetchSource(new String[]{"plotName","houseTotalPrices","room","hall","buildArea",
                         "saveMoney","houseId","housePhotoTitle","avgRelativeWithCommunity","avgAbsoluteWithCommunity",
-                "avgAbsoluteWithBizcircle","avgRelativeWithBizcircle","avgAbsoluteWithDistrict","avgRelativeWithDistrict"}, null);
+                "avgAbsoluteWithBizcircle","avgRelativeWithBizcircle","avgAbsoluteWithDistrict","avgRelativeWithDistrict","lowPriceFlag"}, null);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {
@@ -100,9 +100,9 @@ public class SellHouseThemeEsDaoImpl implements SellHouseThemeEsDao {
     public SearchResponse getBeSureToSnatchShellHouse(BoolQueryBuilder query, Integer pageNum, Integer pageSize, String city) {
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("perRoomPrice", SortOrder.ASC)
+        searchSourceBuilder.query(query).from((pageNum - 1) * pageSize).size(pageSize).sort("cityRobRank", SortOrder.ASC)
                 .fetchSource(new String[]{"plotName","houseTotalPrices","room","hall","buildArea",
-                        "avgDealCycle","hotStarCount","houseId","newcode"}, null);
+                        "avgDealCycle","hotStarCount","houseId","newcode","housePhotoTitle","area"}, null);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {

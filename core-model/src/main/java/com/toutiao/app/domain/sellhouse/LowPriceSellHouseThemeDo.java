@@ -60,6 +60,12 @@ public class LowPriceSellHouseThemeDo {
     @ApiModelProperty(value = "与区县平均单价的相对值(百分比)", name = "avgRelativeWithDistrict")
     private Double avgRelativeWithDistrict;
 
+    @ApiModelProperty(value = "捡漏房节省多少钱", name = "saveMoney")
+    private Double saveMoney;
+
+    @ApiModelProperty(value = "捡漏房判定标志位(1-同小区比较，2-同商圈比较)", name = "lowPriceFlag")
+    private Integer lowPriceFlag;
+
 
 
 }
