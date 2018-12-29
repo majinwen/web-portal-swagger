@@ -206,9 +206,9 @@ public class PlotsThemeDo {
     private String titlePhoto;
 
     /**
-     * 小区所在区域热度榜
+     * 小区行情
      */
-    private Integer districtHotSort;
+    private PlotMarketDomain plotMarketDomain;
 
 
 }

@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.plot;
 
 import com.toutiao.web.common.assertUtils.ChangeName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -72,10 +73,10 @@ public class PlotTop50Do {
      */
     private String rc;
 
-    /**
-     * 平均成交周期
-     */
-    private Integer avgDeal;
+//    /**
+//     * 平均成交周期
+//     */
+//    private Integer avgDeal;
 
     /**
      * 推荐理由
@@ -93,7 +94,7 @@ public class PlotTop50Do {
     private List<String> label;
 
     /**
-     * 小区所在区域热度排名
+     * 小区行情
      */
-    private Integer districtHotSort;
+    private PlotMarketDomain plotMarketDomain;
 }

@@ -350,4 +350,8 @@ public class PlotDetailsDo {
      */
     private Integer lastMonthsDeal;
 
+    /**
+     * 环比（月）
+     */
+    private Double ringRatio;
 }

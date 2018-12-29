@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.app.domain.plot.PlotMarketDomain;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -65,6 +66,9 @@ public class HotSellHouseThemeDo {
 
     @ApiModelProperty(value = "区域名称", name = "area")
     private String area;
+
+    @ApiModelProperty(value = "小区行情", name = "plotMarketDomain")
+    private PlotMarketDomain plotMarketDomain;
 
 
 }

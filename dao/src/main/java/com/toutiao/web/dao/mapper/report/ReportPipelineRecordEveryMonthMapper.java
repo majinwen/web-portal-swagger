@@ -2,6 +2,7 @@ package com.toutiao.web.dao.mapper.report;
 
 import com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth;
 import com.toutiao.web.dao.BaseDao;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -21,4 +22,6 @@ public interface ReportPipelineRecordEveryMonthMapper extends BaseDao {
     int updateByPrimaryKey(ReportPipelineRecordEveryMonth record);
 
     List<ReportPipelineRecordEveryMonth> selectFoldLineDistrictInfo(String code);
+
+    ReportPipelineRecordEveryMonth selectPlotRindRatio(@Param("code") String code,@Param("type") Integer type);
 }

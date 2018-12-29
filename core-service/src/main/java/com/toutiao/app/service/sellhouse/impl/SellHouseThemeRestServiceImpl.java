@@ -3,12 +3,16 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseThemeEsDao;
+import com.toutiao.app.domain.plot.PlotMarketDo;
+import com.toutiao.app.domain.plot.PlotMarketDomain;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
+import com.toutiao.app.service.plot.PlotsMarketService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.sellhouse.SellHouseThemeRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
@@ -19,6 +23,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +50,8 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
     @Autowired
     private SellHouseService sellHouseService;
+    @Autowired
+    private PlotsMarketService plotsMarketService;
 
 
 
@@ -156,6 +163,12 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 if(isDefault==1){
                     cutPriceSellHouseThemeDo.setIsDefaultImage(1);
                 }
+
+                String titlePhoto = cutPriceSellHouseThemeDo.getHousePhotoTitle();
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http://")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                cutPriceSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
                 cutPriceSellHouseThemeDoList.add(cutPriceSellHouseThemeDo);
             }
         }
@@ -189,12 +202,26 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
                     }
                 }
+                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(hotSellHouseThemeDo.getNewcode());
+                if (null != plotMarketDo) {
+                    PlotMarketDomain plotMarketDomain = new PlotMarketDomain();
+                    BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                    plotMarketDomain.setDistrictName(hotSellHouseThemeDo.getArea());
+                    hotSellHouseThemeDo.setPlotMarketDomain(plotMarketDomain);
+                }
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = hotSellHouseThemeDo.getImportTime();
                 int isDefault = sellHouseService.isDefaultImage(importTime ,date, hotSellHouseThemeDo.getHousePhotoTitle());
                 if(isDefault==1){
                     hotSellHouseThemeDo.setIsDefaultImage(1);
                 }
+
+                String titlePhoto = hotSellHouseThemeDo.getHousePhotoTitle();
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http://")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                hotSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
+
                 houseThemeDoList.add(hotSellHouseThemeDo);
             }
         }
@@ -224,6 +251,11 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 if(isDefault==1){
                     lowPriceSellHouseThemeDo.setIsDefaultImage(1);
                 }
+                String titlePhoto = lowPriceSellHouseThemeDo.getHousePhotoTitle();
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http://")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                }
+                lowPriceSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
                 lowPriceSellHouseThemeDoList.add(lowPriceSellHouseThemeDo);
             }
         }
@@ -295,11 +327,11 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         double beginPrice = sellHouseThemeDoQuery.getBeginPrice();
         double endPrice = sellHouseThemeDoQuery.getEndPrice();
         if (beginPrice != 0 && endPrice != 0) {
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(beginPrice).lte(endPrice));
         } else if (beginPrice == 0 && endPrice != 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(endPrice));
         } else if (beginPrice != 0 && endPrice == 0) {
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(beginPrice));
         }
         //户型(室)
         if (StringTool.isNotEmpty(sellHouseThemeDoQuery.getLayoutId()) && sellHouseThemeDoQuery.getLayoutId().length!=0) {

@@ -2,11 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.toutiao.web.dao.mapper.version.VersionDao">
     <resultMap id="VersionResultMap" type="com.toutiao.web.dao.entity.version.VersionVO">
-        <result column="version" property="isNew" jdbcType="INTEGER"/>
+        <result column="is_new" property="isNew" jdbcType="INTEGER"/>
         <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="getIsNewAppVersion" resultMap="VersionResultMap">
-        SELECT version, url FROM version WHERE type = #{type} order by id desc limit 1
+        SELECT version, url, is_new FROM version WHERE type = #{type} order by id desc limit 1
     </select>
 </mapper>

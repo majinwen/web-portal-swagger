@@ -2,6 +2,7 @@ package com.toutiao.appV2.model.plot;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.toutiao.app.domain.plot.CommunityReviewDo;
+import com.toutiao.app.domain.plot.PlotMarketDomain;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -58,9 +59,9 @@ public class PlotTop50Response   {
   @ApiModelProperty("近地铁描述")
   private String trafficInformation = null;
 
-  @JsonProperty("avgDeal")
-  @ApiModelProperty("平均成交周期")
-  private Integer avgDeal;
+//  @JsonProperty("avgDeal")
+//  @ApiModelProperty("平均成交周期")
+//  private Integer avgDeal;
 
   @JsonProperty("districtHotSort")
   @ApiModelProperty("小区所在区域热度榜")
@@ -81,6 +82,10 @@ public class PlotTop50Response   {
   @JsonProperty("titlePhoto")
   @ApiModelProperty("标题图")
   private String titlePhoto;
+
+  @JsonProperty("plotMarketDomain")
+  @ApiModelProperty("小区行情")
+  private PlotMarketDomain plotMarketDomain;
 
 
 
