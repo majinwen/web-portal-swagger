@@ -3,6 +3,7 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.plot.PlotEsDao;
+import com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth;
 import com.toutiao.app.dao.sellhouse.NearbySellHouseEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
@@ -39,10 +40,11 @@ import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteEsHouseMapper;
+import com.toutiao.web.dao.mapper.report.ReportPipelineRecordEveryMonthMapper;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.lucene.search.function.CombineFunction;
@@ -95,7 +97,8 @@ public class SellHouseServiceImpl implements SellHouseService {
     private final Integer FAVORITE_ESF = 2;
     @Autowired
     private SubscribeService subscribeService;
-
+    @Autowired
+    private ReportPipelineRecordEveryMonthMapper reportPipelineRecordEveryMonthMapper;
     @Autowired
     private CommunityRestService communityRestService;
     @Autowired
@@ -256,6 +259,10 @@ public class SellHouseServiceImpl implements SellHouseService {
 
             if (StringUtils.isNotEmpty(details)) {
                 PlotDetailsDo plotDetailsDo = JSON.parseObject(details, PlotDetailsDo.class);
+                ReportPipelineRecordEveryMonth reportPipelineRecordEveryMonth = reportPipelineRecordEveryMonthMapper.selectPlotRindRatio(String.valueOf(plotId),0);
+                if (StringTool.isNotEmpty(reportPipelineRecordEveryMonth)){
+                    plotDetailsDo.setRingRatio(reportPipelineRecordEveryMonth.getRingRatio());
+                }
                 PlotsHousesDomain plotsHousesDomain = plotsHomesRestService.queryPlotsHomesByPlotId(plotId, city);
 
                 PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotId);
