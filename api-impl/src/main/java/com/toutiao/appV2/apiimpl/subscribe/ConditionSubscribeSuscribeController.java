@@ -151,6 +151,18 @@ public class ConditionSubscribeSuscribeController implements SuscribeApi {
         userSubscribe.setUserId(Integer.parseInt(userBasic.getUserId()));
         userSubscribe.setCityId(CityUtils.returnCityId(CityUtils.getCity()));
         userSubscribe.setSubscribeType(0);
+        if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+            userSubscribeDetailDo.setAreaId(userSubscribeDetailDo.getAreaId().replace(" ",","));
+        }
+        if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaName())) {
+            userSubscribeDetailDo.setAreaName(userSubscribeDetailDo.getAreaName().replace(" ",","));
+        }
+        if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
+            userSubscribeDetailDo.setDistrictId(userSubscribeDetailDo.getDistrictId().replace(" ",","));
+        }
+        if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictName())) {
+            userSubscribeDetailDo.setDistrictName(userSubscribeDetailDo.getDistrictName().replace(" ",","));
+        }
         userSubscribe.setUserSubscribeMap(JSONObject.toJSONString(userSubscribeDetailDo, SerializerFeature.WriteMapNullValue, SerializerFeature.WriteNullStringAsEmpty, SerializerFeature.WriteNullNumberAsZero));
         subscribeService.insertSelective(userSubscribe);
         return new ResponseEntity<UserSubscribe>(userSubscribe, HttpStatus.OK);
