@@ -132,4 +132,10 @@
     WHERE code = #{code,jdbcType=VARCHAR}
     ORDER BY create_time DESC LIMIT 6 OFFSET 1
   </select>
+  <select id="selectPlotRindRatio" resultMap="BaseResultMap">
+    SELECT * FROM report_pipeline_record_everymonth
+    WHERE code = #{code, jdbcType=VARCHAR}
+    AND type = #{type, jdbcType=INTEGER}
+    ORDER BY create_time DESC LIMIT 1 OFFSET 1
+  </select>
 </mapper>

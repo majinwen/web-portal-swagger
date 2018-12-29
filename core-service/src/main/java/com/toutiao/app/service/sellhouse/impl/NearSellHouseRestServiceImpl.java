@@ -223,13 +223,12 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             List<HouseColorLable> houseColorLableList = new ArrayList<>();
 
             int isMustRob = nearBySellHousesDo.getIsMustRob();
-            if (isMustRob == 1) {
-                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", wapName + "/"+city+"/topics/house/low"));
+            if (isMustRob == 1) {houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", wapName + "/"+city+"/topics/house/hot"));
             }
 
             int isLowPrice = nearBySellHousesDo.getIsLowPrice();
             if (isLowPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", wapName + "/"+city+"/topics/house/hot"));
+                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", wapName + "/"+city+"/topics/house/low"));
             }
 
             int isCutPrice = nearBySellHousesDo.getIsCutPrice();
