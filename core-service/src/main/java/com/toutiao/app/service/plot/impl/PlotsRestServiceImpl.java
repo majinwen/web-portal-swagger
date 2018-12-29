@@ -693,6 +693,21 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
             plotTop50Do.setRecommendBuildTagsName((List<String>) hit.getSourceAsMap().get("recommendBuildTagsName"));
             plotTop50Do.setLabel((List<String>) hit.getSourceAsMap().get("label"));
+
+            List<String> tagsName = new ArrayList<>();
+            List<String> recommendTags = (List<String>) hit.getSourceAsMap().get("recommendBuildTagsName");
+            List<String> label = (List<String>) hit.getSourceAsMap().get("label");
+//                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotSort");
+            if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
+                tagsName.addAll(recommendTags);
+            }
+            if(StringTool.isNotEmpty(label) && label.size() > 0){
+                tagsName.addAll(label);
+            }
+            String tagName = org.apache.commons.lang3.StringUtils.join(tagsName, " ");
+            plotTop50Do.setTagsName(tagName.trim());
+
+
             //plotTop50Do.setDistrictHotSort(Integer.valueOf(hit.getSourceAsMap().get("districtHotSort")==null?"0":hit.getSourceAsMap().get("districtHotSort").toString()));
 
 //            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId(), CityUtils.getCity());
