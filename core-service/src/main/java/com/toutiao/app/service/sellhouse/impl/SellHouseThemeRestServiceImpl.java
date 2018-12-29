@@ -3,8 +3,11 @@ package com.toutiao.app.service.sellhouse.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.sellhouse.SellHouseThemeEsDao;
+import com.toutiao.app.domain.plot.PlotMarketDo;
+import com.toutiao.app.domain.plot.PlotMarketDomain;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
+import com.toutiao.app.service.plot.PlotsMarketService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.sellhouse.SellHouseThemeRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
@@ -20,6 +23,7 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +50,8 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
     @Autowired
     private SellHouseService sellHouseService;
+    @Autowired
+    private PlotsMarketService plotsMarketService;
 
 
 
@@ -195,6 +201,13 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                         hotSellHouseThemeDo.setDistrictHotSort(Integer.valueOf(tagsHits.getSourceAsMap().get("districtHotSort")==null?"0":tagsHits.getSourceAsMap().get("districtHotSort").toString()));
 
                     }
+                }
+                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(hotSellHouseThemeDo.getNewcode());
+                if (null != plotMarketDo) {
+                    PlotMarketDomain plotMarketDomain = new PlotMarketDomain();
+                    BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                    plotMarketDomain.setDistrictName(hotSellHouseThemeDo.getArea());
+                    hotSellHouseThemeDo.setPlotMarketDomain(plotMarketDomain);
                 }
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = hotSellHouseThemeDo.getImportTime();
