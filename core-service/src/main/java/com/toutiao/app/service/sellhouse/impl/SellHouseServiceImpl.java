@@ -1096,11 +1096,11 @@ public class SellHouseServiceImpl implements SellHouseService {
                 List<HouseColorLable> houseColorLableList = new ArrayList<>();
 
                 if (isMustRob == 1) {
-                    houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", "http://www.baidu.com"));
+                    houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", "http://www.baidu.com"));
                 }
 
                 if (isLowPrice == 1) {
-                    houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", "http://www.baidu.com"));
+                    houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", "http://www.baidu.com"));
                 }
 
                 if (isCutPrice == 1) {
@@ -2395,12 +2395,12 @@ public class SellHouseServiceImpl implements SellHouseService {
 
             int isMustRob = sellHouseDo.getIsMustRob();
             if (isMustRob == 1) {
-                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", "http://www.baidu.com"));
+                houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", "http://www.baidu.com"));
             }
 
             int isLowPrice = sellHouseDo.getIsLowPrice();
             if (isLowPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", "http://www.baidu.com"));
+                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", "http://www.baidu.com"));
             }
 
             int isCutPrice = sellHouseDo.getIsCutPrice();
