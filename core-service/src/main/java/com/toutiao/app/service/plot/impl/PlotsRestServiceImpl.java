@@ -683,18 +683,18 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             CommunityReviewDo communityReviewDo = plotsRestService.getReviewById(plotTop50Do.getId(), city);
             plotTop50Do.setRecommendReason(communityReviewDo);
 
-            PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotTop50Do.getId());
-            if (null != plotMarketDo) {
-                PlotMarketDomain plotMarketDomain = new PlotMarketDomain();
-                org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
-                plotMarketDomain.setDistrictName(plotTop50Do.getArea());
-                plotTop50Do.setPlotMarketDomain(plotMarketDomain);
-            }
 
             plotTop50Do.setRecommendBuildTagsName((List<String>) hit.getSourceAsMap().get("recommendBuildTagsName"));
             plotTop50Do.setLabel((List<String>) hit.getSourceAsMap().get("label"));
 
             List<String> tagsName = new ArrayList<>();
+
+            PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotTop50Do.getId());
+
+            if (null != plotMarketDo) {
+                tagsName.add(plotTop50Do.getArea()+"热度榜第"+plotMarketDo.getTotalSort()+"名");
+            }
+
             List<String> recommendTags = (List<String>) hit.getSourceAsMap().get("recommendBuildTagsName");
             List<String> label = (List<String>) hit.getSourceAsMap().get("label");
 //                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotSort");
@@ -706,6 +706,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
             String tagName = org.apache.commons.lang3.StringUtils.join(tagsName, " ");
             plotTop50Do.setTagsName(tagName.trim());
+
 
 
             //plotTop50Do.setDistrictHotSort(Integer.valueOf(hit.getSourceAsMap().get("districtHotSort")==null?"0":hit.getSourceAsMap().get("districtHotSort").toString()));
