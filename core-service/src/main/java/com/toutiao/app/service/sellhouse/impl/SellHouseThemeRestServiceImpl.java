@@ -327,11 +327,11 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         double beginPrice = sellHouseThemeDoQuery.getBeginPrice();
         double endPrice = sellHouseThemeDoQuery.getEndPrice();
         if (beginPrice != 0 && endPrice != 0) {
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(beginPrice).lte(endPrice));
         } else if (beginPrice == 0 && endPrice != 0) {
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(endPrice));
         } else if (beginPrice != 0 && endPrice == 0) {
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice));
+            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(beginPrice));
         }
         //户型(室)
         if (StringTool.isNotEmpty(sellHouseThemeDoQuery.getLayoutId()) && sellHouseThemeDoQuery.getLayoutId().length!=0) {

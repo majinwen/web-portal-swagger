@@ -68,12 +68,12 @@ public class FilterSellHouseChooseServiceImpl implements FilterSellHouseChooseSe
             }
         }
         //商圈名称
-        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", nearBySellHouseQueryDo.getAreaId()));
-        }
+//        if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId())) {
+//            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessName", nearBySellHouseQueryDo.getAreaId()));
+//        }
         //商圈id
         if (StringTool.isNotEmpty(nearBySellHouseQueryDo.getAreaId())) {
-            booleanQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", nearBySellHouseQueryDo.getAreaId()));
+            booleanQueryBuilder.must(QueryBuilders.termsQuery("houseBusinessNameId", nearBySellHouseQueryDo.getAreaId()));
 
         }
 

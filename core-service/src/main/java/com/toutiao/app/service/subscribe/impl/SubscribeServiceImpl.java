@@ -232,6 +232,7 @@ public class SubscribeServiceImpl implements SubscribeService {
 //            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType(), city).getTotalCount();
             SellHouseThemeDoQuery sellHouseThemeDoQuery = new SellHouseThemeDoQuery();
             BeanUtils.copyProperties(mustBuyShellHouseDoQuery,sellHouseThemeDoQuery);
+            sellHouseThemeDoQuery.setAreaIds(mustBuyShellHouseDoQuery.getAreaId());
             if(userSubscribeDetailDo.getTopicType()==1){
                 count = sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
             }else if(userSubscribeDetailDo.getTopicType()==2){
