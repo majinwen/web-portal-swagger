@@ -40,11 +40,11 @@ public class HotSellHouseThemeDo {
     @ApiModelProperty(value = "上架时间", name = "importTime")
     private String importTime;
 
-    @ApiModelProperty(value = "小区推荐标签", name = "recommendBuildTagsName")
-    private List<String> recommendBuildTagsName;
-
-    @ApiModelProperty(value = "小区自带标签", name = "label")
-    private List<String> label;
+//    @ApiModelProperty(value = "小区推荐标签", name = "recommendBuildTagsName")
+//    private List<String> recommendBuildTagsName;
+//
+//    @ApiModelProperty(value = "小区自带标签", name = "label")
+//    private List<String> label;
 
     @ApiModelProperty(value = "小区所在区域热度排名", name = "districtHotSort")
     private Integer districtHotSort;
@@ -70,5 +70,7 @@ public class HotSellHouseThemeDo {
     @ApiModelProperty(value = "小区行情", name = "plotMarketDomain")
     private PlotMarketDomain plotMarketDomain;
 
+    @ApiModelProperty(value = "标签", name = "tagsName")
+    private String tagsName;
 
 }
