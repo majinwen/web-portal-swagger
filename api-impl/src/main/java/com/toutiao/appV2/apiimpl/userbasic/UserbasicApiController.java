@@ -18,6 +18,7 @@ import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -142,10 +143,11 @@ public class UserbasicApiController implements UserbasicApi {
     @Override
     public ResponseEntity<UserBasicResponse> updateUserAvatar(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId) {
 
-        String userString = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        UserLoginResponse user = JSONObject.parseObject(userString, UserLoginResponse.class);
-        if (null != user) {
-            UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(user.getUserId(),
+//        String userString = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+//        UserLoginResponse user = JSONObject.parseObject(userString, UserLoginResponse.class);
+        UserBasic current = UserBasic.getCurrent();
+        if (null != current) {
+            UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(current.getUserId(),
                     file, request, response);
             UserBasicResponse userBasicResponse = new UserBasicResponse();
             BeanUtils.copyProperties(userBasicDo, userBasicResponse);
