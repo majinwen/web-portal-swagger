@@ -683,13 +683,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 try {
                     //获取新房下户型的数量
                     NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(), city);
-                    if (null != newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0) {
+                    List<NewHouseLayoutCountDo> houseLayoutCountDoList = newHouseLayoutCountDomain.getRooms();
+                    if (null != houseLayoutCountDoList && houseLayoutCountDoList.size() > 0) {
                         List<String> roomsType = new ArrayList<>();
-                        for (int i = 0; i < newHouseLayoutCountDomain.getRooms().size(); i++) {
-                            roomsType.add(newHouseLayoutCountDomain.getRooms().get(i).getRoom().toString());
+                        for (NewHouseLayoutCountDo layoutCountDo : houseLayoutCountDoList) {
+                            roomsType.add(layoutCountDo.getRoom().toString());
                         }
-                        String rooms = String.join(",", roomsType);
-                        newHouseListDos.setRoomType(rooms);
+                        Collections.sort(roomsType);
+                        newHouseListDos.setRoomType(String.join("," , roomsType));
                     } else {
                         newHouseListDos.setRoomType("");
                     }
