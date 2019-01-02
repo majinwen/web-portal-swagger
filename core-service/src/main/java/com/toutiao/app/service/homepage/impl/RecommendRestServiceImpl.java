@@ -194,8 +194,8 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             if (StringTool.isEmpty(recommendTopicDoQuery.getDistrictId())) {
                 recommendTopicDo.setDistrictId("");
             }
-            recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-            recommendTopicDo.setHighestPrice(highestPrice.getValue());
+            recommendTopicDo.setLowestPrice(recommendTopicDoQuery.getBeginPrice());
+            recommendTopicDo.setHighestPrice(recommendTopicDoQuery.getEndPrice());
             recommendTopicDo.setCount((int) parsedCardinality.getValue());
 
 //                recommendTopicDo.setTopicType(flag);

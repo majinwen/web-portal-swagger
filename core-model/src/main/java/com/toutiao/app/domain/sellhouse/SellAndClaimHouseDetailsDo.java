@@ -455,4 +455,8 @@ public class SellAndClaimHouseDetailsDo {
 
     private String plotNameAccurate;
 
+    private String nearbyDistance;
+
+    private List<HouseLable> houseLableList;
+
 }
