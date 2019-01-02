@@ -578,7 +578,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
             booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
             booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(0.0)));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)));
             booleanQueryBuilder.must(existsQuery("saletelphone"));
             booleanQueryBuilder.mustNot(termQuery("saletelphone", ""));
 
@@ -655,7 +655,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 boolQueryBuilderT2.must(termQuery("is_approve", IS_APPROVE));
                 boolQueryBuilderT2.must(termQuery("is_del", IS_DEL));
                 boolQueryBuilderT2.must(termsQuery("property_type_id", new int[]{1, 2}));
-                boolQueryBuilderT2.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(0.0)));
+                boolQueryBuilderT2.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)));
                 boolQueryBuilderT2.must(existsQuery("saletelphone"));
                 boolQueryBuilderT2.mustNot(termQuery("saletelphone", ""));
 
