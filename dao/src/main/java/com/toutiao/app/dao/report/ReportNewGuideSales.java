@@ -57,9 +57,9 @@ public class ReportNewGuideSales {
     private Integer cityId;
 
     /**
-     * 价格
+     * 均价
      */
-    @ApiModelProperty(value = "价格")
+    @ApiModelProperty(value = "均价")
     private Double averagePrice;
 
     /**
@@ -73,4 +73,10 @@ public class ReportNewGuideSales {
      */
     @ApiModelProperty(value = "图片地址")
     private String imgPath;
+
+    /**
+     * 总价
+     */
+    @ApiModelProperty(value = "总价")
+    private Double totalPrice;
 }

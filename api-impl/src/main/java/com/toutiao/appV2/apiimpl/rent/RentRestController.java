@@ -150,8 +150,15 @@ public class RentRestController implements RentRestApi {
                 rentDetailFewResponseList.setIsGuess(0);
             } else {
                 //没有根据结果查询到数据,返回猜你喜欢的数据
-                rentHouseDoQuery = new RentHouseDoQuery();
-                rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+                String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+
+                Integer userId = null;
+                if (null != user) {
+                    UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+                    userId = Integer.valueOf(userLoginResponse.getUserId());
+                }
+                RentGuessYourLikeQuery rentGuessYourLikeQuery = new RentGuessYourLikeQuery();
+                rentDetailsListDo =  appRentRestService.rentGuessYouLike(rentGuessYourLikeQuery,CityUtils.getCity(),userId);
                 rentDetailFewResponseList.setIsGuess(1);
             }
             BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);

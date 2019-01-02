@@ -80,4 +80,10 @@ public class ReportNewGuideSalesResponse {
         }
         this.averagePrice = Double.parseDouble(doubleStr);
     }
+
+    /**
+     * 总价
+     */
+    @ApiModelProperty(value = "总价")
+    private Double totalPrice;
 }

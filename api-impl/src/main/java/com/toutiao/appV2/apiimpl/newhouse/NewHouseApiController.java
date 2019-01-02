@@ -159,8 +159,15 @@ public class NewHouseApiController implements NewHouseApi {
             newHouseListDomainResponse.setIsGuess(0);
         } else {
             //没有根据结果查询到数据,返回猜你喜欢的数据
-            newHouseDoQuery = new NewHouseDoQuery();
-            newHouseListVo = newHouseService.getNewHouseList(newHouseDoQuery, CityUtils.getCity());
+            String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+            Integer userId = null;
+            if (null != user) {
+                UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+                userId = Integer.valueOf(userLoginResponse.getUserId());
+            }
+            NewHouseGuessLikeRequest guessLikeRequest = new NewHouseGuessLikeRequest();
+            BeanUtils.copyProperties(guessLikeRequest, newHouseDoQuery);
+            newHouseListVo = newHouseService.queryGuessLikeNewHouseList(newHouseDoQuery, userId, CityUtils.getCity());
             newHouseListDomainResponse.setIsGuess(1);
         }
         BeanUtils.copyProperties(newHouseListVo, newHouseListDomainResponse);

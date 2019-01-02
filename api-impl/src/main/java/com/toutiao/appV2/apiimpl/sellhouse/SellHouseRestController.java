@@ -243,8 +243,17 @@ public class SellHouseRestController implements SellHouseRestApi {
                 sellHouseSearchDomainResponse.setIsGuess(0);
             } else {
                 //没有根据结果查询到数据,返回猜你喜欢的数据-
-                sellHouseDoQuery = new SellHouseDoQuery();
-                sellHouseSearchDomain = sellHouseService.getSellHouseList(sellHouseDoQuery, CityUtils.getCity());
+                String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+                Integer userId = null;
+                if (null != user) {
+                    UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+                    userId = Integer.valueOf(userLoginResponse.getUserId());
+                }
+                SellHouseGuessLikeRequest sellHouseGuessLikeRequest = new SellHouseGuessLikeRequest();
+                sellHouseGuessLikeRequest.setAreaId(new Integer[1]);
+                sellHouseGuessLikeRequest.setLayoutId(new Integer[1]);
+                BeanUtils.copyProperties(sellHouseGuessLikeRequest, sellHouseDoQuery);
+                sellHouseSearchDomain = sellHouseService.queryGuessLikeSellHouseList(sellHouseDoQuery, userId,CityUtils.getCity());
                 sellHouseSearchDomainResponse.setIsGuess(1);
             }
             BeanUtils.copyProperties(sellHouseSearchDomain, sellHouseSearchDomainResponse);
