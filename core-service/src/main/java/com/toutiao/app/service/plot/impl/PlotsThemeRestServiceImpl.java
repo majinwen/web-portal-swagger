@@ -12,6 +12,7 @@ import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.app.service.rent.impl.RentRestRestServiceImpl;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -56,11 +57,20 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
     @Autowired
     private PlotsMarketService plotsMarketService;
 
+    public static final String COMMUNITY_FIRST = "首置社区";
+
+    public static final String COMMUNITY_IMPROVE = "改善社区";
+
+    public static final String COMMUNITY_LUXURY = "豪宅社区";
+
+    public static final String COMMUNITY_VILLA = "别墅社区";
+
     /**
      * 获取小区主题数据
      */
     @Override
     public PlotsThemeDomain getPlotsThemeList(PlotsThemeDoQuery plotsThemeDoQuery, String city) {
+        PlotsThemeDomain plotsThemeDomain = new PlotsThemeDomain();
         List<PlotsThemeDo> plotsThemeDos = new ArrayList<>();
         //小区筛选条件
         BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
@@ -68,6 +78,15 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 
         //主题标签
         Integer recommendBuildTagsId = plotsThemeDoQuery.getRecommendBuildTagsId();
+
+        Map<Integer, Map<String, Integer>> countByBuildTagsMap = communityRestService.getCountByBuildTags(CityUtils.returnCityId(city));
+        if (recommendBuildTagsId != null && StringTool.isNotEmpty(plotsThemeDoQuery.getDistrictIds()) && plotsThemeDoQuery.getDistrictIds().length != 0) {
+
+            Map<String, Integer> stringIntegerMap = countByBuildTagsMap.get(recommendBuildTagsId);
+            plotsThemeDomain.setCommunityCount(stringIntegerMap.get(plotsThemeDoQuery.getDistrictIds()[0].toString()));
+        }
+
+
         if (recommendBuildTagsId != null) {
             if (recommendBuildTagsId == 6 && StringTool.isNotEmpty(nearestPark)) {
                 boolQueryBuilder.must(QueryBuilders.boolQuery()
@@ -100,7 +119,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 
         SearchHits hits = plotsThemeList.getHits();
         SearchHit[] searchHists = hits.getHits();
-        PlotsThemeDomain plotsThemeDomain = new PlotsThemeDomain();
+
         if (searchHists.length > 0) {
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
@@ -114,14 +133,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                     nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                 }
 
-                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotsThemeDo.getId());
 
-                if (null != plotMarketDo) {
-                    PlotMarketDomain plotMarketDomain = new PlotMarketDomain();
-                    org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
-                    plotMarketDomain.setDistrictName(plotsThemeDo.getArea());
-                    plotsThemeDo.setPlotMarketDomain(plotMarketDomain);
-                }
 
                 plotsThemeDo.setTrafficInformation(nearbyDistance);
 
@@ -156,6 +168,31 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 }
 
                 List<String> tagsName = new ArrayList<>();
+               // plotsThemeDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
+                Map<Integer, Map<String, Integer>> countByBuildTags = communityRestService.getCountByBuildTags(CityUtils.returnCityId(city));
+                if(StringTool.isNotEmpty(recommendBuildTagsId) && recommendBuildTagsId!=6){
+                    String communityType = "";
+                    if(recommendBuildTagsId==2){
+                        communityType = COMMUNITY_FIRST;
+                    }else if(recommendBuildTagsId==3){
+                        communityType = COMMUNITY_IMPROVE;
+                    }else if(recommendBuildTagsId==4){
+                        communityType = COMMUNITY_LUXURY;
+                    }else if(recommendBuildTagsId==5){
+                        communityType = COMMUNITY_VILLA;
+                    }
+                    Map<String, Integer> stringIntegerMap = countByBuildTags.get(recommendBuildTagsId);
+                    tagsName.add(plotsThemeDo.getArea()+stringIntegerMap.get(plotsThemeDo.getAreaId())+"大"+communityType);
+                }
+
+                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotsThemeDo.getId());
+
+                if (null != plotMarketDo) {
+                    tagsName.add(plotsThemeDo.getArea()+"热度榜第"+plotMarketDo.getTotalSort()+"名");
+                }
+
+
+
                 List<String> recommendTags = (List<String>) searchHit.getSourceAsMap().get("recommendBuildTagsName");
                 List<String> label = (List<String>) searchHit.getSourceAsMap().get("label");
 //                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotSort");
@@ -172,12 +209,13 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 plotsThemeDo.setTagsName(tagName.trim());
                 if (plotsThemeDo.getPhoto().length > 0) {
                     String titlePhoto = plotsThemeDo.getPhoto()[0];
-                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                    if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                         titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     plotsThemeDo.setTitlePhoto(titlePhoto);
                 }
-                plotsThemeDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
+
+
                 plotsThemeDos.add(plotsThemeDo);
             }
         }

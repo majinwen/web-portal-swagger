@@ -280,7 +280,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 if (plotDetailsDo.getPhoto().length > 0) {
                     String titlePhoto = plotDetailsDo.getPhoto()[0];
-                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                    if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                         titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     plotDetailsDo.setTitlePhoto(titlePhoto);
@@ -950,7 +950,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                     sellHousesSearchDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
                 String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
-                if (null!=titlePhoto&&!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
@@ -1278,11 +1278,11 @@ public class SellHouseServiceImpl implements SellHouseService {
             booleanQueryBuilder.mustNot(termQuery("houseId", sellHouseDoQuery.getHouseId()));
         }
 
-        if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getTotalPrice())) {
-            double beginPrice = sellHouseDoQuery.getTotalPrice() - (sellHouseDoQuery.getTotalPrice() * 0.1);
-            double endPrice = sellHouseDoQuery.getTotalPrice() + (sellHouseDoQuery.getTotalPrice() * 0.1);
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
-        }
+//        if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getTotalPrice())) {
+//            double beginPrice = sellHouseDoQuery.getTotalPrice() - (sellHouseDoQuery.getTotalPrice() * 0.1);
+//            double endPrice = sellHouseDoQuery.getTotalPrice() + (sellHouseDoQuery.getTotalPrice() * 0.1);
+//            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+//        }
 
         GeoDistanceSortBuilder geoDistanceSort = null;
         if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getLat()) && StringTool.isDoubleNotEmpty(sellHouseDoQuery.getLon())) {
@@ -1331,7 +1331,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                     sellHousesSearchDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
                 String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
-                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                if (StringTool.isNotEmpty(titlePhoto)&& !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
@@ -2130,7 +2130,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                     sellHousesSearchDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
                 String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
-                if (null != titlePhoto && !Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);

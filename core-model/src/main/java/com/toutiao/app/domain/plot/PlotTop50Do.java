@@ -97,4 +97,8 @@ public class PlotTop50Do {
      * 小区行情
      */
     private PlotMarketDomain plotMarketDomain;
+    /**
+     * 标签名称
+     */
+    private String tagsName;
 }

@@ -189,20 +189,37 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
             for (SearchHit searchHit : searchHists) {
                 String details = searchHit.getSourceAsString();
                 HotSellHouseThemeDo hotSellHouseThemeDo = JSON.parseObject(details, HotSellHouseThemeDo.class);
+                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(hotSellHouseThemeDo.getNewcode());
                 if(StringTool.isNotEmpty(hotSellHouseThemeDo.getNewcode())){
                     BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                     boolQueryBuilder.must(QueryBuilders.termQuery("id",hotSellHouseThemeDo.getNewcode().toString()));
                     SearchResponse communityRes = plotEsDao.queryTagsById(boolQueryBuilder, CityUtils.getCity());
                     SearchHits communityHit = communityRes.getHits();
                     SearchHit[] communityHits = communityHit.getHits();
+                    List<String> tagsName = new ArrayList<>();
                     for (SearchHit  tagsHits: communityHits){
-                        hotSellHouseThemeDo.setRecommendBuildTagsName((List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName"));
-                        hotSellHouseThemeDo.setLabel((List<String>) tagsHits.getSourceAsMap().get("label"));
-                        hotSellHouseThemeDo.setDistrictHotSort(Integer.valueOf(tagsHits.getSourceAsMap().get("districtHotSort")==null?"0":tagsHits.getSourceAsMap().get("districtHotSort").toString()));
+//                        hotSellHouseThemeDo.setRecommendBuildTagsName((List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName"));
+//                        hotSellHouseThemeDo.setLabel((List<String>) tagsHits.getSourceAsMap().get("label"));
+//                        hotSellHouseThemeDo.setDistrictHotSort(Integer.valueOf(tagsHits.getSourceAsMap().get("districtHotSort")==null?"0":tagsHits.getSourceAsMap().get("districtHotSort").toString()));
 
+//                        PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(hotSellHouseThemeDo.getNewcode());
+
+                        if (null != plotMarketDo) {
+                            tagsName.add(hotSellHouseThemeDo.getArea()+"热度榜第"+plotMarketDo.getTotalSort()+"名");
+                        }
+                        List<String> recommendTags = (List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName");
+                        List<String> label = (List<String>) tagsHits.getSourceAsMap().get("label");
+                        if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
+                            tagsName.addAll(recommendTags);
+                        }
+                        if(StringTool.isNotEmpty(label) && label.size() > 0){
+                            tagsName.addAll(label);
+                        }
+                        String tagName = StringUtils.join(tagsName, " ");
+                        hotSellHouseThemeDo.setTagsName(tagName);
                     }
                 }
-                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(hotSellHouseThemeDo.getNewcode());
+//                PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(hotSellHouseThemeDo.getNewcode());
                 if (null != plotMarketDo) {
                     PlotMarketDomain plotMarketDomain = new PlotMarketDomain();
                     BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);

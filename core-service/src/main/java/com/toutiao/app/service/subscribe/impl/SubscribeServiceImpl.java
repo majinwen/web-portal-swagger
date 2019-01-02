@@ -18,6 +18,7 @@ import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.mapper.subscribe.CityDao;
 import com.toutiao.web.dao.mapper.subscribe.UserSubscribeMapper;
+import org.apache.commons.beanutils.ConvertUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -28,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -132,8 +134,11 @@ public class SubscribeServiceImpl implements SubscribeService {
             //填充新增数量
             if (userSubscribeListDo.getSubscribeType() == 0) {
                 userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo, city));
-                if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
-                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));
+                if (StringTool.isEmpty(userSubscribeDetailDo.getDistrictName()) && StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
+                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName((Integer[]) ConvertUtils.convert(userSubscribeDetailDo.getDistrictId().split(","), Integer.class)));
+                }
+                if (StringTool.isEmpty(userSubscribeDetailDo.getAreaName()) && StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+                    userSubscribeDetailDo.setAreaName(cityDao.selectAreaNameArray((Integer[]) ConvertUtils.convert(userSubscribeDetailDo.getAreaId().split(","), Integer.class)));
                 }
                 // 1：降价房 2：价格洼地 3：逢出必抢
                 Integer topicType = userSubscribeDetailDo.getTopicType();
@@ -147,7 +152,7 @@ public class SubscribeServiceImpl implements SubscribeService {
                 }
             } else {
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
-                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));
+                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName((Integer[]) ConvertUtils.convert(userSubscribeDetailDo.getDistrictId().split(","), Integer.class)));
                 }
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
                     userSubscribeDetailDo.setAreaName(cityDao.selectAreaName(Integer.valueOf(userSubscribeDetailDo.getAreaId())));

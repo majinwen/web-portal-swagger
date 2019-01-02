@@ -87,6 +87,10 @@ public class PlotTop50Response   {
   @ApiModelProperty("小区行情")
   private PlotMarketDomain plotMarketDomain;
 
+  @JsonProperty("tagsName")
+  @ApiModelProperty("标签")
+  private String tagsName;
+
 
 
 }

@@ -144,7 +144,7 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
 
                 //设置标题图
                 String titlePhoto = userFavoriteRentDetailDo.getHouseTitleImg();
-                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 userFavoriteRentDetailDo.setHouseTitleImg(titlePhoto);

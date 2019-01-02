@@ -586,7 +586,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //小区标题图处理
         if (plotDetailsFewDo.getPhoto().length > 0) {
             String titlePhoto = plotDetailsFewDo.getPhoto()[0];
-            if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+            if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                 titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
             }
             plotDetailsFewDo.setTitlePhoto(titlePhoto);
@@ -673,7 +673,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             plotTop50Do.setTrafficInformation(nearbyDistance);
             if (plotTop50Do.getPhoto().length > 0) {
                 String titlePhoto = plotTop50Do.getPhoto()[0];
-                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 plotTop50Do.setTitlePhoto(titlePhoto);
@@ -683,16 +683,32 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             CommunityReviewDo communityReviewDo = plotsRestService.getReviewById(plotTop50Do.getId(), city);
             plotTop50Do.setRecommendReason(communityReviewDo);
 
-            PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotTop50Do.getId());
-            if (null != plotMarketDo) {
-                PlotMarketDomain plotMarketDomain = new PlotMarketDomain();
-                org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
-                plotMarketDomain.setDistrictName(plotTop50Do.getArea());
-                plotTop50Do.setPlotMarketDomain(plotMarketDomain);
-            }
 
             plotTop50Do.setRecommendBuildTagsName((List<String>) hit.getSourceAsMap().get("recommendBuildTagsName"));
             plotTop50Do.setLabel((List<String>) hit.getSourceAsMap().get("label"));
+
+            List<String> tagsName = new ArrayList<>();
+
+            PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotTop50Do.getId());
+
+            if (null != plotMarketDo) {
+                tagsName.add(plotTop50Do.getArea()+"热度榜第"+plotMarketDo.getTotalSort()+"名");
+            }
+
+            List<String> recommendTags = (List<String>) hit.getSourceAsMap().get("recommendBuildTagsName");
+            List<String> label = (List<String>) hit.getSourceAsMap().get("label");
+//                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotSort");
+            if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
+                tagsName.addAll(recommendTags);
+            }
+            if(StringTool.isNotEmpty(label) && label.size() > 0){
+                tagsName.addAll(label);
+            }
+            String tagName = org.apache.commons.lang3.StringUtils.join(tagsName, " ");
+            plotTop50Do.setTagsName(tagName.trim());
+
+
+
             //plotTop50Do.setDistrictHotSort(Integer.valueOf(hit.getSourceAsMap().get("districtHotSort")==null?"0":hit.getSourceAsMap().get("districtHotSort").toString()));
 
 //            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId(), CityUtils.getCity());
@@ -754,7 +770,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 if (plotDetailsDo.getPhoto().length > 0) {
                     String titlePhoto = plotDetailsDo.getPhoto()[0];
-                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                    if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                         titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     plotDetailsDo.setTitlePhoto(titlePhoto);

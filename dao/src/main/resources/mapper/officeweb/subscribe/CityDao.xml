@@ -276,19 +276,61 @@
     </select>
 
     <select id="selectAreaNameArray" resultType="java.lang.String" parameterType="java.util.ArrayList">
-        SELECT array_to_string(ARRAY(SELECT unnest(array_agg(area_name))),',') as area_name FROM "area"
-        where area_id in
-        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
-            ${item}
+        SELECT
+        string_agg ( TEMP.area_name, ',' ) AS area_name
+        FROM
+        (
+        SELECT
+        area_name,
+        ROW_NUMBER () OVER ( PARTITION BY area_id ) rowNum
+        FROM
+        area
+        WHERE
+        area_id IN (
+        <foreach collection="areaId" item="item" separator=",">
+            #{item}
         </foreach>
+        )
+        GROUP BY
+        area_id,
+        area_name
+        ORDER BY
+        POSITION ( area_id :: TEXT IN
+        <foreach collection="areaId" item="item" separator="," open="'" close="'">
+           ${item}
+        </foreach>  )
+        ) AS TEMP
+        WHERE
+        TEMP.rowNum = 1
     </select>
 
     <select id="selectDistrictName" resultType="java.lang.String" parameterType="java.util.ArrayList">
-        SELECT array_to_string(ARRAY(SELECT unnest(array_agg(district_name))),',') as district_name FROM "district"
-        where district_id in
-        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
-            ${item}
+        SELECT
+        string_agg ( TEMP.district_name, ',' ) AS district_name
+        FROM
+        (
+        SELECT
+        district_name,
+        ROW_NUMBER () OVER ( PARTITION BY district_id ) rowNum
+        FROM
+        district
+        WHERE
+        district_id IN (
+        <foreach collection="districtId" item="item" separator=",">
+            #{item}
         </foreach>
+        )
+        GROUP BY
+        district_id,
+        district_name
+        ORDER BY
+        POSITION ( district_id :: TEXT IN
+        <foreach collection="districtId" item="item" separator="," open="'" close="'">
+            ${item}
+        </foreach>  )
+        ) AS TEMP
+        WHERE
+        TEMP.rowNum = 1
     </select>
 
     <!--List<District> selectDistrictListByCityId(String cityId);-->

@@ -639,7 +639,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
 
                     if (StringTool.isNotEmpty(plotDetailsDo.getPhoto()) && plotDetailsDo.getPhoto().length > 0) {
                         String titlePhoto = plotDetailsDo.getPhoto()[0];
-                        if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                        if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                             titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                         }
                         esfMapCommunityDo.setBuildingImages(titlePhoto);

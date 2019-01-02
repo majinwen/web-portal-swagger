@@ -79,4 +79,9 @@ public class ReportNewGuideAttentionResponse {
     @ApiModelProperty(value = "图片地址")
     private String imgPath;
 
+    /**
+     * 总价
+     */
+    @ApiModelProperty(value = "总价")
+    private Double totalPrice;
 }
