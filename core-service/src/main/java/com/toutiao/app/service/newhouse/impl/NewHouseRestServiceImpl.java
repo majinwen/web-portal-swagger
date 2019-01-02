@@ -616,8 +616,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
             booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
             if (null != newHouseDoQuery.getDistrictName() && !"".equals(newHouseDoQuery.getDistrictName())) {
-                booleanQueryBuilder.must(
-                        QueryBuilders.disMaxQuery().add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getDistrictName()).analyzer("ik_smart")).tieBreaker(0.3f));
+                booleanQueryBuilder.must(QueryBuilders.termQuery("district_name", newHouseDoQuery.getDistrictName()));
             } else if (null != newHouseDoQuery.getDistrictId() && newHouseDoQuery.getDistrictId() > 0) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("district_id", newHouseDoQuery.getDistrictId()));
             }
