@@ -581,6 +581,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)));
             booleanQueryBuilder.must(existsQuery("saletelphone"));
             booleanQueryBuilder.mustNot(termQuery("saletelphone", ""));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("room").gte(1), ScoreMode.None));
 
             SearchResponse searchResponse = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize());
 
@@ -658,6 +659,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 boolQueryBuilderT2.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)));
                 boolQueryBuilderT2.must(existsQuery("saletelphone"));
                 boolQueryBuilderT2.mustNot(termQuery("saletelphone", ""));
+                boolQueryBuilderT2.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("room").gte(1), ScoreMode.None));
 
                 SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(boolQueryBuilderT2, city, pageNum_T2, pageSize_T2);
 
