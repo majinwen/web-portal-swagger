@@ -586,7 +586,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //小区标题图处理
         if (plotDetailsFewDo.getPhoto().length > 0) {
             String titlePhoto = plotDetailsFewDo.getPhoto()[0];
-            if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+            if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                 titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
             }
             plotDetailsFewDo.setTitlePhoto(titlePhoto);
@@ -673,7 +673,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             plotTop50Do.setTrafficInformation(nearbyDistance);
             if (plotTop50Do.getPhoto().length > 0) {
                 String titlePhoto = plotTop50Do.getPhoto()[0];
-                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 plotTop50Do.setTitlePhoto(titlePhoto);
@@ -770,7 +770,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 if (plotDetailsDo.getPhoto().length > 0) {
                     String titlePhoto = plotDetailsDo.getPhoto()[0];
-                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                    if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                         titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     plotDetailsDo.setTitlePhoto(titlePhoto);

@@ -12,6 +12,7 @@ import com.toutiao.app.service.plot.PlotsThemeRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.app.service.rent.impl.RentRestRestServiceImpl;
 import com.toutiao.web.common.util.StringTool;
+import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -208,7 +209,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 plotsThemeDo.setTagsName(tagName.trim());
                 if (plotsThemeDo.getPhoto().length > 0) {
                     String titlePhoto = plotsThemeDo.getPhoto()[0];
-                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                    if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                         titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     plotsThemeDo.setTitlePhoto(titlePhoto);
