@@ -587,7 +587,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         if (plotDetailsFewDo.getPhoto().length > 0) {
             String titlePhoto = plotDetailsFewDo.getPhoto()[0];
             if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-ttc400x300";
             }
             plotDetailsFewDo.setTitlePhoto(titlePhoto);
         }
@@ -674,7 +674,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             if (plotTop50Do.getPhoto().length > 0) {
                 String titlePhoto = plotTop50Do.getPhoto()[0];
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-ttc400x300";
                 }
                 plotTop50Do.setTitlePhoto(titlePhoto);
             }
@@ -771,7 +771,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 if (plotDetailsDo.getPhoto().length > 0) {
                     String titlePhoto = plotDetailsDo.getPhoto()[0];
                     if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-ttc400x300";
                     }
                     plotDetailsDo.setTitlePhoto(titlePhoto);
                 }
