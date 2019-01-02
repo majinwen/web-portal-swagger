@@ -1278,11 +1278,11 @@ public class SellHouseServiceImpl implements SellHouseService {
             booleanQueryBuilder.mustNot(termQuery("houseId", sellHouseDoQuery.getHouseId()));
         }
 
-        if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getTotalPrice())) {
-            double beginPrice = sellHouseDoQuery.getTotalPrice() - (sellHouseDoQuery.getTotalPrice() * 0.1);
-            double endPrice = sellHouseDoQuery.getTotalPrice() + (sellHouseDoQuery.getTotalPrice() * 0.1);
-            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
-        }
+//        if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getTotalPrice())) {
+//            double beginPrice = sellHouseDoQuery.getTotalPrice() - (sellHouseDoQuery.getTotalPrice() * 0.1);
+//            double endPrice = sellHouseDoQuery.getTotalPrice() + (sellHouseDoQuery.getTotalPrice() * 0.1);
+//            booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gte(beginPrice).lte(endPrice));
+//        }
 
         GeoDistanceSortBuilder geoDistanceSort = null;
         if (StringTool.isDoubleNotEmpty(sellHouseDoQuery.getLat()) && StringTool.isDoubleNotEmpty(sellHouseDoQuery.getLon())) {
