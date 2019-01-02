@@ -68,7 +68,7 @@ public class SellHouseEsDaoImpl implements SellHouseEsDao {
         booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(booleanQueryBuilder).aggregation(AggregationBuilders.terms("roomCount").field("layout").order(BucketOrder.count(true)));
+        searchSourceBuilder.query(booleanQueryBuilder).aggregation(AggregationBuilders.terms("roomCount").field("layout").order(BucketOrder.key(true)));
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
         try {
