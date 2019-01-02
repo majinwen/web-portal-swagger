@@ -686,6 +686,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     if (null != houseLayoutCountDoList && houseLayoutCountDoList.size() > 0) {
                         List<String> roomsType = new ArrayList<>();
                         for (NewHouseLayoutCountDo layoutCountDo : houseLayoutCountDoList) {
+                            if ("0".equals(layoutCountDo.getRoom().toString())) {
+                                continue;
+                            }
                             roomsType.add(layoutCountDo.getRoom().toString());
                         }
                         Collections.sort(roomsType);

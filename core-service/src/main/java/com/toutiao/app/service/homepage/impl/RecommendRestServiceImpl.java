@@ -221,7 +221,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             try {
                 UserBasic current = UserBasic.getCurrent();
                 UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
-                userConditionSubscribeDetailDo.setDistrictId(recommendTopicDo.getDistrictId());
+                userConditionSubscribeDetailDo.setDistrictId(recommendTopicDo.getDistrictId().replace(" ",","));
                 userConditionSubscribeDetailDo.setBeginPrice(recommendTopicDo.getLowestPrice().intValue());
                 userConditionSubscribeDetailDo.setEndPrice(recommendTopicDo.getHighestPrice().intValue());
                 if (Objects.equals(flag, "isLowPrice")) {
