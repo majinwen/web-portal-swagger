@@ -73,4 +73,14 @@ public interface PlotsRestService {
      * @return
      */
     JSONArray getFoldLineInfo(String newcode, String districtId);
+
+    /**
+     * 获取小区综述
+     * @param plotId
+     * @param city
+     * @return
+     */
+    CommunityReviewDo getReviewById(Integer plotId, String city);
+
+
 }

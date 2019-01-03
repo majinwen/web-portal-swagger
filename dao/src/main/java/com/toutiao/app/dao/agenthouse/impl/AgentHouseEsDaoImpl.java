@@ -1,12 +1,15 @@
 package com.toutiao.app.dao.agenthouse.impl;
 
 import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
+import com.toutiao.web.common.constant.city.CityConstant;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,9 +43,11 @@ public class AgentHouseEsDaoImpl implements AgentHouseEsDao{
 
     @Override
     public SearchResponse getRentInfoByUserId(BoolQueryBuilder booleanQueryBuilder, String city) {
-
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getAgentIndex(city)).types(ElasticCityUtils.getAgentType(city));
+       // Integer cityId = CityUtils.returnCityId(city);
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getAgentIndex(CityConstant.ABBREVIATION_QUANGUO))
+                .types(ElasticCityUtils.getAgentType(CityConstant.ABBREVIATION_QUANGUO));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+//        booleanQueryBuilder.must(QueryBuilders.termQuery("city_id", cityId));
         searchSourceBuilder.query(booleanQueryBuilder);
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;

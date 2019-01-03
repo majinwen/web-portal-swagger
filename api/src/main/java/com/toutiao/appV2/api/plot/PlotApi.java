@@ -202,4 +202,15 @@ public interface PlotApi {
     ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "newcode") @Valid @RequestParam(value = "newcode", required = true) String newcode,
                                            @ApiParam(value = "districtId") @Valid @RequestParam(value = "districtId", required = true) String districtId);
 
+
+    @ApiOperation(value = "获取小区综述", nickname = "getReviewById", notes = "", response = CommunityReviewResponse.class, tags = {"小区",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = CommunityReviewResponse.class)})
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/plot/getReviewById",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<CommunityReviewResponse> getReviewById(@ApiParam(value = "plotId") @Valid @RequestParam(value = "plotId", required = true) Integer plotId);
+
 }
