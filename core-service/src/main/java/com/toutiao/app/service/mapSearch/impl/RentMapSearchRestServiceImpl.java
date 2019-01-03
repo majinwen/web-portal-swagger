@@ -549,12 +549,15 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                     }
 
 
-                    List<Map<String, String>> rentHouseImg = (List<Map<String, String>>) hit.getSourceAsMap().get("rent_house_img");
-                    for (int i = 0; i < rentHouseImg.size(); i++) {
-                        imgs.add(rentHouseImg.get(i).get("image_path"));
-
-                    }
-                    rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
+//                    List<Map<String, String>> rentHouseImg = (List<Map<String, String>>) hit.getSourceAsMap().get("rent_house_img");
+//                    for (int i = 0; i < rentHouseImg.size(); i++) {
+//                        imgs.add(rentHouseImg.get(i).get("image_path"));
+//
+//                    }
+//                    rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
+                    String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
+                    String[] arrImg = img.split(",");
+                    rentDetailsFewDo.setHousePhoto(arrImg);
                     AgentBaseDo agentBaseDo = new AgentBaseDo();
                     if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
                         agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
