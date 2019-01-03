@@ -843,10 +843,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             for(SearchHit searchHit : searchHists){
                 String  details = searchHit.getSourceAsString();
                 NewHouseCustomConditionDo newHouseCustomConditionDo = JSON.parseObject(details, NewHouseCustomConditionDo.class);
-                if(StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getTotalPrice())){
-                    newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getTotalPrice()+"万/套");
-                }else if (StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getAveragePrice())){
+                if(StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getAveragePrice())){
                     newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getAveragePrice()+"元/m²");
+                }else if (StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getTotalPrice())){
+                    newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getTotalPrice()+"万/套");
                 }else {
                     newHouseCustomConditionDo.setPriceDesc("售价待定");
                 }
