@@ -150,5 +150,7 @@ public class PlotDetailsResponse {
     private Integer lastMonthsDeal;
     @ApiModelProperty(value = "环比")
     private Double ringRatio;
+    @ApiModelProperty(value = "地址")
+    private String address;
 }
 

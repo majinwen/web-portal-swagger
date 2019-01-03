@@ -147,6 +147,9 @@ public class NewHouseDetailResponse {
     @ApiModelProperty(value = "开盘时间")
     private  String openedTime;
 
+    @ApiModelProperty(value = "开盘时间描述")
+    private  String openedTimeDesc;
+
     @ApiModelProperty(value = "销售状态(0-售完,1-在售,2-不在售,3-出租,4-租售,5-待售)")
     private  Integer saleStatusId;
 
