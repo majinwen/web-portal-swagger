@@ -75,8 +75,8 @@ public class SellHouseDetailsDo {
     /**
      * 小区图片
      */
-    @ChangeName("buildingImages")
-    private String plotPhoto;
+//    @ChangeName("buildingImages")
+//    private String plotPhoto;
     /**
      * 地铁站id
      */
@@ -502,6 +502,25 @@ public class SellHouseDetailsDo {
      */
     private PlotDetailsDo plotDetailsDo;
 
+    /**
+     * 初始价格
+     */
+    private Double initialPrice;
+
+    /**
+     * 降价房排名表述
+     */
+    private String houseCutLabel;
+
+    /**
+     * 捡漏房排名表述
+     */
+    private String houseLowerLabel;
+
+    /**
+     * 抢手房排名表述
+     */
+    private String houseRobLabel;
 
 
 }

@@ -47,6 +47,26 @@
      FROM user_favorite_newhouse
     WHERE user_id = #{userId} AND is_del = 0 ORDER BY create_time DESC
   </select>
+
+    <select id="selectNewHouseFavoriteByUserIdAndCityId" parameterType="com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteListDoQuery" resultType="com.toutiao.app.domain.favorite.newhouse.NewHouseFavoriteDo">
+      SELECT
+      id AS Id,
+      user_id AS userId,
+      building_id AS buildingId,
+      create_time AS createTime,
+      is_del AS  isDel,
+      average_price AS averagePrice,
+      house_min_area AS houseMinArea,
+      house_max_area AS houseMaxArea,
+      building_name AS buildingName,
+      building_title_img AS buildingTitleImg,
+      status AS  status,
+      total_price AS totalPrice,
+      city_id AS cityId,
+      district_name AS districtName
+     FROM user_favorite_newhouse
+    WHERE user_id = #{userId} AND is_del = 0 AND city_id = #{cityId} ORDER BY create_time DESC
+    </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user_favorite_newhouse
     where id = #{id,jdbcType=INTEGER}
@@ -212,6 +232,11 @@
     <select id="selectFavoriteNewHouseByUserId" resultType="Integer">
     select count(1) from  user_favorite_newhouse
     where user_id=#{userId} and is_del=0
+  </select>
+
+    <select id="selectFavoriteNewHouseByUserIdAndCityId" resultType="Integer">
+    select count(1) from  user_favorite_newhouse
+    where user_id=#{userId} and is_del=0 and city_id = #{cityId}
   </select>
 
     <update id="cancelNewHouseFavoriteByUserIdAndHouseId"

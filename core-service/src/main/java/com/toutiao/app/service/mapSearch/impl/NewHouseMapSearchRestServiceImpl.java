@@ -3,18 +3,19 @@ package com.toutiao.app.service.mapSearch.impl;
 import com.alibaba.fastjson.JSON;
 import com.toutiao.app.dao.mapsearch.NewHouseMapSearchEsDao;
 import com.toutiao.app.dao.newhouse.NewHouseEsDao;
+import com.toutiao.app.domain.favorite.NewHouseIsFavoriteDoQuery;
 import com.toutiao.app.domain.mapSearch.*;
 import com.toutiao.app.domain.newhouse.NewHouseLayoutCountDomain;
 import com.toutiao.app.domain.sellhouse.HouseLable;
+import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.mapSearch.NewHouseMapSearchRestService;
 import com.toutiao.app.service.newhouse.NewHouseLayoutService;
 import com.toutiao.web.common.constant.house.HouseLableEnum;
-import com.toutiao.web.common.constant.map.MapGroupConstant;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
-import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
-import com.toutiao.web.common.util.mapSearch.MapGroupUtil;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.lucene.search.join.ScoreMode;
 import org.elasticsearch.action.search.SearchResponse;
@@ -25,6 +26,8 @@ import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
 import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
 import org.elasticsearch.search.aggregations.bucket.terms.Terms;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,12 +46,17 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Service
 public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestService {
 
+
+    private Logger logger = LoggerFactory.getLogger(NewHouseMapSearchRestServiceImpl.class);
+
     @Autowired
     private NewHouseMapSearchEsDao newHouseMapSearchEsDao;
     @Autowired
     private NewHouseEsDao newHouseEsDao;
     @Autowired
     private NewHouseLayoutService newHouseLayoutService;
+    @Autowired
+    private FavoriteRestService favoriteRestService;
 
     @Override
     public NewHouseMapSearchDistrictDomain newHouseMapSearchByDistrict(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, String city) {
@@ -77,9 +85,11 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         for (Object bucket : buckets){
 
             NewHouseMapSearchDistrictDo newHouseMapSearchDistrictDo = new NewHouseMapSearchDistrictDo();
-            newHouseMapSearchDistrictDo.setId(((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue());
-            newHouseMapSearchDistrictDo.setCount((int) ((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
-            newHouseMapSearchDistrictDo.setDesc(newHouseMapSearchDistrictDo.getCount()+"个");
+            Integer districtId = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
+            newHouseMapSearchDistrictDo.setId(districtId);
+            Integer districtCount = queryDistiictNewHouseCount(newHouseMapSearchDoQuery,districtId, city);
+            newHouseMapSearchDistrictDo.setCount(districtCount);
+            newHouseMapSearchDistrictDo.setDesc(districtCount+"个");
             BoolQueryBuilder builder = new BoolQueryBuilder();
             builder.must(termQuery("district_id", newHouseMapSearchDistrictDo.getId()));
             SearchResponse newHouseMapByDbAvgPrice = newHouseMapSearchEsDao.getNewHouseMapByDbAvgPrice(builder, city);
@@ -210,8 +220,19 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                     newHouseMapSearchBuildDo.setRoomType("");
                 }
 
-
-
+                try {
+                    UserBasic userBasic = UserBasic.getCurrent();
+                    if (StringTool.isNotEmpty(userBasic)) {
+                        NewHouseIsFavoriteDoQuery newHouseIsFavoriteDoQuery = new NewHouseIsFavoriteDoQuery();
+                        newHouseIsFavoriteDoQuery.setUserId(Integer.valueOf(userBasic.getUserId()));
+                        newHouseIsFavoriteDoQuery.setBuildingId(newHouseMapSearchBuildDo.getBuildingNameId());
+                        Boolean isFavorite = favoriteRestService.getNewHouseIsFavorite(newHouseIsFavoriteDoQuery);
+                        newHouseMapSearchBuildDo.setIsFavorite(isFavorite);
+                    }
+                } catch (BaseException e){
+                    logger.info("用户未登录");
+                    newHouseMapSearchBuildDo.setIsFavorite(Boolean.FALSE);
+                }
 
                 data.add(newHouseMapSearchBuildDo);
             }
@@ -219,6 +240,18 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         newHouseMapSearchBuildDomain.setBuildDoList(data);
         newHouseMapSearchBuildDomain.setHit("可视范围内"+searchCount+"个楼盘，共"+totalHits+"个，拖动可查看全部");
         return newHouseMapSearchBuildDomain;
+    }
+
+    @Override
+    public Integer queryDistiictNewHouseCount(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, Integer districtId, String city) {
+        BoolQueryBuilder boolQueryBuilder = filterNewHouseChoose(newHouseMapSearchDoQuery);
+        boolQueryBuilder.must(termQuery("is_approve", 1));
+        boolQueryBuilder.must(termQuery("is_del", 0));
+        boolQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
+        boolQueryBuilder.must(termQuery("district_id",districtId));
+        SearchResponse response = newHouseMapSearchEsDao.queryDistiictNewHouseCount(boolQueryBuilder, city);
+        long totalHits = response.getHits().getTotalHits();
+        return Integer.valueOf((int) totalHits);
     }
 
 
@@ -293,7 +326,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                     builder.must(QueryBuilders.termQuery("building_tags_id", longs[i]));
                 }
             }
-            builder.must(builder);
+            boolQueryBuilder.must(builder);
         }
 
         //户型
@@ -326,4 +359,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
         return boolQueryBuilder;
 
     }
+
+
+
 }

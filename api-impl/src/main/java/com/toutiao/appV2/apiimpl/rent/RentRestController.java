@@ -19,6 +19,7 @@ import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.city.CityUtils;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -140,13 +141,24 @@ public class RentRestController implements RentRestApi {
             RentHouseDoQuery rentHouseDoQuery = new RentHouseDoQuery();
             RentDetailFewResponseList rentDetailFewResponseList = new RentDetailFewResponseList();
             BeanUtils.copyProperties(rentHouseRequest, rentHouseDoQuery);
+            // 添加默认排序
+            if (StringUtils.isEmpty(rentHouseDoQuery.getSort())) {
+                rentHouseDoQuery.setSort("0");
+            }
             RentDetailsListDo rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
             if (rentDetailsListDo.getRentDetailsList().size() > 0) {
                 rentDetailFewResponseList.setIsGuess(0);
             } else {
                 //没有根据结果查询到数据,返回猜你喜欢的数据
-                rentHouseDoQuery = new RentHouseDoQuery();
-                rentDetailsListDo = appRentRestService.getRentHouseSearchList(rentHouseDoQuery, CityUtils.getCity());
+                String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+
+                Integer userId = null;
+                if (null != user) {
+                    UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
+                    userId = Integer.valueOf(userLoginResponse.getUserId());
+                }
+                RentGuessYourLikeQuery rentGuessYourLikeQuery = new RentGuessYourLikeQuery();
+                rentDetailsListDo =  appRentRestService.rentGuessYouLike(rentGuessYourLikeQuery,CityUtils.getCity(),userId);
                 rentDetailFewResponseList.setIsGuess(1);
             }
             BeanUtils.copyProperties(rentDetailsListDo, rentDetailFewResponseList);

@@ -6,6 +6,11 @@ import java.util.List;
 
 @Data
 public class PlotsThemeDomain {
+
+    /**
+     * 社区数量
+     */
+    private Integer communityCount;
     /**
      * 小区主题List
      */

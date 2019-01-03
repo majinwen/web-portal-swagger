@@ -17,6 +17,7 @@ import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.elastic.ElasticCityUtils;
 import com.toutiao.web.dao.entity.officeweb.MapInfo;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
@@ -194,7 +195,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if (newHouseDoQuery.getBeginPrice() != 0 && newHouseDoQuery.getEndPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         } else if (newHouseDoQuery.getBeginPrice() == 0 && newHouseDoQuery.getEndPrice() != 0) {
-            newHouseDoQuery.setBeginPrice(1.0);
+            newHouseDoQuery.setBeginPrice(0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice()).lte(newHouseDoQuery.getEndPrice())));
         } else if (newHouseDoQuery.getEndPrice() == 0 && newHouseDoQuery.getBeginPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(newHouseDoQuery.getBeginPrice())));
@@ -203,14 +204,14 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         if (newHouseDoQuery.getBeginTotalPrice() != 0 && newHouseDoQuery.getEndTotalPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice()).lte(newHouseDoQuery.getEndTotalPrice())));
         } else if (newHouseDoQuery.getBeginTotalPrice() == 0 && newHouseDoQuery.getEndTotalPrice() != 0) {
-            newHouseDoQuery.setBeginTotalPrice(1.0);
+            newHouseDoQuery.setBeginTotalPrice(0);
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice()).lte(newHouseDoQuery.getEndTotalPrice())));
         } else if (newHouseDoQuery.getEndTotalPrice() == 0 && newHouseDoQuery.getBeginTotalPrice() != 0) {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(newHouseDoQuery.getBeginTotalPrice())));
         }
 
         if ("3".equals(newHouseDoQuery.getSort()) || "4".equals(newHouseDoQuery.getSort())) {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("average_price").gte(0)));
         }
 
         //标签
@@ -323,7 +324,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
                 //新房图片处理
                 if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http")) {
-                    newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-dongfangdi1200x900");
+                    newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-w1200x900");
                 }
 
                 //新房标签
@@ -570,16 +571,17 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         // 无用户行为取价格不为空，且电话不为空，且户型不为空
         if ((null == userId && (newHouseDoQuery.getDistrictId() == 0 && newHouseDoQuery.getAvgPrice() == 0 && newHouseDoQuery.getTotalPrice() == 0)) ||
                 (null != userId && (newHouseDoQuery.getDistrictId() == 0 && newHouseDoQuery.getAvgPrice() == 0 && newHouseDoQuery.getTotalPrice() == 0)
-                        && (userFavoriteNewHouseMapper.selectFavoriteNewHouseByUserId(Integer.valueOf(userId)) == 0))) {
+                        && (userFavoriteNewHouseMapper.selectFavoriteNewHouseByUserIdAndCityId(Integer.valueOf(userId), CityUtils.returnCityId(city)) == 0))) {
             BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
 
             booleanQueryBuilder.must(termsQuery("sale_status_id", new int[]{1, 5}));
             booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
             booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
             booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(0.0)));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)).should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
             booleanQueryBuilder.must(existsQuery("saletelphone"));
             booleanQueryBuilder.mustNot(termQuery("saletelphone", ""));
+            booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("room").gte(1), ScoreMode.None));
 
             SearchResponse searchResponse = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize());
 
@@ -595,7 +597,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             if (null != userId) {
                 NewHouseFavoriteListDoQuery newHouseFavoriteListDoQuery = new NewHouseFavoriteListDoQuery();
                 newHouseFavoriteListDoQuery.setUserId(userId);
-                List<NewHouseFavoriteDo> houseFavoriteDoList = userFavoriteNewHouseMapper.selectNewHouseFavoriteByUserId(newHouseFavoriteListDoQuery);
+                newHouseFavoriteListDoQuery.setCityId(CityUtils.returnCityId(city));
+                List<NewHouseFavoriteDo> houseFavoriteDoList = userFavoriteNewHouseMapper.selectNewHouseFavoriteByUserIdAndCityId(newHouseFavoriteListDoQuery);
 
                 if (null != houseFavoriteDoList && houseFavoriteDoList.size() > 0) {
                     NewHouseFavoriteDo newHouseFavoriteDo = houseFavoriteDoList.get(0);
@@ -613,8 +616,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
             booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
             if (null != newHouseDoQuery.getDistrictName() && !"".equals(newHouseDoQuery.getDistrictName())) {
-                booleanQueryBuilder.must(
-                        QueryBuilders.disMaxQuery().add(QueryBuilders.matchQuery("district_name", newHouseDoQuery.getDistrictName()).analyzer("ik_smart")).tieBreaker(0.3f));
+                booleanQueryBuilder.must(QueryBuilders.termQuery("district_name", newHouseDoQuery.getDistrictName()));
             } else if (null != newHouseDoQuery.getDistrictId() && newHouseDoQuery.getDistrictId() > 0) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("district_id", newHouseDoQuery.getDistrictId()));
             }
@@ -653,11 +655,12 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 boolQueryBuilderT2.must(termQuery("is_approve", IS_APPROVE));
                 boolQueryBuilderT2.must(termQuery("is_del", IS_DEL));
                 boolQueryBuilderT2.must(termsQuery("property_type_id", new int[]{1, 2}));
-                boolQueryBuilderT2.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(0.0)));
+                booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)).should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
                 boolQueryBuilderT2.must(existsQuery("saletelphone"));
                 boolQueryBuilderT2.mustNot(termQuery("saletelphone", ""));
+                boolQueryBuilderT2.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("room").gte(1), ScoreMode.None));
 
-                SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, pageNum_T2, pageSize_T2);
+                SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(boolQueryBuilderT2, city, pageNum_T2, pageSize_T2);
 
 
                 SearchHit[] hitsT2 = searchResponseT2.getHits().getHits();
@@ -679,13 +682,17 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 try {
                     //获取新房下户型的数量
                     NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(), city);
-                    if (null != newHouseLayoutCountDomain.getRooms() && newHouseLayoutCountDomain.getRooms().size() > 0) {
+                    List<NewHouseLayoutCountDo> houseLayoutCountDoList = newHouseLayoutCountDomain.getRooms();
+                    if (null != houseLayoutCountDoList && houseLayoutCountDoList.size() > 0) {
                         List<String> roomsType = new ArrayList<>();
-                        for (int i = 0; i < newHouseLayoutCountDomain.getRooms().size(); i++) {
-                            roomsType.add(newHouseLayoutCountDomain.getRooms().get(i).getRoom().toString());
+                        for (NewHouseLayoutCountDo layoutCountDo : houseLayoutCountDoList) {
+                            if ("0".equals(layoutCountDo.getRoom().toString())) {
+                                continue;
+                            }
+                            roomsType.add(layoutCountDo.getRoom().toString());
                         }
-                        String rooms = String.join(",", roomsType);
-                        newHouseListDos.setRoomType(rooms);
+                        Collections.sort(roomsType);
+                        newHouseListDos.setRoomType(String.join("," , roomsType));
                     } else {
                         newHouseListDos.setRoomType("");
                     }
@@ -836,11 +843,11 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             for(SearchHit searchHit : searchHists){
                 String  details = searchHit.getSourceAsString();
                 NewHouseCustomConditionDo newHouseCustomConditionDo = JSON.parseObject(details, NewHouseCustomConditionDo.class);
-                if(StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getTotalPrice())){
-                    newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getTotalPrice()+"万/套");
-                }else if (StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getAveragePrice())){
+                if(StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getAveragePrice())){
                     newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getAveragePrice()+"元/m²");
-                }else {
+                }else if (StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getTotalPrice()) && StringTool.isEmpty(newHouseCustomConditionDo.getPriceDesc())){
+                    newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getTotalPrice()+"万/套");
+                }else if (StringTool.isDoubleEmpty(newHouseCustomConditionDo.getTotalPrice()) && StringTool.isDoubleEmpty(newHouseCustomConditionDo.getAveragePrice())){
                     newHouseCustomConditionDo.setPriceDesc("售价待定");
                 }
                 //新房图片处理

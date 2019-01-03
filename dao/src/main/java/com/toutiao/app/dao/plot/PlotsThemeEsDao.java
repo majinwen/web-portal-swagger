@@ -9,4 +9,6 @@ public interface PlotsThemeEsDao {
 
 
     SearchResponse getHouseAreaByPlotId(Integer plotId, String city);
+
+    SearchResponse getHouseMaxAndMinArea(Integer plotId, String city);
 }

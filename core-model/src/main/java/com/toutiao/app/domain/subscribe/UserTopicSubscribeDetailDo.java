@@ -30,4 +30,22 @@ public class UserTopicSubscribeDetailDo {
      */
     @ApiModelProperty(value = "结束价格", name = "endPrice")
     private Double endPrice;
+
+    /**
+     * 商圈id
+     */
+    @ApiModelProperty(value = "商圈id", name = "areaId")
+    private String areaId;
+
+    /**
+     * 商圈名称
+     */
+    @ApiModelProperty(value = "商圈名称", name = "areaName")
+    private String areaName;
+
+    /**
+     * 居室
+     */
+    @ApiModelProperty(value = "居室", name = "layoutId")
+    private String layoutId;
 }

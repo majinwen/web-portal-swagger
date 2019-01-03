@@ -32,6 +32,7 @@ public class NewHouseMapSearchController implements NewHouseMapSearchApi {
 
 
 
+    @Override
     public ResponseEntity<NewHouseMapSearchDistrictResponse> getNewHouseMapSearchByDistrict(@ApiParam(value = "newHouseMapSearchRequest" ,required=true )  @Valid NewHouseMapSearchRequest newHouseMapSearchRequest) {
 
         NewHouseMapSearchDoQuery newHouseMapSearchDoQuery = new NewHouseMapSearchDoQuery();
@@ -54,6 +55,7 @@ public class NewHouseMapSearchController implements NewHouseMapSearchApi {
     }
 
 
+    @Override
     public ResponseEntity<NewHouseMapSearchBuildResponse> getNewHouseMapSearchByBuild(@ApiParam(value = "newHouseMapSearchRequest" ,required=true )  @Valid NewHouseMapSearchRequest newHouseMapSearchRequest) {
 
         NewHouseMapSearchDoQuery newHouseMapSearchDoQuery = new NewHouseMapSearchDoQuery();

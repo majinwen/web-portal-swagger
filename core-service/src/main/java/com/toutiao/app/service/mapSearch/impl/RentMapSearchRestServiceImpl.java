@@ -15,14 +15,11 @@ import com.toutiao.app.service.mapSearch.RentMapSearchRestService;
 import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.company.CompanyIconEnum;
-import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
-import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.common.util.mapSearch.MapGroupUtil;
-import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
 import org.apache.commons.lang.ArrayUtils;
@@ -38,8 +35,10 @@ import org.elasticsearch.index.query.functionscore.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.BucketOrder;
-import org.elasticsearch.search.aggregations.InternalOrder;
-import org.elasticsearch.search.aggregations.bucket.terms.*;
+import org.elasticsearch.search.aggregations.bucket.terms.IncludeExclude;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedLongTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.ParsedStringTerms;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
@@ -88,7 +87,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
             totalNum = (int)rentMapSearchNum.getHits().getTotalHits();
         }
         List newList = new ArrayList();
-        Hashtable<String, RentMapSearchDo> allStationDict = new Hashtable<>();
+        Map<String, RentMapSearchDo> allStationDict = new LinkedHashMap<>();
         //groupTypeId 1：区县，2：商圈，3：社区
         Integer groupTypeId = null != MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) ? MapGroupUtil.returnMapGrouId(rentMapSearchDoQuery.getGroupType()) : 0;
 
@@ -244,14 +243,14 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         }
         if (groupTypeId == 3) {
             //聚合
-            searchSourceBuilder.aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
+            searchSourceBuilder.size(0).aggregation(AggregationBuilders.terms("id").field("zufang_id").size(200)
                     .subAggregation(AggregationBuilders.terms("zufangName").field("zufang_name"))
                     .subAggregation(AggregationBuilders.terms("lon").field("longitude"))
                     .subAggregation(AggregationBuilders.terms("lat").field("latitude")));
         }
 
         SearchResponse rentMapSearch = rentMapSearchEsDao.getRentMapSearch(searchSourceBuilder, city);
-        Hashtable<String, RentMapSearchDo> stationDict = new Hashtable<>();
+        Map<String, RentMapSearchDo> stationDict = new LinkedHashMap<>();
 
         List<RentMapSearchDo> list = new ArrayList<>();
         Integer totalHits = 0;
@@ -266,11 +265,12 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                     //区域
                     if(groupTypeId == 1){
                         //id
-                        int id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
+                        Integer id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
                         rentMapSearchDo.setId(id);
                         //数量
-                        rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
-                        rentMapSearchDo.setDesc(rentMapSearchDo.getCount()+"套");
+                        Integer count = queryDistrictOrAreaRentCount(rentMapSearchDoQuery,id, city, 1);
+                        rentMapSearchDo.setCount(count);
+                        rentMapSearchDo.setDesc(count+"套");
                         Map distanceAndAreainfo = getDistanceAndAreainfo(id, 1);
                         if(null!=distanceAndAreainfo&&StringTool.isNotEmpty(distanceAndAreainfo.get("name"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lon"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lat"))){
                             rentMapSearchDo.setName(String.valueOf(distanceAndAreainfo.get("name")));
@@ -284,8 +284,9 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         int id = ((ParsedLongTerms.ParsedBucket) bucket).getKeyAsNumber().intValue();
                         rentMapSearchDo.setId(id);
                         //数量
-                        rentMapSearchDo.setCount((int)((ParsedLongTerms.ParsedBucket) bucket).getDocCount());
-                        rentMapSearchDo.setDesc(rentMapSearchDo.getCount()+"套");
+                        Integer count = queryDistrictOrAreaRentCount(rentMapSearchDoQuery,id, city, 2);
+                        rentMapSearchDo.setCount(count);
+                        rentMapSearchDo.setDesc(count+"套");
                         Map distanceAndAreainfo = getDistanceAndAreainfo(id, 2);
                         if(null!=distanceAndAreainfo&&StringTool.isNotEmpty(distanceAndAreainfo.get("name"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lon"))&&StringTool.isNotEmpty(distanceAndAreainfo.get("lat"))){
                             rentMapSearchDo.setName(String.valueOf(distanceAndAreainfo.get("name")));
@@ -347,11 +348,18 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                 }
 
                 if(groupTypeId==6){
-                    for(int i=0;i<newList.size();i++){
-                        if(stationDict.containsKey(newList.get(i))){
-                            list.add(stationDict.get(newList.get(i)));
+//                    for(int i=1;i<=newList.size();i++){
+//                        if(stationDict.containsKey(newList.get(i))){
+//                            list.add(stationDict.get(newList.get(i)));
+//                        }else{
+//                            list.add(allStationDict.get(newList.get(i)));
+//                        }
+//                    }
+                    for (String key : allStationDict.keySet()) {
+                        if(stationDict.containsKey(key)){
+                            list.add(stationDict.get(key));
                         }else{
-                            list.add(allStationDict.get(newList.get(i)));
+                            list.add(allStationDict.get(key));
                         }
                     }
                 }
@@ -598,7 +606,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
                     //设置标题图
                     String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
-                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                    if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                         titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     rentDetailsFewDo.setHouseTitleImg(titlePhoto);
@@ -636,7 +644,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
                         if (StringTool.isNotEmpty(plotDetailsDo.getPhoto()) && plotDetailsDo.getPhoto().length > 0) {
                             String titlePhoto = plotDetailsDo.getPhoto()[0];
-                            if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                            if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                                 titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                             }
                             rentOfPlotListDo.setBuildingImages(titlePhoto);
@@ -904,7 +912,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 
         //标签
         if (StringTool.isNotEmpty(rentMapSearchDoQuery.getLabelId()) && rentMapSearchDoQuery.getLabelId().length!=0) {
-            boolQueryBuilder.must(QueryBuilders.termQuery("rent_house_tags_id", rentMapSearchDoQuery.getLabelId()));
+            boolQueryBuilder.must(QueryBuilders.termsQuery("rent_house_tags_id", rentMapSearchDoQuery.getLabelId()));
         }
 
         //面积
@@ -920,5 +928,19 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
         boolQueryBuilder.must(QueryBuilders.termQuery("release_status", 1));
 
         return boolQueryBuilder;
+    }
+
+    @Override
+    public Integer queryDistrictOrAreaRentCount(RentMapSearchDoQuery rentMapSearchDoQuery, Integer id, String cityId, Integer type){
+        BoolQueryBuilder boolQueryBuilder = getBoolQueryBuilder(rentMapSearchDoQuery);
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_del",0));
+        if(type==1){
+            boolQueryBuilder.must(QueryBuilders.termQuery("district_id",id));
+        }else if(type==2){
+            boolQueryBuilder.must(QueryBuilders.termQuery("area_id",id));
+        }
+        SearchResponse response = rentMapSearchEsDao.queryDistrictOrAreaRentCount(boolQueryBuilder, cityId);
+        long totalHits = response.getHits().getTotalHits();
+        return (int) totalHits;
     }
 }

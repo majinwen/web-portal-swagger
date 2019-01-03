@@ -37,10 +37,10 @@ import javax.validation.constraints.NotNull;
 @Api(value = "订阅", description = "查询订阅相关接口")
 public interface SuscribeApi {
 
-    @ApiOperation(value = "删除订阅信息", nickname = "deleteConditionSubscribe", notes = "", response = Integer.class, tags={ "订阅", })
+    @ApiOperation(value = "删除订阅信息", nickname = "deleteConditionSubscribe", notes = "", response = StringDataResponse.class, tags={ "订阅", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Integer.class),
-            @ApiResponse(code = 201, message = "Created", response = Integer.class),
+            @ApiResponse(code = 200, message = "OK", response = StringDataResponse.class),
+            @ApiResponse(code = 201, message = "Created", response = StringDataResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })
@@ -52,10 +52,10 @@ public interface SuscribeApi {
     ResponseEntity<StringDataResponse> deleteConditionSubscribe(@NotNull @ApiParam(value = "id", required = true) @Valid @RequestParam(value = "id", required = true) Integer id);
 
 
-    @ApiOperation(value = "删除订阅信息", nickname = "deleteSubscribe", notes = "", response = Integer.class, tags={ "订阅", })
+    @ApiOperation(value = "删除订阅信息", nickname = "deleteSubscribe", notes = "", response = StringDataResponse.class, tags={ "订阅", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = Integer.class),
-            @ApiResponse(code = 201, message = "Created", response = Integer.class),
+            @ApiResponse(code = 200, message = "OK", response = StringDataResponse.class),
+            @ApiResponse(code = 201, message = "Created", response = StringDataResponse.class),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
             @ApiResponse(code = 404, message = "Not Found") })

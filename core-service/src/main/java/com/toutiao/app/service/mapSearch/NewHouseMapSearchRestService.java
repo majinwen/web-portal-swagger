@@ -19,4 +19,5 @@ public interface NewHouseMapSearchRestService {
 
     NewHouseMapSearchBuildDomain newHouseMapSearchByBuild(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, String city);
 
+    Integer queryDistiictNewHouseCount(NewHouseMapSearchDoQuery newHouseMapSearchDoQuery, Integer districtId, String city);
 }

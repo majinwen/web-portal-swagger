@@ -51,4 +51,9 @@ public class ReportNewPreferentialResponse {
 //    @ApiModelProperty(value = "创建时间")
 //    private Date createTime;
 
+    /**
+     * 总价
+     */
+    @ApiModelProperty(value = "总价")
+    private Double totalPrice;
 }

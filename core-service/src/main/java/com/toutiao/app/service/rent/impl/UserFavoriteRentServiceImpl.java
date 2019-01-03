@@ -18,7 +18,8 @@ import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.subway.SubwayLineDo;
 import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.index.query.*;
+import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.BucketOrder;
@@ -115,13 +116,35 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
 
                 }
 
+                //增加房子与地铁的距离
+                if (null != rentHouseDoQuery.getSubwayLineId() && rentHouseDoQuery.getSubwayLineId().length > 0) {
+                    List<Integer> subwayDistanceList = new ArrayList<>();
+                    Map<Integer, String> subwayDistanceMap = new HashMap();
+                    for (int i = 0; i < rentHouseDoQuery.getSubwayLineId().length; i++) {
+                        String keys = "";
+                        keys += rentHouseDoQuery.getSubwayLineId()[i].toString();
+                        //增加地铁线选择，地铁站选择不限
+                        if(StringTool.isNotEmpty(userFavoriteRentDetailDo.getNearbySubway().get(keys))){
+                            trafficArr = userFavoriteRentDetailDo.getNearbySubway().get(keys).split("\\$");
+                            if (trafficArr.length == 3) {
+                                Integer distance = Integer.valueOf(trafficArr[2]);
+                                nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                                subwayDistanceMap.put(distance, nearbyDistance);
+                                subwayDistanceList.add(distance);
+                            }
+                        }
+                    }
+                    Integer subwayDistance = Collections.min(subwayDistanceList);
+                    nearbyDistance = subwayDistanceMap.get(subwayDistance);
+                }
+
                 if(StringTool.isNotEmpty(nearbyDistance)){
                     userFavoriteRentDetailDo.setNearbyDistance(nearbyDistance);
                 }
 
                 //设置标题图
                 String titlePhoto = userFavoriteRentDetailDo.getHouseTitleImg();
-                if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 userFavoriteRentDetailDo.setHouseTitleImg(titlePhoto);

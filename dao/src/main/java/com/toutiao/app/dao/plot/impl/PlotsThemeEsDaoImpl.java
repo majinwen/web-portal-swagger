@@ -8,6 +8,7 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.join.query.ParentIdQueryBuilder;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
@@ -56,6 +57,25 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
         searchSourceBuilder.query(boolQueryBuilder).size(0)
                 .aggregation(AggregationBuilders.max("maxHouse").field("sellHouseArea"))
                 .aggregation(AggregationBuilders.min("minHouse").field("sellHouseArea"));
+        searchRequest.source(searchSourceBuilder);
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return searchResponse;
+    }
+
+    @Override
+    public SearchResponse getHouseMaxAndMinArea(Integer plotId, String city) {
+        BoolQueryBuilder boolQueryBuilder = new BoolQueryBuilder();
+        boolQueryBuilder.must(new ParentIdQueryBuilder(ElasticCityUtils.VILLAGES_CHILD_NAME,plotId.toString()));
+        SearchResponse searchResponse = null;
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).size(0)
+                .aggregation(AggregationBuilders.max("max").field("sellHouseArea"))
+                .aggregation(AggregationBuilders.min("min").field("sellHouseArea"));
         searchRequest.source(searchSourceBuilder);
         try {
             searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);

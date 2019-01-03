@@ -19,6 +19,7 @@ import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper;
+import org.apache.commons.lang.ArrayUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -41,6 +42,7 @@ import java.math.RoundingMode;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.idsQuery;
+import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termsQuery;
 
 @Service
@@ -74,6 +76,8 @@ public class HomePageServiceImpl implements HomePageRestService {
 
     @Autowired
     private RentEsDao rentEsDao;
+
+    private static final String LAYOUT = "5";
     /**
      * @return 获取二手房5条
      */
@@ -722,7 +726,13 @@ public class HomePageServiceImpl implements HomePageRestService {
             //二手房
             String[] layoutId = userFavoriteConditionDoQuery.getLayoutId();
             if (layoutId.length > 0){
-                boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                if(Arrays.asList(layoutId).contains(LAYOUT)){
+                    String[] roomresult = (String[]) ArrayUtils.addAll(layoutId, roommore);
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("room", roomresult));
+                }else{
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
+                }
             }
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getDistrictId()) && userFavoriteConditionDoQuery.getDistrictId().length!=0){
                 boolQueryBuilder.must(termsQuery("areaId", userFavoriteConditionDoQuery.getDistrictId()));
@@ -734,7 +744,8 @@ public class HomePageServiceImpl implements HomePageRestService {
             }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").lte(userFavoriteConditionDoQuery.getEndPrice()));
             }
-
+            boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+            boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
             searchResponse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
             builder.must(QueryBuilders.termQuery("isDel", "0"));
             builder.must(QueryBuilders.termQuery("is_claim", "0"));
@@ -743,11 +754,82 @@ public class HomePageServiceImpl implements HomePageRestService {
             if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getElo())){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",1));
                 String[] room = userFavoriteConditionDoQuery.getElo().split(",");
-                boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", room));
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                if(Arrays.asList(room).contains(LAYOUT)){
+                    String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", roomresult));
+                }else{
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("erent_layout", room));
+                }
+
+
+
             }else if(StringTool.isNotEmpty(userFavoriteConditionDoQuery.getJlo())){
                 boolQueryBuilder.must(QueryBuilders.termQuery("rent_type",2));
                 String[] room = userFavoriteConditionDoQuery.getJlo().split(",");
-                boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", room));
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                if(Arrays.asList(room).contains(LAYOUT)){
+                    String[] roomresult = (String[]) ArrayUtils.addAll(room, roommore);
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", roomresult));
+                }else{
+                    boolQueryBuilder.must(QueryBuilders.termsQuery("jrent_layout", room));
+                }
+
+            }
+
+            if (StringTool.isNotBlank(userFavoriteConditionDoQuery.getElo()) && StringTool.isNotBlank(userFavoriteConditionDoQuery.getJlo())) {
+                BoolQueryBuilder boolQueryBuilder1 = QueryBuilders.boolQuery();
+                String[] roommore = new String[]{"6", "7", "8", "9", "10", "11", "12", "13", "14"};
+                if (userFavoriteConditionDoQuery.getJlo().equals("0") && userFavoriteConditionDoQuery.getElo().equals("0")) {
+                    boolQueryBuilder1.should(rangeQuery("erent_layout").gt(0));
+                    boolQueryBuilder1.should(rangeQuery("jrent_layout").gt(0));
+                    boolQueryBuilder.must(boolQueryBuilder1);
+                } else if (userFavoriteConditionDoQuery.getElo().equals("0") && !userFavoriteConditionDoQuery.getJlo().equals("0")) {
+                    String[] jroom = userFavoriteConditionDoQuery.getJlo().split(",");
+                    boolQueryBuilder1.should(rangeQuery("erent_layout").gt(0));
+
+                    boolean jroomflag = Arrays.asList(jroom).contains(LAYOUT);
+                    if (jroomflag) {
+                        String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
+                        boolQueryBuilder1.should(termsQuery("jrent_layout", jroomresult));
+                    } else {
+                        boolQueryBuilder1.should(termsQuery("jrent_layout", jroom));
+                    }
+                    boolQueryBuilder.must(boolQueryBuilder1);
+                } else if (!userFavoriteConditionDoQuery.getElo().equals("0") && userFavoriteConditionDoQuery.getJlo().equals("0")) {
+                    String[] eroom = userFavoriteConditionDoQuery.getElo().split(",");
+                    boolQueryBuilder1.should(rangeQuery("jrent_layout").gt(0));
+
+                    boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
+                    if (eroomflag) {
+                        String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
+                        boolQueryBuilder1.should(termsQuery("erent_layout", eroomresult));
+                    } else {
+                        boolQueryBuilder1.should(termsQuery("erent_layout", eroom));
+                    }
+                    boolQueryBuilder.must(boolQueryBuilder1);
+                } else {
+                    String[] eroom = userFavoriteConditionDoQuery.getElo().split(",");
+                    String[] jroom = userFavoriteConditionDoQuery.getJlo().split(",");
+
+                    //String[] roommore = new String[]{"4","5","6","7","8","9","10","11","12","13","14"};
+                    boolean jroomflag = Arrays.asList(jroom).contains(LAYOUT);
+                    boolean eroomflag = Arrays.asList(eroom).contains(LAYOUT);
+                    if (jroomflag) {
+                        String[] jroomresult = (String[]) ArrayUtils.addAll(jroom, roommore);
+                        boolQueryBuilder1.should(termsQuery("jrent_layout", jroomresult));
+                    } else {
+                        boolQueryBuilder1.should(termsQuery("jrent_layout", jroom));
+                    }
+                    if (eroomflag) {
+                        String[] eroomresult = (String[]) ArrayUtils.addAll(eroom, roommore);
+                        boolQueryBuilder1.should(termsQuery("erent_layout", eroomresult));
+                    } else {
+                        boolQueryBuilder1.should(termsQuery("erent_layout", eroom));
+                    }
+                    boolQueryBuilder.must(boolQueryBuilder1);
+                }
+
             }
 
 
@@ -775,7 +857,7 @@ public class HomePageServiceImpl implements HomePageRestService {
             }else if (StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
                 boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").gte(userFavoriteConditionDoQuery.getBeginPrice()).lte(userFavoriteConditionDoQuery.getEndPrice()));
             }else if(StringTool.isDoubleEmpty(userFavoriteConditionDoQuery.getBeginPrice()) && StringTool.isDoubleNotEmpty(userFavoriteConditionDoQuery.getEndPrice())){
-                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_pricex").lte(userFavoriteConditionDoQuery.getEndPrice()));
+                boolQueryBuilder.must(QueryBuilders.rangeQuery("rent_house_price").lte(userFavoriteConditionDoQuery.getEndPrice()));
             }
 
             searchResponse = rentEsDao.queryRentList(boolQueryBuilder,0,0,city);

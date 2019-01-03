@@ -16,4 +16,6 @@ public interface RentMapSearchEsDao {
 
     SearchResponse getSubwayStationinfo(BoolQueryBuilder boolQueryBuilder, String city);
 
+    SearchResponse queryDistrictOrAreaRentCount(BoolQueryBuilder boolQueryBuilder, String city);
+
 }

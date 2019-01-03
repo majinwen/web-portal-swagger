@@ -139,5 +139,18 @@ public class PlotDetailsResponse {
 
     @ApiModelProperty(value = "是否收藏")
     private Boolean isFavorite;
+
+    @ApiModelProperty(value = "小区标题图")
+    private String titlePhoto;
+
+    @ApiModelProperty(value = "小区均价浮动比率")
+    private Double averagePriceFloatRatio;
+
+    @ApiModelProperty(value = "上月成交二手房数量")
+    private Integer lastMonthsDeal;
+    @ApiModelProperty(value = "环比")
+    private Double ringRatio;
+    @ApiModelProperty(value = "地址")
+    private String address;
 }
 

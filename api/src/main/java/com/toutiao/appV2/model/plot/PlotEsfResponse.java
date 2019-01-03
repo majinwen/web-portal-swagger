@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.plot;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.toutiao.app.domain.sellhouse.HouseLable;
 import com.toutiao.app.domain.sellhouse.HouseSubject;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -216,6 +217,13 @@ public class PlotEsfResponse {
 
     @ApiModelProperty(value = "公司图标", name = "companyIcon")
     private String companyIcon;
+
+    @ApiModelProperty(value = "附近位置", name = "nearbyDistance")
+    private String nearbyDistance;
+
+    @ApiModelProperty(value = "房源标签", name = "houseLableList")
+    private List<HouseLable> houseLableList;
+
 
 }
 

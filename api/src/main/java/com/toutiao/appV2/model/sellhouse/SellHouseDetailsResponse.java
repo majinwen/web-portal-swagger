@@ -87,12 +87,16 @@ public class SellHouseDetailsResponse {
     @ApiModelProperty(value = "小区名称", name = "plotName")
     //@ChangeName("buildingName")
     private String plotName;
+
+    @ApiModelProperty(value = "小区名称", name = "plotNameAccurate")
+    //@ChangeName("buildingName")
+    private String plotNameAccurate;
     /**
      * 小区图片
      */
-    @ApiModelProperty(value = "小区图片", name = "plotPhoto")
-    //@ChangeName("buildingImages")
-    private String plotPhoto;
+//    @ApiModelProperty(value = "小区图片", name = "plotPhoto")
+//    //@ChangeName("buildingImages")
+//    private String plotPhoto;
     /**
      * 地铁站id
      */
@@ -502,9 +506,9 @@ public class SellHouseDetailsResponse {
     @ApiModelProperty(value = "与区县平均总价的相对值(百分比)", name = "totalRelativeWithDistrict")
     private Double totalRelativeWithDistrict;
     /**
-     * 涨降金额
+     * 累计涨降金额
      */
-    @ApiModelProperty(value = "涨降金额", name = "priceFloat")
+    @ApiModelProperty(value = "累计涨降金额", name = "priceFloat")
     private Double priceFloat;
 
     /**
@@ -577,4 +581,16 @@ public class SellHouseDetailsResponse {
 
     @ApiModelProperty(value = "小区信息", name = "plotInfo")
     private PlotDetailsResponse plotInfo;
+
+    @ApiModelProperty(value = "初始价格", name = "initialPrice")
+    private Double initialPrice;
+
+    @ApiModelProperty(value = "降价房排名表述", name = "houseCutLabel")
+    private String houseCutLabel;
+
+    @ApiModelProperty(value = "捡漏房排名表述", name = "houseLowerLabel")
+    private String houseLowerLabel;
+
+    @ApiModelProperty(value = "抢手房排名表述", name = "houseRobLabel")
+    private String houseRobLabel;
 }

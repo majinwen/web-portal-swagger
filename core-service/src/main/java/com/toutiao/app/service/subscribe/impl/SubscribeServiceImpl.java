@@ -5,17 +5,20 @@ import com.toutiao.app.dao.sellhouse.HouseBusinessAndRoomEsDao;
 import com.toutiao.app.domain.sellhouse.MustBuyShellHouseDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDoQuery;
 import com.toutiao.app.domain.sellhouse.SellHouseBeSureToSnatchDomain;
+import com.toutiao.app.domain.sellhouse.SellHouseThemeDoQuery;
 import com.toutiao.app.domain.subscribe.UserConditionSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.domain.subscribe.UserSubscribeListDo;
-import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
+//import com.toutiao.app.service.sellhouse.MustBuySellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.app.service.sellhouse.SellHouseThemeRestService;
 import com.toutiao.app.service.subscribe.SubscribeService;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.subscribe.UserSubscribe;
 import com.toutiao.web.dao.mapper.subscribe.CityDao;
 import com.toutiao.web.dao.mapper.subscribe.UserSubscribeMapper;
+import org.apache.commons.beanutils.ConvertUtils;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -36,8 +40,10 @@ public class SubscribeServiceImpl implements SubscribeService {
     CityDao cityDao;
     @Autowired
     private SellHouseService sellHouseService;
+//    @Autowired
+//    private MustBuySellHouseRestService mustBuySellHouseRestService;
     @Autowired
-    private MustBuySellHouseRestService mustBuySellHouseRestService;
+    private SellHouseThemeRestService sellHouseThemeRestService;
     @Autowired
     private HouseBusinessAndRoomEsDao houseBusinessAndRoomEsDao;
 
@@ -128,8 +134,11 @@ public class SubscribeServiceImpl implements SubscribeService {
             //填充新增数量
             if (userSubscribeListDo.getSubscribeType() == 0) {
                 userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo, city));
-                if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
-                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));
+                if (StringTool.isEmpty(userSubscribeDetailDo.getDistrictName()) && StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
+                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName((Integer[]) ConvertUtils.convert(userSubscribeDetailDo.getDistrictId().split(","), Integer.class)));
+                }
+                if (StringTool.isEmpty(userSubscribeDetailDo.getAreaName()) && StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+                    userSubscribeDetailDo.setAreaName(cityDao.selectAreaNameArray((Integer[]) ConvertUtils.convert(userSubscribeDetailDo.getAreaId().split(","), Integer.class)));
                 }
                 // 1：降价房 2：价格洼地 3：逢出必抢
                 Integer topicType = userSubscribeDetailDo.getTopicType();
@@ -143,10 +152,10 @@ public class SubscribeServiceImpl implements SubscribeService {
                 }
             } else {
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
-                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName(userSubscribeDetailDo.getDistrictId().split(",")));
+                    userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName((Integer[]) ConvertUtils.convert(userSubscribeDetailDo.getDistrictId().split(","), Integer.class)));
                 }
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
-                    userSubscribeDetailDo.setDistrictName(cityDao.selectAreaName(userSubscribeDetailDo.getAreaId()));
+                    userSubscribeDetailDo.setAreaName(cityDao.selectAreaName(Integer.valueOf(userSubscribeDetailDo.getAreaId())));
                 }
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", userSubscribeDetailDo.getAreaId()));
@@ -184,6 +193,7 @@ public class SubscribeServiceImpl implements SubscribeService {
     private Long getNewCountBySubscribe(UserSubscribeDetailDo userSubscribeDetailDo, String city) {
         Integer pageIndex = 1;
         Integer pageSize = 1;
+        Long count = 0L;
         if (userSubscribeDetailDo.getTopicType() == 3) {
             SellHouseBeSureToSnatchDoQuery sellHouseBeSureToSnatchDoQuery = new SellHouseBeSureToSnatchDoQuery();
             sellHouseBeSureToSnatchDoQuery.setIsNew(1);
@@ -192,6 +202,10 @@ public class SubscribeServiceImpl implements SubscribeService {
             if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
                 Integer[] intArrayFromStringArray = getIntArrayFromStringArray(userSubscribeDetailDo.getDistrictId().split(","));
                 sellHouseBeSureToSnatchDoQuery.setDistrictIds(intArrayFromStringArray);
+            }
+            if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+                Integer[] intArrayFromStringArray = getIntArrayFromStringArray(userSubscribeDetailDo.getAreaId().split(","));
+                sellHouseBeSureToSnatchDoQuery.setAreaId(intArrayFromStringArray);
             }
             if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
                 sellHouseBeSureToSnatchDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
@@ -207,6 +221,10 @@ public class SubscribeServiceImpl implements SubscribeService {
                 Integer[] intArrayFromStringArray = getIntArrayFromStringArray(userSubscribeDetailDo.getDistrictId().split(","));
                 mustBuyShellHouseDoQuery.setDistrictIds(intArrayFromStringArray);
             }
+            if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+                Integer[] intArrayFromStringArray = getIntArrayFromStringArray(userSubscribeDetailDo.getAreaId().split(","));
+                mustBuyShellHouseDoQuery.setAreaId(intArrayFromStringArray);
+            }
             if (userSubscribeDetailDo.getBeginPrice() != null && userSubscribeDetailDo.getBeginPrice() != 0) {
                 mustBuyShellHouseDoQuery.setBeginPrice(userSubscribeDetailDo.getBeginPrice());
             }
@@ -216,9 +234,19 @@ public class SubscribeServiceImpl implements SubscribeService {
             mustBuyShellHouseDoQuery.setIsNew(1);
             mustBuyShellHouseDoQuery.setPageSize(pageSize);
             mustBuyShellHouseDoQuery.setPageNum(pageIndex);
-            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType(), city).getTotalCount();
+//            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType(), city).getTotalCount();
+            SellHouseThemeDoQuery sellHouseThemeDoQuery = new SellHouseThemeDoQuery();
+            BeanUtils.copyProperties(mustBuyShellHouseDoQuery,sellHouseThemeDoQuery);
+            sellHouseThemeDoQuery.setAreaIds(mustBuyShellHouseDoQuery.getAreaId());
+            if(userSubscribeDetailDo.getTopicType()==1){
+                count = sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
+            }else if(userSubscribeDetailDo.getTopicType()==2){
+                count = sellHouseThemeRestService.getLowPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
+            }else if(userSubscribeDetailDo.getTopicType()==3){
+                count = sellHouseThemeRestService.getBeSureToSnatchShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
+            }
         }
-        return 0L;
+        return count;
     }
 
     private Object getHouseListBySubscribe(UserSubscribeDetailDo userSubscribeDetailDo, String city) {
@@ -253,7 +281,15 @@ public class SubscribeServiceImpl implements SubscribeService {
             }
             mustBuyShellHouseDoQuery.setPageSize(pageSize);
             mustBuyShellHouseDoQuery.setPageNum(pageIndex);
-            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType(), city);
+            SellHouseThemeDoQuery sellHouseThemeDoQuery = new SellHouseThemeDoQuery();
+            BeanUtils.copyProperties(mustBuyShellHouseDoQuery,sellHouseThemeDoQuery);
+            if(userSubscribeDetailDo.getTopicType()==1){
+                return sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
+            }else if(userSubscribeDetailDo.getTopicType()==2){
+                return sellHouseThemeRestService.getLowPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
+            }else if(userSubscribeDetailDo.getTopicType()==3){
+                return sellHouseThemeRestService.getBeSureToSnatchShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
+            }
         }
         return null;
     }

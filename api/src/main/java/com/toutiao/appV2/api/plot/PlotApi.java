@@ -5,6 +5,7 @@
  */
 package com.toutiao.appV2.api.plot;
 
+import com.toutiao.app.domain.plot.PlotsThemeDoQuery;
 import com.toutiao.appV2.model.plot.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -132,8 +133,7 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getPlotsTheme",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
-    ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotListRequest") @Valid PlotListRequest plotListRequest);
+    ResponseEntity<PlotsThemeResponse> getPlotsTheme(@ApiParam(value = "plotsThemeRequest") @Valid PlotsThemeRequest plotsThemeRequest);
 
 
     @ApiOperation(value = "查询小区下出租房", nickname = "getRentListByPlotId", notes = "", response = RentDetailsListResponse.class, tags = {"小区",})
@@ -177,7 +177,6 @@ public interface PlotApi {
     @RequestMapping(value = "/rest/plot/getTop50List",
             produces = "application/json",
             method = RequestMethod.GET)
-    @ApiIgnore
     ResponseEntity<PlotTop50ListResponse> getTop50List(@ApiParam(value = "区域") @Valid @RequestParam(value = "districtId", required = false) Integer districtId, @ApiParam(value = "页码", defaultValue = "1") @Valid @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum, @ApiParam(value = "每页数量", defaultValue = "10") @Valid @RequestParam(value = "pageSize", required = false, defaultValue = "10") Integer pageSize);
 
     @ApiOperation(value = "猜你喜欢:小区列表", nickname = "getGuessList", notes = "", response = PlotListResponse.class, tags = {"小区",})

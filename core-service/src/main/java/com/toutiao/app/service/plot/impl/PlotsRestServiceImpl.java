@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
+import com.toutiao.app.dao.plot.impl.PlotEsDaoImpl;
 import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
 import com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
@@ -476,7 +477,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
             if (hits.length > 0) {
                 for (SearchHit hit : hits) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, null, key);
+                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance(), key);
                 }
             }
         }
@@ -512,9 +513,13 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
 
 
-        if (StringTool.isNotEmpty(distance)) {
+        if (StringTool.isNotEmpty(distance) && distance > 0) {
             if (hit.getSortValues().length == 3) {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
+                String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
+                nearbyDistance = "距您" + distances;
+            }else if(hit.getSortValues().length == 2){
+                BigDecimal geoDis= new BigDecimal((Double) hit.getSortValues()[1]);
                 String distances = geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                 nearbyDistance = "距您" + distances;
             }
@@ -581,8 +586,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         //小区标题图处理
         if (plotDetailsFewDo.getPhoto().length > 0) {
             String titlePhoto = plotDetailsFewDo.getPhoto()[0];
-            if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
-                titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+            if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
+                titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dfdo400x300";
             }
             plotDetailsFewDo.setTitlePhoto(titlePhoto);
         }
@@ -658,12 +663,60 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             String sourceAsString = hit.getSourceAsString();
             PlotTop50Do plotTop50Do = JSON.parseObject(sourceAsString, PlotTop50Do.class);
 
-            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId(), CityUtils.getCity());
-            if (plotsEsfRoomCountDomain.getTotalCount() != null) {
-                plotTop50Do.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
-            } else {
-                plotTop50Do.setHouseCount(0);
+            String nearbyDistance = StringTool.nullToString(plotTop50Do.getArea()) + " " + StringTool.nullToString(plotTop50Do.getTradingArea());
+            String traffic = plotTop50Do.getTrafficInformation();
+            String[] trafficArr = traffic.split("\\$");
+            if (trafficArr.length == 3) {
+                DecimalFormat df = new DecimalFormat("0.0");
+                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
             }
+            plotTop50Do.setTrafficInformation(nearbyDistance);
+            if (plotTop50Do.getPhoto().length > 0) {
+                String titlePhoto = plotTop50Do.getPhoto()[0];
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dfdo400x300";
+                }
+                plotTop50Do.setTitlePhoto(titlePhoto);
+            }
+
+            //推荐理由
+            CommunityReviewDo communityReviewDo = plotsRestService.getReviewById(plotTop50Do.getId(), city);
+            plotTop50Do.setRecommendReason(communityReviewDo);
+
+
+            plotTop50Do.setRecommendBuildTagsName((List<String>) hit.getSourceAsMap().get("recommendBuildTagsName"));
+            plotTop50Do.setLabel((List<String>) hit.getSourceAsMap().get("label"));
+
+            List<String> tagsName = new ArrayList<>();
+
+            PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotTop50Do.getId());
+
+            if (null != plotMarketDo) {
+                tagsName.add(plotTop50Do.getArea()+"热度榜第"+plotMarketDo.getTotalSort()+"名");
+            }
+
+            List<String> recommendTags = (List<String>) hit.getSourceAsMap().get("recommendBuildTagsName");
+            List<String> label = (List<String>) hit.getSourceAsMap().get("label");
+//                List<String> districtHotList = (List<String>) searchHit.getSourceAsMap().get("districtHotSort");
+            if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
+                tagsName.addAll(recommendTags);
+            }
+            if(StringTool.isNotEmpty(label) && label.size() > 0){
+                tagsName.addAll(label);
+            }
+            String tagName = org.apache.commons.lang3.StringUtils.join(tagsName, " ");
+            plotTop50Do.setTagsName(tagName.trim());
+
+
+
+            //plotTop50Do.setDistrictHotSort(Integer.valueOf(hit.getSourceAsMap().get("districtHotSort")==null?"0":hit.getSourceAsMap().get("districtHotSort").toString()));
+
+//            PlotsEsfRoomCountDomain plotsEsfRoomCountDomain = plotsEsfRestService.queryHouseCountByPlotsId(plotTop50Do.getId(), CityUtils.getCity());
+//            if (plotsEsfRoomCountDomain.getTotalCount() != null) {
+//                plotTop50Do.setHouseCount(plotsEsfRoomCountDomain.getTotalCount().intValue());
+//            } else {
+//                plotTop50Do.setHouseCount(0);
+//            }
 
             plotTop50Dos.add(plotTop50Do);
         }
@@ -717,8 +770,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
                 if (plotDetailsDo.getPhoto().length > 0) {
                     String titlePhoto = plotDetailsDo.getPhoto()[0];
-                    if (!Objects.equals(titlePhoto, "") && !titlePhoto.startsWith("http")) {
-                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
+                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dfdo400x300";
                     }
                     plotDetailsDo.setTitlePhoto(titlePhoto);
                 }
@@ -817,5 +870,6 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         }
         return communityReviewDo;
     }
+
 
 }

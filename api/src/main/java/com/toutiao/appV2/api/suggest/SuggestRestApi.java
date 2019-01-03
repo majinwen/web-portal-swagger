@@ -10,6 +10,7 @@ import com.toutiao.appV2.model.subscribe.*;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
 import com.toutiao.appV2.model.suggest.SuggestResponse;
 import com.toutiao.appV2.model.suggest.SuggestResultResponse;
+import com.toutiao.appV2.model.version.VersionResponse;
 import com.toutiao.web.dao.entity.subscribe.CityParkInfo;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -203,4 +204,17 @@ public interface SuggestRestApi {
             produces = { "application/json" },
             method = RequestMethod.GET)
     ResponseEntity<HouseCountResponse> getHouseCount(@ApiParam(value = "houseCountRequest", required = false)HouseCountRequest houseCountRequest);
+
+    @ApiOperation(value = "验证APP是否有新版本", nickname = "getAppVersion", notes = "", response = VersionResponse.class, tags={ "其他", })
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = VersionResponse.class),
+            @ApiResponse(code = 201, message = "Created", response = VersionResponse.class),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found") })
+    @RequestMapping(value = "/rest/getVersion",
+            produces = { "application/json" },
+            method = RequestMethod.GET)
+    ResponseEntity<VersionResponse> getVersion(@ApiParam(value = "安卓0，IOS1", required = true) @Valid @RequestParam(value = "type",required = true) Integer type,
+                                                  @ApiParam(value = "当前版本号", required = true) @Valid @RequestParam(value = "version",required = true) Integer version);
 }

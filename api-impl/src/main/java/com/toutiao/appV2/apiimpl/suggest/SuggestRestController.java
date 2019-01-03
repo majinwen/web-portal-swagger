@@ -1,8 +1,5 @@
 package com.toutiao.appV2.apiimpl.suggest;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.houseCount.HouseCountDomain;
@@ -20,6 +17,7 @@ import com.toutiao.app.domain.suggest.SearchScopeDo;
 import com.toutiao.app.domain.suggest.SuggestListDo;
 import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.app.domain.suggest.SuggestResultDo;
+import com.toutiao.web.dao.entity.version.VersionVO;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsRestService;
@@ -28,23 +26,21 @@ import com.toutiao.app.service.search.SearchConditionService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
 import com.toutiao.app.service.subscribe.CityService;
 import com.toutiao.app.service.suggest.SuggestService;
+import com.toutiao.app.service.version.VersionService;
 import com.toutiao.appV2.api.suggest.SuggestRestApi;
 import com.toutiao.appV2.model.agent.AgentRequest;
 import com.toutiao.appV2.model.agent.AgentResponse;
 import com.toutiao.appV2.model.houseCount.HouseCountRequest;
 import com.toutiao.appV2.model.houseCount.HouseCountResponse;
 import com.toutiao.appV2.model.search.SearchConditionRequest;
-import com.toutiao.appV2.model.search.SearchConditionResponse;
 import com.toutiao.appV2.model.subscribe.*;
 import com.toutiao.appV2.model.suggest.SearchEnginesResponse;
 import com.toutiao.appV2.model.suggest.SuggestRequest;
 import com.toutiao.appV2.model.suggest.SuggestResultResponse;
+import com.toutiao.appV2.model.version.VersionResponse;
 import com.toutiao.web.common.util.city.CityUtils;
-import com.toutiao.web.dao.entity.search.SearchCondition;
 import com.toutiao.web.dao.entity.subscribe.City;
-import com.toutiao.web.dao.entity.subscribe.CityParkInfo;
 import com.toutiao.web.dao.entity.subscribe.SubwayLineData;
-import com.toutiao.web.domain.query.RentHouseQuery;
 import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
@@ -102,75 +98,68 @@ public class SuggestRestController implements SuggestRestApi {
     @Autowired
     private PlotsRestService plotsRestService;
 
+    @Autowired
+    private VersionService versionService;
+
     @Override
     public ResponseEntity<SuggestResultResponse> getSuggestByKeyword(@ApiParam(value = "suggestRequest", required = true) @Valid SuggestRequest suggestRequest) {
-        String accept = request.getHeader("Accept");
-        if (accept != null && accept.contains("")) {
-            try {
-                SuggestResultDo suggestResultDo = suggestService.suggest_v2(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
-                SuggestResultResponse suggestResultResponse = new SuggestResultResponse();
-                List<SearchEnginesResponse> searchEnginesResponseList = new ArrayList<>();
-                if (suggestResultDo.getSuggestResultList().size() > 0) {
-                    for (SuggestListDo suggestListDo : suggestResultDo.getSuggestResultList()) {
-                        //搜索结果无商圈信息
-                        SearchScopeDo searchScope = suggestListDo.getSearchScope();
-                        if (searchScope == null && suggestListDo.getSearchEnginesList() != null) {
-                            if (suggestListDo.getSearchEnginesList().size() > 0) {
-                                for (SearchEnginesDo searchEnginesDo : suggestListDo.getSearchEnginesList()) {
-                                    SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
-                                    BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
-                                    searchEnginesResponse.setIsArea(0);
-                                    searchEnginesResponseList.add(searchEnginesResponse);
-                                }
-                            }
-                        } else if (searchScope != null) {
-                            SearchEnginesResponse searchScopeResponse = new SearchEnginesResponse();
-                            searchScopeResponse.setSearchName(searchScope.getSearchName());
-                            searchScopeResponse.setAreaId(searchScope.getSearchId());
-                            searchScopeResponse.setCityId(searchScope.getCityId());
-                            searchScopeResponse.setIsArea(searchScope.getLocationTypeSings());
-                            searchScopeResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
-                            searchEnginesResponseList.add(searchScopeResponse);
-                            Integer listSize = suggestListDo.getSearchEnginesList().size();
-                            if (listSize > 0) {
-                                if (listSize > 2) {
-                                    listSize = listSize - 1;
-                                }
-                                for (int i = 0; i < listSize; i++) {
-                                    SearchEnginesDo searchEnginesDo = suggestListDo.getSearchEnginesList().get(i);
-                                    SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
-                                    BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
-                                    searchEnginesResponse.setIsArea(0);
-                                    searchEnginesResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
-                                    List searchNickname = searchEnginesDo.getSearchNickname();
-                                    String nickname = "";
-                                    if (searchNickname != null && searchNickname.size() > 0) {
-                                        for (int j = 0; j < searchNickname.size(); j++) {
-                                            nickname += searchNickname.get(j).toString() + "·";
-                                        }
-                                    }
-                                    if (nickname.endsWith("·")) {
-                                        nickname = nickname.substring(0, nickname.length() - 1);
-                                    }
-                                    searchEnginesResponse.setSearchNickname(nickname);
-                                    searchEnginesResponseList.add(searchEnginesResponse);
-                                }
-                            }
+        SuggestResultDo suggestResultDo = suggestService.suggest_v2(suggestRequest.getKeyword(), suggestRequest.getProperty(), CityUtils.getCity());
+        SuggestResultResponse suggestResultResponse = new SuggestResultResponse();
+        List<SearchEnginesResponse> searchEnginesResponseList = new ArrayList<>();
+        if (suggestResultDo.getSuggestResultList().size() > 0) {
+            for (SuggestListDo suggestListDo : suggestResultDo.getSuggestResultList()) {
+                //搜索结果无商圈信息
+                SearchScopeDo searchScope = suggestListDo.getSearchScope();
+                if (searchScope == null && suggestListDo.getSearchEnginesList() != null) {
+                    if (suggestListDo.getSearchEnginesList().size() > 0) {
+                        for (SearchEnginesDo searchEnginesDo : suggestListDo.getSearchEnginesList()) {
+                            SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
+                            BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
+                            searchEnginesResponse.setIsArea(0);
+                            searchEnginesResponseList.add(searchEnginesResponse);
                         }
                     }
-
+                } else if (searchScope != null) {
+                    SearchEnginesResponse searchScopeResponse = new SearchEnginesResponse();
+                    searchScopeResponse.setSearchName(searchScope.getSearchName());
+                    searchScopeResponse.setAreaId(searchScope.getSearchId());
+                    searchScopeResponse.setCityId(searchScope.getCityId());
+                    searchScopeResponse.setIsArea(searchScope.getLocationTypeSings());
+                    searchScopeResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
+                    searchEnginesResponseList.add(searchScopeResponse);
+                    Integer listSize = suggestListDo.getSearchEnginesList().size();
+                    if (listSize > 0) {
+                        if (listSize > 2) {
+                            listSize = listSize - 1;
+                        }
+                        for (int i = 0; i < listSize; i++) {
+                            SearchEnginesDo searchEnginesDo = suggestListDo.getSearchEnginesList().get(i);
+                            SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
+                            BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
+                            searchEnginesResponse.setIsArea(0);
+                            searchEnginesResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
+                            List searchNickname = searchEnginesDo.getSearchNickname();
+                            String nickname = "";
+                            if (searchNickname != null && searchNickname.size() > 0) {
+                                for (int j = 0; j < searchNickname.size(); j++) {
+                                    nickname += searchNickname.get(j).toString() + "·";
+                                }
+                            }
+                            if (nickname.endsWith("·")) {
+                                nickname = nickname.substring(0, nickname.length() - 1);
+                            }
+                            searchEnginesResponse.setSearchNickname(nickname);
+                            searchEnginesResponseList.add(searchEnginesResponse);
+                        }
+                    }
                 }
-                suggestResultResponse.setSearchEnginesList(searchEnginesResponseList);
-                suggestResultResponse.setTotalCount(searchEnginesResponseList.size());
-                //SuggestResultResponse suggestResultResponse = JSON.parseObject(JSON.toJSONString(suggestResultDo), SuggestResultResponse.class);
-                return new ResponseEntity<SuggestResultResponse>(suggestResultResponse, HttpStatus.OK);
-            } catch (Exception e) {
-                log.error("Couldn't serialize response for content type ", e);
-                return new ResponseEntity<SuggestResultResponse>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
-        }
 
-        return new ResponseEntity<SuggestResultResponse>(HttpStatus.NOT_IMPLEMENTED);
+        }
+        suggestResultResponse.setSearchEnginesList(searchEnginesResponseList);
+        suggestResultResponse.setTotalCount(searchEnginesResponseList.size());
+        //SuggestResultResponse suggestResultResponse = JSON.parseObject(JSON.toJSONString(suggestResultDo), SuggestResultResponse.class);
+        return new ResponseEntity<SuggestResultResponse>(suggestResultResponse, HttpStatus.OK);
     }
 
     @Override
@@ -328,7 +317,7 @@ public class SuggestRestController implements SuggestRestApi {
                 houseSubject3.setText("抢手房");
                 houseSubject3.setUrl("isMustRob=1");
                 houseSubjectList.add(houseSubject3);
-            }else {
+            } else {
                 HouseSubject houseSubject = new HouseSubject();
                 houseSubject.setText("地铁房");
                 houseSubject.setUrl("labelId=1");
@@ -517,6 +506,14 @@ public class SuggestRestController implements SuggestRestApi {
         HouseCountResponse houseCountResponse = new HouseCountResponse();
         BeanUtils.copyProperties(houseCountDomain, houseCountResponse);
         return new ResponseEntity<HouseCountResponse>(houseCountResponse, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<VersionResponse> getVersion(Integer type, Integer version) {
+        VersionVO versionVO = versionService.getIsNewAppVersion(type, version);
+        VersionResponse versionResponse = new VersionResponse();
+        BeanUtils.copyProperties(versionVO, versionResponse);
+        return new ResponseEntity<VersionResponse>(versionResponse, HttpStatus.OK);
     }
 
 }

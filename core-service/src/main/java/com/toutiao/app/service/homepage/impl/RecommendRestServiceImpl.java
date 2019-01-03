@@ -26,6 +26,7 @@ import org.elasticsearch.search.aggregations.metrics.min.InternalMin;
 import org.elasticsearch.search.aggregations.metrics.min.ParsedMin;
 import org.elasticsearch.search.aggregations.metrics.tophits.ParsedTopHits;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -46,6 +47,9 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
     @Autowired
     private SubscribeService subscribeService;
+
+    @Value("${wap.domain.name}")
+    private String wapName;
 
     public static final double PRICE = 1000d;
     private static final int[] SHOUZHI_VS_GAISHAN = {2, 3};
@@ -118,15 +122,15 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
 
             SearchResponse sp_isCutPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isCutPrice, city);
-            List<RecommendTopicDo> list_isCutPrice = cleanEsData(recommendTopicDoQuery, sp_isCutPrice, "isCutPrice");
+            List<RecommendTopicDo> list_isCutPrice = cleanEsData(recommendTopicDoQuery, sp_isCutPrice, "isCutPrice",city);
             recommendTopicDoList.addAll(list_isCutPrice);
 
             SearchResponse sp_isMustRob = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isMustRob, city);
-            List<RecommendTopicDo> list_isMustRob = cleanEsData(recommendTopicDoQuery, sp_isMustRob, "isMustRob");
+            List<RecommendTopicDo> list_isMustRob = cleanEsData(recommendTopicDoQuery, sp_isMustRob, "isMustRob",city);
             recommendTopicDoList.addAll(list_isMustRob);
 
             SearchResponse sp_isLowPrice = recommendEsDao.getRecommendByRecommendHouseTags(recommendTopicDoQuery, bqb_isLowPrice, city);
-            List<RecommendTopicDo> list_isLowPrice = cleanEsData(recommendTopicDoQuery, sp_isLowPrice, "isLowPrice");
+            List<RecommendTopicDo> list_isLowPrice = cleanEsData(recommendTopicDoQuery, sp_isLowPrice, "isLowPrice",city);
             recommendTopicDoList.addAll(list_isLowPrice);
         }
 
@@ -137,7 +141,7 @@ public class RecommendRestServiceImpl implements RecommendRestService {
     }
 
 
-    public List<RecommendTopicDo> cleanEsData(RecommendTopicDoQuery recommendTopicDoQuery, SearchResponse searchResponse, String flag) {
+    public List<RecommendTopicDo> cleanEsData(RecommendTopicDoQuery recommendTopicDoQuery, SearchResponse searchResponse, String flag, String city) {
         List<RecommendTopicDo> recommendTopicDoList = new ArrayList<>();
 
 //        Terms areaIdBucket = searchResponse.getAggregations().get("areaIds");
@@ -177,10 +181,10 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     Terms.Bucket areaIdsBucket = (Terms.Bucket) areaIdBucketIt.next();
                     ParsedTopHits parsedTopHits = areaIdsBucket.getAggregations().get("areaName");
                     for (SearchHit hit : parsedTopHits.getHits().getHits()) {
-                        areaNames = areaNames.append((String) hit.getSourceAsMap().get("area") + ",");
+                        areaNames = areaNames.append((String) hit.getSourceAsMap().get("area") + " ");
                     }
 
-                    areaIds = areaIds.append(areaIdsBucket.getKeyAsString() + ",");
+                    areaIds = areaIds.append(areaIdsBucket.getKeyAsString() + " ");
                 }
                 recommendTopicDo.setDistrictId(areaIds.substring(0, areaIds.length() - 1));
                 recommendTopicDo.setDistrictName(areaNames.substring(0, areaNames.length() - 1));
@@ -190,8 +194,8 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             if (StringTool.isEmpty(recommendTopicDoQuery.getDistrictId())) {
                 recommendTopicDo.setDistrictId("");
             }
-            recommendTopicDo.setLowestPrice(lowestPrice.getValue());
-            recommendTopicDo.setHighestPrice(highestPrice.getValue());
+            recommendTopicDo.setLowestPrice(recommendTopicDoQuery.getBeginPrice());
+            recommendTopicDo.setHighestPrice(recommendTopicDoQuery.getEndPrice());
             recommendTopicDo.setCount((int) parsedCardinality.getValue());
 
 //                recommendTopicDo.setTopicType(flag);
@@ -200,26 +204,30 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                     recommendTopicDo.setTopicName("捡漏房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
                     recommendTopicDo.setTopicType(2);
+                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/low");
                 }else if(Objects.equals(flag, "isMustRob")){
                     recommendTopicDo.setTopicName("抢手房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
                     recommendTopicDo.setTopicType(3);
+                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/hot");
                 }else if(Objects.equals(flag, "isCutPrice")){
                     recommendTopicDo.setTopicName("降价房源榜");
                     recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
                     recommendTopicDo.setTopicType(1);
+                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/reduction");
+
                 }
 
             try {
                 UserBasic current = UserBasic.getCurrent();
                 UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
-                userConditionSubscribeDetailDo.setDistrictId(recommendTopicDo.getDistrictId());
+                userConditionSubscribeDetailDo.setDistrictId(recommendTopicDo.getDistrictId().replace(" ",","));
                 userConditionSubscribeDetailDo.setBeginPrice(recommendTopicDo.getLowestPrice().intValue());
                 userConditionSubscribeDetailDo.setEndPrice(recommendTopicDo.getHighestPrice().intValue());
                 if (Objects.equals(flag, "isLowPrice")) {
-                    userConditionSubscribeDetailDo.setTopicType(3);
-                } else if (Objects.equals(flag, "isMustRob")) {
                     userConditionSubscribeDetailDo.setTopicType(2);
+                } else if (Objects.equals(flag, "isMustRob")) {
+                    userConditionSubscribeDetailDo.setTopicType(3);
                 } else if (Objects.equals(flag, "isCutPrice")) {
                     userConditionSubscribeDetailDo.setTopicType(1);
                 }

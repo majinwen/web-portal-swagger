@@ -46,4 +46,14 @@ public interface RentMapSearchRestService {
      */
     Map getSubwayLineInfo(Integer id,Integer city_id);
 
+    /**
+     * 查询区域或商圈下小区的个数
+     * @param rentMapSearchDoQuery
+     * @param id
+     * @param cityId
+     * @param type
+     * @return
+     */
+    Integer queryDistrictOrAreaRentCount(RentMapSearchDoQuery rentMapSearchDoQuery, Integer id, String cityId, Integer type);
+
 }

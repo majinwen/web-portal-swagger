@@ -3,6 +3,7 @@ package com.toutiao.app.domain.plot;
 import com.toutiao.web.common.assertUtils.ChangeName;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Data
@@ -54,38 +55,43 @@ public class PlotsThemeDo {
      */
     private String address;
 
-    /**
-     * 坐标
-     */
-    private String location;
+//    /**
+//     * 坐标
+//     */
+//    private String location;
 
     /**
-     * 地铁站编号
+     * 绿化率
      */
-    @ChangeName("subwayStationId")
-    private String[] metroStationId;
+    private String avgGreening;
 
-    /**
-     * 地铁站
-     */
-    @ChangeName("subwayStationName")
-    private String[] metroStation;
+//    /**
+//     * 地铁站编号
+//     */
+//    @ChangeName("subwayStationId")
+//    private String[] metroStationId;
 
-    /**
-     * 地铁站与小区的距离
-     */
-    @ChangeName("nearbyStationsDistance")
-    private Map metroWithPlotsDistance;
+//    /**
+//     * 地铁站
+//     */
+//    @ChangeName("subwayStationName")
+//    private String[] metroStation;
+
+//    /**
+//     * 地铁站与小区的距离
+//     */
+//    @ChangeName("nearbyStationsDistance")
+//    private Map metroWithPlotsDistance;
 
     /**
      * 近地铁描述
      */
     private String trafficInformation;
 
-    /**
-     * 建筑面积
-     */
-    private Double buildingAreaSize;
+//    /**
+//     * 建筑面积
+//     */
+//    private Double buildingAreaSize;
 
     /**
      * 开发商
@@ -109,10 +115,10 @@ public class PlotsThemeDo {
      */
     private String abbreviatedAge;
 
-    /**
-     * 楼龄
-     */
-    private Integer age;
+//    /**
+//     * 楼龄
+//     */
+//    private Integer age;
 
     /**
      * 在售房源套数
@@ -129,20 +135,20 @@ public class PlotsThemeDo {
      */
     private Double nearestParkDistance;
 
-    /**
-     * 小区推荐标签Id
-     */
-    private Integer[] recommendBuildTagsId;
+//    /**
+//     * 小区推荐标签Id
+//     */
+//    private Integer[] recommendBuildTagsId;
+//
+//    /**
+//     * 小区推荐标签名称
+//     */
+//    private String[] recommendBuildTagsName;
 
-    /**
-     * 小区推荐标签名称
-     */
-    private String[] recommendBuildTagsName;
-
-    /**
-     * 是否top50小区
-     */
-    private Integer isTop;
+//    /**
+//     * 是否top50小区
+//     */
+//    private Integer isTop;
 
     /**
      * 最低价
@@ -163,5 +169,46 @@ public class PlotsThemeDo {
      * 最大面积
      */
     private  Double houseMaxArea;
+
+    /**
+     * 车位配比
+     */
+    private String carPositionRatio;
+
+    /**
+     * 推荐理由
+     */
+    private CommunityReviewDo recommendReason;
+
+    /**
+     * 租房个数
+     */
+    private Integer rentCount;
+
+    /**
+     * 容积率
+     */
+    private Double dimension;
+
+    /**
+     * 标签名称
+     */
+    private String tagsName;
+
+    /**
+     * 各个类型数量
+     */
+    private Map<Integer,Map<String,Integer>> typeCounts;
+
+    /**
+     * 标题图
+     */
+    private String titlePhoto;
+
+    /**
+     * 小区行情
+     */
+    private PlotMarketDomain plotMarketDomain;
+
 
 }

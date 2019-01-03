@@ -2,6 +2,7 @@ package com.toutiao.app.domain.mapSearch;
 
 import com.toutiao.app.domain.newhouse.ActivityInfoDo;
 import com.toutiao.app.domain.sellhouse.HouseLable;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -125,5 +126,10 @@ public class NewHouseMapSearchBuildDo {
      * 优惠活动
      */
     private List<ActivityInfoDo> activityInfo;
+
+    /**
+     * 是否收藏
+     */
+    private Boolean isFavorite = false;
 
 }

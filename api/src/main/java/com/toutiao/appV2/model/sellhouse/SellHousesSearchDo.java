@@ -405,4 +405,16 @@ public class SellHousesSearchDo {
 
     @ApiModelProperty(value = "房源所在层（高/低/中）", name = "floor")
     private String floor;
+
+    @ApiModelProperty(value = "初始价格", name = "initialPrice")
+    private Double initialPrice;
+
+    @ApiModelProperty(value = "降价房排名表述", name = "houseCutLabel")
+    private String houseCutLabel;
+
+    @ApiModelProperty(value = "捡漏房排名表述", name = "houseLowerLabel")
+    private String houseLowerLabel;
+
+    @ApiModelProperty(value = "抢手房排名表述", name = "houseRobLabel")
+    private String houseRobLabel;
 }

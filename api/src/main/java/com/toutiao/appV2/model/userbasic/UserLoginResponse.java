@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.userbasic;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -28,5 +29,12 @@ public class UserLoginResponse {
 
     @JsonProperty("unionid")
     private String unionid=null;
+
+    @JsonProperty("isWxBind")
+    private Boolean isWxBind = null;
+
+    @JsonProperty("userPhone")
+    @ApiModelProperty(value = "用户手机", name = "userPhone")
+    private String userPhone = null;
 }
 

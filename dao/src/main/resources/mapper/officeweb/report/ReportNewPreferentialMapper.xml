@@ -8,9 +8,10 @@
         <result column="preferential_price" property="preferentialPrice" jdbcType="NUMERIC"/>
         <result column="average_price" property="averagePrice" jdbcType="NUMERIC"/>
         <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="total_price" property="totalPrice" jdbcType="NUMERIC" />
     </resultMap>
     <sql id="Base_Column_List">
-        newcode, projname, city_id, preferential_price, average_price, create_time
+        newcode, projname, city_id, preferential_price, average_price, create_time, total_price
     </sql>
     <select id="selectAll" resultMap="BaseResultMap" parameterType="map">
         select

@@ -112,4 +112,15 @@ public interface ReportRestApi {
             method = RequestMethod.GET)
     ResponseEntity<ReportAreaHotListResponse> selectReportAreaHotList(Integer pageNum, Integer pageSize);
 
+    @ApiOperation(value = "举报统计", nickname = "queryReportStatistics", tags = {"举报"})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK"),
+            @ApiResponse(code = 401, message = "Unauthorized"),
+            @ApiResponse(code = 403, message = "Forbidden"),
+            @ApiResponse(code = 404, message = "Not Found")})
+    @RequestMapping(value = "/rest/report/queryReportStatistics",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    ResponseEntity<ReportStatisticsResponse> queryReportStatistics();
+
 }

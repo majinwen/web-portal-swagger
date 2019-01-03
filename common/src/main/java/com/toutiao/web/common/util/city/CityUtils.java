@@ -67,4 +67,12 @@ public class CityUtils {
     }
 
 
+    public static String returnCityName(Integer cityId){
+        if(StringTool.isBlank(cityId)){
+            return "";
+        }else{
+            return CityEnum.getName(cityId);
+        }
+    }
+
 }

@@ -18,6 +18,7 @@ import com.toutiao.web.common.constant.syserror.UserInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.*;
 import com.toutiao.web.dao.entity.admin.UserSubscribeEtc;
+import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -142,10 +143,11 @@ public class UserbasicApiController implements UserbasicApi {
     @Override
     public ResponseEntity<UserBasicResponse> updateUserAvatar(@ApiParam(value = "file detail") @Valid @RequestPart("file") MultipartFile file, @ApiParam(value = "") @Valid @RequestParam(value = "userId", required = false) Optional<String> userId) {
 
-        String userString = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
-        UserLoginResponse user = JSONObject.parseObject(userString, UserLoginResponse.class);
-        if (null != user) {
-            UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(user.getUserId(),
+//        String userString = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
+//        UserLoginResponse user = JSONObject.parseObject(userString, UserLoginResponse.class);
+        UserBasic current = UserBasic.getCurrent();
+        if (null != current) {
+            UserBasicDo userBasicDo = userBasicInfoService.updateUserAvatar(current.getUserId(),
                     file, request, response);
             UserBasicResponse userBasicResponse = new UserBasicResponse();
             BeanUtils.copyProperties(userBasicDo, userBasicResponse);
@@ -170,6 +172,13 @@ public class UserbasicApiController implements UserbasicApi {
 
         if (StringTool.isNotBlank(userBasicDo)) {
             BeanUtils.copyProperties(userBasicDo, userLoginResponse);
+            if (null == userLoginResponse.getIsWxBind()){
+                userLoginResponse.setIsWxBind(false);
+            }
+            // 返回用户手机号
+            if (StringTool.isNotEmpty(userBasicDo.getPhone())) {
+                userLoginResponse.setUserPhone(userBasicDo.getPhone());
+            }
             try {
                 if (StringTool.isNotEmpty(userBasicDoQuery.getUnionid())){
                     setCookieAndCache(loginRequest.getUserPhone(), userLoginResponse, request, response, 1);
@@ -358,6 +367,13 @@ public class UserbasicApiController implements UserbasicApi {
         UserBasicDo userBasicDo = userBasicInfoService.weixinLogin(wxUserLoginRequest.getUnionid(),wxUserLoginRequest.getType());
         if (StringTool.isNotEmpty(userBasicDo.getUserId())){
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
+            if (null == userLoginResponse.getIsWxBind()){
+                userLoginResponse.setIsWxBind(false);
+            }
+            // 返回用户手机号
+            if (StringTool.isNotEmpty(userBasicDo.getPhone())) {
+                userLoginResponse.setUserPhone(userBasicDo.getPhone());
+            }
             // 设置登录会员的cookie信息
             StringBuilder sb = new StringBuilder();
             String userJson = JSON.toJSONString(userLoginResponse);
@@ -376,9 +392,9 @@ public class UserbasicApiController implements UserbasicApi {
     }
 
     @Override
-    public ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code",required = true) @Valid @RequestParam(value = "code") String code, @ApiParam(value = "type(0:web,1:小程序)",required = true) @Valid @RequestParam(value = "type") String type){
+    public ResponseEntity<WXUserBasicResponse> getWXUserBasic(@ApiParam(value = "code",required = true) @Valid @RequestParam(value = "code") String code){
         WXUserBasicResponse wxUserBasicResponse = new WXUserBasicResponse();
-        WXUserBasicDo wxUserBasicDo = userBasicInfoService.queryWXUserBasic(code, type, request, response);
+        WXUserBasicDo wxUserBasicDo = userBasicInfoService.queryWXUserBasic(code, request, response);
         BeanUtils.copyProperties(wxUserBasicResponse,wxUserBasicDo);
         return new ResponseEntity<WXUserBasicResponse>(wxUserBasicResponse, HttpStatus.OK);
     }
@@ -394,6 +410,10 @@ public class UserbasicApiController implements UserbasicApi {
             userBasicDo = userBasicInfoService.smallProgramLogin(code,iv,rawData);
 
             BeanUtils.copyProperties(userBasicDo,userLoginResponse);
+            // 返回用户手机号
+            if (StringTool.isNotEmpty(userBasicDo.getPhone())) {
+                userLoginResponse.setUserPhone(userBasicDo.getPhone());
+            }
             if (null!=userBasicDo.getUserId()&&userBasicDo.getUserId().length()>0){
                 // 设置登录会员的cookie信息
                 StringBuilder sb = new StringBuilder();

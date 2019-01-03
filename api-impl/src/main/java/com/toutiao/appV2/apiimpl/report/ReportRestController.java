@@ -7,6 +7,8 @@ import com.toutiao.app.dao.report.*;
 import com.toutiao.app.service.report.ReportCityService;
 import com.toutiao.appV2.api.report.ReportRestApi;
 import com.toutiao.appV2.model.report.*;
+import com.toutiao.web.common.constant.syserror.CityReportErrorCodeEnum;
+import com.toutiao.web.common.exceptions.BaseException;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
@@ -40,7 +42,12 @@ public class ReportRestController implements ReportRestApi {
     public ResponseEntity<ReportCityResponse> selectReportCity() {
         Integer cityId = CityUtils.returnCityId(CityUtils.getCity());
         ReportCity reportCity = reportCityService.selectReportCityByCityId(cityId);
-        ReportCityResponse reportCityResponse = turnToResponse(reportCity);
+        ReportCityResponse reportCityResponse;
+        try {
+            reportCityResponse = turnToResponse(reportCity);
+        } catch (Exception e) {
+            throw new BaseException(CityReportErrorCodeEnum.PARSE_FAILED);
+        }
         return new ResponseEntity<>(reportCityResponse, HttpStatus.OK);
     }
 
@@ -173,6 +180,18 @@ public class ReportRestController implements ReportRestApi {
         return new ResponseEntity<>(rsp, HttpStatus.OK);
     }
 
+    /**
+     * 查询举报统计
+     * @return
+     */
+    @Override
+    public ResponseEntity<ReportStatisticsResponse> queryReportStatistics() {
+        ReportStatisticsResponse response = new ReportStatisticsResponse();
+        ReportStatisticsDo reportStatisticsDo = reportCityService.queryReportStatistics(CityUtils.returnCityId(CityUtils.getCity()));
+        BeanUtils.copyProperties(reportStatisticsDo, response);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 
     private ReportCityResponse turnToResponse(ReportCity reportCity) {
         ReportCityResponse reportCityResponse = new ReportCityResponse();
@@ -196,7 +215,7 @@ public class ReportRestController implements ReportRestApi {
 
         //二手房热门小区
         List<ReportEsfProjHotResponse> reportEsfProjHotResponseList = JSONArray.parseArray(reportCity.getEsfPlotHot(), ReportEsfProjHotResponse.class);
-        if(StringTool.isNotEmptyList(reportEsfProjHotResponseList)){
+        if (StringTool.isNotEmptyList(reportEsfProjHotResponseList)) {
             Collections.sort(reportEsfProjHotResponseList);
         }
         reportCityResponse.setEsfPlotHot(reportEsfProjHotResponseList);
@@ -212,7 +231,7 @@ public class ReportRestController implements ReportRestApi {
 
         //二手房特色房源：降价房
         List<ReportTeSeJiangJiaRespose> teSeJiangjiaResposeList = JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class);
-        if(StringTool.isNotEmptyList(teSeJiangjiaResposeList)){
+        if (StringTool.isNotEmptyList(teSeJiangjiaResposeList)) {
             Collections.sort(teSeJiangjiaResposeList);
         }
         reportCityResponse.setEsfTeseJiangjia(teSeJiangjiaResposeList);
@@ -250,7 +269,7 @@ public class ReportRestController implements ReportRestApi {
 
         //二手房特色房源：抢手房
         List<ReportTeSeQiangShouRespose> teSeQiangShouResposeList = JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class);
-        if(StringTool.isNotEmptyList(teSeQiangShouResposeList)){
+        if (StringTool.isNotEmptyList(teSeQiangShouResposeList)) {
             Collections.sort(teSeQiangShouResposeList);
         }
         reportCityResponse.setEsfTeseQiangshou(teSeQiangShouResposeList);
@@ -258,14 +277,14 @@ public class ReportRestController implements ReportRestApi {
 
         //新房价格趋势，近6个月数据
         List<ReportPriceQuotationsResponse> newPriceRange = JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class);
-        if(StringTool.isNotEmptyList(newPriceRange)){
+        if (StringTool.isNotEmptyList(newPriceRange)) {
             Collections.sort(newPriceRange);
         }
         reportCityResponse.setNewPriceRange(newPriceRange);
 
         //二手房均价趋势，近6个月数据
         List<ReportPriceQuotationsResponse> esfPriceFenbu = JSONArray.parseArray(reportCity.getEsfPriceFenbu(), ReportPriceQuotationsResponse.class);
-        if(StringTool.isNotEmptyList(esfPriceFenbu)){
+        if (StringTool.isNotEmptyList(esfPriceFenbu)) {
             Collections.sort(esfPriceFenbu);
         }
         reportCityResponse.setEsfPriceFenbu(esfPriceFenbu);

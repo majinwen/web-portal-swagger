@@ -217,7 +217,7 @@ public interface NewHouseApi {
     @ApiOperation(value = "提交活动表单", nickname = "saveUserActivityMsg", notes = "提交活动表单",
             response = StringDataResponse.class, tags={ "新房", })
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "OK", response = NashResult.class),
+            @ApiResponse(code = 200, message = "OK", response = StringDataResponse.class),
             @ApiResponse(code = 201, message = "Created"),
             @ApiResponse(code = 401, message = "Unauthorized"),
             @ApiResponse(code = 403, message = "Forbidden"),
