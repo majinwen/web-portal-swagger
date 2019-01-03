@@ -161,7 +161,7 @@ public class RentDetailsDo {
     /**
      * 房源图片
      */
-    private List<Map<String,String>> rentHouseImg;
+    private String rentHouseImg;
 
     private String[] housePhoto;
     /**
