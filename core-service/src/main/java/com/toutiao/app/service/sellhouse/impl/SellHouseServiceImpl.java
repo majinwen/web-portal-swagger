@@ -1146,7 +1146,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 Integer rankLowInBizcircleLayout = sellHousesSearchDo.getRankLowInBizcircleLayout();
                 if (rankLowInBizcircleLayout > 0 && rankLowInBizcircleLayout < 10) {
                     String text = sellHousesSearchDo.getHouseBusinessName() + "居室低总价榜NO." + rankLowInBizcircleLayout;
-                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
+//                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
                 }
                 sellHousesSearchDo.setHouseColorLableList(houseColorLableList);
 
@@ -2457,7 +2457,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             Integer rankLowInBizcircleLayout = sellHouseDo.getRankLowInBizcircleLayout();
             if (rankLowInBizcircleLayout > 0 && rankLowInBizcircleLayout < 10) {
                 String text = sellHouseDo.getHouseBusinessName() + "居室低总价榜NO." + rankLowInBizcircleLayout;
-                houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
+//                houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
             }
             sellHouseDo.setHouseColorLableList(houseColorLableList);
 
