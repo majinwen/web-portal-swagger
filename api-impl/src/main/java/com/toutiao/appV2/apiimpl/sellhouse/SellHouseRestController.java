@@ -250,8 +250,8 @@ public class SellHouseRestController implements SellHouseRestApi {
                     userId = Integer.valueOf(userLoginResponse.getUserId());
                 }
                 SellHouseGuessLikeRequest sellHouseGuessLikeRequest = new SellHouseGuessLikeRequest();
-                sellHouseGuessLikeRequest.setAreaId(new Integer[1]);
-                sellHouseGuessLikeRequest.setLayoutId(new Integer[1]);
+                sellHouseGuessLikeRequest.setAreaId(new Integer[0]);
+                sellHouseGuessLikeRequest.setLayoutId(new Integer[0]);
                 BeanUtils.copyProperties(sellHouseGuessLikeRequest, sellHouseDoQuery);
                 sellHouseSearchDomain = sellHouseService.queryGuessLikeSellHouseList(sellHouseDoQuery, userId,CityUtils.getCity());
                 sellHouseSearchDomainResponse.setIsGuess(1);

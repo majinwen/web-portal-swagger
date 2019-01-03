@@ -42,7 +42,7 @@ public class ReportEsfProjHot {
      * 挂牌量
      */
     @ApiModelProperty(value = "挂牌量")
-    private Integer hosueCount;
+    private Integer houseCount;
 
     /**
      * 更新时间

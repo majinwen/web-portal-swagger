@@ -7,12 +7,12 @@
     <result column="projname" property="projname" jdbcType="VARCHAR" />
     <result column="newcode" property="newcode" jdbcType="INTEGER" />
     <result column="average_price" property="averagePrice" jdbcType="NUMERIC" />
-    <result column="hosue_count" property="hosueCount" jdbcType="INTEGER" />
+    <result column="house_count" property="houseCount" jdbcType="INTEGER" />
     <result column="time" property="time" jdbcType="TIMESTAMP" />
     <result column="sort" property="sort" jdbcType="INTEGER" />
   </resultMap>
   <sql id="Base_Column_List" >
-    id, city_id, newcode, projname, average_price, hosue_count, time, sort
+    id, city_id, newcode, projname, average_price, house_count, time, sort
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -26,10 +26,10 @@
   </delete>
   <insert id="insert" parameterType="com.toutiao.app.dao.report.ReportEsfProjHot" >
     insert into report_esf_proj_hot (id, city_id, projname, 
-      newcode, average_price, hosue_count, 
+      newcode, average_price, house_count, 
       city_name, time)
     values (#{id,jdbcType=INTEGER}, #{cityId,jdbcType=INTEGER}, #{projname,jdbcType=VARCHAR}, 
-      #{newcode,jdbcType=INTEGER}, #{averagePrice,jdbcType=NUMERIC}, #{hosueCount,jdbcType=INTEGER}, 
+      #{newcode,jdbcType=INTEGER}, #{averagePrice,jdbcType=NUMERIC}, #{houseCount,jdbcType=INTEGER}, 
       #{cityName,jdbcType=VARCHAR}, #{time,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.toutiao.app.dao.report.ReportEsfProjHot" >
@@ -50,8 +50,8 @@
       <if test="averagePrice != null" >
         average_price,
       </if>
-      <if test="hosueCount != null" >
-        hosue_count,
+      <if test="houseCount != null" >
+        house_count,
       </if>
       <if test="cityName != null" >
         city_name,
@@ -76,8 +76,8 @@
       <if test="averagePrice != null" >
         #{averagePrice,jdbcType=NUMERIC},
       </if>
-      <if test="hosueCount != null" >
-        #{hosueCount,jdbcType=INTEGER},
+      <if test="houseCount != null" >
+        #{houseCount,jdbcType=INTEGER},
       </if>
       <if test="cityName != null" >
         #{cityName,jdbcType=VARCHAR},
@@ -102,8 +102,8 @@
       <if test="averagePrice != null" >
         average_price = #{averagePrice,jdbcType=NUMERIC},
       </if>
-      <if test="hosueCount != null" >
-        hosue_count = #{hosueCount,jdbcType=INTEGER},
+      <if test="houseCount != null" >
+        house_count = #{houseCount,jdbcType=INTEGER},
       </if>
       <if test="cityName != null" >
         city_name = #{cityName,jdbcType=VARCHAR},
@@ -120,7 +120,7 @@
       projname = #{projname,jdbcType=VARCHAR},
       newcode = #{newcode,jdbcType=INTEGER},
       average_price = #{averagePrice,jdbcType=NUMERIC},
-      hosue_count = #{hosueCount,jdbcType=INTEGER},
+      house_count = #{houseCount,jdbcType=INTEGER},
       city_name = #{cityName,jdbcType=VARCHAR},
       time = #{time,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
