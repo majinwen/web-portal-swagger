@@ -732,7 +732,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 //设置标题图
                 String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-ttc400x300";
+                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dfdo400x300";
                 }
                 rentDetailsFewDo.setHouseTitleImg(titlePhoto);
 
