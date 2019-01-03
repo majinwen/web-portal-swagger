@@ -243,19 +243,19 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             if (recommendBuildTagNameList.size() > 0 && StringTool.isNotEmpty(typeCountsMap)) {
                 String communityLableStr = "";
                 if (recommendBuildTagNameList.contains("豪宅")) {
-                    communityLableStr = areaName + typeCountsMap.get(4).get(nearBySellHousesDo.getAreaId()) + "大豪宅社区主力户型";
+                    communityLableStr = areaName + typeCountsMap.get(4).get(nearBySellHousesDo.getAreaId().toString()) + "大豪宅社区主力户型";
                     houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/plot/luxuryHouse"));
                 }
                 if (recommendBuildTagNameList.contains("别墅")) {
-                    communityLableStr = areaName + typeCountsMap.get(5).get(nearBySellHousesDo.getAreaId()) + "大别墅社区主力户型";
+                    communityLableStr = areaName + typeCountsMap.get(5).get(nearBySellHousesDo.getAreaId().toString()) + "大别墅社区主力户型";
                     houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/plot/topVilla"));
                 }
                 if (recommendBuildTagNameList.contains("首次置业")) {
-                    communityLableStr = areaName + typeCountsMap.get(2).get(nearBySellHousesDo.getAreaId()) + "大首置社区主力户型";
+                    communityLableStr = areaName + typeCountsMap.get(2).get(nearBySellHousesDo.getAreaId().toString()) + "大首置社区主力户型";
                     houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/plot/first"));
                 }
                 if (recommendBuildTagNameList.contains("换房升级")) {
-                    communityLableStr = areaName + typeCountsMap.get(3).get(nearBySellHousesDo.getAreaId()) + "大换房社区主力户型";
+                    communityLableStr = areaName + typeCountsMap.get(3).get(nearBySellHousesDo.getAreaId().toString()) + "大换房社区主力户型";
                     houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/plot/improve"));
                 }
                 if (recommendBuildTagNameList.contains("近公园")) {
