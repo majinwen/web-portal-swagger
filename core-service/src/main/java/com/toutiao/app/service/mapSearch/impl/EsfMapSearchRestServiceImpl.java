@@ -570,7 +570,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     HouseSubject sellHouseSubject = new HouseSubject();
                     sellHouseSubject.setText(esfMapHouseDo.getHouseBusinessName()+esfMapHouseDo.getRoom()+"居室低总价榜NO."+rankInLowCommunityLayout);
                     sellHouseSubject.setUrl("");
-                    houseSubjectList.add(sellHouseSubject);
+//                    houseSubjectList.add(sellHouseSubject);
                 }
 
                 //tagsName
@@ -1105,7 +1105,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     HouseSubject sellHouseSubject = new HouseSubject();
                     sellHouseSubject.setText(esfMapHouseDo.getHouseBusinessName()+esfMapHouseDo.getRoom()+"居室低总价榜NO."+rankInLowCommunityLayout);
                     sellHouseSubject.setUrl("");
-                    houseSubjectList.add(sellHouseSubject);
+//                    houseSubjectList.add(sellHouseSubject);
                 }
 
                 //tagsName

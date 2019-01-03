@@ -223,17 +223,17 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             List<HouseColorLable> houseColorLableList = new ArrayList<>();
 
             int isMustRob = nearBySellHousesDo.getIsMustRob();
-            if (isMustRob == 1) {houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", wapName + "/"+city+"/topics/house/hot"));
+            if (isMustRob == 1) {houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"));
             }
 
             int isLowPrice = nearBySellHousesDo.getIsLowPrice();
             if (isLowPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", wapName + "/"+city+"/topics/house/low"));
+                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"));
             }
 
             int isCutPrice = nearBySellHousesDo.getIsCutPrice();
             if (isCutPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价房", wapName + "/"+city+"/topics/house/reduction"));
+                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"));
             }
 
             List recommendBuildTagNameList = nearBySellHousesDo.getRecommendBuildTagsName();
@@ -274,6 +274,8 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
                 String text = nearBySellHousesDo.getHouseBusinessName()+"居室低总价榜NO."+rankLowInBizcircleLayout;
                 houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", text, "http://www.baidu.com"));
             }
+
+            nearBySellHousesDo.setHouseColorLableList(houseColorLableList);
 
             //二手房弹幕第一行
             List<String> houseBarrageFirstList = new ArrayList<>();

@@ -295,7 +295,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
                     HouseSubject sellHouseSubject = new HouseSubject();
                     sellHouseSubject.setText(sellHouseDo.getHouseBusinessName() + sellHouseDo.getRoom() + "居室低总价榜NO." + rankInLowCommunityLayout);
                     sellHouseSubject.setUrl("");
-                    houseSubjectList.add(sellHouseSubject);
+//                    houseSubjectList.add(sellHouseSubject);
                 }
 
                 //tagsName

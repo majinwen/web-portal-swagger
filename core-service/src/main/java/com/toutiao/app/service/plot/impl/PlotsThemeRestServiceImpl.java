@@ -130,7 +130,8 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 if (trafficArr.length == 3) {
 //                    int i = Integer.parseInt(trafficArr[2]);
                     DecimalFormat df = new DecimalFormat("0.0");
-                    nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+//                    nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                 }
 
 
