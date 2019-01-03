@@ -105,9 +105,10 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
 //                }
 //                userFavoriteRentDetailDo.setHousePhoto(imgs.toArray(new String[0]));
 
-                String img = searchHit.getSourceAsMap().get("rent_house_img")==null?"":searchHit.getSourceAsMap().get("rent_house_img").toString();
-                String[] arrImg = img.split(",");
-                userFavoriteRentDetailDo.setHousePhoto(arrImg);
+//                String img = searchHit.getSourceAsMap().get("rent_house_img")==null?"":searchHit.getSourceAsMap().get("rent_house_img").toString();
+//                String[] arrImg = img.split(",");
+//                userFavoriteRentDetailDo.setHousePhoto(arrImg);
+                userFavoriteRentDetailDo.setHousePhoto(userFavoriteRentDetailDo.getRentHouseImg());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (StringTool.isNotEmpty(userFavoriteRentDetailDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(userFavoriteRentDetailDo.getUserId().toString(), city);

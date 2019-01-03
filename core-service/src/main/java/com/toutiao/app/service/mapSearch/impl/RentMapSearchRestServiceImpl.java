@@ -555,9 +555,10 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
 //
 //                    }
 //                    rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
-                    String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
-                    String[] arrImg = img.split(",");
-                    rentDetailsFewDo.setHousePhoto(arrImg);
+//                    String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
+//                    String[] arrImg = img.split(",");
+//                    rentDetailsFewDo.setHousePhoto(arrImg);
+                    rentDetailsFewDo.setHousePhoto(rentDetailsFewDo.getRentHouseImg());
                     AgentBaseDo agentBaseDo = new AgentBaseDo();
                     if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
                         agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);

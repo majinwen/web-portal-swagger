@@ -126,9 +126,9 @@ public class RentRestRestServiceImpl implements RentRestService {
 //
 //                }
 //                rentDetailsDo.setHousePhoto(imgs.toArray(new String[0]));
-                String img = searchHit.getSourceAsMap().get("rent_house_img")==null?"":searchHit.getSourceAsMap().get("rent_house_img").toString();
-                String[] arrImg = img.split(",");
-                rentDetailsDo.setHousePhoto(arrImg);
+
+
+                rentDetailsDo.setHousePhoto(rentDetailsDo.getRentHouseImg());
 
                 if (rentDetailsDo.getRentHouseType() == 1 && StringTool.isNotEmpty(rentDetailsDo.getUserId())) {
                     //经纪人信息
@@ -462,9 +462,10 @@ public class RentRestRestServiceImpl implements RentRestService {
 //
 //                }
 //                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
-                String img = searchHit.getSourceAsMap().get("rent_house_img")==null?"":searchHit.getSourceAsMap().get("rent_house_img").toString();
-                String[] arrImg = img.split(",");
-                rentDetailsFewDo.setHousePhoto(arrImg);
+//                String img = searchHit.getSourceAsMap().get("rent_house_img")==null?"":searchHit.getSourceAsMap().get("rent_house_img").toString();
+//                String[] arrImg = img.split(",");
+//                rentDetailsFewDo.setHousePhoto(arrImg);
+                rentDetailsFewDo.setHousePhoto(rentDetailsFewDo.getRentHouseImg());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
@@ -523,9 +524,10 @@ public class RentRestRestServiceImpl implements RentRestService {
 //
 //                }
 //                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
-                String img = searchHit.getSourceAsMap().get("rent_house_img")==null?"":searchHit.getSourceAsMap().get("rent_house_img").toString();
-                String[] arrImg = img.split(",");
-                rentDetailsFewDo.setHousePhoto(arrImg);
+//                String img = searchHit.getSourceAsMap().get("rent_house_img")==null?"":searchHit.getSourceAsMap().get("rent_house_img").toString();
+//                String[] arrImg = img.split(",");
+//                rentDetailsFewDo.setHousePhoto(arrImg);
+                rentDetailsFewDo.setHousePhoto(rentDetailsFewDo.getRentHouseImg());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
@@ -684,9 +686,10 @@ public class RentRestRestServiceImpl implements RentRestService {
 //
 //                }
 //                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
-                String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
-                String[] arrImg = img.split(",");
-                rentDetailsFewDo.setHousePhoto(arrImg);
+//                String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
+//                String[] arrImg = img.split(",");
+//                rentDetailsFewDo.setHousePhoto(arrImg);
+                rentDetailsFewDo.setHousePhoto(rentDetailsFewDo.getRentHouseImg());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
@@ -1052,9 +1055,10 @@ public class RentRestRestServiceImpl implements RentRestService {
 //
 //                }
 //                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
-                String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
-                String[] arrImg = img.split(",");
-                rentDetailsFewDo.setHousePhoto(arrImg);
+//                String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
+//                String[] arrImg = img.split(",");
+//                rentDetailsFewDo.setHousePhoto(arrImg);
+                rentDetailsFewDo.setHousePhoto(rentDetailsFewDo.getRentHouseImg());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
@@ -1163,9 +1167,10 @@ public class RentRestRestServiceImpl implements RentRestService {
 //
 //                }
 //                rentDetailsFewDo.setHousePhoto(imgs.toArray(new String[0]));
-                String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
-                String[] arrImg = img.split(",");
-                rentDetailsFewDo.setHousePhoto(arrImg);
+//                String img = hit.getSourceAsMap().get("rent_house_img")==null?"":hit.getSourceAsMap().get("rent_house_img").toString();
+//                String[] arrImg = img.split(",");
+//                rentDetailsFewDo.setHousePhoto(arrImg);
+                rentDetailsFewDo.setHousePhoto(rentDetailsFewDo.getRentHouseImg());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), city);
