@@ -845,13 +845,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 NewHouseCustomConditionDo newHouseCustomConditionDo = JSON.parseObject(details, NewHouseCustomConditionDo.class);
                 if(StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getAveragePrice())){
                     newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getAveragePrice()+"元/m²");
-                    continue;
-                }else if (StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getTotalPrice())){
+                }else if (StringTool.isDoubleNotEmpty(newHouseCustomConditionDo.getTotalPrice()) && StringTool.isEmpty(newHouseCustomConditionDo.getPriceDesc())){
                     newHouseCustomConditionDo.setPriceDesc(newHouseCustomConditionDo.getTotalPrice()+"万/套");
-                    continue;
                 }else if (StringTool.isDoubleEmpty(newHouseCustomConditionDo.getTotalPrice()) && StringTool.isDoubleEmpty(newHouseCustomConditionDo.getAveragePrice())){
                     newHouseCustomConditionDo.setPriceDesc("售价待定");
-                    continue;
                 }
                 //新房图片处理
                 if (!Objects.equals(newHouseCustomConditionDo.getBuildingTitleImg(), "") && !newHouseCustomConditionDo.getBuildingTitleImg().startsWith("http")) {
