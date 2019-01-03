@@ -641,10 +641,12 @@ public class RentRestRestServiceImpl implements RentRestService {
                 if (trafficArr.length == 3) {
                     int i = Integer.parseInt(trafficArr[2]);
                     if (i < 1000) {
-                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
                     } else if (i < 2000) {
                         DecimalFormat df = new DecimalFormat("0.0");
-                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+//                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
                     }
                 }
 
@@ -692,7 +694,8 @@ public class RentRestRestServiceImpl implements RentRestService {
                     if(StringTool.isNotEmpty(rentDetailsFewDo.getNearbySubway().get(keys))){
                         trafficArr = rentDetailsFewDo.getNearbySubway().get(keys).split("\\$");
                         if (trafficArr.length == 3) {
-                            nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                            nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                            nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
                         }
                     }
                 }
@@ -720,7 +723,8 @@ public class RentRestRestServiceImpl implements RentRestService {
                     rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(map.get(minDistance)));
                     trafficArr = rentDetailsFewDo.getSubwayDistanceInfo().split("\\$");
                     if (trafficArr.length == 3) {
-                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                        nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
 
                     }
                 }

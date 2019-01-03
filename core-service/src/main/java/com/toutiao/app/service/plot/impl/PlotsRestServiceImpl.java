@@ -505,10 +505,12 @@ public class PlotsRestServiceImpl implements PlotsRestService {
         if (trafficArr.length == 3) {
             int i = Integer.parseInt(trafficArr[2]);
             if (i < 1000) {
-                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
             } else if (i < 2000) {
                 DecimalFormat df = new DecimalFormat("0.0");
-                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+//                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
             }
         }
 
@@ -530,7 +532,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             if(StringTool.isNotEmpty(plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId))){
                 trafficArr = plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId).toString().split("\\$");
                 if (trafficArr.length == 3) {
-                    nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                    nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                    nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
                 }
             }
         }
@@ -553,7 +556,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
             trafficArr = plotDetailsFewDo.getSubwayDistanceInfo().split("\\$");
             if (trafficArr.length == 3) {
-                nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
 
             }
         }
@@ -668,7 +672,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             String[] trafficArr = traffic.split("\\$");
             if (trafficArr.length == 3) {
                 DecimalFormat df = new DecimalFormat("0.0");
-                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+//                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
             }
             plotTop50Do.setTrafficInformation(nearbyDistance);
             if (plotTop50Do.getPhoto().length > 0) {
