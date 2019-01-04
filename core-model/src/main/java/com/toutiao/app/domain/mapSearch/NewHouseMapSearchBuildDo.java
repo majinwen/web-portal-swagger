@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName NewHouseMapFindHouseBuildDo
@@ -131,5 +132,20 @@ public class NewHouseMapSearchBuildDo {
      * 是否收藏
      */
     private Boolean isFavorite = false;
+
+    /**
+     * 地铁信息
+     */
+    private Map<String,String> nearbySubway;
+
+    /**
+     * 附近距离xxkm
+     */
+    private String nearbyDistance;
+
+    /**
+     * 最近的地铁
+     */
+    private String roundStation;
 
 }
