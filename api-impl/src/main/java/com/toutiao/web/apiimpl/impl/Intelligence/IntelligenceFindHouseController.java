@@ -99,7 +99,7 @@ public class IntelligenceFindHouseController {
             String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
             UserLoginResponse userLoginResponse = JSONObject.parseObject(user,UserLoginResponse.class);
             if (StringTool.isBlank(user)) {
-                //前台判断状态 然后跳转到登陆页面
+                //前台判断状态 然后跳转到登录页面
                  return NashResult.Fail("no-login","");
             }else {
                 //更改当前报告的状态

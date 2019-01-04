@@ -82,7 +82,7 @@ public class FavoriteRestController implements FavoriteRestApi {
             favoriteHouseResponse.setTotalNum(favoriteHouseDomain.getTotalCount());
             return new ResponseEntity<>(favoriteHouseResponse, HttpStatus.OK);
         } else {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
     }
 
@@ -99,7 +99,7 @@ public class FavoriteRestController implements FavoriteRestApi {
         UserBasic user = UserBasic.getCurrent();
 
         if (null == user) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
 
         CancelFavoriteHouseDto cancelFavoriteHouseDto = new CancelFavoriteHouseDto();
@@ -133,7 +133,7 @@ public class FavoriteRestController implements FavoriteRestApi {
         UserBasic user = UserBasic.getCurrent();
 
         if (null == user) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
 
         CancelFavoriteHouseDto cancelFavoriteHouseDto = new CancelFavoriteHouseDto();
