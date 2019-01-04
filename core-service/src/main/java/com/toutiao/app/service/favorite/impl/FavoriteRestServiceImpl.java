@@ -13,6 +13,7 @@ import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.*;
 import org.slf4j.Logger;
@@ -23,9 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FavoriteRestServiceImpl implements FavoriteRestService {
@@ -386,7 +385,16 @@ public class FavoriteRestServiceImpl implements FavoriteRestService {
                     favoriteHouseVo.setHouseMinArea(favoriteHouseDo.getHouseMinArea());
                     favoriteHouseVo.setHouseMaxArea(favoriteHouseDo.getHouseMaxArea());
                     favoriteHouseVo.setTotalPrice(favoriteHouseDo.getTotalPrice().intValue());
-                    favoriteHouseVo.setRoomType(favoriteHouseDo.getRoomType());
+                    List<Integer> roomType = new ArrayList<>();
+                    if (StringTool.isNotEmpty(favoriteHouseDo.getRoomType())) {
+                        for (Integer i : favoriteHouseDo.getRoomType()) {
+                            if (null != i && i > 0) {
+                                roomType.add(i);
+                            }
+                        }
+                    }
+                    Collections.sort(roomType);
+                    favoriteHouseVo.setRoomType(roomType.toArray(new Integer[0]));
                     favoriteHouseVo.setIsActive(favoriteHouseDo.getIsActive());
                     break;
                 case 2: // 二手房

@@ -149,7 +149,7 @@
 //                userBasic =userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
 //            }
 //            if (StringTool.isBlank(userBasic)) {
-//                //前台判断状态 然后跳转到登陆页面
+//                //前台判断状态 然后跳转到登录页面
 //                return "no-login";
 //            }else {
 //                //更改当前报告的状态

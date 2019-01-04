@@ -26,7 +26,7 @@ import java.io.OutputStream;
 public class imageCodeController {
 
     /**
-     * 生成登陆验证码
+     * 生成登录验证码
      *
      * @return
      * @author

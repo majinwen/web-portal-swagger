@@ -212,7 +212,7 @@ public class PaymentServiceImpl implements PaymentService {
             }
         }else{
             Integer noLogin = UserInterfaceErrorCodeEnum.USER_NO_LOGIN.getValue();
-            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登陆");
+            NashResult<Object> nashResult = NashResult.Fail(noLogin.toString(),"用户未登录");
             result = JSONObject.toJSONString(nashResult);
         }
 

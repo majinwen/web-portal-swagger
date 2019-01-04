@@ -57,7 +57,7 @@ public class Login {
     private UserBasicMapper userBasicMapper;
 
     /**
-     * 功能描述：去登陆页面
+     * 功能描述：去登录页面
      *
      * @param []
      * @return java.lang.String
@@ -133,8 +133,8 @@ public class Login {
             //查询该电话号是否存在
 //            SysUserEntity sysUser = sysUserService.selectByPhone(phone);
 //            if (StringTool.isBlank(sysUser)) {
-//                //首次登陆
-//                //登陆成功后需要将用户手机号插入的数据库
+//                //首次登录
+//                //登录成功后需要将用户手机号插入的数据库
 //                sysUserService.insertPhone(phone);
 //            }
 

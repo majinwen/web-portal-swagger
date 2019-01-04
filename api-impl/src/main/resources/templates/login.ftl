@@ -172,7 +172,7 @@
         }
     }
 
-    //登陆
+    //登录
     $("#log_in_button").click(function () {
         var bo = false;
         var msgInfo = '';
@@ -204,7 +204,7 @@
         if (bo) {
             $("#message").html(msgInfo);
         } else {
-            //点击登陆按钮进行跳转
+            //点击登录按钮进行跳转
             $("#myform").submit();
         }
     });
