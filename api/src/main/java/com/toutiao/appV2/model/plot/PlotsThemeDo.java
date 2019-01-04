@@ -165,6 +165,9 @@ public class PlotsThemeDo   {
   @ApiModelProperty("距离最近的大型公园")
   private String nearestPark;
 
+  @ApiModelProperty(value = "小区所在区域热度排名", name = "districtHotSort")
+  private Integer districtHotSort;
+
   /**
    * 距最近公园的距离
    */

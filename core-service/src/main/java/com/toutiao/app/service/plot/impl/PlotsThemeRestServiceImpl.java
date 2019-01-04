@@ -190,6 +190,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
 
                 if (null != plotMarketDo) {
                     tagsName.add(plotsThemeDo.getArea()+"热度榜第"+plotMarketDo.getTotalSort()+"名");
+                    plotsThemeDo.setDistrictHotSort(plotMarketDo.getTotalSort());
                 }
 
 

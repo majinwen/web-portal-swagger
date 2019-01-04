@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -119,6 +120,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             }
 
             String[] img = newHouseDetailDo.getBuildingImgs().get(0).split(",");
+            if (null != img && img.length == 1 && "".equals(img[0])) {
+                img = new String[0];
+            }
             newHouseDetailDo.setBuildingImg(img);
         }
         if ("0".equals(newHouseDetailDo.getHeatingType())) {
@@ -296,6 +300,21 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 String details = "";
                 details = searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
+                String nearbyDistance = StringTool.nullToString(newHouseListDos.getDistrictName());
+                String traffic = newHouseListDos.getRoundStation();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    if (i < 1000) {
+//                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+                    } else if (i < 2000) {
+                        DecimalFormat df = new DecimalFormat("0.0");
+//                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    }
+                }
+
                 if (null != newHouseDoQuery.getSubwayStationId() && newHouseDoQuery.getSubwayStationId().length > 0) {
                     Map<Integer, String> map = new HashMap<>();
                     List<Integer> sortDistance = new ArrayList<>();
@@ -311,7 +330,16 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                     }
                     Integer minDistance = Collections.min(sortDistance);
                     newHouseListDos.setSubwayDistanceInfo(newHouseListDos.getNearbysubway().get(map.get(minDistance)).toString());
+                    trafficArr = newHouseListDos.getSubwayDistanceInfo().split("\\$");
+                    if (trafficArr.length == 3) {
+                        nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+                    }
                 }
+
+                if (StringTool.isNotEmpty(nearbyDistance)) {
+                    newHouseListDos.setNearbyDistance(nearbyDistance);
+                }
+
                 try {
                     //获取新房下户型的数量
                     NewHouseLayoutCountDomain newHouseLayoutCountDomain = newHouseLayoutService.getNewHouseLayoutByNewHouseId(newHouseListDos.getBuildingNameId(), city);
@@ -678,6 +706,23 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 String details = "";
                 details = searchHit.getSourceAsString();
                 NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
+
+                String nearbyDistance = StringTool.nullToString(newHouseListDos.getDistrictName());
+                String traffic = newHouseListDos.getRoundStation();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    if (i < 1000) {
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+                    } else if (i < 2000) {
+                        DecimalFormat df = new DecimalFormat("0.0");
+                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    }
+                }
+
+                if (StringTool.isNotEmpty(nearbyDistance)) {
+                    newHouseListDos.setNearbyDistance(nearbyDistance);
+                }
 
                 try {
                     //获取新房下户型的数量
