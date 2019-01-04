@@ -459,4 +459,9 @@ public class SellAndClaimHouseDetailsDo {
 
     private List<HouseLable> houseLableList;
 
+    /**
+     * 初始价格
+     */
+    private Double initialPrice;
+
 }
