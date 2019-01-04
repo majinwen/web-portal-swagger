@@ -29,10 +29,10 @@ public class SellHouseThemeRequest {
     private Integer[] layoutId;
 
     @ApiModelProperty(value = "页码", name = "pageNum")
-    private Integer pageNum;
+    private Integer pageNum = 1;
 
     @ApiModelProperty(value = "数量", name = "pageSize")
-    private Integer pageSize;
+    private Integer pageSize = 10;
 
 //    @ApiModelProperty(value = "主题类型", name = "themeType")
 //    private Integer themeType;

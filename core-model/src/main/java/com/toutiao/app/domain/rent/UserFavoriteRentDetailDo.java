@@ -170,4 +170,6 @@ public class UserFavoriteRentDetailDo {
 
     @ApiModelProperty("坐标")
     private String location;
+
+    private String[] rentHouseImg;
 }

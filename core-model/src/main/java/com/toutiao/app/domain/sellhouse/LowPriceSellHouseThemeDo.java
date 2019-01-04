@@ -1,5 +1,6 @@
 package com.toutiao.app.domain.sellhouse;
 
+import com.toutiao.web.common.constant.city.CityEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -65,6 +66,49 @@ public class LowPriceSellHouseThemeDo {
 
     @ApiModelProperty(value = "捡漏房判定标志位(1-同小区比较，2-同商圈比较)", name = "lowPriceFlag")
     private Integer lowPriceFlag;
+
+
+    public void setAvgRelativeWithCommunity(Double avgRelativeWithCommunity) {
+        this.avgRelativeWithCommunity = avgRelativeWithCommunity;
+        if(null!=avgRelativeWithCommunity){
+            this.avgRelativeWithCommunity = Math.abs(avgRelativeWithCommunity);
+        }
+    }
+
+    public void setAvgAbsoluteWithCommunity(Double avgAbsoluteWithCommunity) {
+        this.avgAbsoluteWithCommunity = avgAbsoluteWithCommunity;
+        if(null!=avgAbsoluteWithCommunity){
+            this.avgAbsoluteWithCommunity = Math.abs(avgAbsoluteWithCommunity);
+        }
+    }
+
+    public void setAvgRelativeWithBizcircle(Double avgRelativeWithBizcircle) {
+        this.avgRelativeWithBizcircle = avgRelativeWithBizcircle;
+        if(null!=avgRelativeWithBizcircle){
+            this.avgRelativeWithBizcircle = Math.abs(avgRelativeWithBizcircle);
+        }
+    }
+
+    public void setAvgAbsoluteWithBizcircle(Double avgAbsoluteWithBizcircle) {
+        this.avgAbsoluteWithBizcircle = avgAbsoluteWithBizcircle;
+        if(null!=avgAbsoluteWithBizcircle){
+            this.avgAbsoluteWithBizcircle = Math.abs(avgAbsoluteWithBizcircle);
+        }
+    }
+
+    public void setAvgRelativeWithDistrict(Double avgRelativeWithDistrict) {
+        this.avgRelativeWithDistrict = avgRelativeWithDistrict;
+        if(null!=avgRelativeWithDistrict){
+            this.avgRelativeWithDistrict = Math.abs(avgRelativeWithDistrict);
+        }
+    }
+
+    public void setAvgAbsoluteWithDistrict(Double avgAbsoluteWithDistrict) {
+        this.avgAbsoluteWithDistrict = avgAbsoluteWithDistrict;
+        if(null!=avgAbsoluteWithDistrict){
+            this.avgAbsoluteWithDistrict = Math.abs(avgAbsoluteWithDistrict);
+        }
+    }
 
 
 

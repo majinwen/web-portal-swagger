@@ -98,12 +98,17 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                     userFavoriteRentDetailDo.setIsDefaultImage(1);
                 }
 
-                List<Map<String, String>> rentHouseImg = (List<Map<String, String>>) searchHit.getSourceAsMap().get("rent_house_img");
-                for (int i = 0; i < rentHouseImg.size(); i++) {
-                    imgs.add(rentHouseImg.get(i).get("image_path"));
+//                List<Map<String, String>> rentHouseImg = (List<Map<String, String>>) searchHit.getSourceAsMap().get("rent_house_img");
+//                for (int i = 0; i < rentHouseImg.size(); i++) {
+//                    imgs.add(rentHouseImg.get(i).get("image_path"));
+//
+//                }
+//                userFavoriteRentDetailDo.setHousePhoto(imgs.toArray(new String[0]));
 
-                }
-                userFavoriteRentDetailDo.setHousePhoto(imgs.toArray(new String[0]));
+//                String img = searchHit.getSourceAsMap().get("rent_house_img")==null?"":searchHit.getSourceAsMap().get("rent_house_img").toString();
+//                String[] arrImg = img.split(",");
+//                userFavoriteRentDetailDo.setHousePhoto(arrImg);
+                userFavoriteRentDetailDo.setHousePhoto(userFavoriteRentDetailDo.getRentHouseImg());
                 AgentBaseDo agentBaseDo = new AgentBaseDo();
                 if (StringTool.isNotEmpty(userFavoriteRentDetailDo.getUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(userFavoriteRentDetailDo.getUserId().toString(), city);
