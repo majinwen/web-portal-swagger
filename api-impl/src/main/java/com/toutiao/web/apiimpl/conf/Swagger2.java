@@ -1,5 +1,6 @@
 package com.toutiao.web.apiimpl.conf;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -15,12 +16,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 @Configuration
 public class Swagger2 {
+
+    private static String swaggerHost;
+    @Value("${swagger.host}")
+    public void setSwaggerHost(String a) {
+        swaggerHost = a;
+    }
+
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
-                .host("app.dev.bidewu.com/searchapiv2")
-//                .host("localhost:8085")
+//                .host("app.dev.bidewu.com/searchapiv2")
+                .host(swaggerHost)
                 .select()
                 //为controller包路径
                 .apis(RequestHandlerSelectors.basePackage("com.toutiao.appV2.apiimpl"))

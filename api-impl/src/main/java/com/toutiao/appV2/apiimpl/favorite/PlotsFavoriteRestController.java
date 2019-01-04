@@ -96,7 +96,7 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
         UserBasic user = UserBasic.getCurrent();
 
         if (null == user) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
         PlotsAddFavoriteDoQuery plotsAddFavoriteDoQuery = new PlotsAddFavoriteDoQuery();
         BeanUtils.copyProperties(plotsAddFavoriteRequest, plotsAddFavoriteDoQuery);
@@ -133,7 +133,7 @@ public class PlotsFavoriteRestController implements PlotsFavoriteRestApi {
         UserBasic user = UserBasic.getCurrent();
 
         if (null == user) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
         PlotIsFavoriteDoQuery plotIsFavoriteDoQuery = new PlotIsFavoriteDoQuery();
         BeanUtils.copyProperties(cancelFavoriteRequest, plotIsFavoriteDoQuery);

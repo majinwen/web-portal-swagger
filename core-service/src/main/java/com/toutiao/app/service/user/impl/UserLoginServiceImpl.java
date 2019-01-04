@@ -135,7 +135,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                     BeanUtils.copyProperties(insertUserBasic, ubd);
                 }
 
-                //登陆后合并cookie中的对比信息
+                //登录后合并cookie中的对比信息
                 String currHouseId = CookieUtils.getCookie(request, response, CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED);
                 if (StringTool.isNotEmpty(currHouseId)) {
                     String[] currHouseIdArray = currHouseId.split("_");
@@ -273,7 +273,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                     BeanUtils.copyProperties(insertUserBasic, ubd);
                 }
 
-                //登陆后合并cookie中的对比信息
+                //登录后合并cookie中的对比信息
                 String currHouseId = CookieUtils.getCookie(request, response, CookieUtils.COOKIE_NAME_TEMP_HOUSE_COMPARED);
                 if (StringUtil.isNotNullString(currHouseId)) {
                     String[] currHouseIdArray = currHouseId.split("_");

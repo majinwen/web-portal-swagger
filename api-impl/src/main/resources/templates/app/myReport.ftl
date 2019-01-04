@@ -141,7 +141,7 @@
             success: function (data) {
 
                 if (data.code == "success") {
-                    //重定向到登陆页面
+                    //重定向到登录页面
                     window.location.href ="${backUrl}";
                 }
                 if(data.code="fail"){
