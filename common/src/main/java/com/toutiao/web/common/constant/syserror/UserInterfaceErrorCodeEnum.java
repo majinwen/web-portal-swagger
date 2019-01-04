@@ -15,7 +15,7 @@ public enum UserInterfaceErrorCodeEnum implements IntBaseType {
     QUERY_USER_BASIC_ERROR("用户不存在",30004),
     INVITATION_CODE_NOT_EXITS("邀请码不存在",30006),
     INVITATION_CODE_ADD_ERROR("邀请记录添加失败",30007),
-    USER_NO_LOGIN("用户未登陆",30005),
+    USER_NO_LOGIN("用户未登录",30005),
     VERIFY_TOO_FAST("短信验证码发送过于频繁或已超出限制",30008),
     ILLEGAL_PHONE("非法手机号",30009),
     USER_NO_BIND_WX("用户未绑定微信",30010),

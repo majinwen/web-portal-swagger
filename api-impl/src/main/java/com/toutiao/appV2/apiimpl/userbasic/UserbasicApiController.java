@@ -355,7 +355,7 @@ public class UserbasicApiController implements UserbasicApi {
                 throw new BaseException(UserInterfaceErrorCodeEnum.QUERY_USER_BASIC_ERROR, "用户不存在");
             }
         }else {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
         unbind.setMessage("fail");
         return new ResponseEntity<UnbindResponse>(unbind, HttpStatus.INTERNAL_SERVER_ERROR);

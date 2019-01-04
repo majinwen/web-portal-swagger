@@ -80,7 +80,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
         UserBasic user = UserBasic.getCurrent();
 
         if (null == user) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
         UserFavoriteRentDoQuery userFavoriteRent = new UserFavoriteRentDoQuery();
         BeanUtils.copyProperties(addFavorite, userFavoriteRent);
@@ -117,7 +117,7 @@ public class RentFavoriteRestController implements RentFavoriteRestApi {
         UserBasic user = UserBasic.getCurrent();
 
         if (null == user) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
         DeleteRentFavoriteDoQuery deleteRentFavoriteDoQuery = new DeleteRentFavoriteDoQuery();
         BeanUtils.copyProperties(deleteRentFavoriteRequest, deleteRentFavoriteDoQuery);
