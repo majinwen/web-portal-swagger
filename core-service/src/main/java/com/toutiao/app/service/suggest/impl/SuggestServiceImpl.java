@@ -294,14 +294,20 @@ public class SuggestServiceImpl implements SuggestService {
 
         if (null!=newHouseList&&newHouseList.size()>3){
             newHouseList = newHouseList.subList(0,3);
+        }else{
+            newHouseList = newHouseList.subList(0,newHouseList.size());
         }
         List<SearchEnginesDo> subPlotList = plotList;
         if (null!=plotList&&plotList.size()>3){
             subPlotList = plotList.subList(0,3);
+        }else{
+            subPlotList = plotList.subList(0,plotList.size());
         }
         List<SearchEnginesDo> subRentList = rentList;
         if(null!=rentList&&rentList.size()>3){
             subRentList = rentList.subList(0,3);
+        }else{
+            subRentList = rentList.subList(0,rentList.size());
         }
 
         Integer esfSize = newHouseList.size() + subPlotList.size() + subRentList.size();
@@ -311,7 +317,7 @@ public class SuggestServiceImpl implements SuggestService {
 
         Integer totalSize = esfSize+esfList.size();
 
-        if (totalSize==12){
+        if (totalSize<=12){
             newhouse.setSearchEnginesList(newHouseList);
             newhouse.setHouseType(0);
             if (null!=map.get(0)){
