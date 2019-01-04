@@ -1871,6 +1871,15 @@ public class RentRestRestServiceImpl implements RentRestService {
         if(StringTool.isNotEmpty(rentDetailsFewDo.getRentTypeName())){
             houseBarrageFirstList.add(rentDetailsFewDo.getRentTypeName());
         }
+        if (StringTool.isNotEmpty(rentDetailsFewDo.getHouseCutLabel())) {
+            houseBarrageFirstList.add(rentDetailsFewDo.getHouseCutLabel());
+        }
+        if (StringTool.isNotEmpty(rentDetailsFewDo.getHouseLowerLabel())) {
+            houseBarrageFirstList.add(rentDetailsFewDo.getHouseLowerLabel());
+        }
+        if (StringTool.isNotEmpty(rentDetailsFewDo.getHouseRobLabel())) {
+            houseBarrageFirstList.add(rentDetailsFewDo.getHouseRobLabel());
+        }
         rentDetailsFewDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
         //二手房弹幕第二行

@@ -174,4 +174,12 @@ public class RentDetailsFewDo {
 
     private String[] rentHouseImg;
 
+    @ApiModelProperty(value = "降价房排名表述", name = "houseCutLabel")
+    private String houseCutLabel;
+
+    @ApiModelProperty(value = "捡漏房排名表述", name = "houseLowerLabel")
+    private String houseLowerLabel;
+
+    @ApiModelProperty(value = "抢手房排名表述", name = "houseRobLabel")
+    private String houseRobLabel;
 }

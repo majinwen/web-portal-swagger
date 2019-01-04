@@ -1217,6 +1217,16 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if (titleTag) {
                     houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
                 }
+
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseCutLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseCutLabel());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseLowerLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseLowerLabel());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseRobLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseRobLabel());
+                }
                 sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
                 //二手房弹幕第二行
@@ -1520,6 +1530,15 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 if (titleTag) {
                     houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseCutLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseCutLabel());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseLowerLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseLowerLabel());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseRobLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseRobLabel());
                 }
                 sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
@@ -1925,6 +1944,15 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 if (titleTag) {
                     houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseCutLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseCutLabel());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseLowerLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseLowerLabel());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseRobLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseRobLabel());
                 }
                 sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
@@ -2334,6 +2362,15 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if (titleTag) {
                     houseBarrageFirstList.add(sellHousesSearchDo.getHouseTitle());
                 }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseCutLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseCutLabel());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseLowerLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseLowerLabel());
+                }
+                if (StringTool.isNotEmpty(sellHousesSearchDo.getHouseRobLabel())) {
+                    houseBarrageFirstList.add(sellHousesSearchDo.getHouseRobLabel());
+                }
                 sellHousesSearchDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
                 //二手房弹幕第二行
@@ -2484,6 +2521,15 @@ public class SellHouseServiceImpl implements SellHouseService {
             }
             if (titleTag) {
                 houseBarrageFirstList.add(sellHouseDo.getHouseTitle());
+            }
+            if (StringTool.isNotEmpty(sellHouseDo.getHouseCutLabel())) {
+                houseBarrageFirstList.add(sellHouseDo.getHouseCutLabel());
+            }
+            if (StringTool.isNotEmpty(sellHouseDo.getHouseLowerLabel())) {
+                houseBarrageFirstList.add(sellHouseDo.getHouseLowerLabel());
+            }
+            if (StringTool.isNotEmpty(sellHouseDo.getHouseRobLabel())) {
+                houseBarrageFirstList.add(sellHouseDo.getHouseRobLabel());
             }
             sellHouseDo.setHouseBarrageFirstList(houseBarrageFirstList);
 

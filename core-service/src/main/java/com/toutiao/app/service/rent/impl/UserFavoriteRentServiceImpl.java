@@ -521,6 +521,15 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
         if(StringTool.isNotEmpty(userFavoriteRentDetailDo.getRentTypeName())){
             houseBarrageFirstList.add(userFavoriteRentDetailDo.getRentTypeName());
         }
+        if (StringTool.isNotEmpty(userFavoriteRentDetailDo.getHouseCutLabel())) {
+            houseBarrageFirstList.add(userFavoriteRentDetailDo.getHouseCutLabel());
+        }
+        if (StringTool.isNotEmpty(userFavoriteRentDetailDo.getHouseLowerLabel())) {
+            houseBarrageFirstList.add(userFavoriteRentDetailDo.getHouseLowerLabel());
+        }
+        if (StringTool.isNotEmpty(userFavoriteRentDetailDo.getHouseRobLabel())) {
+            houseBarrageFirstList.add(userFavoriteRentDetailDo.getHouseRobLabel());
+        }
         userFavoriteRentDetailDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
         //二手房弹幕第二行

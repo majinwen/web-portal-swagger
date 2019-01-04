@@ -398,4 +398,12 @@ public class NearBySellHousesDo {
     @ApiModelProperty(value = "公司图标", name = "companyIcon")
     private String companyIcon;
 
+    @ApiModelProperty(value = "降价房排名表述", name = "houseCutLabel")
+    private String houseCutLabel;
+
+    @ApiModelProperty(value = "捡漏房排名表述", name = "houseLowerLabel")
+    private String houseLowerLabel;
+
+    @ApiModelProperty(value = "抢手房排名表述", name = "houseRobLabel")
+    private String houseRobLabel;
 }

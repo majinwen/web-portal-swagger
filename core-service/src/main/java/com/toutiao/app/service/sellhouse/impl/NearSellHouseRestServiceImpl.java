@@ -302,6 +302,15 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             if(titleTag){
                 houseBarrageFirstList.add(nearBySellHousesDo.getHouseTitle());
             }
+            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseCutLabel())) {
+                houseBarrageFirstList.add(nearBySellHousesDo.getHouseCutLabel());
+            }
+            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseLowerLabel())) {
+                houseBarrageFirstList.add(nearBySellHousesDo.getHouseLowerLabel());
+            }
+            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseRobLabel())) {
+                houseBarrageFirstList.add(nearBySellHousesDo.getHouseRobLabel());
+            }
             nearBySellHousesDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
             //二手房弹幕第二行
