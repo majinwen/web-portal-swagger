@@ -317,7 +317,7 @@ public class SuggestServiceImpl implements SuggestService {
 
         Integer totalSize = esfSize+esfList.size();
 
-        if (totalSize<=12){
+        if (totalSize==12){
             newhouse.setSearchEnginesList(newHouseList);
             newhouse.setHouseType(0);
             if (null!=map.get(0)){
@@ -427,6 +427,41 @@ public class SuggestServiceImpl implements SuggestService {
 
             return resultList;
         }
+
+        if (totalSize<=12){
+            newhouse.setSearchEnginesList(newHouseList);
+            newhouse.setHouseType(0);
+            if (null!=map.get(0)){
+                newhouse.setSearchScope(map.get(0));
+            }
+            resultList.add(newhouse);
+
+            sellhouse.setSearchEnginesList(esfList);
+            sellhouse.setHouseType(2);
+            if(null!=map.get(2)){
+                sellhouse.setSearchScope(map.get(2));
+            }
+            resultList.add(sellhouse);
+
+            if (null!=map.get(3)&&null!=map.get(4)){
+                map.get(3).setLocationNum(map.get(3).getLocationNum()+map.get(4).getLocationNum());
+                rent.setSearchScope(map.get(3));
+            }
+            rent.setSearchEnginesList(subRentList);
+            rent.setHouseType(3);
+            resultList.add(rent);
+
+            plot.setSearchEnginesList(subPlotList);
+            plot.setHouseType(1);
+            if(null!=map.get(1)){
+                plot.setSearchScope(map.get(1));
+            }
+            resultList.add(plot);
+
+            return resultList;
+
+        }
+
         return resultList;
     }
 
