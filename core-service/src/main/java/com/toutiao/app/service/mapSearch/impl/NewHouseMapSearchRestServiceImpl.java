@@ -32,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -166,6 +167,18 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
             for(SearchHit searchHit : searchHists){
                 String details = searchHit.getSourceAsString();
                 newHouseMapSearchBuildDo = JSON.parseObject(details,NewHouseMapSearchBuildDo.class);
+                String nearbyDistance = "";
+                String traffic = newHouseMapSearchBuildDo.getRoundStation();
+                String[] trafficArr = traffic.split("\\$");
+                if (trafficArr.length == 3) {
+                    int i = Integer.parseInt(trafficArr[2]);
+                    if (i < 1000) {
+                        nearbyDistance = "距" + trafficArr[1] + "(" + trafficArr[0] + ")" + trafficArr[2] + "米";
+                    } else {
+                        DecimalFormat df = new DecimalFormat("0.0");
+                        nearbyDistance = "距" + trafficArr[1] + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                    }
+                }
                 if(newHouseMapSearchBuildDo.getAveragePrice() > 0){
                     newHouseMapSearchBuildDo.setPriceDesc("均价"+new BigDecimal(String.valueOf(newHouseMapSearchBuildDo.getAveragePrice())).stripTrailingZeros().toPlainString()+"元/m²");
                 } else if(newHouseMapSearchBuildDo.getTotalPrice() > 0){
@@ -177,6 +190,25 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                 if(StringTool.isNotEmpty(newHouseMapSearchBuildDo.getBuildingTitleImg())){
                     newHouseMapSearchBuildDo.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseMapSearchBuildDo.getBuildingTitleImg() + "-dongfangdi1200x900");
                 }
+                //地铁线信息
+                if (StringTool.isNotEmpty(newHouseMapSearchDoQuery.getSubwayLineId())) {
+                    String keys = "";
+                    keys += newHouseMapSearchDoQuery.getSubwayLineId().toString();
+                    //增加地铁线选择，地铁站选择不限
+                    if(StringTool.isNotEmpty(newHouseMapSearchBuildDo.getNearbySubway().get(keys))){
+                        trafficArr = newHouseMapSearchBuildDo.getNearbySubway().get(keys).split("\\$");
+                        if (trafficArr.length == 3) {
+                            int i = Integer.parseInt(trafficArr[2]);
+                            if (i < 1000) {
+                                nearbyDistance = "距" + trafficArr[1] + "(" + trafficArr[0] + ")" + trafficArr[2] + "米";
+                            } else {
+                                DecimalFormat df = new DecimalFormat("0.0");
+                                nearbyDistance = "距" + trafficArr[1] + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+                            }
+                        }
+                    }
+                }
+                newHouseMapSearchBuildDo.setNearbyDistance(nearbyDistance);
                 //新房标签
                 List<HouseLable> houseLableList= new ArrayList<>();
                 String saleStatusName= newHouseMapSearchBuildDo.getSaleStatusName();

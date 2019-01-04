@@ -120,6 +120,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             }
 
             String[] img = newHouseDetailDo.getBuildingImgs().get(0).split(",");
+            if (null != img && img.length == 1 && "".equals(img[0])) {
+                img = new String[0];
+            }
             newHouseDetailDo.setBuildingImg(img);
         }
         if ("0".equals(newHouseDetailDo.getHeatingType())) {
