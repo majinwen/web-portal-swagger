@@ -144,10 +144,13 @@ public class SubscribeServiceImpl implements SubscribeService {
                 Integer topicType = userSubscribeDetailDo.getTopicType();
                 switch (topicType) {
                     case 1 : userSubscribeDetailDo.setTopicTypeName("降价房");
+                             userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
                         break;
                     case 2 : userSubscribeDetailDo.setTopicTypeName("价格洼地");
+                             userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
                         break;
                     case 3 : userSubscribeDetailDo.setTopicTypeName("逢出必抢");
+                             userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
                         break;
                 }
             } else {
