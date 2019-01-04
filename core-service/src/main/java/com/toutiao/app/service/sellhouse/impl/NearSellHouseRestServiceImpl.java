@@ -223,17 +223,21 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             List<HouseColorLable> houseColorLableList = new ArrayList<>();
 
             int isMustRob = nearBySellHousesDo.getIsMustRob();
-            if (isMustRob == 1) {houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"));
+            if (isMustRob == 1) {
+                String houseRobCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseRobCondition"))?"?"+searchHit.getSourceAsMap().get("houseRobCondition"):"";
+                houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"+houseRobCondition));
             }
 
             int isLowPrice = nearBySellHousesDo.getIsLowPrice();
             if (isLowPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"));
+                String houseLowerCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseLowerCondition"))?"?"+searchHit.getSourceAsMap().get("houseLowerCondition"):"";
+                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"+houseLowerCondition));
             }
 
             int isCutPrice = nearBySellHousesDo.getIsCutPrice();
             if (isCutPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"));
+                String houseCutCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseCutCondition"))?"?"+searchHit.getSourceAsMap().get("houseCutCondition"):"";
+                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
             }
 
             List recommendBuildTagNameList = nearBySellHousesDo.getRecommendBuildTagsName();

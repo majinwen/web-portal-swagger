@@ -1104,15 +1104,18 @@ public class SellHouseServiceImpl implements SellHouseService {
                 List<HouseColorLable> houseColorLableList = new ArrayList<>();
 
                 if (isMustRob == 1) {
-                    houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"));
+                    String houseRobCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseRobCondition"))?"?"+searchHit.getSourceAsMap().get("houseRobCondition"):"";
+                    houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"+houseRobCondition));
                 }
 
                 if (isLowPrice == 1) {
-                    houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"));
+                    String houseLowerCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseLowerCondition"))?"?"+searchHit.getSourceAsMap().get("houseLowerCondition"):"";
+                    houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"+houseLowerCondition));
                 }
 
                 if (isCutPrice == 1) {
-                    houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"));
+                    String houseCutCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseCutCondition"))?"?"+searchHit.getSourceAsMap().get("houseCutCondition"):"";
+                    houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
                 }
 
                 if (recommendBuildTagNameList.size() > 0 && StringTool.isNotEmpty(typeCountsMap)) {
@@ -2407,8 +2410,8 @@ public class SellHouseServiceImpl implements SellHouseService {
 
 
     private List<SellHouseDo> getResultFromSearchHitList(String city, List<SellHouseDo> list, List<SearchHit> searchHitList) {
-        for (SearchHit hit : searchHitList) {
-            String details = hit.getSourceAsString();
+        for (SearchHit searchHit : searchHitList) {
+            String details = searchHit.getSourceAsString();
             SellHouseDo sellHouseDo = JSON.parseObject(details, SellHouseDo.class);
 
             //判断3天内导入，且无图片，默认上显示默认图
@@ -2426,10 +2429,10 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if (StringUtil.isNotNullString(sellHouseDo.getProjExpertUserId())) {
                     agentBaseDo = agentService.queryAgentInfoByUserId(sellHouseDo.getProjExpertUserId().toString(), city);
                 } else {
-                    agentBaseDo.setAgentName(hit.getSourceAsMap().get("houseProxyName") == null ? "" : hit.getSourceAsMap().get("houseProxyName").toString());
-                    agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("ofCompany") == null ? "" : hit.getSourceAsMap().get("ofCompany").toString());
-                    agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : hit.getSourceAsMap().get("houseProxyPhoto").toString());
-                    agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("houseProxyPhone") == null ? "" : hit.getSourceAsMap().get("houseProxyPhone").toString());
+                    agentBaseDo.setAgentName(searchHit.getSourceAsMap().get("houseProxyName") == null ? "" : searchHit.getSourceAsMap().get("houseProxyName").toString());
+                    agentBaseDo.setAgentCompany(searchHit.getSourceAsMap().get("ofCompany") == null ? "" : searchHit.getSourceAsMap().get("ofCompany").toString());
+                    agentBaseDo.setHeadPhoto(searchHit.getSourceAsMap().get("houseProxyPhoto") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhoto").toString());
+                    agentBaseDo.setDisplayPhone(searchHit.getSourceAsMap().get("houseProxyPhone") == null ? "" : searchHit.getSourceAsMap().get("houseProxyPhone").toString());
                 }
             }
             sellHouseDo.setAgentBaseDo(agentBaseDo);
@@ -2444,18 +2447,21 @@ public class SellHouseServiceImpl implements SellHouseService {
 
             int isMustRob = sellHouseDo.getIsMustRob();
             if (isMustRob == 1) {
-                houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"));
+                String houseRobCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseRobCondition"))?"?"+searchHit.getSourceAsMap().get("houseRobCondition"):"";
+                houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"+houseRobCondition));
             }
 
             int isLowPrice = sellHouseDo.getIsLowPrice();
             if (isLowPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"));
+                String houseLowerCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseLowerCondition"))?"?"+searchHit.getSourceAsMap().get("houseLowerCondition"):"";
+                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"+houseLowerCondition));
 
             }
 
             int isCutPrice = sellHouseDo.getIsCutPrice();
             if (isCutPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"));
+                String houseCutCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseCutCondition"))?"?"+searchHit.getSourceAsMap().get("houseCutCondition"):"";
+                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
             }
 
             List recommendBuildTagNameList = sellHouseDo.getRecommendBuildTagsName();
