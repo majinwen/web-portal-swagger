@@ -1,6 +1,7 @@
 package com.toutiao.appV2.model.plot;
 
 import com.toutiao.app.domain.plot.PlotMarketDomain;
+import com.toutiao.app.domain.sellhouse.HouseColorLable;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -152,5 +153,8 @@ public class PlotDetailsResponse {
     private Double ringRatio;
     @ApiModelProperty(value = "地址")
     private String address;
+
+    @ApiModelProperty(value = "小区标签列表")
+    private List<HouseColorLable> plotLableList;
 }
 

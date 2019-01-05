@@ -3,6 +3,7 @@ package com.toutiao.appV2.model.sellhouse;
 
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.sellhouse.HouseColorLable;
+import com.toutiao.app.domain.sellhouse.HouseRankLable;
 import com.toutiao.app.domain.sellhouse.HouseSubject;
 import com.toutiao.appV2.model.plot.PlotDetailsResponse;
 import com.toutiao.web.common.assertUtils.ChangeName;
@@ -596,9 +597,9 @@ public class SellHouseDetailsResponse {
     @ApiModelProperty(value = "抢手房排名表述", name = "houseRobLabel")
     private String houseRobLabel;
 
-    @ApiModelProperty(value = "房源标签列表", name = "houseColorLableList")
-    private List<HouseColorLable> houseColorLableList;
+    @ApiModelProperty(value = "房源排行榜标签列表", name = "houseRankLableList")
+    private List<HouseRankLable> houseRankLableList;
 
-    @ApiModelProperty(value = "专题列表", name = "houseSubjectList")
+    @ApiModelProperty(value = "房源Tags标签列表", name = "houseSubjectList")
     private List<HouseSubject> houseSubjectList;
 }

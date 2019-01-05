@@ -127,12 +127,12 @@ public class SellHouseDetailsDo {
      */
     private String elevatorName;
     /**
-     *供暖
+     * 供暖
      */
     @ChangeName("heatingMode")
     private Integer houseHeating;
     /**
-     *供暖
+     * 供暖
      */
     private String houseHeatingName;
     /**
@@ -240,9 +240,9 @@ public class SellHouseDetailsDo {
     public void setUpdateTime(String updateTime) {
         this.updateTime = updateTime;
         try {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-         Date date = format.parse(updateTime);
+            Date date = format.parse(updateTime);
             this.updateTime = format.format(date);
         } catch (ParseException e) {
             e.printStackTrace();
@@ -314,7 +314,7 @@ public class SellHouseDetailsDo {
     /**
      * 是否收藏
      */
-    private Boolean isFavorite= false;
+    private Boolean isFavorite = false;
 
     /**
      * 价格涨降标志
@@ -349,7 +349,7 @@ public class SellHouseDetailsDo {
     private Integer isLowPrice;
 
     /**
-     *是否降价房(0-否，1-降价房，2-涨价房)
+     * 是否降价房(0-否，1-降价房，2-涨价房)
      */
     private Integer isCutPrice;
 
@@ -372,7 +372,6 @@ public class SellHouseDetailsDo {
      * 是否是top50小区房源(0-否，1-是)
      */
     private Integer isCommunityTopHouse;
-
 
 
     /**
@@ -457,7 +456,7 @@ public class SellHouseDetailsDo {
     /**
      * 各个类型数量
      */
-    private Map<Integer,Map<String,Integer>> typeCounts;
+    private Map<Integer, Map<String, Integer>> typeCounts;
 
     /**
      * 在同商圈同户型范围内做低价排名
@@ -523,10 +522,9 @@ public class SellHouseDetailsDo {
      */
     private String houseRobLabel;
 
-    @ApiModelProperty(value = "房源标签列表", name = "houseColorLableList")
-    private List<HouseColorLable> houseColorLableList;
+    @ApiModelProperty(value = "房源排行榜标签列表", name = "houseRankLableList")
+    private List<HouseRankLable> houseRankLableList;
 
-    @ApiModelProperty(value = "专题列表", name = "houseSubjectList")
+    @ApiModelProperty(value = "房源Tags标签列表", name = "houseSubjectList")
     private List<HouseSubject> houseSubjectList;
-
 }
