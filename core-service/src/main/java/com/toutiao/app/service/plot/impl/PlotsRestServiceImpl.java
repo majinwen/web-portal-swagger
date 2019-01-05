@@ -696,6 +696,14 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
             PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(plotTop50Do.getId());
 
+            PlotMarketDomain plotMarketDomain = null;
+            if (null != plotMarketDo) {
+                plotMarketDomain = new PlotMarketDomain();
+                org.springframework.beans.BeanUtils.copyProperties(plotMarketDo, plotMarketDomain);
+                plotMarketDomain.setDistrictName(plotTop50Do.getArea());
+                plotTop50Do.setPlotMarketDomain(plotMarketDomain);
+            }
+
             if (null != plotMarketDo) {
                 tagsName.add(plotTop50Do.getArea()+"热度榜第"+plotMarketDo.getTotalSort()+"名");
             }
