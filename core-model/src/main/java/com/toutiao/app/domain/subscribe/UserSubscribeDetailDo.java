@@ -62,4 +62,7 @@ public class UserSubscribeDetailDo {
 
     @ApiModelProperty(value = "居室", name ="layoutId")
     private String layoutId;
+
+    @ApiModelProperty(value = "跳转地址", name = "url")
+    private String url;
 }
