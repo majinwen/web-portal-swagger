@@ -294,14 +294,20 @@ public class SuggestServiceImpl implements SuggestService {
 
         if (null!=newHouseList&&newHouseList.size()>3){
             newHouseList = newHouseList.subList(0,3);
+        }else{
+            newHouseList = newHouseList.subList(0,newHouseList.size());
         }
         List<SearchEnginesDo> subPlotList = plotList;
         if (null!=plotList&&plotList.size()>3){
             subPlotList = plotList.subList(0,3);
+        }else{
+            subPlotList = plotList.subList(0,plotList.size());
         }
         List<SearchEnginesDo> subRentList = rentList;
         if(null!=rentList&&rentList.size()>3){
             subRentList = rentList.subList(0,3);
+        }else{
+            subRentList = rentList.subList(0,rentList.size());
         }
 
         Integer esfSize = newHouseList.size() + subPlotList.size() + subRentList.size();
@@ -421,6 +427,41 @@ public class SuggestServiceImpl implements SuggestService {
 
             return resultList;
         }
+
+        if (totalSize<=12){
+            newhouse.setSearchEnginesList(newHouseList);
+            newhouse.setHouseType(0);
+            if (null!=map.get(0)){
+                newhouse.setSearchScope(map.get(0));
+            }
+            resultList.add(newhouse);
+
+            sellhouse.setSearchEnginesList(esfList);
+            sellhouse.setHouseType(2);
+            if(null!=map.get(2)){
+                sellhouse.setSearchScope(map.get(2));
+            }
+            resultList.add(sellhouse);
+
+            if (null!=map.get(3)&&null!=map.get(4)){
+                map.get(3).setLocationNum(map.get(3).getLocationNum()+map.get(4).getLocationNum());
+                rent.setSearchScope(map.get(3));
+            }
+            rent.setSearchEnginesList(subRentList);
+            rent.setHouseType(3);
+            resultList.add(rent);
+
+            plot.setSearchEnginesList(subPlotList);
+            plot.setHouseType(1);
+            if(null!=map.get(1)){
+                plot.setSearchScope(map.get(1));
+            }
+            resultList.add(plot);
+
+            return resultList;
+
+        }
+
         return resultList;
     }
 

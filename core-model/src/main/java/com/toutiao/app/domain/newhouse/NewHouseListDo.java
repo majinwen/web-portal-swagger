@@ -131,5 +131,7 @@ public class NewHouseListDo  {
     @ApiModelProperty(value = "描述（中位）")
     private  String descMid;
 
+    @ApiModelProperty(value = "附近距离xxkm", name = "nearbyDistance")
+    private String nearbyDistance;
 
 }

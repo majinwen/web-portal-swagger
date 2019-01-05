@@ -766,7 +766,7 @@
                                 $('.collect-button').find('span').text('已收藏');
                             }
                             if (data.code == "no-login") {
-                                //重定向到登陆页面
+                                //重定向到登录页面
                                 window.location.href = "/user/login?backUrl="+backUrl+"&title="+"dongfangdi";
                             }
                             // 收藏失败

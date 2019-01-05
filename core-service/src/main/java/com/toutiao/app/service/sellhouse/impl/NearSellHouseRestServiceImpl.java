@@ -223,17 +223,21 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             List<HouseColorLable> houseColorLableList = new ArrayList<>();
 
             int isMustRob = nearBySellHousesDo.getIsMustRob();
-            if (isMustRob == 1) {houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"));
+            if (isMustRob == 1) {
+                String houseRobCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseRobCondition"))?"?"+searchHit.getSourceAsMap().get("houseRobCondition"):"";
+                houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手榜", wapName + "/"+city+"/topics/house/hot"+houseRobCondition));
             }
 
             int isLowPrice = nearBySellHousesDo.getIsLowPrice();
             if (isLowPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"));
+                String houseLowerCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseLowerCondition"))?"?"+searchHit.getSourceAsMap().get("houseLowerCondition"):"";
+                houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏榜", wapName + "/"+city+"/topics/house/low"+houseLowerCondition));
             }
 
             int isCutPrice = nearBySellHousesDo.getIsCutPrice();
             if (isCutPrice == 1) {
-                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"));
+                String houseCutCondition = StringTool.isNotEmpty(searchHit.getSourceAsMap().get("houseCutCondition"))?"?"+searchHit.getSourceAsMap().get("houseCutCondition"):"";
+                houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价榜", wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
             }
 
             List recommendBuildTagNameList = nearBySellHousesDo.getRecommendBuildTagsName();
@@ -244,11 +248,11 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
                 String communityLableStr = "";
                 if (recommendBuildTagNameList.contains("豪宅")) {
                     communityLableStr = areaName + typeCountsMap.get(4).get(nearBySellHousesDo.getAreaId().toString()) + "大豪宅社区主力户型";
-                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/plot/luxuryHouse"));
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/plot/luxury"));
                 }
                 if (recommendBuildTagNameList.contains("别墅")) {
                     communityLableStr = areaName + typeCountsMap.get(5).get(nearBySellHousesDo.getAreaId().toString()) + "大别墅社区主力户型";
-                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/plot/topVilla"));
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/plot/villa"));
                 }
                 if (recommendBuildTagNameList.contains("首次置业")) {
                     communityLableStr = areaName + typeCountsMap.get(2).get(nearBySellHousesDo.getAreaId().toString()) + "大首置社区主力户型";
@@ -261,7 +265,8 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
                 if (recommendBuildTagNameList.contains("近公园")) {
 //                    communityLableStr = "近公园社区主力户型";
                     communityLableStr = "近公园";
-                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/nearpark"));
+                    String nearpark = StringTool.isNotEmpty(nearBySellHousesDo.getNearPark())?"?strNearestPark="+nearBySellHousesDo.getNearPark():"";
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/nearpark"+nearpark));
                 }
             }
 
@@ -301,6 +306,15 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             }
             if(titleTag){
                 houseBarrageFirstList.add(nearBySellHousesDo.getHouseTitle());
+            }
+            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseCutLabel())) {
+                houseBarrageFirstList.add(nearBySellHousesDo.getHouseCutLabel());
+            }
+            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseLowerLabel())) {
+                houseBarrageFirstList.add(nearBySellHousesDo.getHouseLowerLabel());
+            }
+            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseRobLabel())) {
+                houseBarrageFirstList.add(nearBySellHousesDo.getHouseRobLabel());
             }
             nearBySellHousesDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
