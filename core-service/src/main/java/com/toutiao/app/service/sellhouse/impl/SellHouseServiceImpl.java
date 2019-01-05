@@ -1138,7 +1138,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                     if (recommendBuildTagNameList.contains("近公园")) {
 //                    communityLableStr = "近公园社区主力户型";
                         communityLableStr = "近公园";
-                        houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/nearpark"));
+                        String nearpark = StringTool.isNotEmpty(sellHousesSearchDo.getNearPark())?"?strNearestPark="+sellHousesSearchDo.getNearPark():"";
+                        houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/nearpark"+nearpark));
                     }
                 }
 
@@ -2489,7 +2490,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if (recommendBuildTagNameList.contains("近公园")) {
 //                    communityLableStr = "近公园社区主力户型";
                     communityLableStr = "近公园";
-                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/nearpark"));
+                    String nearpark = StringTool.isNotEmpty(sellHouseDo.getNearPark())?"?strNearestPark="+sellHouseDo.getNearPark():"";
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/nearpark"+nearpark));
                 }
             }
 

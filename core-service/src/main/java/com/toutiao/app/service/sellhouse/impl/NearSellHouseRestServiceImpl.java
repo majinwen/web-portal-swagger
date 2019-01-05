@@ -265,7 +265,8 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
                 if (recommendBuildTagNameList.contains("近公园")) {
 //                    communityLableStr = "近公园社区主力户型";
                     communityLableStr = "近公园";
-                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/nearpark"));
+                    String nearpark = StringTool.isNotEmpty(nearBySellHousesDo.getNearPark())?"?strNearestPark="+nearBySellHousesDo.getNearPark():"";
+                    houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", communityLableStr, wapName + "/"+city+"/topics/nearpark"+nearpark));
                 }
             }
 
