@@ -162,8 +162,9 @@ public class UserLoginServiceImpl implements UserLoginService {
         } else {
             throw new BaseException(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_ERROR, "短信验证码错误！");
         }
-
-        ubd.setAvatar(headPicPath + "/" + ubd.getAvatar());
+        if (StringUtils.isNotEmpty(ubd.getAvatar()) && !ubd.getAvatar().startsWith("http:")) {
+            ubd.setAvatar(headPicPath + "/" + ubd.getAvatar());
+        }
         if(StringUtils.isNotEmpty(ubd.getUnionid())){
             ubd.setIsWxBind(true);
         }

@@ -609,6 +609,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)).should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
             booleanQueryBuilder.must(existsQuery("saletelphone"));
             booleanQueryBuilder.mustNot(termQuery("saletelphone", ""));
+            booleanQueryBuilder.mustNot(termQuery("building_title_img",""));
             booleanQueryBuilder.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("room").gte(1), ScoreMode.None));
 
             SearchResponse searchResponse = newHouseEsDao.getGuessLikeNewHouseList(booleanQueryBuilder, city, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize());
@@ -643,6 +644,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
             booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
             booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
             booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
+            booleanQueryBuilder.mustNot(termQuery("building_title_img",""));
             if (null != newHouseDoQuery.getDistrictName() && !"".equals(newHouseDoQuery.getDistrictName())) {
                 booleanQueryBuilder.must(QueryBuilders.termQuery("district_name", newHouseDoQuery.getDistrictName()));
             } else if (null != newHouseDoQuery.getDistrictId() && newHouseDoQuery.getDistrictId() > 0) {
@@ -683,9 +685,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 boolQueryBuilderT2.must(termQuery("is_approve", IS_APPROVE));
                 boolQueryBuilderT2.must(termQuery("is_del", IS_DEL));
                 boolQueryBuilderT2.must(termsQuery("property_type_id", new int[]{1, 2}));
-                booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)).should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
+                boolQueryBuilderT2.must(boolQuery().should(QueryBuilders.rangeQuery("totalPrice").gte(1.0)).should(QueryBuilders.rangeQuery("average_price").gte(1.0)));
                 boolQueryBuilderT2.must(existsQuery("saletelphone"));
                 boolQueryBuilderT2.mustNot(termQuery("saletelphone", ""));
+                boolQueryBuilderT2.mustNot(termQuery("building_title_img",""));
                 boolQueryBuilderT2.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("room").gte(1), ScoreMode.None));
 
                 SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(boolQueryBuilderT2, city, pageNum_T2, pageSize_T2);

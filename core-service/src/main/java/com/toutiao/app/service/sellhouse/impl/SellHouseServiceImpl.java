@@ -2170,6 +2170,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             boolQueryBuilder.must(termQuery("is_claim", 0));
             boolQueryBuilder.must(termQuery("isDel", 0));
             boolQueryBuilder.must(termQuery("isNew", 1));
+            boolQueryBuilder.mustNot(termQuery("housePhotoTitle",""));
 
 //            Date date = new Date();
 //            SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
@@ -2212,6 +2213,7 @@ public class SellHouseServiceImpl implements SellHouseService {
             //过滤为删除
             booleanQueryBuilder.must(termQuery("isDel", "0"));
             booleanQueryBuilder.must(termQuery("is_claim", "0"));
+            booleanQueryBuilder.mustNot(termQuery("housePhotoTitle",""));
 
             //商圈
             if (null != sellHouseDoQuery.getAreaName() && !"".equals(sellHouseDoQuery.getAreaName())) {
@@ -2262,6 +2264,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 boolQueryBuilderT2.must(termQuery("is_claim", 0));
                 boolQueryBuilderT2.must(termQuery("isDel", 0));
                 boolQueryBuilderT2.must(termQuery("isNew", 1));
+                boolQueryBuilderT2.mustNot(termQuery("housePhotoTitle",""));
 //
 //                Date date = new Date();
 //                SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
