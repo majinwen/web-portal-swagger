@@ -1,6 +1,7 @@
 package com.toutiao.app.domain.plot;
 
 import com.toutiao.web.common.assertUtils.ChangeName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
@@ -87,6 +88,10 @@ public class PlotsThemeDo {
      * 近地铁描述
      */
     private String trafficInformation;
+
+
+    @ApiModelProperty(value = "小区所在区域热度排名", name = "districtHotSort")
+    private Integer districtHotSort;
 
 //    /**
 //     * 建筑面积

@@ -95,7 +95,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
         UserBasic user = UserBasic.getCurrent();
 
         if (null == user) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
         NewHouseAddFavoriteDoQuery newHouseAddFavoriteDoQuery = new NewHouseAddFavoriteDoQuery();
         BeanUtils.copyProperties(newHouseAddFavoriteRequest, newHouseAddFavoriteDoQuery);
@@ -133,7 +133,7 @@ public class NewHouseFavoriteRestController implements NewHouseFavoriteRestApi {
         UserBasic user = UserBasic.getCurrent();
 
         if (null == user) {
-            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登陆");
+            throw new BaseException(UserInterfaceErrorCodeEnum.USER_NO_LOGIN, "用户未登录");
         }
         UserFavoriteNewHouse userFavoriteNewHouse = new UserFavoriteNewHouse();
         BeanUtils.copyProperties(cancelFavoriteRequest, userFavoriteNewHouse);

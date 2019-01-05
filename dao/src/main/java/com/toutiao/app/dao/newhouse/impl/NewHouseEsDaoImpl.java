@@ -149,7 +149,7 @@ public class NewHouseEsDaoImpl implements NewHouseEsDao {
         if (pageNum <= 0) {
             pageNum = 1;
         }
-        searchRequest.source(searchSourceBuilder.query(booleanQueryBuilder).sort("create_time",SortOrder.DESC).from((pageNum-1)*pageSize).size(pageSize));
+        searchRequest.source(searchSourceBuilder.query(booleanQueryBuilder).sort("build_level",SortOrder.ASC).sort("building_sort",SortOrder.DESC).from((pageNum-1)*pageSize).size(pageSize));
         SearchResponse searchresponse = null;
         try {
             searchresponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);

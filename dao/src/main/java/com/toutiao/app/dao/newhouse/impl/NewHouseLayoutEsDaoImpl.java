@@ -33,7 +33,7 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
 
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(booleanQueryBuilder).aggregation(AggregationBuilders.terms("roomCount").field("room").order(BucketOrder.count(true)));
+        searchSourceBuilder.query(booleanQueryBuilder).aggregation(AggregationBuilders.terms("roomCount").field("room").order(BucketOrder.key(true)));
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchresponse = null;
 
