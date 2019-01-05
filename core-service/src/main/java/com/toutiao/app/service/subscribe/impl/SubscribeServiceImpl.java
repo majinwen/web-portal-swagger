@@ -25,6 +25,7 @@ import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHits;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,12 +41,15 @@ public class SubscribeServiceImpl implements SubscribeService {
     CityDao cityDao;
     @Autowired
     private SellHouseService sellHouseService;
-//    @Autowired
+    //    @Autowired
 //    private MustBuySellHouseRestService mustBuySellHouseRestService;
     @Autowired
     private SellHouseThemeRestService sellHouseThemeRestService;
     @Autowired
     private HouseBusinessAndRoomEsDao houseBusinessAndRoomEsDao;
+
+    @Value("${wap.domain.name}")
+    private String wapName;
 
     @Override
     @Transactional
@@ -142,17 +146,40 @@ public class SubscribeServiceImpl implements SubscribeService {
                 }
                 // 1：降价房 2：价格洼地 3：逢出必抢
                 Integer topicType = userSubscribeDetailDo.getTopicType();
+                StringBuilder url = new StringBuilder(wapName + "/" + city + "/topics/house");
                 switch (topicType) {
-                    case 1 : userSubscribeDetailDo.setTopicTypeName("降价房");
-                             userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
+                    case 1:
+                        userSubscribeDetailDo.setTopicTypeName("降价房");
+                        userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
+                        url.append("/reduction?");
                         break;
-                    case 2 : userSubscribeDetailDo.setTopicTypeName("价格洼地");
-                             userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
+                    case 2:
+                        userSubscribeDetailDo.setTopicTypeName("价格洼地");
+                        userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
+                        url.append("/low?");
                         break;
-                    case 3 : userSubscribeDetailDo.setTopicTypeName("逢出必抢");
-                             userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
+                    case 3:
+                        userSubscribeDetailDo.setTopicTypeName("逢出必抢");
+                        userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
+                        url.append("/hot?");
                         break;
                 }
+                if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
+                    url.append("&districtIds=" + userSubscribeDetailDo.getDistrictId());
+                }
+                if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
+                    url.append("&areaIds=" + userSubscribeDetailDo.getDistrictId());
+                }
+                if (StringTool.isNotEmpty(userSubscribeDetailDo.getBeginPrice())) {
+                    url.append("&beginPrice=" + userSubscribeDetailDo.getBeginPrice());
+                }
+                if (StringTool.isNotEmpty(userSubscribeDetailDo.getEndPrice())) {
+                    url.append("&endPrice=" + userSubscribeDetailDo.getEndPrice());
+                }
+                if (StringTool.isNotEmpty(userSubscribeDetailDo.getLayoutId())) {
+                    url.append("&layoutId=" + userSubscribeDetailDo.getLayoutId());
+                }
+                userSubscribeDetailDo.setUrl(url.toString());
             } else {
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
                     userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName((Integer[]) ConvertUtils.convert(userSubscribeDetailDo.getDistrictId().split(","), Integer.class)));
@@ -162,7 +189,7 @@ public class SubscribeServiceImpl implements SubscribeService {
                 }
                 BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
                 boolQueryBuilder.must(QueryBuilders.termQuery("houseBusinessNameId", userSubscribeDetailDo.getAreaId()));
-                boolQueryBuilder.must(QueryBuilders.termQuery("room",  userSubscribeDetailDo.getRoom()));
+                boolQueryBuilder.must(QueryBuilders.termQuery("room", userSubscribeDetailDo.getRoom()));
                 boolQueryBuilder.must(QueryBuilders.termQuery("isNew", 1));
                 SearchResponse houseBusinessAndRoomHouses = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomHouses(
                         boolQueryBuilder, 1, 1, city);
@@ -239,14 +266,14 @@ public class SubscribeServiceImpl implements SubscribeService {
             mustBuyShellHouseDoQuery.setPageNum(pageIndex);
 //            return mustBuySellHouseRestService.getMustBuySellHouse(mustBuyShellHouseDoQuery, userSubscribeDetailDo.getTopicType(), city).getTotalCount();
             SellHouseThemeDoQuery sellHouseThemeDoQuery = new SellHouseThemeDoQuery();
-            BeanUtils.copyProperties(mustBuyShellHouseDoQuery,sellHouseThemeDoQuery);
+            BeanUtils.copyProperties(mustBuyShellHouseDoQuery, sellHouseThemeDoQuery);
             sellHouseThemeDoQuery.setAreaIds(mustBuyShellHouseDoQuery.getAreaId());
-            if(userSubscribeDetailDo.getTopicType()==1){
-                count = sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
-            }else if(userSubscribeDetailDo.getTopicType()==2){
-                count = sellHouseThemeRestService.getLowPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
-            }else if(userSubscribeDetailDo.getTopicType()==3){
-                count = sellHouseThemeRestService.getBeSureToSnatchShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
+            if (userSubscribeDetailDo.getTopicType() == 1) {
+                count = sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery, city).getTotalCount();
+            } else if (userSubscribeDetailDo.getTopicType() == 2) {
+                count = sellHouseThemeRestService.getLowPriceShellHouse(sellHouseThemeDoQuery, city).getTotalCount();
+            } else if (userSubscribeDetailDo.getTopicType() == 3) {
+                count = sellHouseThemeRestService.getBeSureToSnatchShellHouse(sellHouseThemeDoQuery, city).getTotalCount();
             }
         }
         return count;
@@ -285,13 +312,13 @@ public class SubscribeServiceImpl implements SubscribeService {
             mustBuyShellHouseDoQuery.setPageSize(pageSize);
             mustBuyShellHouseDoQuery.setPageNum(pageIndex);
             SellHouseThemeDoQuery sellHouseThemeDoQuery = new SellHouseThemeDoQuery();
-            BeanUtils.copyProperties(mustBuyShellHouseDoQuery,sellHouseThemeDoQuery);
-            if(userSubscribeDetailDo.getTopicType()==1){
-                return sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
-            }else if(userSubscribeDetailDo.getTopicType()==2){
-                return sellHouseThemeRestService.getLowPriceShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
-            }else if(userSubscribeDetailDo.getTopicType()==3){
-                return sellHouseThemeRestService.getBeSureToSnatchShellHouse(sellHouseThemeDoQuery,city).getTotalCount();
+            BeanUtils.copyProperties(mustBuyShellHouseDoQuery, sellHouseThemeDoQuery);
+            if (userSubscribeDetailDo.getTopicType() == 1) {
+                return sellHouseThemeRestService.getCutPriceShellHouse(sellHouseThemeDoQuery, city).getTotalCount();
+            } else if (userSubscribeDetailDo.getTopicType() == 2) {
+                return sellHouseThemeRestService.getLowPriceShellHouse(sellHouseThemeDoQuery, city).getTotalCount();
+            } else if (userSubscribeDetailDo.getTopicType() == 3) {
+                return sellHouseThemeRestService.getBeSureToSnatchShellHouse(sellHouseThemeDoQuery, city).getTotalCount();
             }
         }
         return null;

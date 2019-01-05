@@ -838,6 +838,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                     boolQueryBuilder.filter(rangeQuery("rent_house_price").gte(rent_house_price-rent_house_price*0.3).lte(rent_house_price+rent_house_price*0.3));
                     isQueryEs = true;
                 }
+            boolQueryBuilder.mustNot(termQuery("house_title_img",""));
 
 
         }
@@ -885,6 +886,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 Date sevenDaysAgo=cal.getTime();
                 String sevenDaysAgoChar =  new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sevenDaysAgo);
                 boolQueryBuilder7Day.must(rangeQuery("update_time").lte(today).gte(sevenDaysAgoChar));
+                boolQueryBuilder7Day.mustNot(termQuery("house_title_img",""));
             SearchResponse searchResponse7Day = rentEsDao.guessYoourLikeRent(boolQueryBuilder7Day, city, rentGuessYourLikeQuery.getPageNum(),pageSizeResidue);
             SearchHit[]  hits7Day = searchResponse7Day.getHits().getHits();
             if (hits7Day.length > 0){
@@ -917,6 +919,7 @@ public class RentRestRestServiceImpl implements RentRestService {
             if (rentDetailsFewDos.size()<10){
                 boolQueryBuilder7Day = QueryBuilders.boolQuery();
                 int residueNum = 10 - rentDetailsFewDos.size();
+                boolQueryBuilder7Day.mustNot(termQuery("house_title_img",""));
                 searchResponse7Day = rentEsDao.guessYoourLikeRent(boolQueryBuilder7Day, city, rentGuessYourLikeQuery.getPageNum(),residueNum);
                 hits7Day = searchResponse7Day.getHits().getHits();
                 if (hits7Day.length > 0){

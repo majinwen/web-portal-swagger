@@ -39,6 +39,9 @@ public class UserSubscribeListDo {
     @ApiModelProperty("类型0-房源专题订阅，3-排行榜订阅")
     private Integer subscribeType;
 
+    @ApiModelProperty(value = "跳转地址", name = "url")
+    private String url;
+
     public void setCityId(Integer cityId) {
         this.cityId = cityId;
         if(null!=cityId){

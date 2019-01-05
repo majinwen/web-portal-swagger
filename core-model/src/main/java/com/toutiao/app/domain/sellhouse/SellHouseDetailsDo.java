@@ -3,6 +3,7 @@ package com.toutiao.app.domain.sellhouse;
 import com.toutiao.app.domain.agent.AgentBaseDo;
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.web.common.assertUtils.ChangeName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.text.ParseException;
@@ -522,5 +523,10 @@ public class SellHouseDetailsDo {
      */
     private String houseRobLabel;
 
+    @ApiModelProperty(value = "房源标签列表", name = "houseColorLableList")
+    private List<HouseColorLable> houseColorLableList;
+
+    @ApiModelProperty(value = "专题列表", name = "houseSubjectList")
+    private List<HouseSubject> houseSubjectList;
 
 }
