@@ -199,24 +199,38 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             recommendTopicDo.setCount((int) parsedCardinality.getValue());
 
 //                recommendTopicDo.setTopicType(flag);
+            StringBuilder url = new StringBuilder(wapName + "/" + city + "/topics/house");
 
-                if(Objects.equals(flag, "isLowPrice")){
-                    recommendTopicDo.setTopicName("捡漏房源榜");
-                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
-                    recommendTopicDo.setTopicType(2);
-                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/low");
-                }else if(Objects.equals(flag, "isMustRob")){
-                    recommendTopicDo.setTopicName("抢手房源榜");
-                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
-                    recommendTopicDo.setTopicType(3);
-                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/hot");
-                }else if(Objects.equals(flag, "isCutPrice")){
-                    recommendTopicDo.setTopicName("降价房源榜");
-                    recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
-                    recommendTopicDo.setTopicType(1);
-                    recommendTopicDo.setUrl(wapName + "/"+city+"/topics/house/reduction");
+            if(Objects.equals(flag, "isLowPrice")){
+                recommendTopicDo.setTopicName("捡漏房源榜");
+                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
+                recommendTopicDo.setTopicType(2);
+                url.append("/low?");
+            }else if(Objects.equals(flag, "isMustRob")){
+                recommendTopicDo.setTopicName("抢手房源榜");
+                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
+                recommendTopicDo.setTopicType(3);
+                url.append("/hot?");
+            }else if(Objects.equals(flag, "isCutPrice")){
+                recommendTopicDo.setTopicName("降价房源榜");
+                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
+                recommendTopicDo.setTopicType(1);
+                url.append("/reduction?");
+            }
 
-                }
+            if (null != recommendTopicDoQuery.getDistrictId() && recommendTopicDoQuery.getDistrictId().length > 0) {
+                url.append("&districtIds=" + String.join("," , recommendTopicDoQuery.getDistrictId()));
+            }
+            if (StringTool.isNotEmpty(recommendTopicDoQuery.getBeginPrice())) {
+                url.append("&beginPrice=" + recommendTopicDoQuery.getBeginPrice());
+            }
+            if (StringTool.isNotEmpty(recommendTopicDoQuery.getEndPrice())) {
+                url.append("&endPrice=" + recommendTopicDoQuery.getEndPrice());
+            }
+            if (null != recommendTopicDoQuery.getLayoutId() && recommendTopicDoQuery.getLayoutId().length > 0) {
+                url.append("&layoutId=" + String.join("," , recommendTopicDoQuery.getLayoutId()));
+            }
+            recommendTopicDo.setUrl(url.toString());
 
             try {
                 UserBasic current = UserBasic.getCurrent();
