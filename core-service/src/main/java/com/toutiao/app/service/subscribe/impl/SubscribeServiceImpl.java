@@ -168,7 +168,7 @@ public class SubscribeServiceImpl implements SubscribeService {
                     url.append("&districtIds=" + userSubscribeDetailDo.getDistrictId());
                 }
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getAreaId())) {
-                    url.append("&areaIds=" + userSubscribeDetailDo.getDistrictId());
+                    url.append("&areaIds=" + userSubscribeDetailDo.getAreaId());
                 }
                 if (StringTool.isNotEmpty(userSubscribeDetailDo.getBeginPrice())) {
                     url.append("&beginPrice=" + userSubscribeDetailDo.getBeginPrice());
