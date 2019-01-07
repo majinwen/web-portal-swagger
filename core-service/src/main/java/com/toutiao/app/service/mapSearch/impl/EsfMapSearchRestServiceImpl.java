@@ -155,7 +155,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         GeoBoundingBoxQueryBuilder geoBoundingBoxQueryBuilder = QueryBuilders.geoBoundingBoxQuery("district_location").setCornersOGC(bottomLeft, topRight);
         builder.must(geoBoundingBoxQueryBuilder);
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByDistrict(builder, city);
-        long searchCount = searchResponse.getHits().totalHits;
+        //long searchCount = searchResponse.getHits().totalHits;
         Terms terms = searchResponse.getAggregations().get("houseCount");
         List buckets = terms.getBuckets();
         for (Object bucket : buckets) {
@@ -191,7 +191,9 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             data.add(esfMapSearchDistrictDo);
         }
         esfMapSearchDistrictDomain.setData(data);
-        esfMapSearchDistrictDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"套房源");
+        SearchResponse responseHouseCount = esfMapSearchEsDao.esfMapSearchByCommunity(boolQueryBuilder, city);
+        long searchHouseCount = responseHouseCount.getHits().totalHits;
+        esfMapSearchDistrictDomain.setHit("可视范围内"+searchHouseCount+"套房源，共"+esfCount+"套房源");
         return esfMapSearchDistrictDomain;
     }
 
@@ -212,11 +214,13 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
         BeanUtils.copyProperties(esfMapSearchDoQuery, sellHouseDoQuery);
         nf.setRoundingMode(RoundingMode.UP);
 
+        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
+        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
         boolQueryBuilder = filterSellHouseChooseService.filterSellHouseChoose(sellHouseDoQuery);
-//        boolQueryBuilder.must(QueryBuilders.termQuery("isDel", "0"));
-//        boolQueryBuilder.must(QueryBuilders.termQuery("is_claim", "0"));
         SearchResponse searchSellHouse = sellHouseEsDao.querySellHouse(boolQueryBuilder, city);
         long esfCount = searchSellHouse.getHits().totalHits;
+
+
 
         BoolQueryBuilder aggBuilder = QueryBuilders.boolQuery();
         GeoPoint topRight = new GeoPoint(esfMapSearchDoQuery.getMaxLatitude(),esfMapSearchDoQuery.getMaxLongitude());
@@ -227,7 +231,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             aggBuilder.must(QueryBuilders.termQuery("district_id", sellHouseDoQuery.getDistrictId()));
         }
         SearchResponse searchResponse = esfMapSearchEsDao.esfMapSearchByBizcircle(aggBuilder, city);
-        long searchCount = searchResponse.getHits().totalHits;
+        //long searchCount = searchResponse.getHits().totalHits;
         Terms houseCount = searchResponse.getAggregations().get("houseCount");
         List buckets= houseCount.getBuckets();
         for (Object bucket : buckets){
@@ -263,7 +267,9 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             data.add(esfMapSearchBizcircleDo);
         }
         esfMapSearchBizcircleDomain.setData(data);
-        esfMapSearchBizcircleDomain.setHit("可视范围内"+searchCount+"套房源，共"+esfCount+"套房源");
+        SearchResponse responseHouseCount = esfMapSearchEsDao.esfMapSearchByCommunity(boolQueryBuilder, city);
+        long searchHouseCount = responseHouseCount.getHits().totalHits;
+        esfMapSearchBizcircleDomain.setHit("可视范围内"+searchHouseCount+"套房源，共"+esfCount+"套房源");
         return esfMapSearchBizcircleDomain;
     }
 

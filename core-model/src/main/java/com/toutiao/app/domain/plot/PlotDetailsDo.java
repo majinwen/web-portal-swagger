@@ -2,7 +2,9 @@ package com.toutiao.app.domain.plot;
 
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.toutiao.app.domain.sellhouse.HouseColorLable;
 import com.toutiao.web.common.assertUtils.ChangeName;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
@@ -354,4 +356,9 @@ public class PlotDetailsDo {
      * 环比（月）
      */
     private Double ringRatio;
+
+    /**
+     * 小区标签列表
+     */
+    private List<HouseColorLable> plotLableList;
 }
