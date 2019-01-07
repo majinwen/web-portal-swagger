@@ -153,10 +153,14 @@ public class SellHouseServiceImpl implements SellHouseService {
                     houseRankLableList.add(new HouseRankLable("", "", "捡漏榜", sellHouseDetailsDo.getHouseLowerLabel(), wapName + "/"+city+"/topics/house/low"+houseLowerCondition));
                 }
 
+
                 int isCutPrice = sellHouseDetailsDo.getIsCutPrice();
-                if (isCutPrice == 1) {
+                double priceFloat = sellHouseDetailsDo.getPriceFloat();
+
+                if (isCutPrice == 1 && sellHouseDetailsDo.getPriceFloat() < 0) {
                     String houseCutCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseCutLabel())?"?"+sellHouseDetailsDo.getHouseCutLabel():"";
-                    houseRankLableList.add(new HouseRankLable("", "", "降价榜", sellHouseDetailsDo.getHouseCutLabel(), wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
+                    String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseCutLabel())?sellHouseDetailsDo.getHouseCutLabel():"降" + Math.abs(priceFloat) + "万";
+                    houseRankLableList.add(new HouseRankLable("", "", "降价榜", desc, wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
                 }
                 sellHouseDetailsDo.setHouseRankLableList(houseRankLableList);
 
@@ -171,9 +175,8 @@ public class SellHouseServiceImpl implements SellHouseService {
                     houseSubjectList.add(new HouseSubject("总价低于商圈同户型" + Math.abs(sellHouseDetailsDo.getTotalAbsoluteWithBizcircle()) + "万",""));
                 }
 
-                double priceFloat = sellHouseDetailsDo.getPriceFloat();
-                if (sellHouseDetailsDo.getIsCutPrice() == 1 && sellHouseDetailsDo.getPriceFloat() > 0) {
-                    houseSubjectList.add(new HouseSubject("降" + priceFloat + "万",""));
+                if (sellHouseDetailsDo.getIsCutPrice() == 1 && sellHouseDetailsDo.getPriceFloat() < 0) {
+                    houseSubjectList.add(new HouseSubject("降" + Math.abs(priceFloat) + "万",""));
                 }
 
                 Integer avgDealCycle = sellHouseDetailsDo.getAvgDealCycle();
@@ -214,9 +217,10 @@ public class SellHouseServiceImpl implements SellHouseService {
                 String communityLableStr = "";
                 List recommendBuildTagNameList = sellHouseDetailsDo.getRecommendBuildTagsName();
                 String areaName = sellHouseDetailsDo.getArea();
+                sellHouseDetailsDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
                 Map<Integer, Map<String, Integer>> typeCountsMap = sellHouseDetailsDo.getTypeCounts();
                 //区域ID
-                Integer areaId = sellHouseDetailsDo.getAreaId();
+                String areaId = sellHouseDetailsDo.getAreaId().toString();
 
                 if (sellHouseDetailsDo.getIsMustRob() == 1 && sellHouseDetailsDo.getIsMainLayout() == 1) {
                     if (sellHouseDetailsDo.getIsCommunityTopHouse() == 1) {
