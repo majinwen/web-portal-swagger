@@ -285,7 +285,7 @@ public class NewHouseApiController implements NewHouseApi {
 
         BeanUtils.copyProperties(newHouseListDomain, newHouseGuessLikeResponse);
         newHouseGuessLikeResponse.setTotalNum(newHouseListDomain.getTotalCount());
-        log.info("返回结果集:{}", JSONUtil.stringfy(newHouseGuessLikeResponse));
+//        log.info("返回结果集:{}", JSONUtil.stringfy(newHouseGuessLikeResponse));
         return new ResponseEntity<>(newHouseGuessLikeResponse, HttpStatus.OK);
     }
 
