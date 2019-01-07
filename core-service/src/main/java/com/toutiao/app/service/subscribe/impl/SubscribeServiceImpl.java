@@ -137,7 +137,7 @@ public class SubscribeServiceImpl implements SubscribeService {
 
             //填充新增数量
             if (userSubscribeListDo.getSubscribeType() == 0) {
-                userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo, city));
+                userSubscribeListDo.setNewCount(getNewCountBySubscribe(userSubscribeDetailDo, CityUtils.retuenCityCode(userSubscribe.getCityId())));
                 if (StringTool.isEmpty(userSubscribeDetailDo.getDistrictName()) && StringTool.isNotEmpty(userSubscribeDetailDo.getDistrictId())) {
                     userSubscribeDetailDo.setDistrictName(cityDao.selectDistrictName((Integer[]) ConvertUtils.convert(userSubscribeDetailDo.getDistrictId().split(","), Integer.class)));
                 }
@@ -146,7 +146,7 @@ public class SubscribeServiceImpl implements SubscribeService {
                 }
                 // 1：降价房 2：价格洼地 3：逢出必抢
                 Integer topicType = userSubscribeDetailDo.getTopicType();
-                StringBuilder url = new StringBuilder(wapName + "/" + city + "/topics/house");
+                StringBuilder url = new StringBuilder(wapName + "/" + CityUtils.retuenCityCode(userSubscribe.getCityId()) + "/topics/house");
                 switch (topicType) {
                     case 1:
                         userSubscribeDetailDo.setTopicTypeName("降价房");
@@ -192,13 +192,13 @@ public class SubscribeServiceImpl implements SubscribeService {
                 boolQueryBuilder.must(QueryBuilders.termQuery("room", userSubscribeDetailDo.getRoom()));
                 boolQueryBuilder.must(QueryBuilders.termQuery("isNew", 1));
                 SearchResponse houseBusinessAndRoomHouses = houseBusinessAndRoomEsDao.getHouseBusinessAndRoomHouses(
-                        boolQueryBuilder, 1, 1, city);
+                        boolQueryBuilder, 1, 1, CityUtils.retuenCityCode(userSubscribe.getCityId()));
                 SearchHits hits = houseBusinessAndRoomHouses.getHits();
                 userSubscribeListDo.setNewCount(hits.getTotalHits());
             }
             if (isGetHouseDetail) {
                 //填充房源列表数据
-                userSubscribeListDo.setHouseList(getHouseListBySubscribe(userSubscribeDetailDo, city));
+                userSubscribeListDo.setHouseList(getHouseListBySubscribe(userSubscribeDetailDo, CityUtils.retuenCityCode(userSubscribe.getCityId())));
             }
             userSubscribeListDo.setUserSubscribeDetail(userSubscribeDetailDo);
             userSubscribeListDoList.add(userSubscribeListDo);
