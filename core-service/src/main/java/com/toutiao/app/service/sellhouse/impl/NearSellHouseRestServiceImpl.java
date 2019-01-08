@@ -10,6 +10,7 @@ import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.sellhouse.FilterSellHouseChooseService;
 import com.toutiao.app.service.sellhouse.NearSellHouseRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.app.service.sellhouse.SellHouseToolService;
 import com.toutiao.web.common.constant.company.CompanyIconEnum;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
@@ -55,6 +56,9 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
 
     @Value("${wap.domain.name}")
     private String wapName;
+
+    @Autowired
+    private SellHouseToolService sellHouseToolService;
 
     @Override
     public NearBySellHouseDomain getSellHouseByHouseIdAndLocation(NearBySellHouseQueryDo nearBySellHouseQueryDo, String city) {
@@ -284,39 +288,40 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             nearBySellHousesDo.setHouseColorLableList(houseColorLableList);
 
             //二手房弹幕第一行
-            List<String> houseBarrageFirstList = new ArrayList<>();
-            if (nearBySellHousesDo.getIsLowest() == 1 ){
-                houseBarrageFirstList.add("小区同户型总价最低");
-            }
-            boolean titleTag = true;
-            if(nearBySellHousesDo.getTotalAbsoluteWithBizcircle()<0){
-                String lowPriceStr = "总价低于商圈同户型" + Math.abs(nearBySellHousesDo.getTotalAbsoluteWithBizcircle()) + "万";
-                houseBarrageFirstList.add(lowPriceStr);
-                titleTag = false;
-            }
-            double priceFloat = nearBySellHousesDo.getPriceFloat();
-            if (nearBySellHousesDo.getIsCutPrice() == 1 && priceFloat > 0) {
-                houseBarrageFirstList.add("降" + priceFloat + "万");
-                titleTag = false;
-            }
-            Integer avgDealCycle = nearBySellHousesDo.getAvgDealCycle();
-            if (nearBySellHousesDo.getIsDealLayout() == 1 && avgDealCycle > 0) {
-                houseBarrageFirstList.add("平均成交周期" + avgDealCycle + "天");
-//                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
-                titleTag = false;
-            }
-            if(titleTag){
-                houseBarrageFirstList.add(nearBySellHousesDo.getHouseTitle());
-            }
-            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseCutLabel())) {
-                houseBarrageFirstList.add(nearBySellHousesDo.getHouseCutLabel());
-            }
-            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseLowerLabel())) {
-                houseBarrageFirstList.add(nearBySellHousesDo.getHouseLowerLabel());
-            }
-            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseRobLabel())) {
-                houseBarrageFirstList.add(nearBySellHousesDo.getHouseRobLabel());
-            }
+            List<String> houseBarrageFirstList = sellHouseToolService.getHouseBarrageFirstList(searchHit,city);
+//            List<String> houseBarrageFirstList = new ArrayList<>();
+//            if (nearBySellHousesDo.getIsLowest() == 1 ){
+//                houseBarrageFirstList.add("小区同户型总价最低");
+//            }
+//            boolean titleTag = true;
+//            if(nearBySellHousesDo.getTotalAbsoluteWithBizcircle()<0){
+//                String lowPriceStr = "总价低于商圈同户型" + Math.abs(nearBySellHousesDo.getTotalAbsoluteWithBizcircle()) + "万";
+//                houseBarrageFirstList.add(lowPriceStr);
+//                titleTag = false;
+//            }
+//            double priceFloat = nearBySellHousesDo.getPriceFloat();
+//            if (nearBySellHousesDo.getIsCutPrice() == 1 && priceFloat > 0) {
+//                houseBarrageFirstList.add("降" + priceFloat + "万");
+//                titleTag = false;
+//            }
+//            Integer avgDealCycle = nearBySellHousesDo.getAvgDealCycle();
+//            if (nearBySellHousesDo.getIsDealLayout() == 1 && avgDealCycle > 0) {
+//                houseBarrageFirstList.add("平均成交周期" + avgDealCycle + "天");
+////                houseBarrageFirstList.add("本户型平均成交时间为" + avgDealCycle + "天");
+//                titleTag = false;
+//            }
+//            if(titleTag){
+//                houseBarrageFirstList.add(nearBySellHousesDo.getHouseTitle());
+//            }
+//            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseCutLabel())) {
+//                houseBarrageFirstList.add(nearBySellHousesDo.getHouseCutLabel());
+//            }
+//            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseLowerLabel())) {
+//                houseBarrageFirstList.add(nearBySellHousesDo.getHouseLowerLabel());
+//            }
+//            if (StringTool.isNotEmpty(nearBySellHousesDo.getHouseRobLabel())) {
+//                houseBarrageFirstList.add(nearBySellHousesDo.getHouseRobLabel());
+//            }
             nearBySellHousesDo.setHouseBarrageFirstList(houseBarrageFirstList);
 
             //二手房弹幕第二行

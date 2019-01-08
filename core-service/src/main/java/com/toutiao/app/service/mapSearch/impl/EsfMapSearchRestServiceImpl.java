@@ -444,7 +444,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     esfMapHouseDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
                 String titlePhoto = esfMapHouseDo.getHousePhotoTitle();
-                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http://")) {
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 esfMapHouseDo.setHousePhotoTitle(titlePhoto);
@@ -980,7 +980,7 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
                     esfMapHouseDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
                 }
                 String titlePhoto = esfMapHouseDo.getHousePhotoTitle();
-                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http://")) {
+                if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
                     titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 esfMapHouseDo.setHousePhotoTitle(titlePhoto);
