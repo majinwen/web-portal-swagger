@@ -43,4 +43,10 @@ public class ReportEsfTongbiDescriptionResponse {
      */
     @ApiModelProperty(value = "同比")
     private Double percent;
+
+    /**
+     * 同比数量变动
+     */
+    @ApiModelProperty(value = "同比数量变动")
+    private Integer changeNumber;
 }
