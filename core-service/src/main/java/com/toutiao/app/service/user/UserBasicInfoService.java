@@ -81,4 +81,5 @@ public interface UserBasicInfoService {
      */
     UserBasicDo smallProgramLogin(String code, String iv, String rawData) throws Exception;
 
+    UserSubscribeEtc getUserFavoriteEtcCountForLite(Integer userId);
 }
