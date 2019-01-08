@@ -283,7 +283,7 @@ public class UserbasicApiController implements UserbasicApi {
     }
 
     @Override
-    public ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount() {
+    public ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount(@ApiParam(value = "0-APP、WAP，1-小程序",name = "flag") @RequestParam(required = false,defaultValue = "0") Integer flag) {
 
         UserSubscribeEtcCountResponse userSubscribeEtcCountResponse = new UserSubscribeEtcCountResponse();
         String user = CookieUtils.validCookieValue1(request, CookieUtils.COOKIE_NAME_USER);
@@ -291,7 +291,12 @@ public class UserbasicApiController implements UserbasicApi {
 
         if (null != user) {
             UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
-            UserSubscribeEtc userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userLoginResponse.getUserId()));
+            UserSubscribeEtc userSubscribeEtc = null;
+            if (0 == flag) {
+                userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCount(Integer.parseInt(userLoginResponse.getUserId()));
+            } else {
+                userSubscribeEtc = userBasicInfoService.getUserFavoriteEtcCountForLite(Integer.parseInt(userLoginResponse.getUserId()));
+            }
             BeanUtils.copyProperties(userSubscribeEtc, userSubscribeEtcCountResponse);
         }
         return new ResponseEntity<UserSubscribeEtcCountResponse>(userSubscribeEtcCountResponse, HttpStatus.OK);

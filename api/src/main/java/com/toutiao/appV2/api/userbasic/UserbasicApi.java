@@ -152,7 +152,7 @@ public interface UserbasicApi {
             produces = "application/json",
             //consumes = "application/json",
             method = RequestMethod.GET)
-    ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount();
+    ResponseEntity<UserSubscribeEtcCountResponse> getUserSubscribeEtcCount(Integer flag);
 
     @ApiOperation(value = "解除微信绑定", nickname = "unbindweixin", notes = "", tags={ "用户基本信息", })
     @ApiResponses(value = {

@@ -334,6 +334,16 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
         return userBasicDo;
     }
 
+    @Override
+    public UserSubscribeEtc getUserFavoriteEtcCountForLite(Integer userId) {
+        UserSubscribeEtc userSubscribeEtc = new UserSubscribeEtc();
+        Integer favoriteCount = userBasicMapper.getUserFavoriteCount(userId);
+        Integer subscribeCount = userBasicMapper.getUserSubscribeCount(userId);
+        userSubscribeEtc.setUserFavoriteCount(favoriteCount);
+        userSubscribeEtc.setUserSubscribeCount(subscribeCount);
+        return userSubscribeEtc;
+    }
+
 
     private void setCookieAndCache(String phone, UserLoginDomain userLoginDomain,
                                    HttpServletRequest request, HttpServletResponse response) throws Exception {
