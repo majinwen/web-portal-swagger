@@ -16,6 +16,7 @@ import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.common.NearbyDistanceService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.favorite.RentFavoriteRestService;
 import com.toutiao.app.service.plot.PlotsHomesRestService;
@@ -88,6 +89,9 @@ public class RentRestRestServiceImpl implements RentRestService {
 
     @Autowired
     private RentRestRestServiceImpl rentRestRestService;
+    @Autowired
+    private NearbyDistanceService nearbyDistanceService;
+
     /**
      * 租房详情信息
      *
@@ -646,20 +650,31 @@ public class RentRestRestServiceImpl implements RentRestService {
             for (SearchHit hit : hits) {
                 String sourceAsString = hit.getSourceAsString();
                 RentDetailsFewDo rentDetailsFewDo = JSON.parseObject(sourceAsString, RentDetailsFewDo.class);
-                String nearbyDistance = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
+//                String nearbyDistance = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
+//                String traffic = rentDetailsFewDo.getNearestSubway();
+//                String[] trafficArr = traffic.split("\\$");
+//                if (trafficArr.length == 3) {
+//                    int i = Integer.parseInt(trafficArr[2]);
+//                    if (i < 1000) {
+////                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+//                    } else if (i < 2000) {
+//                        DecimalFormat df = new DecimalFormat("0.0");
+////                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+//                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+//                    }
+//                }
+
+                String frontName = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
+
                 String traffic = rentDetailsFewDo.getNearestSubway();
-                String[] trafficArr = traffic.split("\\$");
-                if (trafficArr.length == 3) {
-                    int i = Integer.parseInt(trafficArr[2]);
-                    if (i < 1000) {
-//                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
-                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
-                    } else if (i < 2000) {
-                        DecimalFormat df = new DecimalFormat("0.0");
-//                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-                        nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-                    }
+                String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
+                        (rentDetailsFewDo.getNearbySubway(),rentHouseDoQuery.getSubwayLineId(),rentHouseDoQuery.getSubwayStationId());
+                if(StringTool.isNotEmpty(trafficWithSubway)) {
+                    traffic = trafficWithSubway;
                 }
+                String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,frontName);
+                rentDetailsFewDo.setSubwayDistanceInfo(traffic);
 
                 if (StringTool.isNotEmpty(rentHouseDoQuery.getDistance()) && rentHouseDoQuery.getDistance() > 0) {
                     BigDecimal geoDis;
@@ -670,6 +685,10 @@ public class RentRestRestServiceImpl implements RentRestService {
                     }
                     String distances= geoDis.setScale(1, BigDecimal.ROUND_CEILING) + DistanceUnit.KILOMETERS.toString();
                     nearbyDistance = "距您" + distances;
+                }
+
+                if(StringTool.isNotEmpty(nearbyDistance)){
+                    rentDetailsFewDo.setNearbyDistance(nearbyDistance);
                 }
 
                 //判断3天内导入，且无图片，默认上显示默认图
@@ -702,18 +721,18 @@ public class RentRestRestServiceImpl implements RentRestService {
                 }
 
                 //增加房子与地铁的距离
-                String keys = "";
-                if (null != rentHouseDoQuery.getSubwayLineId() && rentHouseDoQuery.getSubwayLineId() > 0) {
-                    keys += rentHouseDoQuery.getSubwayLineId().toString();
-                    //增加地铁线选择，地铁站选择不限
-                    if(StringTool.isNotEmpty(rentDetailsFewDo.getNearbySubway().get(keys))){
-                        trafficArr = rentDetailsFewDo.getNearbySubway().get(keys).split("\\$");
-                        if (trafficArr.length == 3) {
-//                            nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
-                            nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
-                        }
-                    }
-                }
+//                String keys = "";
+//                if (null != rentHouseDoQuery.getSubwayLineId() && rentHouseDoQuery.getSubwayLineId() > 0) {
+//                    keys += rentHouseDoQuery.getSubwayLineId().toString();
+//                    //增加地铁线选择，地铁站选择不限
+//                    if(StringTool.isNotEmpty(rentDetailsFewDo.getNearbySubway().get(keys))){
+//                        trafficArr = rentDetailsFewDo.getNearbySubway().get(keys).split("\\$");
+//                        if (trafficArr.length == 3) {
+////                            nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                            nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+//                        }
+//                    }
+//                }
 //                if (null != rentHouseDoQuery.getSubwayStationId()) {
 //                    keys += "$" + rentHouseDoQuery.getSubwayStationId();
 //                }
@@ -721,32 +740,32 @@ public class RentRestRestServiceImpl implements RentRestService {
 //                    rentDetails
 // ewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(keys).toString());
 //                }
-                if (null != rentHouseDoQuery.getSubwayStationId() && rentHouseDoQuery.getSubwayStationId().length > 0) {
-                    Map<Integer,String> map = new HashMap<>();
-                    List<Integer> sortDistance = new ArrayList<>();
-                    for (int i=0; i<rentHouseDoQuery.getSubwayStationId().length; i++) {
-                        String stationKey = keys+"$"+rentHouseDoQuery.getSubwayStationId()[i];
-                        if (StringTool.isNotEmpty(rentDetailsFewDo.getNearbySubway().get(stationKey))) {
-                            String stationValue = rentDetailsFewDo.getNearbySubway().get(stationKey);
-                            String[] stationValueSplit = stationValue.split("\\$");
-                            Integer distance = Integer.valueOf(stationValueSplit[2]);
-                            sortDistance.add(distance);
-                            map.put(distance,stationKey);
-                        }
-                    }
-                    Integer minDistance = Collections.min(sortDistance);
-                    rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(map.get(minDistance)));
-                    trafficArr = rentDetailsFewDo.getSubwayDistanceInfo().split("\\$");
-                    if (trafficArr.length == 3) {
-//                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
-                        nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
-
-                    }
-                }
-
-                if(StringTool.isNotEmpty(nearbyDistance)){
-                    rentDetailsFewDo.setNearbyDistance(nearbyDistance);
-                }
+//                if (null != rentHouseDoQuery.getSubwayStationId() && rentHouseDoQuery.getSubwayStationId().length > 0) {
+//                    Map<Integer,String> map = new HashMap<>();
+//                    List<Integer> sortDistance = new ArrayList<>();
+//                    for (int i=0; i<rentHouseDoQuery.getSubwayStationId().length; i++) {
+//                        String stationKey = keys+"$"+rentHouseDoQuery.getSubwayStationId()[i];
+//                        if (StringTool.isNotEmpty(rentDetailsFewDo.getNearbySubway().get(stationKey))) {
+//                            String stationValue = rentDetailsFewDo.getNearbySubway().get(stationKey);
+//                            String[] stationValueSplit = stationValue.split("\\$");
+//                            Integer distance = Integer.valueOf(stationValueSplit[2]);
+//                            sortDistance.add(distance);
+//                            map.put(distance,stationKey);
+//                        }
+//                    }
+//                    Integer minDistance = Collections.min(sortDistance);
+//                    rentDetailsFewDo.setSubwayDistanceInfo(rentDetailsFewDo.getNearbySubway().get(map.get(minDistance)));
+//                    trafficArr = rentDetailsFewDo.getSubwayDistanceInfo().split("\\$");
+//                    if (trafficArr.length == 3) {
+////                        nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                        nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+//
+//                    }
+//                }
+//
+//                if(StringTool.isNotEmpty(nearbyDistance)){
+//                    rentDetailsFewDo.setNearbyDistance(nearbyDistance);
+//                }
 
                 //设置标题图
                 String titlePhoto = rentDetailsFewDo.getHouseTitleImg();

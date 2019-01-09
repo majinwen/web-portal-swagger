@@ -13,11 +13,8 @@ public interface SellHouseToolService {
 
     String getCommunityLableStr(SearchHit searchHit,String city);
 
-    String getNearbyDistanceBySubway(SearchHit searchHit);
-
-    String getSubwayDistanceInfoBySubway(SearchHit searchHit);
-
     List<HouseColorLable> getHouseColorLableListForESF(SearchHit searchHit, String wapName,String city,String districtId,String districtName);
 
     List<HouseColorLable> getHouseColorLableListForESFDetails(SearchHit searchHit, String wapName,String city,String districtId,String districtName);
+
 }

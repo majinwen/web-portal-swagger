@@ -42,4 +42,14 @@ public interface RecommendEsDao {
      * @return
      */
     SearchResponse getRecommendByRecommendHouseTags(RecommendTopicDoQuery recommendTopicDoQuery,BoolQueryBuilder boolQueryBuilder, String city);
+
+
+    /**
+     * 查询上新
+     * @param boolQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse getIsNewByHouseTags(BoolQueryBuilder boolQueryBuilder, String city);
+
 }
