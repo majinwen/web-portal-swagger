@@ -252,9 +252,12 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                         rentMapSearchDo.setLongitude((Double) subwayInfo.get("lon"));
                         //租房均价
                         if (StringUtil.isNotNullString(rentHouseDoQuery.getElo())) {
-                            rentMapSearchDo.setRentAvgPrice((String) subwayInfo.get("eloAvgPrice"));
+                            rentMapSearchDo.setEloAvgPrice((String) subwayInfo.get("eloAvgPrice"));
                         } else if (StringUtil.isNotNullString(rentHouseDoQuery.getJlo())) {
-                            rentMapSearchDo.setRentAvgPrice((String) subwayInfo.get("jloAvgPrice"));
+                            rentMapSearchDo.setJloAvgPrice((String) subwayInfo.get("jloAvgPrice"));
+                        } else {
+                            rentMapSearchDo.setEloAvgPrice((String) subwayInfo.get("eloAvgPrice"));
+                            rentMapSearchDo.setJloAvgPrice((String) subwayInfo.get("jloAvgPrice"));
                         }
                         rentCustomConditionDos.add(rentMapSearchDo);
                     }
