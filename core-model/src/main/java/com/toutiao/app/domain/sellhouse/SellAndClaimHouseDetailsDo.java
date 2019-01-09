@@ -464,4 +464,19 @@ public class SellAndClaimHouseDetailsDo {
      */
     private Double initialPrice;
 
+    /**
+     * 抢手房 跳转条件
+     */
+    private String houseRobCondition;
+
+    /**
+     * 捡漏房 跳转条件
+     */
+    private String houseLowerCondition;
+
+    /**
+     * 降价房 跳转条件
+     */
+    private String houseCutCondition;
+
 }
