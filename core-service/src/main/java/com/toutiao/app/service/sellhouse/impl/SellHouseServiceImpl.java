@@ -22,6 +22,7 @@ import com.toutiao.app.domain.plot.PlotsHousesDomain;
 import com.toutiao.app.domain.sellhouse.*;
 import com.toutiao.app.domain.subscribe.UserSubscribeDetailDo;
 import com.toutiao.app.service.agent.AgentService;
+import com.toutiao.app.service.common.NearbyDistanceService;
 import com.toutiao.app.service.community.CommunityRestService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsHomesRestService;
@@ -114,6 +115,8 @@ public class SellHouseServiceImpl implements SellHouseService {
     private String wapName;
     @Autowired
     private SellHouseToolService sellHouseToolService;
+    @Autowired
+    private NearbyDistanceService nearbyDistanceService;
 
     @Override
     public SellHouseDetailsDo getSellHouseByHouseId(String houseId, String city) {
@@ -177,8 +180,8 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                    }
 //                    houseSubjectList.add(new HouseSubject(nearbyDistance,""));
 //                }
-                String traffic = sellHouseToolService.getDefaultTraffic(searchHit,"traffic");
-                String nearbyDistance = sellHouseToolService.getNearbyDistanceByTraffic(traffic,"");
+                String traffic = nearbyDistanceService.getDefaultTraffic(searchHit,"traffic");
+                String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,"");
                 houseSubjectList.add(new HouseSubject(nearbyDistance,""));
 
                 //tagsName
@@ -1100,9 +1103,9 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 // 距离计算
                 // 1.默认地铁最近
-                String traffic = sellHouseToolService.getDefaultTraffic(searchHit,"traffic");
+                String traffic = nearbyDistanceService.getDefaultTraffic(searchHit,"traffic");
                 // 2.如果有地铁筛选信息，会返回对应的地铁信息
-                String trafficWithSubway = sellHouseToolService.getTrafficWithOneSubwayLine
+                String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
                         (searchHit,"traffic",sellHouseDoQuery.getSubwayLineId(),sellHouseDoQuery.getSubwayStationId());
 
                 if(StringTool.isNotEmpty(trafficWithSubway)) {
@@ -1110,7 +1113,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
 
                 sellHousesSearchDo.setSubwayDistanceInfo(traffic);
-                String nearbyDistance = sellHouseToolService.getNearbyDistanceByTraffic(traffic,frontName);
+                String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,frontName);
 
                 // 3.选择附近 的距离
                 if (StringTool.isNotEmpty(sellHouseDoQuery.getDistance()) && sellHouseDoQuery.getDistance() > 0) {
@@ -2547,8 +2550,8 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                    keys += sellHouseDoQuery.getSubwayLineId().toString();
 //                }
 
-                String traffic = sellHouseToolService.getDefaultTraffic(searchHit,"traffic");
-                String nearbyDistance = sellHouseToolService.getNearbyDistanceByTraffic(traffic,frontName);
+                String traffic = nearbyDistanceService.getDefaultTraffic(searchHit,"traffic");
+                String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,frontName);
 
                 if (StringTool.isNotEmpty(nearbyDistance)) {
                     sellHousesSearchDo.setNearbyDistance(nearbyDistance);
