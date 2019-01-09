@@ -52,8 +52,14 @@ public class RentCustomConditionDo {
     private Integer houseCount;
 
     /**
-     * 租房均价
+     * 租房整租均价
      */
-    @ApiModelProperty(name = "rentAvgPrice", value = "租房均价")
-    private String rentAvgPrice;
+    @ApiModelProperty(name = "eloAvgPrice", value = "租房整租均价")
+    private String eloAvgPrice;
+
+    /**
+     * 租房合租均价
+     */
+    @ApiModelProperty(name = "jloAvgPrice", value = "租房合租均价")
+    private String jloAvgPrice;
 }
