@@ -527,4 +527,20 @@ public class SellHouseDetailsDo {
 
     @ApiModelProperty(value = "房源Tags标签列表", name = "houseSubjectList")
     private List<HouseSubject> houseSubjectList;
+
+    /**
+     * 抢手房 跳转条件
+     */
+    private String houseRobCondition;
+
+    /**
+     * 捡漏房 跳转条件
+     */
+    private String houseLowerCondition;
+
+    /**
+     * 降价房 跳转条件
+     */
+    private String houseCutCondition;
+
 }
