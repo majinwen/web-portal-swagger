@@ -79,6 +79,26 @@ public class RecommendEsDaoImpl implements RecommendEsDao{
         return searchResponse;
     }
 
+    @Override
+    public SearchResponse getIsNewByHouseTags(BoolQueryBuilder boolQueryBuilder, String city) {
+
+        SearchResponse searchResponse = null;
+
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getEsfHouseIndex(city)).types(ElasticCityUtils.getEsfHouseTpye(city));
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(boolQueryBuilder).size(0);
+
+        searchRequest.source(searchSourceBuilder);
+
+        try {
+            searchResponse = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return searchResponse;
+    }
+
 //    /**
 //     * 根据小区楼盘推荐标志查询
 //     * @param boolQueryBuilder
