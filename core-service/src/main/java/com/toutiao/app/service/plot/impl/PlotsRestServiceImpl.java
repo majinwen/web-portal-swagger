@@ -10,6 +10,7 @@ import com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.rent.RentNumListDo;
+import com.toutiao.app.service.common.NearbyDistanceService;
 import com.toutiao.app.service.favorite.FavoriteRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.plot.PlotsHomesRestService;
@@ -84,6 +85,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     private PlotsMarketService plotsMarketService;
     @Autowired
     private ReportPipelineRecordEveryMonthMapper reportPipelineRecordEveryMonthMapper;
+    @Autowired
+    private NearbyDistanceService nearbyDistanceService;
 
 
     /**
@@ -477,7 +480,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
 
             if (hits.length > 0) {
                 for (SearchHit hit : hits) {
-                    commonMethod(hit, keyList, plotDetailsFewDoList, city, plotListDoQuery.getDistance(), key);
+                    commonMethod(hit,plotDetailsFewDoList, city, plotListDoQuery.getDistance(), plotListDoQuery);
                 }
             }
         }
@@ -490,31 +493,44 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     /**
      * 遍历结果
      *
-     * @param hit
-     * @param key
      * @return
      */
-    public void commonMethod(SearchHit hit, List<String> key, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance,String subwayLineId) {
+    public void commonMethod(SearchHit hit, List<PlotDetailsFewDo> plotDetailsFewDoList, String city, Double distance,PlotListDoQuery plotListDoQuery) {
         String sourceAsString = hit.getSourceAsString();
         PlotDetailsFewDo plotDetailsFewDo = JSON.parseObject(sourceAsString, PlotDetailsFewDo.class);
         plotDetailsFewDo.setAvgPrice((double) Math.round(plotDetailsFewDo.getAvgPrice()));
 
-        String nearbyDistance = StringTool.nullToString(plotDetailsFewDo.getArea()) + " " + StringTool.nullToString(plotDetailsFewDo.getTradingArea());
+//        String nearbyDistance = StringTool.nullToString(plotDetailsFewDo.getArea()) + " " + StringTool.nullToString(plotDetailsFewDo.getTradingArea());
+//        String traffic = plotDetailsFewDo.getTrafficInformation();
+//        String[] trafficArr = traffic.split("\\$");
+//        if (trafficArr.length == 3) {
+//            int i = Integer.parseInt(trafficArr[2]);
+//            if (i < 1000) {
+////                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+//            } else if (i < 2000) {
+//                DecimalFormat df = new DecimalFormat("0.0");
+////                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+//                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
+//            }
+//        }
+
+
+        String frontName = StringTool.nullToString(plotDetailsFewDo.getArea()) + " " + StringTool.nullToString(plotDetailsFewDo.getTradingArea());
+        // 1.默认地铁最近
         String traffic = plotDetailsFewDo.getTrafficInformation();
-        String[] trafficArr = traffic.split("\\$");
-        if (trafficArr.length == 3) {
-            int i = Integer.parseInt(trafficArr[2]);
-            if (i < 1000) {
-//                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
-                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
-            } else if (i < 2000) {
-                DecimalFormat df = new DecimalFormat("0.0");
-//                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[0] + trafficArr[1] + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-                nearbyDistance = nearbyDistance + " " + "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + df.format(Double.parseDouble(trafficArr[2]) / 1000) + "km";
-            }
+        // 2.如果有地铁筛选信息，会返回对应的地铁信息
+        String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
+                (plotDetailsFewDo.getMetroWithPlotsDistance(),plotListDoQuery.getSubwayLineId(),plotListDoQuery.getSubwayStationId());
+
+        if(StringTool.isNotEmpty(trafficWithSubway)) {
+            traffic = trafficWithSubway;
         }
 
+        String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,frontName);
+        plotDetailsFewDo.setSubwayDistanceInfo(traffic);
 
+        // 3.选择附近 的距离
         if (StringTool.isNotEmpty(distance) && distance > 0) {
             if (hit.getSortValues().length == 3) {
                 BigDecimal geoDis = new BigDecimal((Double) hit.getSortValues()[2]);
@@ -527,45 +543,49 @@ public class PlotsRestServiceImpl implements PlotsRestService {
             }
         }
 
-        //增加地铁线选择，地铁站选择不限
-        if(StringTool.isNotEmpty(subwayLineId)){
-            if(StringTool.isNotEmpty(plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId))){
-                trafficArr = plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId).toString().split("\\$");
-                if (trafficArr.length == 3) {
-//                    nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
-                    nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
-                }
-            }
-        }
-
-        if (null != plotDetailsFewDo.getMetroWithPlotsDistance() && key.size() > 0) {
-            Map<Integer, String> map = new HashMap<>();
-            List<Integer> sortDistance = new ArrayList<>();
-            for (int i = 0; i < key.size(); i++) {
-                String stationKey = key.get(i);
-                if (StringTool.isNotEmpty(plotDetailsFewDo.getMetroWithPlotsDistance().get(stationKey))) {
-                    String stationValue = plotDetailsFewDo.getMetroWithPlotsDistance().get(stationKey).toString();
-                    String[] stationValueSplit = stationValue.split("\\$");
-                    Integer stationDis = Integer.valueOf(stationValueSplit[2]);
-                    sortDistance.add(stationDis);
-                    map.put(stationDis, stationKey);
-                }
-            }
-            Integer minDistance = Collections.min(sortDistance);
-            plotDetailsFewDo.setSubwayDistanceInfo(plotDetailsFewDo.getMetroWithPlotsDistance().get(map.get(minDistance)).toString());
-
-            trafficArr = plotDetailsFewDo.getSubwayDistanceInfo().split("\\$");
-            if (trafficArr.length == 3) {
-//                nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
-                nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
-
-            }
-        }
-        plotDetailsFewDo.setMetroWithPlotsDistance(null);
-
         if (StringTool.isNotEmpty(nearbyDistance)) {
             plotDetailsFewDo.setNearbyDistance(nearbyDistance);
         }
+
+        //增加地铁线选择，地铁站选择不限
+//        if(StringTool.isNotEmpty(subwayLineId)){
+//            if(StringTool.isNotEmpty(plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId))){
+//                trafficArr = plotDetailsFewDo.getMetroWithPlotsDistance().get(subwayLineId).toString().split("\\$");
+//                if (trafficArr.length == 3) {
+////                    nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                    nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+//                }
+//            }
+//        }
+
+//        if (null != plotDetailsFewDo.getMetroWithPlotsDistance() && key.size() > 0) {
+//            Map<Integer, String> map = new HashMap<>();
+//            List<Integer> sortDistance = new ArrayList<>();
+//            for (int i = 0; i < key.size(); i++) {
+//                String stationKey = key.get(i);
+//                if (StringTool.isNotEmpty(plotDetailsFewDo.getMetroWithPlotsDistance().get(stationKey))) {
+//                    String stationValue = plotDetailsFewDo.getMetroWithPlotsDistance().get(stationKey).toString();
+//                    String[] stationValueSplit = stationValue.split("\\$");
+//                    Integer stationDis = Integer.valueOf(stationValueSplit[2]);
+//                    sortDistance.add(stationDis);
+//                    map.put(stationDis, stationKey);
+//                }
+//            }
+//            Integer minDistance = Collections.min(sortDistance);
+//            plotDetailsFewDo.setSubwayDistanceInfo(plotDetailsFewDo.getMetroWithPlotsDistance().get(map.get(minDistance)).toString());
+//
+//            trafficArr = plotDetailsFewDo.getSubwayDistanceInfo().split("\\$");
+//            if (trafficArr.length == 3) {
+////                nearbyDistance = "距离" + trafficArr[0] + trafficArr[1] + trafficArr[2] + "米";
+//                nearbyDistance = "距离" + trafficArr[1]  + "(" + trafficArr[0] + ")" + trafficArr[2] + "m";
+//
+//            }
+//        }
+        plotDetailsFewDo.setMetroWithPlotsDistance(null);
+
+//        if (StringTool.isNotEmpty(nearbyDistance)) {
+//            plotDetailsFewDo.setNearbyDistance(nearbyDistance);
+//        }
 
         //二手房总数
         try {

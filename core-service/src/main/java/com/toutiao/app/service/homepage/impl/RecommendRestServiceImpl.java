@@ -72,21 +72,21 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             TermQueryBuilder termQuery_isDel = QueryBuilders.termQuery("isDel", 0);
             TermQueryBuilder termQuery_isClaim = QueryBuilders.termQuery("is_claim", 0);
             bqb_isCutPrice.must(QueryBuilders.termQuery("isCutPrice", 1));
-            bqb_isCutPrice.must(QueryBuilders.termQuery("isNew", 1));
+            //bqb_isCutPrice.must(QueryBuilders.termQuery("isNew", 1));
             if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
                 bqb_isCutPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
             }
             bqb_isCutPrice.must(termQuery_isClaim);
             bqb_isCutPrice.must(termQuery_isDel);
             bqb_isLowPrice.must(QueryBuilders.termQuery("isLowPrice", 1));
-            bqb_isLowPrice.must(QueryBuilders.termQuery("isNew", 1));
+            //bqb_isLowPrice.must(QueryBuilders.termQuery("isNew", 1));
             if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
                 bqb_isLowPrice.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
             }
             bqb_isLowPrice.must(termQuery_isClaim);
             bqb_isLowPrice.must(termQuery_isDel);
             bqb_isMustRob.must(QueryBuilders.termQuery("isMustRob", 1));
-            bqb_isMustRob.must(QueryBuilders.termQuery("isNew", 1));
+            //bqb_isMustRob.must(QueryBuilders.termQuery("isNew", 1));
             if (StringTool.isNotEmpty(recommendTopicDoQuery.getLayoutId()) && recommendTopicDoQuery.getLayoutId().length !=0){
                 bqb_isMustRob.must(QueryBuilders.termsQuery("layout", recommendTopicDoQuery.getLayoutId()));
             }
@@ -196,7 +196,17 @@ public class RecommendRestServiceImpl implements RecommendRestService {
             }
             recommendTopicDo.setLowestPrice(recommendTopicDoQuery.getBeginPrice());
             recommendTopicDo.setHighestPrice(recommendTopicDoQuery.getEndPrice());
-            recommendTopicDo.setCount((int) parsedCardinality.getValue());
+            //recommendTopicDo.setCount((int) parsedCardinality.getValue());
+            BoolQueryBuilder builder = QueryBuilders.boolQuery();
+            builder.must(QueryBuilders.termQuery("isNew", 1));
+            builder.must(QueryBuilders.termQuery("is_claim", 0));
+            builder.must(QueryBuilders.termQuery("isDel", 0));
+            builder.must(QueryBuilders.termQuery(flag, 1));
+
+            SearchResponse isNewByHouseTags = recommendEsDao.getIsNewByHouseTags(builder, city);
+            recommendTopicDo.setCount((int) isNewByHouseTags.getHits().totalHits);
+
+
 
 //                recommendTopicDo.setTopicType(flag);
             StringBuilder url = new StringBuilder(wapName + "/" + city + "/topics/house");
