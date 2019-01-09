@@ -668,6 +668,11 @@ public class RentRestRestServiceImpl implements RentRestService {
                 String frontName = StringTool.nullToString(rentDetailsFewDo.getDistrictName()) + " " + StringTool.nullToString(rentDetailsFewDo.getAreaName());
 
                 String traffic = rentDetailsFewDo.getNearestSubway();
+                String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
+                        (hit,rentHouseDoQuery.getSubwayLineId(),rentHouseDoQuery.getSubwayStationId());
+                if(StringTool.isNotEmpty(trafficWithSubway)) {
+                    traffic = trafficWithSubway;
+                }
                 String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,frontName);
                 rentDetailsFewDo.setSubwayDistanceInfo(traffic);
 
