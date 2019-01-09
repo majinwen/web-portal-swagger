@@ -22,4 +22,9 @@ public class VersionVO {
      * 最新的版本号
      */
     private Integer version;
+
+    /**
+     * 背景图
+     */
+    private String backImage;
 }

@@ -50,4 +50,10 @@ public class RentCustomConditionDo {
      */
     @ApiModelProperty(name = "houseCount", value = "房源数量")
     private Integer houseCount;
+
+    /**
+     * 租房均价
+     */
+    @ApiModelProperty(name = "rentAvgPrice", value = "租房均价")
+    private String rentAvgPrice;
 }

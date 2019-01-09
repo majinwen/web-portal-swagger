@@ -17,4 +17,7 @@ public class VersionResponse {
 
     @ApiModelProperty(value = "版本号", name = "version")
     private Integer version;
+
+    @ApiModelProperty(value = "背景图", name = "backImage")
+    private String backImage;
 }

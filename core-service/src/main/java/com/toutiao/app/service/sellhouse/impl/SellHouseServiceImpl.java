@@ -290,21 +290,21 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 int isMustRob = sellHouseDetailsDo.getIsMustRob();
                 if (isMustRob == 1) {
-                    String houseRobCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseRobLabel())?"?"+sellHouseDetailsDo.getHouseRobLabel():"";
+                    String houseRobCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseRobCondition())?"?"+sellHouseDetailsDo.getHouseRobCondition():"";
                     String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseRobLabel())?sellHouseDetailsDo.getHouseRobLabel():communityLableStr;
                     houseRankLableList.add(new HouseRankLable("", "", "抢手榜",desc, wapName + "/"+city+"/topics/house/hot"+houseRobCondition));
                 }
 
                 int isLowPrice = sellHouseDetailsDo.getIsLowPrice();
                 if (isLowPrice == 1) {
-                    String houseLowerCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseLowerLabel())?"?"+sellHouseDetailsDo.getHouseLowerLabel():"";
+                    String houseLowerCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseLowerCondition())?"?"+sellHouseDetailsDo.getHouseLowerCondition():"";
                     String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseLowerLabel())?sellHouseDetailsDo.getHouseLowerLabel():houseLower;
                     houseRankLableList.add(new HouseRankLable("", "", "捡漏榜", desc, wapName + "/"+city+"/topics/house/low"+houseLowerCondition));
                 }
 
                 int isCutPrice = sellHouseDetailsDo.getIsCutPrice();
                 if (isCutPrice == 1 && priceFloat < 0) {
-                    String houseCutCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseCutLabel())?"?"+sellHouseDetailsDo.getHouseCutLabel():"";
+                    String houseCutCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseCutCondition())?"?"+sellHouseDetailsDo.getHouseCutCondition():"";
                     String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseCutLabel())?sellHouseDetailsDo.getHouseCutLabel():houseLowerMsg;
                     houseRankLableList.add(new HouseRankLable("", "", "降价榜", desc, wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
                 }
