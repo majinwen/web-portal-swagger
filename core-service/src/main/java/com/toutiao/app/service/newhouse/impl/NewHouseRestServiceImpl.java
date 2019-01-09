@@ -357,7 +357,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                    newHouseListDos.setNearbyDistance(nearbyDistance);
 //                }
 
-                String traffic = newHouseListDos.getRoundStation();
+//                String traffic = newHouseListDos.getRoundStation();
+                String traffic = "";
                 String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
                         (newHouseListDos.getNearbysubway(),newHouseDoQuery.getSubwayLineId(),newHouseDoQuery.getSubwayStationId());
 
