@@ -29,6 +29,7 @@ import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -242,13 +243,19 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
                         rentMapSearchDo.setCommunityCount(communityCount);
                         totalCommunityCount += communityCount;
                         //地铁站信息
-                        Map subwayInfo = rentMapSearchRestService.getSubwayInfo(id, CityUtils.returnCityId(city));
+                        Map subwayInfo = getSubwayInfo(id, CityUtils.returnCityId(city));
                         //名称
                         rentMapSearchDo.setName((String) subwayInfo.get("name"));
                         //纬度
                         rentMapSearchDo.setLatitude((Double) subwayInfo.get("lat"));
                         //经度
                         rentMapSearchDo.setLongitude((Double) subwayInfo.get("lon"));
+                        //租房均价
+                        if (StringUtil.isNotNullString(rentHouseDoQuery.getElo())) {
+                            rentMapSearchDo.setRentAvgPrice((String) subwayInfo.get("eloAvgPrice"));
+                        } else if (StringUtil.isNotNullString(rentHouseDoQuery.getJlo())) {
+                            rentMapSearchDo.setRentAvgPrice((String) subwayInfo.get("jloAvgPrice"));
+                        }
                         rentCustomConditionDos.add(rentMapSearchDo);
                     }
                 }
@@ -351,6 +358,35 @@ public class UserFavoriteRentServiceImpl implements UserFavoriteRentService {
             rentCustomConditionDomain.setDescription(description);
         }
         return rentCustomConditionDomain;
+    }
+
+    public Map getSubwayInfo(Integer id, Integer city_id) {
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        boolQueryBuilder.must(QueryBuilders.termQuery("station_id",id));
+        boolQueryBuilder.must(QueryBuilders.termQuery("city_id",city_id));
+        searchSourceBuilder.query(boolQueryBuilder);
+        Map map = new HashMap();
+        SearchResponse subwayInfo = rentMapSearchEsDao.getSubwayInfo(searchSourceBuilder);
+        if (null!=subwayInfo){
+            SearchHit[] hits = subwayInfo.getHits().getHits();
+            if (ArrayUtils.isNotEmpty(hits)){
+                Map<String, Object> sourceAsMap = hits[0].getSourceAsMap();
+                String station_name = (String) sourceAsMap.get("station_name");
+                Double longitude = (Double) sourceAsMap.get("longitude");
+                Double latitude = (Double) sourceAsMap.get("latitude");
+                BigDecimal eloDecimal = new BigDecimal(sourceAsMap.get("station_elo_avgPrice").toString());
+                Integer eloAvgPrice = Integer.parseInt(eloDecimal.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+                BigDecimal jloDecimal = new BigDecimal(sourceAsMap.get("station_jlo_avgPrice").toString());
+                Integer jloAvgPrice = Integer.parseInt(jloDecimal.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+                map.put("name",station_name);
+                map.put("lon",longitude);
+                map.put("lat",latitude);
+                map.put("eloAvgPrice",eloAvgPrice.toString());
+                map.put("jloAvgPrice",jloAvgPrice.toString());
+            }
+        }
+        return map;
     }
 
     /**
