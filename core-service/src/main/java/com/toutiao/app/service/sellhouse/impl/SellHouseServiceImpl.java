@@ -180,7 +180,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                    }
 //                    houseSubjectList.add(new HouseSubject(nearbyDistance,""));
 //                }
-                String traffic = nearbyDistanceService.getDefaultTraffic(searchHit,"traffic");
+                String traffic = sellHouseDetailsDo.getTraffic();
                 String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,"");
                 houseSubjectList.add(new HouseSubject(nearbyDistance,""));
 
@@ -1103,10 +1103,10 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 // 距离计算
                 // 1.默认地铁最近
-                String traffic = nearbyDistanceService.getDefaultTraffic(searchHit,"traffic");
+                String traffic = sellHousesSearchDo.getTraffic();
                 // 2.如果有地铁筛选信息，会返回对应的地铁信息
                 String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
-                        (searchHit,"traffic",sellHouseDoQuery.getSubwayLineId(),sellHouseDoQuery.getSubwayStationId());
+                        (searchHit,sellHouseDoQuery.getSubwayLineId(),sellHouseDoQuery.getSubwayStationId());
 
                 if(StringTool.isNotEmpty(trafficWithSubway)) {
                     traffic = trafficWithSubway;
@@ -2550,7 +2550,7 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                    keys += sellHouseDoQuery.getSubwayLineId().toString();
 //                }
 
-                String traffic = nearbyDistanceService.getDefaultTraffic(searchHit,"traffic");
+                String traffic = sellHousesSearchDo.getTraffic();
                 String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,frontName);
 
                 if (StringTool.isNotEmpty(nearbyDistance)) {

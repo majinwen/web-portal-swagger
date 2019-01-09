@@ -358,9 +358,9 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                    newHouseListDos.setNearbyDistance(nearbyDistance);
 //                }
 
-                String traffic = nearbyDistanceService.getDefaultTraffic(searchHit,"roundStation");
+                String traffic = newHouseListDos.getRoundStation();
                 String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
-                        (searchHit,"roundStation",newHouseDoQuery.getSubwayLineId(),newHouseDoQuery.getSubwayStationId());
+                        (searchHit,newHouseDoQuery.getSubwayLineId(),newHouseDoQuery.getSubwayStationId());
 
                 if(StringTool.isNotEmpty(trafficWithSubway)) {
                     traffic = trafficWithSubway;
@@ -757,7 +757,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 //                    newHouseListDos.setNearbyDistance(nearbyDistance);
 //                }
 
-                String traffic = nearbyDistanceService.getDefaultTraffic(searchHit,"roundStation");
+                String traffic = newHouseListDos.getRoundStation();
 //                String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
 //                        (searchHit,"roundStation",newHouseDoQuery.getSubwayLineId(),newHouseDoQuery.getSubwayStationId());
 //

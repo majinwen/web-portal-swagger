@@ -13,17 +13,7 @@ import java.util.*;
 public class NearbyDistanceServiceImpl implements NearbyDistanceService {
 
     @Override
-    public String getDefaultTraffic(SearchHit searchHit, String trafficKey) {
-        JSONObject searchJson = JSONObject.parseObject(searchHit.getSourceAsString());
-        String traffic = "";
-        if (StringTool.isNotEmpty(trafficKey)) {
-            traffic = searchJson.getString(trafficKey);
-        }
-        return traffic;
-    }
-
-    @Override
-    public String getTrafficWithOneSubwayLine(SearchHit searchHit, String trafficKey, Integer subwayLineId, Integer[] subwayStationIdArray) {
+    public String getTrafficWithOneSubwayLine(SearchHit searchHit, Integer subwayLineId, Integer[] subwayStationIdArray) {
         String traffic = "";
         JSONObject searchJson = JSONObject.parseObject(searchHit.getSourceAsString());
         JSONObject subwayDistinceJson = searchJson.getJSONObject("subwayDistince");
