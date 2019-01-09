@@ -246,8 +246,12 @@ public class RecommendRestServiceImpl implements RecommendRestService {
                 UserBasic current = UserBasic.getCurrent();
                 UserConditionSubscribeDetailDo userConditionSubscribeDetailDo = new UserConditionSubscribeDetailDo();
                 userConditionSubscribeDetailDo.setDistrictId(recommendTopicDo.getDistrictId().replace(" ",","));
-                userConditionSubscribeDetailDo.setBeginPrice(recommendTopicDo.getLowestPrice().intValue());
-                userConditionSubscribeDetailDo.setEndPrice(recommendTopicDo.getHighestPrice().intValue());
+                if (null != recommendTopicDo.getLowestPrice()) {
+                    userConditionSubscribeDetailDo.setBeginPrice(recommendTopicDo.getLowestPrice().intValue());
+                }
+                if (null != recommendTopicDo.getHighestPrice()) {
+                    userConditionSubscribeDetailDo.setEndPrice(recommendTopicDo.getHighestPrice().intValue());
+                }
                 if (Objects.equals(flag, "isLowPrice")) {
                     userConditionSubscribeDetailDo.setTopicType(2);
                 } else if (Objects.equals(flag, "isMustRob")) {
