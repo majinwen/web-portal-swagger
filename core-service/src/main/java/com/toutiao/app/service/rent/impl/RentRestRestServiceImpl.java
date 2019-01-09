@@ -669,7 +669,7 @@ public class RentRestRestServiceImpl implements RentRestService {
 
                 String traffic = rentDetailsFewDo.getNearestSubway();
                 String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
-                        (hit,rentHouseDoQuery.getSubwayLineId(),rentHouseDoQuery.getSubwayStationId());
+                        (rentDetailsFewDo.getNearbySubway(),rentHouseDoQuery.getSubwayLineId(),rentHouseDoQuery.getSubwayStationId());
                 if(StringTool.isNotEmpty(trafficWithSubway)) {
                     traffic = trafficWithSubway;
                 }

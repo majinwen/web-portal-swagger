@@ -44,7 +44,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -360,7 +359,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
                 String traffic = newHouseListDos.getRoundStation();
                 String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
-                        (searchHit,newHouseDoQuery.getSubwayLineId(),newHouseDoQuery.getSubwayStationId());
+                        (newHouseListDos.getNearbysubway(),newHouseDoQuery.getSubwayLineId(),newHouseDoQuery.getSubwayStationId());
 
                 if(StringTool.isNotEmpty(trafficWithSubway)) {
                     traffic = trafficWithSubway;

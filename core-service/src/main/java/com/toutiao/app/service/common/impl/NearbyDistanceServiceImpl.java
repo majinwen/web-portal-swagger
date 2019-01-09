@@ -1,9 +1,7 @@
 package com.toutiao.app.service.common.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.service.common.NearbyDistanceService;
 import com.toutiao.web.common.util.StringTool;
-import org.elasticsearch.search.SearchHit;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -13,19 +11,16 @@ import java.util.*;
 public class NearbyDistanceServiceImpl implements NearbyDistanceService {
 
     @Override
-    public String getTrafficWithOneSubwayLine(SearchHit searchHit, Integer subwayLineId, Integer[] subwayStationIdArray) {
+    public String getTrafficWithOneSubwayLine(Map subwayDistinceMap,Integer subwayLineId, Integer[] subwayStationIdArray) {
         String traffic = "";
-        JSONObject searchJson = JSONObject.parseObject(searchHit.getSourceAsString());
-        JSONObject subwayDistinceJson = searchJson.getJSONObject("subwayDistince");
-
         String keys = "";
-        if (StringTool.isNotEmpty(subwayDistinceJson)) {
+        if (StringTool.isNotEmpty(subwayDistinceMap)) {
 
             if (StringTool.isNotEmpty(subwayLineId)) {
                 keys += subwayLineId.toString();
                 //地铁线已选择，地铁站选择不限
-                if (subwayDistinceJson.containsKey(keys)) {
-                    traffic = subwayDistinceJson.getString(keys);
+                if (subwayDistinceMap.containsKey(keys)) {
+                    traffic = subwayDistinceMap.get(keys).toString();
                 }
             }
 
@@ -35,8 +30,8 @@ public class NearbyDistanceServiceImpl implements NearbyDistanceService {
                 List<Integer> sortDistance = new ArrayList<>();
                 for (Integer i : subwayStationIdArray) {
                     String stationKey = keys + "$" + i;
-                    if (StringTool.isNotEmpty(subwayDistinceJson.getString(stationKey))) {
-                        String stationValue = subwayDistinceJson.getString(stationKey);
+                    if (StringTool.isNotEmpty(subwayDistinceMap.get(stationKey))) {
+                        String stationValue = subwayDistinceMap.get(stationKey).toString();
                         String[] stationValueSplit = stationValue.split("\\$");
                         Integer distance = Integer.valueOf(stationValueSplit[2]);
                         sortDistance.add(distance);
@@ -44,7 +39,7 @@ public class NearbyDistanceServiceImpl implements NearbyDistanceService {
                     }
                 }
                 Integer minDistance = Collections.min(sortDistance);
-                traffic = subwayDistinceJson.getString(map.get(minDistance));
+                traffic = subwayDistinceMap.get(map.get(minDistance)).toString();
             }
         }
         return traffic;

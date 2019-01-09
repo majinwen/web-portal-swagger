@@ -1106,7 +1106,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 String traffic = sellHousesSearchDo.getTraffic();
                 // 2.如果有地铁筛选信息，会返回对应的地铁信息
                 String trafficWithSubway = nearbyDistanceService.getTrafficWithOneSubwayLine
-                        (searchHit,sellHouseDoQuery.getSubwayLineId(),sellHouseDoQuery.getSubwayStationId());
+                        (sellHousesSearchDo.getSubwayDistince(),sellHouseDoQuery.getSubwayLineId(),sellHouseDoQuery.getSubwayStationId());
 
                 if(StringTool.isNotEmpty(trafficWithSubway)) {
                     traffic = trafficWithSubway;
