@@ -140,4 +140,13 @@ public interface PlotEsDao {
      */
     SearchResponse queryTagsById(BoolQueryBuilder boolQueryBuilder, String city);
 
+
+    /**
+     * 根据id查询小区均价
+     * @param boolQueryBuilder
+     * @param city
+     * @return
+     */
+    SearchResponse getAvgPriceById(BoolQueryBuilder boolQueryBuilder, String city);
+
 }
