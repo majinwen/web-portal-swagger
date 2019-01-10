@@ -233,7 +233,7 @@ public class SellHouseToolServiceImpl implements SellHouseToolService {
 
         Integer isCommunityTopHouse = searchJson.getInteger("isCommunityTopHouse");
         if (StringTool.isNotEmpty(isCommunityTopHouse) && isCommunityTopHouse == 1) {
-            houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", "北京50大必看社区", wapName + "/" + city + "/topics/top50" + districtIdCondition));
+            houseColorLableList.add(new HouseColorLable("FFF9E5", "E3AF00", CityUtils.returnCityName(CityUtils.returnCityId(city)) +"50大必看社区", wapName + "/" + city + "/topics/top50" + districtIdCondition));
         }
 
         return houseColorLableList;
