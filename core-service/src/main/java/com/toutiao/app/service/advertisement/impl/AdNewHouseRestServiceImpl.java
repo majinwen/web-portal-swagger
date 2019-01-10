@@ -84,7 +84,7 @@ public class AdNewHouseRestServiceImpl implements AdNewHouseRestService {
         }
         NewHouseDoQuery newHouseDoQuery = new NewHouseDoQuery();
         newHouseDoQuery.setPageSize(5-newHouseCount);
-        NewHouseListDomain newHouseListDomain = newHouseService.getNewHouseList(newHouseDoQuery, city);
+        NewHouseListDomain newHouseListDomain = newHouseService.getNewHouseHomeList(newHouseDoQuery, city);
         newHouseListDoList.addAll(newHouseListDomain.getData());
         newHouseListVo.setData(newHouseListDoList);
         newHouseListVo.setTotalCount(newHouseListDoList.size());

@@ -951,5 +951,45 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
         return newHouseCustomConditionDomain;
     }
 
+    @Override
+    public NewHouseListDomain getNewHouseHomeList(NewHouseDoQuery newHouseDoQuery, String city) {
+        NewHouseListDomain newHouseListVo = new NewHouseListDomain();
+        List<NewHouseListDo> newHouseListDoList = new ArrayList<>();
+        BoolQueryBuilder booleanQueryBuilder = boolQuery();
+        FieldSortBuilder levelSort = SortBuilders.fieldSort("build_level").order(SortOrder.ASC);
+        FieldSortBuilder buildingSort = SortBuilders.fieldSort("building_sort").order(SortOrder.DESC);
+
+        //房源已发布
+        booleanQueryBuilder.must(termQuery("is_approve", IS_APPROVE));
+        booleanQueryBuilder.must(termQuery("is_del", IS_DEL));
+        booleanQueryBuilder.must(termsQuery("property_type_id", new int[]{1, 2}));
+        booleanQueryBuilder.must(QueryBuilders.boolQuery().should(rangeQuery("total_price").gt(0)).should(rangeQuery("average_price").gt(0)));
+        SearchResponse searchResponse = newHouseEsDao.getNewHouseList(booleanQueryBuilder, newHouseDoQuery.getPageNum(), newHouseDoQuery.getPageSize(), levelSort, buildingSort, city, newHouseDoQuery.getSort());
+        SearchHits hits = searchResponse.getHits();
+        SearchHit[] searchHists = hits.getHits();
+        if (searchHists.length > 0) {
+            for (SearchHit searchHit : searchHists) {
+                String details = searchHit.getSourceAsString();
+                NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
+
+                //新房图片处理
+                if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http")) {
+                    newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-w1200x900");
+                }
+
+                newHouseListDoList.add(newHouseListDos);
+            }
+
+            newHouseListVo.setData(newHouseListDoList);
+            newHouseListVo.setTotalCount(hits.getTotalHits());
+        } else {
+            newHouseListVo.setData(newHouseListDoList);
+            newHouseListVo.setTotalCount(hits.getTotalHits());
+        }
+
+
+        return newHouseListVo;
+    }
+
 
 }

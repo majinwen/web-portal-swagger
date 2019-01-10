@@ -40,8 +40,8 @@ public class HomePageNewHouseResponse {
     @ApiModelProperty(value = "最近交房")
     private  String deliverTime;
 
-    @ChangeName("ringRoad")
-    @ApiModelProperty(value = "环路")
-    private  String ringRoadName;
+//    @ChangeName("ringRoad")
+//    @ApiModelProperty(value = "环路")
+//    private  String ringRoadName;
 
 }
