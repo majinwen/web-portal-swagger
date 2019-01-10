@@ -86,6 +86,6 @@ public class EsfQuotationRespose implements Comparable<EsfQuotationRespose>{
 
     @Override
     public int compareTo(EsfQuotationRespose o) {
-        return o.getSort()-this.getSort();
+        return this.getSort()-o.getSort();
     }
 }

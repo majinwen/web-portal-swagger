@@ -68,6 +68,6 @@ public class ReportPriceQuotationsResponse implements Comparable<ReportPriceQuot
 
     @Override
     public int compareTo(ReportPriceQuotationsResponse o) {
-        return o.getSort()-this.getSort();
+        return this.getSort()-o.getSort();
     }
 }

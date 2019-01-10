@@ -86,6 +86,6 @@ public class LowerHouseQuotationResponse implements Comparable<LowerHouseQuotati
 
     @Override
     public int compareTo(LowerHouseQuotationResponse o) {
-        return o.getSort()-this.getSort();
+        return this.getSort()-o.getSort();
     }
 }

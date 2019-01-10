@@ -182,7 +182,9 @@ public class SellHouseServiceImpl implements SellHouseService {
 //                }
                 String traffic = sellHouseDetailsDo.getTraffic();
                 String nearbyDistance = nearbyDistanceService.getNearbyDistanceByTraffic(traffic,"");
-                houseSubjectList.add(new HouseSubject(nearbyDistance,""));
+                if(StringTool.isNotEmpty(nearbyDistance)){
+                    houseSubjectList.add(new HouseSubject(nearbyDistance,""));
+                }
 
                 //tagsName
                 String[] tagsNameArray = sellHouseDetailsDo.getTagsName();
