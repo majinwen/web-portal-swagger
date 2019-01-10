@@ -77,6 +77,10 @@ public class UserFavoriteConditionRequest   {
   @ApiParam("合租户型")
   private String jlo;
 
+  @ApiModelProperty(name = "isToday", value = "今天上新房源数量")
+  @JsonProperty("isToday")
+  private Integer isToday = 0;
+
 
 }
 

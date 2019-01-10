@@ -16,6 +16,7 @@ import com.toutiao.app.service.homepage.HomePageRestService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
 import com.toutiao.app.service.plot.PlotsEsfRestService;
 import com.toutiao.app.service.sellhouse.SellHouseService;
+import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.mapper.officeweb.favorite.UserFavoriteConditionMapper;
@@ -719,6 +720,11 @@ public class HomePageServiceImpl implements HomePageRestService {
 
         SearchResponse houseCount = null;
         SearchResponse searchResponse = null;
+
+        if(userFavoriteConditionDoQuery.getIsToday()>0){
+            String time = DateUtil.defaultDateFormat(DateUtil.getBeforeDate())+" 23:59:59";
+            boolQueryBuilder.must(QueryBuilders.rangeQuery("import_time").gt(time));
+        }
         //预算
 
 

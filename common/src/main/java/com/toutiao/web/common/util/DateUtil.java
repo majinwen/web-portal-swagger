@@ -172,6 +172,14 @@ public class DateUtil {
 		return new SimpleDateFormat("yyyyMMdd").format(date);
 	}
 
+	public static String beforeDateFromat(String currDate) {
+		Calendar calender = Calendar.getInstance();
+		calender.setTime(parseDate(currDate, "yyyy-MM-dd"));
+		calender.add(Calendar.DATE, -1);
+		Date date = new Date(calender.getTime().getTime());
+		return new SimpleDateFormat("yyyy-MM-dd").format(date);
+	}
+
 	/**
 	 * 获取前七天日期
 	 *
@@ -924,6 +932,10 @@ public class DateUtil {
 	 */
 	public static String defaultFormat(Date date) {
 		return format(date, "yyyyMMdd");
+	}
+
+	public static String defaultDateFormat(Date date) {
+		return format(date, "yyyy-MM-dd");
 	}
 
 	/**

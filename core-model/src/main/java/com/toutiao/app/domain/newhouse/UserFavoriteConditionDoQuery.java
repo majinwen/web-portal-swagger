@@ -67,4 +67,9 @@ public class UserFavoriteConditionDoQuery{
      * 合租户型
      */
     private String jlo;
+
+    /**
+     * 今天上新房源数量
+     */
+    private Integer isToday;
 }
