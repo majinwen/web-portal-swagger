@@ -54,4 +54,11 @@ public interface NewHouseRestService {
      * @return
      */
     NewHouseCustomConditionDomain getNewHouseCustomList(UserFavoriteConditionDoQuery userFavoriteConditionDoQuery, String city);
+
+    /**
+     * 新房首页5条
+     * @param newHouseQueryDo
+     * @return
+     */
+    NewHouseListDomain getNewHouseHomeList(NewHouseDoQuery newHouseQueryDo, String city);
 }
