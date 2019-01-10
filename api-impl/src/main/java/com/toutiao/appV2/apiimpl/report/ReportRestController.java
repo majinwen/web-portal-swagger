@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -231,10 +232,7 @@ public class ReportRestController implements ReportRestApi {
 
         //二手房特色房源：降价房
         List<ReportTeSeJiangJiaRespose> teSeJiangjiaResposeList = JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class);
-        if (StringTool.isNotEmptyList(teSeJiangjiaResposeList)) {
-            Collections.sort(teSeJiangjiaResposeList);
-        }
-        reportCityResponse.setEsfTeseJiangjia(teSeJiangjiaResposeList);
+        reportCityResponse.setEsfTeseJiangjia(doWellSortForJJ(teSeJiangjiaResposeList, 7));
 
         //二手房特色房源：捡漏房
         Object jsonObject = JSON.parse(reportCity.getEsfTeseJianlou());
@@ -250,10 +248,7 @@ public class ReportRestController implements ReportRestApi {
             jianolouJson.put("lower_house_quotation", "[]");
         }
         List<LowerHouseQuotationResponse> lowerHouseQuotationResponseList = JSONArray.parseArray(jianolouJson.getString("lower_house_quotation"), LowerHouseQuotationResponse.class);
-        if (StringTool.isNotEmptyList(lowerHouseQuotationResponseList)) {
-            Collections.sort(lowerHouseQuotationResponseList);
-        }
-        reportTeSeJianLouRespose.setHouseQuotationList(lowerHouseQuotationResponseList);
+        reportTeSeJianLouRespose.setHouseQuotationList(doWellSortForJL(lowerHouseQuotationResponseList, 7));
 
 
         //二手房日均价
@@ -261,35 +256,167 @@ public class ReportRestController implements ReportRestApi {
             jianolouJson.put("esf_quotation", "[]");
         }
         List<EsfQuotationRespose> esfQuotationResposeList = JSONArray.parseArray(jianolouJson.getString("esf_quotation"), EsfQuotationRespose.class);
-        if (StringTool.isNotEmptyList(esfQuotationResposeList)) {
-            Collections.sort(esfQuotationResposeList);
-        }
-        reportTeSeJianLouRespose.setEsfQuotationList(esfQuotationResposeList);
+        reportTeSeJianLouRespose.setEsfQuotationList(doWellSortForJLE(esfQuotationResposeList, 7));
         reportCityResponse.setEsfTeseJianlou(reportTeSeJianLouRespose);
 
         //二手房特色房源：抢手房
         List<ReportTeSeQiangShouRespose> teSeQiangShouResposeList = JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class);
-        if (StringTool.isNotEmptyList(teSeQiangShouResposeList)) {
-            Collections.sort(teSeQiangShouResposeList);
-        }
-        reportCityResponse.setEsfTeseQiangshou(teSeQiangShouResposeList);
+        reportCityResponse.setEsfTeseQiangshou(doWellSortForQS(teSeQiangShouResposeList,7));
 
 
         //新房价格趋势，近6个月数据
         List<ReportPriceQuotationsResponse> newPriceRange = JSONArray.parseArray(reportCity.getNewPriceRange(), ReportPriceQuotationsResponse.class);
-        if (StringTool.isNotEmptyList(newPriceRange)) {
-            Collections.sort(newPriceRange);
-        }
-        reportCityResponse.setNewPriceRange(newPriceRange);
+        reportCityResponse.setNewPriceRange(doWellSortForNE(newPriceRange, 6));
 
         //二手房均价趋势，近6个月数据
         List<ReportPriceQuotationsResponse> esfPriceFenbu = JSONArray.parseArray(reportCity.getEsfPriceFenbu(), ReportPriceQuotationsResponse.class);
-        if (StringTool.isNotEmptyList(esfPriceFenbu)) {
-            Collections.sort(esfPriceFenbu);
-        }
-        reportCityResponse.setEsfPriceFenbu(esfPriceFenbu);
+        reportCityResponse.setEsfPriceFenbu(doWellSortForNE(esfPriceFenbu, 6));
 
         return reportCityResponse;
+    }
+
+    /**
+     * 新房或者二手房趋势
+     * @param list
+     * @param size
+     * @return
+     */
+    private List<ReportPriceQuotationsResponse> doWellSortForNE(List<ReportPriceQuotationsResponse> list, Integer size) {
+        List<ReportPriceQuotationsResponse> returnList = new ArrayList<>();
+
+        for (Integer i = size; i > 0; i--) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -i);
+            ReportPriceQuotationsResponse report = new ReportPriceQuotationsResponse();
+            report.setMonth(calendar.get(Calendar.MONTH)+1);
+            report.setYear(calendar.get(Calendar.YEAR));
+            report.setSort(size + 1 - i);
+            report.setPrice(0);
+            for (ReportPriceQuotationsResponse li : list) {
+                if (report.getMonth().equals(li.getMonth()) && report.getYear().equals(li.getYear())) {
+                    report.setPrice(li.getPrice());
+                }
+            }
+            returnList.add(report);
+        }
+        Collections.sort(returnList);
+        return returnList;
+    }
+
+    /**
+     * 降价房
+     * @param list
+     * @param size
+     * @return
+     */
+    private List<ReportTeSeJiangJiaRespose> doWellSortForJJ(List<ReportTeSeJiangJiaRespose> list, Integer size){
+        List<ReportTeSeJiangJiaRespose> returnList = new ArrayList<>();
+
+        for (Integer i = size; i > 0; i--) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -i);
+            ReportTeSeJiangJiaRespose report = new ReportTeSeJiangJiaRespose();
+            report.setMonth(calendar.get(Calendar.MONTH)+1);
+            report.setYear(calendar.get(Calendar.YEAR));
+            report.setDay(calendar.get(Calendar.DATE));
+            report.setSort(size + 1 - i);
+            report.setRatio(0);
+            for (ReportTeSeJiangJiaRespose li : list) {
+                if (report.getDay().equals(li.getDay()) && report.getMonth().equals(li.getMonth()) && report.getYear().equals(li.getYear())) {
+                    report.setRatio(li.getRatio());
+                }
+            }
+            returnList.add(report);
+        }
+        Collections.sort(returnList);
+        return returnList;
+    }
+
+    /**
+     * 抢手房
+     * @param list
+     * @param size
+     * @return
+     */
+    private List<ReportTeSeQiangShouRespose> doWellSortForQS(List<ReportTeSeQiangShouRespose> list, Integer size){
+        List<ReportTeSeQiangShouRespose> returnList = new ArrayList<>();
+
+        for (Integer i = size; i > 0; i--) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -i);
+            ReportTeSeQiangShouRespose report = new ReportTeSeQiangShouRespose();
+            report.setMonth(calendar.get(Calendar.MONTH)+1);
+            report.setYear(calendar.get(Calendar.YEAR));
+            report.setDay(calendar.get(Calendar.DATE));
+            report.setSort(size + 1 - i);
+            report.setCount(0);
+            for (ReportTeSeQiangShouRespose li : list) {
+                if (report.getDay().equals(li.getDay()) && report.getMonth().equals(li.getMonth()) && report.getYear().equals(li.getYear())) {
+                    report.setCount(li.getCount());
+                }
+            }
+            returnList.add(report);
+        }
+        Collections.sort(returnList);
+        return returnList;
+    }
+
+    /**
+     * 捡漏二手日均
+     * @param list
+     * @param size
+     * @return
+     */
+    private List<EsfQuotationRespose> doWellSortForJLE(List<EsfQuotationRespose> list, Integer size){
+        List<EsfQuotationRespose> returnList = new ArrayList<>();
+
+        for (Integer i = size; i > 0; i--) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -i);
+            EsfQuotationRespose report = new EsfQuotationRespose();
+            report.setMonth(calendar.get(Calendar.MONTH)+1);
+            report.setYear(calendar.get(Calendar.YEAR));
+            report.setDay(calendar.get(Calendar.DATE));
+            report.setSort(size + 1 - i);
+            report.setPrice(0);
+            for (EsfQuotationRespose li : list) {
+                if (report.getDay().equals(li.getDay()) && report.getMonth().equals(li.getMonth()) && report.getYear().equals(li.getYear())) {
+                    report.setPrice(li.getPrice());
+                }
+            }
+            returnList.add(report);
+        }
+        Collections.sort(returnList);
+        return returnList;
+    }
+
+    /**
+     * 捡漏房
+     * @param list
+     * @param size
+     * @return
+     */
+    private List<LowerHouseQuotationResponse> doWellSortForJL(List<LowerHouseQuotationResponse> list, Integer size){
+        List<LowerHouseQuotationResponse> returnList = new ArrayList<>();
+
+        for (Integer i = size; i > 0; i--) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DATE, -i);
+            LowerHouseQuotationResponse report = new LowerHouseQuotationResponse();
+            report.setMonth(calendar.get(Calendar.MONTH)+1);
+            report.setYear(calendar.get(Calendar.YEAR));
+            report.setDay(calendar.get(Calendar.DATE));
+            report.setSort(size + 1 - i);
+            report.setPrice(0);
+            for (LowerHouseQuotationResponse li : list) {
+                if (report.getDay().equals(li.getDay()) && report.getMonth().equals(li.getMonth()) && report.getYear().equals(li.getYear())) {
+                    report.setPrice(li.getPrice());
+                }
+            }
+            returnList.add(report);
+        }
+        Collections.sort(returnList);
+        return returnList;
     }
 
 }
