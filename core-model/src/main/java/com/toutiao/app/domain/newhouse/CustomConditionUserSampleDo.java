@@ -12,9 +12,9 @@ import lombok.Data;
 @Data
 public class CustomConditionUserSampleDo {
 
-    private Integer userCount;
-
-    private String userRatio;
+//    private Integer userCount;
+//
+//    private String userRatio;
 
     private String data;
 }

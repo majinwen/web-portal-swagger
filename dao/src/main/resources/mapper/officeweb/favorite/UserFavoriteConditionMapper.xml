@@ -84,17 +84,17 @@
   <select id="getRecommendCondition" parameterType="com.toutiao.app.domain.favorite.UserFavoriteCondition" resultMap="BaseResultMap">
     SELECT
       *
-     FROM user_favorite_condition WHERE user_id = #{userId} and city_id = #{cityId} and is_del = 0 and condition_type=#{conditionType}
+     FROM user_favorite_condition WHERE user_id = #{userId} and city_id = #{cityId} and is_del = 0
   </select>
   <update id="updateRecommendCondition" parameterType="com.toutiao.app.domain.favorite.UserFavoriteCondition">
     UPDATE user_favorite_condition
     <set >
-        update_time = #{updateTime,jdbcType=TIMESTAMP},condition = '${condition}'
+        update_time = #{updateTime,jdbcType=TIMESTAMP},condition = '${condition}',condition_type=#{conditionType,jdbcType=INTEGER}
       <!--<if test="condition != null" >-->
         <!--condition = '${condition}',-->
       <!--</if>-->
     </set>
-    WHERE user_id = #{userId,jdbcType=INTEGER} and is_del = 0 and city_id = #{cityId,jdbcType=INTEGER} and condition_type=#{conditionType,jdbcType=INTEGER}
+    WHERE user_id = #{userId,jdbcType=INTEGER} and is_del = 0 and city_id = #{cityId,jdbcType=INTEGER}
   </update>
   <update id="deleteRecommendCondition" parameterType="java.lang.Integer">
     UPDATE user_favorite_condition

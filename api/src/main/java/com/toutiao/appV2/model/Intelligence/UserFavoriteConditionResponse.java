@@ -2,6 +2,7 @@ package com.toutiao.appV2.model.Intelligence;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiParam;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
 
@@ -52,9 +53,17 @@ public class UserFavoriteConditionResponse   {
   @JsonProperty("conditionType")
   private Integer conditionType = null;
 
-  @ApiModelProperty(name = "rentType", value = "租房类型1整租2合租")
-  @JsonProperty("rentType")
-  private Integer rentType = null;
+//  @ApiModelProperty(name = "rentType", value = "租房类型1整租2合租")
+//  @JsonProperty("rentType")
+//  private Integer rentType = null;
+
+  @ApiModelProperty(name = "elo", value = "整租户型")
+  @JsonProperty("elo")
+  private String elo;
+
+  @ApiModelProperty(name = "jlo", value = "合租户型")
+  @JsonProperty("jlo")
+  private String jlo;
 
 
 }
