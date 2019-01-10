@@ -240,8 +240,8 @@ public interface NewHouseApi {
             method = RequestMethod.POST)
     ResponseEntity<NewHouseGuessLikeResponse> getGuessList(@RequestBody NewHouseGuessLikeRequest newHouseGuessLikeRequest);
 
-    @ApiOperation(value = "新房首页-获取推荐新房列表页面广告信息", nickname = "getAdNewHouseListByIds",
-            notes = "新房首页-获取推荐新房列表页面广告信息", response = NewHouseListDomainResponse.class,
+    @ApiOperation(value = "新房列表广告信息", nickname = "getAdNewHouseListByIds",
+            notes = "新房列表广告信息", response = NewHouseListDomainResponse.class,
             tags={ "新房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = NewHouseListDomainResponse.class),
@@ -254,7 +254,7 @@ public interface NewHouseApi {
     ResponseEntity<NewHouseListDomainResponse> getAdNewHouseListByIds(AdNewHouse adNewHouse);
 
 
-    @ApiOperation(value = "新房列表广告信息", nickname = "getAdRecommendNewHouseByIds", notes = "新房列表广告信息",
+    @ApiOperation(value = "新房首页-获取推荐新房列表页面广告信息", nickname = "getAdRecommendNewHouseByIds", notes = "新房首页-获取推荐新房列表页面广告信息",
             response = AdRecommendNewRespose.class, tags={ "新房", })
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK", response = AdRecommendNewRespose.class),
