@@ -5,7 +5,6 @@
  */
 package com.toutiao.appV2.api.plot;
 
-import com.toutiao.app.domain.plot.PlotsThemeDoQuery;
 import com.toutiao.appV2.model.plot.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -16,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.Valid;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Optional;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:42:20.134Z")
 
@@ -199,6 +196,7 @@ public interface PlotApi {
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "newcode") @Valid @RequestParam(value = "newcode", required = true) String newcode,
+                                           @ApiParam(value = "type") @Valid @RequestParam(value = "type", required = true) Integer type,
                                            @ApiParam(value = "districtId") @Valid @RequestParam(value = "districtId", required = true) String districtId);
 
 

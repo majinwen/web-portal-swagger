@@ -127,10 +127,13 @@
       city_id = #{cityId,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectFoldLineDistrictInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectFoldLineDistrictInfo" resultMap="BaseResultMap">
     SELECT * FROM report_pipeline_record_everymonth
     WHERE code = #{code,jdbcType=VARCHAR}
-    ORDER BY create_time DESC LIMIT 6 OFFSET 1
+    AND <![CDATA[ create_time < date_trunc('month', CURRENT_DATE) ]]>
+    AND create_time > date_trunc('month', CURRENT_DATE)- INTERVAL '6 month'
+    AND type = #{type, jdbcType=INTEGER}
+    ORDER BY create_time ASC
   </select>
   <select id="selectPlotRindRatio" resultMap="BaseResultMap">
     SELECT * FROM report_pipeline_record_everymonth

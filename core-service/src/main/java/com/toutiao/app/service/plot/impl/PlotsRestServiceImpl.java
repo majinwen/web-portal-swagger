@@ -4,9 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.toutiao.app.dao.plot.PlotEsDao;
-import com.toutiao.app.dao.plot.impl.PlotEsDaoImpl;
-import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
 import com.toutiao.app.dao.report.ReportPipelineRecordEveryMonth;
+import com.toutiao.app.domain.favorite.PlotIsFavoriteDoQuery;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.rent.RentNumListDo;
@@ -57,7 +56,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.boolQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Service
 public class PlotsRestServiceImpl implements PlotsRestService {
@@ -832,9 +830,10 @@ public class PlotsRestServiceImpl implements PlotsRestService {
     }
 
     @Override
-    public JSONArray getFoldLineInfo(String newcode, String districtId) {
-        List<ReportPipelineRecordEveryMonth> newcodeInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineDistrictInfo(newcode);
-        List<ReportPipelineRecordEveryMonth> districtInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineDistrictInfo(districtId);
+    public JSONArray getFoldLineInfo(String newcode, String districtId, Integer type) {
+
+        List<ReportPipelineRecordEveryMonth> newcodeInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineDistrictInfo(newcode,0);
+        List<ReportPipelineRecordEveryMonth> districtInfo = reportPipelineRecordEveryMonthMapper.selectFoldLineDistrictInfo(districtId,type);
         JSONArray jsonArray = new JSONArray();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM");
         List newcodePrice = new ArrayList();
@@ -853,10 +852,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 newcodeMonth.add(formatter.format(newcodeEntity.getCreateTime()));
 
             }
-            newcodeRindratio = (newcodeInfo.get(0).getRingRatio())*100+"%";
-            plotName = newcodeInfo.get(0).getDisplayName();
-            Collections.reverse(newcodePrice);
-            Collections.reverse(newcodeMonth);
+            newcodeRindratio = (newcodeInfo.get(newcodeInfo.size()-1).getRingRatio())*100+"%";
+            plotName = newcodeInfo.get(newcodeInfo.size()-1).getDisplayName();
         }
 
         if (null!=districtInfo&&districtInfo.size()>0){
@@ -864,10 +861,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 districtPrice.add(districtEntity.getAvgPrice());
                 districtMonth.add(formatter.format(districtEntity.getCreateTime()));
             }
-            districtRindratio = (districtInfo.get(0).getRingRatio())*100+"%";
-            districtName = districtInfo.get(0).getDisplayName();
-            Collections.reverse(districtPrice);
-            Collections.reverse(districtMonth);
+            districtRindratio = (districtInfo.get(newcodeInfo.size()-1).getRingRatio())*100+"%";
+            districtName = districtInfo.get(newcodeInfo.size()-1).getDisplayName();
         }
 
 

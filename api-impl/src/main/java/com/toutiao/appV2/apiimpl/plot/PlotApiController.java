@@ -8,7 +8,6 @@ import com.toutiao.app.domain.plot.*;
 import com.toutiao.app.domain.plot.PlotDetailsFewDo;
 import com.toutiao.app.domain.rent.RentDetailsListDo;
 import com.toutiao.app.domain.rent.RentNumListDo;
-import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDo;
 import com.toutiao.app.domain.sellhouse.SellAndClaimHouseDetailsDomain;
 import com.toutiao.app.service.plot.*;
 import com.toutiao.app.service.rent.RentRestService;
@@ -30,9 +29,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Optional;
 
 @javax.annotation.Generated(value = "io.swagger.codegen.languages.SpringCodegen", date = "2018-11-17T03:42:20.134Z")
 
@@ -281,8 +278,9 @@ public class PlotApiController implements PlotApi {
 
     @Override
     public ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "小区id", required = true) @Valid @RequestParam(value = "newcode") String newcode,
-                                                  @ApiParam(value = "区域id", required = true) @Valid @RequestParam(value = "districtId") String districtId){
-        JSONArray jsonArray = appPlotService.getFoldLineInfo(newcode,districtId);
+                                                  @ApiParam(value = "区域：2,商圈：1", required = true) @Valid @RequestParam(value = "type") Integer type,
+                                                  @ApiParam(value = "区域/商圈id", required = true) @Valid @RequestParam(value = "districtId") String districtId){
+        JSONArray jsonArray = appPlotService.getFoldLineInfo(newcode,districtId,type);
         return new ResponseEntity<String>(JSONObject.toJSONString(jsonArray), HttpStatus.OK);
     }
 
