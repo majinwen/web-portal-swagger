@@ -38,7 +38,7 @@ public class ReportNewPreferentialResponse {
             preferentialPrice = 0.0;
         }
 
-        this.preferentialPrice = df.format(preferentialPrice);
+        this.preferentialPrice = df.format(preferentialPrice).replace(".0","");
     }
 
     /**
