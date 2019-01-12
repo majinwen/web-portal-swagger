@@ -314,9 +314,16 @@ public class EsfMapSearchRestServiceImpl implements EsfMapSearchRestService {
             if (communityName.getBuckets().size() > 0) {
                 esfMapSearchCommunityDo.setName(communityName.getBuckets().get(0).getKeyAsString());//社区名称
             }
-            Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
-            if (communityAvgPrice.getBuckets().size() > 0) {
-                esfMapSearchCommunityDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
+//            Terms communityAvgPrice = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("communityAvgPrice");
+//            if (communityAvgPrice.getBuckets().size() > 0) {
+//                esfMapSearchCommunityDo.setPrice(communityAvgPrice.getBuckets().get(0).getKeyAsNumber().doubleValue());//均价
+//            }
+            BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.termQuery("id",esfMapSearchCommunityDo.getId()));
+            SearchResponse avgPriceById = plotEsDao.getAvgPriceById(queryBuilder, city);
+            SearchHit[] hits = avgPriceById.getHits().getHits();
+
+            for (SearchHit searchHit : hits) {
+                esfMapSearchCommunityDo.setPrice(searchHit.getSourceAsMap().get("avgPrice")==null?0: (Double) searchHit.getSourceAsMap().get("avgPrice"));
             }
             Terms plotLongitude = ((ParsedLongTerms.ParsedBucket) bucket).getAggregations().get("plotLongitude");
             if (plotLongitude.getBuckets().size() > 0) {

@@ -38,6 +38,9 @@ public class ConverterConf {
         NameRespFilter nameRespFilter = new NameRespFilter();
         ValueRespFilter valueRespFilter = new ValueRespFilter();
         fastJsonConfig.setSerializeFilters(nameRespFilter,valueRespFilter);
+//        ValueRespFilter valueRespFilter = new ValueRespFilter();
+//        fastJsonConfig.setSerializeFilters(nameRespFilter,valueRespFilter);
+//        fastJsonConfig.setSerializeFilters(nameRespFilter);
         //3处理中文乱码问题
         List<MediaType> fastMediaTypes = new ArrayList<>();
         fastMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);
