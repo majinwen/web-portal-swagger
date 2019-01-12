@@ -563,7 +563,7 @@ public class MessagePushServiceImpl implements MessagePushService {
 
         //清空消息
         if (lastMessageId == null || lastMessageId == 0) {
-            updateIsRead(contentType, userId);
+            updateIsRead(Arrays.asList(5, 10, 11, 12, 8, 9), userId);
         }
 
         return messagePushDomain;
