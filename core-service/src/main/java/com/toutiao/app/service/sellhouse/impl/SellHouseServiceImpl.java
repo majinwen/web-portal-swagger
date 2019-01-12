@@ -2248,11 +2248,6 @@ public class SellHouseServiceImpl implements SellHouseService {
             boolQueryBuilder.must(termQuery("isNew", 1));
             boolQueryBuilder.mustNot(termQuery("housePhotoTitle",""));
 
-//            Date date = new Date();
-//            SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
-//            String day = dateFormat.format(date);
-//            String sevenDayBefore = DateUtil.beforeSevenDate(day);
-//            boolQueryBuilder.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
 
             SearchResponse searchResponse = sellHouseEsDao.getGuessLikeSellHouseList(boolQueryBuilder, city, sellHouseDoQuery.getPageNum(), sellHouseDoQuery.getPageSize());
 
@@ -2341,12 +2336,15 @@ public class SellHouseServiceImpl implements SellHouseService {
                 boolQueryBuilderT2.must(termQuery("isDel", 0));
                 boolQueryBuilderT2.must(termQuery("isNew", 1));
                 boolQueryBuilderT2.mustNot(termQuery("housePhotoTitle",""));
-//
-//                Date date = new Date();
-//                SimpleDateFormat dateFormat = new SimpleDateFormat(DateUtil.datetimePattern);
-//                String day = dateFormat.format(date);
-//                String sevenDayBefore = DateUtil.beforeSevenDate(day);
-//                boolQueryBuilderT2.must(QueryBuilders.rangeQuery("updateTimeSort").gte(sevenDayBefore).lte(day));
+                List<Integer> houseIds = new ArrayList<>();
+                if (searchHitList.size() > 0) {
+                    for (SearchHit searchHit : searchHitList) {
+                        String details = searchHit.getSourceAsString();
+                        SellHousesSearchDo housesSearchDo = JSON.parseObject(details, SellHousesSearchDo.class);
+                        houseIds.add(Integer.valueOf(housesSearchDo.getHouseId()));
+                    }
+                }
+                boolQueryBuilderT2.mustNot(termsQuery("houseId", houseIds.toArray()));
 
                 SearchResponse searchResponseT2 = sellHouseEsDao.getGuessLikeSellHouseList(boolQueryBuilderT2, city, pageNum_T2, pageSize_T2);
 

@@ -721,6 +721,15 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 boolQueryBuilderT2.mustNot(termQuery("building_title_img",""));
                 boolQueryBuilderT2.must(JoinQueryBuilders.hasChildQuery(ElasticCityUtils.NEWHOUSE_CHILD_NAME, QueryBuilders.rangeQuery("room").gte(1), ScoreMode.None));
 
+                List<Integer> buildingNameIds = new ArrayList<>();
+                if (searchHitList.size() > 0) {
+                    for (SearchHit searchHit : searchHitList) {
+                        String details = searchHit.getSourceAsString();
+                        NewHouseListDo newHouseListDos = JSON.parseObject(details, NewHouseListDo.class);
+                        buildingNameIds.add(newHouseListDos.getBuildingNameId());
+                    }
+                }
+                boolQueryBuilderT2.mustNot(termsQuery("building_name_id", buildingNameIds.toArray()));
                 SearchResponse searchResponseT2 = newHouseEsDao.getGuessLikeNewHouseList(boolQueryBuilderT2, city, pageNum_T2, pageSize_T2);
 
 
