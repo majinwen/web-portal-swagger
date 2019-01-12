@@ -861,8 +861,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 districtPrice.add(districtEntity.getAvgPrice());
                 districtMonth.add(formatter.format(districtEntity.getCreateTime()));
             }
-            districtRindratio = (districtInfo.get(newcodeInfo.size()-1).getRingRatio())*100+"%";
-            districtName = districtInfo.get(newcodeInfo.size()-1).getDisplayName();
+            districtRindratio = (districtInfo.get(districtInfo.size()-1).getRingRatio())*100+"%";
+            districtName = districtInfo.get(districtInfo.size()-1).getDisplayName();
         }
 
 
