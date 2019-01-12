@@ -416,7 +416,11 @@ public class MessagePushServiceImpl implements MessagePushService {
             }
             countCriteria.andIsReadEqualTo((short) 0);
             countCriteria.andPushTypeEqualTo(1);
-            countCriteria.andContentTypeEqualTo(houseActivityContentYype);
+            if (i == 5){
+                countCriteria.andContentTypeIn(Arrays.asList(5, 10, 11, 12, 8, 9));
+            } else {
+                countCriteria.andContentTypeEqualTo(6);
+            }
             int unreadCount = messagePushMapper.countByExample(countExample);
             if (StringTool.isNotEmpty(messageContent[0])) {
                 homeMessageDo.setUnReadCount(unreadCount);
