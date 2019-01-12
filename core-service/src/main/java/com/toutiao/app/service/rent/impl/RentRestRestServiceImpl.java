@@ -5,9 +5,6 @@ import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
-import com.toutiao.app.domain.favorite.FavoriteHouseDomain;
-import com.toutiao.app.domain.favorite.FavoriteHouseListDoQuery;
-import com.toutiao.app.domain.favorite.FavoriteHouseVo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteDo;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteDomain;
@@ -24,10 +21,7 @@ import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.constant.company.CompanyIconEnum;
-import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
-import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
-import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
@@ -54,7 +48,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -336,7 +329,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public List<RentDetailsFewDo> queryNearHouseByLocation(NearHouseDo nearHouseDo) {
+    public List<RentDetailsFewDo> queryNearHouseByLocation(NearHouseDo nearHouseDo, String city) {
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //从该坐标查询距离为5000内的小区

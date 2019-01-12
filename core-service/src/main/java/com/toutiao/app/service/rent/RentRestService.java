@@ -39,7 +39,7 @@ public interface RentRestService {
      * @param nearHouseDo
      * @return
      */
-    List<RentDetailsFewDo> queryNearHouseByLocation(NearHouseDo nearHouseDo);
+    List<RentDetailsFewDo> queryNearHouseByLocation(NearHouseDo nearHouseDo, String city);
 
     /**
      * 出租推荐房源（7天内录入）
