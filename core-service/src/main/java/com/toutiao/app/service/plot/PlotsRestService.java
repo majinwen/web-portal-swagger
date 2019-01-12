@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.toutiao.app.domain.newhouse.UserFavoriteConditionDoQuery;
 import com.toutiao.app.domain.plot.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 
@@ -72,7 +71,7 @@ public interface PlotsRestService {
      * @param districtId
      * @return
      */
-    JSONArray getFoldLineInfo(String newcode, String districtId);
+    JSONArray getFoldLineInfo(String newcode, String districtId, Integer type);
 
     /**
      * 获取小区综述

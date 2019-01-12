@@ -5,12 +5,11 @@ import com.toutiao.app.service.mapSearch.EsfMapSearchRestService;
 import com.toutiao.appV2.api.mapSearch.EsfMapSearchApi;
 import com.toutiao.appV2.model.mapSearch.*;
 import com.toutiao.web.common.util.city.CityUtils;
-import io.swagger.annotations.*;
+import io.swagger.annotations.ApiParam;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -28,6 +27,7 @@ public class EsfMapSearchController implements EsfMapSearchApi {
     private EsfMapSearchRestService esfMapSearchRestService;
 
 
+    @Override
     public ResponseEntity<EsfMapSearchResponse> mapEsfSearch(@ApiParam(value = "esfMapSearchRequest" ,required=true )  @Valid EsfMapSearchRequest esfMapSearchRequest) {
 
         EsfMapSearchDoQuery esfMapSearchDoQuery = new EsfMapSearchDoQuery();

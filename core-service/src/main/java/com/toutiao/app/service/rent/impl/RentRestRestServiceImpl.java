@@ -5,9 +5,6 @@ import com.toutiao.app.dao.agenthouse.AgentHouseEsDao;
 import com.toutiao.app.dao.plot.PlotEsDao;
 import com.toutiao.app.dao.rent.RentEsDao;
 import com.toutiao.app.domain.agent.AgentBaseDo;
-import com.toutiao.app.domain.favorite.FavoriteHouseDomain;
-import com.toutiao.app.domain.favorite.FavoriteHouseListDoQuery;
-import com.toutiao.app.domain.favorite.FavoriteHouseVo;
 import com.toutiao.app.domain.favorite.IsFavoriteDo;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteDo;
 import com.toutiao.app.domain.favorite.rent.RentFavoriteDomain;
@@ -24,13 +21,11 @@ import com.toutiao.app.service.rent.NearRentHouseRestService;
 import com.toutiao.app.service.rent.RentRestService;
 import com.toutiao.web.common.constant.city.CityConstant;
 import com.toutiao.web.common.constant.company.CompanyIconEnum;
-import com.toutiao.web.common.constant.syserror.PlotsInterfaceErrorCodeEnum;
-import com.toutiao.web.common.constant.syserror.RentInterfaceErrorCodeEnum;
 import com.toutiao.web.common.exceptions.BaseException;
-import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.DateUtil;
 import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.common.util.StringUtil;
+import com.toutiao.web.common.util.city.CityUtils;
 import com.toutiao.web.dao.entity.officeweb.user.UserBasic;
 import com.toutiao.web.dao.sources.beijing.AreaMap;
 import com.toutiao.web.dao.sources.beijing.DistrictMap;
@@ -53,7 +48,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -335,7 +329,7 @@ public class RentRestRestServiceImpl implements RentRestService {
      * @return
      */
     @Override
-    public List<RentDetailsFewDo> queryNearHouseByLocation(NearHouseDo nearHouseDo) {
+    public List<RentDetailsFewDo> queryNearHouseByLocation(NearHouseDo nearHouseDo, String city) {
         List<RentDetailsFewDo> list = new ArrayList<>();
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
         //从该坐标查询距离为5000内的小区
@@ -359,6 +353,17 @@ public class RentRestRestServiceImpl implements RentRestService {
                 if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
                     rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                 }
+                AgentBaseDo agentBaseDo = new AgentBaseDo();
+                if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
+                    agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), CityUtils.getCity());
+
+                } else {
+                    agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent") == null ? "" : hit.getSourceAsMap().get("estate_agent").toString());
+                    agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency") == null ? "" : hit.getSourceAsMap().get("brokerage_agency").toString());
+                    agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
+                    agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
+                }
+                rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                 list.add(rentDetailsFewDo);
             }
         }
@@ -379,6 +384,17 @@ public class RentRestRestServiceImpl implements RentRestService {
                     if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
                         rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                     }
+                    AgentBaseDo agentBaseDo = new AgentBaseDo();
+                    if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), CityUtils.getCity());
+
+                    } else {
+                        agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent") == null ? "" : hit.getSourceAsMap().get("estate_agent").toString());
+                        agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency") == null ? "" : hit.getSourceAsMap().get("brokerage_agency").toString());
+                        agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
+                        agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
+                    }
+                    rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                     list.add(rentDetailsFewDo);
                 }
             }
@@ -399,6 +415,17 @@ public class RentRestRestServiceImpl implements RentRestService {
                     if(!StringUtil.isNullString(AgentCompany) && CompanyIconEnum.containKey(AgentCompany)){
                         rentDetailsFewDo.setCompanyIcon(CompanyIconEnum.getValueByKey(AgentCompany));
                     }
+                    AgentBaseDo agentBaseDo = new AgentBaseDo();
+                    if (StringTool.isNotEmpty(rentDetailsFewDo.getUserId())) {
+                        agentBaseDo = agentService.queryAgentInfoByUserId(rentDetailsFewDo.getUserId().toString(), CityUtils.getCity());
+
+                    } else {
+                        agentBaseDo.setAgentName(hit.getSourceAsMap().get("estate_agent") == null ? "" : hit.getSourceAsMap().get("estate_agent").toString());
+                        agentBaseDo.setAgentCompany(hit.getSourceAsMap().get("brokerage_agency") == null ? "" : hit.getSourceAsMap().get("brokerage_agency").toString());
+                        agentBaseDo.setHeadPhoto(hit.getSourceAsMap().get("agent_headphoto") == null ? "" : hit.getSourceAsMap().get("agent_headphoto").toString());
+                        agentBaseDo.setDisplayPhone(hit.getSourceAsMap().get("phone") == null ? "" : hit.getSourceAsMap().get("phone").toString());
+                    }
+                    rentDetailsFewDo.setAgentBaseDo(agentBaseDo);
                     list.add(rentDetailsFewDo);
                 }
             }

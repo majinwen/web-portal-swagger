@@ -479,4 +479,19 @@ public class SellAndClaimHouseDetailsDo {
      */
     private String houseCutCondition;
 
+    /**
+     * 降价房排名表述
+     */
+    private String houseCutLabel;
+
+    /**
+     * 捡漏房排名表述
+     */
+    private String houseLowerLabel;
+
+    /**
+     * 抢手房排名表述
+     */
+    private String houseRobLabel;
+
 }

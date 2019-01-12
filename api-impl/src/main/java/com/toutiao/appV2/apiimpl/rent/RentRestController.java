@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.toutiao.app.domain.plot.PlotDetailsDo;
 import com.toutiao.app.domain.rent.*;
 import com.toutiao.app.domain.rent.RentDetailsFewDo;
@@ -18,7 +17,6 @@ import com.toutiao.appV2.model.userbasic.UserLoginResponse;
 import com.toutiao.web.common.assertUtils.Second;
 import com.toutiao.web.common.util.CookieUtils;
 import com.toutiao.web.common.util.city.CityUtils;
-import io.swagger.annotations.ApiParam;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,7 +29,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.List;
 
 //import com.toutiao.app.api.chance.response.rent.*;
@@ -64,7 +61,7 @@ public class RentRestController implements RentRestApi {
 
         NearHouseDo nearHouseDo = new NearHouseDo();
         BeanUtils.copyProperties(nearHouseListRequest, nearHouseDo);
-        List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
+        List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo, CityUtils.getCity());
         JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
         List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
         RentDetailFewResponseList nearRentHouseResponse = new RentDetailFewResponseList();
@@ -125,7 +122,7 @@ public class RentRestController implements RentRestApi {
             NearHouseDo nearHouseDo = new NearHouseDo();
             BeanUtils.copyProperties(rentHouseRequest, nearHouseDo);
             nearHouseDo.setDistance(5);
-            List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo);
+            List<RentDetailsFewDo> list = appRentRestService.queryNearHouseByLocation(nearHouseDo,CityUtils.getCity());
             JSONArray objects = JSONArray.parseArray(JSON.toJSONString(list));
             List<RentDetailFewResponse> rentDetailFewResponses = JSONObject.parseArray(objects.toJSONString(), RentDetailFewResponse.class);
             RentDetailFewResponseList nearRentHouseResponse = new RentDetailFewResponseList();

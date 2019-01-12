@@ -134,7 +134,6 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
         SearchResponse searchResponse = nearbySellHouseEsDao.getNearbySellHouseByFilter(query, nearBySellHouseQueryDo.getPageNum(), nearBySellHouseQueryDo.getPageSize(), city);
         SearchHits hits = searchResponse.getHits();
         SearchHit[] searchHists = hits.getHits();
-        AgentBaseDo agentBaseDo = new AgentBaseDo();
         Date date = new Date();
         for (SearchHit searchHit : searchHists) {
             String details = "";
@@ -148,6 +147,7 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
                 nearBySellHousesDo.setHousePhotoTitle(claimSellHouseDo.getClaimHousePhotoTitle());
             }
 
+            AgentBaseDo agentBaseDo = new AgentBaseDo();
             if (claimSellHouseDo.getIsClaim() == 1 && StringTool.isNotEmpty(nearBySellHousesDo.getUserId())) {
                 agentBaseDo = agentService.queryAgentInfoByUserId(nearBySellHousesDo.getUserId().toString(), city);
             } else if (claimSellHouseDo.getIsClaim() == 0) {

@@ -34,8 +34,22 @@ public class UserFavoriteConditionDo {
      */
     private Integer conditionType = null;
 
+//    /**
+//     * 租房类型1整租2合租
+//     */
+//    private Integer rentType = null;
     /**
-     * 租房类型1整租2合租
+     * 地铁线
      */
-    private Integer rentType = null;
+    private String[] subwayLineId = null;
+
+    /**
+     * 整租
+     */
+    private String elo;
+
+    /**
+     * 合租
+     */
+    private String jlo;
 }

@@ -21,7 +21,7 @@ public interface ReportPipelineRecordEveryMonthMapper extends BaseDao {
 
     int updateByPrimaryKey(ReportPipelineRecordEveryMonth record);
 
-    List<ReportPipelineRecordEveryMonth> selectFoldLineDistrictInfo(String code);
+    List<ReportPipelineRecordEveryMonth> selectFoldLineDistrictInfo(@Param("code") String code,@Param("type") Integer type);
 
     ReportPipelineRecordEveryMonth selectPlotRindRatio(@Param("code") String code,@Param("type") Integer type);
 }

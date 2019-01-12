@@ -43,7 +43,6 @@ public class SellHouseToolServiceImpl implements SellHouseToolService {
         String houseCutPriceMsg = "";
         if (StringTool.isNotEmpty(isCutPrice) && StringTool.isNotEmpty(priceFloat) && isCutPrice == 1 && priceFloat < 0) {
             houseCutPriceMsg = "降" + Math.abs(priceFloat) + "万";
-            houseBarrageFirstList.add(houseCutPriceMsg);
             titleTag = false;
         }
 

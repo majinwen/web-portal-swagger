@@ -1,9 +1,10 @@
 package com.toutiao.appV2.model.report;
 
+import com.toutiao.web.common.util.StringTool;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
+import java.text.DecimalFormat;
 
 @Data
 public class ReportNewPreferentialResponse {
@@ -29,14 +30,15 @@ public class ReportNewPreferentialResponse {
      * 优惠价格
      */
     @ApiModelProperty(value = "优惠价格(万元)")
-    private Double offPrice;
+    private String preferentialPrice;
 
-    public void setOffPrice(Double offPrice) {
-        String doubleStr = offPrice.toString();
-        if(doubleStr.contains(".")){
-            doubleStr = doubleStr.substring(0,doubleStr.indexOf(".")+1);
+    public void setPreferentialPrice(Double preferentialPrice) {
+        DecimalFormat df = new DecimalFormat("0.0");
+        if (StringTool.isEmpty(preferentialPrice)){
+            preferentialPrice = 0.0;
         }
-        this.offPrice = Double.parseDouble(doubleStr);
+
+        this.preferentialPrice = df.format(preferentialPrice).replace(".0","");
     }
 
     /**
