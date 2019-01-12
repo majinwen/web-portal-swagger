@@ -61,6 +61,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseTheme(sellHouseThemeDoQuery);
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isCutPrice", 1));
+        booleanQueryBuilder.must(QueryBuilders.rangeQuery("cityCutRank").gt(0));
         Integer pageNum = sellHouseThemeDoQuery.getPageNum();
         Integer pageSize = sellHouseThemeDoQuery.getPageSize();
 
@@ -88,6 +89,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseTheme(sellHouseThemeDoQuery);
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isLowPrice", 1));
+        booleanQueryBuilder.must(QueryBuilders.rangeQuery("cityLowerRank").gt(0));
         Integer pageNum = sellHouseThemeDoQuery.getPageNum();
         Integer pageSize = sellHouseThemeDoQuery.getPageSize();
         SearchResponse lowPriceShellHouse = sellHouseThemeEsDao.getLowPriceShellHouse(booleanQueryBuilder, pageNum, pageSize, city);
@@ -111,6 +113,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         BoolQueryBuilder booleanQueryBuilder = filterSellHouseTheme(sellHouseThemeDoQuery);
 
         booleanQueryBuilder.must(QueryBuilders.termQuery("isMustRob", 1));
+        booleanQueryBuilder.must(QueryBuilders.rangeQuery("cityRobRank").gt(0));
         Integer pageNum = sellHouseThemeDoQuery.getPageNum();
         Integer pageSize = sellHouseThemeDoQuery.getPageSize();
         SearchResponse beSureToSnatchShellHouse = sellHouseThemeEsDao.getBeSureToSnatchShellHouse(booleanQueryBuilder, pageNum, pageSize, city);
