@@ -17,6 +17,7 @@ import com.toutiao.app.domain.suggest.SearchScopeDo;
 import com.toutiao.app.domain.suggest.SuggestListDo;
 import com.toutiao.app.domain.sellhouse.HouseSubjectListResponse;
 import com.toutiao.app.domain.suggest.SuggestResultDo;
+import com.toutiao.web.common.util.StringTool;
 import com.toutiao.web.dao.entity.version.VersionVO;
 import com.toutiao.app.service.agent.AgentService;
 import com.toutiao.app.service.newhouse.NewHouseRestService;
@@ -127,29 +128,31 @@ public class SuggestRestController implements SuggestRestApi {
                     searchScopeResponse.setIsArea(searchScope.getLocationTypeSings());
                     searchScopeResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
                     searchEnginesResponseList.add(searchScopeResponse);
-                    Integer listSize = suggestListDo.getSearchEnginesList().size();
-                    if (listSize > 0) {
-                        if (listSize > 2) {
-                            listSize = listSize - 1;
-                        }
-                        for (int i = 0; i < listSize; i++) {
-                            SearchEnginesDo searchEnginesDo = suggestListDo.getSearchEnginesList().get(i);
-                            SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
-                            BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
-                            searchEnginesResponse.setIsArea(0);
-                            searchEnginesResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
-                            List searchNickname = searchEnginesDo.getSearchNickname();
-                            String nickname = "";
-                            if (searchNickname != null && searchNickname.size() > 0) {
-                                for (int j = 0; j < searchNickname.size(); j++) {
-                                    nickname += searchNickname.get(j).toString() + "·";
+                    if (StringTool.isNotEmpty(suggestListDo.getSearchEnginesList())) {
+                        Integer listSize = suggestListDo.getSearchEnginesList().size();
+                        if (listSize > 0) {
+                            if (listSize > 2) {
+                                listSize = listSize - 1;
+                            }
+                            for (int i = 0; i < listSize; i++) {
+                                SearchEnginesDo searchEnginesDo = suggestListDo.getSearchEnginesList().get(i);
+                                SearchEnginesResponse searchEnginesResponse = new SearchEnginesResponse();
+                                BeanUtils.copyProperties(searchEnginesDo, searchEnginesResponse);
+                                searchEnginesResponse.setIsArea(0);
+                                searchEnginesResponse.setSearchTypeSings(searchScope.getSearchTypeSings());
+                                List searchNickname = searchEnginesDo.getSearchNickname();
+                                String nickname = "";
+                                if (searchNickname != null && searchNickname.size() > 0) {
+                                    for (int j = 0; j < searchNickname.size(); j++) {
+                                        nickname += searchNickname.get(j).toString() + "·";
+                                    }
                                 }
+                                if (nickname.endsWith("·")) {
+                                    nickname = nickname.substring(0, nickname.length() - 1);
+                                }
+                                searchEnginesResponse.setSearchNickname(nickname);
+                                searchEnginesResponseList.add(searchEnginesResponse);
                             }
-                            if (nickname.endsWith("·")) {
-                                nickname = nickname.substring(0, nickname.length() - 1);
-                            }
-                            searchEnginesResponse.setSearchNickname(nickname);
-                            searchEnginesResponseList.add(searchEnginesResponse);
                         }
                     }
                 }
