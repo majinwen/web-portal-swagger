@@ -44,6 +44,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.RoundingMode;
+import java.text.NumberFormat;
 import java.util.*;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -415,11 +417,10 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 SearchResponse dynamicResponse = newHouseEsDao.getDynamicByNewCode(queryBuilderDynamic, 1, 10, city);
                 long dynamicTotal = dynamicResponse.getHits().totalHits;//动态总数
                 newHouseListDos.setDynamicTotal(dynamicTotal);
-
                 //获取新房户型价格范围
                 NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId(), city);
-                newHouseListDos.setHouseMinPrice(newHouseLayoutPriceDo.getHouseMinPrice());
-                newHouseListDos.setHouseMaxPrice(newHouseLayoutPriceDo.getHouseMaxPrice());
+                newHouseListDos.setHouseMinPrice((double) Math.round(newHouseLayoutPriceDo.getHouseMinPrice()));
+                newHouseListDos.setHouseMaxPrice((double) Math.round(newHouseLayoutPriceDo.getHouseMaxPrice()));
                 //新房动态
                 NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
                 newHouseDynamicDoQuery.setNewCode(newHouseListDos.getBuildingNameId());
