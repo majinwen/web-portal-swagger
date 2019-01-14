@@ -162,7 +162,7 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
                 }
                 String titlePhoto = sellHouseDo.getHousePhotoTitle();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 sellHouseDo.setHousePhotoTitle(titlePhoto);
 
