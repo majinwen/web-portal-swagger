@@ -525,6 +525,9 @@ public class SellHouseDetailsDo {
     @ApiModelProperty(value = "房源排行榜标签列表", name = "houseRankLableList")
     private List<HouseRankLable> houseRankLableList;
 
+    @ApiModelProperty(value = "房源Tags彩色标签列表", name = "houseColorLableList")
+    private List<HouseColorLable> houseColorLableList;
+
     @ApiModelProperty(value = "房源Tags标签列表", name = "houseSubjectList")
     private List<HouseSubject> houseSubjectList;
 

@@ -239,7 +239,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                     if (userBasic.getRongCloudToken() == null || "".equals(userBasic.getRongCloudToken())) {
                         //获取融云token
                         String rcToken = imService.queryRongCloudTokenByUser(userBasic.getUserOnlySign(), userBasicDo.getUserPhone(),
-                                headPicPath + "/" + headPicDirectory + "/" + userBasic.getAvatar());
+                                userBasic.getAvatar());
                         userBasic.setRongCloudToken(rcToken);
                     }
                     userBasicMapper.updateByPrimaryKeySelective(userBasic);
@@ -268,7 +268,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                     insertUserBasic.setUserOnlySign(d.getTime() + insertUserBasic.getPhone());
                     //用户注册融云信息
                     String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getUserPhone(),
-                            headPicPath + "/" + headPicDirectory + "/" + insertUserBasic.getAvatar());
+                            insertUserBasic.getAvatar());
                     insertUserBasic.setRongCloudToken(rcToken);
                     int userId = userBasicMapper.insertSelective(insertUserBasic);
                     BeanUtils.copyProperties(insertUserBasic, ubd);
