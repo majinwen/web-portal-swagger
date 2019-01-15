@@ -133,7 +133,7 @@ public class SubscribeServiceImpl implements SubscribeService {
             UserSubscribeListDo userSubscribeListDo = new UserSubscribeListDo();
             BeanUtils.copyProperties(userSubscribe, userSubscribeListDo);
             UserSubscribeDetailDo userSubscribeDetailDo = JSONObject.parseObject(userSubscribe.getUserSubscribeMap(), UserSubscribeDetailDo.class);
-            userSubscribeDetailDo.setTitleImg("http://s1.qn.toutiaofangchan.com/imgLoadErr.png-agent400x300");
+            userSubscribeDetailDo.setTitleImg("http://s1-qn.bidewu.com/imgLoadErr.png-agent400x300");
 
             //填充新增数量
             if (userSubscribeListDo.getSubscribeType() == 0) {
@@ -150,17 +150,17 @@ public class SubscribeServiceImpl implements SubscribeService {
                 switch (topicType) {
                     case 1:
                         userSubscribeDetailDo.setTopicTypeName("降价房");
-                        userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
+                        userSubscribeDetailDo.setTitleImg("http://wap-qn.bidewu.com/zt/jiangjia/21.jpg");
                         url.append("/reduction?");
                         break;
                     case 2:
                         userSubscribeDetailDo.setTopicTypeName("价格洼地");
-                        userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
+                        userSubscribeDetailDo.setTitleImg("http://wap-qn.bidewu.com/zt/jianlou/22.jpg");
                         url.append("/low?");
                         break;
                     case 3:
                         userSubscribeDetailDo.setTopicTypeName("逢出必抢");
-                        userSubscribeDetailDo.setTitleImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
+                        userSubscribeDetailDo.setTitleImg("http://wap-qn.bidewu.com/zt/qiangshou/14.jpg");
                         url.append("/hot?");
                         break;
                 }

@@ -611,7 +611,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                     //设置标题图
                     String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
                     if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                        titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     rentDetailsFewDo.setHouseTitleImg(titlePhoto);
 
@@ -649,7 +649,7 @@ public class RentMapSearchRestServiceImpl implements RentMapSearchRestService {
                         if (StringTool.isNotEmpty(plotDetailsDo.getPhoto()) && plotDetailsDo.getPhoto().length > 0) {
                             String titlePhoto = plotDetailsDo.getPhoto()[0];
                             if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                                titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                                titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                             }
                             rentOfPlotListDo.setBuildingImages(titlePhoto);
                         }

@@ -797,7 +797,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 //设置标题图
                 String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dfdo400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dfdo400x300";
                 }
                 rentDetailsFewDo.setHouseTitleImg(titlePhoto);
 
@@ -1128,7 +1128,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 //设置标题图
                 String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 rentDetailsFewDo.setHouseTitleImg(titlePhoto);
 
@@ -1256,7 +1256,7 @@ public class RentRestRestServiceImpl implements RentRestService {
                 //设置标题图
                 String titlePhoto = rentDetailsFewDo.getHouseTitleImg();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 rentDetailsFewDo.setHouseTitleImg(titlePhoto);
                 //设置公司图标

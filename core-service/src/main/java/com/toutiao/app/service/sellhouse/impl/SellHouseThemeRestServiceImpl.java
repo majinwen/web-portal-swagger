@@ -169,7 +169,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
                 String titlePhoto = cutPriceSellHouseThemeDo.getHousePhotoTitle();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 cutPriceSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
                 cutPriceSellHouseThemeDoList.add(cutPriceSellHouseThemeDo);
@@ -238,7 +238,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
                 String titlePhoto = hotSellHouseThemeDo.getHousePhotoTitle();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 hotSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
 
@@ -273,7 +273,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 }
                 String titlePhoto = lowPriceSellHouseThemeDo.getHousePhotoTitle();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 lowPriceSellHouseThemeDo.setHousePhotoTitle(titlePhoto);
                 lowPriceSellHouseThemeDoList.add(lowPriceSellHouseThemeDo);

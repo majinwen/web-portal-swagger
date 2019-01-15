@@ -212,7 +212,7 @@ public class PlotsThemeRestServiceImpl implements PlotsThemeRestService {
                 if (plotsThemeDo.getPhoto().length > 0) {
                     String titlePhoto = plotsThemeDo.getPhoto()[0];
                     if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                        titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     plotsThemeDo.setTitlePhoto(titlePhoto);
                 }

@@ -213,17 +213,17 @@ public class RecommendRestServiceImpl implements RecommendRestService {
 
             if(Objects.equals(flag, "isLowPrice")){
                 recommendTopicDo.setTopicName("捡漏房源榜");
-                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jianlou/22.jpg");
+                recommendTopicDo.setTopicImg("http://wap-qn.bidewu.com/zt/jianlou/22.jpg");
                 recommendTopicDo.setTopicType(2);
                 url.append("/low?");
             }else if(Objects.equals(flag, "isMustRob")){
                 recommendTopicDo.setTopicName("抢手房源榜");
-                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/qiangshou/14.jpg");
+                recommendTopicDo.setTopicImg("http://wap-qn.bidewu.com/zt/qiangshou/14.jpg");
                 recommendTopicDo.setTopicType(3);
                 url.append("/hot?");
             }else if(Objects.equals(flag, "isCutPrice")){
                 recommendTopicDo.setTopicName("降价房源榜");
-                recommendTopicDo.setTopicImg("http://wap-qn.toutiaofangchan.com/zt/jiangjia/21.jpg");
+                recommendTopicDo.setTopicImg("http://wap-qn.bidewu.com/zt/jiangjia/21.jpg");
                 recommendTopicDo.setTopicType(1);
                 url.append("/reduction?");
             }

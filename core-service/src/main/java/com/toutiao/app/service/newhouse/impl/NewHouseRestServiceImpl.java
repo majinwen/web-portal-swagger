@@ -384,7 +384,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
                 //新房图片处理
                 if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http")) {
-                    newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-w1200x900");
+                    newHouseListDos.setBuildingTitleImg("http://s1-qn.bidewu.com/" + newHouseListDos.getBuildingTitleImg() + "-w1200x900");
                 }
 
                 //新房标签
@@ -802,7 +802,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
                 //新房图片处理
                 if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http")) {
-                    newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-dongfangdi1200x900");
+                    newHouseListDos.setBuildingTitleImg("http://s1-qn.bidewu.com/" + newHouseListDos.getBuildingTitleImg() + "-dongfangdi1200x900");
                 }
 
                 //新房标签
@@ -951,7 +951,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 }
                 //新房图片处理
                 if (!Objects.equals(newHouseCustomConditionDo.getBuildingTitleImg(), "") && !newHouseCustomConditionDo.getBuildingTitleImg().startsWith("http")) {
-                    newHouseCustomConditionDo.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseCustomConditionDo.getBuildingTitleImg() + "-dongfangdi1200x900");
+                    newHouseCustomConditionDo.setBuildingTitleImg("http://s1-qn.bidewu.com/" + newHouseCustomConditionDo.getBuildingTitleImg() + "-dongfangdi1200x900");
                 }
                 newHouseCustomConditionDos.add(newHouseCustomConditionDo);
             }
@@ -984,7 +984,7 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
                 //新房图片处理
                 if (!Objects.equals(newHouseListDos.getBuildingTitleImg(), "") && !newHouseListDos.getBuildingTitleImg().startsWith("http")) {
-                    newHouseListDos.setBuildingTitleImg("http://s1.qn.toutiaofangchan.com/" + newHouseListDos.getBuildingTitleImg() + "-w1200x900");
+                    newHouseListDos.setBuildingTitleImg("http://s1-qn.bidewu.com/" + newHouseListDos.getBuildingTitleImg() + "-w1200x900");
                 }
 
                 newHouseListDoList.add(newHouseListDos);
