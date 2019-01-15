@@ -239,7 +239,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                     if (userBasic.getRongCloudToken() == null || "".equals(userBasic.getRongCloudToken())) {
                         //获取融云token
                         String rcToken = imService.queryRongCloudTokenByUser(userBasic.getUserOnlySign(), userBasicDo.getUserPhone(),
-                                headPicPath + "/" + headPicDirectory + "/" + userBasic.getAvatar());
+                                userBasic.getAvatar());
                         userBasic.setRongCloudToken(rcToken);
                     }
                     userBasicMapper.updateByPrimaryKeySelective(userBasic);
