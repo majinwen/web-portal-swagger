@@ -54,7 +54,6 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
     private PlotsMarketService plotsMarketService;
 
 
-
     @Override
     public CutPriceSellHouseThemeDomain getCutPriceShellHouse(SellHouseThemeDoQuery sellHouseThemeDoQuery, String city) {
 //        CutPriceSellHouseThemeDomain cutPriceSellHouseThemeDomain = new CutPriceSellHouseThemeDomain();
@@ -72,7 +71,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         if (!UserBasic.isLogin()) {
             cutPriceSellHouseThemeDomain.setSubscribeId(-1);
         } else {
-            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery,1);
+            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery, 1);
             if (userSubscribe != null) {
                 cutPriceSellHouseThemeDomain.setSubscribeId(userSubscribe.getId());
             } else {
@@ -97,7 +96,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         if (!UserBasic.isLogin()) {
             lowPriceSellHouseThemeDomain.setSubscribeId(-1);
         } else {
-            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery,2);
+            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery, 2);
             if (userSubscribe != null) {
                 lowPriceSellHouseThemeDomain.setSubscribeId(userSubscribe.getId());
             } else {
@@ -121,7 +120,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         if (!UserBasic.isLogin()) {
             hotSellHouseThemeDomain.setSubscribeId(-1);
         } else {
-            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery,3);
+            UserSubscribe userSubscribe = getUserSubscribe(sellHouseThemeDoQuery, 3);
             if (userSubscribe != null) {
                 hotSellHouseThemeDomain.setSubscribeId(userSubscribe.getId());
             } else {
@@ -146,10 +145,11 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
     /**
      * 专题数据
+     *
      * @param cpSellHouse
      * @return
      */
-    public CutPriceSellHouseThemeDomain getCutPriceSellHouseTheme(SearchResponse cpSellHouse){
+    public CutPriceSellHouseThemeDomain getCutPriceSellHouseTheme(SearchResponse cpSellHouse) {
 
         CutPriceSellHouseThemeDomain cutPrice = new CutPriceSellHouseThemeDomain();
         SearchHits hits = cpSellHouse.getHits();
@@ -162,8 +162,8 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 CutPriceSellHouseThemeDo cutPriceSellHouseThemeDo = JSON.parseObject(details, CutPriceSellHouseThemeDo.class);
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = cutPriceSellHouseThemeDo.getImportTime();
-                int isDefault = sellHouseService.isDefaultImage(importTime ,date, cutPriceSellHouseThemeDo.getHousePhotoTitle());
-                if(isDefault==1){
+                int isDefault = sellHouseService.isDefaultImage(importTime, date, cutPriceSellHouseThemeDo.getHousePhotoTitle());
+                if (isDefault == 1) {
                     cutPriceSellHouseThemeDo.setIsDefaultImage(1);
                 }
 
@@ -181,7 +181,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
     }
 
 
-    public HotSellHouseThemeDomain getHotSellHouseTheme(SearchResponse cpSellHouse){
+    public HotSellHouseThemeDomain getHotSellHouseTheme(SearchResponse cpSellHouse) {
 
         HotSellHouseThemeDomain hot = new HotSellHouseThemeDomain();
         SearchHits hits = cpSellHouse.getHits();
@@ -193,14 +193,14 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 String details = searchHit.getSourceAsString();
                 HotSellHouseThemeDo hotSellHouseThemeDo = JSON.parseObject(details, HotSellHouseThemeDo.class);
                 PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(hotSellHouseThemeDo.getNewcode());
-                if(StringTool.isNotEmpty(hotSellHouseThemeDo.getNewcode())){
+                if (StringTool.isNotEmpty(hotSellHouseThemeDo.getNewcode())) {
                     BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-                    boolQueryBuilder.must(QueryBuilders.termQuery("id",hotSellHouseThemeDo.getNewcode().toString()));
+                    boolQueryBuilder.must(QueryBuilders.termQuery("id", hotSellHouseThemeDo.getNewcode().toString()));
                     SearchResponse communityRes = plotEsDao.queryTagsById(boolQueryBuilder, CityUtils.getCity());
                     SearchHits communityHit = communityRes.getHits();
                     SearchHit[] communityHits = communityHit.getHits();
                     List<String> tagsName = new ArrayList<>();
-                    for (SearchHit  tagsHits: communityHits){
+                    for (SearchHit tagsHits : communityHits) {
 //                        hotSellHouseThemeDo.setRecommendBuildTagsName((List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName"));
 //                        hotSellHouseThemeDo.setLabel((List<String>) tagsHits.getSourceAsMap().get("label"));
 //                        hotSellHouseThemeDo.setDistrictHotSort(Integer.valueOf(tagsHits.getSourceAsMap().get("districtHotSort")==null?"0":tagsHits.getSourceAsMap().get("districtHotSort").toString()));
@@ -208,14 +208,14 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 //                        PlotMarketDo plotMarketDo = plotsMarketService.queryPlotMarketByPlotId(hotSellHouseThemeDo.getNewcode());
 
                         if (null != plotMarketDo) {
-                            tagsName.add(hotSellHouseThemeDo.getArea()+"热度榜第"+plotMarketDo.getTotalSort()+"名");
+                            tagsName.add(hotSellHouseThemeDo.getArea() + "热度榜第" + plotMarketDo.getTotalSort() + "名");
                         }
                         List<String> recommendTags = (List<String>) tagsHits.getSourceAsMap().get("recommendBuildTagsName");
                         List<String> label = (List<String>) tagsHits.getSourceAsMap().get("label");
-                        if(StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0){
+                        if (StringTool.isNotEmpty(recommendTags) && recommendTags.size() > 0) {
                             tagsName.addAll(recommendTags);
                         }
-                        if(StringTool.isNotEmpty(label) && label.size() > 0){
+                        if (StringTool.isNotEmpty(label) && label.size() > 0) {
                             tagsName.addAll(label);
                         }
                         String tagName = StringUtils.join(tagsName, " ");
@@ -231,8 +231,8 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 }
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = hotSellHouseThemeDo.getImportTime();
-                int isDefault = sellHouseService.isDefaultImage(importTime ,date, hotSellHouseThemeDo.getHousePhotoTitle());
-                if(isDefault==1){
+                int isDefault = sellHouseService.isDefaultImage(importTime, date, hotSellHouseThemeDo.getHousePhotoTitle());
+                if (isDefault == 1) {
                     hotSellHouseThemeDo.setIsDefaultImage(1);
                 }
 
@@ -252,9 +252,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
     }
 
 
-
-
-    public LowPriceSellHouseThemeDomain getLowPriceSellHouseTheme(SearchResponse cpSellHouse){
+    public LowPriceSellHouseThemeDomain getLowPriceSellHouseTheme(SearchResponse cpSellHouse) {
 
         LowPriceSellHouseThemeDomain lowPrice = new LowPriceSellHouseThemeDomain();
         SearchHits hits = cpSellHouse.getHits();
@@ -267,8 +265,8 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
                 LowPriceSellHouseThemeDo lowPriceSellHouseThemeDo = JSON.parseObject(details, LowPriceSellHouseThemeDo.class);
                 //判断3天内导入，且无图片，默认上显示默认图
                 String importTime = lowPriceSellHouseThemeDo.getImportTime();
-                int isDefault = sellHouseService.isDefaultImage(importTime ,date, lowPriceSellHouseThemeDo.getHousePhotoTitle());
-                if(isDefault==1){
+                int isDefault = sellHouseService.isDefaultImage(importTime, date, lowPriceSellHouseThemeDo.getHousePhotoTitle());
+                if (isDefault == 1) {
                     lowPriceSellHouseThemeDo.setIsDefaultImage(1);
                 }
                 String titlePhoto = lowPriceSellHouseThemeDo.getHousePhotoTitle();
@@ -284,7 +282,6 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
         lowPrice.setTotalCount(hits.totalHits);
         return lowPrice;
     }
-
 
 
     /**
@@ -321,13 +318,14 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
 
     /**
      * 专题筛选
+     *
      * @param sellHouseThemeDoQuery
      * @return
      */
-    public BoolQueryBuilder filterSellHouseTheme(SellHouseThemeDoQuery sellHouseThemeDoQuery){
+    public BoolQueryBuilder filterSellHouseTheme(SellHouseThemeDoQuery sellHouseThemeDoQuery) {
         BoolQueryBuilder booleanQueryBuilder = QueryBuilders.boolQuery();
-        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim",0));
-        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel",0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("is_claim", 0));
+        booleanQueryBuilder.must(QueryBuilders.termQuery("isDel", 0));
 
         if (StringTool.isNotEmpty(sellHouseThemeDoQuery.getIsNew())) {
             booleanQueryBuilder.must(QueryBuilders.termQuery("isNew", sellHouseThemeDoQuery.getIsNew()));
@@ -354,7 +352,7 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
             booleanQueryBuilder.must(QueryBuilders.rangeQuery("houseTotalPrices").gt(beginPrice));
         }
         //户型(室)
-        if (StringTool.isNotEmpty(sellHouseThemeDoQuery.getLayoutId()) && sellHouseThemeDoQuery.getLayoutId().length!=0) {
+        if (StringTool.isNotEmpty(sellHouseThemeDoQuery.getLayoutId()) && sellHouseThemeDoQuery.getLayoutId().length != 0) {
             Integer[] layoutId = sellHouseThemeDoQuery.getLayoutId();
             booleanQueryBuilder.must(QueryBuilders.termsQuery("room", layoutId));
         }
@@ -363,30 +361,32 @@ public class SellHouseThemeRestServiceImpl implements SellHouseThemeRestService 
     }
 
 
-
-
     /**
      * 是否订阅
+     *
      * @param sellHouseThemeDoQuery
      * @param topicType
      * @return
      */
-    public UserSubscribe getUserSubscribe(SellHouseThemeDoQuery sellHouseThemeDoQuery, Integer topicType){
+    public UserSubscribe getUserSubscribe(SellHouseThemeDoQuery sellHouseThemeDoQuery, Integer topicType) {
 
-            UserBasic userBasic = UserBasic.getCurrent();
-            UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
-            userSubscribeDetailDo.setTopicType(topicType);
-            String districtIdsStr = "";
-            if (StringTool.isNotEmpty(sellHouseThemeDoQuery.getDistrictIds()) && sellHouseThemeDoQuery.getDistrictIds().length!=0) {
-                //区域id排序，与订阅信息匹配
-                Arrays.sort(sellHouseThemeDoQuery.getDistrictIds());
-                districtIdsStr = StringTool.IntegerArrayToString(sellHouseThemeDoQuery.getDistrictIds());
-            }
-            userSubscribeDetailDo.setDistrictId(districtIdsStr);
-            userSubscribeDetailDo.setBeginPrice(sellHouseThemeDoQuery.getBeginPrice());
-            userSubscribeDetailDo.setEndPrice(sellHouseThemeDoQuery.getEndPrice());
+        UserBasic userBasic = UserBasic.getCurrent();
+        UserSubscribeDetailDo userSubscribeDetailDo = new UserSubscribeDetailDo();
+        userSubscribeDetailDo.setTopicType(topicType);
+        String districtIdsStr = "";
+        if (StringTool.isNotEmpty(sellHouseThemeDoQuery.getDistrictIds()) && sellHouseThemeDoQuery.getDistrictIds().length != 0) {
+            //区域id排序，与订阅信息匹配
+            Arrays.sort(sellHouseThemeDoQuery.getDistrictIds());
+            districtIdsStr = StringTool.IntegerArrayToString(sellHouseThemeDoQuery.getDistrictIds());
+        }
+        userSubscribeDetailDo.setDistrictId(districtIdsStr);
+        userSubscribeDetailDo.setAreaId(StringTool.IntegerArrayToString(sellHouseThemeDoQuery.getAreaIds()));
+        userSubscribeDetailDo.setLayoutId(StringTool.IntegerArrayToString(sellHouseThemeDoQuery.getLayoutId()));
+        userSubscribeDetailDo.setBeginPrice(sellHouseThemeDoQuery.getBeginPrice());
+        userSubscribeDetailDo.setEndPrice(sellHouseThemeDoQuery.getEndPrice());
 
-            UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.valueOf(userBasic.getUserId()));
+
+        UserSubscribe userSubscribe = subscribeService.selectByUserSubscribeMap(userSubscribeDetailDo, Integer.valueOf(userBasic.getUserId()));
 
         return userSubscribe;
     }
