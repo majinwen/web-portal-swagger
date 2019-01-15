@@ -188,7 +188,7 @@ public class NewHouseMapSearchRestServiceImpl implements NewHouseMapSearchRestSe
                 }
 
                 if(StringTool.isNotEmpty(newHouseMapSearchBuildDo.getBuildingTitleImg())){
-                    newHouseMapSearchBuildDo.setBuildingTitleImg("http://s1-qn.bidewu.com/" + newHouseMapSearchBuildDo.getBuildingTitleImg() + "-dongfangdi1200x900");
+                    newHouseMapSearchBuildDo.setBuildingTitleImg("http://s1-qn.bidewu.com/" + newHouseMapSearchBuildDo.getBuildingTitleImg() + "-w1200x900");
                 }
                 //地铁线信息
                 if (StringTool.isNotEmpty(newHouseMapSearchDoQuery.getSubwayLineId())) {
