@@ -457,7 +457,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 if (plotDetailsDo.getPhoto().length > 0) {
                     String titlePhoto = plotDetailsDo.getPhoto()[0];
                     if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                        titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                        titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                     }
                     plotDetailsDo.setTitlePhoto(titlePhoto);
                 }
@@ -1149,7 +1149,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dfdo400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dfdo400x300";
                 }
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
 
@@ -1554,7 +1554,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
                 if (StringTool.isNotEmpty(titlePhoto)&& !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
 
@@ -1980,7 +1980,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
                 if (StringTool.isNotEmpty(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
 
@@ -2382,7 +2382,7 @@ public class SellHouseServiceImpl implements SellHouseService {
                 }
                 String titlePhoto = sellHousesSearchDo.getHousePhotoTitle();
                 if (StringUtil.isNotNullString(titlePhoto) && !titlePhoto.startsWith("http")) {
-                    titlePhoto = "http://s1.qn.toutiaofangchan.com/" + titlePhoto + "-dongfangdi400x300";
+                    titlePhoto = "http://s1-qn.bidewu.com/" + titlePhoto + "-dongfangdi400x300";
                 }
                 sellHousesSearchDo.setHousePhotoTitle(titlePhoto);
 
