@@ -83,8 +83,8 @@ public class NewHouseLayoutEsDaoImpl implements NewHouseLayoutEsDao{
         SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getNewHouseIndex(city)).types(ElasticCityUtils.getNewHouseParentType(city));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(booleanQueryBuilder).size(0)
-                .aggregation(AggregationBuilders.min("minPrice").field("total_price"))
-                .aggregation(AggregationBuilders.max("maxPrice").field("total_price"));
+                .aggregation(AggregationBuilders.min("minPrice").field("total_price").missing(0))
+                .aggregation(AggregationBuilders.max("maxPrice").field("total_price").missing(0));
 
         searchRequest.source(searchSourceBuilder);
         SearchResponse searchResponse = null;
