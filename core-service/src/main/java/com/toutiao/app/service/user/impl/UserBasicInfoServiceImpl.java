@@ -277,7 +277,7 @@ public class UserBasicInfoServiceImpl implements UserBasicInfoService{
         UserBasic userBasic = userBasicMapper.getUserBasicByunionId(unionid);
         if (StringTool.isNotEmpty(userBasic)){
             BeanUtils.copyProperties(userBasic,userBasicDo);
-            if (userBasicDo.getAvatar().indexOf("http:")==-1){
+            if (!userBasicDo.getAvatar().contains("https")){
                 userBasicDo.setAvatar(headPicPath + "/" + userBasicDo.getAvatar());
             }
             //unionid加密

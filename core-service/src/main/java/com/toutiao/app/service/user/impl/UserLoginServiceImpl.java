@@ -162,7 +162,7 @@ public class UserLoginServiceImpl implements UserLoginService {
         } else {
             throw new BaseException(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_ERROR, "短信验证码错误！");
         }
-        if (StringUtils.isNotEmpty(ubd.getAvatar()) && !ubd.getAvatar().startsWith("http:")) {
+        if (StringUtils.isNotEmpty(ubd.getAvatar()) && !ubd.getAvatar().startsWith("http")) {
             ubd.setAvatar(headPicPath + "/" + ubd.getAvatar());
         }
         if(StringUtils.isNotEmpty(ubd.getUnionid())){
@@ -302,7 +302,7 @@ public class UserLoginServiceImpl implements UserLoginService {
             throw new BaseException(ShortMessageInterfaceErrorCodeEnum.SHORT_MESSAGE_ERROR, "短信验证码错误！");
         }
         //todo
-        if (ubd.getAvatar().indexOf("http:")==-1){
+        if (ubd.getAvatar().indexOf("http")==-1){
             ubd.setAvatar(headPicPath + "/" + ubd.getAvatar());
         }
         ubd.setIsWxBind(true);

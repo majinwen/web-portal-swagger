@@ -81,7 +81,7 @@ public class UserbasicApiController implements UserbasicApi {
         UserLoginResponse userLoginResponse = JSONObject.parseObject(user, UserLoginResponse.class);
         if (null != userLoginResponse) {
             UserBasicDo userBasic = userBasicInfoService.queryUserBasic(userLoginResponse.getUserId());
-            if(userBasic.getAvatar().indexOf("http:")==-1){
+            if(userBasic.getAvatar().indexOf("http")==-1){
                 userBasic.setAvatar(headPicPath + "/" + userBasic.getAvatar());
             }
             BeanUtils.copyProperties(userBasic, userLoginResponse);
