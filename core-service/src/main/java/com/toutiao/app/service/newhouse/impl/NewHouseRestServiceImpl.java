@@ -421,6 +421,13 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
                 NewHouseLayoutPriceDo newHouseLayoutPriceDo = newHouseLayoutService.getNewHouseLayoutPriceByNewHouseId(newHouseListDos.getBuildingNameId(), city);
                 newHouseListDos.setHouseMinPrice((double) Math.round(newHouseLayoutPriceDo.getHouseMinPrice()));
                 newHouseListDos.setHouseMaxPrice((double) Math.round(newHouseLayoutPriceDo.getHouseMaxPrice()));
+//                if(newHouseLayoutPriceDo.getHouseMinPrice()>0){
+//                    newHouseListDos.setHouseMinPrice((double) Math.round(newHouseLayoutPriceDo.getHouseMinPrice()));
+//                }
+//                if(newHouseLayoutPriceDo.getHouseMaxPrice()>=0){
+//                    newHouseListDos.setHouseMaxPrice((double) Math.round(newHouseLayoutPriceDo.getHouseMaxPrice()));
+//                }
+
                 //新房动态
                 NewHouseDynamicDoQuery newHouseDynamicDoQuery = new NewHouseDynamicDoQuery();
                 newHouseDynamicDoQuery.setNewCode(newHouseListDos.getBuildingNameId());
