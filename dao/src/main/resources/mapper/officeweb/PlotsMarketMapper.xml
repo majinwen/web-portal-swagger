@@ -19,6 +19,6 @@
 
 
     <select id="queryPlotMarketByPlotId" resultMap="PlotsMarketResultMap">
-        SELECT r.* FROM "report_district_hot_20" AS r WHERE r.newcode = #{plotId}
+        SELECT r.* FROM "report_district_hot_20" AS r WHERE r.newcode = #{plotId} ORDER BY r."time" LIMIT 1
     </select>
 </mapper>
