@@ -602,4 +602,7 @@ public class SellHouseDetailsResponse {
 
     @ApiModelProperty(value = "房源Tags标签列表", name = "houseSubjectList")
     private List<HouseSubject> houseSubjectList;
+
+    @ApiModelProperty(value = "房源Tags彩色标签列表", name = "houseColorLableList")
+    private List<HouseColorLable> houseColorLableList;
 }

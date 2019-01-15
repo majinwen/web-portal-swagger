@@ -289,28 +289,46 @@ public class SellHouseServiceImpl implements SellHouseService {
 
                 //房源列表标签
                 List<HouseRankLable> houseRankLableList = new ArrayList<>();
-
+                //设置彩色房源标签
+                List<HouseColorLable> houseColorLableList = new ArrayList<>();
                 int isMustRob = sellHouseDetailsDo.getIsMustRob();
                 if (isMustRob == 1) {
                     String houseRobCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseRobCondition())?"?"+sellHouseDetailsDo.getHouseRobCondition():"";
-                    String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseRobLabel())?sellHouseDetailsDo.getHouseRobLabel():communityLableStr;
-                    houseRankLableList.add(new HouseRankLable("", "", "抢手榜",desc, wapName + "/"+city+"/topics/house/hot"+houseRobCondition));
+//                    String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseRobLabel())?sellHouseDetailsDo.getHouseRobLabel():communityLableStr;
+                    String desc = sellHouseDetailsDo.getHouseRobLabel();
+                    if (StringTool.isNotEmpty(desc)){
+                        houseRankLableList.add(new HouseRankLable("", "", "抢手榜",desc, wapName + "/"+city+"/topics/house/hot"+houseRobCondition));
+                    }else{
+                        houseColorLableList.add(new HouseColorLable("F0FAFF", "2FB3FF", "抢手房", wapName + "/" + city + "/topics/house/hot" + houseRobCondition));
+                    }
                 }
 
                 int isLowPrice = sellHouseDetailsDo.getIsLowPrice();
                 if (isLowPrice == 1) {
                     String houseLowerCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseLowerCondition())?"?"+sellHouseDetailsDo.getHouseLowerCondition():"";
-                    String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseLowerLabel())?sellHouseDetailsDo.getHouseLowerLabel():houseLower;
-                    houseRankLableList.add(new HouseRankLable("", "", "捡漏榜", desc, wapName + "/"+city+"/topics/house/low"+houseLowerCondition));
+//                    String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseLowerLabel())?sellHouseDetailsDo.getHouseLowerLabel():houseLower;
+                    String desc = sellHouseDetailsDo.getHouseLowerLabel();
+                    if(StringTool.isNotEmpty(desc)){
+                        houseRankLableList.add(new HouseRankLable("", "", "捡漏榜", desc, wapName + "/"+city+"/topics/house/low"+houseLowerCondition));
+                    }else{
+                        houseColorLableList.add(new HouseColorLable("FFF2F2", "FF6B6B", "捡漏房", wapName + "/" + city + "/topics/house/low" + houseLowerCondition));
+                    }
                 }
 
                 int isCutPrice = sellHouseDetailsDo.getIsCutPrice();
                 if (isCutPrice == 1 && priceFloat < 0) {
                     String houseCutCondition = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseCutCondition())?"?"+sellHouseDetailsDo.getHouseCutCondition():"";
-                    String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseCutLabel())?sellHouseDetailsDo.getHouseCutLabel():houseLowerMsg;
-                    houseRankLableList.add(new HouseRankLable("", "", "降价榜", desc, wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
+//                    String desc = StringTool.isNotEmpty(sellHouseDetailsDo.getHouseCutLabel())?sellHouseDetailsDo.getHouseCutLabel():houseLowerMsg;
+                    String desc = sellHouseDetailsDo.getHouseCutLabel();
+                    if(StringTool.isNotEmpty(desc)){
+                        houseRankLableList.add(new HouseRankLable("", "", "降价榜", desc, wapName + "/"+city+"/topics/house/reduction"+houseCutCondition));
+                    }else{
+                        houseColorLableList.add(new HouseColorLable("EFFFEF", "47E24C", "降价房", wapName + "/" + city + "/topics/house/reduction" + houseCutCondition));
+                    }
                 }
                 sellHouseDetailsDo.setHouseRankLableList(houseRankLableList);
+                sellHouseDetailsDo.setHouseColorLableList(houseColorLableList);
+
 
 
                 //判断3天内导入，且无图片，默认上显示默认图
