@@ -268,7 +268,7 @@ public class UserLoginServiceImpl implements UserLoginService {
                     insertUserBasic.setUserOnlySign(d.getTime() + insertUserBasic.getPhone());
                     //用户注册融云信息
                     String rcToken = imService.queryRongCloudTokenByUser(insertUserBasic.getUserOnlySign(), userBasicDo.getUserPhone(),
-                            headPicPath + "/" + headPicDirectory + "/" + insertUserBasic.getAvatar());
+                            insertUserBasic.getAvatar());
                     insertUserBasic.setRongCloudToken(rcToken);
                     int userId = userBasicMapper.insertSelective(insertUserBasic);
                     BeanUtils.copyProperties(insertUserBasic, ubd);
