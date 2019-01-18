@@ -232,7 +232,7 @@ public class ReportRestController implements ReportRestApi {
 
         //二手房特色房源：降价房
         List<ReportTeSeJiangJiaRespose> teSeJiangjiaResposeList = JSONArray.parseArray(reportCity.getEsfTeseJiangjia(), ReportTeSeJiangJiaRespose.class);
-        reportCityResponse.setEsfTeseJiangjia(doWellSortForJJ(teSeJiangjiaResposeList, 7));
+        reportCityResponse.setEsfTeseJiangjia(doWellSortForJJ(teSeJiangjiaResposeList, 6));
 
         //二手房特色房源：捡漏房
         Object jsonObject = JSON.parse(reportCity.getEsfTeseJianlou());
@@ -248,7 +248,7 @@ public class ReportRestController implements ReportRestApi {
             jianolouJson.put("lower_house_quotation", "[]");
         }
         List<LowerHouseQuotationResponse> lowerHouseQuotationResponseList = JSONArray.parseArray(jianolouJson.getString("lower_house_quotation"), LowerHouseQuotationResponse.class);
-        reportTeSeJianLouRespose.setHouseQuotationList(doWellSortForJL(lowerHouseQuotationResponseList, 7));
+        reportTeSeJianLouRespose.setHouseQuotationList(doWellSortForJL(lowerHouseQuotationResponseList, 6));
 
 
         //二手房日均价
@@ -256,12 +256,12 @@ public class ReportRestController implements ReportRestApi {
             jianolouJson.put("esf_quotation", "[]");
         }
         List<EsfQuotationRespose> esfQuotationResposeList = JSONArray.parseArray(jianolouJson.getString("esf_quotation"), EsfQuotationRespose.class);
-        reportTeSeJianLouRespose.setEsfQuotationList(doWellSortForJLE(esfQuotationResposeList, 7));
+        reportTeSeJianLouRespose.setEsfQuotationList(doWellSortForJLE(esfQuotationResposeList, 6));
         reportCityResponse.setEsfTeseJianlou(reportTeSeJianLouRespose);
 
         //二手房特色房源：抢手房
         List<ReportTeSeQiangShouRespose> teSeQiangShouResposeList = JSONArray.parseArray(reportCity.getEsfTeseQiangshou(), ReportTeSeQiangShouRespose.class);
-        reportCityResponse.setEsfTeseQiangshou(doWellSortForQS(teSeQiangShouResposeList,7));
+        reportCityResponse.setEsfTeseQiangshou(doWellSortForQS(teSeQiangShouResposeList,6));
 
 
         //新房价格趋势，近6个月数据
