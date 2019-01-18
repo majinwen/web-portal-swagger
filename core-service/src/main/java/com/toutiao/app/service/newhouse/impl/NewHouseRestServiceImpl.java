@@ -267,8 +267,8 @@ public class NewHouseRestServiceImpl implements NewHouseRestService {
 
         //面积
         if (newHouseDoQuery.getBeginArea() != 0 && newHouseDoQuery.getEndArea() != 0) {
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").gte(newHouseDoQuery.getEndArea())));
-            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getBeginArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_min_area").lte(newHouseDoQuery.getEndArea())));
+            booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").gte(newHouseDoQuery.getBeginArea())));
         } else if (newHouseDoQuery.getBeginArea() == 0 && newHouseDoQuery.getEndArea() != 0) {
 
             booleanQueryBuilder.must(boolQuery().should(QueryBuilders.rangeQuery("house_max_area").lte(newHouseDoQuery.getEndArea())));
