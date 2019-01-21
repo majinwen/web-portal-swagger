@@ -19,11 +19,6 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public VersionVO getIsNewAppVersion(Integer type, Integer version) {
-        VersionVO versionVO = versionDao.getIsNewAppVersion(type);
-        if (Objects.equals(versionVO.getVersion(), version)) {
-            versionVO.setIsNew(0);
-            versionVO.setUrl("");
-        }
-        return versionVO;
+        return versionDao.getIsNewAppVersion(type, version);
     }
 }

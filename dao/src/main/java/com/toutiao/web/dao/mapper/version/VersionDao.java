@@ -15,5 +15,5 @@ public interface VersionDao {
      * @param type
      * @return
      */
-    VersionVO getIsNewAppVersion(@Param("type") Integer type);
+    VersionVO getIsNewAppVersion(@Param("type") Integer type, @Param("version") Integer version);
 }

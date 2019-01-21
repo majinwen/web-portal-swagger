@@ -9,6 +9,6 @@
     </resultMap>
 
     <select id="getIsNewAppVersion" resultMap="VersionResultMap">
-        SELECT version, url, is_new, back_image FROM version WHERE type = #{type} order by id desc limit 1
+        SELECT version, url, is_new, back_image FROM version WHERE type = #{type} and version = #{version} order by id desc limit 1
     </select>
 </mapper>
