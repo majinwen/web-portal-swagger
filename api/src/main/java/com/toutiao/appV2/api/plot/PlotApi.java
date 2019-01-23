@@ -205,7 +205,7 @@ public interface PlotApi {
             @ApiResponse(code = 200, message = "OK", response = String.class)})
     @ApiImplicitParams({
     })
-    @RequestMapping(value = "/rest/plot/getFoldLineInfo",
+    @RequestMapping(value = "/rest/plot/getFoldLineInfoIos",
             produces = "application/json",
             method = RequestMethod.GET)
     ResponseEntity<JSONArray> getFoldLineInfoIos(@ApiParam(value = "newcode") @Valid @RequestParam(value = "newcode", required = true) String newcode,
