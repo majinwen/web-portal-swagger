@@ -5,6 +5,7 @@
  */
 package com.toutiao.appV2.api.plot;
 
+import com.alibaba.fastjson.JSONArray;
 import com.toutiao.appV2.model.plot.*;
 import io.swagger.annotations.*;
 import org.springframework.http.ResponseEntity;
@@ -198,6 +199,18 @@ public interface PlotApi {
     ResponseEntity<String> getFoldLineInfo(@ApiParam(value = "newcode") @Valid @RequestParam(value = "newcode", required = true) String newcode,
                                            @ApiParam(value = "type") @Valid @RequestParam(value = "type", required = true) Integer type,
                                            @ApiParam(value = "districtId") @Valid @RequestParam(value = "districtId", required = true) String districtId);
+
+    @ApiOperation(value = "折线图IOS", nickname = "getFoldLineInfoIos", notes = "", response = String.class, tags = {"小区",})
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK", response = String.class)})
+    @ApiImplicitParams({
+    })
+    @RequestMapping(value = "/rest/plot/getFoldLineInfo",
+            produces = "application/json",
+            method = RequestMethod.GET)
+    ResponseEntity<JSONArray> getFoldLineInfoIos(@ApiParam(value = "newcode") @Valid @RequestParam(value = "newcode", required = true) String newcode,
+                                                    @ApiParam(value = "type") @Valid @RequestParam(value = "type", required = true) Integer type,
+                                                    @ApiParam(value = "districtId") @Valid @RequestParam(value = "districtId", required = true) String districtId);
 
 
     @ApiOperation(value = "获取小区综述", nickname = "getReviewById", notes = "", response = CommunityReviewResponse.class, tags = {"小区",})

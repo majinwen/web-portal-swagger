@@ -284,6 +284,13 @@ public class PlotApiController implements PlotApi {
         return new ResponseEntity<String>(JSONObject.toJSONString(jsonArray), HttpStatus.OK);
     }
 
+    @Override
+    public ResponseEntity<JSONArray> getFoldLineInfoIos(@ApiParam(value = "小区id", required = true) @Valid @RequestParam(value = "newcode") String newcode,
+                                                  @ApiParam(value = "区域：2,商圈：1", required = true) @Valid @RequestParam(value = "type") Integer type,
+                                                  @ApiParam(value = "区域/商圈id", required = true) @Valid @RequestParam(value = "districtId") String districtId){
+        JSONArray jsonArray = appPlotService.getFoldLineInfo(newcode,districtId,type);
+        return new ResponseEntity<JSONArray>(jsonArray, HttpStatus.OK);
+    }
 
     @Override
     public ResponseEntity<CommunityReviewResponse> getReviewById(@ApiParam(value = "plotId", required = true) @Valid @RequestParam(value = "plotId", required = true) Integer plotId) {
