@@ -259,35 +259,35 @@ public class PlotsEsfRestServiceImpl implements PlotsEsfRestService{
                 }
 
                 //5.商圈N大XX社区主力户型
-                String communityLableStr = "";
-                List recommendBuildTagNameList = sellHouseDo.getRecommendBuildTagsName();
-                String areaName = sellHouseDo.getArea();
-                Map<Integer, Map<String, Integer>> typeCountsMap = sellHouseDo.getTypeCounts();
+//                String communityLableStr = "";
+//                List recommendBuildTagNameList = sellHouseDo.getRecommendBuildTagsName();
+//                String areaName = sellHouseDo.getArea();
+//                Map<Integer, Map<String, Integer>> typeCountsMap = sellHouseDo.getTypeCounts();
 
-                if (sellHouseDo.getIsMustRob() == 1 && sellHouseDo.getIsMainLayout() == 1) {
-                    if (sellHouseDo.getIsCommunityTopHouse() == 1) {
-                        communityLableStr = "top50社区主力户型";
-                    } else if (recommendBuildTagNameList.size() > 0 && StringTool.isNotEmpty(typeCountsMap)) {
-                        if (recommendBuildTagNameList.contains("豪宅")) {
-                            communityLableStr = areaName + typeCountsMap.get(4).get(sellHouseDo.getAreaId()) + "大豪宅社区主力户型";
-                        } else if (recommendBuildTagNameList.contains("别墅")) {
-                            communityLableStr = areaName + typeCountsMap.get(5).get(sellHouseDo.getAreaId()) + "大别墅社区主力户型";
-                        } else if (recommendBuildTagNameList.contains("首次置业")) {
-                            communityLableStr = areaName + typeCountsMap.get(2).get(sellHouseDo.getAreaId()) + "大首置社区主力户型";
-                        } else if (recommendBuildTagNameList.contains("换房升级")) {
-                            communityLableStr = areaName + typeCountsMap.get(3).get(sellHouseDo.getAreaId()) + "大换房社区主力户型";
-                        } else if (recommendBuildTagNameList.contains("近公园")) {
-                            communityLableStr = "近公园社区主力户型";
-                        }
-                    }
-                }
+//                if (sellHouseDo.getIsMustRob() == 1 && sellHouseDo.getIsMainLayout() == 1) {
+//                    if (sellHouseDo.getIsCommunityTopHouse() == 1) {
+//                        communityLableStr = "top50社区主力户型";
+//                    } else if (recommendBuildTagNameList.size() > 0 && StringTool.isNotEmpty(typeCountsMap)) {
+//                        if (recommendBuildTagNameList.contains("豪宅")) {
+//                            communityLableStr = areaName + typeCountsMap.get(4).get(sellHouseDo.getAreaId()) + "大豪宅社区主力户型";
+//                        } else if (recommendBuildTagNameList.contains("别墅")) {
+//                            communityLableStr = areaName + typeCountsMap.get(5).get(sellHouseDo.getAreaId()) + "大别墅社区主力户型";
+//                        } else if (recommendBuildTagNameList.contains("首次置业")) {
+//                            communityLableStr = areaName + typeCountsMap.get(2).get(sellHouseDo.getAreaId()) + "大首置社区主力户型";
+//                        } else if (recommendBuildTagNameList.contains("换房升级")) {
+//                            communityLableStr = areaName + typeCountsMap.get(3).get(sellHouseDo.getAreaId()) + "大换房社区主力户型";
+//                        } else if (recommendBuildTagNameList.contains("近公园")) {
+//                            communityLableStr = "近公园社区主力户型";
+//                        }
+//                    }
+//                }
 
-                if (StringTool.isNotEmpty(communityLableStr)) {
-                    HouseSubject sellHouseSubject = new HouseSubject();
-                    sellHouseSubject.setText(communityLableStr);
-                    sellHouseSubject.setUrl("http://www.baidu.com");
-                    houseSubjectList.add(sellHouseSubject);
-                }
+//                if (StringTool.isNotEmpty(communityLableStr)) {
+//                    HouseSubject sellHouseSubject = new HouseSubject();
+//                    sellHouseSubject.setText(communityLableStr);
+//                    sellHouseSubject.setUrl("http://www.baidu.com");
+//                    houseSubjectList.add(sellHouseSubject);
+//                }
 
                 //6同商圈同户型范围内做低价排名
                 Integer rankInLowCommunityLayout = sellHouseDo.getRankInLowCommunityLayout();
