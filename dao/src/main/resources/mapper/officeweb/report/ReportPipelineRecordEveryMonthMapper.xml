@@ -131,7 +131,7 @@
     SELECT * FROM report_pipeline_record_everymonth
     WHERE code = #{code,jdbcType=VARCHAR}
     AND <![CDATA[ create_time < date_trunc('month', CURRENT_DATE) ]]>
-    AND create_time > date_trunc('month', CURRENT_DATE)- INTERVAL '6 month'
+    AND create_time > date_trunc('month', CURRENT_DATE)- INTERVAL '7 month'
     AND type = #{type, jdbcType=INTEGER}
     ORDER BY create_time ASC
   </select>

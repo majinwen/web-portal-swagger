@@ -852,7 +852,8 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 newcodeMonth.add(formatter.format(newcodeEntity.getCreateTime()));
 
             }
-            newcodeRindratio = (newcodeInfo.get(newcodeInfo.size()-1).getRingRatio())*100+"%";
+
+            newcodeRindratio = String.format("%.2f", (newcodeInfo.get(newcodeInfo.size()-1).getRingRatio())*100)+"%";
             plotName = newcodeInfo.get(newcodeInfo.size()-1).getDisplayName();
         }
 
@@ -861,7 +862,7 @@ public class PlotsRestServiceImpl implements PlotsRestService {
                 districtPrice.add(districtEntity.getAvgPrice());
                 districtMonth.add(formatter.format(districtEntity.getCreateTime()));
             }
-            districtRindratio = (districtInfo.get(districtInfo.size()-1).getRingRatio())*100+"%";
+            districtRindratio = String.format("%.2f", (districtInfo.get(districtInfo.size()-1).getRingRatio())*100)+"%";
             districtName = districtInfo.get(districtInfo.size()-1).getDisplayName();
         }
 
