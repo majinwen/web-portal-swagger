@@ -30,7 +30,7 @@ public class PlotsThemeEsDaoImpl implements PlotsThemeEsDao {
     @Override
     public SearchResponse getPlotsThemeList(BoolQueryBuilder boolQueryBuilder, Integer pageNum, Integer pageSize, String city) {
         SearchResponse searchResponse = null;
-        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city));
+        SearchRequest searchRequest = new SearchRequest(ElasticCityUtils.getPlotIndex(city)).types(ElasticCityUtils.getPlotParentType(city)).preference("_primary_first");
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
         searchSourceBuilder.query(boolQueryBuilder).sort("house_count", SortOrder.DESC).from((pageNum - 1) * pageSize).size(pageSize);
         searchRequest.source(searchSourceBuilder);
