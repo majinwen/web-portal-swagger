@@ -172,7 +172,9 @@ public class NearSellHouseRestServiceImpl implements NearSellHouseRestService {
             if (isDefault == 1) {
                 nearBySellHousesDo.setIsDefaultImage(1);
             }
-
+            if(!nearBySellHousesDo.getHousePhotoTitle().startsWith("http")){
+                nearBySellHousesDo.setHousePhotoTitle("http://s1-qn.bidewu.com/"+nearBySellHousesDo.getHousePhotoTitle());
+            }
 
             nearBySellHousesDo.setAgentBaseDo(agentBaseDo);
             nearBySellHousesDo.setTypeCounts(communityRestService.getCountByBuildTags(CityUtils.returnCityId(city)));
