@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
@@ -270,6 +271,18 @@ public class UploadUtil {
         if (file.getSize() < 0 || file.getSize() > maxLength) {
             Integer code = RestfulInterfaceErrorCodeEnum.IMAGE_SIZE_BEYOND_LIMIT.getValue();
             return InvokeResult.Fail(code,RestfulInterfaceErrorCodeEnum.IMAGE_SIZE_BEYOND_LIMIT.getDesc());
+        }
+
+        try {
+            Image image = ImageIO.read(file.getInputStream());
+            if(image == null)
+            {
+                Integer code = RestfulInterfaceErrorCodeEnum.IMAGE_UPLOAD_FAIL.getValue();
+                return InvokeResult.Fail(code,RestfulInterfaceErrorCodeEnum.IMAGE_UPLOAD_FAIL.getDesc());
+            }
+        } catch(IOException ex) {
+            Integer code = RestfulInterfaceErrorCodeEnum.IMAGE_UPLOAD_FAIL.getValue();
+            return InvokeResult.Fail(code,RestfulInterfaceErrorCodeEnum.IMAGE_UPLOAD_FAIL.getDesc());
         }
 
         if(qiniu_auth==null){
