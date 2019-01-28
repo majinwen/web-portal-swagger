@@ -30,11 +30,11 @@ public class MessagePushServiceImpl implements MessagePushService {
     }
 
     /**
-     * 搜索订阅
+     * 搜索订阅(已弃用)
      */
     private static final Integer CONDITIONHOUSE = 3;
     /**
-     * 关注小区
+     * 关注小区(已弃用)
      */
     private static final Integer FAVORITEPLOT = 4;
     /**
@@ -65,6 +65,19 @@ public class MessagePushServiceImpl implements MessagePushService {
      * 关注租房价格变动
      */
     private static final Integer RENTCHANGEPRICE = 12;
+    /**
+     * 房源动态默认类型
+     */
+    private static final Integer HOUSEDYNAMICDEFAULTTYPE = 5;
+    /**
+     * 房源动态默认类型
+     */
+    private static final Integer THEMESUBSCRIPTIONDEFAULTTYPE = 6;
+
+    /**
+     * 房源动态类型列表
+     */
+    private static final List<Integer> HOUSEDYNAMICTYPES = Arrays.asList(5, 10, 11, 12, 8, 9);
 
     /**
      * 常用汉字
@@ -86,7 +99,6 @@ public class MessagePushServiceImpl implements MessagePushService {
     private static final String ANYLIVINGROOM = "居室不限";
     private static final String ADDONE = "新上一套";
     private static final String SQUAREMETER = "㎡";
-    //    private static final String CHINESESQUAREMETER = "平米";
     private static final String OF = "的";
     private static final String RISE = "已涨";
     private static final String DROP = "已降";
@@ -317,6 +329,7 @@ public class MessagePushServiceImpl implements MessagePushService {
      * @return
      */
     @Override
+    @Deprecated
     public List<HomeMessageDo> getHomeMessage(HomeMessageDoQuery homeMessageDoQuery, String userId) {
         ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
         for (int i = 3; i < 7; i++) {
@@ -389,10 +402,10 @@ public class MessagePushServiceImpl implements MessagePushService {
             listRenewal = messagePushMapper.selectListRenewal(Integer.valueOf(userId));
         }
         List<MessagePushDo> houseActivityDos = ToutiaoBeanUtils.copyPropertiesToList(houseActivity, MessagePushDo.class);
-        getMessageContent(userId, homeMessageDos, houseActivityDos, 5);
+        getMessageContent(userId, homeMessageDos, houseActivityDos, HOUSEDYNAMICDEFAULTTYPE);
 
         List<MessagePushDo> listRenewalDos = ToutiaoBeanUtils.copyPropertiesToList(listRenewal, MessagePushDo.class);
-        getMessageContent(userId, homeMessageDos, listRenewalDos, 6);
+        getMessageContent(userId, homeMessageDos, listRenewalDos, THEMESUBSCRIPTIONDEFAULTTYPE);
         return homeMessageDos;
     }
 
@@ -401,8 +414,7 @@ public class MessagePushServiceImpl implements MessagePushService {
             Integer houseActivityContentYype = houseActivityDos.get(0).getContentType();
             String[] messageContent = getMessageContent(houseActivityDos.get(0), houseActivityContentYype);
             HomeMessageDo homeMessageDo = new HomeMessageDo();
-            //首页统一使用 5和6区分房源类和专题类
-            homeMessageDo.setContentType(i);
+            homeMessageDo.setContentType(houseActivityContentYype);
 
             homeMessageDo.setMessageContent(messageContent[0]);
             homeMessageDo.setBoldMessageContent(messageContent[1]);
@@ -416,10 +428,10 @@ public class MessagePushServiceImpl implements MessagePushService {
             }
             countCriteria.andIsReadEqualTo((short) 0);
             countCriteria.andPushTypeEqualTo(1);
-            if (i == 5){
-                countCriteria.andContentTypeIn(Arrays.asList(5, 10, 11, 12, 8, 9));
+            if (i == HOUSEDYNAMICDEFAULTTYPE){
+                countCriteria.andContentTypeIn(HOUSEDYNAMICTYPES);
             } else {
-                countCriteria.andContentTypeEqualTo(6);
+                countCriteria.andContentTypeEqualTo(THEMESUBSCRIPTIONDEFAULTTYPE);
             }
             int unreadCount = messagePushMapper.countByExample(countExample);
             if (StringTool.isNotEmpty(messageContent[0])) {
@@ -435,72 +447,6 @@ public class MessagePushServiceImpl implements MessagePushService {
             homeMessageDos.add(homeMessageDo);
         }
     }
-
-   /* @Override
-    public List<HomeMessageDo> getHomeMessageNew(HomeMessageDoQuery homeMessageDoQuery, String userId) {
-        ArrayList<HomeMessageDo> homeMessageDos = new ArrayList<>();
-        for (int i = 3; i <= 12; i++) {
-            if (i == 7){
-                continue;
-            }
-            MessagePushExample example = new MessagePushExample();
-            example.setOrderByClause("id DESC");
-            MessagePushExample.Criteria criteria = example.createCriteria();
-            if (StringTool.isNotEmpty(userId)) {
-                criteria.andUserIdEqualTo(Integer.valueOf(userId));
-            }
-            //推送类型(0-系统消息, 1-定向推送)
-            criteria.andPushTypeEqualTo(1);
-            criteria.andContentTypeEqualTo(i);
-            List<MessagePush> messagePushes = messagePushMapper.selectByExample(example);
-            if (CollectionUtils.isEmpty(messagePushes)) {
-                continue;
-            }
-            List<MessagePushDo> messagePushDos = ToutiaoBeanUtils.copyPropertiesToList(messagePushes, MessagePushDo.class);
-
-            String[] messageContent = getMessageContent(messagePushDos.get(0), i);
-            HomeMessageDo homeMessageDo = new HomeMessageDo();
-            homeMessageDo.setContentType(i);
-            homeMessageDo.setMessageContent(messageContent[0]);
-            homeMessageDo.setBoldMessageContent(messageContent[1]);
-            homeMessageDo.setCreateTime(messagePushDos.get(0).getCreateTime().getTime());
-
-            //查询一段时间内消息未读数量
-            MessagePushExample countExample = new MessagePushExample();
-            MessagePushExample.Criteria countCriteria = countExample.createCriteria();
-            if (StringTool.isNotEmpty(userId)) {
-                countCriteria.andUserIdEqualTo(Integer.valueOf(userId));
-            }
-            countCriteria.andIsReadEqualTo((short)0);
-            countCriteria.andPushTypeEqualTo(1);
-            countCriteria.andContentTypeEqualTo(i);
-            if (i == CONDITIONHOUSE && homeMessageDoQuery.getConditionHouseDate() != 0) {
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getConditionHouseDate()));
-            } else if (i == FAVORITEPLOT && homeMessageDoQuery.getFavoritePlotDate() != 0) {
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoritePlotDate()));
-            } else if (i == FAVORITEHOUSE && homeMessageDoQuery.getFavoriteHouseDate() != 0) {
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteHouseDate()));
-            } else if (i == SUBSCRIBETHEME && homeMessageDoQuery.getSubscribeThemeDate() != 0) {
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getSubscribeThemeDate()));
-            } else if (i == FAVORITEVILLAGEESF && homeMessageDoQuery.getFavoriteVillageEsfDate() != 0){
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteVillageEsfDate()));
-            } else if (i == FAVORITEVILLAGERENT && homeMessageDoQuery.getFavoriteVillageRentDate() != 0) {
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getFavoriteVillageRentDate()));
-            } else if (i == ESFSHELVES && homeMessageDoQuery.getEsfShelvesDate() != 0) {
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getEsfShelvesDate()));
-            } else if (i == RENTSHELVES && homeMessageDoQuery.getRentShelvesDate() != 0) {
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getRentShelvesDate()));
-            } else if (i == RENTCHANGEPRICE && homeMessageDoQuery.getRentChangePriceDate() != 0) {
-                countCriteria.andCreateTimeGreaterThanOrEqualTo(new Date(homeMessageDoQuery.getRentChangePriceDate()));
-            }
-            int unreadCount = messagePushMapper.countByExample(countExample);
-            if (StringTool.isNotEmpty(messageContent[0])) {
-                homeMessageDo.setUnReadCount(unreadCount);
-            }
-            homeMessageDos.add(homeMessageDo);
-        }
-        return homeMessageDos;
-    }*/
 
     /**
      * 获取房源消息列表V2
@@ -567,10 +513,11 @@ public class MessagePushServiceImpl implements MessagePushService {
 
         //清空消息
         if (lastMessageId == null || lastMessageId == 0) {
-            updateIsRead(Arrays.asList(5, 10, 11, 12, 8, 9), userId);
+            updateIsRead(HOUSEDYNAMICTYPES, userId);
         }
 
         return messagePushDomain;
+
     }
 
     /**
