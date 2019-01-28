@@ -209,7 +209,7 @@ public class NewHouseApiController implements NewHouseApi {
         PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listActivityMsg(userNewBuildingActivityDoQuery);
         ActivityMsgResponse response = ActivityMsgResponse.builder()
                 .data(userNewBuildingActivityDoPageInfo.getList())
-                .totalNum(userNewBuildingActivityDoPageInfo.getSize()).build();
+                .totalNum((int)userNewBuildingActivityDoPageInfo.getTotal()).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
@@ -230,7 +230,7 @@ public class NewHouseApiController implements NewHouseApi {
         PageInfo<UserNewBuildingActivityDo> userNewBuildingActivityDoPageInfo = newHouseActivityRestService.listUserActivityMsg(userNewBuildingActivityDoQuery);
         ActivityMsgResponse response = ActivityMsgResponse.builder()
                 .data(userNewBuildingActivityDoPageInfo.getList())
-                .totalNum(userNewBuildingActivityDoPageInfo.getSize()).build();
+                .totalNum((int)userNewBuildingActivityDoPageInfo.getTotal()).build();
         return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
